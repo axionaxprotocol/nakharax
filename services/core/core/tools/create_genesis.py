@@ -99,13 +99,13 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
                 "address": _evm_addr("axionax_genesis_validator_eu_217_76_61_116"),
                 "label": "Validator-EU-01",
                 "region": "EU",
-                "ip": "217.216.109.5",
+                "ip": "rpc.axionax.org",
             },
             {
                 "address": _evm_addr("axionax_genesis_validator_au_46_250_244_4"),
                 "label": "Validator-AU-01",
                 "region": "AU",
-                "ip": "46.250.244.4",
+                "ip": "rpc-au.axionax.org",
             },
             {
                 "address": _evm_addr("axionax_genesis_validator_us_mainnet"),

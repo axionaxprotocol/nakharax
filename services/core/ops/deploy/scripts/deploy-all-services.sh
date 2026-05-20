@@ -239,7 +239,7 @@ deploy_phase_1_infrastructure() {
     
     # Redis
     deploy_service "redis" \
-        "docker exec axionax-redis redis-cli ping | grep -q PONG" \
+        "docker exec axionax-redis redis-cli -a \"${REDIS_PASSWORD}\" ping | grep -q PONG" \
         30
     
     print_success "Phase 1 completed: Infrastructure services are running"
@@ -259,17 +259,17 @@ deploy_phase_2_core() {
 deploy_phase_3_applications() {
     print_header "PHASE 3: Application Services"
     
-    # Block Explorer Backend
+    # Block Explorer Backend (optional — may not have image yet)
     deploy_service "explorer-backend" \
         "docker exec axionax-explorer-backend curl -f http://localhost:3001/api/health" \
-        90
+        90 || print_warning "Explorer backend failed — continuing without it"
     
     # Faucet
     deploy_service "faucet" \
         "docker exec axionax-faucet curl -f http://localhost:3002/health" \
         60
     
-    print_success "Phase 3 completed: Application services are running"
+    print_success "Phase 3 completed: Application services deployed"
 }
 
 deploy_phase_4_monitoring() {

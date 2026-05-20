@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from rpc_client import AxionaxRpcClient
 
 def find_peers():
-    print("🔍 Scanning Network for Peers (via 217.216.109.5)...")
+    print("🔍 Scanning Network for Peers (via rpc.axionax.org)...")
     client = AxionaxRpcClient()
     
     # 1. Check Node Version

@@ -10,6 +10,7 @@ environment = "production"
 [network]
 bootnodes = [
     "https://rpc.axionax.org",
+    "https://rpc-au.axionax.org",
     "https://rpc-au.axionax.org"
 ]
 chain_id = 86137

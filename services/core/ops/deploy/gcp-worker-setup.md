@@ -197,7 +197,7 @@ ram = 15  # GB
 
 [network]
 # RPC endpoint (connect to testnet)
-rpc_url = "http://217.216.109.5:8545"
+rpc_url = "https://rpc.axionax.org"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -304,7 +304,7 @@ cat ~/axionax-worker/keys/worker-key.json
 
 ```bash
 # Connect to testnet RPC
-export AXIONAX_RPC="http://217.216.109.5:8545"
+export AXIONAX_RPC="https://rpc.axionax.org"
 
 # Register worker (requires AXX tokens for gas)
 # An auto-register script will be available in the future

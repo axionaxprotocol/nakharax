@@ -6,7 +6,7 @@ This script monitors the testnet while the operator manually stops/starts
 a validator on one of the VPS nodes. It does NOT require SSH access.
 
 Usage:
-  python chaos_observer.py --monitor-rpc http://217.216.109.5:8545 --duration 120
+  python chaos_observer.py --monitor-rpc https://rpc.axionax.org --duration 120
 
 The operator should:
   1. Start this script
@@ -165,8 +165,8 @@ def main():
         "--monitor-rpc",
         nargs="+",
         default=[
-            os.environ.get("AXIONAX_RPC_EU", "http://217.216.109.5:8545"),
-            os.environ.get("AXIONAX_RPC_AU", "http://46.250.244.4:8545"),
+            os.environ.get("AXIONAX_RPC_EU", "https://rpc.axionax.org"),
+            os.environ.get("AXIONAX_RPC_AU", "https://rpc-au.axionax.org"),
         ],
         help="RPC endpoint(s) to monitor",
     )

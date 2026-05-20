@@ -71,7 +71,7 @@ mkdir -p ./certbot/conf ./certbot/www
 docker-compose -f docker-compose.vps.yml up -d nginx certbot
 
 # Request certificates for each subdomain
-DOMAINS=("rpc" "explorer" "faucet")
+DOMAINS=("rpc" "faucet" "faucet-api" "api")
 for domain in "${DOMAINS[@]}"; do
     FULL_DOMAIN="${domain}.${DOMAIN}"
     echo -e "${YELLOW}Requesting certificate for ${FULL_DOMAIN}${NC}"
@@ -95,13 +95,18 @@ sleep 30
 
 # Check service health
 echo -e "${YELLOW}Checking service health...${NC}"
-services=("rpc-node:8545/health" "explorer-backend:3001/api/health" "faucet:3002/health")
-for service in "${services[@]}"; do
-    IFS=':' read -r name endpoint <<< "$service"
-    if docker exec axionax-${name} curl -f http://localhost:${endpoint} &>/dev/null; then
-        echo -e "${GREEN}✓ ${name} is healthy${NC}"
+# Health checks use container_name from docker-compose.vps.yml
+health_checks=(
+    "axionax-rpc:8545/health:RPC Node"
+    "axionax-explorer-backend:3001/api/health:Explorer Backend"
+    "axionax-faucet:3002/health:Faucet"
+)
+for entry in "${health_checks[@]}"; do
+    IFS=':' read -r container port_path label <<< "$entry"
+    if docker exec "$container" curl -sf "http://localhost:${port_path}" &>/dev/null; then
+        echo -e "${GREEN}✓ ${label} is healthy${NC}"
     else
-        echo -e "${RED}✗ ${name} is not responding${NC}"
+        echo -e "${RED}✗ ${label} is not responding (container: ${container})${NC}"
     fi
 done
 
@@ -112,6 +117,7 @@ if command -v ufw &> /dev/null; then
     ufw allow 22/tcp
     ufw allow 80/tcp
     ufw allow 443/tcp
+    ufw allow 8545/tcp   # RPC direct access
     ufw allow 30303/tcp  # P2P
     ufw allow 30303/udp
     ufw reload
@@ -124,16 +130,17 @@ echo -e "${GREEN}=== Deployment Complete ===${NC}"
 echo ""
 echo "Services are available at:"
 echo -e "${GREEN}RPC Node:${NC}      https://rpc.${DOMAIN}"
-echo -e "${GREEN}Explorer:${NC}      https://explorer.${DOMAIN}"
+echo -e "${GREEN}RPC Direct:${NC}    http://${VPS_IP}:8545"
+echo -e "${GREEN}API:${NC}           https://api.${DOMAIN}"
 echo -e "${GREEN}Faucet:${NC}        https://faucet.${DOMAIN}"
-echo -e "${GREEN}Grafana:${NC}       http://${VPS_IP}:3000 (admin/${GRAFANA_PASSWORD})"
-echo -e "${GREEN}Prometheus:${NC}    http://${VPS_IP}:9090"
+echo -e "${GREEN}Faucet API:${NC}    https://faucet-api.${DOMAIN}"
+echo -e "${GREEN}Grafana:${NC}       http://127.0.0.1:3030 (SSH tunnel required)"
 echo ""
 echo "To view logs:"
-echo "  docker-compose -f docker-compose.vps.yml logs -f [service-name]"
+echo "  docker compose -f docker-compose.vps.yml logs -f [service-name]"
 echo ""
 echo "To restart services:"
-echo "  docker-compose -f docker-compose.vps.yml restart"
+echo "  docker compose -f docker-compose.vps.yml restart"
 echo ""
 echo -e "${YELLOW}Note: Make sure DNS records are configured correctly${NC}"
-echo "A records for rpc/explorer/faucet should point to: ${VPS_IP}"
+echo "A records for rpc/faucet/faucet-api/api should point to: ${VPS_IP}"

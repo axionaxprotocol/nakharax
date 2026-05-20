@@ -449,8 +449,8 @@ def main() -> int:
     args = ap.parse_args()
 
     validators = args.validator or [
-        "http://217.216.109.5:8545",
-        "http://46.250.244.4:8545",
+        "https://rpc.axionax.org",
+        "https://rpc-au.axionax.org",
     ]
     if args.skip_validators:
         validators = []

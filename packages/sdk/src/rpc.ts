@@ -12,8 +12,7 @@ export type { NodeEndpoint, NodeStatus, Result, RpcError };
 
 /** Curated default testnet endpoints — keep in sync with `services/core/configs/`. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
-  { id: "node-1", name: "Node 1 (EU)", url: "http://46.250.244.4:8545" },
-  { id: "node-2", name: "Node 2 (ES)", url: "http://217.216.109.5:8545" },
+  { id: "node-1", name: "Node 1 (EU)", url: "https://rpc.axionax.org" },
 ];
 
 export interface RpcCallOptions {

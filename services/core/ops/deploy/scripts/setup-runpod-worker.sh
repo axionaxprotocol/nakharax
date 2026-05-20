@@ -190,7 +190,7 @@ ram = 64
 
 [network]
 # axionax Testnet RPC
-rpc_url = "http://217.216.109.5:8545"
+rpc_url = "https://rpc.axionax.org"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

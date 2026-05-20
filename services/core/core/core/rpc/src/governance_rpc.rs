@@ -2,6 +2,7 @@
 //!
 //! JSON-RPC methods for governance operations
 
+use crate::auth::SignedRequest;
 use governance::{
     Governance, GovernanceConfig, Proposal, ProposalStatus, ProposalType, VoteOption,
 };
@@ -126,26 +127,11 @@ pub trait GovernanceRpc {
 
     /// Create a new proposal. Requires signature. Proposer stake is looked up server-side.
     #[method(name = "gov_createProposal")]
-    async fn create_proposal(
-        &self,
-        proposer: String,
-        title: String,
-        description: String,
-        proposal_type: String,
-        signature: String,
-        public_key: String,
-    ) -> RpcResult<u64>;
+    async fn create_proposal(&self, signed_tx: String) -> RpcResult<u64>;
 
     /// Vote on a proposal. Requires signature. Vote weight is looked up from staking.
     #[method(name = "gov_vote")]
-    async fn vote(
-        &self,
-        voter: String,
-        proposal_id: u64,
-        vote: String,
-        signature: String,
-        public_key: String,
-    ) -> RpcResult<bool>;
+    async fn vote(&self, signed_tx: String) -> RpcResult<bool>;
 
     /// Get vote status for a voter on a proposal
     #[method(name = "gov_getVote")]
@@ -160,7 +146,18 @@ pub trait GovernanceRpc {
     async fn execute_proposal(&self, proposal_id: u64) -> RpcResult<String>;
 }
 
-/// Governance RPC Server Implementation
+#[derive(Deserialize)]
+struct CreateProposalParams {
+    title: String,
+    description: String,
+    proposal_type: String,
+}
+
+#[derive(Deserialize)]
+struct VoteParams {
+    proposal_id: u64,
+    vote: String,
+}
 pub struct GovernanceRpcServerImpl {
     governance: Arc<RwLock<Governance>>,
     staking: Arc<RwLock<Staking>>,
@@ -210,18 +207,15 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
         })
     }
 
-    async fn create_proposal(
-        &self,
-        proposer: String,
-        title: String,
-        description: String,
-        proposal_type: String,
-        signature: String,
-        public_key: String,
-    ) -> RpcResult<u64> {
-        let verified_addr =
-            verify_signed_request(&proposer, "createProposal", &signature, &public_key)
-                .map_err(GovernanceRpcError::AuthError)?;
+    async fn create_proposal(&self, signed_tx: String) -> RpcResult<u64> {
+        let req: SignedRequest = serde_json::from_str(&signed_tx)
+            .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
+            
+        let verified_addr = req.verify_and_recover_address()
+            .map_err(|e| GovernanceRpcError::AuthError(e.to_string()))?;
+            
+        let params: CreateProposalParams = serde_json::from_slice(&req.message)
+            .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
         // Look up actual stake from the staking module
         let staking = self.staking.read().await;
@@ -232,15 +226,15 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
             .unwrap_or(0);
 
         let ptype =
-            parse_proposal_type(&proposal_type).map_err(GovernanceRpcError::InvalidParams)?;
+            parse_proposal_type(&params.proposal_type).map_err(GovernanceRpcError::InvalidParams)?;
 
         let gov = self.governance.read().await;
         let id = gov
             .create_proposal(
                 verified_addr.clone(),
                 actual_stake,
-                title.clone(),
-                description,
+                params.title.clone(),
+                params.description,
                 ptype,
             )
             .await
@@ -248,21 +242,20 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
 
         info!(
             "RPC: Created proposal {} by {}: {}",
-            id, verified_addr, title
+            id, verified_addr, params.title
         );
         Ok(id)
     }
 
-    async fn vote(
-        &self,
-        voter: String,
-        proposal_id: u64,
-        vote: String,
-        signature: String,
-        public_key: String,
-    ) -> RpcResult<bool> {
-        let verified_addr = verify_signed_request(&voter, "vote", &signature, &public_key)
-            .map_err(GovernanceRpcError::AuthError)?;
+    async fn vote(&self, signed_tx: String) -> RpcResult<bool> {
+        let req: SignedRequest = serde_json::from_str(&signed_tx)
+            .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
+            
+        let verified_addr = req.verify_and_recover_address()
+            .map_err(|e| GovernanceRpcError::AuthError(e.to_string()))?;
+            
+        let params: VoteParams = serde_json::from_slice(&req.message)
+            .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
         // Look up actual vote weight from the staking module
         let staking = self.staking.read().await;
@@ -279,14 +272,14 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
             .into());
         }
 
-        let vote_option = match vote.to_lowercase().as_str() {
+        let vote_option = match params.vote.to_lowercase().as_str() {
             "for" | "yes" | "1" => VoteOption::For,
             "against" | "no" | "0" => VoteOption::Against,
             "abstain" | "2" => VoteOption::Abstain,
             _ => {
                 return Err(GovernanceRpcError::InvalidParams(format!(
                     "Invalid vote option: {}",
-                    vote
+                    params.vote
                 ))
                 .into())
             }
@@ -295,7 +288,7 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
         let gov = self.governance.read().await;
         gov.vote(
             verified_addr.clone(),
-            proposal_id,
+            params.proposal_id,
             vote_option,
             actual_weight,
         )
@@ -304,7 +297,7 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
 
         info!(
             "RPC: Vote {:?} by {} on proposal {} with weight {}",
-            vote_option, verified_addr, proposal_id, actual_weight
+            vote_option, verified_addr, params.proposal_id, actual_weight
         );
         Ok(true)
     }
@@ -358,35 +351,6 @@ fn parse_hex_u128(hex: &str) -> Result<u128, String> {
     u128::from_str_radix(hex, 16).map_err(|e| format!("Invalid hex: {}", e))
 }
 
-/// Verify that the caller owns the claimed address by checking an Ed25519 signature.
-fn verify_signed_request(
-    claimed_address: &str,
-    action: &str,
-    signature_hex: &str,
-    public_key_hex: &str,
-) -> Result<String, String> {
-    let pk_bytes = hex::decode(public_key_hex.strip_prefix("0x").unwrap_or(public_key_hex))
-        .map_err(|e| format!("Invalid public_key hex: {}", e))?;
-    let sig_bytes = hex::decode(signature_hex.strip_prefix("0x").unwrap_or(signature_hex))
-        .map_err(|e| format!("Invalid signature hex: {}", e))?;
-
-    let vk = crypto::signature::public_key_from_bytes(&pk_bytes)
-        .ok_or_else(|| "Invalid public key (must be 32 bytes)".to_string())?;
-
-    if !crypto::signature::verify(&vk, action.as_bytes(), &sig_bytes) {
-        return Err("Signature verification failed".to_string());
-    }
-
-    let derived = crypto::signature::address_from_public_key(&vk);
-    if derived != claimed_address {
-        return Err(format!(
-            "Address mismatch: claimed {} but signature proves {}",
-            claimed_address, derived
-        ));
-    }
-
-    Ok(derived)
-}
 
 fn parse_proposal_type(s: &str) -> Result<ProposalType, String> {
     if s == "text" || s.is_empty() {

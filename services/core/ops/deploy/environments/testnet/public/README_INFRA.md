@@ -40,7 +40,7 @@ Example env for a second region (copy `rpc.env` to `rpc-au.env` and set `REGION=
   rpc-au:
     image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
     restart: unless-stopped
-    command: [ "axionax-node", "--role", "rpc", "--chain", "/genesis/testnet.json", "--rpc", "0.0.0.0:8545", "--unsafe-rpc" ]
+    command: [ "axionax-node", "--role", "rpc", "--chain", "/genesis/testnet.json", "--rpc", "0.0.0.0:8545", "" ]
     env_file: [ rpc-au.env ]
     volumes: [ rpc-au-data:/data, ./bootstrap/genesis:/genesis:ro ]
     ports: [ "9546:8545" ]

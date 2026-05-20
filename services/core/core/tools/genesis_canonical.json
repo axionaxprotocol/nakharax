@@ -1,4 +1,4 @@
-﻿{
+{
   "number": 0,
   "hash": "0xf78ed62a713cef40588614485ec0eaeb0c17166250daf0ee77eecc60a20ea087",
   "parent_hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -18,13 +18,13 @@
         "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://217.216.109.5:30303"
+        "node_url": "http://rpc.axionax.org:30303"
       },
       {
         "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://46.250.244.4:30303"
+        "node_url": "http://rpc-au.axionax.org:30303"
       }
     ],
     "balances": {

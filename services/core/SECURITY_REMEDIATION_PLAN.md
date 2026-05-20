@@ -384,7 +384,7 @@ echo "ops/deploy/VPS_CONNECTION.txt" >> .gitignore
 **1. `core/deai/rpc_client.py` (line 10)**
 ```python
 # BEFORE:
-def __init__(self, rpc_url: str = "http://217.216.109.5:8545"):
+def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
 
 # AFTER:
 def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
@@ -401,8 +401,8 @@ def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
 ```toml
 # BEFORE:
 bootnodes = [
-    "http://217.216.109.5:8545",
-    "http://46.250.244.4:8545"
+    "https://rpc.axionax.org",
+    "https://rpc-au.axionax.org"
 ]
 
 # AFTER:
@@ -415,7 +415,7 @@ bootnodes = [
 **3. `configs/monolith_sentinel.toml`, `configs/monolith_worker.toml`, `configs/monolith_scout_single.toml`**
 ```toml
 # BEFORE:
-bootnodes = ["http://217.216.109.5:8545", "http://46.250.244.4:8545"]
+bootnodes = ["https://rpc.axionax.org", "https://rpc-au.axionax.org"]
 
 # AFTER:
 bootnodes = ["https://rpc.axionax.org", "https://rpc-au.axionax.org"]
@@ -740,8 +740,8 @@ add_header Access-Control-Allow-Origin $cors_origin always;
 
 แทนที่ด้วย DNS:
 ```
-http://217.216.109.5:8545  → https://rpc-eu.axionax.org
-http://46.250.244.4:8545   → https://rpc-au.axionax.org
+https://rpc.axionax.org  → https://rpc-eu.axionax.org
+https://rpc-au.axionax.org   → https://rpc-au.axionax.org
 ```
 
 ---

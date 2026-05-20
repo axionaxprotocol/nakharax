@@ -87,10 +87,10 @@ On each VPS (or from another machine):
 # RPC
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  http://217.216.109.5:8545
+  https://rpc.axionax.org
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  http://46.250.244.4:8545
+  https://rpc-au.axionax.org
 ```
 
 If running Docker Compose on the VPS:

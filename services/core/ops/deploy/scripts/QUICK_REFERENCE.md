@@ -71,7 +71,7 @@ docker-compose -f docker-compose.vps.yml logs --tail=100 rpc-node
 - **Faucet:** `https://faucet.axionax.org`
 
 ### Direct Access (No SSL)
-- **RPC HTTP:** `http://217.216.109.5:8545`
+- **RPC HTTP:** `https://rpc.axionax.org`
 - **RPC WS:** `ws://217.216.109.5:8546`
 - **Explorer API:** `http://217.216.109.5:3001`
 - **Faucet API:** `http://217.216.109.5:3002`

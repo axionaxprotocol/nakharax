@@ -339,7 +339,7 @@ ram = 64
 
 [network]
 # axionax Testnet RPC
-rpc_url = "http://217.216.109.5:8545"
+rpc_url = "https://rpc.axionax.org"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -420,7 +420,7 @@ cargo run --release --bin axionax-worker -- \
   GPU: NVIDIA A40 (48GB)
   Network: Testnet
 
-🔧 Connecting to RPC: http://217.216.109.5:8545
+🔧 Connecting to RPC: https://rpc.axionax.org
 ✅ Connected to axionax Testnet
 ✅ Worker registered successfully
 
@@ -595,7 +595,7 @@ gradient_checkpointing = true
 
 ```bash
 # Check connection
-curl http://217.216.109.5:8545
+curl https://rpc.axionax.org
 
 # Check logs
 tail -f ~/axionax-worker/logs/worker.log

@@ -195,6 +195,16 @@ impl PersistentBlockchain {
             });
         }
 
+        if block.number > 0 {
+            if let Some(prev_block) = self.store.get_block(expected - 1)? {
+                if block.parent_hash != prev_block.hash {
+                    return Err(BlockchainError::InvalidParentHash {
+                        block_number: block.number,
+                    });
+                }
+            }
+        }
+
         if self.store.block_exists(block.number)? {
             return Err(BlockchainError::BlockExists(block.number));
         }

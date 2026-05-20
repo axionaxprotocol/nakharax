@@ -34,7 +34,7 @@ python services/core/core/deai/deai_submit.py \
 ```bash
 # Copy job files to cloud worker
 scp services/core/reports/deai-queue/job-*.json \
-  root@217.216.109.5:/root/axionax-core-universe/services/core/reports/deai-queue/
+  root@rpc.axionax.org:/root/axionax-core-universe/services/core/reports/deai-queue/
 ```
 
 ### Step 3: On cloud VPS (worker monitor)
@@ -50,7 +50,7 @@ python services/core/core/deai/deai_monitor.py \
 ### Step 4: Transfer results back
 ```bash
 # Copy result files back to local
-scp root@217.216.109.5:/root/axionax-core-universe/services/core/reports/deai-queue/result-*.json \
+scp root@rpc.axionax.org:/root/axionax-core-universe/services/core/reports/deai-queue/result-*.json \
   services/core/reports/deai-queue/
 ```
 

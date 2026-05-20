@@ -17,6 +17,7 @@ use tracing::info;
 use blockchain::{Block, Transaction, TransactionPool};
 use state::StateDB;
 
+pub mod auth;
 pub mod governance_rpc;
 pub mod health;
 pub mod http_health;
@@ -489,8 +490,11 @@ pub async fn start_rpc_server(
         ))
         .layer(cors);
 
+    let rpc_middleware = jsonrpsee::server::middleware::rpc::RpcServiceBuilder::new();
+
     let server = Server::builder()
         .set_http_middleware(middleware)
+        .set_rpc_middleware(rpc_middleware)
         .max_request_body_size(1_048_576) // 1 MB max request
         .max_response_body_size(10_485_760) // 10 MB max response
         .max_connections(1_000)
@@ -564,8 +568,11 @@ pub async fn start_rpc_server_full(
         ))
         .layer(cors);
 
+    let rpc_middleware = jsonrpsee::server::middleware::rpc::RpcServiceBuilder::new();
+
     let server = Server::builder()
         .set_http_middleware(middleware)
+        .set_rpc_middleware(rpc_middleware)
         .max_request_body_size(1_048_576)
         .max_response_body_size(10_485_760)
         .max_connections(1_000)

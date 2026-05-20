@@ -138,7 +138,7 @@ check_service_health() {
         ["faucet"]="Faucet API|3002|docker ps --filter name=axionax-faucet-api --filter status=running --format '{{.Names}}'"
         ["prometheus"]="Prometheus|9090|curl -sf http://localhost:9090/-/healthy"
         ["postgres"]="PostgreSQL|5432|docker exec axionax-postgres pg_isready -U explorer"
-        ["redis"]="Redis|6379|docker exec axionax-redis redis-cli ping"
+        ["redis"]="Redis|6379|docker exec axionax-redis redis-cli -a \"${REDIS_PASSWORD}\" ping"
     )
     
     printf "%-20s %-8s %-10s\n" "Service" "Port" "Status"
@@ -194,7 +194,7 @@ check_network() {
     declare -a public_ports=(
         "80:HTTP"
         "443:HTTPS"
-        "3000:Grafana"
+        "8545:RPC Direct"
     )
     
     echo "Public Port Status:"
@@ -280,11 +280,11 @@ check_database() {
         print_success "Redis container is running"
         
         # Redis memory usage
-        REDIS_MEM=$(docker exec axionax-redis redis-cli INFO memory 2>/dev/null | grep "used_memory_human" | cut -d: -f2 | tr -d '\r')
+        REDIS_MEM=$(docker exec axionax-redis redis-cli -a "${REDIS_PASSWORD}" INFO memory 2>/dev/null | grep "used_memory_human" | cut -d: -f2 | tr -d '\r')
         echo -e "Redis Memory:      ${REDIS_MEM}"
         
         # Redis keys
-        REDIS_KEYS=$(docker exec axionax-redis redis-cli DBSIZE 2>/dev/null | awk '{print $2}')
+        REDIS_KEYS=$(docker exec axionax-redis redis-cli -a "${REDIS_PASSWORD}" DBSIZE 2>/dev/null | awk '{print $2}')
         echo -e "Redis Keys:        ${REDIS_KEYS}"
     else
         print_error "Redis container is not running"

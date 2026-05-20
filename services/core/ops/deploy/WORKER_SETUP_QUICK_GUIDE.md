@@ -210,7 +210,7 @@ ram = 15  # GB
 
 [network]
 # Connect to your RPC node
-rpc_url = "http://217.216.109.5:8545"
+rpc_url = "https://rpc.axionax.org"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

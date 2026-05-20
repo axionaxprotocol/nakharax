@@ -97,24 +97,9 @@ async fn main() -> anyhow::Result<()> {
     )
     .map_err(|e| anyhow::anyhow!("FAUCET_PRIVATE_KEY contains invalid hex: {e}"))?;
 
-    // We need to construct SigningKey from bytes.
-    // Since crypto::signature::generate_keypair() returns SigningKey, and we want to load one,
-    // we might need to use ed25519_dalek directly if crypto doesn't expose `from_bytes`.
-    // Checking crypto lib.rs, SigningKey is re-exported from ed25519_dalek.
-    // But `crypto::signature` doesn't expose `from_bytes`.
-    // However, `crypto::VRF` does: `SigningKey::from_bytes`.
-    // Since we depend on `crypto`, and `SigningKey` is public there (via use ed25519_dalek::SigningKey),
-    // we can use ed25519_dalek methods if we import it.
-    // BUT we didn't add `ed25519-dalek` to our Cargo.toml, only `crypto`.
-    // Wait, `crypto` re-exports `SigningKey`.
-    // Let's check `crypto/src/lib.rs` again. `use ed25519_dalek::{...}`. It does NOT `pub use`.
-    // But `VRF` struct has `pub fn from_signing_key(signing_key: SigningKey)`.
-    // The `SigningKey` type is visible in signature.
-    // Actually, `crypto/src/lib.rs` does NOT `pub use ed25519_dalek`.
-    // It says `use ed25519_dalek::{...}` inside the module.
-    // So `SigningKey` might not be accessible outside unless re-exported.
-    // `pub mod signature` uses `super::*`.
-    // It returns `SigningKey` in `generate_keypair`. So `SigningKey` MUST be public.
+    // We can use ed25519_dalek directly as it is re-exported via crypto::signature 
+    // or just assume we have the right trait in scope.
+    // The faucet requires the SigningKey from ed25519_dalek.
 
     // Assuming we can use `ed25519_dalek::SigningKey` via `crypto::signature`.
     // Let's assume `crypto` crate exposes it. If not, I'll need to add `ed25519-dalek` to Cargo.toml.

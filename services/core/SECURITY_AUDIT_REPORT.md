@@ -478,7 +478,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 
 - **Files:** `core/deai/rpc_client.py` line 10, `core/deai/worker_config.toml` lines 17–19
 - **Category:** Insecure Communication
-- **Description:** RPC client defaults to `http://217.216.109.5:8545`. All RPC traffic — including signed transactions — is sent unencrypted.
+- **Description:** RPC client defaults to `https://rpc.axionax.org`. All RPC traffic — including signed transactions — is sent unencrypted.
 - **Impact:** Man-in-the-middle attacks can intercept, modify, or replay transactions.
 - **Recommendation:** Use HTTPS/TLS for all RPC endpoints. Validate certificates.
 

@@ -146,13 +146,13 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 
 1. **Add AxionAX Testnet to MetaMask:**
    - Network Name: AxionAX Testnet
-   - RPC URL: http://217.216.109.5:8545
+   - RPC URL: https://rpc.axionax.org
    - Chain ID: 86137
    - Currency Symbol: AXX
-   - Block Explorer: http://217.216.109.5:3000/explorer
+   - Block Explorer: http://rpc.axionax.org:3000/explorer
 
 2. **Get Testnet Tokens:**
-   - Visit: http://217.216.109.5:3000/faucet
+   - Visit: http://rpc.axionax.org:3000/faucet
    - Request 1 AXX (60 minute cooldown)
 
 3. **Deploy with Remix:**
@@ -171,7 +171,7 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 module.exports = {
   networks: {
     axionax: {
-      url: "http://217.216.109.5:8545",
+      url: "https://rpc.axionax.org",
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY]
     }
@@ -190,19 +190,19 @@ npx hardhat run scripts/deploy.js --network axionax
 ```bash
 # Deploy SimpleToken
 forge create SimpleToken \
-  --rpc-url http://217.216.109.5:8545 \
+  --rpc-url https://rpc.axionax.org \
   --constructor-args "Test Token" "TEST" 1000000 \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleNFT
 forge create SimpleNFT \
-  --rpc-url http://217.216.109.5:8545 \
+  --rpc-url https://rpc.axionax.org \
   --constructor-args "My NFT" "MNFT" \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleStaking
 forge create SimpleStaking \
-  --rpc-url http://217.216.109.5:8545 \
+  --rpc-url https://rpc.axionax.org \
   --constructor-args 0x0000000000000000000000000000000000000000 \
   --private-key $PRIVATE_KEY
 ```
@@ -258,10 +258,10 @@ await staking.claimRewards();
 
 ## 📚 Resources
 
-- **Testnet Website**: http://217.216.109.5:3000
-- **Faucet**: http://217.216.109.5:3000/faucet
-- **Explorer**: http://217.216.109.5:3000/explorer
-- **RPC Endpoint**: http://217.216.109.5:8545
+- **Testnet Website**: http://rpc.axionax.org:3000
+- **Faucet**: http://rpc.axionax.org:3000/faucet
+- **Explorer**: http://rpc.axionax.org:3000/explorer
+- **RPC Endpoint**: https://rpc.axionax.org
 - **Chain ID**: 86137
 - **Documentation**: https://github.com/axionaxprotocol/axionax-docs
 

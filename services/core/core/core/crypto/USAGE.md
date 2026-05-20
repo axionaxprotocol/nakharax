@@ -238,39 +238,40 @@ impl Transaction {
 **Use for**: Validator selection, Challenge generation
 
 ```rust
-use crypto::VRF;
+use crypto::ECVRF;
 
 // Create VRF instance
-let vrf = VRF::new();
+let keypair = crypto::signature::generate_keypair();
+let vrf = ECVRF::from_keypair(&keypair);
 
 // Generate proof and random output
 let input = b"block_number_12345";
-let (proof, random_output) = vrf.prove(input);
+let result = vrf.prove(input).unwrap();
 
 // Get public key
-let verifying_key = vrf.verifying_key();
+let verifying_key = keypair.verifying_key();
 
 // Anyone can verify the proof
-let is_valid = VRF::verify(&verifying_key, input, &proof, &random_output);
+let is_valid = ECVRF::verify(&verifying_key, input, &result.proof).is_ok();
 assert!(is_valid);
 ```
 
 ### Validator Selection Example
 
 ```rust
-use crypto::VRF;
+use crypto::{ECVRF, signature::VerifyingKey};
 
 fn select_validator(
     validators: &[String],
     block_number: u64,
-    vrf: &VRF
+    vrf: &ECVRF
 ) -> String {
     // Generate randomness from block number
     let input = format!("block_{}", block_number);
-    let (_proof, random_output) = vrf.prove(input.as_bytes());
+    let result = vrf.prove(input.as_bytes()).unwrap();
     
     // Use random output to select validator
-    let index = u64::from_be_bytes(random_output[0..8].try_into().unwrap());
+    let index = u64::from_be_bytes(result.output[0..8].try_into().unwrap());
     let selected_index = (index as usize) % validators.len();
     
     validators[selected_index].clone()

@@ -16,6 +16,10 @@ services:
     expose:
       - "8545"
       - "8546"
+    ports:
+      - "30303:30303/tcp"
+      - "30303:30303/udp"
+      - "8545:8545"
     environment:
       - RUST_LOG=info
       - RPC_HOST=0.0.0.0
@@ -23,7 +27,7 @@ services:
       - WS_PORT=8546
       - NETWORK=testnet
       - ENABLE_CORS=true
-      - CORS_ORIGINS=https://explorer.axionax.org,https://faucet.axionax.org
+      - CORS_ORIGINS=https://axionax.org,https://www.axionax.org,https://explorer.axionax.org,https://faucet.axionax.org,https://api.axionax.org
     volumes:
       - rpc-data:/data
       - ./configs/rpc-config.toml:/etc/axionax/config.toml:ro
@@ -86,6 +90,8 @@ services:
       - FAUCET_AMOUNT=100
       - RATE_LIMIT_MINUTES=1440  # 24 hours
       - PORT=3002
+      - CHAIN_ID=86137
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
     depends_on:
       - rpc-node
       - redis
@@ -128,20 +134,21 @@ services:
     image: redis:7-alpine
     container_name: axionax-redis
     restart: unless-stopped
-    mem_limit: 256m
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:?Set in .env}"]
+    ports:
+      - "127.0.0.1:6379:6379"
     cpus: 0.5
     logging:
       driver: json-file
       options:
         max-size: "20m"
         max-file: "3"
-    command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis-data:/data
     networks:
       - axionax-net
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -167,9 +174,12 @@ services:
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
     depends_on:
-      - rpc-node
-      - explorer-backend
-      - faucet
+      rpc-node:
+        condition: service_started
+      explorer-backend:
+        condition: service_started
+      faucet:
+        condition: service_started
     networks:
       - axionax-net
     healthcheck:

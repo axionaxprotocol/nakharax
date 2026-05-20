@@ -43,7 +43,7 @@ server {
     location / {
         limit_req zone=rpc_limit burst=50 nodelay;
 
-        proxy_pass http://217.216.109.5:8545;
+        proxy_pass https://rpc.axionax.org;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

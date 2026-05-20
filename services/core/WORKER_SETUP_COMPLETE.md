@@ -70,7 +70,7 @@ vram = 4
 
 [network]
 # Connect to your RPC node
-rpc_url = "http://217.216.109.5:8545"
+rpc_url = "https://rpc.axionax.org"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -148,7 +148,7 @@ deactivate
 
 ```powershell
 # Test connection to your RPC node
-curl http://217.216.109.5:8545 -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
+curl https://rpc.axionax.org -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
 ```
 
 ### Register Worker (Future)

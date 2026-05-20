@@ -51,12 +51,15 @@ struct PyValidator {
 #[pymethods]
 impl PyValidator {
     #[new]
-    fn new(address: String, stake: u64) -> Self {
-        PyValidator {
+    fn new(address: String, stake_str: String) -> PyResult<Self> {
+        let stake = stake_str.parse::<u128>().map_err(|e| {
+            PyValueError::new_err(format!("Invalid stake amount: {}", e))
+        })?;
+        Ok(PyValidator {
             address,
-            stake: stake as u128,
+            stake,
             is_active: true,
-        }
+        })
     }
 
     #[getter]
@@ -191,13 +194,16 @@ struct PyTransaction {
 #[pymethods]
 impl PyTransaction {
     #[new]
-    fn new(from: String, to: String, value: u64, data: Vec<u8>) -> Self {
-        PyTransaction {
+    fn new(from: String, to: String, value_str: String, data: Vec<u8>) -> PyResult<Self> {
+        let value = value_str.parse::<u128>().map_err(|e| {
+            PyValueError::new_err(format!("Invalid value amount: {}", e))
+        })?;
+        Ok(PyTransaction {
             from,
             to,
-            value: value as u128,
+            value,
             _data: data,
-        }
+        })
     }
 
     #[getter]
