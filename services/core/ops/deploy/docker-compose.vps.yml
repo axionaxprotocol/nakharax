@@ -2,6 +2,7 @@ services:
   # RPC Node (behind nginx — not exposed directly)
   rpc-node:
     image: ghcr.io/axionaxprotocol/axionax-core:latest
+    pull_policy: never
     container_name: axionax-rpc
     restart: unless-stopped
     ulimits:
@@ -42,6 +43,7 @@ services:
   # Block Explorer Backend (behind nginx — not exposed directly)
   explorer-backend:
     image: ghcr.io/axionaxprotocol/axionax-explorer:latest
+    pull_policy: never
     container_name: axionax-explorer-backend
     restart: unless-stopped
     mem_limit: 1g
@@ -72,6 +74,7 @@ services:
   # Testnet Faucet (behind nginx — not exposed directly)
   faucet:
     image: ghcr.io/axionaxprotocol/axionax-faucet:latest
+    pull_policy: never
     container_name: axionax-faucet
     restart: unless-stopped
     mem_limit: 512m
