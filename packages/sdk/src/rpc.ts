@@ -10,9 +10,11 @@ import { TESTNET_CHAIN_ID } from "./types";
 
 export type { NodeEndpoint, NodeStatus, Result, RpcError };
 
-/** Curated default testnet endpoints — keep in sync with `services/core/configs/`. */
+/** Curated default testnet endpoints — keep in sync with deploy docs. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
-  { id: "node-1", name: "Node 1 (EU)", url: "https://rpc.axionax.org" },
+  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.axionax.org" },
+  { id: "rpc-eu", name: "Validator EU", url: "http://217.216.109.5:8545" },
+  { id: "rpc-au", name: "Validator AU", url: "http://46.250.244.4:8545" },
 ];
 
 export interface RpcCallOptions {

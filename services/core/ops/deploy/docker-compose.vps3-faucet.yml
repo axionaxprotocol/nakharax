@@ -1,5 +1,7 @@
-# VPS3 only: Testnet Faucet pointing to RPC on VPS1 (217.216.109.5)
-# Usage: copy to VPS3, set FAUCET_PRIVATE_KEY in .env, then:
+# DEPRECATED — use docker-compose.vps.yml on 46.250.244.4 (see VPS_AU_ALL_IN_ONE.md)
+#
+# Legacy: Faucet-only on EU, RPC_URL pointing elsewhere
+# Usage: copy to host, set FAUCET_PRIVATE_KEY in .env, then:
 #   docker compose -f docker-compose.vps3-faucet.yml up -d
 
 services:

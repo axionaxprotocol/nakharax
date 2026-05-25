@@ -28,12 +28,14 @@ Nodes running `axionax-node` (or equivalent), mode set via config or `--role`.
 | **Stake** | Must meet `min_validator_stake` in genesis |
 | **Refs** | `config.example.yaml`, `docker-compose` (validator), `setup_validator.sh` |
 
-**Current testnet validators (2 VPS):**
+**Current testnet deployment (2 VPS, updated 2026-05):**
 
-| IP | Region | RPC |
-|----|--------|-----|
-| 217.216.109.5 | EU | http://217.216.109.5:8545 |
-| 46.250.244.4 | AU | http://46.250.244.4:8545 |
+| IP | Region | Role | RPC (direct) | Public HTTPS |
+|----|--------|------|--------------|--------------|
+| 217.216.109.5 | EU | Validator #1 + RPC + **Axionax OS** | http://217.216.109.5:8545 | `https://app.axionax.org` |
+| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.axionax.org` |
+
+- EU OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) · AU stack: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 ### 1.2 RPC Node
 

@@ -1,76 +1,14 @@
+# =============================================================================
+# Axionax VPS 2 (46.250.244.4) — Supporting Services Stack
+# =============================================================================
+# The Validator/RPC Node runs via systemd (axionax-node.service) on the host.
+# This compose file runs ONLY the supporting services:
+#   nginx (SSL reverse proxy), faucet, redis, postgres, monitoring
+#
+# The services connect to the host's RPC via host.docker.internal:8545
+# =============================================================================
+
 services:
-  # RPC Node (behind nginx — not exposed directly)
-  rpc-node:
-    image: ghcr.io/axionaxprotocol/axionax-core:latest
-    pull_policy: never
-    container_name: axionax-rpc
-    restart: unless-stopped
-    ulimits:
-      nofile: { soft: 65536, hard: 65536 }
-    mem_limit: 2g
-    cpus: 2.0
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
-    expose:
-      - "8545"
-      - "8546"
-    ports:
-      - "30303:30303/tcp"
-      - "30303:30303/udp"
-      - "8545:8545"
-    environment:
-      - RUST_LOG=info
-      - RPC_HOST=0.0.0.0
-      - RPC_PORT=8545
-      - WS_PORT=8546
-      - NETWORK=testnet
-      - ENABLE_CORS=true
-      - CORS_ORIGINS=https://axionax.org,https://www.axionax.org,https://explorer.axionax.org,https://faucet.axionax.org,https://api.axionax.org
-    volumes:
-      - rpc-data:/data
-      - ./configs/rpc-config.toml:/etc/axionax/config.toml:ro
-    networks:
-      - axionax-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8545/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Block Explorer Backend (behind nginx — not exposed directly)
-  explorer-backend:
-    image: ghcr.io/axionaxprotocol/axionax-explorer:latest
-    pull_policy: never
-    container_name: axionax-explorer-backend
-    restart: unless-stopped
-    mem_limit: 1g
-    cpus: 1.0
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
-    expose:
-      - "3001"
-    environment:
-      - NODE_ENV=production
-      - RPC_URL=http://rpc-node:8545
-      - DATABASE_URL=postgresql://explorer:${DB_PASSWORD}@postgres:5432/explorer
-      - PORT=3001
-    depends_on:
-      - rpc-node
-      - postgres
-    networks:
-      - axionax-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   # Testnet Faucet (behind nginx — not exposed directly)
   faucet:
     image: ghcr.io/axionaxprotocol/axionax-faucet:latest
@@ -84,11 +22,13 @@ services:
       options:
         max-size: "20m"
         max-file: "3"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     expose:
       - "3002"
     environment:
       - NODE_ENV=production
-      - RPC_URL=http://rpc-node:8545
+      - RPC_URL=http://host.docker.internal:8545
       - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
       - FAUCET_AMOUNT=100
       - RATE_LIMIT_MINUTES=1440  # 24 hours
@@ -96,7 +36,6 @@ services:
       - CHAIN_ID=86137
       - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
     depends_on:
-      - rpc-node
       - redis
     networks:
       - axionax-net
@@ -106,7 +45,7 @@ services:
       timeout: 10s
       retries: 3
 
-  # PostgreSQL Database (internal only — never expose publicly)
+  # PostgreSQL Database (internal only — for future explorer use)
   postgres:
     image: postgres:16-alpine
     container_name: axionax-postgres
@@ -132,7 +71,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Redis Cache (internal only — never expose publicly)
+  # Redis Cache (internal only — for faucet rate limiting)
   redis:
     image: redis:7-alpine
     container_name: axionax-redis
@@ -156,7 +95,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Nginx Reverse Proxy
+  # Nginx Reverse Proxy (SSL termination for rpc/faucet)
   nginx:
     image: nginx:alpine
     container_name: axionax-nginx
@@ -168,6 +107,8 @@ services:
       options:
         max-size: "50m"
         max-file: "5"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "80:80"
       - "443:443"
@@ -177,10 +118,6 @@ services:
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
     depends_on:
-      rpc-node:
-        condition: service_started
-      explorer-backend:
-        condition: service_started
       faucet:
         condition: service_started
     networks:
@@ -205,6 +142,8 @@ services:
     image: prom/prometheus:latest
     container_name: axionax-prometheus
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
@@ -234,7 +173,6 @@ services:
       - axionax-net
 
 volumes:
-  rpc-data:
   postgres-data:
   redis-data:
   prometheus-data:

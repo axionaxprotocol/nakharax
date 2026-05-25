@@ -1,6 +1,9 @@
 # Axionax OS Dashboard
 
-A self-hosted, Umbrel-style web dashboard for managing an Axionax node.
+A self-hosted, Umbrel-style web dashboard for managing an Axionax node (Obsidian OS UI).
+
+**Production host (EU):** `217.216.109.5` → `https://app.axionax.org`  
+Deploy guide: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md)
 
 ## Features (alpha)
 

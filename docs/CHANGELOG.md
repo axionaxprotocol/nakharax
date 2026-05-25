@@ -53,7 +53,7 @@
 
 ### Added
 - **Testnet Configuration**: Chain ID 86137, Symbol AXXt
-- **Validator Infrastructure**: 2 validators (AU: 46.250.244.4, ES: 217.216.109.5)
+- **Validator Infrastructure**: EU `217.216.109.5` (validator + Axionax OS / `app.axionax.org`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
 - **Faucet Service**: Port 3002 for testnet token distribution
 - **P2P Network**: Bootstrap nodes operational on port 30303
 

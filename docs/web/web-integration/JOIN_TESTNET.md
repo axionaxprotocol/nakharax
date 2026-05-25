@@ -31,17 +31,20 @@
 
 ### Endpoints
 
-- **RPC URL**: `https://rpc.axionax.org` (Nginx proxy บน VPS 3 → VPS 1/2)
-- **WebSocket**: `wss://rpc.axionax.org`
-- **Explorer**: https://explorer.axionax.org (optional บน VPS 3)
-- **Faucet**: https://faucet.axionax.org (VPS 3)
+- **RPC URL**: `https://rpc.axionax.org` (nginx บน AU `46.250.244.4` → local validator)
+- **WebSocket**: `wss://rpc.axionax.org/ws`
+- **Explorer**: https://explorer.axionax.org (AU)
+- **API**: https://api.axionax.org (AU — explorer backend)
+- **Faucet**: https://faucet.axionax.org (AU)
+- **Axionax OS**: https://app.axionax.org (EU `217.216.109.5`)
 - **Website**: https://axionax.org
 
 ### Validator Nodes (direct RPC fallback)
 
-- **EU Validator** (VPS 1): http://217.216.109.5:8545
-- **AU Validator** (VPS 2): http://46.250.244.4:8545
-- **Infra hub** (VPS 3 — Nginx + Faucet, no chain node): 217.216.109.5
+- **EU Validator #1**: http://217.216.109.5:8545
+- **AU Validator #2 + services**: http://46.250.244.4:8545
+
+Deploy: [VPS_AU_ALL_IN_ONE.md](../../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 ---
 

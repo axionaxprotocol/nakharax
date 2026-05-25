@@ -1,5 +1,13 @@
 # Deploy Testnet Faucet on VPS3
 
+> **Deprecated (2026-05):** Faucet, RPC proxy, explorer, และ API รวมอยู่บน **46.250.244.4 (AU)** ผ่าน `docker-compose.vps.yml` แล้ว — ใช้ [VPS_AU_ALL_IN_ONE.md](VPS_AU_ALL_IN_ONE.md) แทนเอกสารนี้
+
+---
+
+## Legacy — Faucet only on EU (217.216.109.5)
+
+เอกสารด้านล่างเป็นขั้นตอนเก่า (แยก VPS3 infra ที่ EU) — เก็บไว้เพื่ออ้างอิงเท่านั้น
+
 ใช้เมื่อต้องการรัน **Faucet สำหรับ chain 86137** บน VPS3 (217.216.109.5) โดยชี้ RPC ไป VPS1
 
 ---

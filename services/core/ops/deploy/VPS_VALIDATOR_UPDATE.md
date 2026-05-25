@@ -2,6 +2,14 @@
 
 Checklist for updating both **Validator VPS**: **217.216.109.5** (EU) and **46.250.244.4** (AU)
 
+| VPS | IP | Stack |
+|-----|-----|--------|
+| EU | 217.216.109.5 | Validator + RPC + **Axionax OS** (`apps/os-dashboard`, port 3030) |
+| AU | 46.250.244.4 | Validator + RPC + **chain services** (`docker-compose.vps.yml`) |
+
+**EU OS deploy:** [VPS_EU_OS_DASHBOARD.md](../../../docs/web/VPS_EU_OS_DASHBOARD.md)  
+**AU chain deploy:** [VPS_AU_ALL_IN_ONE.md](VPS_AU_ALL_IN_ONE.md)
+
 ---
 
 ## Run the Update Script on Both VPS (Recommended)
@@ -103,12 +111,21 @@ cd /path/to/ops/deploy
 
 ---
 
-## 6. Explorer / Faucet (If Present on This VPS)
+## 6. Explorer / Faucet / API (AU only — 46.250.244.4)
 
-From [TESTNET_DEPLOYMENT_PLAN](../tools/devtools/docs/TESTNET_DEPLOYMENT_PLAN.md): if Explorer (3001) or Faucet (3002) is not running:
+รันผ่าน `docker-compose.vps.yml` บน AU เท่านั้น:
 
-- **Explorer:** Check `docker logs axionax-explorer-backend`; if the image is missing/not working, use a stub or build from `tools/devtools/Dockerfile.explorer`
-- **Faucet:** Set `FAUCET_PRIVATE_KEY` in .env; or build from `ops/deploy/Dockerfile.faucet` (context = core/)
+```bash
+cd /opt/axionax   # path ที่มี compose + nginx
+docker compose -f docker-compose.vps.yml ps
+bash scripts/check-vps-status.sh
+```
+
+- **Explorer:** `docker logs axionax-explorer-backend`; เปิด `nginx/conf.d/explorer.conf` (ย้ายจาก `.disabled`)
+- **API:** `api.axionax.org` → same `explorer-backend:3001`
+- **Faucet:** `FAUCET_PRIVATE_KEY` ใน `.env`; `RPC_URL` ชี้ `http://rpc-node:8545` ใน compose แล้ว
+
+EU (217.216.109.5) ไม่ต้องรัน explorer/faucet แยก — ใช้โดเมนที่ชี้ AU
 
 ---
 

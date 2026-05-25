@@ -73,7 +73,9 @@ This repository contains many documents. This file is the central index: content
 
 | Document | Description |
 |----------|-------------|
-| [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis public testnet plan, VPS allocation (3 nodes), weekly timeline |
+| [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis public testnet plan, 2-VPS allocation (EU validator + AU all-in-one), weekly timeline |
+| [ops/deploy/VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) | Deploy chain services on 46.250.244.4 (AU) |
+| [web/VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) | Deploy Axionax OS on 217.216.109.5 (EU) |
 | [CONNECTIVITY_OVERVIEW.md](CONNECTIVITY_OVERVIEW.md) | How Local full node, VPS Validator, and Frontend connect |
 | [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Axionax Testnet and AXX token in MetaMask; receive from Faucet |
 | [ops/deploy/VPS_VALIDATOR_UPDATE.md](../ops/deploy/VPS_VALIDATOR_UPDATE.md) | Validator VPS update (217.216.109.5, 46.250.244.4) and checklist |

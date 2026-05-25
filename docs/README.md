@@ -33,6 +33,8 @@
 ### Core Universe (`docs/core/`)
 - **Architecture**: [`core/ARCHITECTURE_OVERVIEW.md`](./core/ARCHITECTURE_OVERVIEW.md), [`core/AXIONAX_BIBLE.md`](./core/AXIONAX_BIBLE.md)
 - **Network**: [`core/NETWORK_NODES.md`](./core/NETWORK_NODES.md), [`core/NODE_SPECS.md`](./core/NODE_SPECS.md)
+- **VPS deploy (AU chain)**: [`../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
+- **VPS deploy (EU OS)**: [`./web/VPS_EU_OS_DASHBOARD.md`](./web/VPS_EU_OS_DASHBOARD.md)
 - **Marketplace**: [`core/MARKETPLACE_WORKER_NODES.md`](./core/MARKETPLACE_WORKER_NODES.md)
 - **Sentinels**: [`core/SENTINELS.md`](./core/SENTINELS.md)
 - **API**: [`core/API_REFERENCE.md`](./core/API_REFERENCE.md), [`core/RPC_API.md`](./core/RPC_API.md)

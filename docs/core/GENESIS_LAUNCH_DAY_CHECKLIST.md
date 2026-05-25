@@ -19,7 +19,7 @@
 ## ก่อน Launch (Pre-flight)
 
 - [ ] **Validator keys** — แต่ละ VPS (EU, AU) มี key สำหรับ block production ตรงกับ address ใน genesis
-- [ ] **Faucet key** — VPS3 ตั้ง `FAUCET_PRIVATE_KEY` ให้ตรงกับ genesis (deterministic จาก seed `axionax_faucet_mainnet_q2_2026` ถ้าใช้ default)
+- [ ] **Faucet key** — AU (`46.250.244.4`) ตั้ง `FAUCET_PRIVATE_KEY` ใน `.env` ให้ตรงกับ genesis (deterministic จาก seed `axionax_faucet_mainnet_q2_2026` ถ้าใช้ default)
 - [ ] **Firewall** — VPS1 & VPS2 เปิด 22, 8545, 30303 (และ 8546 ถ้าใช้ WS)
 - [ ] **Genesis hash** — ทุก validator ใช้ genesis ชุดเดียวกัน; ตรวจด้วย `sha256sum genesis.json`
 
@@ -132,8 +132,8 @@ find /opt /root -name "rpc-config.toml" -o -name "config.toml" 2>/dev/null | hea
 
 - [ ] ตรวจ block ถูก produce สม่ำเสมอ (block time 2s ตาม genesis)
 - [ ] ตรวจ P2P peer count = 1 ระหว่างสอง validator
-- [x] เปิด RPC ผ่าน VPS3 (Nginx → VPS1/VPS2), ตั้ง DNS rpc.axionax.org
-- [x] เปิด Faucet บน VPS3: ตาม [VPS3_FAUCET_DEPLOY.md](../ops/deploy/VPS3_FAUCET_DEPLOY.md) (compose: `docker-compose.vps3-faucet.yml`, ตั้ง `FAUCET_PRIVATE_KEY`), ตั้ง DNS faucet.axionax.org
+- [ ] เปิด stack บน AU (`46.250.244.4`): [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) — `docker-compose.vps.yml`, DNS rpc / explorer / api / faucet → AU
+- [ ] ตั้ง `FAUCET_PRIVATE_KEY` ใน `.env` บน AU
 - [ ] Frontend ตั้ง `NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org` และทดสอบ Add Network (86137) + รับ AXX จาก Faucet
 - [ ] รัน verify-launch-ready (หลัง RPC/DNS พร้อม): จาก repo root  
   `bash ops/deploy/scripts/verify-launch-ready.sh`
@@ -163,11 +163,11 @@ cd /root/axionax-core-universe
 bash ops/deploy/scripts/fix-validator-ulimit.sh axionax-validator-eu
 ```
 
-**เช็ก VPS3 (จากเครื่องคุณ):**
+**เช็ก AU stack (จากเครื่องคุณ):**
 
 ```powershell
-scp ops\deploy\scripts\check-vps3.sh root@217.216.109.5:/tmp/
-ssh root@217.216.109.5 'sed -i "s/\r$//" /tmp/check-vps3.sh; bash /tmp/check-vps3.sh'
+scp services\core\ops\deploy\scripts\check-vps-status.sh root@46.250.244.4:/tmp/
+ssh root@46.250.244.4 'sed -i "s/\r$//" /tmp/check-vps-status.sh; bash /tmp/check-vps-status.sh --detailed'
 ```
 
 Script จะ recreate container ด้วย `--ulimit nofile=65536:65536` อัตโนมัติ หลังรันตรวจ: `docker logs axionax-validator-eu --tail 20`

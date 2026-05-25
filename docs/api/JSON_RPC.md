@@ -6,11 +6,18 @@ Last Updated: May 3, 2026
 
 ## Testnet Endpoints
 
-| Endpoint | URL | Status |
-|----------|-----|--------|
-| **AU Validator** | `http://46.250.244.4:8545` | ✅ Live |
-| **ES Validator** | `http://217.216.109.5:8545` | ✅ Live |
-| **Public RPC** | `https://rpc.axionax.org` | 🔄 Planned |
+| Endpoint | URL | Host |
+|----------|-----|------|
+| **EU Validator** | `http://217.216.109.5:8545` | Validator #1 |
+| **AU Validator** | `http://46.250.244.4:8545` | Validator #2 + services |
+| **Public RPC** | `https://rpc.axionax.org` | AU (`46.250.244.4`) |
+| **Public RPC (AU)** | `https://rpc-au.axionax.org` | AU |
+| **Explorer** | `https://explorer.axionax.org` | AU |
+| **API** | `https://api.axionax.org` | AU |
+| **Faucet** | `https://faucet.axionax.org` | AU |
+| **Axionax OS** | `https://app.axionax.org` | EU (`217.216.109.5`) |
+
+Deploy: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) · OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md)
 
 ## Overview
 

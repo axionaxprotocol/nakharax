@@ -114,9 +114,12 @@ python3 scripts/update-node.py --full-deps
 
 ## Current Network (Testnet)
 
-| Validator | IP | RPC | Region |
-|-----------|-----|-----|--------|
-| #1 | 46.250.244.4 | `https://rpc-au.axionax.org` | AU |
+| Node | IP | Role | RPC |
+|------|-----|------|-----|
+| EU | 217.216.109.5 | Validator + RPC + **Axionax OS** | `https://app.axionax.org` |
+| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.axionax.org` |
+
+EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) · AU: [ops/deploy/VPS_AU_ALL_IN_ONE.md](ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 - **Chain ID:** `86137`
 - **Phase:** Pre-Testnet (Phase 2)

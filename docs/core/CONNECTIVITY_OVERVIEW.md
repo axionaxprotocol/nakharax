@@ -1,6 +1,8 @@
 # Connectivity: Local Full Node, VPS Validator, and Frontend
 
-How **Local full node**, **VPS Validator node**, and **Frontend (hosted website)** connect, and what must be configured.
+How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website)** connect, and what must be configured.
+
+> **Production layout (2026-05):** User-facing services (rpc, explorer, api, faucet) run on **46.250.244.4 (AU)** via `docker-compose.vps.yml`. EU validator: **217.216.109.5**.
 
 ---
 
@@ -8,11 +10,12 @@ How **Local full node**, **VPS Validator node**, and **Frontend (hosted website)
 
 | Component | Location / URL | Connects to |
 |-----------|----------------|-------------|
-| **VPS Validator #1** | 217.216.109.5 (EU), RPC :8545, P2P :30303 | Validator #2 (P2P), clients (RPC) |
-| **VPS Validator #2** | 46.250.244.4 (AU), RPC :8545, P2P :30303 | Validator #1 (P2P), clients (RPC) |
-| **DNS (if used)** | rpc.axionax.org, faucet.axionax.org, explorer.axionax.org | Points to VPS hosting that service |
-| **Frontend (axionax-web-universe)** | Hosted at axionax.org / Vercel / VPS | Uses RPC via URL set in env |
-| **Local full node** | Your machine (node running locally) | Choice: point to Public Testnet or run own chain |
+| **VPS EU** | 217.216.109.5 | Validator #1, RPC, **Axionax OS** (`app.axionax.org` → :3030) |
+| **VPS AU** | 46.250.244.4 | Validator #2; nginx, rpc, explorer, api, faucet |
+| **DNS (chain)** | rpc / explorer / api / faucet `.axionax.org` | → **46.250.244.4** |
+| **DNS (OS)** | `app.axionax.org` | → **217.216.109.5** |
+| **Axionax OS** | `apps/os-dashboard` on EU | RPC client → `https://rpc.axionax.org` (AU) |
+| **Local full node** | Your machine | Bootstrap to EU or AU; or use public RPC only |
 
 ---
 
@@ -21,30 +24,31 @@ How **Local full node**, **VPS Validator node**, and **Frontend (hosted website)
 ### Intended connectivity
 
 ```
-[User] → [axionax.org / website] → RPC (rpc.axionax.org or IP:8545)
-                    ↓
-            [VPS Validator #1 or #2]
-                    ↓
-            Chain ID 86137, same state
+[User] → https://rpc.axionax.org (nginx @ 46.250.244.4)
+              ↓
+         [AU rpc-node] ←P2P→ [EU validator @ 217.216.109.5]
+              ↓
+         Chain ID 86137
+
+[Faucet / Explorer / API] → same host (46.250.244.4), RPC_URL=http://rpc-node:8545
 ```
 
-- **Both validators** run the same chain (same genesis, Chain ID 86137) and sync via P2P (port 30303).
-- **Frontend (website)** must use an **RPC URL** that points to a node of this chain to be "connected" to the real testnet:
-  - With DNS: `NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org` (or `https://testnet-rpc.axionax.org`)
-  - Or by IP: `http://217.216.109.5:8545` / `http://46.250.244.4:8545`
-- **Faucet** must have `RPC_URL` pointing to the RPC of this chain (validator or RPC node in sync with the validator) to distribute AXX on the same chain the frontend uses.
+- **Both validators** share genesis (86137) and sync on P2P **30303**.
+- **Frontend** should use `NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org` (or `https://rpc-au.axionax.org`).
+- **Faucet** on AU uses internal RPC — no cross-VPS RPC URL needed when stack is all-in-one.
+- **Direct IP RPC** (debug): `http://217.216.109.5:8545` (EU), `http://46.250.244.4:8545` (AU).
 
 ### What must be in place for "fully connected"
 
-| Item | Status | Notes |
-|------|--------|-------|
-| VPS Validator runs node and exposes 8545, 30303 | Per README / VPS_VALIDATOR_UPDATE | Must be running and firewall open |
-| DNS: rpc.axionax.org → RPC host IP | Set in DNS | If no DNS, use IP in frontend |
-| DNS: faucet.axionax.org → Faucet host | Set in DNS | Faucet must set RPC_URL to chain 86137 |
-| Frontend (web-universe) env: NEXT_PUBLIC_RPC_URL | Set on hosted site | Use rpc.axionax.org or http://217.216.109.5:8545 |
-| Faucet running and RPC_URL pointing to Validator/RPC | Set on Faucet host | See ops/deploy, Dockerfile.faucet |
+| Item | Host | Notes |
+|------|------|-------|
+| EU validator running | 217.216.109.5 | 8545, 30303 open |
+| AU stack running | 46.250.244.4 | `docker-compose.vps.yml`, all containers healthy |
+| DNS → AU | 46.250.244.4 | rpc, explorer, api, faucet subdomains |
+| Frontend RPC env | build-time | `https://rpc.axionax.org` |
+| P2P between validators | both | `peers >= 1` on each node |
 
-**Summary:** Everything is connected only when (1) validators run and expose RPC, (2) frontend uses this chain’s RPC URL, (3) Faucet uses the same RPC, and (4) if using domains, DNS is set correctly.
+**Deploy guide:** [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 ---
 
@@ -52,25 +56,19 @@ How **Local full node**, **VPS Validator node**, and **Frontend (hosted website)
 
 ### Option A: Connect to Public Testnet
 
-- Run a full node on your machine with **bootstrap / RPC** pointing at a validator to sync with the same chain as VPS and frontend:
-  - Env: `AXIONAX_BOOTSTRAP_NODES=/ip4/217.216.109.5/tcp/30303/p2p/<PEER_ID>` (requires actual Peer ID from validator)
-  - Or do not sync P2P and use the validator RPC as a "remote RPC" from apps/scripts.
-- If you use the validator RPC directly (e.g. `http://217.216.109.5:8545`), a **local full node is not required** just to use the frontend/faucet; run one when you want a local copy of the chain.
+- Bootstrap: `AXIONAX_BOOTSTRAP_NODES` pointing at EU or AU peer ID on port 30303.
+- Or skip local sync and use public RPC only.
 
-### Option B: Run a separate chain (not connected to Public Testnet)
+### Option B: Separate local chain
 
-- Run the node in standalone mode (no bootstrap or different genesis/chain_id) to get a **local-only chain**:
-  - If the frontend runs locally with `NEXT_PUBLIC_RPC_URL=http://localhost:8545`, it connects to this chain, not the VPS validators.
-  - Suitable for development only.
+- Standalone genesis / chain_id — not connected to public testnet.
 
 ---
 
-## 3. Frontend (hosted — axionax-web-universe)
+## 3. Frontend (hosted)
 
-- The hosted site (axionax.org or elsewhere) reads **RPC URL from env** (e.g. `NEXT_PUBLIC_RPC_URL`, `VITE_RPC_URL`):
-  - If set to `https://rpc.axionax.org` or `http://217.216.109.5:8545` → connected to **Public Testnet (validators)**.
-  - If set to `http://localhost:8545` → connected to **local node (local chain or local node synced to testnet)**.
-- So **which chain the frontend uses depends on the RPC URL** used at build/run time, not on where the validator is hosted.
+- RPC URL at build/runtime determines which chain the UI uses.
+- Production: `https://rpc.axionax.org` → testnet 86137 on AU/EU validators.
 
 ---
 
@@ -78,29 +76,30 @@ How **Local full node**, **VPS Validator node**, and **Frontend (hosted website)
 
 | Pair | Connected? | Condition |
 |------|------------|-----------|
-| **VPS Validator #1 ↔ #2** | Yes | P2P 30303 open between them; same genesis and chain_id |
-| **Frontend ↔ Public Testnet** | Yes | Set NEXT_PUBLIC_RPC_URL (or equivalent) to the chain’s RPC (or rpc.axionax.org if DNS points there) |
-| **Faucet ↔ Public Testnet** | Yes | Run Faucet and set RPC_URL to the RPC of chain 86137 (validator/RPC node) |
-| **Local full node ↔ Public Testnet** | Yes | Set bootstrap/RPC to validator and use same genesis/chain_id |
-| **Hosted frontend ↔ Local full node** | Yes | Set frontend RPC URL to the local node (e.g. http://localhost:8545 or IP:8545) |
-
-**Overall:** If DNS (rpc.axionax.org, faucet.axionax.org) points to the VPS that actually run those services, and the frontend uses those URLs, then local full node (if running and synced to validators), VPS validators, and hosted frontend all use the **same chain** and are "connected" at the data level. If DNS is not set or the frontend points RPC elsewhere, configure DNS and env as in the table above.
+| **EU ↔ AU validators** | Yes | P2P 30303; same genesis |
+| **Frontend ↔ testnet** | Yes | RPC URL points to rpc.axionax.org (AU nginx → local node) |
+| **Faucet ↔ testnet** | Yes | Faucet on AU, `RPC_URL=http://rpc-node:8545` |
+| **Explorer/API ↔ testnet** | Yes | `explorer-backend` on AU, same internal RPC |
 
 ---
 
 ## 5. Quick verification
 
 ```bash
-# Public Testnet RPC
+# EU validator
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
   http://217.216.109.5:8545
-# Expect "0x15079" (86137)
 
-# With DNS
+# AU validator (direct)
+curl -s -X POST -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
+  http://46.250.244.4:8545
+
+# Public HTTPS (after DNS + SSL on AU)
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
   https://rpc.axionax.org
 ```
 
-Full verification script: `ops/deploy/scripts/verify-launch-ready.sh` (checks DNS, RPC, Explorer, Faucet).
+Full script: `ops/deploy/scripts/verify-launch-ready.sh`

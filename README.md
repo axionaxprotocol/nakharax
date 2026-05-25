@@ -97,15 +97,18 @@ python3 scripts/join-axionax.py
 
 ### Testnet (Chain ID `86137`)
 
-| Validator | RPC | Region |
-|---|---|---|
-| #1 | `http://46.250.244.4:8545` | AU |
-| #2 | `http://217.216.109.5:8545` | ES |
+| Validator | IP | Role | RPC (direct) |
+|---|---|---|---|
+| #1 (EU) | `217.216.109.5` | Validator + RPC + **Axionax OS** | `http://217.216.109.5:8545` · `https://app.axionax.org` |
+| #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
+
+**Public HTTPS (AU):** `https://rpc.axionax.org` · `explorer` · `api` · `faucet`  
+**Axionax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 P2P bootnodes are advertised via `AXIONAX_BOOTSTRAP_NODES` — see `services/core/configs/`.
 
 Current validated status (2026-05-01):
-- AU (`46.250.244.4`) and ES (`217.216.109.5`) nodes are connected and report `peers: 1`.
+- AU (`46.250.244.4`) and EU (`217.216.109.5`) nodes are connected and report `peers: 1`.
 - Cross-node handshake tests in `services/core/core/core/network/tests/handshake_test.rs` pass (including the ignored mDNS test when run explicitly).
 
 ### Key constants

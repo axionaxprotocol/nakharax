@@ -24,7 +24,7 @@
   ```
 - [ ] **Ulimit** — ไม่เจอ "Too many open files" (ถ้าเจอ ใช้ [GENESIS_LAUNCH_DAY_CHECKLIST.md#แก้ปัญหา-too-many-open-files](GENESIS_LAUNCH_DAY_CHECKLIST.md))
 
-### RPC / VPS3
+### RPC / AU services (46.250.244.4)
 
 - [ ] **RPC proxy ขึ้น** — `https://rpc.axionax.org` ตอบ
   ```bash
@@ -72,7 +72,7 @@
 
 ## 4. Faucet & Token Distribution
 
-- [ ] **Faucet ขึ้น** — `https://faucet.axionax.org` ตอบ (ตาม [VPS3_FAUCET_DEPLOY.md](../ops/deploy/VPS3_FAUCET_DEPLOY.md))
+- [ ] **Faucet ขึ้น** — `https://faucet.axionax.org` ตอบ (ตาม [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md))
 - [ ] **Balance faucet พอ** — ตรวจ balance ของ faucet address; เติมหรือปรับ amount ต่อ request ถ้าจำเป็น
 - [ ] **Rate limit สมเหตุสมผล** — จำกัดต่อ IP/address (เช่น 24h) ไม่ให้ abuse แต่ยังให้ทดสอบได้
 - [ ] **Request สำเร็จ** — ทดสอบขอ AXX จาก faucet แล้วได้ token; ดู log ถ้ามี error (RPC timeout, gas)
@@ -132,7 +132,7 @@ done
 - Launch day: [GENESIS_LAUNCH_DAY_CHECKLIST.md](GENESIS_LAUNCH_DAY_CHECKLIST.md)
 - Plan: [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md)
 - Add network: [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md)
-- Faucet deploy: [VPS3_FAUCET_DEPLOY.md](../ops/deploy/VPS3_FAUCET_DEPLOY.md)
+- AU deploy: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 - Optimize suite (RPC smoke / light / optional stress): จาก root `python scripts/run_optimize_suite.py` หรือจาก `scripts/` รัน `python run_optimize_suite.py` — แพ็กเกจ `scripts/optimize_suite/` — unit test (ไม่ต้องมีเครือข่าย): `cd scripts && python -m unittest discover -s optimize_suite/tests -q`
 - สร้างรายงาน performance อัตโนมัติ (optimize + block-time → `reports/NETWORK_PERFORMANCE_SUMMARY.md`): จาก root `python scripts/generate_network_performance_report.py` (ต้องมี `web3` สำหรับขั้น block-time — ดู `scripts/requirements.txt`)
 - ภาพรวมความพร้อมแบบ production-like + เกณฑ์: [TESTNET_PRODUCTION_READINESS.md](TESTNET_PRODUCTION_READINESS.md) — เช็กอัตโนมัติ (chain / height / hash / faucet): `python scripts/check_testnet_production_readiness.py` → `reports/TESTNET_PRODUCTION_READINESS_LAST.md`
