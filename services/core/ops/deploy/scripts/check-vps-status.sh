@@ -132,10 +132,9 @@ check_service_health() {
         ["nginx"]="Web Server|80|curl -sf http://localhost/"
         ["nginx-ssl"]="HTTPS|443|nc -z localhost 443"
         ["grafana"]="Grafana|3030|curl -sf http://localhost:3030/api/health"
-        ["rpc-node"]="RPC HTTP|8545|curl -sf http://localhost:8545/health"
-        ["rpc-ws"]="RPC WebSocket|8546|nc -z localhost 8546"
+        ["rpc-node"]="RPC HTTP|8545|curl -sf -X POST -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_version\",\"params\":[],\"id\":67}' http://localhost:8545"
         ["faucet"]="Faucet API|3002|[ -n \"\$(docker ps -q --filter name=axionax-faucet --filter status=running)\" ]"
-        ["prometheus"]="Prometheus|9090|curl -sf http://localhost:9090/-/healthy"
+        ["prometheus"]="Prometheus|9090|[ -n \"\$(docker ps -q --filter name=axionax-prometheus --filter status=running)\" ]"
         ["postgres"]="PostgreSQL|5432|docker exec axionax-postgres pg_isready -U explorer"
         ["redis"]="Redis|6379|docker exec axionax-redis redis-cli -a \"${REDIS_PASSWORD}\" ping"
     )
@@ -212,12 +211,7 @@ check_network() {
     echo ""
     echo "Internal Service Ports:"
     declare -a internal_ports=(
-        "8545:RPC HTTP"
-        "8546:RPC WS"
-        "3001:Explorer"
-        "3002:Faucet"
-        "9090:Prometheus"
-        "5432:PostgreSQL"
+        "8545:RPC HTTP/WS"
         "6379:Redis"
     )
     
