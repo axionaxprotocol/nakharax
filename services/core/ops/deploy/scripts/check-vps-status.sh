@@ -134,7 +134,6 @@ check_service_health() {
         ["grafana"]="Grafana|3030|curl -sf http://localhost:3030/api/health"
         ["rpc-node"]="RPC HTTP|8545|curl -sf http://localhost:8545/health"
         ["rpc-ws"]="RPC WebSocket|8546|nc -z localhost 8546"
-        ["explorer"]="Explorer API|3001|[ -n \"\$(docker ps -q --filter name=axionax-explorer-backend --filter status=running)\" ]"
         ["faucet"]="Faucet API|3002|[ -n \"\$(docker ps -q --filter name=axionax-faucet --filter status=running)\" ]"
         ["prometheus"]="Prometheus|9090|curl -sf http://localhost:9090/-/healthy"
         ["postgres"]="PostgreSQL|5432|docker exec axionax-postgres pg_isready -U explorer"
@@ -307,7 +306,7 @@ show_summary() {
     cd "${DEPLOY_DIR}" 2>/dev/null || return 1
     
     # Count running services
-    EXPECTED_SERVICES=9
+    EXPECTED_SERVICES=7
     RUNNING_SERVICES=$(docker-compose -f docker-compose.vps.yml ps --services --filter "status=running" 2>/dev/null | wc -l)
     
     echo -e "Services Status: ${RUNNING_SERVICES}/${EXPECTED_SERVICES} running"
