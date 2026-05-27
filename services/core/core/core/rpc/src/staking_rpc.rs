@@ -3,6 +3,7 @@
 //! JSON-RPC methods for staking operations
 
 use crate::auth::SignedRequest;
+use jsonrpsee::{
     core::{async_trait, RpcResult},
     proc_macros::rpc,
     types::ErrorObjectOwned,
