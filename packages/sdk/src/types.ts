@@ -46,3 +46,10 @@ export interface NodeStatus {
   latencyMs: number;
   error?: string;
 }
+
+/** Information about a peer in the Kademlia DHT routing table. */
+export interface KadPeer {
+  peer_id: string;
+  addresses: string[];
+}
+

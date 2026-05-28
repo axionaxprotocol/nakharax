@@ -508,7 +508,7 @@ pub async fn start_rpc_server(
 
     let mut module = rpc_impl.into_rpc();
 
-    module.merge(build_system_module(state, chain_id)?)?;
+    module.merge(build_system_module(state, chain_id, None)?)?;
 
     if let Some(bus) = event_bus {
         module.merge(build_events_module(bus)?)?;
@@ -534,6 +534,7 @@ pub async fn start_rpc_server_full(
         Arc<tokio::sync::RwLock<governance::Governance>>,
         Arc<tokio::sync::RwLock<staking::Staking>>,
     )>,
+    network: Option<Arc<tokio::sync::Mutex<network::NetworkManager>>>,
 ) -> anyhow::Result<ServerHandle> {
     info!("Starting full RPC server on {}", addr);
 
@@ -587,7 +588,7 @@ pub async fn start_rpc_server_full(
     }
     let mut module = rpc_impl.into_rpc();
 
-    module.merge(build_system_module(state, chain_id)?)?;
+    module.merge(build_system_module(state, chain_id, network)?)?;
 
     if let Some(bus) = event_bus {
         module.merge(build_events_module(bus)?)?;
@@ -616,7 +617,11 @@ pub async fn start_rpc_server_full(
     Ok(handle)
 }
 
-fn build_system_module(state: Arc<StateDB>, chain_id: u64) -> anyhow::Result<RpcModule<()>> {
+fn build_system_module(
+    state: Arc<StateDB>,
+    chain_id: u64,
+    network: Option<Arc<tokio::sync::Mutex<network::NetworkManager>>>,
+) -> anyhow::Result<RpcModule<()>> {
     let mut module = RpcModule::new(());
     let state_for_status = state.clone();
     module.register_method("system_status", move |_, _, _| {
@@ -678,6 +683,35 @@ fn build_system_module(state: Arc<StateDB>, chain_id: u64) -> anyhow::Result<Rpc
             "uptime_seconds": metrics::UPTIME_SECONDS.get(),
         }))
     })?;
+
+    if let Some(net) = network {
+        module.register_async_method("system_kadRoutingTable", move |_, _, _| {
+            let net = net.clone();
+            async move {
+                let fut = {
+                    let network_lock = net.lock().await;
+                    network_lock.kad_routing_table()
+                };
+                let table = fut.await
+                    .map_err(|e| jsonrpsee::types::ErrorObjectOwned::owned(
+                        -32603,
+                        e.to_string(),
+                        None::<()>,
+                    ))?;
+                
+                let result: Vec<serde_json::Value> = table
+                    .into_iter()
+                    .map(|(peer_id, addrs)| {
+                        serde_json::json!({
+                            "peer_id": peer_id.to_string(),
+                            "addresses": addrs.into_iter().map(|a| a.to_string()).collect::<Vec<String>>(),
+                        })
+                    })
+                    .collect();
+                Ok::<_, jsonrpsee::types::ErrorObjectOwned>(result)
+            }
+        })?;
+    }
 
     Ok(module)
 }

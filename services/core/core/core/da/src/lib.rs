@@ -7,6 +7,7 @@
 //! - Availability window management
 
 use serde::{Deserialize, Serialize};
+use reed_solomon_erasure::galois_8::ReedSolomon;
 use sha3::{Digest, Sha3_256};
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -181,10 +182,12 @@ impl DA {
         let data_size = data.len();
         let chunk_size = self.config.chunk_size;
 
-        // Calculate chunks needed
-        let data_chunks = data_size.div_ceil(chunk_size);
-        let parity_chunks =
-            ((data_chunks as f64 * (self.config.erasure_coding_rate - 1.0)).ceil()) as usize;
+        // Calculate chunks needed (handling empty data case safely)
+        let data_chunks = std::cmp::max(1, data_size.div_ceil(chunk_size));
+        let parity_chunks = std::cmp::max(
+            1,
+            ((data_chunks as f64 * (self.config.erasure_coding_rate - 1.0)).ceil()) as usize,
+        );
         let total_chunks = data_chunks + parity_chunks;
 
         // Check storage capacity
@@ -194,24 +197,38 @@ impl DA {
             return Err(DAError::StorageFull);
         }
 
+        // Prepare shards for Reed-Solomon encoding.
+        // All shards must be exactly `chunk_size` bytes. Pad with 0s if needed.
+        let total_data_len = data_chunks * chunk_size;
+        let mut padded_data = data.to_vec();
+        if padded_data.len() < total_data_len {
+            padded_data.resize(total_data_len, 0u8);
+        }
+
+        let mut shards: Vec<Vec<u8>> = Vec::with_capacity(total_chunks);
+        for i in 0..data_chunks {
+            let start = i * chunk_size;
+            let end = start + chunk_size;
+            shards.push(padded_data[start..end].to_vec());
+        }
+        for _ in 0..parity_chunks {
+            shards.push(vec![0u8; chunk_size]);
+        }
+
+        // Encode parity shards
+        let encoder = ReedSolomon::new(data_chunks, parity_chunks)
+            .map_err(|e| DAError::InvalidErasureCoding(e.to_string()))?;
+        encoder
+            .encode(&mut shards)
+            .map_err(|e| DAError::InvalidErasureCoding(e.to_string()))?;
+
         let mut chunks_storage = self.chunks.write().await;
         let mut chunk_ids = Vec::with_capacity(total_chunks);
 
-        // Create data chunks
-        for i in 0..data_chunks {
-            let start = i * chunk_size;
-            let end = std::cmp::min(start + chunk_size, data_size);
-            let chunk_data = data[start..end].to_vec();
-
-            let chunk = Chunk::new(i, chunk_data, false);
-            chunk_ids.push(chunk.id.clone());
-            chunks_storage.insert(chunk.id.clone(), chunk);
-        }
-
-        // Create parity chunks (simplified XOR parity for demo)
-        for i in 0..parity_chunks {
-            let parity_data = self.compute_parity(&chunks_storage, &chunk_ids, i, chunk_size);
-            let chunk = Chunk::new(data_chunks + i, parity_data, true);
+        // Store data and parity chunks
+        for (i, shard_data) in shards.into_iter().enumerate() {
+            let is_parity = i >= data_chunks;
+            let chunk = Chunk::new(i, shard_data, is_parity);
             chunk_ids.push(chunk.id.clone());
             chunks_storage.insert(chunk.id.clone(), chunk);
         }
@@ -244,34 +261,6 @@ impl DA {
         Ok(entry)
     }
 
-    /// Compute simple XOR parity (simplified erasure coding)
-    fn compute_parity(
-        &self,
-        chunks: &HashMap<String, Chunk>,
-        chunk_ids: &[String],
-        parity_index: usize,
-        chunk_size: usize,
-    ) -> Vec<u8> {
-        let mut parity = vec![0u8; chunk_size];
-
-        // XOR all data chunks together (simplified)
-        for (i, chunk_id) in chunk_ids.iter().enumerate() {
-            if let Some(chunk) = chunks.get(chunk_id) {
-                if !chunk.is_parity {
-                    // Rotate based on parity index for variety
-                    let offset = (parity_index * 7 + i) % 256;
-                    for (j, byte) in chunk.data.iter().enumerate() {
-                        if j < parity.len() {
-                            parity[j] ^= byte.wrapping_add(offset as u8);
-                        }
-                    }
-                }
-            }
-        }
-
-        parity
-    }
-
     /// Retrieve data
     pub async fn retrieve(&self, id: &str) -> Result<Vec<u8>> {
         let entries = self.entries.read().await;
@@ -285,29 +274,68 @@ impl DA {
         }
 
         let chunks = self.chunks.read().await;
-        let mut data = Vec::with_capacity(entry.original_size);
 
-        // Retrieve data chunks in order
-        for i in 0..entry.data_chunks {
+        // Try to collect all chunks. Mark missing/corrupt chunks as None.
+        let mut shards: Vec<Option<Vec<u8>>> = vec![None; entry.total_chunks];
+        let mut valid_count = 0;
+        let mut missing_data_shards = Vec::new();
+
+        for i in 0..entry.total_chunks {
             let chunk_id = &entry.chunk_ids[i];
-            let chunk = chunks
-                .get(chunk_id)
-                .ok_or_else(|| DAError::ChunkNotFound(chunk_id.clone()))?;
-
-            if !chunk.verify() {
-                return Err(DAError::AuditFailed(format!(
-                    "Chunk {} corrupted",
-                    chunk_id
-                )));
+            if let Some(chunk) = chunks.get(chunk_id) {
+                if chunk.verify() {
+                    shards[i] = Some(chunk.data.clone());
+                    valid_count += 1;
+                } else if i < entry.data_chunks {
+                    missing_data_shards.push(i);
+                }
+            } else if i < entry.data_chunks {
+                missing_data_shards.push(i);
             }
-
-            data.extend_from_slice(&chunk.data);
         }
 
-        // Trim to original size
-        data.truncate(entry.original_size);
+        // Fast path: if all data shards are present and verified, bypass Reed-Solomon.
+        if missing_data_shards.is_empty() {
+            let mut data = Vec::with_capacity(entry.original_size);
+            for i in 0..entry.data_chunks {
+                if let Some(ref shard_data) = shards[i] {
+                    data.extend_from_slice(shard_data);
+                }
+            }
+            data.truncate(entry.original_size);
+            return Ok(data);
+        }
 
-        debug!("Retrieved data {}: {} bytes", id, data.len());
+        // Slow path: some data shards are missing. Check if we have enough total valid chunks.
+        if valid_count < entry.data_chunks {
+            return Err(DAError::AuditFailed(format!(
+                "Not enough valid chunks to reconstruct: have {}, need {}",
+                valid_count, entry.data_chunks
+            )));
+        }
+
+        // Setup decoder and reconstruct missing shards
+        let decoder = ReedSolomon::new(entry.data_chunks, entry.parity_chunks)
+            .map_err(|e| DAError::InvalidErasureCoding(e.to_string()))?;
+        decoder
+            .reconstruct(&mut shards)
+            .map_err(|e| DAError::InvalidErasureCoding(e.to_string()))?;
+
+        // Retrieve and assemble data
+        let mut data = Vec::with_capacity(entry.original_size);
+        for i in 0..entry.data_chunks {
+            if let Some(ref shard_data) = shards[i] {
+                data.extend_from_slice(shard_data);
+            } else {
+                return Err(DAError::AuditFailed(format!(
+                    "Failed to reconstruct data shard {}",
+                    i
+                )));
+            }
+        }
+
+        data.truncate(entry.original_size);
+        debug!("Retrieved and reconstructed data {}: {} bytes", id, data.len());
         Ok(data)
     }
 
@@ -522,5 +550,38 @@ mod tests {
         let stats = da.get_stats().await;
         assert_eq!(stats.total_entries, 1);
         assert!(stats.total_storage_bytes > 0);
+    }
+
+    #[tokio::test]
+    async fn test_erasure_reconstruction() {
+        let da = DA::new(DAConfig {
+            chunk_size: 10,
+            erasure_coding_rate: 1.5,
+            ..Default::default()
+        });
+
+        let data = b"This data will be split, partially lost, and then reconstructed.";
+        let entry = da.store("reconstruct-test".to_string(), data).await.unwrap();
+
+        // For chunk_size=10, 64 bytes -> data_chunks=7, parity_chunks=4, total=11.
+        assert_eq!(entry.data_chunks, 7);
+        assert_eq!(entry.parity_chunks, 4);
+
+        // Delete 3 data chunks (which is <= parity_chunks, so we can still reconstruct!)
+        {
+            let mut chunks_storage = da.chunks.write().await;
+            chunks_storage.remove(&entry.chunk_ids[0]);
+            chunks_storage.remove(&entry.chunk_ids[2]);
+            chunks_storage.remove(&entry.chunk_ids[4]);
+        }
+
+        // Audit should still pass since we have 8/11 chunks remaining (which is >= 7)
+        let audit_res = da.audit("reconstruct-test").await.unwrap();
+        assert!(audit_res.passed);
+        assert_eq!(audit_res.chunks_valid, 8);
+
+        // Retrieve should succeed and reconstruct the missing data shards perfectly!
+        let retrieved = da.retrieve("reconstruct-test").await.unwrap();
+        assert_eq!(retrieved, data.to_vec());
     }
 }

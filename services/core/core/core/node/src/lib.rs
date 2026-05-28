@@ -276,6 +276,7 @@ impl AxionaxNode {
             Some(self.event_bus.clone()),
             Some(self.staking.clone()),
             Some((self.governance.clone(), self.staking.clone())),
+            Some(self.network.clone()),
         )
         .await?;
         self.rpc_handle = Some(rpc_handle);

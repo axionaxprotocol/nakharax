@@ -5,10 +5,10 @@
 //   * surface EIP-1474 error codes when the node returns them;
 //   * stay browser/Node/Edge compatible (no platform-specific imports).
 
-import type { NodeEndpoint, NodeStatus, Result, RpcError } from "./types";
+import type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer } from "./types";
 import { TESTNET_CHAIN_ID } from "./types";
 
-export type { NodeEndpoint, NodeStatus, Result, RpcError };
+export type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer };
 
 /** Curated default testnet endpoints — keep in sync with deploy docs. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
@@ -214,3 +214,9 @@ export async function isReachable(
     return false;
   }
 }
+
+/** Retrieve the Kademlia DHT routing table of the node. */
+export async function getKadRoutingTable(url: string): Promise<Result<KadPeer[]>> {
+  return rpcCall<KadPeer[]>(url, "system_kadRoutingTable");
+}
+

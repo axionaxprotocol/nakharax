@@ -48,6 +48,16 @@ enum Commands {
     /// Governance commands
     #[command(subcommand)]
     Gov(GovCommands),
+
+    /// Debug commands
+    #[command(subcommand)]
+    Debug(DebugCommands),
+}
+
+#[derive(Subcommand)]
+pub enum DebugCommands {
+    /// Inspect Kademlia routing table
+    RoutingTable,
 }
 
 #[derive(Subcommand)]
@@ -345,6 +355,36 @@ async fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
                         "Votes Abstain: {}",
                         result["votes_abstain"].as_str().unwrap_or("0")
                     );
+                }
+            }
+        },
+
+        Commands::Debug(cmd) => match cmd {
+            DebugCommands::RoutingTable => {
+                let result = rpc_call(&client, &cli.rpc, "system_kadRoutingTable", vec![]).await?;
+
+                println!("{}", "Kademlia DHT Routing Table".cyan().bold());
+                println!("{}", "=".repeat(60));
+
+                if let Some(peers) = result.as_array() {
+                    if peers.is_empty() {
+                        println!("No peers in Kademlia routing table.");
+                    } else {
+                        for p in peers {
+                            println!(
+                                "Peer ID: {}",
+                                p["peer_id"].as_str().unwrap_or("").green()
+                            );
+                            if let Some(addrs) = p["addresses"].as_array() {
+                                for addr in addrs {
+                                    println!("  - {}", addr.as_str().unwrap_or(""));
+                                }
+                            }
+                        }
+                        println!("\nTotal: {} peers in routing table", peers.len());
+                    }
+                } else {
+                    println!("{}", "Unexpected response format".red());
                 }
             }
         },

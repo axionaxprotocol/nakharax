@@ -25,6 +25,8 @@ pub struct AxionaxBehaviour {
     pub identify: identify::Behaviour,
     /// Ping for connection keep-alive
     pub ping: ping::Behaviour,
+    /// AutoNAT for NAT traversal
+    pub autonat: libp2p::autonat::Behaviour,
 }
 
 impl AxionaxBehaviour {
@@ -88,12 +90,17 @@ impl AxionaxBehaviour {
                 .with_timeout(Duration::from_secs(10)),
         );
 
+        // Configure AutoNAT
+        let autonat_config = libp2p::autonat::Config::default();
+        let autonat = libp2p::autonat::Behaviour::new(peer_id, autonat_config);
+
         Ok(Self {
             gossipsub,
             mdns,
             kad,
             identify,
             ping,
+            autonat,
         })
     }
 
@@ -129,6 +136,19 @@ impl AxionaxBehaviour {
     /// Get number of connected peers
     pub fn peer_count(&self) -> usize {
         self.connected_peers().len()
+    }
+
+    /// Get snapshot of Kademlia routing table
+    pub fn routing_table(&mut self) -> Vec<(PeerId, Vec<libp2p::Multiaddr>)> {
+        let mut table = Vec::new();
+        for bucket in self.kad.kbuckets() {
+            for entry in bucket.iter() {
+                let peer_id = *entry.node.key.preimage();
+                let addrs = entry.node.value.iter().cloned().collect();
+                table.push((peer_id, addrs));
+            }
+        }
+        table
     }
 }
 

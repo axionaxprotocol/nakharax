@@ -30,6 +30,20 @@ use crate::{
 /// - sends outbound messages through `message_tx`
 /// - exposes the inbound event receiver once via [`Self::take_event_receiver`]
 /// - reports peer count via an atomic counter updated by the swarm task
+/// Control commands sent from the manager handle to the swarm event loop task
+#[derive(Debug)]
+pub enum NetworkCommand {
+    GetRoutingTable(tokio::sync::oneshot::Sender<Vec<(PeerId, Vec<Multiaddr>)>>),
+}
+
+/// Network manager handles P2P communication.
+///
+/// After [`NetworkManager::start`] is called, the underlying libp2p swarm is
+/// moved into a dedicated tokio task that polls events and processes outbound
+/// messages. The manager itself becomes a thin handle that:
+/// - sends outbound messages through `message_tx`
+/// - exposes the inbound event receiver once via [`Self::take_event_receiver`]
+/// - reports peer count via an atomic counter updated by the swarm task
 pub struct NetworkManager {
     /// Swarm is `Some` until [`Self::start`] consumes it into the swarm task.
     swarm: Option<Swarm<AxionaxBehaviour>>,
@@ -39,6 +53,9 @@ pub struct NetworkManager {
     /// publish by sending on `message_tx` (cloned cheaply).
     message_tx: mpsc::Sender<NetworkMessage>,
     message_rx: Option<mpsc::Receiver<NetworkMessage>>,
+    /// Outbound control command channel. The swarm task drains `control_rx`.
+    control_tx: mpsc::Sender<NetworkCommand>,
+    control_rx: Option<mpsc::Receiver<NetworkCommand>>,
     /// Channel for forwarding incoming network messages to the node layer.
     event_tx: mpsc::Sender<NetworkMessage>,
     event_rx: Option<mpsc::Receiver<NetworkMessage>>,
@@ -135,6 +152,8 @@ impl NetworkManager {
 
         // Create message channels (bounded to apply backpressure)
         let (message_tx, message_rx) = mpsc::channel(1000);
+        // Control command channel
+        let (control_tx, control_rx) = mpsc::channel(100);
         // Channel for forwarding inbound gossipsub messages to the node
         let (event_tx, event_rx) = mpsc::channel(1000);
 
@@ -144,6 +163,8 @@ impl NetworkManager {
             local_peer_id,
             message_tx,
             message_rx: Some(message_rx),
+            control_tx,
+            control_rx: Some(control_rx),
             event_tx,
             event_rx: Some(event_rx),
             peer_count: Arc::new(AtomicUsize::new(0)),
@@ -167,6 +188,10 @@ impl NetworkManager {
             .message_rx
             .take()
             .ok_or_else(|| NetworkError::InitializationError("message_rx already taken".into()))?;
+        let control_rx = self
+            .control_rx
+            .take()
+            .ok_or_else(|| NetworkError::InitializationError("control_rx already taken".into()))?;
 
         // Listen on configured address
         let listen_addr: Multiaddr = self.config.listen_multiaddr().parse().map_err(|e| {
@@ -194,7 +219,7 @@ impl NetworkManager {
         let event_tx = self.event_tx.clone();
         let peer_count = self.peer_count.clone();
         tokio::spawn(async move {
-            run_swarm_loop(swarm, message_rx, event_tx, peer_count).await;
+            run_swarm_loop(swarm, message_rx, control_rx, event_tx, peer_count).await;
         });
         info!("Swarm event loop task spawned");
 
@@ -260,6 +285,10 @@ impl NetworkManager {
                     "ExternalAddrStrategy::Auto — relying on Identify-observed addresses \
                      (set AXIONAX_PUBLIC_IP=<your public ip> to advertise explicitly)"
                 ),
+                ExternalAddrStrategy::AutoNAT => debug!(
+                    target: "p2p",
+                    "ExternalAddrStrategy::AutoNAT — relying on AutoNAT-confirmed addresses"
+                ),
                 ExternalAddrStrategy::Disabled => unreachable!(),
             }
             return;
@@ -313,6 +342,13 @@ impl NetworkManager {
                 Err(e) => warn!("Invalid bootstrap node address {}: {}", node, e),
             }
         }
+
+        // Trigger Kademlia DHT bootstrap to discover more peers in the network
+        if let Err(e) = swarm.behaviour_mut().kad.bootstrap() {
+            warn!("Failed to initiate Kademlia DHT bootstrap: {:?}", e);
+        } else {
+            info!("Initiated Kademlia DHT bootstrap");
+        }
     }
 
     /// Publish a message to the network.
@@ -352,6 +388,21 @@ impl NetworkManager {
         self.event_rx.take()
     }
 
+    /// Get snapshot of Kademlia routing table peers and their addresses.
+    pub fn kad_routing_table(&self) -> impl std::future::Future<Output = Result<Vec<(PeerId, Vec<Multiaddr>)>>> + Send {
+        let (reply_tx, reply_rx) = tokio::sync::oneshot::channel();
+        let control_tx = self.control_tx.clone();
+        async move {
+            control_tx
+                .send(NetworkCommand::GetRoutingTable(reply_tx))
+                .await
+                .map_err(|e| NetworkError::SendError(e.to_string()))?;
+            reply_rx
+                .await
+                .map_err(|e| NetworkError::ReceiveError(e.to_string()))
+        }
+    }
+
     /// Get list of connected peers.
     ///
     /// After `start()`, the authoritative peer list lives inside the swarm
@@ -387,6 +438,7 @@ impl NetworkManager {
 async fn run_swarm_loop(
     mut swarm: Swarm<AxionaxBehaviour>,
     mut message_rx: mpsc::Receiver<NetworkMessage>,
+    mut control_rx: mpsc::Receiver<NetworkCommand>,
     event_tx: mpsc::Sender<NetworkMessage>,
     peer_count: Arc<AtomicUsize>,
 ) {
@@ -412,6 +464,17 @@ async fn run_swarm_loop(
                     None => {
                         info!("Outbound channel closed; terminating swarm task");
                         break;
+                    }
+                }
+            }
+            maybe_cmd = control_rx.recv() => {
+                match maybe_cmd {
+                    Some(NetworkCommand::GetRoutingTable(reply_tx)) => {
+                        let snapshot = swarm.behaviour_mut().routing_table();
+                        let _ = reply_tx.send(snapshot);
+                    }
+                    None => {
+                        debug!("Control command channel closed");
                     }
                 }
             }
@@ -687,6 +750,9 @@ async fn handle_behaviour_event(
         }
         AxionaxBehaviourEvent::Identify(identify::Event::Error { peer_id, error, .. }) => {
             warn!(target: "p2p::identify", %peer_id, %error, "Identify protocol error");
+        }
+        AxionaxBehaviourEvent::Autonat(libp2p::autonat::Event::StatusChanged { old, new }) => {
+            info!(target: "p2p::autonat", "AutoNAT status changed from {:?} to {:?}", old, new);
         }
         _ => {
             // Kademlia, Ping — handled automatically by libp2p; surface only on errors.

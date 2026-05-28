@@ -41,6 +41,7 @@ staking = { path = "../staking" }
 governance = { path = "../governance" }
 metrics = { path = "../metrics" }
 events = { path = "../events" }
+network = { path = "../network" }
 
 
 [dev-dependencies]

@@ -96,6 +96,8 @@ pub enum ExternalAddrStrategy {
     /// Let the Identify protocol discover the observed address.
     #[default]
     Auto,
+    /// Use AutoNAT to discover and confirm reachability of our address.
+    AutoNAT,
     /// Do not advertise any external address.
     Disabled,
 }

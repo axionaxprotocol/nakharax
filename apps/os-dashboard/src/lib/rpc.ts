@@ -16,6 +16,7 @@ export {
   getNodeStatus,
   sendRawTransaction,
   isReachable,
+  getKadRoutingTable,
 } from "@axionax/sdk";
 
 export type {
@@ -26,4 +27,5 @@ export type {
   Result as RpcResult, // legacy alias
   RawBlock,
   RpcCallOptions,
+  KadPeer,
 } from "@axionax/sdk";
