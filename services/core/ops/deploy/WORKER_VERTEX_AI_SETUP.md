@@ -148,15 +148,15 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 ```
 
 ### Step 9: Build axionax Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/axionax-core-universe/core
+cd ~/axionax-monolith/services/core/core
 cargo build --release
 ```
 
@@ -164,7 +164,7 @@ cargo build --release
 
 ```bash
 # DeAI dependencies
-cd ~/axionax-core-universe/core/deai
+cd ~/axionax-monolith/services/core/core/deai
 pip install -r requirements.txt
 
 # Additional ML libraries (if not already installed)
@@ -178,7 +178,7 @@ pip install transformers datasets scikit-learn scipy
 ### Step 11: Run Training Example
 
 ```bash
-cd ~/axionax-core-universe/core/examples
+cd ~/axionax-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -261,7 +261,7 @@ Downloading...
 # Cell 1: Import and Setup
 import torch
 import sys
-sys.path.append('/home/jupyter/axionax-core-universe/core/examples')
+sys.path.append('/home/jupyter/axionax-monolith/services/core/core/examples')
 
 from deai_simple_training import SimpleCNN, train_epoch, test
 from torchvision import datasets, transforms

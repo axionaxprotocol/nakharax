@@ -6,13 +6,13 @@ alwaysApply: false
 
 # AXIONAX FRONTEND — Web Universe (Git Submodule)
 
-The frontend project lives at **web-universe/** (Git submodule pointing to `axionax-web-universe` repo).  
+The frontend project lives at **web-universe/** (Git submodule pointing to `axionax-monolith` repo).  
 Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm workspaces, TurboRepo
 
 ## Structure (inside `web-universe/`)
 
 ```
-axionax-web-universe/
+axionax-monolith/
 ├── apps/
 │   ├── web/           ← Next.js 14 App Router — main portal, explorer, staking UI
 │   └── marketplace/   ← Vite + React — compute job marketplace

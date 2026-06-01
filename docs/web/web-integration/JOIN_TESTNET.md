@@ -1,7 +1,7 @@
 # วิธีเข้าร่วม Axionax Testnet 🚀
 
 **เวอร์ชัน**: v1.9.0-testnet (Genesis Public Testnet)  
-**Synced core ref**: `axionax-core-universe@28f42cf`  
+**Synced core ref**: `axionax-monolith@28f42cf`  
 **อัพเดทล่าสุด**: 24 เมษายน 2026  
 **ภาษา**: ไทย 🇹🇭
 
@@ -402,7 +402,7 @@ cast estimate \
 ### หาความช่วยเหลือ
 
 - **Discord**: https://discord.gg/axionax (ช่อง #testnet-support)
-- **GitHub Issues**: https://github.com/axionaxprotocol/axionax-web-universe/issues
+- **GitHub Issues**: https://github.com/axionaxprotocol/axionax-monolith/issues
 - **Twitter**: https://twitter.com/axionax (@axionax)
 - **Email**: support@axionax.org
 
@@ -434,7 +434,7 @@ cast estimate \
 
 3. **ร่วมพัฒนา**
    - อ่าน [Contributing Guide](./CONTRIBUTING.md)
-   - ดู [Good First Issues](https://github.com/axionaxprotocol/axionax-web-universe/labels/good%20first%20issue)
+   - ดู [Good First Issues](https://github.com/axionaxprotocol/axionax-monolith/labels/good%20first%20issue)
    - เข้า Developer Channel บน Discord
 
 ---

@@ -204,11 +204,11 @@ const handleAddToken = async () => {
 หากยังมีปัญหา กรุณาติดต่อ:
 
 - **Discord**: [Axionax Community](https://discord.gg/axionax)
-- **GitHub Issues**: [axionax-web-universe](https://github.com/axionaxprotocol/axionax-web-universe/issues)
+- **GitHub Issues**: [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith/issues)
 - **Email**: support@axionax.org
 
 ---
 
 **อัปเดตล่าสุด:** เมษายน 2026  
-**Synced core ref:** `axionax-core-universe@28f42cf`  
+**Synced core ref:** `axionax-monolith@28f42cf`  
 **Version:** 1.1.0 (Genesis Public Testnet)

@@ -21,7 +21,7 @@ Use **`axionax-node-bootstrap.sh`** to build `axionax-node`, lay out data (`gene
 From repo after clone:
 
 ```bash
-cd axionax-core-universe/ops/deploy/scripts
+cd axionax-monolith/services/core/ops/deploy/scripts
 chmod +x axionax-node-bootstrap.sh
 
 ./axionax-node-bootstrap.sh build
@@ -57,7 +57,7 @@ sudo systemctl start axionax-node
 
 | Variable | When |
 |----------|------|
-| `AXIONAX_REPO_ROOT` | Repo root if not `…/axionax-core-universe` relative to `ops/deploy/scripts` |
+| `AXIONAX_REPO_ROOT` | Repo root if not `…/axionax-monolith` relative to `ops/deploy/scripts` |
 | `AXIONAX_BOOTSTRAP_NODES` | Comma-separated libp2p multiaddrs; required to join existing validators |
 | `AXIONAX_VALIDATOR_ADDRESS` | `0x…` for `--role validator` |
 | `AXIONAX_NODE_BIN` | Override path to `axionax-node` (written into `node.env` at `setup`) |

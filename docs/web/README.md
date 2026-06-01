@@ -12,7 +12,7 @@ Monorepo-level documentation and deployment guides.
 | [SOLO_CORE_WEB_SYNC.md](SOLO_CORE_WEB_SYNC.md)   | Solo maintainer: sync chain params web ↔ core (dual repo)                        |
 | [CORE_WEB_COMPAT.md](CORE_WEB_COMPAT.md)         | Last paired core / web revision (human-maintained)                                |
 | [QUICK_START.md](QUICK_START.md)                 | Get started in 5 minutes                                                          |
-| [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) | axionax-web-universe system architecture (tech stack, data flow)                  |
+| [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) | axionax-monolith system architecture (tech stack, data flow)                  |
 
 ## Audits
 

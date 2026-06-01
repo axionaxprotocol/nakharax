@@ -142,7 +142,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 
 ---
 
-## 4. Web3 Frontend & DApp (`axionax-web-universe`)
+## 4. Web3 Frontend & DApp (`axionax-monolith`)
 
 ### 4.1 Stack
 
@@ -245,7 +245,7 @@ Constraints:
 
 ### Web Frontend (TypeScript / Next.js)
 ```
-Context: Working in `axionax-web-universe/apps/web/` (Next.js 14 App Router)
+Context: Working in `axionax-monolith/apps/web/` (Next.js 14 App Router)
 Task: [describe UI component or page]
 Constraints:
 - TypeScript strict mode, no `any`

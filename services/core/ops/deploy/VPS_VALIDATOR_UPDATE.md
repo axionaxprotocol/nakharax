@@ -28,10 +28,10 @@ ssh root@217.216.109.5 'bash /tmp/update-validator-vps.sh'
 ssh root@46.250.244.4 'bash /tmp/update-validator-vps.sh'
 ```
 
-Or if the VPS already has a cloned repo (e.g. `/opt/axionax-core-universe` or `/opt/axionax-deploy`):
+Or if the VPS already has a cloned repo (e.g. `/opt/axionax-monolith` or `/opt/axionax-deploy`):
 
 ```bash
-cd /opt/axionax-core-universe/ops/deploy   # or the path containing scripts/
+cd /opt/axionax-monolith/services/core/ops/deploy   # or the path containing scripts/
 sudo bash scripts/update-validator-vps.sh
 ```
 

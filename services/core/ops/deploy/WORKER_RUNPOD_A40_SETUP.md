@@ -175,7 +175,7 @@ EOF
 ```bash
 # Download setup script
 cd ~
-wget https://raw.githubusercontent.com/axionaxprotocol/axionax-core-universe/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 
 # Make executable
 chmod +x setup-runpod-worker.sh
@@ -212,15 +212,15 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 ```
 
 #### Step 8: Build axionax Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/axionax-core-universe/core
+cd ~/axionax-monolith/services/core/core
 cargo build --release
 ```
 
@@ -231,7 +231,7 @@ cargo build --release
 pip install --upgrade pip
 
 # Install DeAI requirements
-cd ~/axionax-core-universe/core/deai
+cd ~/axionax-monolith/services/core/core/deai
 pip install -r requirements.txt
 
 # Install additional ML libraries
@@ -246,7 +246,7 @@ pip install transformers datasets accelerate
 
 ```bash
 # Run simple training example
-cd ~/axionax-core-universe/core/examples
+cd ~/axionax-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -377,7 +377,7 @@ ls -la /workspace/axionax-worker/
 
 ```bash
 # Generate wallet (using axionax tools)
-cd ~/axionax-core-universe/tools
+cd ~/axionax-monolith/services/core/tools
 python generate_worker_wallet.py
 
 # Or use an existing wallet
@@ -391,7 +391,7 @@ python generate_worker_wallet.py
 ### Step 14: Run Worker
 
 ```bash
-cd ~/axionax-core-universe/core
+cd ~/axionax-monolith/services/core/core
 
 # Activate environment
 source ~/.cargo/env

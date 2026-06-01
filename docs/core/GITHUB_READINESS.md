@@ -1,4 +1,4 @@
-# GitHub Repository Readiness (axionax-core-universe)
+# GitHub Repository Readiness (axionax-monolith)
 
 Status of the repo for Genesis public testnet launch and public use.
 
@@ -9,7 +9,7 @@ Status of the repo for Genesis public testnet launch and public use.
 | Item | Status | Notes |
 |------|--------|-------|
 | **CI (GitHub Actions)** | ✅ | `.github/workflows/ci.yml` — Rust (fmt, build, clippy, test, audit) + Python (pytest, bandit) on push/PR to `main`, `develop` |
-| **Clone URL & Links** | ✅ | README uses `https://github.com/axionaxprotocol/axionax-core-universe.git`; links to web-universe, docs, issues are correct |
+| **Clone URL & Links** | ✅ | README uses `https://github.com/axionaxprotocol/axionax-monolith.git`; links to web-universe, docs, issues are correct |
 | **Secrets / .gitignore** | ✅ | `.env`, `.env.local`, `.env.production`, `worker_key.json`, `*.keystore` in .gitignore — no secrets committed |
 | **LICENSE** | ✅ | core/ AGPLv3, ops/ & tools/ MIT; CONTRIBUTING.md present |
 | **Core docs** | ✅ | README (Quick Start, Network Testnet, Config), TESTNET_READINESS, docs (WALLET_AND_KEYS, ADD_NETWORK_AND_TOKEN, CONNECTIVITY_OVERVIEW, GENESIS_PUBLIC_TESTNET_PLAN) |

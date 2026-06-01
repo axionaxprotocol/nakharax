@@ -9,8 +9,8 @@ To run a **permissionless full node** (sync + optional local RPC) from anywhere 
 ## DeAI / Worker (Python)
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 python3 scripts/update-node.py
 python3 scripts/join-axionax.py
 ```

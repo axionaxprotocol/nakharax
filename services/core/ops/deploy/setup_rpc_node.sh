@@ -129,10 +129,10 @@ chown -R axionax:axionax "$DATA_DIR"
 chmod 755 "$DATA_DIR"
 
 # Clone and build axionax (if not already built)
-AXIONAX_HOME="/home/axionax/axionax-core-universe"
+AXIONAX_HOME="/home/axionax/axionax-monolith"
 if [ ! -d "$AXIONAX_HOME" ]; then
   echo -e "${BLUE}[6/8]${NC} Cloning axionax repository..."
-  sudo -u axionax git clone https://github.com/axionaxprotocol/axionax-core-universe.git "$AXIONAX_HOME"
+  sudo -u axionax git clone https://github.com/axionaxprotocol/axionax-monolith.git "$AXIONAX_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating axionax repository..."
   cd "$AXIONAX_HOME"

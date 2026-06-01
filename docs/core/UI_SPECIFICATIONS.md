@@ -3,7 +3,7 @@
 
 ## Overview
 
-This document specifies the UI components to build in `axionax-web-universe` for Staking and Governance
+This document specifies the UI components to build in `axionax-monolith` for Staking and Governance
 
 ---
 

@@ -7,7 +7,7 @@ services:
   axionax-node:
     build:
       context: ./services/core
-      dockerfile: core/ops/deploy/Dockerfile
+      dockerfile: ops/deploy/Dockerfile
     container_name: axionax-node
     restart: unless-stopped
     ports:

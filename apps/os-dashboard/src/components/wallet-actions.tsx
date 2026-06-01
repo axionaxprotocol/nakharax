@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowDownLeft, ArrowUpRight, Copy, Check, RefreshCw } from "lucide-react";
 import { createPublicClient, createWalletClient, http, formatEther, parseEther } from "viem";
 import { axionaxLocal, burnerAccount } from "@/lib/web3/config";
@@ -30,7 +30,7 @@ export function WalletActions() {
 
   const address = burnerAccount.address;
 
-  const fetchBalance = async () => {
+  const fetchBalance = useCallback(async () => {
     try {
       setIsRefreshing(true);
       const wei = await publicClient.getBalance({ address });
@@ -41,12 +41,12 @@ export function WalletActions() {
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [address]);
 
   // Initial load
   useEffect(() => {
     fetchBalance();
-  }, []);
+  }, [fetchBalance]);
 
   async function copyAddr() {
     try {

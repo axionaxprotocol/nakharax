@@ -27,8 +27,8 @@ Optional:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-web-universe.git
-cd axionax-web-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 ```
 
 ### 2️⃣ Install Dependencies
@@ -156,7 +156,7 @@ pnpm docker:logs      # View Docker logs
 ## 📁 Project Structure
 
 ```
-axionax-web-universe/
+axionax-monolith/
 ├── 📱 apps/
 │   ├── web/              # Next.js website
 │   ├── marketplace/      # React marketplace

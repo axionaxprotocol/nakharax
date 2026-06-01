@@ -130,7 +130,7 @@ axionax-core init \
   --genesis ~/.axionax/config/genesis.json
 
 # Setup systemd service
-sudo bash ~/axionax-core-universe/ops/deploy/scripts/setup_systemd.sh
+sudo bash ~/axionax-monolith/services/core/ops/deploy/scripts/setup_systemd.sh
 
 # DO NOT start yet - wait for coordinated launch
 ```

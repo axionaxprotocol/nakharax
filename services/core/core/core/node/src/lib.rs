@@ -515,7 +515,7 @@ impl AxionaxNode {
                         state_root: hash_to_hex(&block.state_root),
                     };
 
-                    if let Ok(mut net) = network.try_lock() {
+                    if let Ok(net) = network.try_lock() {
                         let _ = net.publish(NetworkMessage::Block(block_msg));
                     }
 
@@ -532,7 +532,7 @@ impl AxionaxNode {
                             block_number: new_number,
                             validator_address: addr.clone(),
                         });
-                        if let Ok(mut net) = network.try_lock() {
+                        if let Ok(net) = network.try_lock() {
                             let _ = net.publish(conf);
                         }
                     }
@@ -586,7 +586,7 @@ impl AxionaxNode {
                                                 validator_address: addr.clone(),
                                             }
                                         );
-                                        if let Ok(mut net) = network.try_lock() {
+                                        if let Ok(net) = network.try_lock() {
                                             let _ = net.publish(conf);
                                         }
                                     }
@@ -799,7 +799,7 @@ impl AxionaxNode {
             state_root: hash_to_hex(&block.state_root),
         };
 
-        let mut network = self.network.lock().await;
+        let network = self.network.lock().await;
         network.publish(NetworkMessage::Block(block_msg))?;
 
         Ok(())
@@ -826,7 +826,7 @@ impl AxionaxNode {
             signer_public_key: tx.signer_public_key.clone(),
         };
 
-        let mut network = self.network.lock().await;
+        let network = self.network.lock().await;
         network.publish(NetworkMessage::Transaction(tx_msg))?;
 
         Ok(())

@@ -7,9 +7,9 @@ Thank you for contributing. This document explains how to set up, test, and subm
 1. **Fork** the repository on GitHub.
 2. **Clone** your fork and add upstream:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/axionax-core-universe.git
-   cd axionax-core-universe
-   git remote add upstream https://github.com/axionaxprotocol/axionax-core-universe.git
+   git clone https://github.com/YOUR_USERNAME/axionax-monolith.git
+   cd axionax-monolith
+   git remote add upstream https://github.com/axionaxprotocol/axionax-monolith.git
    ```
 3. **Create a branch** for your work:
    ```bash
@@ -68,7 +68,7 @@ See the main [README](README.md#testing--verification) for more test commands an
 
 ## Questions
 
-- **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/axionax-core-universe/issues).
+- **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/axionax-monolith/services/core/issues).
 - **Website:** [axionax.org](https://axionax.org).
 
 Thanks for contributing.

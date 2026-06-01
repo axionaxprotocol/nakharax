@@ -148,6 +148,9 @@ async fn main() -> anyhow::Result<()> {
         config.network.block_time_seconds = protocol_config.network.block_time_seconds;
     }
 
+    // Load bootstrap nodes from protocol config
+    config.network.bootstrap_nodes = protocol_config.network.bootstrap_nodes.clone();
+
     // If chain genesis is provided, try parsing blockTime from it
     if let Some(ref chain_path) = args.chain {
         if let Ok(contents) = std::fs::read_to_string(chain_path) {

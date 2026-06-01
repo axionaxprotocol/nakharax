@@ -36,8 +36,8 @@ Verify: `node -v` (v20.x), `pnpm -v`, `git --version`
 
 ```bash
 # Clone (or use single script below)
-export APP_DIR=/opt/axionax-web-universe
-git clone --depth 1 -b main https://github.com/axionaxprotocol/axionax-web-universe.git $APP_DIR
+export APP_DIR=/opt/axionax-monolith
+git clone --depth 1 -b main https://github.com/axionaxprotocol/axionax-monolith.git $APP_DIR
 cd $APP_DIR
 
 # Install + Build (build packages first — web uses @axionax/sdk, @axionax/blockchain-utils)
@@ -71,7 +71,7 @@ npm install -g pm2
 
 # Run app
 # ⚠️ Important: must use path apps/web/server.js (outputFileTracingRoot = monorepo root)
-cd /opt/axionax-web-universe/apps/web/.next/standalone
+cd /opt/axionax-monolith/apps/web/.next/standalone
 PORT=3000 pm2 start apps/web/server.js --name axionax-web
 
 # Save + auto-start after reboot

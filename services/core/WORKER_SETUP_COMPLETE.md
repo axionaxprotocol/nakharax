@@ -35,7 +35,7 @@ Environment:
 ### 1. Activate Environment
 
 ```powershell
-cd D:\axionax-core-universe
+cd D:\axionax-monolith
 .\worker-env\Scripts\Activate.ps1
 ```
 
@@ -193,7 +193,7 @@ Get-Process python | Format-Table Name,CPU,WorkingSet -AutoSize
 ## 📁 Project Structure
 
 ```
-D:\axionax-core-universe\
+D:\axionax-monolith\
 ├── worker-env\              # Virtual environment ✅
 ├── core\
 │   ├── deai\               # DeAI components

@@ -35,7 +35,7 @@
 
 | Item                    | Details                                                                                |
 | ----------------------- | -------------------------------------------------------------------------------------- |
-| **Repository**          | [axionax-core-universe](https://github.com/axionaxprotocol/axionax-core-universe)      |
+| **Repository**          | [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)      |
 | **Languages**           | Rust (80% — Core Logic) + Python (20% — DeAI Layer)                                    |
 | **Consensus**           | PoPC (Proof of Probabilistic Checking)                                                 |
 | **Verification**        | Statistical probabilistic checking instead of full re-execution — \(O(s)\) vs \(O(n)\) |
@@ -115,7 +115,7 @@ Dedicated AI models on Sentinel nodes for security verification:
 
 | Item           | Details                                                                                    |
 | -------------- | ------------------------------------------------------------------------------------------ |
-| **Repository** | [axionax-web-universe](https://github.com/axionaxprotocol/axionax-web-universe) (Monorepo) |
+| **Repository** | [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith) (Monorepo) |
 | **Stack**      | Next.js, Tailwind CSS, TypeScript, pnpm                                                    |
 
 ### Key Components

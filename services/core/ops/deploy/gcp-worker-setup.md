@@ -155,8 +155,8 @@ python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}');
 ```bash
 # Clone repository
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 
 # Build core
 cd core
@@ -292,7 +292,7 @@ python3 ~/test_gpu.py
 
 ```bash
 # Create a wallet for the worker
-cd ~/axionax-core-universe/tools
+cd ~/axionax-monolith/services/core/tools
 cargo run --bin keygen -- --output ~/axionax-worker/keys/worker-key.json
 
 # Backup key (very important!)

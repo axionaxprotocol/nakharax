@@ -6,10 +6,10 @@
 
 | Repo                                                                                  | Role                                                             |
 | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **axionax-web-universe** (this repo)                                                  | Frontend (Next.js, Marketplace), SDK, Faucet API, docs           |
-| **[axionax-core-universe](https://github.com/axionaxprotocol/axionax-core-universe)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
+| **axionax-monolith** (this repo)                                                  | Frontend (Next.js, Marketplace), SDK, Faucet API, docs           |
+| **[axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
 
-Validator node setup, persistence, Docker/volume config, and chain data live in **axionax-core-universe**. This repo only connects to validators via RPC (e.g. 217.216.109.5, 46.250.244.4).
+Validator node setup, persistence, Docker/volume config, and chain data live in **axionax-monolith**. This repo only connects to validators via RPC (e.g. 217.216.109.5, 46.250.244.4).
 
 **Solo maintainer (dual repo):** when you change chain parameters in core, mirror them here and log the pair — see [SOLO_CORE_WEB_SYNC.md](SOLO_CORE_WEB_SYNC.md) and [CORE_WEB_COMPAT.md](CORE_WEB_COMPAT.md).
 
@@ -27,8 +27,8 @@ Validator node setup, persistence, Docker/volume config, and chain data live in 
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-web-universe.git
-cd axionax-web-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 
 # Install dependencies
 pnpm install
@@ -68,7 +68,7 @@ pnpm dev
 
 #### 🐳 Full Stack (Local Blockchain)
 
-Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [axionax-core-universe](https://github.com/axionaxprotocol/axionax-core-universe) to `./core-universe` and uncomment the `axionax-node` service in `docker-compose.dev.yml`.
+Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith) to `./core-universe` and uncomment the `axionax-node` service in `docker-compose.dev.yml`.
 
 ```bash
 # Start services (web, DB, Redis, Prometheus, Grafana, Adminer)
@@ -95,8 +95,8 @@ Core (blockchain node) is in a separate repository. For local node development:
 
 ```bash
 # Clone core repo (optional, for full-stack local dev)
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git core-universe
-cd core-universe/core
+git clone https://github.com/axionaxprotocol/axionax-monolith.git core-universe
+cd axionax-monolith/services/core/core
 
 # Build & run
 cargo build --release
@@ -119,10 +119,10 @@ docker-compose -f docker-compose.dev.yml down
 docker-compose -f docker-compose.dev.yml down -v
 ```
 
-### 4. Project Structure (this repo only; backend = axionax-core-universe)
+### 4. Project Structure (this repo only; backend = axionax-monolith)
 
 ```
-axionax-web-universe/
+axionax-monolith/
 ├── apps/
 │   ├── web/                 # Next.js 14 website
 │   ├── marketplace/         # Vite + React marketplace
@@ -194,13 +194,13 @@ Chain ID: `86137` (0x15079)
 
 ### 8. Validator node persistence (EU/AU)
 
-Validator nodes (EU/AU) run from the **backend repo [axionax-core-universe](https://github.com/axionaxprotocol/axionax-core-universe)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
+Validator nodes (EU/AU) run from the **backend repo [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
 
 If you restart a validator and its **block height drops to a low number** (e.g. ~29 while the other is at 800k+), the node is starting from a fresh chain because **chain data was not persisted**.
 
 **Cause (summary):** Data directory not on a persistent volume, or wiped, or node started with a dev/fresh flag.
 
-**Fix (see axionax-core-universe for details):** Use a persistent volume for chain data; set the other validator as bootnode/peer so the restarted node can sync; avoid `--dev` in production. The dashboard in this repo will show the restarted node’s height climbing as it syncs.
+**Fix (see axionax-monolith for details):** Use a persistent volume for chain data; set the other validator as bootnode/peer so the restarted node can sync; avoid `--dev` in production. The dashboard in this repo will show the restarted node’s height climbing as it syncs.
 
 ---
 
@@ -208,7 +208,7 @@ If you restart a validator and its **block height drops to a low number** (e.g. 
 
 - [Web README](../apps/web/README.md)
 - [Marketplace README](../apps/marketplace/README.md)
-- [Core Universe](https://github.com/axionaxprotocol/axionax-core-universe) (separate repo)
+- [Core Universe](https://github.com/axionaxprotocol/axionax-monolith) (separate repo)
 - [SDK README](../packages/sdk/README.md)
 
 ## 🔗 Links

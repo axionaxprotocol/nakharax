@@ -20,8 +20,8 @@ If bootstrap list is empty, stop and publish bootstrap values first.
 ## 2) Run from scratch
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 
 export AXIONAX_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
 test -n "$AXIONAX_BOOTSTRAP_NODES"

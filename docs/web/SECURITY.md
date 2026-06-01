@@ -27,7 +27,7 @@ Instead, please use one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 
-1. Go to the [Security tab](https://github.com/axionaxprotocol/axionax-web-universe/security)
+1. Go to the [Security tab](https://github.com/axionaxprotocol/axionax-monolith/security)
 2. Click "Report a vulnerability"
 3. Fill out the form with details
 

@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## 🤖 AI Agent Directives (CRITICAL)
-- **Boundary Restriction:** This repo (`axionax-core-universe`) is STRICTLY Backend, Blockchain Core, and Ops. **DO NOT** attempt to generate, import, or suggest Frontend (React/Next.js/UI) code here. Frontend lives in `axionax-web-universe`.
+- **Boundary Restriction:** This repo (`axionax-monolith`) is STRICTLY Backend, Blockchain Core, and Ops. **DO NOT** attempt to generate, import, or suggest Frontend (React/Next.js/UI) code here. Frontend lives in `axionax-monolith`.
 - **Workflow Loop:** When asked to write or refactor Rust code, always follow this loop: `Code` -> `cargo fmt` -> `cargo clippy` -> `cargo test`. Do not commit or finalize if clippy or tests fail.
 - **Language Stack:** Rust (Primary Core), Python (DeAI Worker/Sandbox), Bash/PowerShell (Ops/Deployment).
 

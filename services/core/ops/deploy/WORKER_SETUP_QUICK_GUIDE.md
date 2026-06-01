@@ -75,11 +75,11 @@ gcloud compute ssh axionax-worker-1 --zone=us-central1-a
 
 ```bash
 # Download script
-wget https://raw.githubusercontent.com/axionaxprotocol/axionax-core-universe/main/ops/deploy/scripts/setup-gcp-worker.sh
+wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 
 # Or if the repo is not yet public
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe/ops/deploy/scripts
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith/services/core/ops/deploy/scripts
 chmod +x setup-gcp-worker.sh
 ```
 
@@ -149,7 +149,7 @@ python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); 
 ### Step 10: Run Training Example
 
 ```bash
-cd ~/axionax-core-universe/core/examples
+cd ~/axionax-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -230,7 +230,7 @@ logs_dir = "/home/YOUR_USERNAME/logs"
 
 ```bash
 # Create a wallet for the worker
-cd ~/axionax-core-universe/core
+cd ~/axionax-monolith/services/core/core
 cargo run --bin keygen -- generate --output ~/axionax-worker/keys/worker-key.json
 
 # Or if you already have a wallet, copy the private key into the config
@@ -356,9 +356,9 @@ pip install --force-reinstall torch torchvision torchaudio --index-url https://d
 
 ## 📞 Need Help?
 
-- **Documentation**: `~/axionax-core-universe/ops/deploy/gcp-worker-setup.md`
-- **Training Example**: `~/axionax-core-universe/core/examples/deai_simple_training.py`
-- **Setup Script**: `~/axionax-core-universe/ops/deploy/scripts/setup-gcp-worker.sh`
+- **Documentation**: `~/axionax-monolith/services/core/ops/deploy/gcp-worker-setup.md`
+- **Training Example**: `~/axionax-monolith/services/core/core/examples/deai_simple_training.py`
+- **Setup Script**: `~/axionax-monolith/services/core/ops/deploy/scripts/setup-gcp-worker.sh`
 
 ---
 

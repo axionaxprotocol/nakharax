@@ -101,7 +101,7 @@ docker-compose stop faucet-api
 #### Pull Latest Code
 
 ```bash
-cd /var/www/axionax-web-universe
+cd /var/www/axionax-monolith
 git fetch origin
 git checkout main
 git pull origin main
@@ -905,8 +905,8 @@ Deployment completed successfully. Performance improvements observed due to opti
 
 ## Links
 
-- Release notes: https://github.com/axionaxprotocol/axionax-web-universe/releases/tag/v1.8.0
-- PR: https://github.com/axionaxprotocol/axionax-web-universe/pull/123
+- Release notes: https://github.com/axionaxprotocol/axionax-monolith/releases/tag/v1.8.0
+- PR: https://github.com/axionaxprotocol/axionax-monolith/pull/123
 ```
 
 ---

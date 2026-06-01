@@ -17,7 +17,7 @@ Operational procedures for Axionax validators, RPC nodes, and incident response.
    ```
 3. **Build node**:
    ```bash
-   git clone <repo> && cd axionax-core-universe/core
+   git clone <repo> && cd axionax-monolith/services/core/core
    cargo build --release -p axionax-core
    ```
 4. **Place genesis**:

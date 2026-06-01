@@ -12,7 +12,7 @@ We release security updates for the following branches:
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in **axionax-core-universe** (blockchain core, node, RPC, DeAI worker, ops/deploy, or tooling), please report it responsibly.
+If you discover a security vulnerability in **axionax-monolith** (blockchain core, node, RPC, DeAI worker, ops/deploy, or tooling), please report it responsibly.
 
 **Do not** open a public GitHub issue for security-sensitive findings.
 

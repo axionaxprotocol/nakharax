@@ -40,8 +40,8 @@
 
 **Files:**
 
-- `/core-universe/ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/ui/index.html`
-- `/core-universe/ops/deploy/environments/testnet/Axionax_v1.5_Testnet_in_a_Box/ui/index.html`
+- `/axionax-monolith/services/core/ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/ui/index.html`
+- `/axionax-monolith/services/core/ops/deploy/environments/testnet/Axionax_v1.5_Testnet_in_a_Box/ui/index.html`
 
 **Changes:**
 
@@ -257,8 +257,8 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 ## Files Changed
 
 ```
-✅ /core-universe/ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/ui/index.html
-✅ /core-universe/ops/deploy/environments/testnet/Axionax_v1.5_Testnet_in_a_Box/ui/index.html
+✅ /axionax-monolith/services/core/ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/ui/index.html
+✅ /axionax-monolith/services/core/ops/deploy/environments/testnet/Axionax_v1.5_Testnet_in_a_Box/ui/index.html
 ✅ /apps/web/src/lib/web3.ts
 ✅ /apps/web/src/components/wallet/ConnectButton.tsx
 ✅ /apps/docs/ADD_TOKEN_TO_METAMASK.md (NEW)

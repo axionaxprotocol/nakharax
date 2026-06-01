@@ -21,15 +21,6 @@ use crate::{
     error::{NetworkError, Result},
     protocol::{MessageType, NetworkMessage},
 };
-
-/// Network manager handles P2P communication.
-///
-/// After [`NetworkManager::start`] is called, the underlying libp2p swarm is
-/// moved into a dedicated tokio task that polls events and processes outbound
-/// messages. The manager itself becomes a thin handle that:
-/// - sends outbound messages through `message_tx`
-/// - exposes the inbound event receiver once via [`Self::take_event_receiver`]
-/// - reports peer count via an atomic counter updated by the swarm task
 /// Control commands sent from the manager handle to the swarm event loop task
 #[derive(Debug)]
 pub enum NetworkCommand {

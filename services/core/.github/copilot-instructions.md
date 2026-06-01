@@ -11,7 +11,7 @@
 This is a **monorepo** with these components:
 
 ```
-axionax-core-universe/
+axionax-monolith/services/core/
 ├── core/              # Cargo workspace root — blockchain (Rust) + DeAI (Python)
 │   ├── core/          # Protocol crates (blockchain, consensus, network, ...)
 │   ├── bridge/       # PyO3 Rust↔Python bridge

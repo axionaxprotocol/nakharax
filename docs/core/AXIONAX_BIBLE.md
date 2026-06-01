@@ -158,4 +158,4 @@ This repository contains many documents. This file is the central index: content
 
 ---
 
-*Axionax Bible — central index of canonical documentation for axionax-core-universe.*
+*Axionax Bible — central index of canonical documentation for axionax-monolith.*

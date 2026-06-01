@@ -1,6 +1,6 @@
 # Core ↔ Web compatibility record
 
-**Human-maintained.** Update whenever you sync chain-related constants from **axionax-core-universe** into this repo.
+**Human-maintained.** Update whenever you sync chain-related constants from **axionax-monolith** into this repo.
 
 | Last updated | Core reference (tag or SHA)                                      | Web reference (tag or SHA) | Notes                                                                                                                                                             |
 | ------------ | ---------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |

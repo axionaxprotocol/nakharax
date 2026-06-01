@@ -42,13 +42,13 @@ By participating in this project, you agree to abide by our Code of Conduct:
 2. Clone your fork locally:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/axionax-web-universe.git
-   cd axionax-web-universe
+   git clone https://github.com/YOUR_USERNAME/axionax-monolith.git
+   cd axionax-monolith
    ```
 
 3. Add upstream remote:
    ```bash
-   git remote add upstream https://github.com/axionaxprotocol/axionax-web-universe.git
+   git remote add upstream https://github.com/axionaxprotocol/axionax-monolith.git
    ```
 
 ### Install Dependencies

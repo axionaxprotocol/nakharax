@@ -4,9 +4,9 @@
 
 ### Blockchain Core Only — High-Performance Protocol · DeAI · DePIN
 
-> **Scope:** This repository is the **blockchain core** of Axionax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [axionax-web-universe](https://github.com/axionaxprotocol/axionax-web-universe)).
+> **Scope:** This repository is the **blockchain core** of Axionax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)).
 
-[![CI](https://github.com/axionaxprotocol/axionax-core-universe/actions/workflows/ci.yml/badge.svg)](https://github.com/axionaxprotocol/axionax-core-universe/actions)
+[![CI](https://github.com/axionaxprotocol/axionax-monolith/services/core/actions/workflows/ci.yml/badge.svg)](https://github.com/axionaxprotocol/axionax-monolith/services/core/actions)
 [![License](https://img.shields.io/badge/License-AGPLv3%2FMIT-orange?style=flat-square)](#license)
 [![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
@@ -14,7 +14,7 @@
 
 **PoPC Consensus** · **45,000+ TPS** · **<0.5s Finality** · **DeAI at the Edge**
 
-[Website](https://axionax.org) · [Documentation](https://axionaxprotocol.github.io/axionax-docs/) · [Web Universe](https://github.com/axionaxprotocol/axionax-web-universe)
+[Website](https://axionax.org) · [Documentation](https://axionaxprotocol.github.io/axionax-docs/) · [Web Universe](https://github.com/axionaxprotocol/axionax-monolith)
 
 </div>
 
@@ -58,8 +58,8 @@
 ### 1. Clone & Update
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 python3 scripts/update-node.py
 ```
 
@@ -99,7 +99,7 @@ python3 hydra_manager.py
 Run on any machine that runs a node:
 
 ```bash
-cd ~/axionax-core-universe
+cd ~/axionax-monolith
 git pull
 python3 scripts/update-node.py
 ```
@@ -189,8 +189,8 @@ cp core/deai/.env.example core/deai/.env
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 python3 scripts/update-node.py --full-deps
 
 # Single Core (one Hailo)
@@ -222,7 +222,7 @@ sudo systemctl enable --now axionax-hydra
 ## Repository Overview
 
 ```
-axionax-core-universe/
+axionax-monolith/services/core/
 ├── core/                       # Blockchain Protocol Core
 │   ├── blockchain/             # Block and chain management
 │   ├── consensus/              # PoPC consensus mechanism
@@ -384,13 +384,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related Projects (separate repositories)
 
-- [**axionax Web Universe**](https://github.com/axionaxprotocol/axionax-web-universe) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
+- [**axionax Web Universe**](https://github.com/axionaxprotocol/axionax-monolith) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
 
 ---
 
 ## Support
 
-[Website](https://axionax.org) · [Docs](https://axionaxprotocol.github.io/axionax-docs/) · [Issues](https://github.com/axionaxprotocol/axionax-core-universe/issues)
+[Website](https://axionax.org) · [Docs](https://axionaxprotocol.github.io/axionax-docs/) · [Issues](https://github.com/axionaxprotocol/axionax-monolith/services/core/issues)
 
 ---
 

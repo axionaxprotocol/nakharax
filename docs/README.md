@@ -90,6 +90,7 @@ docs/
 │
 ├── architecture/          # Cross-cutting protocol architecture
 │   ├── AXIONAX_PROTOCOL.md
+│   ├── ECOSYSTEM_WORKFLOW.md  # Ecosystem lifecycle & workflow
 │   ├── ROADMAP.md
 │   ├── TOKENOMICS.md
 │   ├── TOKENOMICS_TESTNET.md

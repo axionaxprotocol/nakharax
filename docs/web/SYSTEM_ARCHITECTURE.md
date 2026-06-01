@@ -1,4 +1,4 @@
-# System Architecture Report: axionax-web-universe
+# System Architecture Report: axionax-monolith
 
 **Date:** December 13, 2025 (reference update Feb 2026)  
 **Protocol:** v2.1 — Series Seed Preparation ([Master Summary](../MASTER_SUMMARY.md))  
@@ -11,7 +11,7 @@
 
 ## 1. High-Level Architecture
 
-`axionax-web-universe` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
+`axionax-monolith` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
 
 ```mermaid
 graph TD

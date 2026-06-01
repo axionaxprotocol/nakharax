@@ -36,4 +36,5 @@ network:
   network_name: axionax-testnet
   block_time_seconds: 5
   max_peers: 50
-  bootstrap_nodes: []
+  bootstrap_nodes:
+    - "/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWQY4NaM13vP6Vrx5Q4MWFQHGKj5qigtg81WC2J1Cca7ZK"

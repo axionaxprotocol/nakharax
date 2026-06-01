@@ -226,8 +226,8 @@ check_repo() {
     fi
 }
 
-check_repo "axionax-core-universe"
-check_repo "axionax-web-universe"
+check_repo "axionax-monolith"
+check_repo "axionax-monolith"
 echo ""
 
 # 11. Check Monitoring

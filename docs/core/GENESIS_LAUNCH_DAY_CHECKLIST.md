@@ -116,7 +116,7 @@ docker logs <CONTAINER> --tail 50
 
 # ตรวจ config ว่า chain_id 86137 (path ขึ้นกับที่ deploy — มักอยู่ข้าง docker-compose)
 grep -E "chain_id|genesis" /opt/axionax-deploy/configs/rpc-config.toml 2>/dev/null || \
-grep -E "chain_id|genesis" ~/axionax-core-universe/ops/deploy/configs/rpc-config.toml 2>/dev/null || \
+grep -E "chain_id|genesis" ~/axionax-monolith/services/core/ops/deploy/configs/rpc-config.toml 2>/dev/null || \
 find /opt /root -name "rpc-config.toml" -o -name "config.toml" 2>/dev/null | head -5
 ```
 
@@ -159,7 +159,7 @@ ssh root@217.216.109.5 'bash /tmp/fix-validator-ulimit.sh axionax-validator-eu'
 หรือถ้า SSH เข้า VPS อยู่แล้ว:
 
 ```bash
-cd /root/axionax-core-universe
+cd /root/axionax-monolith
 bash ops/deploy/scripts/fix-validator-ulimit.sh axionax-validator-eu
 ```
 

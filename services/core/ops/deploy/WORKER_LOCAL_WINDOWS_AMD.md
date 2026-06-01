@@ -55,7 +55,7 @@ Software:
 
 ```powershell
 # Create virtual environment
-cd d:\axionax-core-universe
+cd d:\axionax-monolith
 python -m venv worker-env
 
 # Activate

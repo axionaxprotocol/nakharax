@@ -29,7 +29,7 @@ core/tools/genesis.json
 
 ```bash
 curl -fsSL -o genesis.json \
-  https://raw.githubusercontent.com/axionaxprotocol/axionax-core-universe/main/core/tools/genesis.json
+  https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/core/tools/genesis.json
 ```
 
 Verify the file is JSON and contains `"chainId": 86137` (or `86137` under `config` per your file layout).
@@ -84,8 +84,8 @@ Without a valid `AXIONAX_BOOTSTRAP_NODES`, your node may start but **not** find 
 ## 5. Build the binary
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe/core
+git clone https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith/services/core/core
 cargo build --release -p node
 ```
 
@@ -102,7 +102,7 @@ target/release/axionax-node
 From the repository, use the bootstrap script (build → data directory → `run.sh` → optional systemd):
 
 ```bash
-cd axionax-core-universe/ops/deploy/scripts
+cd axionax-monolith/services/core/ops/deploy/scripts
 chmod +x axionax-node-bootstrap.sh
 
 ./axionax-node-bootstrap.sh build
@@ -184,4 +184,4 @@ cd ops/deploy/scripts
 
 ---
 
-*Canonical public full-node guide for axionax-core-universe.*
+*Canonical public full-node guide for axionax-monolith.*

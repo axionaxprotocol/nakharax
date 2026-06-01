@@ -42,8 +42,8 @@ No file upload from your machine — on VPS just clone repo and build there:
 1. SSH into VPS, clone repo, install dependencies, and build:
 
    ```bash
-   export APP_DIR=/opt/axionax-web-universe
-   git clone https://github.com/axionaxprotocol/axionax-web-universe.git $APP_DIR
+   export APP_DIR=/opt/axionax-monolith
+   git clone https://github.com/axionaxprotocol/axionax-monolith.git $APP_DIR
    cd $APP_DIR
    pnpm install --frozen-lockfile
    pnpm --filter @axionax/blockchain-utils build
@@ -55,7 +55,7 @@ No file upload from your machine — on VPS just clone repo and build there:
 
 3. Nginx must proxy to `http://127.0.0.1:3000` (see [apps/web/nginx/conf.d/axionax-standalone.conf.example](../apps/web/nginx/conf.d/axionax-standalone.conf.example))
 
-Default script values: app folder `/opt/axionax-web-universe`, port 3000
+Default script values: app folder `/opt/axionax-monolith`, port 3000
 
 #### VPS standalone: branch, lockfile, and Windows
 

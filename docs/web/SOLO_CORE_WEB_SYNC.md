@@ -1,6 +1,6 @@
 # Solo maintainer: web ↔ core (dual repo)
 
-Lightweight discipline when you are the only person touching **axionax-web-universe** and **axionax-core-universe**.
+Lightweight discipline when you are the only person touching **axionax-monolith** and **axionax-monolith**.
 
 ## Rules of thumb
 
@@ -28,6 +28,6 @@ If you start missing sync steps or forget which core revision matches production
 
 ## Links
 
-- Core repo: https://github.com/axionaxprotocol/axionax-core-universe  
+- Core repo: https://github.com/axionaxprotocol/axionax-monolith  
 - Parameter map: [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md)  
 - Dev setup: [DEVELOPMENT.md](DEVELOPMENT.md)

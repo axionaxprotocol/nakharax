@@ -10,7 +10,7 @@
 | **Remediated** | Current code appears to address the finding; spot-checked in repo. |
 | **Partial** | Improved materially; audit recommendation not fully met or deployment-dependent. |
 | **Open** | No evidence of fix in this pass, or still structurally true (e.g. HTTP without TLS). |
-| **Dev / out of scope** | Applies to mocks, examples, or repos not in `axionax-core-universe`; accept risk for dev only. |
+| **Dev / out of scope** | Applies to mocks, examples, or repos not in `axionax-monolith`; accept risk for dev only. |
 
 ---
 
@@ -129,7 +129,7 @@
 
 ## §4 — TypeScript SDK & website
 
-All findings marked **Dev / other repo** — tracked in `axionax-web-universe`, not verified here.
+All findings marked **Dev / other repo** — tracked in `axionax-monolith`, not verified here.
 
 ---
 

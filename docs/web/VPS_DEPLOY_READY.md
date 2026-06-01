@@ -1,4 +1,4 @@
-# เตรียม Deploy Web บน VPS (axionax-web-universe)
+# เตรียม Deploy Web บน VPS (axionax-monolith)
 
 ใช้กับ flow **clone/pull บนเซิร์ฟเวอร์ → pnpm build → Next standalone + PM2 → Nginx proxy ไปพอร์ต 3000**
 
@@ -14,7 +14,7 @@
 
 ## 2. โฟลเดอร์บนเซิร์ฟเวอร์ (ค่าเริ่มต้นในสคริปต์)
 
-- `APP_DIR` = `/opt/axionax-web-universe`
+- `APP_DIR` = `/opt/axionax-monolith`
 - Standalone รัน: `apps/web/.next/standalone/apps/web/server.js`
 - พอร์ต: `PORT=3000`
 
@@ -61,7 +61,7 @@ ssh root@YOUR_VPS_IP 'bash -s' < scripts/vps-update-and-restart.sh
 ให้รันแทน:
 
 ```powershell
-cd D:\axionax-web-universe   # โฟลเดอร์ repo
+cd D:\axionax-monolith   # โฟลเดอร์ repo
 .\scripts\vps-update-from-windows.ps1
 # หรือระบุ host: .\scripts\vps-update-from-windows.ps1 -HostName root@YOUR_VPS_IP
 ```
@@ -77,7 +77,7 @@ ssh root@YOUR_VPS_IP "sed -i 's/\r$//' /tmp/vps-update.sh && bash /tmp/vps-updat
 
 หรือคัดลอกคำสั่งจาก `scripts/vps-update-and-restart.sh` ไปรันทีละบล็อก:
 
-1. `cd /opt/axionax-web-universe && git pull origin main`
+1. `cd /opt/axionax-monolith && git pull origin main`
 2. `pnpm install --frozen-lockfile`
 3. `pnpm --filter @axionax/blockchain-utils build`
 4. `pnpm --filter @axionax/sdk build`

@@ -8,7 +8,7 @@
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU (A40, A100, RTX 4090, etc.)
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/axionaxprotocol/axionax-core-universe/main/ops/deploy/scripts/setup-runpod-worker.sh
+#   wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 #   chmod +x setup-runpod-worker.sh
 #   ./setup-runpod-worker.sh
 #
@@ -135,18 +135,18 @@ source $HOME/.cargo/env
 
 # Step 8: Clone axionax repository
 log_info "Step 8: Cloning axionax repository..."
-if [ ! -d "$USER_HOME/axionax-core-universe" ]; then
-    git clone https://github.com/axionaxprotocol/axionax-core-universe.git "$USER_HOME/axionax-core-universe"
+if [ ! -d "$USER_HOME/axionax-monolith" ]; then
+    git clone https://github.com/axionaxprotocol/axionax-monolith.git "$USER_HOME/axionax-monolith"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."
-    cd "$USER_HOME/axionax-core-universe"
+    cd "$USER_HOME/axionax-monolith"
     git pull
 fi
 
 # Step 9: Build Rust core
 log_info "Step 9: Building axionax core (this may take 5-10 minutes)..."
-cd "$USER_HOME/axionax-core-universe/core"
+cd "$USER_HOME/axionax-monolith/services/core/core"
 source $HOME/.cargo/env
 cargo build --release
 log_success "Core built successfully"
@@ -154,7 +154,7 @@ log_success "Core built successfully"
 # Step 10: Install DeAI dependencies
 log_info "Step 10: Installing DeAI dependencies..."
 pip install --upgrade pip
-cd "$USER_HOME/axionax-core-universe/core/deai"
+cd "$USER_HOME/axionax-monolith/services/core/core/deai"
 pip install -r requirements.txt
 log_success "DeAI dependencies installed"
 
@@ -244,7 +244,7 @@ log_info "Step 15: Creating worker start script..."
 cat > "$USER_HOME/start-worker.sh" << 'EOF'
 #!/bin/bash
 echo "🚀 Starting axionax Worker Node..."
-cd ~/axionax-core-universe/core
+cd ~/axionax-monolith/services/core/core
 source $HOME/.cargo/env
 
 # Check if config exists and has wallet address
@@ -294,7 +294,7 @@ log_success "Monitoring script created: $USER_HOME/monitor-worker.sh"
 
 # Step 17: Run quick test
 log_info "Step 17: Running GPU test..."
-cd "$USER_HOME/axionax-core-universe/core/examples"
+cd "$USER_HOME/axionax-monolith/services/core/core/examples"
 python3 << 'EOF'
 import torch
 import time
@@ -344,7 +344,7 @@ echo "  2. Activate worker environment:"
 echo "     ${YELLOW}source ~/activate-worker.sh${NC}"
 echo ""
 echo "  3. Test training example:"
-echo "     ${YELLOW}cd ~/axionax-core-universe/core/examples${NC}"
+echo "     ${YELLOW}cd ~/axionax-monolith/services/core/core/examples${NC}"
 echo "     ${YELLOW}python deai_simple_training.py${NC}"
 echo ""
 echo "  4. Start worker (in tmux):"

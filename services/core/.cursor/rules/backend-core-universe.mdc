@@ -6,13 +6,13 @@ alwaysApply: false
 
 # AXIONAX BACKEND — Core Universe
 
-This repo is `axionax-core-universe`: Rust blockchain core + Python DeAI + ops + tools.  
+This repo is `axionax-monolith`: Rust blockchain core + Python DeAI + ops + tools.  
 **Version:** Core v1.9.0 | Tests: 201/201 | Chain ID: 86137 (testnet)
 
 ## Repository Layout
 
 ```
-axionax-core-universe/
+axionax-monolith/services/core/
 ├── core/                  ← Rust Cargo workspace (core/Cargo.toml)
 │   ├── core/<crate>/      ← 18 Rust crates (consensus, blockchain, node, rpc, ...)
 │   ├── bridge/rust-python/← PyO3 FFI

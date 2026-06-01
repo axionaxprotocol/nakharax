@@ -37,16 +37,16 @@ python3 -c "import hashlib; print(hashlib.sha256(b'axionax_faucet_mainnet_q2_202
 **จากเครื่องคุณ (สร้างโฟลเดอร์ให้ก่อนแล้วส่งไฟล์ไป VPS3):**
 
 ```powershell
-ssh root@217.216.109.5 "mkdir -p /root/axionax-core-universe/ops/deploy/scripts"
-scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/axionax-core-universe/ops/deploy/
-scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/axionax-core-universe/ops/deploy/scripts/
-scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/axionax-core-universe/ops/deploy/
+ssh root@217.216.109.5 "mkdir -p /root/axionax-monolith/services/core/ops/deploy/scripts"
+scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/
+scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/scripts/
+scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/
 ```
 
 **บน VPS3 (SSH เข้าไปแล้ว):**
 
 ```bash
-cd /root/axionax-core-universe/ops/deploy
+cd /root/axionax-monolith/services/core/ops/deploy
 
 # สร้าง .env.vps3-faucet และใส่ FAUCET_PRIVATE_KEY
 cp env.vps3-faucet.example .env.vps3-faucet

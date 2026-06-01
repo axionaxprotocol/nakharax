@@ -150,7 +150,7 @@ impl Write for BroadcastWriter {
             .inner
             .buf
             .lock()
-            .map_err(|_| io::Error::new(io::ErrorKind::Other, "log buffer poisoned"))?;
+            .map_err(|_| io::Error::other("log buffer poisoned"))?;
         guard.extend_from_slice(buf);
 
         // Drain complete lines (split on '\n').

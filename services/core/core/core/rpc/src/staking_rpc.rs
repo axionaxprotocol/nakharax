@@ -128,9 +128,7 @@ struct DelegateParams {
     amount: String,
 }
 
-#[derive(Deserialize)]
-struct ClaimRewardsParams {
-}
+
 pub struct StakingRpcServerImpl {
     staking: Arc<RwLock<Staking>>,
     config: StakingConfig,

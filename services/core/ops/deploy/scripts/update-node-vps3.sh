@@ -5,7 +5,7 @@
 set -e
 
 VPS_HOST="root@46.250.244.4"
-REPO_DIR="/root/axionax-core-universe"
+REPO_DIR="/root/axionax-monolith"
 SERVICE_NAME="axionax-node"
 
 echo "🔄 Deploying updated axionax-node to VPS3..."
@@ -15,7 +15,7 @@ ssh "$VPS_HOST" << 'ENDSSH'
 set -e
 
 echo "📁 Changing to repo directory..."
-cd /root/axionax-core-universe
+cd /root/axionax-monolith
 
 echo "🧹 Stashing local changes..."
 git stash push -m "Auto-stash before update $(date)" || true
@@ -34,8 +34,8 @@ echo "⏹️  Stopping axionax-node service..."
 systemctl stop axionax-node
 
 echo "📋 Copying new binary to correct location..."
-cp target/release/axionax-node /opt/axionax-core-universe/core/target/release/axionax-node
-chmod +x /opt/axionax-core-universe/core/target/release/axionax-node
+cp target/release/axionax-node /opt/axionax-monolith/services/core/core/target/release/axionax-node
+chmod +x /opt/axionax-monolith/services/core/core/target/release/axionax-node
 
 echo "🚀 Starting axionax-node service..."
 systemctl start axionax-node

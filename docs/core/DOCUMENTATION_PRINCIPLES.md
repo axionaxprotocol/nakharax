@@ -44,4 +44,4 @@ Documentation in this repository is the **canonical** source for Axionax Protoco
 
 ---
 
-*This document defines the documentation principles for axionax-core-universe: canonical, formal, and citable. All documentation is in English.*
+*This document defines the documentation principles for axionax-monolith: canonical, formal, and citable. All documentation is in English.*

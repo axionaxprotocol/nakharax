@@ -280,8 +280,7 @@ impl DA {
         let mut valid_count = 0;
         let mut missing_data_shards = Vec::new();
 
-        for i in 0..entry.total_chunks {
-            let chunk_id = &entry.chunk_ids[i];
+        for (i, chunk_id) in entry.chunk_ids.iter().enumerate().take(entry.total_chunks) {
             if let Some(chunk) = chunks.get(chunk_id) {
                 if chunk.verify() {
                     shards[i] = Some(chunk.data.clone());
@@ -297,10 +296,8 @@ impl DA {
         // Fast path: if all data shards are present and verified, bypass Reed-Solomon.
         if missing_data_shards.is_empty() {
             let mut data = Vec::with_capacity(entry.original_size);
-            for i in 0..entry.data_chunks {
-                if let Some(ref shard_data) = shards[i] {
-                    data.extend_from_slice(shard_data);
-                }
+            for shard_data in shards.iter().take(entry.data_chunks).flatten() {
+                data.extend_from_slice(shard_data);
             }
             data.truncate(entry.original_size);
             return Ok(data);
@@ -323,8 +320,8 @@ impl DA {
 
         // Retrieve and assemble data
         let mut data = Vec::with_capacity(entry.original_size);
-        for i in 0..entry.data_chunks {
-            if let Some(ref shard_data) = shards[i] {
+        for (i, shard) in shards.iter().take(entry.data_chunks).enumerate() {
+            if let Some(ref shard_data) = shard {
                 data.extend_from_slice(shard_data);
             } else {
                 return Err(DAError::AuditFailed(format!(

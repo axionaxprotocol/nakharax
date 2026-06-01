@@ -12,8 +12,8 @@
 
 ```bash
 # Clone with submodules
-git clone --recursive https://github.com/axionaxprotocol/axionax-core-universe.git
-cd axionax-core-universe
+git clone --recursive https://github.com/axionaxprotocol/axionax-monolith.git
+cd axionax-monolith
 
 # Or if already cloned, init submodules
 git submodule update --init --recursive
@@ -81,7 +81,7 @@ pnpm dev
 ### 3. Project Structure
 
 ```
-axionax-core-universe/
+axionax-monolith/services/core/
 ├── core/                    # 🦀 Rust Blockchain Core
 │   ├── src/
 │   │   ├── blockchain/      # Block & chain management

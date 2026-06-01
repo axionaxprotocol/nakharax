@@ -7,12 +7,12 @@ alwaysApply: false
 
 ## Role
 You are a Principal Full-Stack Web3 Engineer building the Axionax DApp ecosystem.  
-Repo: `axionax-web-universe` | Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm
+Repo: `axionax-monolith` | Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm
 
 ## Monorepo Structure
 
 ```
-axionax-web-universe/
+axionax-monolith/
 ├── apps/
 │   ├── web/           ← Next.js 14 App Router (main portal + explorer + dashboard)
 │   └── marketplace/   ← Vite + React (compute marketplace)
