@@ -1,8 +1,10 @@
 <div align="center">
 
-# Axionax Monolith
+# nakhara.io
 
-### One repo · Two universes · Civilization OS
+### Cheap, accessible compute for everyone — a paid, verifiable grid for parallel science & AI
+
+<sub>formerly **Axionax** — rebrand in progress. Code identifiers, env vars, and live endpoints still use `axionax` during migration; see [Naming & rebrand](#naming--rebrand).</sub>
 
 [![Chain ID](https://img.shields.io/badge/Testnet-86137-orange?style=flat-square)](#network)
 [![Rust](https://img.shields.io/badge/Rust-1.81%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
@@ -10,7 +12,7 @@
 [![Node.js](https://img.shields.io/badge/Node-20%2B-green?style=flat-square&logo=node.js)](https://nodejs.org/)
 [![PNPM](https://img.shields.io/badge/pnpm-10-yellow?style=flat-square&logo=pnpm)](https://pnpm.io/)
 
-**PoPC Consensus** · **45,000 TPS target** · **<0.5s finality** · **DeAI at the edge**
+**PoPC verification** · **decentralized compute marketplace** · **own a node, earn NAK** · **science & AI at the edge**
 
 </div>
 
@@ -18,7 +20,7 @@
 
 ## What's inside
 
-This repository is the **monolithic working tree** for the Axionax Protocol. Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
+This repository is the **monolithic working tree** for **nakhara.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
 
 ```
 axionax-monolith/
@@ -33,6 +35,21 @@ axionax-monolith/
 ```
 
 > **Domain separation matters.** Frontend changes go in `apps/`, blockchain/AI changes go in `services/core/`. They communicate **only** via the JSON-RPC contract on port 8545. See [`.windsurfrules`](./.windsurfrules) for the full rule set.
+
+---
+
+## Naming & rebrand
+
+The project is being renamed **Axionax → nakhara.io**. This is a **phased** migration:
+
+| Layer | New | Status |
+|---|---|---|
+| Brand / docs / UI | **nakhara.io** | 🔄 in progress (this pass) |
+| Native token | **NAK** (was `AXX`) | ⏳ pending on-chain (contract + genesis) |
+| Domain | **nakhara.io** (was `axionax.org`) | ⏳ pending DNS/SSL migration |
+| Code identifiers | crate/package names, `AXIONAX_*` env vars | ⏳ deferred — **do not change yet** (would break the build + live testnet) |
+
+> ⚠️ Until the deeper phases land, **live endpoints, env-var names, crate/package names, and the on-chain token symbol still read `axionax`/`AXX`.** Use them as-is. The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
 
 ---
 
