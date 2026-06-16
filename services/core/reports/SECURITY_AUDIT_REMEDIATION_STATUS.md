@@ -3,6 +3,40 @@
 **Source report:** [SECURITY_AUDIT_REPORT.md](../SECURITY_AUDIT_REPORT.md) (2026-03-05, 97 deduplicated findings)  
 **This status:** Generated from codebase review **2026-04-05** — not a formal re-audit.
 
+---
+
+## ⚠️ Re-verification 2026-06-16 — the table below is STALE and overstates open risk
+
+A code-level spot re-verification on 2026-06-16 found that **many items marked "Open" below are
+in fact remediated in the current tree.** The §2/§4 table should not be used for decisions until
+refreshed. Corrected statuses for the items checked (with evidence):
+
+| ID | Old status | **Verified 2026-06-16** | Evidence |
+| --- | --- | --- | --- |
+| RM-1 (reputation unwrap) | Open | **Remediated** | only `.unwrap()` in tests; prod uses graceful paths (`network/src/reputation.rs`) |
+| RM-2 (mempool nonce overflow) | Open | **Remediated** | `checked_add` for expected nonce (`mempool.rs:189`) |
+| RM-10 (reputation decay overflow) | Open | **Remediated** | `saturating_mul` + `saturating_sub` (`reputation.rs:234-235`) |
+| RL-1 (duplicate tx in block) | Open | **Remediated** | explicit duplicate-hash check (`validation.rs:216`) |
+| RI-1 (`panic = "abort"`) | Open | **Moot** | release profile is now `panic = "unwind"` (`Cargo.toml:140`) — also lowers RH-4 severity |
+| SM-1 (SystemTime unwraps) | Open | **Mostly addressed** | hot paths use `unwrap_or(0)`, not `unwrap()` (rpc/node/blockchain) |
+| SH-5 / PM-6 (u128→u64 money truncation) | Open | **Not present** | no `amount/value/balance/stake as u64` casts found in `core/` |
+| DC-1 (hardcoded keys in ops/scripts) | Open | **Not present** | all keys are `${FAUCET_PRIVATE_KEY}` env placeholders; the only `0x…64` literals are standard empty-trie/uncle hashes |
+| PM-5 (legacy plaintext key deletion) | Open | **Remediated** | keystore migration securely overwrites the plaintext file (`wallet_manager.py:93-98`) |
+
+**Net:** code-level Critical/High/Medium are largely closed. What genuinely remains is
+**operational hardening + an external audit**, not outstanding crash/forgery bugs:
+
+- **No built-in TLS** — terminate at a reverse proxy (SH-2, PC-2).
+- **`0.0.0.0` binding / `:latest` image tags / unauthenticated metrics** — deploy-config choices.
+- **Python DeAI** — needs a focused re-audit; spot-checks (wallet, contract manager) look sound,
+  but findings PM-2/PM-9 (mutable defaults, payload logging) are not yet verified.
+- **No external/third-party audit yet** — hard gate before mainnet (roadmap: Q4 2026).
+
+> Bug fixed during this pass: `wallet_manager.sign_transaction()` used the removed
+> `signed.rawTransaction` attribute → corrected to `raw_transaction` (`wallet_manager.py:161`).
+
+---
+
 ## Legend
 
 | Status | Meaning |
