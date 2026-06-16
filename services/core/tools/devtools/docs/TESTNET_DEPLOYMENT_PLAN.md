@@ -1,4 +1,4 @@
-# axionax Testnet Deployment Plan
+# nakhara Testnet Deployment Plan
 **Date**: November 13, 2025  
 **Status**: Phase 1 In Progress (78% Complete)  
 **VPS**: vmi2895217 (217.216.109.5)
@@ -47,7 +47,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - [ ] Debug and fix Explorer API (Port 3001)
   - Check RPC connection configuration
   - Verify database connectivity
-  - Review container logs: `docker logs axionax-explorer-backend` (or `axionax-explorer-api` in dev)
+  - Review container logs: `docker logs nakhara-explorer-backend` (or `nakhara-explorer-api` in dev)
   - Test: `curl -s http://localhost:3001/api/health`
   - **If the image is missing or not starting:** use the stub from the repo — `docker compose -f docker-compose.dev.yml up -d explorer-api` (build from `tools/devtools/Dockerfile.explorer`)
 
@@ -128,7 +128,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 **Validator Node Setup**
 - [ ] Provision new VPS (Hetzner CPX41 recommended)
 - [ ] Install system dependencies (Rust, Docker, etc.)
-- [ ] Build axionax-core from source
+- [ ] Build nakhara-core from source
 - [ ] Configure validator keys and credentials
 - [ ] Setup systemd service for auto-restart
 - [ ] Configure firewall and security
@@ -245,7 +245,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 **Week 4**: Infrastructure Setup
 - VPS provisioning
 - System configuration
-- axionax-core build
+- nakhara-core build
 - Testing environment
 
 **Week 5**: Genesis Ceremony
@@ -324,7 +324,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 ## 📞 Support & Communication
 
 ### Development Team Channels
-- **GitHub**: https://github.com/axionaxprotocol/axionax-core
+- **GitHub**: https://github.com/nakhara-io/nakhara-core
 - **Issues**: Track progress and bugs
 - **Discussions**: Technical Q&A
 - **Pull Requests**: Code review process
@@ -336,7 +336,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - **Medium/Blog**: Technical articles, tutorials
 
 ### Documentation Sites
-- **Main Docs**: https://docs.axionax.org
+- **Main Docs**: https://docs.nakhara.io
 - **API Reference**: In progress
 - **Tutorials**: To be created
 - **Network Status**: Grafana dashboards
@@ -364,14 +364,14 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 1. **Debug Explorer API** (Priority 1)
    ```bash
    ssh root@217.216.109.5
-   docker logs axionax-explorer-api
+   docker logs nakhara-explorer-api
    # Check RPC configuration
    # Verify database connectivity
    ```
 
 2. **Debug Faucet API** (Priority 1)
    ```bash
-   docker logs axionax-faucet-api
+   docker logs nakhara-faucet-api
    # Check wallet configuration
    # Verify RPC integration
    ```
@@ -397,7 +397,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 
 ## 📝 Conclusion
 
-The axionax testnet deployment is proceeding well with 78% infrastructure completion. The recommended hybrid approach allows us to:
+The nakhara testnet deployment is proceeding well with 78% infrastructure completion. The recommended hybrid approach allows us to:
 
 1. **Quickly complete** remaining infrastructure (1-2 days)
 2. **Enhance developer experience** with improved tools (1 week)
@@ -415,4 +415,4 @@ This phased approach minimizes risk, controls costs, and ensures a stable founda
 **Document Version**: 1.0  
 **Last Updated**: November 13, 2025  
 **Next Review**: November 20, 2025  
-**Owner**: axionax Protocol Core Team
+**Owner**: nakhara Protocol Core Team

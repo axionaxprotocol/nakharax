@@ -4,7 +4,7 @@
 
 ```bash
 # Run full check
-python axionax-devtools/scripts/testing/testnet_readiness_checker.py
+python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
 
 # Windows shortcut
 .\check-testnet-readiness.ps1
@@ -95,12 +95,12 @@ git commit -m "fix: secure API keys in .env"
 ### Issue: Build Failures
 ```bash
 # Rust
-cd axionax-core
+cd nakhara-core
 cargo clean
 cargo build --release
 
 # TypeScript
-cd axionax-sdk-ts
+cd nakhara-sdk-ts
 rm -rf node_modules
 npm install
 npm run build
@@ -111,8 +111,8 @@ npm run build
 # Create required docs
 touch CONTRIBUTING.md ARCHITECTURE.md docs/API_REFERENCE.md
 
-# Copy templates from axionax-docs
-cp axionax-docs/CONTRIBUTING.md ./
+# Copy templates from nakhara-docs
+cp nakhara-docs/CONTRIBUTING.md ./
 ```
 
 ## 📈 Progress Tracking

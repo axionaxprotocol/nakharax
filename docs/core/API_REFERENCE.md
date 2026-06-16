@@ -29,7 +29,7 @@ pub struct ConsensusConfig {
 **Example:**
 
 ```rust
-use axionax_consensus::ConsensusConfig;
+use nakhara_consensus::ConsensusConfig;
 
 let config = ConsensusConfig {
     sample_size: 1000,
@@ -64,7 +64,7 @@ impl Blockchain {
 **Example:**
 
 ```rust
-use axionax_blockchain::Blockchain;
+use nakhara_blockchain::Blockchain;
 
 let mut chain = Blockchain::new();
 let block = Block::new(/* ... */);
@@ -89,7 +89,7 @@ pub fn sign_message(
 **Example:**
 
 ```rust
-use axionax_crypto::sign_message;
+use nakhara_crypto::sign_message;
 
 let signature = sign_message(&private_key, b"Hello AxionAx")?;
 ```
@@ -130,7 +130,7 @@ impl P2PNetwork {
 **Example:**
 
 ```rust
-use axionax_network::{P2PNetwork, NetworkConfig};
+use nakhara_network::{P2PNetwork, NetworkConfig};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -275,7 +275,7 @@ def select_workers(
 Main provider for interacting with AxionAx blockchain.
 
 ```typescript
-import { AxionAxProvider } from '@axionax/sdk';
+import { AxionAxProvider } from '@nakhara/sdk';
 
 const provider = new AxionAxProvider('http://localhost:8545');
 ```
@@ -346,7 +346,7 @@ await tx.wait();
 Wallet management.
 
 ```typescript
-import { Wallet } from '@axionax/sdk';
+import { Wallet } from '@nakhara/sdk';
 
 const wallet = new Wallet(privateKey, provider);
 ```
@@ -433,7 +433,7 @@ network:
 **Load config:**
 
 ```rust
-use axionax_config::ProtocolConfig;
+use nakhara_config::ProtocolConfig;
 
 let config = ProtocolConfig::from_yaml("config.yaml")?;
 ```
@@ -457,7 +457,7 @@ pub enum AxionAxError {
 **Example:**
 
 ```rust
-use axionax_core::AxionAxError;
+use nakhara_core::AxionAxError;
 
 fn process_block(block: Block) -> Result<(), AxionAxError> {
     // Validate block
@@ -502,4 +502,4 @@ provider.on('block', (blockNumber) => {
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Quick Start Guide](../QUICK_START.md)
 - [Examples](../examples/)
-- [GitHub Repository](https://github.com/axionaxprotocol/axionax-core)
+- [GitHub Repository](https://github.com/nakhara-io/nakhara-core)

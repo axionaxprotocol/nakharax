@@ -1,11 +1,11 @@
-# Axionax OS (Next.js) — monorepo root
+# Nakhara OS (Next.js) — monorepo root
 #
 # Do NOT point `publish` at `.next` as a static site without the Next.js runtime.
 # That served raw build output and made the app look "blank" / 404.
 # The @netlify/plugin-nextjs runtime wires SSR, functions, and routing correctly.
 
 [build]
-  command = "pnpm install && pnpm --filter axionax-os-dashboard build"
+  command = "pnpm install && pnpm --filter nakhara-os-dashboard build"
   publish = "apps/os-dashboard/.next"
 
 [build.environment]

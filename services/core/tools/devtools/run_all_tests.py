@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-axionax DevTools - Test Runner
+nakhara DevTools - Test Runner
 Runs all unit and integration tests
 """
 
@@ -25,7 +25,7 @@ except ImportError:
 def main():
     """Main test runner"""
     print("=" * 80)
-    print(" " * 20 + "axionax DevTools - Test Suite")
+    print(" " * 20 + "nakhara DevTools - Test Suite")
     print("=" * 80)
     print()
     

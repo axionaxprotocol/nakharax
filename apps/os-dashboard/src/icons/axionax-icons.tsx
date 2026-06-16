@@ -1,15 +1,15 @@
-// Axionax OS — minimalist 1.25px-stroke icon set.
+// Nakhara OS — minimalist 1.25px-stroke icon set.
 //
 // Designed to sit alongside `lucide-react` icons without visual conflict.
 // Every icon renders inside a 24x24 viewbox; size via the `size` prop.
 //
 // Usage:
-//   import { Icon } from "@/icons/axionax-icons";
+//   import { Icon } from "@/icons/nakhara-icons";
 //   <Icon name="neural" size={18} className="text-accent-ai" />
 
 import type { SVGProps } from "react";
 
-export type AxionaxIconName =
+export type NakharaIconName =
   | "neural"
   | "node"
   | "peer"
@@ -18,13 +18,13 @@ export type AxionaxIconName =
   | "edge";
 
 type Props = SVGProps<SVGSVGElement> & {
-  name: AxionaxIconName;
+  name: NakharaIconName;
   size?: number;
 };
 
 const STROKE = 1.25;
 
-const PATHS: Record<AxionaxIconName, JSX.Element> = {
+const PATHS: Record<NakharaIconName, JSX.Element> = {
   // Neural Network — three-layer perceptron
   neural: (
     <>
@@ -107,7 +107,7 @@ export function Icon({
   );
 }
 
-export const ICON_NAMES: AxionaxIconName[] = [
+export const ICON_NAMES: NakharaIconName[] = [
   "neural",
   "node",
   "peer",

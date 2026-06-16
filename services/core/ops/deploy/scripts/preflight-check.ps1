@@ -1,10 +1,10 @@
 # ==============================================================================
-# axionax VPS Deployment - Simple Pre-Flight Check
+# nakhara VPS Deployment - Simple Pre-Flight Check
 # ==============================================================================
 
-Write-Host "`n=== axionax VPS Deployment Pre-Flight Check ===" -ForegroundColor Cyan
+Write-Host "`n=== nakhara VPS Deployment Pre-Flight Check ===" -ForegroundColor Cyan
 
-$DeployDir = "C:\Users\engnc\axionaxius02\axionax-deploy"
+$DeployDir = "C:\Users\engnc\nakharaius02\nakhara-deploy"
 $VPS_IP = "217.216.109.5"
 
 # 1. Check Scripts
@@ -98,7 +98,7 @@ Write-Host "`n=== Summary ===" -ForegroundColor Cyan
 Write-Host "Pre-flight check complete!" -ForegroundColor Green
 Write-Host "`nNext Steps:" -ForegroundColor Yellow
 Write-Host "1. Connect to VPS: ssh root@$VPS_IP" -ForegroundColor White
-Write-Host "2. Upload files or clone repo to /opt/axionax-deploy" -ForegroundColor White
+Write-Host "2. Upload files or clone repo to /opt/nakhara-deploy" -ForegroundColor White
 Write-Host "3. Configure .env file" -ForegroundColor White
 Write-Host "4. Run: chmod +x scripts/*.sh" -ForegroundColor White
 Write-Host "5. Run: sudo ./scripts/deploy-all-services.sh --check-only" -ForegroundColor White
@@ -106,19 +106,19 @@ Write-Host "6. Run: sudo ./scripts/deploy-all-services.sh --full" -ForegroundCol
 
 # Save connection commands
 $connectionInfo = @"
-# axionax VPS Quick Commands
+# nakhara VPS Quick Commands
 # Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 # Connect to VPS
 ssh root@$VPS_IP
 
 # Upload files (run from parent directory)
-scp -r axionax-deploy root@${VPS_IP}:/opt/
+scp -r nakhara-deploy root@${VPS_IP}:/opt/
 
 # OR clone from GitHub (on VPS)
 cd /opt
-git clone https://github.com/axionaxprotocol/axionax-deploy.git
-cd axionax-deploy
+git clone https://github.com/nakhara-io/nakhara-deploy.git
+cd nakhara-deploy
 
 # Setup
 cp .env.example .env

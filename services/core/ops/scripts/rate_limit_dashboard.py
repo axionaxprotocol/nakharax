@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Axionax Rate Limiting Dashboard
+Nakhara Rate Limiting Dashboard
 Monitor RPC rate limiting status and adjust limits dynamically
 """
 
@@ -30,7 +30,7 @@ class RateLimitDashboard:
         """Parse Prometheus metrics format"""
         metrics = {}
         for line in metrics_text.split('\n'):
-            if line.startswith('axionax_') and not line.startswith('#'):
+            if line.startswith('nakhara_') and not line.startswith('#'):
                 parts = line.split()
                 if len(parts) >= 2:
                     metrics[parts[0]] = float(parts[1])
@@ -70,7 +70,7 @@ class RateLimitDashboard:
                 
                 # Header
                 print("=" * 60)
-                print("🔒 Axionax Rate Limiting Dashboard")
+                print("🔒 Nakhara Rate Limiting Dashboard")
                 print("=" * 60)
                 print(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                 
@@ -119,7 +119,7 @@ class RateLimitDashboard:
             return "📈"
 
 def main():
-    parser = argparse.ArgumentParser(description="Axionax Rate Limiting Dashboard")
+    parser = argparse.ArgumentParser(description="Nakhara Rate Limiting Dashboard")
     parser.add_argument("--rpc", default="http://127.0.0.1:8545", help="RPC URL")
     args = parser.parse_args()
     

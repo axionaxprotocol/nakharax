@@ -1,5 +1,5 @@
 """
-axionax DeAI - Simple Training Example
+nakhara DeAI - Simple Training Example
 
 Simple AI Training Job example for testing Worker Node
 Runs MNIST digit classification
@@ -101,7 +101,7 @@ def test(model, test_loader, criterion):
 def main():
     """Main training function"""
     print("\n" + "="*60)
-    print("🚀 axionax DeAI - Simple Training Example")
+    print("🚀 nakhara DeAI - Simple Training Example")
     print("="*60 + "\n")
     
     # Job configuration

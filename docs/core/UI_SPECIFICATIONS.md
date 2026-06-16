@@ -3,7 +3,7 @@
 
 ## Overview
 
-This document specifies the UI components to build in `axionax-monolith` for Staking and Governance
+This document specifies the UI components to build in `nakhara-monolith` for Staking and Governance
 
 ---
 
@@ -331,7 +331,7 @@ await rpc.call('gov_executeProposal', [proposalId]);
 
 ---
 
-## SDK Types (for @axionax/sdk)
+## SDK Types (for @nakhara/sdk)
 
 ```typescript
 // packages/sdk/src/types/staking.ts

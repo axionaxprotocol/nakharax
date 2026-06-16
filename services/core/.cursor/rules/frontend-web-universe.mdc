@@ -4,28 +4,28 @@ globs: web-universe/**/*
 alwaysApply: false
 ---
 
-# AXIONAX FRONTEND — Web Universe (Git Submodule)
+# NAKHARA FRONTEND — Web Universe (Git Submodule)
 
-The frontend project lives at **web-universe/** (Git submodule pointing to `axionax-monolith` repo).  
+The frontend project lives at **web-universe/** (Git submodule pointing to `nakhara-monolith` repo).  
 Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm workspaces, TurboRepo
 
 ## Structure (inside `web-universe/`)
 
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── apps/
 │   ├── web/           ← Next.js 14 App Router — main portal, explorer, staking UI
 │   └── marketplace/   ← Vite + React — compute job marketplace
 └── packages/
-    ├── sdk/           ← @axionax/sdk — RPC calls, wallet, ABI, types, contract wrappers
-    └── ui/            ← @axionax/ui — shared design system (Tailwind + Radix-based)
+    ├── sdk/           ← @nakhara/sdk — RPC calls, wallet, ABI, types, contract wrappers
+    └── ui/            ← @nakhara/ui — shared design system (Tailwind + Radix-based)
 ```
 
 ## Rules
 
 ### Always
 - Use **pnpm** — never `npm` or `yarn` at the web-universe root
-- Use workspace aliases: `import { ... } from "@axionax/sdk"` — never relative cross-package paths
+- Use workspace aliases: `import { ... } from "@nakhara/sdk"` — never relative cross-package paths
 - Default to **Server Components** in Next.js; add `"use client"` only for hooks (`useState`, `useEffect`, wallet events)
 - **All blockchain logic** (RPC, ABI, contract calls, wallet) goes in `packages/sdk` — apps only consume it
 - TypeScript strict mode — no `any`, no `@ts-ignore`
@@ -40,11 +40,11 @@ axionax-monolith/
 ## Chain Config for Frontend
 
 ```typescript
-export const AXIONAX_TESTNET_CONFIG = {
+export const NAKHARA_TESTNET_CONFIG = {
   chainId: 86137,
   chainIdHex: "0x15079",
-  name: "Axionax Testnet",
-  rpcUrl: process.env.NEXT_PUBLIC_RPC_URL ?? "https://rpc.axionax.org",
+  name: "Nakhara Testnet",
+  rpcUrl: process.env.NEXT_PUBLIC_RPC_URL ?? "https://rpc.nakhara.io",
   currency: { name: "AXX", symbol: "AXX", decimals: 18 },
   explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL ?? "",
 }

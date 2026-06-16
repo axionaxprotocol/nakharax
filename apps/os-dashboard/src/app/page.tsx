@@ -60,7 +60,7 @@ export default async function Home() {
               <Server size={16} className="text-zinc-300" />
             </div>
             <h1 className="text-display font-mono text-zinc-100 tracking-tight uppercase">
-              AXIONAX_OS
+              NAKHARA_OS
             </h1>
           </div>
           <p className="text-body font-mono text-zinc-500 uppercase tracking-widest">

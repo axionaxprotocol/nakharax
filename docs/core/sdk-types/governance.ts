@@ -1,8 +1,8 @@
 /**
- * Axionax SDK - Governance Types
+ * Nakhara SDK - Governance Types
  * 
  * Copy this file to: packages/sdk/src/types/governance.ts
- * For use in @axionax/sdk
+ * For use in @nakhara/sdk
  */
 
 // =============================================================================

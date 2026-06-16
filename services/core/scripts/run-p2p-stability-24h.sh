@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Start a full DoD P2P stability window from the monorepo root (Linux/macOS/WSL).
-# Optional: export AXIONAX_P2P_WEBHOOK=<discord-url> for Discord alerts.
+# Optional: export NAKHARA_P2P_WEBHOOK=<discord-url> for Discord alerts.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
@@ -14,8 +14,8 @@ ARGS=(
   --output-root services/core/reports
 )
 
-if [[ -n "${AXIONAX_P2P_WEBHOOK:-}" ]]; then
-  ARGS+=(--webhook "$AXIONAX_P2P_WEBHOOK")
+if [[ -n "${NAKHARA_P2P_WEBHOOK:-}" ]]; then
+  ARGS+=(--webhook "$NAKHARA_P2P_WEBHOOK")
 fi
 
 exec python3 "${ARGS[@]}"

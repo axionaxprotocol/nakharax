@@ -12,9 +12,9 @@ use std::time::Duration;
 
 use crate::config::NetworkConfig;
 
-/// axionax network behaviour combining multiple libp2p protocols
+/// nakhara network behaviour combining multiple libp2p protocols
 #[derive(NetworkBehaviour)]
-pub struct AxionaxBehaviour {
+pub struct NakharaBehaviour {
     /// Gossipsub for message propagation
     pub gossipsub: gossipsub::Behaviour,
     /// mDNS for local peer discovery
@@ -29,7 +29,7 @@ pub struct AxionaxBehaviour {
     pub autonat: libp2p::autonat::Behaviour,
 }
 
-impl AxionaxBehaviour {
+impl NakharaBehaviour {
     /// Create new network behaviour.
     /// Accepts the node's actual keypair so Gossipsub messages and Identify
     /// announcements are bound to the real node identity (not a throwaway key).
@@ -77,10 +77,10 @@ impl AxionaxBehaviour {
         // Configure Identify
         let identify = identify::Behaviour::new(
             identify::Config::new(
-                format!("/axionax/{}", config.protocol_version),
+                format!("/nakhara/{}", config.protocol_version),
                 keypair.public(),
             )
-            .with_agent_version(format!("axionax-core/{}", config.protocol_version)),
+            .with_agent_version(format!("nakhara-core/{}", config.protocol_version)),
         );
 
         // Configure Ping
@@ -162,7 +162,7 @@ mod tests {
         let keypair = Keypair::generate_ed25519();
         let config = NetworkConfig::dev();
 
-        let behaviour = AxionaxBehaviour::new(&keypair, &config);
+        let behaviour = NakharaBehaviour::new(&keypair, &config);
         assert!(behaviour.is_ok());
     }
 }

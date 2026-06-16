@@ -1,4 +1,4 @@
-import { DEFAULT_NODES, getNodeStatus } from "@axionax/sdk";
+import { DEFAULT_NODES, getNodeStatus } from "@nakhara/sdk";
 
 /**
  * One-shot log lines derived from live RPC (server-only). Pairs with LogViewer for a live feel.
@@ -6,8 +6,8 @@ import { DEFAULT_NODES, getNodeStatus } from "@axionax/sdk";
 export async function buildLogSeedLines(): Promise<string[]> {
   const lines: string[] = [];
   const iso = new Date().toISOString();
-  lines.push(`${iso}  axionax-os  INFO  log collector · Obsidian shell`);
-  lines.push(`${iso}  axionax-os  INFO  polling ${DEFAULT_NODES.length} configured endpoints`);
+  lines.push(`${iso}  nakhara-os  INFO  log collector · Obsidian shell`);
+  lines.push(`${iso}  nakhara-os  INFO  polling ${DEFAULT_NODES.length} configured endpoints`);
 
   const statuses = await Promise.all(DEFAULT_NODES.map(getNodeStatus));
   for (const s of statuses) {

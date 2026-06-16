@@ -10,11 +10,11 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 
 | Component | Location / URL | Connects to |
 |-----------|----------------|-------------|
-| **VPS EU** | 217.216.109.5 | Validator #1, RPC, **Axionax OS** (`app.axionax.org` → :3030) |
+| **VPS EU** | 217.216.109.5 | Validator #1, RPC, **Nakhara OS** (`app.nakhara.io` → :3030) |
 | **VPS AU** | 46.250.244.4 | Validator #2; nginx, rpc, explorer, api, faucet |
-| **DNS (chain)** | rpc / explorer / api / faucet `.axionax.org` | → **46.250.244.4** |
-| **DNS (OS)** | `app.axionax.org` | → **217.216.109.5** |
-| **Axionax OS** | `apps/os-dashboard` on EU | RPC client → `https://rpc.axionax.org` (AU) |
+| **DNS (chain)** | rpc / explorer / api / faucet `.nakhara.io` | → **46.250.244.4** |
+| **DNS (OS)** | `app.nakhara.io` | → **217.216.109.5** |
+| **Nakhara OS** | `apps/os-dashboard` on EU | RPC client → `https://rpc.nakhara.io` (AU) |
 | **Local full node** | Your machine | Bootstrap to EU or AU; or use public RPC only |
 
 ---
@@ -24,7 +24,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 ### Intended connectivity
 
 ```
-[User] → https://rpc.axionax.org (nginx @ 46.250.244.4)
+[User] → https://rpc.nakhara.io (nginx @ 46.250.244.4)
               ↓
          [AU rpc-node] ←P2P→ [EU validator @ 217.216.109.5]
               ↓
@@ -34,7 +34,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 ```
 
 - **Both validators** share genesis (86137) and sync on P2P **30303**.
-- **Frontend** should use `NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org` (or `https://rpc-au.axionax.org`).
+- **Frontend** should use `NEXT_PUBLIC_RPC_URL=https://rpc.nakhara.io` (or `https://rpc-au.nakhara.io`).
 - **Faucet** on AU uses internal RPC — no cross-VPS RPC URL needed when stack is all-in-one.
 - **Direct IP RPC** (debug): `http://217.216.109.5:8545` (EU), `http://46.250.244.4:8545` (AU).
 
@@ -45,7 +45,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 | EU validator running | 217.216.109.5 | 8545, 30303 open |
 | AU stack running | 46.250.244.4 | `docker-compose.vps.yml`, all containers healthy |
 | DNS → AU | 46.250.244.4 | rpc, explorer, api, faucet subdomains |
-| Frontend RPC env | build-time | `https://rpc.axionax.org` |
+| Frontend RPC env | build-time | `https://rpc.nakhara.io` |
 | P2P between validators | both | `peers >= 1` on each node |
 
 **Deploy guide:** [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
@@ -56,7 +56,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 
 ### Option A: Connect to Public Testnet
 
-- Bootstrap: `AXIONAX_BOOTSTRAP_NODES` pointing at EU or AU peer ID on port 30303.
+- Bootstrap: `NAKHARA_BOOTSTRAP_NODES` pointing at EU or AU peer ID on port 30303.
 - Or skip local sync and use public RPC only.
 
 ### Option B: Separate local chain
@@ -68,7 +68,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 ## 3. Frontend (hosted)
 
 - RPC URL at build/runtime determines which chain the UI uses.
-- Production: `https://rpc.axionax.org` → testnet 86137 on AU/EU validators.
+- Production: `https://rpc.nakhara.io` → testnet 86137 on AU/EU validators.
 
 ---
 
@@ -77,7 +77,7 @@ How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website
 | Pair | Connected? | Condition |
 |------|------------|-----------|
 | **EU ↔ AU validators** | Yes | P2P 30303; same genesis |
-| **Frontend ↔ testnet** | Yes | RPC URL points to rpc.axionax.org (AU nginx → local node) |
+| **Frontend ↔ testnet** | Yes | RPC URL points to rpc.nakhara.io (AU nginx → local node) |
 | **Faucet ↔ testnet** | Yes | Faucet on AU, `RPC_URL=http://rpc-node:8545` |
 | **Explorer/API ↔ testnet** | Yes | `explorer-backend` on AU, same internal RPC |
 
@@ -99,7 +99,7 @@ curl -s -X POST -H "Content-Type: application/json" \
 # Public HTTPS (after DNS + SSL on AU)
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  https://rpc.axionax.org
+  https://rpc.nakhara.io
 ```
 
 Full script: `ops/deploy/scripts/verify-launch-ready.sh`

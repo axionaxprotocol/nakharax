@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Security and Configuration Tests for axionax DevTools
+Security and Configuration Tests for nakhara DevTools
 Tests security best practices, configuration files, and dependencies
 """
 
@@ -93,7 +93,7 @@ class TestConfigurationFiles(unittest.TestCase):
                 with open(package_json, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     self.assertIn('name', data)
-                    self.assertEqual(data['name'], 'axionax-devtools')
+                    self.assertEqual(data['name'], 'nakhara-devtools')
             except json.JSONDecodeError as e:
                 self.fail(f"package.json is not valid JSON: {e}")
                 
@@ -175,7 +175,7 @@ class TestDocumentationQuality(unittest.TestCase):
             essential_sections = [
                 'installation',
                 'usage',
-                'axionax'
+                'nakhara'
             ]
             
             for section in essential_sections:
@@ -193,7 +193,7 @@ class TestDocumentationQuality(unittest.TestCase):
             
             # Should have GitHub links
             self.assertIn('github.com', content)
-            self.assertIn('axionaxprotocol', content)
+            self.assertIn('nakhara-io', content)
             
     def test_no_broken_markdown_links(self):
         """Test that there are no obviously broken markdown links"""
@@ -298,7 +298,7 @@ def run_advanced_tests():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("axionax DevTools - Advanced Security & Quality Tests")
+    print("nakhara DevTools - Advanced Security & Quality Tests")
     print("=" * 70)
     print()
     

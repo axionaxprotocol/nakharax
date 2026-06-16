@@ -7,7 +7,7 @@ pragma solidity ^0.8.20;
  *      Anyone can mint (testnet only — NOT for production).
  */
 contract MockAXXToken {
-    string public constant name     = "Axionax Token (Testnet)";
+    string public constant name     = "Nakhara Token (Testnet)";
     string public constant symbol   = "tAXX";
     uint8  public constant decimals = 18;
 

@@ -282,45 +282,45 @@ async fn handle_request(
             let mut body = metrics::export();
 
             // Basic metrics
-            body.push_str("# HELP axionax_up Node is up\n");
-            body.push_str("# TYPE axionax_up gauge\n");
+            body.push_str("# HELP nakhara_up Node is up\n");
+            body.push_str("# TYPE nakhara_up gauge\n");
             body.push_str(&format!(
-                "axionax_up {}\n",
+                "nakhara_up {}\n",
                 if state.is_alive() { 1 } else { 0 }
             ));
 
             // Network metrics
-            body.push_str("# HELP axionax_peers_connected Number of connected peers\n");
-            body.push_str("# TYPE axionax_peers_connected gauge\n");
+            body.push_str("# HELP nakhara_peers_connected Number of connected peers\n");
+            body.push_str("# TYPE nakhara_peers_connected gauge\n");
             body.push_str(&format!(
-                "axionax_peers_connected {}\n",
+                "nakhara_peers_connected {}\n",
                 state.peers_connected
             ));
 
             // Blockchain metrics
-            body.push_str("# HELP axionax_block_height Current block height\n");
-            body.push_str("# TYPE axionax_block_height counter\n");
-            body.push_str(&format!("axionax_block_height {}\n", state.block_height));
+            body.push_str("# HELP nakhara_block_height Current block height\n");
+            body.push_str("# TYPE nakhara_block_height counter\n");
+            body.push_str(&format!("nakhara_block_height {}\n", state.block_height));
 
             // Health check metrics
-            body.push_str("# HELP axionax_database_ok Database connectivity status\n");
-            body.push_str("# TYPE axionax_database_ok gauge\n");
+            body.push_str("# HELP nakhara_database_ok Database connectivity status\n");
+            body.push_str("# TYPE nakhara_database_ok gauge\n");
             body.push_str(&format!(
-                "axionax_database_ok {}\n",
+                "nakhara_database_ok {}\n",
                 if state.database_ok { 1 } else { 0 }
             ));
 
-            body.push_str("# HELP axionax_sync_ok Blockchain sync status\n");
-            body.push_str("# TYPE axionax_sync_ok gauge\n");
+            body.push_str("# HELP nakhara_sync_ok Blockchain sync status\n");
+            body.push_str("# TYPE nakhara_sync_ok gauge\n");
             body.push_str(&format!(
-                "axionax_sync_ok {}\n",
+                "nakhara_sync_ok {}\n",
                 if state.sync_ok { 1 } else { 0 }
             ));
 
             // Performance metrics
-            body.push_str("# HELP axionax_min_peers Minimum required peers\n");
-            body.push_str("# TYPE axionax_min_peers gauge\n");
-            body.push_str(&format!("axionax_min_peers {}\n", state.min_peers));
+            body.push_str("# HELP nakhara_min_peers Minimum required peers\n");
+            body.push_str("# TYPE nakhara_min_peers gauge\n");
+            body.push_str(&format!("nakhara_min_peers {}\n", state.min_peers));
 
             ("200 OK", body)
         } else if path == version_path {

@@ -1,4 +1,4 @@
-//! Network Layer for axionax Core
+//! Network Layer for nakhara Core
 //!
 //! Implements P2P networking using libp2p for:
 //! - Block propagation

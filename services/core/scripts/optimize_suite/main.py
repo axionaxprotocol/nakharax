@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI for the Axionax optimization suite."""
+"""CLI for the Nakhara optimization suite."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from .scenarios import ScenarioReport, run_all
 
 def _print_banner() -> None:
     print(
-        "Axionax optimize suite - smoke / light usage / optional RPC stress.\n"
+        "Nakhara optimize suite - smoke / light usage / optional RPC stress.\n"
         "Use cyber mode only on networks you operate or have explicit permission to test.\n"
     )
 
@@ -32,7 +32,7 @@ def _reports_to_json(rpc_url: str, reports: List[ScenarioReport]) -> dict[str, A
 
 
 def main(argv: list[str] | None = None) -> int:
-    default_rpc = os.environ.get("AXIONAX_RPC_URL", "https://rpc.axionax.org").strip()
+    default_rpc = os.environ.get("NAKHARA_RPC_URL", "https://rpc.nakhara.io").strip()
     ap = argparse.ArgumentParser(
         description="Simulate light testnet traffic and optional RPC stress (authorized use only)."
     )

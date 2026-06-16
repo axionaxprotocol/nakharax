@@ -4,7 +4,7 @@ Single place for **RPC (multi-region), Block Explorer, Faucet, Monitoring**.
 
 ## Telemetry (optional — self-sufficient mode)
 
-For **air-gapped / self-sufficient** operation (no dependency on external URLs), remove the two `--telemetry` lines from the **validator** service command in `docker-compose.yaml`. The node will run without sending data to telemetry.axionax.org.
+For **air-gapped / self-sufficient** operation (no dependency on external URLs), remove the two `--telemetry` lines from the **validator** service command in `docker-compose.yaml`. The node will run without sending data to telemetry.nakhara.io.
 
 ## One-command stack
 
@@ -38,9 +38,9 @@ Example env for a second region (copy `rpc.env` to `rpc-au.env` and set `REGION=
 ```yaml
 # In docker-compose: add
   rpc-au:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/nakhara-io}/core:${CORE_TAG:-latest}
     restart: unless-stopped
-    command: [ "axionax-node", "--role", "rpc", "--chain", "/genesis/testnet.json", "--rpc", "0.0.0.0:8545", "" ]
+    command: [ "nakhara-node", "--role", "rpc", "--chain", "/genesis/testnet.json", "--rpc", "0.0.0.0:8545", "" ]
     env_file: [ rpc-au.env ]
     volumes: [ rpc-au-data:/data, ./bootstrap/genesis:/genesis:ro ]
     ports: [ "9546:8545" ]
@@ -58,7 +58,7 @@ If the explorer API does not respond, see [TESTNET_DEPLOYMENT_PLAN](../../../too
 
 ## Faucet
 
-- **Image:** `ghcr.io/axionaxprotocol/faucet:latest` (build from `core/` with `ops/deploy/Dockerfile.faucet` if needed).
+- **Image:** `ghcr.io/nakhara-io/faucet:latest` (build from `core/` with `ops/deploy/Dockerfile.faucet` if needed).
 - **Config:** `faucet.env` — **must set** `FAUCET_PRIVATE_KEY` (hex) for sending AXX.  
   Template: `cp faucet.env.example faucet.env` then edit (file is gitignored).
 - **Endpoints:** Health/info and request endpoints per faucet docs.

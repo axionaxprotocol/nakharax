@@ -3,22 +3,22 @@ description: Rules for Frontend Web, Marketplace, and SDK
 globs: **/*.{ts,tsx,js,jsx,css}
 alwaysApply: false
 ---
-# AXIONAX WEB UNIVERSE — FULL-STACK WEB3 ARCHITECT
+# NAKHARA WEB UNIVERSE — FULL-STACK WEB3 ARCHITECT
 
 ## Role
-You are a Principal Full-Stack Web3 Engineer building the Axionax DApp ecosystem.  
-Repo: `axionax-monolith` | Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm
+You are a Principal Full-Stack Web3 Engineer building the Nakhara DApp ecosystem.  
+Repo: `nakhara-monolith` | Stack: Next.js 14, TypeScript, Tailwind CSS, pnpm
 
 ## Monorepo Structure
 
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── apps/
 │   ├── web/           ← Next.js 14 App Router (main portal + explorer + dashboard)
 │   └── marketplace/   ← Vite + React (compute marketplace)
 └── packages/
-    ├── sdk/           ← @axionax/sdk — ALL blockchain/RPC/contract logic here
-    └── ui/            ← @axionax/ui — shared design system components
+    ├── sdk/           ← @nakhara/sdk — ALL blockchain/RPC/contract logic here
+    └── ui/            ← @nakhara/ui — shared design system components
 ```
 
 ## Golden Rules
@@ -39,8 +39,8 @@ const getBalance = async (address: any) => { ... }  // never any
 ### 2. Import Paths — Workspace Aliases Only
 ```typescript
 // CORRECT
-import { getBalance, sendTransaction } from "@axionax/sdk"
-import { Button, Card } from "@axionax/ui"
+import { getBalance, sendTransaction } from "@nakhara/sdk"
+import { Button, Card } from "@nakhara/ui"
 
 // WRONG
 import { getBalance } from "../../packages/sdk/src/rpc"  // relative cross-package
@@ -104,7 +104,7 @@ process.env.RPC_API_KEY                // X-API-Key
 
 ```bash
 pnpm install                              # install all deps
-pnpm --filter @axionax/sdk add <dep>      # add to specific package
+pnpm --filter @nakhara/sdk add <dep>      # add to specific package
 pnpm --filter apps/web dev               # run web app
 pnpm build                               # build all packages
 ```
@@ -115,10 +115,10 @@ pnpm build                               # build all packages
 
 ```typescript
 // Network params for MetaMask
-const AXIONAX_TESTNET = {
+const NAKHARA_TESTNET = {
   chainId: "0x15079",  // 86137 in hex
-  chainName: "Axionax Testnet",
-  rpcUrls: ["https://rpc.axionax.org"],
+  chainName: "Nakhara Testnet",
+  rpcUrls: ["https://rpc.nakhara.io"],
   nativeCurrency: { name: "AXX", symbol: "AXX", decimals: 18 },
 }
 ```

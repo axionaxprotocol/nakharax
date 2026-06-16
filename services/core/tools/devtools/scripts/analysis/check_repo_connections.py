@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Repository Connection Checker
-Analyzes dependencies and connections between axionax repositories
+Analyzes dependencies and connections between nakhara repositories
 """
 
 import os
@@ -14,13 +14,13 @@ class RepoConnectionChecker:
     def __init__(self, base_path: str):
         self.base_path = Path(base_path)
         self.repos = [
-            'axionax-core',
-            'axionax-web',
-            'axionax-sdk-ts',
-            'axionax-marketplace',
-            'axionax-docs',
-            'axionax-deploy',
-            'axionax-devtools'
+            'nakhara-core',
+            'nakhara-web',
+            'nakhara-sdk-ts',
+            'nakhara-marketplace',
+            'nakhara-docs',
+            'nakhara-deploy',
+            'nakhara-devtools'
         ]
         self.connections = {}
         self.package_dependencies = {}
@@ -85,13 +85,13 @@ class RepoConnectionChecker:
             if 'devDependencies' in data:
                 deps['devDependencies'] = data['devDependencies']
             
-            # Check for axionax-related dependencies
-            axionax_deps = []
+            # Check for nakhara-related dependencies
+            nakhara_deps = []
             for dep_type in ['dependencies', 'devDependencies']:
                 if dep_type in deps:
                     for dep_name in deps[dep_type].keys():
-                        if 'axionax' in dep_name.lower():
-                            axionax_deps.append({
+                        if 'nakhara' in dep_name.lower():
+                            nakhara_deps.append({
                                 'name': dep_name,
                                 'version': deps[dep_type][dep_name],
                                 'type': dep_type
@@ -99,7 +99,7 @@ class RepoConnectionChecker:
             
             return {
                 'has_package_json': True,
-                'axionax_dependencies': axionax_deps,
+                'nakhara_dependencies': nakhara_deps,
                 'total_dependencies': len(deps.get('dependencies', {})),
                 'total_dev_dependencies': len(deps.get('devDependencies', {}))
             }
@@ -118,8 +118,8 @@ class RepoConnectionChecker:
             with open(cargo_toml, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            # Simple parsing for axionax-related dependencies
-            axionax_deps = []
+            # Simple parsing for nakhara-related dependencies
+            nakhara_deps = []
             in_dependencies = False
             for line in content.split('\n'):
                 if line.strip().startswith('[dependencies'):
@@ -128,20 +128,20 @@ class RepoConnectionChecker:
                 if line.strip().startswith('['):
                     in_dependencies = False
                 
-                if in_dependencies and 'axionax' in line.lower():
-                    axionax_deps.append(line.strip())
+                if in_dependencies and 'nakhara' in line.lower():
+                    nakhara_deps.append(line.strip())
             
             return {
                 'has_cargo_toml': True,
-                'axionax_dependencies': axionax_deps
+                'nakhara_dependencies': nakhara_deps
             }
         except Exception as e:
             return {'has_cargo_toml': True, 'error': str(e)}
     
     def scan_imports(self, repo_name: str) -> Set[str]:
-        """Scan for axionax-related imports in source files"""
+        """Scan for nakhara-related imports in source files"""
         repo_path = self.base_path / repo_name
-        axionax_imports = set()
+        nakhara_imports = set()
         
         # File extensions to scan
         extensions = ['.ts', '.tsx', '.js', '.jsx', '.rs', '.py', '.go']
@@ -157,16 +157,16 @@ class RepoConnectionChecker:
                         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                             content = f.read()
                             
-                        # Look for import/require statements with axionax
+                        # Look for import/require statements with nakhara
                         for line in content.split('\n'):
-                            if 'axionax' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'use']):
-                                axionax_imports.add(line.strip()[:100])  # Truncate long lines
+                            if 'nakhara' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'use']):
+                                nakhara_imports.add(line.strip()[:100])  # Truncate long lines
                     except:
                         continue
             except:
                 continue
         
-        return axionax_imports
+        return nakhara_imports
     
     def analyze_readme(self, repo_name: str) -> Dict:
         """Analyze README.md for documentation and references"""
@@ -221,16 +221,16 @@ class RepoConnectionChecker:
         
         for repo_name, data in results.items():
             # From package.json dependencies
-            if 'package_info' in data and 'axionax_dependencies' in data['package_info']:
-                for dep in data['package_info']['axionax_dependencies']:
+            if 'package_info' in data and 'nakhara_dependencies' in data['package_info']:
+                for dep in data['package_info']['nakhara_dependencies']:
                     dep_name = dep['name']
                     for other_repo in self.repos:
                         if other_repo in dep_name:
                             connections.append((repo_name, other_repo, f"npm:{dep['type']}"))
             
             # From Cargo.toml dependencies
-            if 'cargo_info' in data and 'axionax_dependencies' in data['cargo_info']:
-                for dep in data['cargo_info']['axionax_dependencies']:
+            if 'cargo_info' in data and 'nakhara_dependencies' in data['cargo_info']:
+                for dep in data['cargo_info']['nakhara_dependencies']:
                     for other_repo in self.repos:
                         if other_repo in dep:
                             connections.append((repo_name, other_repo, "cargo:dependency"))
@@ -265,10 +265,10 @@ class RepoConnectionChecker:
         mermaid.append("    classDef toolStyle fill:#ffe66d,stroke:#cca300,stroke-width:2px")
         mermaid.append("    classDef sdkStyle fill:#a8e6cf,stroke:#64b58b,stroke-width:2px")
         mermaid.append("")
-        mermaid.append("    class axionax_core coreStyle")
-        mermaid.append("    class axionax_web,axionax_marketplace webStyle")
-        mermaid.append("    class axionax_devtools,axionax_deploy toolStyle")
-        mermaid.append("    class axionax_sdk_ts,axionax_docs sdkStyle")
+        mermaid.append("    class nakhara_core coreStyle")
+        mermaid.append("    class nakhara_web,nakhara_marketplace webStyle")
+        mermaid.append("    class nakhara_devtools,nakhara_deploy toolStyle")
+        mermaid.append("    class nakhara_sdk_ts,nakhara_docs sdkStyle")
         mermaid.append("```")
         
         return "\n".join(mermaid)
@@ -277,7 +277,7 @@ class RepoConnectionChecker:
         """Generate comprehensive text report"""
         report = []
         report.append("=" * 80)
-        report.append("AXIONAX REPOSITORY CONNECTION ANALYSIS REPORT")
+        report.append("NAKHARA REPOSITORY CONNECTION ANALYSIS REPORT")
         report.append("=" * 80)
         report.append("")
         
@@ -315,18 +315,18 @@ class RepoConnectionChecker:
                 report.append(f"\n📄 Package.json:")
                 report.append(f"   Dependencies: {pkg_info.get('total_dependencies', 0)}")
                 report.append(f"   Dev Dependencies: {pkg_info.get('total_dev_dependencies', 0)}")
-                if pkg_info.get('axionax_dependencies'):
-                    report.append(f"   Axionax Dependencies:")
-                    for dep in pkg_info['axionax_dependencies']:
+                if pkg_info.get('nakhara_dependencies'):
+                    report.append(f"   Nakhara Dependencies:")
+                    for dep in pkg_info['nakhara_dependencies']:
                         report.append(f"     - {dep['name']} ({dep['version']}) [{dep['type']}]")
             
             # Cargo info
             cargo_info = data.get('cargo_info', {})
             if cargo_info.get('has_cargo_toml'):
                 report.append(f"\n📦 Cargo.toml:")
-                if cargo_info.get('axionax_dependencies'):
-                    report.append(f"   Axionax Dependencies:")
-                    for dep in cargo_info['axionax_dependencies']:
+                if cargo_info.get('nakhara_dependencies'):
+                    report.append(f"   Nakhara Dependencies:")
+                    for dep in cargo_info['nakhara_dependencies']:
                         report.append(f"     - {dep}")
             
             # README info
@@ -369,7 +369,7 @@ def main():
     # Get the base path (current directory)
     base_path = os.getcwd()
     
-    print("🚀 axionax Repository Connection Checker")
+    print("🚀 nakhara Repository Connection Checker")
     print("=" * 80)
     print(f"📁 Base Path: {base_path}\n")
     
@@ -394,14 +394,14 @@ def main():
     # Save Mermaid diagram
     mermaid_file = Path(base_path) / "REPOSITORY_FLOW.md"
     with open(mermaid_file, 'w', encoding='utf-8') as f:
-        f.write("# axionax Repository Connection Flow\n\n")
+        f.write("# nakhara Repository Connection Flow\n\n")
         f.write("## Connection Diagram\n\n")
         f.write(mermaid_diagram)
         f.write("\n\n## Legend\n\n")
-        f.write("- 🔴 **Core**: axionax-core (main protocol implementation)\n")
-        f.write("- 🔵 **Web**: axionax-web, axionax-marketplace (web interfaces)\n")
-        f.write("- 🟡 **Tools**: axionax-devtools, axionax-deploy (development & deployment)\n")
-        f.write("- 🟢 **SDK/Docs**: axionax-sdk-ts, axionax-docs (libraries & documentation)\n")
+        f.write("- 🔴 **Core**: nakhara-core (main protocol implementation)\n")
+        f.write("- 🔵 **Web**: nakhara-web, nakhara-marketplace (web interfaces)\n")
+        f.write("- 🟡 **Tools**: nakhara-devtools, nakhara-deploy (development & deployment)\n")
+        f.write("- 🟢 **SDK/Docs**: nakhara-sdk-ts, nakhara-docs (libraries & documentation)\n")
     
     print(f"✅ Mermaid diagram saved to: {mermaid_file}")
     

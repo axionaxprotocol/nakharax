@@ -1,6 +1,6 @@
-# axionax protocol — Architecture Overview v1.9.0 (Breakdown)
+# nakhara protocol — Architecture Overview v1.9.0 (Breakdown)
 
-เอกสารนี้แยกสถาปัตยกรรม axionax ออกเป็นส่วนย่อยตามสรุปเวอร์ชัน 1.9.0 เพื่อให้เห็นภาพรวมและรายละเอียดของแต่ละองค์ประกอบได้ชัดเจนขึ้น
+เอกสารนี้แยกสถาปัตยกรรม nakhara ออกเป็นส่วนย่อยตามสรุปเวอร์ชัน 1.9.0 เพื่อให้เห็นภาพรวมและรายละเอียดของแต่ละองค์ประกอบได้ชัดเจนขึ้น
 
 **Last Updated**: May 3, 2026 | **Protocol Version**: v1.9.0-testnet
 
@@ -21,7 +21,7 @@ flowchart LR
     Clients["Users and DApps and Wallets"] --> RPC["RPC Nodes"]
 
     %% Core
-    subgraph L1["axionax L1"]
+    subgraph L1["nakhara L1"]
         direction LR
         subgraph Market["Assignment and Pricing"]
             ASR["Auto Selection Router<br/>Top K weighted VRF"]
@@ -56,7 +56,7 @@ flowchart LR
     Attest["Public Attestations"] -.-> Telemetry
 
     %% Governance and DeAI
-    DAO["axionax DAO"] -.-> PPC
+    DAO["nakhara DAO"] -.-> PPC
     DAO -.-> ASR
     DeAI["DeAI Sentinel and Assist"] -.-> Telemetry
     Telemetry -.-> DeAI
@@ -277,7 +277,7 @@ flowchart TB
 flowchart LR
     Telemetry["Telemetry and Metrics"] --> Sentinel["DeAI Sentinel<br/>Anomaly detection"]
     Attest["Public Attestations"] --> Sentinel
-    Sentinel --> DAO["axionax DAO"]
+    Sentinel --> DAO["nakhara DAO"]
     Assist["Assistive DeAI<br/>Guidance and Explanations"] -.-> Clients["Users and Devs"]
     DAO -.-> Params["Protocol Parameters<br/>PoPC and ASR and PPC and VRF and Fraud Window"]
 ```

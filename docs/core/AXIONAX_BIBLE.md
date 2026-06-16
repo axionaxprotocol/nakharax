@@ -1,6 +1,6 @@
-# Axionax Bible
+# Nakhara Bible
 
-**Canonical documentation index for Axionax Protocol — single entry point for Vision, Protocol, Run, Deploy, and Launch.**
+**Canonical documentation index for Nakhara Protocol — single entry point for Vision, Protocol, Run, Deploy, and Launch.**
 
 This repository contains many documents. This file is the central index: content is organised into Books with links to the actual documents, so you do not need to memorise paths.
 
@@ -24,7 +24,7 @@ This repository contains many documents. This file is the central index: content
 
 ## Book I: Vision & Principles
 
-**What Axionax is and what principles it follows.**
+**What Nakhara is and what principles it follows.**
 
 | Document | Description |
 |----------|-------------|
@@ -75,13 +75,13 @@ This repository contains many documents. This file is the central index: content
 |----------|-------------|
 | [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis public testnet plan, 2-VPS allocation (EU validator + AU all-in-one), weekly timeline |
 | [ops/deploy/VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) | Deploy chain services on 46.250.244.4 (AU) |
-| [web/VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) | Deploy Axionax OS on 217.216.109.5 (EU) |
+| [web/VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) | Deploy Nakhara OS on 217.216.109.5 (EU) |
 | [CONNECTIVITY_OVERVIEW.md](CONNECTIVITY_OVERVIEW.md) | How Local full node, VPS Validator, and Frontend connect |
-| [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Axionax Testnet and AXX token in MetaMask; receive from Faucet |
+| [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Nakhara Testnet and AXX token in MetaMask; receive from Faucet |
 | [ops/deploy/VPS_VALIDATOR_UPDATE.md](../ops/deploy/VPS_VALIDATOR_UPDATE.md) | Validator VPS update (217.216.109.5, 46.250.244.4) and checklist |
 | [ops/deploy/VPS_FULL_NODE_RUNBOOK.md](../ops/deploy/VPS_FULL_NODE_RUNBOOK.md) | Run full node on VPS (chain_id 86137, RPC 8545, P2P 30303) |
 | [RUN_PUBLIC_FULL_NODE.md](RUN_PUBLIC_FULL_NODE.md) | Permissionless public testnet full node — genesis, bootstrap, build, verify (any operator worldwide) |
-| [PUBLIC_TESTNET_BOOTSTRAPS.txt](PUBLIC_TESTNET_BOOTSTRAPS.txt) | Maintainer-updated libp2p multiaddrs for `AXIONAX_BOOTSTRAP_NODES` |
+| [PUBLIC_TESTNET_BOOTSTRAPS.txt](PUBLIC_TESTNET_BOOTSTRAPS.txt) | Maintainer-updated libp2p multiaddrs for `NAKHARA_BOOTSTRAP_NODES` |
 | [SMOKE_TEST_PUBLIC_FULL_NODE.md](SMOKE_TEST_PUBLIC_FULL_NODE.md) | Fresh-machine smoke test for external operators + bootstrap publish flow |
 | [EXTERNAL_OPERATOR_ACCEPTANCE_CHECKLIST.md](EXTERNAL_OPERATOR_ACCEPTANCE_CHECKLIST.md) | Release gate checklist for external node-operator readiness |
 | [ops/deploy/README.md](../ops/deploy/README.md) | ops/deploy structure, Docker, Nginx, scripts |
@@ -158,4 +158,4 @@ This repository contains many documents. This file is the central index: content
 
 ---
 
-*Axionax Bible — central index of canonical documentation for axionax-monolith.*
+*Nakhara Bible — central index of canonical documentation for nakhara-monolith.*

@@ -23,20 +23,20 @@ class RepoHealthChecker:
     def __init__(self, workspace_root: str):
         self.workspace_root = Path(workspace_root)
         self.repos = [
-            'axionax-core',
-            'axionax-sdk-ts',
-            'axionax-web',
-            'axionax-marketplace',
-            'axionax-docs',
-            'axionax-deploy',
-            'axionax-devtools'
+            'nakhara-core',
+            'nakhara-sdk-ts',
+            'nakhara-web',
+            'nakhara-marketplace',
+            'nakhara-docs',
+            'nakhara-deploy',
+            'nakhara-devtools'
         ]
         self.issues = []
         self.recommendations = []
 
     def print_header(self):
         print(f"\n{BOLD}{'='*80}{RESET}")
-        print(f"{BOLD}{BLUE}🏥 AXIONAX REPOSITORY HEALTH CHECK{RESET}")
+        print(f"{BOLD}{BLUE}🏥 NAKHARA REPOSITORY HEALTH CHECK{RESET}")
         print(f"{BOLD}{'='*80}{RESET}")
         print(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Workspace: {self.workspace_root}")
@@ -75,15 +75,15 @@ class RepoHealthChecker:
         
         # Determine repo type
         repo_type = None
-        if repo_name == 'axionax-core':
+        if repo_name == 'nakhara-core':
             repo_type = 'rust'
-        elif repo_name in ['axionax-sdk-ts', 'axionax-web', 'axionax-marketplace']:
+        elif repo_name in ['nakhara-sdk-ts', 'nakhara-web', 'nakhara-marketplace']:
             repo_type = 'typescript'
-        elif repo_name == 'axionax-docs':
+        elif repo_name == 'nakhara-docs':
             repo_type = 'documentation'
-        elif repo_name == 'axionax-deploy':
+        elif repo_name == 'nakhara-deploy':
             repo_type = 'deployment'
-        elif repo_name == 'axionax-devtools':
+        elif repo_name == 'nakhara-devtools':
             repo_type = 'tools'
         
         if repo_type:
@@ -211,18 +211,18 @@ class RepoHealthChecker:
             
             deps = pkg.get('dependencies', {})
             
-            # Check @axionax/sdk
-            if '@axionax/sdk' in deps:
-                version = deps['@axionax/sdk']
+            # Check @nakhara/sdk
+            if '@nakhara/sdk' in deps:
+                version = deps['@nakhara/sdk']
                 
                 if not version.startswith('file:'):
                     result['status'] = 'fail'
-                    result['issues'].append(f'@axionax/sdk uses {version} instead of file: link')
-                    self.issues.append(f"{repo_name}: @axionax/sdk not using file: link")
-                    self.recommendations.append(f"Change @axionax/sdk to 'file:../axionax-sdk-ts' in {repo_name}")
-                elif not version.endswith('axionax-sdk-ts'):
+                    result['issues'].append(f'@nakhara/sdk uses {version} instead of file: link')
+                    self.issues.append(f"{repo_name}: @nakhara/sdk not using file: link")
+                    self.recommendations.append(f"Change @nakhara/sdk to 'file:../nakhara-sdk-ts' in {repo_name}")
+                elif not version.endswith('nakhara-sdk-ts'):
                     result['status'] = 'warn'
-                    result['issues'].append(f'@axionax/sdk path may be incorrect: {version}')
+                    result['issues'].append(f'@nakhara/sdk path may be incorrect: {version}')
         
         except Exception as e:
             result['status'] = 'fail'

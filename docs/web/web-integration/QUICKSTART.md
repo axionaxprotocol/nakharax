@@ -1,13 +1,13 @@
-# axionax Core v1.8.0 - Quick Start Guide
+# nakhara Core v1.8.0 - Quick Start Guide
 
 **Last Updated**: December 5, 2025 | **Protocol Version**: v1.8.0-testnet
 
-Welcome to axionax! This guide will help you get started with running a node, validator, or worker on the axionax testnet.
+Welcome to nakhara! This guide will help you get started with running a node, validator, or worker on the nakhara testnet.
 
 ## 🎯 What You'll Learn
 
 - Start a local testnet environment
-- Run an axionax node
+- Run an nakhara node
 - Become a validator
 - Register as a compute worker
 - Submit and monitor jobs
@@ -26,10 +26,10 @@ Ensure you have:
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 
-# Build axionax Core
+# Build nakhara Core
 make build
 ```
 
@@ -37,7 +37,7 @@ make build
 
 ```bash
 # Start local testnet (Anvil + Explorer + Faucet)
-cd axionax_v1.5_Testnet_in_a_Box
+cd nakhara_v1.5_Testnet_in_a_Box
 docker compose up -d
 
 # Verify services
@@ -50,11 +50,11 @@ You should see:
 - ✅ blockscout - http://localhost:4001
 - ✅ faucet - http://localhost:8080
 
-### Step 4: Configure axionax Node
+### Step 4: Configure nakhara Node
 
 ```bash
 cd ..
-./build/axionax-core config init
+./build/nakhara-core config init
 ```
 
 Edit `config.yaml` to connect to local testnet (already configured by default).
@@ -62,10 +62,10 @@ Edit `config.yaml` to connect to local testnet (already configured by default).
 ### Step 5: Start Your Node
 
 ```bash
-./build/axionax-core start --network testnet
+./build/nakhara-core start --network testnet
 ```
 
-🎉 **Success!** Your axionax node is now running!
+🎉 **Success!** Your nakhara node is now running!
 
 ---
 
@@ -88,7 +88,7 @@ Validators secure the network by performing PoPC validation.
 1. **Generate keys:**
 
 ```bash
-./build/axionax-core keys generate --type validator
+./build/nakhara-core keys generate --type validator
 # Your address: 0xYourValidatorAddress
 ```
 
@@ -105,19 +105,19 @@ curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
 3. **Stake AXX:**
 
 ```bash
-./build/axionax-core stake deposit 10000 --address 0xYourValidatorAddress
+./build/nakhara-core stake deposit 10000 --address 0xYourValidatorAddress
 ```
 
 4. **Start validating:**
 
 ```bash
-./build/axionax-core validator start
+./build/nakhara-core validator start
 ```
 
 5. **Check status:**
 
 ```bash
-./build/axionax-core validator status
+./build/nakhara-core validator status
 ```
 
 **Expected output:**
@@ -166,7 +166,7 @@ EOF
 2. **Generate worker keys:**
 
 ```bash
-./build/axionax-core keys generate --type worker
+./build/nakhara-core keys generate --type worker
 ```
 
 3. **Get testnet AXX from faucet** (same as validator)
@@ -174,19 +174,19 @@ EOF
 4. **Register as worker:**
 
 ```bash
-./build/axionax-core worker register --specs worker-specs.json
+./build/nakhara-core worker register --specs worker-specs.json
 ```
 
 5. **Start worker:**
 
 ```bash
-./build/axionax-core worker start
+./build/nakhara-core worker start
 ```
 
 6. **Monitor status:**
 
 ```bash
-./build/axionax-core worker status
+./build/nakhara-core worker status
 ```
 
 **Expected output:**
@@ -258,10 +258,10 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Node logs
-tail -f ~/.axionax/logs/node.log
+tail -f ~/.nakhara/logs/node.log
 
 # Docker logs
-cd axionax_v1.5_Testnet_in_a_Box
+cd nakhara_v1.5_Testnet_in_a_Box
 docker compose logs -f hardhat
 ```
 
@@ -289,46 +289,46 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Show current config
-./build/axionax-core config show
+./build/nakhara-core config show
 
 # Initialize default config
-./build/axionax-core config init
+./build/nakhara-core config init
 ```
 
 ### Keys Management
 
 ```bash
 # Generate new key
-./build/axionax-core keys generate --type validator
+./build/nakhara-core keys generate --type validator
 
 # List keys
-./build/axionax-core keys list
+./build/nakhara-core keys list
 ```
 
 ### Staking
 
 ```bash
 # Check balance
-./build/axionax-core stake balance
+./build/nakhara-core stake balance
 
 # Deposit stake
-./build/axionax-core stake deposit 10000 --address 0x...
+./build/nakhara-core stake deposit 10000 --address 0x...
 
 # Withdraw stake
-./build/axionax-core stake withdraw 5000
+./build/nakhara-core stake withdraw 5000
 ```
 
 ### Status Checks
 
 ```bash
 # Node version
-./build/axionax-core version
+./build/nakhara-core version
 
 # Validator status
-./build/axionax-core validator status
+./build/nakhara-core validator status
 
 # Worker status
-./build/axionax-core worker status
+./build/nakhara-core worker status
 ```
 
 ---
@@ -343,7 +343,7 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Check if testnet is running
-cd axionax_v1.5_Testnet_in_a_Box
+cd nakhara_v1.5_Testnet_in_a_Box
 docker compose ps
 
 # Restart if needed
@@ -389,16 +389,16 @@ docker compose up -d
 - **API Reference:** See [API Documentation](./API_REFERENCE.md)
 - **Build from Source:** Follow [Build Guide](./BUILD.md)
 - **Production Deploy:** Check [Testnet Integration](./TESTNET_INTEGRATION.md)
-- **Join Community:** Discord at https://discord.gg/axionax
+- **Join Community:** Discord at https://discord.gg/nakhara
 
 ---
 
 ## 🆘 Getting Help
 
-- **Documentation:** https://docs.axionax.org
-- **GitHub Issues:** https://github.com/axionaxprotocol/axionax-core/issues
-- **Discord:** https://discord.gg/axionax
-- **Telegram:** https://t.me/axionax
+- **Documentation:** https://docs.nakhara.io
+- **GitHub Issues:** https://github.com/nakhara-io/nakhara-core/issues
+- **Discord:** https://discord.gg/nakhara
+- **Telegram:** https://t.me/nakhara
 
 ---
 
@@ -408,6 +408,6 @@ This is a **testnet** environment. Do not use real assets or run this in product
 
 ---
 
-**Made with 💜 by the axionax community**
+**Made with 💜 by the nakhara community**
 
 Happy building! 🚀

@@ -1,5 +1,5 @@
 """
-Axionax — Marketplace end-to-end DRY-RUN (safe, offline).
+Nakhara — Marketplace end-to-end DRY-RUN (safe, offline).
 
 Proves the honest proof-point from docs/REALITY_MAP.md without deploying or
 touching the network:
@@ -64,7 +64,7 @@ def run_inference_job(job: dict) -> dict:
 
 def main() -> int:
     print("=" * 70)
-    print("AXIONAX MARKETPLACE — END-TO-END DRY-RUN (MOCK, no deploy)")
+    print("NAKHARA MARKETPLACE — END-TO-END DRY-RUN (MOCK, no deploy)")
     print("=" * 70)
 
     # 1) Ephemeral in-memory worker identity (never persisted)
@@ -111,7 +111,7 @@ def main() -> int:
     print("\n" + "-" * 70)
     print("DRY-RUN COMPLETE — full lifecycle exercised, zero on-chain side effects.")
     print("To go LIVE later: deploy JobMarketplaceStandalone.sol and set")
-    print("AXIONAX_MARKETPLACE_ADDRESS to the deployed address.")
+    print("NAKHARA_MARKETPLACE_ADDRESS to the deployed address.")
     print("-" * 70)
     return 0
 

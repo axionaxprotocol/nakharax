@@ -5,8 +5,8 @@ environment = "production"
 
 [network]
 bootnodes = [
-    "https://rpc.axionax.org",
-    "https://rpc-au.axionax.org"
+    "https://rpc.nakhara.io",
+    "https://rpc-au.nakhara.io"
 ]
 chain_id = 86137
 contract_address = "0x0000000000000000000000000000000000000000"

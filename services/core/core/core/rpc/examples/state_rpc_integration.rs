@@ -19,7 +19,7 @@ async fn main() -> anyhow::Result<()> {
     // Initialize logging
     tracing_subscriber::fmt::init();
 
-    println!("\n=== axionax State + RPC Integration Example ===\n");
+    println!("\n=== nakhara State + RPC Integration Example ===\n");
 
     // 1. Create temporary StateDB
     let temp_dir = TempDir::new()?;

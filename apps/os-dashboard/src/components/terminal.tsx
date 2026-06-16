@@ -1,6 +1,6 @@
 "use client";
 
-// Web Terminal for Axionax OS.
+// Web Terminal for Nakhara OS.
 //
 // Pure-React (no xterm.js) — keeps the dashboard bundle small. Upgrade path
 // is a single drop-in if/when we need full ANSI rendering: replace the
@@ -56,8 +56,8 @@ const COMMANDS: Record<string, CommandSpec> = {
       // Handled in component (see useEffect below) — emits no output.
     },
   },
-  "axionax --status": {
-    name: "axionax --status",
+  "nakhara --status": {
+    name: "nakhara --status",
     summary: "Show node status (block height + chain id)",
     run: async (_args, ctx) => {
       const [bn, ci] = await Promise.all([
@@ -130,8 +130,8 @@ export interface TerminalProps {
 
 export function Terminal({
   endpoint = DEFAULT_NODES[0]!,
-  prompt = "axionax$",
-  greeting = "Axionax OS Terminal — type `help` for commands.",
+  prompt = "nakhara$",
+  greeting = "Nakhara OS Terminal — type `help` for commands.",
 }: TerminalProps) {
   const [lines, setLines] = useState<TerminalLine[]>([
     { kind: "info", text: greeting },

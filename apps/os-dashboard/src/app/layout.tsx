@@ -5,23 +5,23 @@ import { Dock } from "@/components/dock";
 
 export const metadata: Metadata = {
   title: {
-    default: "Axionax OS",
-    template: "%s · Axionax OS",
+    default: "Nakhara OS",
+    template: "%s · Nakhara OS",
   },
   description:
-    "Self-hosted Axionax node dashboard: peers, jobs, wallet, and chain activity.",
-  applicationName: "Axionax OS",
+    "Self-hosted Nakhara node dashboard: peers, jobs, wallet, and chain activity.",
+  applicationName: "Nakhara OS",
   openGraph: {
-    title: "Axionax OS",
+    title: "Nakhara OS",
     description:
-      "Obsidian command center for Axionax validators and DeAI workloads.",
+      "Obsidian command center for Nakhara validators and DeAI workloads.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Axionax OS",
+    title: "Nakhara OS",
     description:
-      "Obsidian command center for Axionax validators and DeAI workloads.",
+      "Obsidian command center for Nakhara validators and DeAI workloads.",
   },
 };
 

@@ -1,4 +1,4 @@
-# Axionax Protocol — Security Remediation Plan
+# Nakhara Protocol — Security Remediation Plan
 
 **Date:** 2026-03-05
 **Based on:** SECURITY_AUDIT_REPORT.md (97 findings)
@@ -215,7 +215,7 @@ pub fn new(keypair: &libp2p::identity::Keypair, config: &NetworkConfig) -> Resul
     // BEFORE (lines 72-78):
     let identify = identify::Behaviour::new(
         identify::Config::new(
-            format!("/axionax/{}", config.protocol_version),
+            format!("/nakhara/{}", config.protocol_version),
             libp2p::identity::Keypair::generate_ed25519().public(),  // ❌ random
         )
     );
@@ -223,7 +223,7 @@ pub fn new(keypair: &libp2p::identity::Keypair, config: &NetworkConfig) -> Resul
     // AFTER:
     let identify = identify::Behaviour::new(
         identify::Config::new(
-            format!("/axionax/{}", config.protocol_version),
+            format!("/nakhara/{}", config.protocol_version),
             keypair.public(),  // ✅ node's actual public key
         )
     );
@@ -234,10 +234,10 @@ pub fn new(keypair: &libp2p::identity::Keypair, config: &NetworkConfig) -> Resul
 
 ```rust
 // BEFORE (line 60):
-let behaviour = AxionaxBehaviour::new(local_peer_id, &config)?;
+let behaviour = NakharaBehaviour::new(local_peer_id, &config)?;
 
 // AFTER:
-let behaviour = AxionaxBehaviour::new(&keypair, &config)?;
+let behaviour = NakharaBehaviour::new(&keypair, &config)?;
 ```
 
 ---
@@ -294,14 +294,14 @@ if (!PK) {
 **2. `ops/deploy/setup_validator.sh` (line 44)**
 ```bash
 # BEFORE:
-echo "$AXIONAX_USER:axionax2025" | chpasswd
+echo "$NAKHARA_USER:nakhara2025" | chpasswd
 
 # AFTER:
 GENERATED_PASS=$(openssl rand -base64 24)
-echo "$AXIONAX_USER:$GENERATED_PASS" | chpasswd
-echo "⚠️  Generated password for $AXIONAX_USER: $GENERATED_PASS"
+echo "$NAKHARA_USER:$GENERATED_PASS" | chpasswd
+echo "⚠️  Generated password for $NAKHARA_USER: $GENERATED_PASS"
 echo "   Change this immediately or switch to SSH key-only auth"
-passwd -e "$AXIONAX_USER"  # force password change on first login
+passwd -e "$NAKHARA_USER"  # force password change on first login
 ```
 
 **3. `ops/deploy/environments/testnet/.../docker-compose.yml` (lines 64, 86, 100)**
@@ -326,11 +326,11 @@ passwd -e "$AXIONAX_USER"  # force password change on first login
 **4. `docker-compose.dev.yml` (lines 75-77, 163, 203)**
 ```yaml
 # BEFORE:
-    POSTGRES_PASSWORD: axionax_dev_2026
+    POSTGRES_PASSWORD: nakhara_dev_2026
     # ...
     FAUCET_PRIVATE_KEY: ${FAUCET_PRIVATE_KEY:-0x00...01}
     # ...
-    GF_SECURITY_ADMIN_PASSWORD: axionax
+    GF_SECURITY_ADMIN_PASSWORD: nakhara
 
 # AFTER:
     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
@@ -384,10 +384,10 @@ echo "ops/deploy/VPS_CONNECTION.txt" >> .gitignore
 **1. `core/deai/rpc_client.py` (line 10)**
 ```python
 # BEFORE:
-def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
+def __init__(self, rpc_url: str = "https://rpc.nakhara.io"):
 
 # AFTER:
-def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
+def __init__(self, rpc_url: str = "https://rpc.nakhara.io"):
     if rpc_url.startswith("http://") and "localhost" not in rpc_url and "127.0.0.1" not in rpc_url:
         import warnings
         warnings.warn(
@@ -401,24 +401,24 @@ def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
 ```toml
 # BEFORE:
 bootnodes = [
-    "https://rpc.axionax.org",
-    "https://rpc-au.axionax.org"
+    "https://rpc.nakhara.io",
+    "https://rpc-au.nakhara.io"
 ]
 
 # AFTER:
 bootnodes = [
-    "https://rpc.axionax.org",
-    "https://rpc-au.axionax.org"
+    "https://rpc.nakhara.io",
+    "https://rpc-au.nakhara.io"
 ]
 ```
 
 **3. `configs/monolith_sentinel.toml`, `configs/monolith_worker.toml`, `configs/monolith_scout_single.toml`**
 ```toml
 # BEFORE:
-bootnodes = ["https://rpc.axionax.org", "https://rpc-au.axionax.org"]
+bootnodes = ["https://rpc.nakhara.io", "https://rpc-au.nakhara.io"]
 
 # AFTER:
-bootnodes = ["https://rpc.axionax.org", "https://rpc-au.axionax.org"]
+bootnodes = ["https://rpc.nakhara.io", "https://rpc-au.nakhara.io"]
 ```
 
 ---
@@ -551,8 +551,8 @@ use jsonrpsee::server::middleware::rpc::RpcServiceBuilder;
 
 let cors = CorsLayer::new()
     .allow_origin(AllowOrigin::list([
-        "https://explorer.axionax.org".parse().unwrap(),
-        "https://app.axionax.org".parse().unwrap(),
+        "https://explorer.nakhara.io".parse().unwrap(),
+        "https://app.nakhara.io".parse().unwrap(),
     ]))
     .allow_methods([Method::POST])
     .allow_headers([header::CONTENT_TYPE]);
@@ -686,7 +686,7 @@ pub fn mainnet() -> Self {
 cors_origins = ["*"]
 
 # AFTER:
-cors_origins = ["https://explorer.axionax.org", "https://app.axionax.org", "https://faucet.axionax.org"]
+cors_origins = ["https://explorer.nakhara.io", "https://app.nakhara.io", "https://faucet.nakhara.io"]
 ```
 
 **ไฟล์:** `ops/deploy/nginx/conf.d/rpc.conf`
@@ -696,7 +696,7 @@ add_header Access-Control-Allow-Origin * always;
 
 # AFTER:
 set $cors_origin "";
-if ($http_origin ~* "^https://(explorer|app|faucet)\.axionax\.org$") {
+if ($http_origin ~* "^https://(explorer|app|faucet)\.nakhara\.org$") {
     set $cors_origin $http_origin;
 }
 add_header Access-Control-Allow-Origin $cors_origin always;
@@ -740,8 +740,8 @@ add_header Access-Control-Allow-Origin $cors_origin always;
 
 แทนที่ด้วย DNS:
 ```
-https://rpc.axionax.org  → https://rpc-eu.axionax.org
-https://rpc-au.axionax.org   → https://rpc-au.axionax.org
+https://rpc.nakhara.io  → https://rpc-eu.nakhara.io
+https://rpc-au.nakhara.io   → https://rpc-au.nakhara.io
 ```
 
 ---
@@ -893,7 +893,7 @@ validation_mode: ValidationMode::Strict,
 
 | Fix | File | Detail |
 |-----|------|--------|
-| Add USER directive | Testnet Dockerfile | `RUN adduser --system axionax && USER axionax` |
+| Add USER directive | Testnet Dockerfile | `RUN adduser --system nakhara && USER nakhara` |
 | Fix nginx rate-limit zone | faucet.conf | Move `limit_req_zone` before `server` |
 | Add `server_tokens off` | nginx.conf | Add in http block |
 | Bind dev services to 127.0.0.1 | docker-compose.dev.yml | `"127.0.0.1:5432:5432"` etc. |

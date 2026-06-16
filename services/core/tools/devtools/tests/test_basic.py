@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic Unit Tests for axionax DevTools
+Basic Unit Tests for nakhara DevTools
 Tests core functionality, file operations, and utility functions
 """
 
@@ -58,11 +58,11 @@ class TestRepositoryStructure(unittest.TestCase):
     def test_sibling_repositories(self):
         """Test that sibling repositories exist"""
         expected_repos = [
-            "axionax-core",
-            "axionax-web",
-            "axionax-sdk-ts",
-            "axionax-docs",
-            "axionax-deploy"
+            "nakhara-core",
+            "nakhara-web",
+            "nakhara-sdk-ts",
+            "nakhara-docs",
+            "nakhara-deploy"
         ]
         
         for repo in expected_repos:
@@ -121,8 +121,8 @@ class TestDocumentation(unittest.TestCase):
         readme = self.root_dir / "README.md"
         if readme.exists():
             content = readme.read_text(encoding='utf-8')
-            # Should use lowercase 'axionax', not 'AxionAX' or 'Axionax'
-            self.assertIn("axionax", content.lower())
+            # Should use lowercase 'nakhara', not 'AxionAX' or 'Nakhara'
+            self.assertIn("nakhara", content.lower())
             
     def test_no_broken_branding(self):
         """Test that there are no incorrect branding variations"""
@@ -135,7 +135,7 @@ class TestDocumentation(unittest.TestCase):
                 # Allow AxionAX in URLs and specific contexts
                 if line.startswith('#') and 'github.com' not in line:
                     # Title lines should not have AxionAX
-                    if 'AxionAX' in line and 'axionax' not in line.lower():
+                    if 'AxionAX' in line and 'nakhara' not in line.lower():
                         self.fail(f"Line {i+1}: Found 'AxionAX' in title: {line}")
 
 
@@ -160,7 +160,7 @@ def run_tests():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("axionax DevTools - Basic Unit Tests")
+    print("nakhara DevTools - Basic Unit Tests")
     print("=" * 70)
     print()
     

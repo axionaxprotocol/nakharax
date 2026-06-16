@@ -1,7 +1,7 @@
 """
-[EVOLUTION] Hardware Abstraction Layer (HAL) for Axionax DeAI.
+[EVOLUTION] Hardware Abstraction Layer (HAL) for Nakhara DeAI.
 
-Makes Axionax agnostic to underlying hardware: GPU (SILICON) or Photonic Chip (PHOTONIC).
+Makes Nakhara agnostic to underlying hardware: GPU (SILICON) or Photonic Chip (PHOTONIC).
 This is where we "plug in light" when Monolith Mark-II hardware is available.
 """
 

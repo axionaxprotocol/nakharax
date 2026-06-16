@@ -6,13 +6,13 @@ def test_rust_bridge():
 
     print("--- Testing Rust-Python Bridge ---")
     try:
-        import axionax_bridge
+        import nakhara_bridge
     except ImportError:
-        print("axionax_bridge not found (Rust bridge not built or not in PYTHONPATH).")
+        print("nakhara_bridge not found (Rust bridge not built or not in PYTHONPATH).")
         pytest.skip("Rust bridge not available")
 
-    print("Successfully imported 'axionax_bridge' module.")
-    version = axionax_bridge.get_version()
+    print("Successfully imported 'nakhara_bridge' module.")
+    version = nakhara_bridge.get_version()
     print(f"Rust Core Version: {version}")
     assert version is not None
     assert isinstance(version, str)

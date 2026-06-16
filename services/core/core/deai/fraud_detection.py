@@ -1,5 +1,5 @@
 """
-axionax DeAI - Fraud Detection System
+nakhara DeAI - Fraud Detection System
 
 ML-based fraud detection for PoPC verification
 """

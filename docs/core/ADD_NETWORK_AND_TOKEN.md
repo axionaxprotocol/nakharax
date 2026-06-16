@@ -1,8 +1,8 @@
-# Add Axionax Network and AXX Token in MetaMask and Other Wallets
+# Add Nakhara Network and AXX Token in MetaMask and Other Wallets
 
-How to add **Axionax Testnet** and the **AXX** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
+How to add **Nakhara Testnet** and the **AXX** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
 
-**Web UI guide (with Add Token button):** [axionax-monolith → Add Token to MetaMask](https://github.com/axionaxprotocol/axionax-monolith/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
+**Web UI guide (with Add Token button):** [nakhara-monolith → Add Token to MetaMask](https://github.com/nakhara-io/nakhara-monolith/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
 
 ---
 
@@ -10,12 +10,12 @@ How to add **Axionax Testnet** and the **AXX** token in MetaMask, Rabby, Coinbas
 
 | Item | Value |
 |------|-------|
-| **Network name** | Axionax Testnet |
-| **RPC URL** | `https://rpc.axionax.org` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
+| **Network name** | Nakhara Testnet |
+| **RPC URL** | `https://rpc.nakhara.io` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
 | **Chain ID** | `86137` |
 | **Currency symbol** | AXX |
 | **Decimals** | 18 |
-| **Block explorer** | https://explorer.axionax.org |
+| **Block explorer** | https://explorer.nakhara.io |
 
 ---
 
@@ -28,13 +28,13 @@ How to add **Axionax Testnet** and the **AXX** token in MetaMask, Rabby, Coinbas
 
    | Field | Value |
    |-------|-------|
-   | **Network name** | `Axionax Testnet` |
-   | **RPC URL** | `https://rpc.axionax.org` |
+   | **Network name** | `Nakhara Testnet` |
+   | **RPC URL** | `https://rpc.nakhara.io` |
    | **Chain ID** | `86137` |
    | **Currency symbol** | `AXX` |
    | **Block explorer URL** | Leave blank or set when available |
 
-3. Click **Save** and switch to **Axionax Testnet**.
+3. Click **Save** and switch to **Nakhara Testnet**.
 
 After adding the network, **native AXX** appears in the wallet automatically; no separate "Import token" is required for the native token.
 
@@ -42,7 +42,7 @@ After adding the network, **native AXX** appears in the wallet automatically; no
 
 If you have another ERC-20 contract (e.g. a test token) to show in MetaMask:
 
-1. Ensure the network is **Axionax Testnet**.
+1. Ensure the network is **Nakhara Testnet**.
 2. Click **Import tokens** (or **Add token**) at the bottom.
 3. Enter the **Token contract address** from the team or docs.
 4. MetaMask will fill **Token symbol** and **Decimals** if the contract is standard; otherwise set them (e.g. Symbol `TEST`, Decimals `18`).
@@ -61,8 +61,8 @@ Same idea: add a **Custom network / Custom RPC** with the parameters above.
 
 | Field | Value |
 |-------|-------|
-| Network name | Axionax Testnet |
-| RPC URL | `https://rpc.axionax.org` |
+| Network name | Nakhara Testnet |
+| RPC URL | `https://rpc.nakhara.io` |
 | Chain ID | `86137` |
 | Symbol | AXX |
 
@@ -76,19 +76,19 @@ A zero balance is resolved by **receiving from the Faucet** only. The "Add funds
 
 ### Option 1: Web Faucet (recommended)
 
-1. Open the **official Faucet** (from [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)):
-   - **https://faucet.axionax.org**
+1. Open the **official Faucet** (from [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith)):
+   - **https://faucet.nakhara.io**
 2. **Copy your wallet address** from MetaMask (click "Account 1" or the address at the top → Copy).
 3. Paste the address into the Faucet page → click Request / Claim.
 4. Wait a moment (typically 100 AXX per request; 24h cooldown per address).
 
 ### Option 2: Faucet API (when a Faucet is running)
 
-If a Faucet is running at the given URL (e.g. `https://faucet.axionax.org`):
+If a Faucet is running at the given URL (e.g. `https://faucet.nakhara.io`):
 
 ```bash
 # Replace 0xYOUR_METAMASK_ADDRESS with your address from MetaMask
-curl -X POST https://faucet.axionax.org/request \
+curl -X POST https://faucet.nakhara.io/request \
   -H "Content-Type: application/json" \
   -d '{"address": "0xYOUR_METAMASK_ADDRESS"}'
 ```
@@ -99,11 +99,11 @@ A successful response includes `"success": true` and `tx_hash`; the AXX balance 
 
 | Cause | Action |
 |-------|--------|
-| **Faucet web not available or URL changed** | Check [axionax.org](https://axionax.org), Discord, or GitHub for the current Faucet URL |
+| **Faucet web not available or URL changed** | Check [nakhara.io](https://nakhara.io), Discord, or GitHub for the current Faucet URL |
 | **Invalid address** | Must be EVM format: `0x` + 40 hex characters (42 total) — copy directly from MetaMask |
 | **24h cooldown** | Faucet limits one request per address per 24h — wait or use another address |
 | **Faucet out of funds** | Contact the team/community to refill the Faucet |
-| **RPC mismatch** | MetaMask must use **Axionax Testnet** (Chain ID 86137) and the RPC specified by the team (e.g. `http://217.216.109.5:8545`) |
+| **RPC mismatch** | MetaMask must use **Nakhara Testnet** (Chain ID 86137) and the RPC specified by the team (e.g. `http://217.216.109.5:8545`) |
 
 ---
 
@@ -111,8 +111,8 @@ A successful response includes `"success": true` and `tx_hash`; the AXX balance 
 
 | Goal | Method |
 |------|--------|
-| **See AXX in MetaMask/wallet** | Add Axionax Testnet (RPC + Chain ID 86137 + symbol AXX) → native AXX appears automatically |
-| **See another ERC-20 token** | On Axionax Testnet → Import token with contract address |
+| **See AXX in MetaMask/wallet** | Add Nakhara Testnet (RPC + Chain ID 86137 + symbol AXX) → native AXX appears automatically |
+| **See another ERC-20 token** | On Nakhara Testnet → Import token with contract address |
 | **Mainnet (future)** | Chain ID will be `86150` — same add-network steps with the announced Chain ID and RPC |
 
 ---

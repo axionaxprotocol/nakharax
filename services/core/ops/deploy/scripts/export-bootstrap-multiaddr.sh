@@ -9,11 +9,11 @@ set -euo pipefail
 #   ./export-bootstrap-multiaddr.sh --public-ip 46.250.244.4 --p2p-port 30303
 #
 # Optional env:
-#   AXIONAX_RPC_URL (default: http://127.0.0.1:8545)
-#   AXIONAX_P2P_PORT (default: 30303)
+#   NAKHARA_RPC_URL (default: http://127.0.0.1:8545)
+#   NAKHARA_P2P_PORT (default: 30303)
 
-RPC_URL="${AXIONAX_RPC_URL:-http://127.0.0.1:8545}"
-P2P_PORT="${AXIONAX_P2P_PORT:-30303}"
+RPC_URL="${NAKHARA_RPC_URL:-http://127.0.0.1:8545}"
+P2P_PORT="${NAKHARA_P2P_PORT:-30303}"
 PUBLIC_IP=""
 
 while [[ $# -gt 0 ]]; do
@@ -57,7 +57,7 @@ PEER_ID="$(
 if [[ -z "$PEER_ID" || "$PEER_ID" == "null" ]]; then
   # Fallback: parse logs (systemd or docker) for "Local peer ID: ..."
   PEER_ID="$(
-    (journalctl -u axionax-node --no-pager -n 300 2>/dev/null || true; \
+    (journalctl -u nakhara-node --no-pager -n 300 2>/dev/null || true; \
      docker logs public-validator-1 --tail 300 2>/dev/null || true; \
      docker logs public-rpc-1 --tail 300 2>/dev/null || true) \
       | sed -n 's/.*Local peer ID: \([[:alnum:]]\+\).*/\1/p' | tail -n 1

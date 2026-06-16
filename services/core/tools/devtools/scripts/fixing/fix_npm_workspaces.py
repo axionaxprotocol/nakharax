@@ -7,14 +7,14 @@ import json
 from pathlib import Path
 
 def fix_dependency_to_file_protocol(file_path, sdk_path):
-    """Change @axionax/sdk to use file: protocol"""
+    """Change @nakhara/sdk to use file: protocol"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        if 'dependencies' in data and '@axionax/sdk' in data['dependencies']:
-            data['dependencies']['@axionax/sdk'] = sdk_path
-            print(f"✅ Updated {file_path.name}: @axionax/sdk -> {sdk_path}")
+        if 'dependencies' in data and '@nakhara/sdk' in data['dependencies']:
+            data['dependencies']['@nakhara/sdk'] = sdk_path
+            print(f"✅ Updated {file_path.name}: @nakhara/sdk -> {sdk_path}")
         
         with open(file_path, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -30,22 +30,22 @@ def update_root_package_json():
     root_package = Path('package.json')
     
     package_json = {
-        "name": "axionax-monorepo",
+        "name": "nakhara-monorepo",
         "version": "1.0.0",
         "private": True,
         "workspaces": [
-            "axionax-sdk-ts",
-            "axionax-web",
-            "axionax-marketplace"
+            "nakhara-sdk-ts",
+            "nakhara-web",
+            "nakhara-marketplace"
         ],
         "scripts": {
             "install-all": "npm install",
-            "build:sdk": "cd axionax-sdk-ts && npm run build",
-            "build:web": "cd axionax-web && npm run build",
-            "build:marketplace": "cd axionax-marketplace && npm run build",
+            "build:sdk": "cd nakhara-sdk-ts && npm run build",
+            "build:web": "cd nakhara-web && npm run build",
+            "build:marketplace": "cd nakhara-marketplace && npm run build",
             "build-all": "npm run build:sdk && npm run build:web && npm run build:marketplace",
-            "dev:web": "cd axionax-web && npm run dev",
-            "dev:marketplace": "cd axionax-marketplace && npm run dev"
+            "dev:web": "cd nakhara-web && npm run dev",
+            "dev:marketplace": "cd nakhara-marketplace && npm run dev"
         },
         "devDependencies": {
             "typescript": "^5.4.0"
@@ -63,15 +63,15 @@ def main():
     print("=" * 80)
     print()
     
-    # Fix axionax-web
-    web_package = Path('axionax-web/package.json')
+    # Fix nakhara-web
+    web_package = Path('nakhara-web/package.json')
     if web_package.exists():
-        fix_dependency_to_file_protocol(web_package, 'file:../axionax-sdk-ts')
+        fix_dependency_to_file_protocol(web_package, 'file:../nakhara-sdk-ts')
     
-    # Fix axionax-marketplace
-    marketplace_package = Path('axionax-marketplace/package.json')
+    # Fix nakhara-marketplace
+    marketplace_package = Path('nakhara-marketplace/package.json')
     if marketplace_package.exists():
-        fix_dependency_to_file_protocol(marketplace_package, 'file:../axionax-sdk-ts')
+        fix_dependency_to_file_protocol(marketplace_package, 'file:../nakhara-sdk-ts')
     
     # Update root package.json
     update_root_package_json()

@@ -1,4 +1,4 @@
-# Axionax Deploy - Copilot Instructions
+# Nakhara Deploy - Copilot Instructions
 # Target Model: Claude 4.5 Sonnet
 
 **Context:** Docker, Kubernetes, Terraform, Ansible.

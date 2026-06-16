@@ -16,7 +16,7 @@ The Node module integrates three core components into a complete blockchain node
 
 ```
 ┌─────────────────────────────────────────────────┐
-│            axionaxNode                           │
+│            nakharaNode                           │
 │                                                  │
 │  ┌──────────────┐  ┌──────────────┐  ┌────────┐│
 │  │ NetworkManager│  │   StateDB    │  │  RPC   ││
@@ -34,12 +34,12 @@ The Node module integrates three core components into a complete blockchain node
 
 ## Features
 
-### axionaxNode
+### nakharaNode
 
-The `axionaxNode` struct provides a high-level API for running a complete node:
+The `nakharaNode` struct provides a high-level API for running a complete node:
 
 ```rust
-pub struct axionaxNode {
+pub struct nakharaNode {
     config: NodeConfig,
     network: Arc<RwLock<NetworkManager>>,
     state: Arc<StateDB>,
@@ -82,16 +82,16 @@ pub struct NodeStats {
 ### Basic Node Setup
 
 ```rust
-use node::{axionaxNode, NodeConfig};
+use node::{nakharaNode, NodeConfig};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Create node with dev configuration
     let mut config = NodeConfig::dev();
-    config.state_path = "/tmp/axionax-node".to_string();
+    config.state_path = "/tmp/nakhara-node".to_string();
     config.rpc_addr = "127.0.0.1:8545".parse()?;
 
-    let mut node = axionaxNode::new(config).await?;
+    let mut node = nakharaNode::new(config).await?;
 
     // Start all components
     node.start().await?;
@@ -525,4 +525,4 @@ The Node module successfully integrates:
 
 **Contributors**: GitHub Copilot + User  
 **License**: MIT  
-**Repository**: https://github.com/axionaxprotocol/axionax-core
+**Repository**: https://github.com/nakhara-io/nakhara-core

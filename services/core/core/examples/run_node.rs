@@ -1,6 +1,6 @@
 // Example: Run a local AxionAx node
-use axionax_node::{Node, NodeConfig};
-use axionax_rpc::RpcServer;
+use nakhara_node::{Node, NodeConfig};
+use nakhara_rpc::RpcServer;
 use std::sync::Arc;
 use tokio;
 

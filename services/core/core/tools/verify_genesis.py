@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Axionax Genesis Verification Tool
+Nakhara Genesis Verification Tool
 
 Validates genesis.json integrity and prints a human-readable summary.
 
@@ -18,7 +18,7 @@ from pathlib import Path
 
 EXPECTED_CHAIN_ID = 86137
 EXPECTED_CONSENSUS = "popc"
-EXPECTED_CREATOR = "axionaxius"
+EXPECTED_CREATOR = "nakharaius"
 EXPECTED_TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion AXX
 EXPECTED_TOTAL_SUPPLY_WEI = EXPECTED_TOTAL_SUPPLY * (10 ** 18)
 EXPECTED_DECIMALS = 18
@@ -36,7 +36,7 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
 
     file_hash = sha256_file(path)
     print("=" * 64)
-    print("  Axionax Genesis Verification")
+    print("  Nakhara Genesis Verification")
     print("=" * 64)
     print(f"  File    : {path}")
     print(f"  SHA-256 : 0x{file_hash}")
@@ -57,7 +57,7 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
         return False
 
     config = genesis.get("config", {})
-    axionax = config.get("axionax", {})
+    nakhara = config.get("nakhara", {})
     alloc = genesis.get("alloc", {})
     validators = genesis.get("validators", [])
     creator = genesis.get("creator", {})
@@ -66,8 +66,8 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
     print()
     print(f"  Chain ID    : {config.get('chainId')}")
     print(f"  Chain Name  : {config.get('chainName', 'N/A')}")
-    print(f"  Consensus   : {axionax.get('consensus')}")
-    print(f"  Symbol      : {axionax.get('symbol', 'N/A')}")
+    print(f"  Consensus   : {nakhara.get('consensus')}")
+    print(f"  Symbol      : {nakhara.get('symbol', 'N/A')}")
     print(f"  Creator     : {creator.get('alias', 'N/A')}")
 
     ts_hex = genesis.get("timestamp", "0x0")
@@ -104,8 +104,8 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
     if config.get("chainId") != EXPECTED_CHAIN_ID:
         issues.append(f"Chain ID is {config.get('chainId')}, expected {EXPECTED_CHAIN_ID}")
 
-    if axionax.get("consensus") != EXPECTED_CONSENSUS:
-        issues.append(f"Consensus is '{axionax.get('consensus')}', expected '{EXPECTED_CONSENSUS}'")
+    if nakhara.get("consensus") != EXPECTED_CONSENSUS:
+        issues.append(f"Consensus is '{nakhara.get('consensus')}', expected '{EXPECTED_CONSENSUS}'")
 
     if creator.get("alias") != EXPECTED_CREATOR:
         issues.append(f"Creator is '{creator.get('alias')}', expected '{EXPECTED_CREATOR}'")

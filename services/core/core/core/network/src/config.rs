@@ -79,7 +79,7 @@ pub enum ValidationMode {
 /// How the node should advertise its publicly-reachable address(es).
 ///
 /// - **`Manual`**: operator-provided list of multiaddrs (e.g. `/ip4/1.2.3.4/tcp/30303`)
-///   sourced from `external_addrs` or the `AXIONAX_EXTERNAL_ADDRS` env var. Use
+///   sourced from `external_addrs` or the `NAKHARA_EXTERNAL_ADDRS` env var. Use
 ///   this on VPS / cloud nodes where the public IP is known.
 /// - **`Auto`** (default): rely on libp2p `Identify` for peers to *report* the
 ///   observed address. Works once at least one peer is reached but can't help
@@ -116,7 +116,7 @@ impl Default for NetworkConfig {
             validation_mode: ValidationMode::Strict,
             idle_timeout: Duration::from_secs(60),
             protocol_version: "1.0.0".to_string(),
-            chain_id: 86137, // axionax Testnet
+            chain_id: 86137, // nakhara Testnet
             key_file: None,
             block_time_seconds: 5,
             external_addr_strategy: ExternalAddrStrategy::Auto,
@@ -131,9 +131,9 @@ impl NetworkConfig {
     ///
     /// Resolution order (first wins):
     ///
-    /// 1. `AXIONAX_EXTERNAL_ADDRS` — comma-separated multiaddrs.
-    ///    *Example:* `/ip4/rpc-au.axionax.org/tcp/30303,/ip4/rpc-au.axionax.org/udp/30303/quic-v1`
-    /// 2. `AXIONAX_PUBLIC_IP` — bare IPv4/IPv6 literal. We synthesize
+    /// 1. `NAKHARA_EXTERNAL_ADDRS` — comma-separated multiaddrs.
+    ///    *Example:* `/ip4/rpc-au.nakhara.io/tcp/30303,/ip4/rpc-au.nakhara.io/udp/30303/quic-v1`
+    /// 2. `NAKHARA_PUBLIC_IP` — bare IPv4/IPv6 literal. We synthesize
     ///    `/ip4/<IP>/tcp/<port>` from it. This is the convenient form for
     ///    Docker / systemd operators who don't want to write multiaddrs.
     /// 3. `self.external_addrs` from the config file.
@@ -147,8 +147,8 @@ impl NetworkConfig {
             return Vec::new();
         }
 
-        // 1. AXIONAX_EXTERNAL_ADDRS — explicit multiaddr list
-        if let Ok(raw) = std::env::var("AXIONAX_EXTERNAL_ADDRS") {
+        // 1. NAKHARA_EXTERNAL_ADDRS — explicit multiaddr list
+        if let Ok(raw) = std::env::var("NAKHARA_EXTERNAL_ADDRS") {
             let from_env: Vec<String> = raw
                 .split(',')
                 .map(|s| s.trim())
@@ -160,8 +160,8 @@ impl NetworkConfig {
             }
         }
 
-        // 2. AXIONAX_PUBLIC_IP — bare IP, we synthesize the TCP multiaddr
-        if let Ok(ip) = std::env::var("AXIONAX_PUBLIC_IP") {
+        // 2. NAKHARA_PUBLIC_IP — bare IP, we synthesize the TCP multiaddr
+        if let Ok(ip) = std::env::var("NAKHARA_PUBLIC_IP") {
             let ip = ip.trim();
             if !ip.is_empty() {
                 return vec![format!("/ip4/{}/tcp/{}", ip, self.port)];
@@ -185,17 +185,17 @@ impl NetworkConfig {
 }
 
 impl NetworkConfig {
-    /// Create config for testnet (bootstrap via AXIONAX_BOOTSTRAP_NODES env or add peers manually)
+    /// Create config for testnet (bootstrap via NAKHARA_BOOTSTRAP_NODES env or add peers manually)
     pub fn testnet() -> Self {
         Self {
             chain_id: 86137,
-            bootstrap_nodes: vec![], // Set AXIONAX_BOOTSTRAP_NODES=/ip4/<IP>/tcp/30303/p2p/<PEER_ID> on VPS
+            bootstrap_nodes: vec![], // Set NAKHARA_BOOTSTRAP_NODES=/ip4/<IP>/tcp/30303/p2p/<PEER_ID> on VPS
             block_time_seconds: 5,
             ..Default::default()
         }
     }
 
-    /// Create config for mainnet (bootstrap via AXIONAX_BOOTSTRAP_NODES env)
+    /// Create config for mainnet (bootstrap via NAKHARA_BOOTSTRAP_NODES env)
     pub fn mainnet() -> Self {
         Self {
             chain_id: 86150,
@@ -242,7 +242,7 @@ mod tests {
     fn test_testnet_config() {
         let config = NetworkConfig::testnet();
         assert_eq!(config.chain_id, 86137);
-        // bootstrap_nodes is empty by default; operators set AXIONAX_BOOTSTRAP_NODES at runtime
+        // bootstrap_nodes is empty by default; operators set NAKHARA_BOOTSTRAP_NODES at runtime
         assert!(config.bootstrap_nodes.is_empty());
     }
 

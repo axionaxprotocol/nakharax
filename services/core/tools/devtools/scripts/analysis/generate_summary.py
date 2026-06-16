@@ -10,13 +10,13 @@ with open('QUALITY_ANALYSIS.json', 'r') as f:
 
 # Previous scores (before improvements)
 before_scores = {
-    'axionax-core': 50.5,
-    'axionax-sdk-ts': 33.5,
-    'axionax-web': 44.5,
-    'axionax-marketplace': 26.0,
-    'axionax-docs': 16.8,
-    'axionax-deploy': 33.8,
-    'axionax-devtools': 25.5,
+    'nakhara-core': 50.5,
+    'nakhara-sdk-ts': 33.5,
+    'nakhara-web': 44.5,
+    'nakhara-marketplace': 26.0,
+    'nakhara-docs': 16.8,
+    'nakhara-deploy': 33.8,
+    'nakhara-devtools': 25.5,
 }
 
 print("\n" + "="*70)
@@ -82,11 +82,11 @@ print("✨ QUALITY ACHIEVEMENTS")
 print("="*70 + "\n")
 
 achievements = []
-if data['axionax-core']['total'] >= 60:
-    achievements.append("🎯 axionax-core reached Grade D (64.0)")
+if data['nakhara-core']['total'] >= 60:
+    achievements.append("🎯 nakhara-core reached Grade D (64.0)")
 if avg_change >= 8:
     achievements.append(f"📈 Average improvement: +{avg_change:.1f} points")
-if all(data[r]['organization'] > 50 for r in ['axionax-core', 'axionax-web', 'axionax-marketplace']):
+if all(data[r]['organization'] > 50 for r in ['nakhara-core', 'nakhara-web', 'nakhara-marketplace']):
     achievements.append("📁 Organization scores improved across main repos")
 
 for achievement in achievements:

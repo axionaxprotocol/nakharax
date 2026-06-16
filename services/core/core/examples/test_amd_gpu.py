@@ -1,5 +1,5 @@
 """
-axionax DeAI Worker - Test AMD GPU with DirectML
+nakhara DeAI Worker - Test AMD GPU with DirectML
 Quick test to verify DirectML setup on Windows
 """
 
@@ -9,7 +9,7 @@ import torch.nn as nn
 import time
 
 print("="*60)
-print("🧪 axionax Worker Node - AMD GPU Test")
+print("🧪 nakhara Worker Node - AMD GPU Test")
 print("="*60)
 
 # Check DirectML

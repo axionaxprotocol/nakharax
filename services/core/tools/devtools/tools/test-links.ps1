@@ -1,5 +1,5 @@
 # =====================================================
-# Axionax Link Validation Script
+# Nakhara Link Validation Script
 # Tests all inter-repository links and documentation
 # =====================================================
 
@@ -16,7 +16,7 @@ $FixedLinks = 0
 $Warnings = 0
 
 Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "  Axionax Link Validation Script v1.0" -ForegroundColor Cyan
+Write-Host "  Nakhara Link Validation Script v1.0" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 $startTime = Get-Date
@@ -28,15 +28,15 @@ $startTime = Get-Date
 Write-Host "`n[1] Testing Repository Structure..." -ForegroundColor Yellow
 
 $repos = @(
-    "axionax-core",
-    "axionax-deploy", 
-    "axionax-devtools",
-    "axionax-docs",
-    "axionax-marketplace",
-    "axionax-sdk-ts",
-    "axionax-web",
-    "axionax-phase1",
-    "axionaxprotocol",
+    "nakhara-core",
+    "nakhara-deploy", 
+    "nakhara-devtools",
+    "nakhara-docs",
+    "nakhara-marketplace",
+    "nakhara-sdk-ts",
+    "nakhara-web",
+    "nakhara-phase1",
+    "nakhara-io",
     "issue-manager"
 )
 
@@ -77,7 +77,7 @@ foreach ($repo in $repos) {
 Write-Host "`n[2] Testing Cross-Repository Links..." -ForegroundColor Yellow
 
 $repoFolders = Get-ChildItem $PSScriptRoot -Directory | Where-Object { 
-    $_.Name -match '^axionax-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'axionaxprotocol'
+    $_.Name -match '^nakhara-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'nakhara-io'
 }
 
 foreach ($repo in $repoFolders) {
@@ -138,7 +138,7 @@ foreach ($repo in $repoFolders) {
 Write-Host "`n[3] Testing Documentation Consistency..." -ForegroundColor Yellow
 
 $repos = Get-ChildItem $PSScriptRoot -Directory | Where-Object { 
-    $_.Name -match '^axionax-'
+    $_.Name -match '^nakhara-'
 }
 
 foreach ($repo in $repos) {
@@ -148,12 +148,12 @@ foreach ($repo in $repos) {
         $content = Get-Content $readmePath -Raw
         
         # Check for inconsistent branding
-        $axionaxCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
-        $axionaxCapCount = ([regex]::Matches($content, '\bAxionax\b')).Count
+        $nakharaCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
+        $nakharaCapCount = ([regex]::Matches($content, '\bNakhara\b')).Count
         
-        if ($axionaxCount -gt 0 -or $axionaxCapCount -gt 0) {
+        if ($nakharaCount -gt 0 -or $nakharaCapCount -gt 0) {
             Write-Host "  [WARN] Inconsistent branding in $($repo.Name)" -ForegroundColor Yellow
-            Write-Host "         AxionAX: $axionaxCount, Axionax: $axionaxCapCount" -ForegroundColor Gray
+            Write-Host "         AxionAX: $nakharaCount, Nakhara: $nakharaCapCount" -ForegroundColor Gray
             $Warnings++
         } else {
             Write-Host "  [OK] $($repo.Name) branding consistent" -ForegroundColor Green
@@ -167,7 +167,7 @@ foreach ($repo in $repos) {
 
 Write-Host "`n[4] Testing Website Links..." -ForegroundColor Yellow
 
-$webPath = Join-Path $PSScriptRoot "axionax-web"
+$webPath = Join-Path $PSScriptRoot "nakhara-web"
 
 if (Test-Path $webPath) {
     Write-Host "  [OK] Website repository found" -ForegroundColor Green
@@ -178,16 +178,16 @@ if (Test-Path $webPath) {
         $content = Get-Content $indexPath -Raw
         
         # Count GitHub links
-        $githubLinks = ([regex]::Matches($content, 'github\.com/axionaxprotocol')).Count
+        $githubLinks = ([regex]::Matches($content, 'github\.com/nakhara-io')).Count
         Write-Host "       Found $githubLinks GitHub repository links" -ForegroundColor Gray
         
         # Check for branding
-        $axionaxCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
-        if ($axionaxCount -gt 0) {
-            Write-Host "       [WARN] Found $axionaxCount instances of 'AxionAX' (should be 'axionax')" -ForegroundColor Yellow
+        $nakharaCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
+        if ($nakharaCount -gt 0) {
+            Write-Host "       [WARN] Found $nakharaCount instances of 'AxionAX' (should be 'nakhara')" -ForegroundColor Yellow
             $Warnings++
         } else {
-            Write-Host "       Branding consistent (axionax)" -ForegroundColor Gray
+            Write-Host "       Branding consistent (nakhara)" -ForegroundColor Gray
         }
     }
 } else {
@@ -297,7 +297,7 @@ Write-Host "`nExecution Time:      $([math]::Round($duration, 2)) seconds" -Fore
 
 # Save results to file
 $results = @"
-Axionax Link Validation Results
+Nakhara Link Validation Results
 Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 Duration: $([math]::Round($duration, 2)) seconds
 

@@ -300,11 +300,11 @@ def create_sandbox(use_docker: bool = True) -> DockerSandbox:
             return DockerSandbox()
         except SandboxError:
             logger.warning("Docker unavailable, falling back to MockSandbox")
-            if os.environ.get("AXIONAX_ENV") == "production":
+            if os.environ.get("NAKHARA_ENV") == "production":
                 raise SandboxError("Docker sandbox required in production - cannot fall back to MockSandbox")
             return MockSandbox()
     else:
-        if os.environ.get("AXIONAX_ENV") == "production":
+        if os.environ.get("NAKHARA_ENV") == "production":
             raise SandboxError("Docker sandbox required in production - cannot fall back to MockSandbox")
         return MockSandbox()
 
@@ -323,7 +323,7 @@ if __name__ == "__main__":
         # Test 1: Simple command
         print("\n[Test 1] Simple echo command...")
         result = sandbox.execute(
-            command=["echo", "Hello, Axionax!"],
+            command=["echo", "Hello, Nakhara!"],
             image="alpine:latest",
             limits=ResourceLimits(timeout_seconds=10),
         )

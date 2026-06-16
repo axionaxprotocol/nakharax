@@ -182,7 +182,7 @@ impl Default for RequestValidator {
 /// CORS configuration
 #[derive(Debug, Clone)]
 pub struct CorsConfig {
-    /// Allowed origins (e.g., ["https://app.axionax.org"])
+    /// Allowed origins (e.g., ["https://app.nakhara.io"])
     pub allowed_origins: Vec<String>,
     /// Allow all origins (use only for development)
     pub allow_all: bool,
@@ -337,12 +337,12 @@ mod tests {
     #[test]
     fn test_cors_production_config() {
         let cors = CorsConfig::production(vec![
-            "https://app.axionax.org".to_string(),
-            "https://wallet.axionax.org".to_string(),
+            "https://app.nakhara.io".to_string(),
+            "https://wallet.nakhara.io".to_string(),
         ]);
 
         assert!(!cors.allow_all);
-        assert!(cors.is_origin_allowed("https://app.axionax.org"));
+        assert!(cors.is_origin_allowed("https://app.nakhara.io"));
         assert!(!cors.is_origin_allowed("https://evil.com"));
     }
 }

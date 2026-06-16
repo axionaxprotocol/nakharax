@@ -1,4 +1,4 @@
-# 🚀 axionax Worker Node - RunPod A40 GPU Setup
+# 🚀 nakhara Worker Node - RunPod A40 GPU Setup
 
 **Platform**: RunPod.io Cloud GPU  
 **GPU**: NVIDIA A40 (48GB VRAM)  
@@ -168,14 +168,14 @@ EOF
 
 ---
 
-## 📦 Part 4: Install axionax Worker (10-15 minutes)
+## 📦 Part 4: Install nakhara Worker (10-15 minutes)
 
 ### Method 1: Use Setup Script (recommended)
 
 ```bash
 # Download setup script
 cd ~
-wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 
 # Make executable
 chmod +x setup-runpod-worker.sh
@@ -186,7 +186,7 @@ chmod +x setup-runpod-worker.sh
 
 **Script will install:**
 - ✅ Rust toolchain
-- ✅ axionax core repository
+- ✅ nakhara core repository
 - ✅ DeAI dependencies
 - ✅ Worker directories
 - ✅ Configuration files
@@ -207,20 +207,20 @@ rustc --version
 cargo --version
 ```
 
-#### Step 7: Clone axionax Repository
+#### Step 7: Clone nakhara Repository
 
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 ```
 
-#### Step 8: Build axionax Core
+#### Step 8: Build nakhara Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/axionax-monolith/services/core/core
+cd ~/nakhara-monolith/services/core/core
 cargo build --release
 ```
 
@@ -231,7 +231,7 @@ cargo build --release
 pip install --upgrade pip
 
 # Install DeAI requirements
-cd ~/axionax-monolith/services/core/core/deai
+cd ~/nakhara-monolith/services/core/core/deai
 pip install -r requirements.txt
 
 # Install additional ML libraries
@@ -246,14 +246,14 @@ pip install transformers datasets accelerate
 
 ```bash
 # Run simple training example
-cd ~/axionax-monolith/services/core/core/examples
+cd ~/nakhara-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
 **Expected output:**
 
 ```
-🚀 axionax DeAI - Simple Training Example
+🚀 nakhara DeAI - Simple Training Example
 ============================================================
 
 📋 Job Configuration:
@@ -313,10 +313,10 @@ python deai_simple_training.py
 
 ```bash
 # Create worker config directory
-mkdir -p ~/axionax-worker/config
+mkdir -p ~/nakhara-worker/config
 
 # Create worker.toml
-nano ~/axionax-worker/config/worker.toml
+nano ~/nakhara-worker/config/worker.toml
 ```
 
 **Content of `worker.toml`:**
@@ -338,8 +338,8 @@ cpu_threads = 32
 ram = 64
 
 [network]
-# axionax Testnet RPC
-rpc_url = "https://rpc.axionax.org"
+# nakhara Testnet RPC
+rpc_url = "https://rpc.nakhara.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -350,9 +350,9 @@ target_uptime = 0.99
 max_batch_size = 512
 
 [storage]
-data_dir = "/workspace/axionax-worker/data"
-models_dir = "/workspace/axionax-worker/models"
-logs_dir = "/workspace/axionax-worker/logs"
+data_dir = "/workspace/nakhara-worker/data"
+models_dir = "/workspace/nakhara-worker/models"
+logs_dir = "/workspace/nakhara-worker/logs"
 cache_dir = "/workspace/cache"
 
 [optimization]
@@ -366,18 +366,18 @@ dataloader_workers = 8
 
 ```bash
 # Create directories
-mkdir -p /workspace/axionax-worker/{data,models,logs}
+mkdir -p /workspace/nakhara-worker/{data,models,logs}
 mkdir -p /workspace/cache
 
 # Verify
-ls -la /workspace/axionax-worker/
+ls -la /workspace/nakhara-worker/
 ```
 
 ### Step 13: Create Worker Wallet (if you don't have one)
 
 ```bash
-# Generate wallet (using axionax tools)
-cd ~/axionax-monolith/services/core/tools
+# Generate wallet (using nakhara tools)
+cd ~/nakhara-monolith/services/core/tools
 python generate_worker_wallet.py
 
 # Or use an existing wallet
@@ -391,20 +391,20 @@ python generate_worker_wallet.py
 ### Step 14: Run Worker
 
 ```bash
-cd ~/axionax-monolith/services/core/core
+cd ~/nakhara-monolith/services/core/core
 
 # Activate environment
 source ~/.cargo/env
 
 # Run worker (foreground)
-cargo run --release --bin axionax-worker -- \
-  --config ~/axionax-worker/config/worker.toml \
+cargo run --release --bin nakhara-worker -- \
+  --config ~/nakhara-worker/config/worker.toml \
   --log-level info
 
 # Or run in background with tmux
-tmux new -s axionax-worker
-cargo run --release --bin axionax-worker -- \
-  --config ~/axionax-worker/config/worker.toml \
+tmux new -s nakhara-worker
+cargo run --release --bin nakhara-worker -- \
+  --config ~/nakhara-worker/config/worker.toml \
   --log-level info
 # Press Ctrl+B then D to detach
 ```
@@ -412,7 +412,7 @@ cargo run --release --bin axionax-worker -- \
 **Expected output:**
 
 ```
-🚀 axionax Worker Node v0.1.0
+🚀 nakhara Worker Node v0.1.0
 ============================================================
 📋 Worker Configuration:
   Address: 0xYour...Address
@@ -420,8 +420,8 @@ cargo run --release --bin axionax-worker -- \
   GPU: NVIDIA A40 (48GB)
   Network: Testnet
 
-🔧 Connecting to RPC: https://rpc.axionax.org
-✅ Connected to axionax Testnet
+🔧 Connecting to RPC: https://rpc.nakhara.io
+✅ Connected to nakhara Testnet
 ✅ Worker registered successfully
 
 🎯 Worker Status: READY
@@ -440,13 +440,13 @@ cargo run --release --bin axionax-worker -- \
 tmux ls
 
 # Attach to session
-tmux attach -t axionax-worker
+tmux attach -t nakhara-worker
 
 # Detach from session
 # Press Ctrl+B then D
 
 # Kill session
-tmux kill-session -t axionax-worker
+tmux kill-session -t nakhara-worker
 ```
 
 ---
@@ -500,7 +500,7 @@ A40 (48GB): ~$0.44/hour
 watch -n 1 nvidia-smi
 
 # Worker logs
-tail -f ~/axionax-worker/logs/worker.log
+tail -f ~/nakhara-worker/logs/worker.log
 
 # System resources
 htop
@@ -521,7 +521,7 @@ uptime
 
 echo ""
 echo "==== Worker Process ===="
-ps aux | grep axionax-worker | grep -v grep
+ps aux | grep nakhara-worker | grep -v grep
 EOF
 
 chmod +x ~/monitor-worker.sh
@@ -544,7 +544,7 @@ cd /workspace
 
 # Store important data here:
 /workspace/
-├── axionax-worker/        # Worker data
+├── nakhara-worker/        # Worker data
 ├── models/                # Trained models
 ├── datasets/              # Training datasets
 └── cache/                 # Cache files
@@ -595,13 +595,13 @@ gradient_checkpointing = true
 
 ```bash
 # Check connection
-curl https://rpc.axionax.org
+curl https://rpc.nakhara.io
 
 # Check logs
-tail -f ~/axionax-worker/logs/worker.log
+tail -f ~/nakhara-worker/logs/worker.log
 
 # Restart worker
-tmux kill-session -t axionax-worker
+tmux kill-session -t nakhara-worker
 # Then start again
 ```
 
@@ -624,7 +624,7 @@ tmux kill-session -t axionax-worker
 - [ ] Verify GPU (nvidia-smi)
 - [ ] Verify PyTorch CUDA
 - [ ] Install Rust
-- [ ] Clone axionax repo
+- [ ] Clone nakhara repo
 - [ ] Build core successfully
 - [ ] Run training example successfully
 
@@ -673,7 +673,7 @@ tmux kill-session -t axionax-worker
 - [GPU Pricing](https://www.runpod.io/pricing)
 - [SSH Guide](https://docs.runpod.io/docs/ssh)
 
-**axionax Docs:**
+**nakhara Docs:**
 - Worker Setup: `WORKER_SETUP_QUICK_GUIDE.md`
 - GCP Setup: `gcp-worker-setup.md`
 - Vertex AI Setup: `WORKER_VERTEX_AI_SETUP.md`

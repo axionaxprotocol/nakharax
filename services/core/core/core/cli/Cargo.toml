@@ -1,16 +1,16 @@
 [package]
-name = "axionax-cli"
+name = "nakhara-cli"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
-description = "Axionax Protocol CLI - Command line interface"
+description = "Nakhara Protocol CLI - Command line interface"
 
 [lib]
-name = "axionax_cli"
+name = "nakhara_cli"
 path = "src/lib.rs"
 
 [[bin]]
-name = "axionax"
+name = "nakhara"
 path = "src/main.rs"
 
 [dependencies]

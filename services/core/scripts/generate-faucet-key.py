@@ -24,7 +24,7 @@ except ImportError:
     HAS_ETH_ACCOUNT = False
 
 
-FAUCET_SEED = b"axionax_faucet_mainnet_q2_2026"
+FAUCET_SEED = b"nakhara_faucet_mainnet_q2_2026"
 
 
 def main():

@@ -20,7 +20,7 @@ The Testnet Readiness Checker performs **28 validation checks** across **7 criti
 
 ### Direct Python
 ```bash
-python axionax-devtools/scripts/testing/testnet_readiness_checker.py
+python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ## What It Checks
@@ -177,18 +177,18 @@ EOF
 ### Issue: Build Failures
 ```bash
 # Rust
-cd axionax-core
+cd nakhara-core
 cargo clean && cargo build --release
 
 # TypeScript
-cd axionax-sdk-ts
+cd nakhara-sdk-ts
 rm -rf node_modules && npm install && npm run build
 ```
 
 ### Issue: Low Code Quality Score
 ```bash
 # Run quality analyzer
-python axionax-devtools/scripts/analysis/repo_quality_analyzer.py
+python nakhara-devtools/scripts/analysis/repo_quality_analyzer.py
 
 # Address top issues first
 # - Add missing documentation
@@ -264,7 +264,7 @@ Edit the script to adjust:
 
 - 📖 **Full Guide:** [TESTNET_READINESS_GUIDE.md](../../TESTNET_READINESS_GUIDE.md)
 - 📋 **Quick Reference:** [TESTNET_READINESS_QUICK_REF.md](../../TESTNET_READINESS_QUICK_REF.md)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/axionax-devtools/issues)
+- 🐛 **Issues:** [GitHub Issues](https://github.com/nakhara-io/nakhara-devtools/issues)
 
 ## Version History
 

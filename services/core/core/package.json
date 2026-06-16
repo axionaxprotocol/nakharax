@@ -1,16 +1,16 @@
 {
-  "name": "@axionax/sdk",
+  "name": "@nakhara/sdk",
   "version": "1.8.0",
-  "description": "Official TypeScript SDK for axionax protocol",
+  "description": "Official TypeScript SDK for nakhara protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://axionax.org",
+  "homepage": "https://nakhara.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/axionaxprotocol/axionax-sdk-ts.git"
+    "url": "https://github.com/nakhara-io/nakhara-sdk-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/axionaxprotocol/axionax-sdk-ts/issues"
+    "url": "https://github.com/nakhara-io/nakhara-sdk-ts/issues"
   },
   "scripts": {
     "build": "tsc",
@@ -19,13 +19,13 @@
     "format": "prettier --write src/**/*.ts"
   },
   "keywords": [
-    "axionax",
+    "nakhara",
     "blockchain",
     "deai",
     "sdk",
     "typescript"
   ],
-  "author": "axionax protocol Team <team@axionax.org>",
+  "author": "nakhara protocol Team <team@nakhara.io>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.0.0",

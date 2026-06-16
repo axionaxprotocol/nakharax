@@ -70,7 +70,7 @@ LOCAL=$(curl -s -X POST -H "Content-Type: application/json" \
 
 PUBLIC=$(curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.axionax.org | jq -r '.result')
+  https://rpc.nakhara.io | jq -r '.result')
 
 echo "local=$LOCAL public=$PUBLIC"
 ```
@@ -78,7 +78,7 @@ echo "local=$LOCAL public=$PUBLIC"
 ### 3.4 Optional TPS mode (funded account required)
 
 ```bash
-AXIONAX_PRIVATE_KEY=0x... \
+NAKHARA_PRIVATE_KEY=0x... \
 python3 scripts/load_test/tps_finality_test.py \
   --rpc http://127.0.0.1:8545 \
   --mode tps \

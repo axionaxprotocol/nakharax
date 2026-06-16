@@ -16,7 +16,7 @@ use tracing::{debug, error, info, warn};
 const P2P_HEALTH_INTERVAL: Duration = Duration::from_secs(30);
 
 use crate::{
-    behaviour::AxionaxBehaviour,
+    behaviour::NakharaBehaviour,
     config::NetworkConfig,
     error::{NetworkError, Result},
     protocol::{MessageType, NetworkMessage},
@@ -37,7 +37,7 @@ pub enum NetworkCommand {
 /// - reports peer count via an atomic counter updated by the swarm task
 pub struct NetworkManager {
     /// Swarm is `Some` until [`Self::start`] consumes it into the swarm task.
-    swarm: Option<Swarm<AxionaxBehaviour>>,
+    swarm: Option<Swarm<NakharaBehaviour>>,
     config: NetworkConfig,
     local_peer_id: PeerId,
     /// Outbound message channel. The swarm task drains `message_rx`; callers
@@ -123,7 +123,7 @@ impl NetworkManager {
         info!("Local peer ID: {}", local_peer_id);
 
         // Create network behaviour using the node's actual keypair
-        let behaviour = AxionaxBehaviour::new(&keypair, &config)
+        let behaviour = NakharaBehaviour::new(&keypair, &config)
             .map_err(|e| NetworkError::InitializationError(e.to_string()))?;
 
         // Build swarm
@@ -218,7 +218,7 @@ impl NetworkManager {
     }
 
     /// Subscribe to all standard network topics.
-    fn subscribe_to_topics_swarm(swarm: &mut Swarm<AxionaxBehaviour>) -> Result<()> {
+    fn subscribe_to_topics_swarm(swarm: &mut Swarm<NakharaBehaviour>) -> Result<()> {
         let topics = [
             MessageType::Blocks,
             MessageType::Transactions,
@@ -241,11 +241,11 @@ impl NetworkManager {
     /// Apply the configured [`ExternalAddrStrategy`].
     ///
     /// For [`ExternalAddrStrategy::Manual`] this calls `swarm.add_external_address`
-    /// for every entry the operator supplied (config or `AXIONAX_EXTERNAL_ADDRS`
+    /// for every entry the operator supplied (config or `NAKHARA_EXTERNAL_ADDRS`
     /// env). Auto / Disabled are no-ops here — Auto relies on Identify to fill
     /// the address book later, Disabled deliberately advertises nothing.
     fn apply_external_addr_strategy(
-        swarm: &mut Swarm<AxionaxBehaviour>,
+        swarm: &mut Swarm<NakharaBehaviour>,
         config: &NetworkConfig,
     ) {
         use crate::config::ExternalAddrStrategy;
@@ -258,8 +258,8 @@ impl NetworkManager {
             return;
         }
 
-        // `resolved_external_addrs()` honours AXIONAX_EXTERNAL_ADDRS /
-        // AXIONAX_PUBLIC_IP env vars and auto-promotes Auto → effective
+        // `resolved_external_addrs()` honours NAKHARA_EXTERNAL_ADDRS /
+        // NAKHARA_PUBLIC_IP env vars and auto-promotes Auto → effective
         // Manual when one is set — see NetworkConfig::resolved_external_addrs.
         let addrs = config.resolved_external_addrs();
 
@@ -268,13 +268,13 @@ impl NetworkManager {
                 ExternalAddrStrategy::Manual => warn!(
                     target: "p2p",
                     "ExternalAddrStrategy::Manual selected but no external addrs \
-                     configured (set AXIONAX_EXTERNAL_ADDRS, AXIONAX_PUBLIC_IP, or \
+                     configured (set NAKHARA_EXTERNAL_ADDRS, NAKHARA_PUBLIC_IP, or \
                      NetworkConfig.external_addrs)"
                 ),
                 ExternalAddrStrategy::Auto => debug!(
                     target: "p2p",
                     "ExternalAddrStrategy::Auto — relying on Identify-observed addresses \
-                     (set AXIONAX_PUBLIC_IP=<your public ip> to advertise explicitly)"
+                     (set NAKHARA_PUBLIC_IP=<your public ip> to advertise explicitly)"
                 ),
                 ExternalAddrStrategy::AutoNAT => debug!(
                     target: "p2p",
@@ -308,7 +308,7 @@ impl NetworkManager {
 
     /// Dial each configured bootstrap node, registering its address with the
     /// behaviour first so subsequent gossip/Kademlia traffic can find them.
-    fn dial_bootstrap_nodes(swarm: &mut Swarm<AxionaxBehaviour>, nodes: &[String]) {
+    fn dial_bootstrap_nodes(swarm: &mut Swarm<NakharaBehaviour>, nodes: &[String]) {
         if nodes.is_empty() {
             debug!("No bootstrap nodes configured");
             return;
@@ -427,7 +427,7 @@ impl NetworkManager {
 /// Owns the `Swarm` exclusively — this is the single point where the swarm is
 /// driven. Returns when `message_rx` is closed (i.e. the manager is dropped).
 async fn run_swarm_loop(
-    mut swarm: Swarm<AxionaxBehaviour>,
+    mut swarm: Swarm<NakharaBehaviour>,
     mut message_rx: mpsc::Receiver<NetworkMessage>,
     mut control_rx: mpsc::Receiver<NetworkCommand>,
     event_tx: mpsc::Sender<NetworkMessage>,
@@ -482,7 +482,7 @@ async fn run_swarm_loop(
 /// is currently listening on, and a count of external addresses that remote
 /// peers have reported via Identify. This is the single most useful signal
 /// when debugging "nodes work on localhost but never connect over public IPs".
-fn emit_p2p_health(swarm: &Swarm<AxionaxBehaviour>, peer_count: &Arc<AtomicUsize>) {
+fn emit_p2p_health(swarm: &Swarm<NakharaBehaviour>, peer_count: &Arc<AtomicUsize>) {
     let listeners: Vec<String> = swarm.listeners().map(|m| m.to_string()).collect();
     let external_addrs: Vec<String> = swarm.external_addresses().map(|m| m.to_string()).collect();
     let count = peer_count.load(Ordering::Relaxed);
@@ -509,7 +509,7 @@ fn emit_p2p_health(swarm: &Swarm<AxionaxBehaviour>, peer_count: &Arc<AtomicUsize
     }
 }
 
-fn publish_on_swarm(swarm: &mut Swarm<AxionaxBehaviour>, message: &NetworkMessage) -> Result<()> {
+fn publish_on_swarm(swarm: &mut Swarm<NakharaBehaviour>, message: &NetworkMessage) -> Result<()> {
     let topic = message.message_type().topic_name();
     let data = message
         .to_bytes()
@@ -525,8 +525,8 @@ fn publish_on_swarm(swarm: &mut Swarm<AxionaxBehaviour>, message: &NetworkMessag
 }
 
 async fn handle_swarm_event(
-    swarm: &mut Swarm<AxionaxBehaviour>,
-    event: SwarmEvent<crate::behaviour::AxionaxBehaviourEvent>,
+    swarm: &mut Swarm<NakharaBehaviour>,
+    event: SwarmEvent<crate::behaviour::NakharaBehaviourEvent>,
     event_tx: &mpsc::Sender<NetworkMessage>,
     peer_count: &Arc<AtomicUsize>,
 ) {
@@ -665,14 +665,14 @@ async fn handle_swarm_event(
 }
 
 async fn handle_behaviour_event(
-    swarm: &mut Swarm<AxionaxBehaviour>,
-    event: crate::behaviour::AxionaxBehaviourEvent,
+    swarm: &mut Swarm<NakharaBehaviour>,
+    event: crate::behaviour::NakharaBehaviourEvent,
     event_tx: &mpsc::Sender<NetworkMessage>,
 ) {
-    use crate::behaviour::AxionaxBehaviourEvent;
+    use crate::behaviour::NakharaBehaviourEvent;
 
     match event {
-        AxionaxBehaviourEvent::Gossipsub(gossipsub::Event::Message {
+        NakharaBehaviourEvent::Gossipsub(gossipsub::Event::Message {
             propagation_source,
             message_id,
             message,
@@ -701,18 +701,18 @@ async fn handle_behaviour_event(
                 }
             }
         }
-        AxionaxBehaviourEvent::Mdns(mdns::Event::Discovered(peers)) => {
+        NakharaBehaviourEvent::Mdns(mdns::Event::Discovered(peers)) => {
             for (peer_id, addr) in peers {
                 debug!(target: "p2p::mdns", %peer_id, %addr, "mDNS discovered peer");
                 swarm.behaviour_mut().add_address(&peer_id, addr);
             }
         }
-        AxionaxBehaviourEvent::Mdns(mdns::Event::Expired(peers)) => {
+        NakharaBehaviourEvent::Mdns(mdns::Event::Expired(peers)) => {
             for (peer_id, _addr) in peers {
                 debug!(target: "p2p::mdns", %peer_id, "mDNS peer expired");
             }
         }
-        AxionaxBehaviourEvent::Identify(identify::Event::Received {
+        NakharaBehaviourEvent::Identify(identify::Event::Received {
             peer_id,
             info,
             ..
@@ -736,13 +736,13 @@ async fn handle_behaviour_event(
                 swarm.behaviour_mut().add_address(&peer_id, addr.clone());
             }
         }
-        AxionaxBehaviourEvent::Identify(identify::Event::Sent { peer_id, .. }) => {
+        NakharaBehaviourEvent::Identify(identify::Event::Sent { peer_id, .. }) => {
             debug!(target: "p2p::identify", %peer_id, "Identify sent to peer");
         }
-        AxionaxBehaviourEvent::Identify(identify::Event::Error { peer_id, error, .. }) => {
+        NakharaBehaviourEvent::Identify(identify::Event::Error { peer_id, error, .. }) => {
             warn!(target: "p2p::identify", %peer_id, %error, "Identify protocol error");
         }
-        AxionaxBehaviourEvent::Autonat(libp2p::autonat::Event::StatusChanged { old, new }) => {
+        NakharaBehaviourEvent::Autonat(libp2p::autonat::Event::StatusChanged { old, new }) => {
             info!(target: "p2p::autonat", "AutoNAT status changed from {:?} to {:?}", old, new);
         }
         _ => {

@@ -31,7 +31,7 @@ def commit_package_locks():
     """Commit uncommitted package-lock.json files"""
     print(f"\n{BOLD}{BLUE}📦 Committing package-lock.json files...{RESET}")
     
-    repos = ['axionax-marketplace', 'axionax-deploy']
+    repos = ['nakhara-marketplace', 'nakhara-deploy']
     
     for repo in repos:
         repo_path = Path(os.getcwd()) / repo
@@ -49,8 +49,8 @@ def clean_git_artifacts():
     """Clean git artifacts"""
     print(f"\n{BOLD}{BLUE}🧹 Cleaning git artifacts...{RESET}")
     
-    repos = ['axionax-core', 'axionax-sdk-ts', 'axionax-web', 
-             'axionax-marketplace', 'axionax-docs', 'axionax-deploy', 'axionax-devtools']
+    repos = ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web', 
+             'nakhara-marketplace', 'nakhara-docs', 'nakhara-deploy', 'nakhara-devtools']
     
     for repo in repos:
         repo_path = Path(os.getcwd()) / repo
@@ -72,7 +72,7 @@ def install_all_dependencies():
     print(f"\n{BOLD}{BLUE}📥 Installing dependencies...{RESET}")
     
     # TypeScript repos
-    ts_repos = ['axionax-sdk-ts', 'axionax-web', 'axionax-marketplace', 'axionax-deploy']
+    ts_repos = ['nakhara-sdk-ts', 'nakhara-web', 'nakhara-marketplace', 'nakhara-deploy']
     
     for repo in ts_repos:
         repo_path = Path(os.getcwd()) / repo
@@ -90,8 +90,8 @@ def fix_line_endings():
     """Fix line endings to LF"""
     print(f"\n{BOLD}{BLUE}📝 Fixing line endings...{RESET}")
     
-    repos = ['axionax-core', 'axionax-sdk-ts', 'axionax-web', 
-             'axionax-marketplace', 'axionax-docs', 'axionax-deploy', 'axionax-devtools']
+    repos = ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web', 
+             'nakhara-marketplace', 'nakhara-docs', 'nakhara-deploy', 'nakhara-devtools']
     
     for repo in repos:
         repo_path = Path(os.getcwd()) / repo
@@ -118,7 +118,7 @@ def fix_line_endings():
 
 def main():
     print(f"\n{BOLD}{BLUE}{'='*80}{RESET}")
-    print(f"{BOLD}{BLUE}🚀 AXIONAX QUICK FIX{RESET}")
+    print(f"{BOLD}{BLUE}🚀 NAKHARA QUICK FIX{RESET}")
     print(f"{BOLD}{BLUE}{'='*80}{RESET}\n")
     
     print("Select fixes to apply:")

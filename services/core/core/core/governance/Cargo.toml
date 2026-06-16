@@ -3,7 +3,7 @@ name = "governance"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
-description = "On-chain Governance Module for Axionax Protocol"
+description = "On-chain Governance Module for Nakhara Protocol"
 
 [dependencies]
 tokio = { workspace = true }

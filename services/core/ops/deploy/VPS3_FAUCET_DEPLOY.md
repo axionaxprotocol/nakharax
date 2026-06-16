@@ -25,7 +25,7 @@
 Genesis ใช้ address จาก key ที่ได้จาก seed นี้:
 
 ```bash
-python3 -c "import hashlib; print(hashlib.sha256(b'axionax_faucet_mainnet_q2_2026').hexdigest())"
+python3 -c "import hashlib; print(hashlib.sha256(b'nakhara_faucet_mainnet_q2_2026').hexdigest())"
 ```
 
 ได้ค่า hex 64 ตัว (ไม่มี `0x`) — ใช้เป็น `FAUCET_PRIVATE_KEY`
@@ -37,16 +37,16 @@ python3 -c "import hashlib; print(hashlib.sha256(b'axionax_faucet_mainnet_q2_202
 **จากเครื่องคุณ (สร้างโฟลเดอร์ให้ก่อนแล้วส่งไฟล์ไป VPS3):**
 
 ```powershell
-ssh root@217.216.109.5 "mkdir -p /root/axionax-monolith/services/core/ops/deploy/scripts"
-scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/
-scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/scripts/
-scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/axionax-monolith/services/core/ops/deploy/
+ssh root@217.216.109.5 "mkdir -p /root/nakhara-monolith/services/core/ops/deploy/scripts"
+scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/nakhara-monolith/services/core/ops/deploy/
+scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/nakhara-monolith/services/core/ops/deploy/scripts/
+scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/nakhara-monolith/services/core/ops/deploy/
 ```
 
 **บน VPS3 (SSH เข้าไปแล้ว):**
 
 ```bash
-cd /root/axionax-monolith/services/core/ops/deploy
+cd /root/nakhara-monolith/services/core/ops/deploy
 
 # สร้าง .env.vps3-faucet และใส่ FAUCET_PRIVATE_KEY
 cp env.vps3-faucet.example .env.vps3-faucet
@@ -59,7 +59,7 @@ bash scripts/deploy-faucet-vps3.sh
 หรือถ้า repo ยังไม่มีบน VPS3 — copy แค่ 2 ไฟล์ไปรันที่ไหนก็ได้:
 
 ```bash
-mkdir -p /opt/axionax-faucet && cd /opt/axionax-faucet
+mkdir -p /opt/nakhara-faucet && cd /opt/nakhara-faucet
 # วาง docker-compose.vps3-faucet.yml ตรงนี้
 echo 'FAUCET_PRIVATE_KEY=<hex_key>' > .env.vps3-faucet
 docker compose -f docker-compose.vps3-faucet.yml --env-file .env.vps3-faucet up -d
@@ -76,14 +76,14 @@ curl -s http://127.0.0.1:3002/info
 
 ---
 
-## 5. Nginx (ให้ faucet.axionax.org ชี้มาที่ Faucet)
+## 5. Nginx (ให้ faucet.nakhara.io ชี้มาที่ Faucet)
 
 ถ้า Nginx รันบน host (ไม่ใช่ใน Docker) และ Faucet รันใน container ที่ bind port 3002:
 
 - ใช้ `proxy_pass http://127.0.0.1:3002` (ไม่ใช้ `http://faucet:3002`)
 - ตัวอย่าง config: `ops/deploy/nginx/conf.d/faucet-vps3.conf.example`
-- ตั้ง DNS: faucet.axionax.org → 217.216.109.5
-- ออก SSL: `certbot --nginx -d faucet.axionax.org`
+- ตั้ง DNS: faucet.nakhara.io → 217.216.109.5
+- ออก SSL: `certbot --nginx -d faucet.nakhara.io`
 
 ---
 

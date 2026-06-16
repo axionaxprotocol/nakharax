@@ -1,6 +1,6 @@
 "use client";
 
-// Lightweight window-management context for the Axionax OS dashboard.
+// Lightweight window-management context for the Nakhara OS dashboard.
 //
 // Why hand-rolled instead of `react-rnd`:
 //   * zero extra deps (the dashboard is shipped over the wire)
@@ -73,7 +73,7 @@ interface WindowManagerContextValue {
 
 const WindowManagerContext = createContext<WindowManagerContextValue | null>(null);
 
-const STORAGE_KEY = "axionax-windows-v1";
+const STORAGE_KEY = "nakhara-windows-v1";
 
 // Persisted-only fields. We never serialize `render`.
 type PersistedWindow = Omit<WindowState, "render">;

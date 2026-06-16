@@ -1,10 +1,10 @@
 # =============================================================================
-# Axionax DeAI Worker Configuration
+# Nakhara DeAI Worker Configuration
 # Version: 1.9.0 (Optimized)
 # =============================================================================
 
 [worker]
-name = "axionax-worker-local"
+name = "nakhara-worker-local"
 version = "1.9.0"
 environment = "development"
 
@@ -14,8 +14,8 @@ environment = "development"
 [network]
 # List of Bootnodes (Validators) to discover the network
 bootnodes = [
-    "https://rpc.axionax.org",       # EU Validator
-    "https://rpc-au.axionax.org"     # AU Validator
+    "https://rpc.nakhara.io",       # EU Validator
+    "https://rpc-au.nakhara.io"     # AU Validator
 ]
 chain_id = 86137
 contract_address = "0x0000000000000000000000000000000000000000"  # Placeholder

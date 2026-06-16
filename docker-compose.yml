@@ -4,11 +4,11 @@ services:
   # ============================================
   # ⛓️ Core Blockchain Node (Rust)
   # ============================================
-  axionax-node:
+  nakhara-node:
     build:
       context: ./services/core
       dockerfile: ops/deploy/Dockerfile
-    container_name: axionax-node
+    container_name: nakhara-node
     restart: unless-stopped
     ports:
       - "8545:8545"     # JSON-RPC HTTP
@@ -18,7 +18,7 @@ services:
     volumes:
       - node_data:/data
     environment:
-      - RUST_LOG=info,axionax=debug
+      - RUST_LOG=info,nakhara=debug
       - CHAIN_ID=1337
       - NETWORK=localnet
       - RPC_HOST=0.0.0.0
@@ -28,11 +28,11 @@ services:
       - BLOCK_TIME=1
       - MAX_PEERS=50
     networks:
-      - axionax-net
+      - nakhara-net
 
 
 networks:
-  axionax-net:
+  nakhara-net:
     driver: bridge
 
 volumes:

@@ -9,7 +9,7 @@ Three main options: **CI → VPS** (auto on push), **GitHub Pages** (static), an
 - **Workflow:** `.github/workflows/ci-cd.yml`
 - **Trigger:** Push to `develop` = deploy staging; push to `main` = deploy production
 - **Steps:** Build web app as standalone → rsync to VPS via SSH → (if configured) run restart command on server
-- **Setup:** Repo → Settings → Secrets and variables → Actions → select environment **staging** / **production** and add secrets: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `REMOTE_PATH`, and optionally `DEPLOY_RESTART_CMD` (e.g. `pm2 restart axionax-web`)
+- **Setup:** Repo → Settings → Secrets and variables → Actions → select environment **staging** / **production** and add secrets: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `REMOTE_PATH`, and optionally `DEPLOY_RESTART_CMD` (e.g. `pm2 restart nakhara-web`)
 - Server and SSH setup details: [docs/web/DEPLOYMENT.md](./DEPLOYMENT.md) section "CI/CD Deploy (GitHub Actions)"
 
 ---
@@ -18,7 +18,7 @@ Three main options: **CI → VPS** (auto on push), **GitHub Pages** (static), an
 
 - **Workflow:** `.github/workflows/deploy-pages.yml`
 - **Trigger:** Push to branch `main` (when changes in `apps/web/**` or `packages/**`)
-- **Steps:** Build `@axionax/web` → upload `apps/web/out` → Deploy to GitHub Pages
+- **Steps:** Build `@nakhara/web` → upload `apps/web/out` → Deploy to GitHub Pages
 
 **Repo setup:**
 
@@ -27,7 +27,7 @@ Three main options: **CI → VPS** (auto on push), **GitHub Pages** (static), an
 3. After push to `main` workflow runs and deploys
 4. URL at **Environments → github-pages** or `https://<org>.github.io/<repo>/`
 
-**Custom domain (e.g. axionax.org):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
+**Custom domain (e.g. nakhara.io):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
 
 ---
 
@@ -42,20 +42,20 @@ No file upload from your machine — on VPS just clone repo and build there:
 1. SSH into VPS, clone repo, install dependencies, and build:
 
    ```bash
-   export APP_DIR=/opt/axionax-monolith
-   git clone https://github.com/axionaxprotocol/axionax-monolith.git $APP_DIR
+   export APP_DIR=/opt/nakhara-monolith
+   git clone https://github.com/nakhara-io/nakhara-monolith.git $APP_DIR
    cd $APP_DIR
    pnpm install --frozen-lockfile
-   pnpm --filter @axionax/blockchain-utils build
-   pnpm --filter @axionax/sdk build
-   pnpm --filter @axionax/web build
+   pnpm --filter @nakhara/blockchain-utils build
+   pnpm --filter @nakhara/sdk build
+   pnpm --filter @nakhara/web build
    ```
 
-2. For updates: SSH into VPS and run [scripts/vps-update-and-restart.sh](../scripts/vps-update-and-restart.sh) (or `git pull && pnpm install && pnpm --filter @axionax/web build` then restart process)
+2. For updates: SSH into VPS and run [scripts/vps-update-and-restart.sh](../scripts/vps-update-and-restart.sh) (or `git pull && pnpm install && pnpm --filter @nakhara/web build` then restart process)
 
-3. Nginx must proxy to `http://127.0.0.1:3000` (see [apps/web/nginx/conf.d/axionax-standalone.conf.example](../apps/web/nginx/conf.d/axionax-standalone.conf.example))
+3. Nginx must proxy to `http://127.0.0.1:3000` (see [apps/web/nginx/conf.d/nakhara-standalone.conf.example](../apps/web/nginx/conf.d/nakhara-standalone.conf.example))
 
-Default script values: app folder `/opt/axionax-monolith`, port 3000
+Default script values: app folder `/opt/nakhara-monolith`, port 3000
 
 #### VPS standalone: branch, lockfile, and Windows
 
@@ -80,8 +80,8 @@ From repo root:
 .\deploy-vps.ps1
 ```
 
-- **What it does:** `pnpm install` → build `@axionax/web` → upload `apps/web/out` to VPS via SCP
-- **Defaults:** VPS_IP=`YOUR_VPS_IP`, VPS_USER=`root`, REMOTE_PATH=`/var/www/axionax`
+- **What it does:** `pnpm install` → build `@nakhara/web` → upload `apps/web/out` to VPS via SCP
+- **Defaults:** VPS_IP=`YOUR_VPS_IP`, VPS_USER=`root`, REMOTE_PATH=`/var/www/nakhara`
 - **Override:** Set env or pass params: `$env:VPS_IP="1.2.3.4"; .\deploy-vps.ps1` or `.\deploy-vps.ps1 -VPS_IP 1.2.3.4 -VPS_USER ubuntu -REMOTE_PATH /var/www/html`
 - **Skip build:** `.\deploy-vps.ps1 -SkipBuild` (when already built)
 
@@ -90,12 +90,12 @@ From repo root:
 **If site still shows old content after deploy:**
 
 1. **Node process must be running** — after deploy restart to load new code
-   - Without PM2: `ssh root@YOUR_VPS_IP "cd /var/www/axionax && pkill -f 'node server.js' 2>/dev/null; sleep 1; PORT=3000 nohup node server.js > server.log 2>&1 &"`
+   - Without PM2: `ssh root@YOUR_VPS_IP "cd /var/www/nakhara && pkill -f 'node server.js' 2>/dev/null; sleep 1; PORT=3000 nohup node server.js > server.log 2>&1 &"`
    - Or deploy with restart: `$env:RESTART_CMD="pkill -f 'node server.js' 2>/dev/null; sleep 1; PORT=3000 nohup node server.js > server.log 2>&1 &"; .\deploy-vps.ps1 -SkipBuild`
 
-2. **Nginx must proxy to 127.0.0.1:3000** — if Nginx uses `root /var/www/axionax` and `index index.html` you get old static only
+2. **Nginx must proxy to 127.0.0.1:3000** — if Nginx uses `root /var/www/nakhara` and `index index.html` you get old static only
    - Use `proxy_pass http://127.0.0.1:3000` for location `/` and `/api/`
-   - Example: [apps/web/nginx/conf.d/axionax-standalone.conf.example](../apps/web/nginx/conf.d/axionax-standalone.conf.example)
+   - Example: [apps/web/nginx/conf.d/nakhara-standalone.conf.example](../apps/web/nginx/conf.d/nakhara-standalone.conf.example)
 
 3. **Check server:** SSH into VPS and verify `pm2 list` shows the process running, and `curl -I http://127.0.0.1:3000` returns HTTP 200
 
@@ -109,7 +109,7 @@ From repo root:
 ### VPS requirements
 
 - **SSH:** Access via `ssh user@VPS_IP` (use SSH key for passwordless)
-- **Server paths:** Some repo scripts assume clone/pull at `/opt/axionax-web` or `/var/www/axionax-marketplace` — ensure paths match your server
+- **Server paths:** Some repo scripts assume clone/pull at `/opt/nakhara-web` or `/var/www/nakhara-marketplace` — ensure paths match your server
 - **Docker:** If using Docker, server needs Docker + Docker Compose and `docker-compose.yml` for web/API
 
 ### Change IP / path in scripts

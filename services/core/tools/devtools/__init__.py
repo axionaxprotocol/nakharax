@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Axionax DevTools - Main Entry Point
+Nakhara DevTools - Main Entry Point
 '''
 
 import sys
@@ -14,7 +14,7 @@ sys.path.insert(0, str(scripts_path / 'fixing'))
 sys.path.insert(0, str(scripts_path / 'analysis'))
 
 def main():
-    print("Axionax DevTools")
+    print("Nakhara DevTools")
     print("================")
     print()
     print("Available commands:")
@@ -23,7 +23,7 @@ def main():
     print("  fix      - Quick fixes")
     print("  analyze  - Analyze code quality")
     print()
-    print("Usage: python -m axionax-devtools <command>")
+    print("Usage: python -m nakhara-devtools <command>")
 
 if __name__ == '__main__':
     main()

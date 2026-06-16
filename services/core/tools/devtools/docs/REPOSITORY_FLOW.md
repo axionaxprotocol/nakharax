@@ -1,66 +1,66 @@
-# axionax Repository Connection Flow
+# nakhara Repository Connection Flow
 
 ## Connection Diagram
 
 ```mermaid
 graph TD
-    axionax_core["✅ axionax-core"]
-    axionax_web["✅ axionax-web"]
-    axionax_sdk_ts["✅ axionax-sdk-ts"]
-    axionax_marketplace["✅ axionax-marketplace"]
-    axionax_docs["✅ axionax-docs"]
-    axionax_deploy["✅ axionax-deploy"]
-    axionax_devtools["✅ axionax-devtools"]
-    axionax_core -->|docs:reference(4)| axionax_web
-    axionax_core -->|docs:reference(9)| axionax_sdk_ts
-    axionax_core -->|docs:reference(4)| axionax_marketplace
-    axionax_core -->|docs:reference(6)| axionax_docs
-    axionax_core -->|docs:reference(4)| axionax_deploy
-    axionax_core -->|docs:reference(4)| axionax_devtools
-    axionax_web -->|docs:reference(7)| axionax_core
-    axionax_web -->|docs:reference(7)| axionax_sdk_ts
-    axionax_web -->|docs:reference(4)| axionax_marketplace
-    axionax_web -->|docs:reference(7)| axionax_docs
-    axionax_web -->|docs:reference(8)| axionax_deploy
-    axionax_web -->|docs:reference(4)| axionax_devtools
-    axionax_sdk_ts -->|docs:reference(4)| axionax_core
-    axionax_sdk_ts -->|docs:reference(1)| axionax_web
-    axionax_sdk_ts -->|docs:reference(1)| axionax_marketplace
-    axionax_marketplace -->|docs:reference(4)| axionax_core
-    axionax_marketplace -->|docs:reference(2)| axionax_docs
-    axionax_docs -->|docs:reference(11)| axionax_core
-    axionax_docs -->|docs:reference(5)| axionax_web
-    axionax_docs -->|docs:reference(4)| axionax_sdk_ts
-    axionax_docs -->|docs:reference(4)| axionax_marketplace
-    axionax_docs -->|docs:reference(5)| axionax_deploy
-    axionax_docs -->|docs:reference(4)| axionax_devtools
-    axionax_deploy -->|docs:reference(8)| axionax_core
-    axionax_deploy -->|docs:reference(5)| axionax_web
-    axionax_deploy -->|docs:reference(3)| axionax_sdk_ts
-    axionax_deploy -->|docs:reference(2)| axionax_marketplace
-    axionax_deploy -->|docs:reference(5)| axionax_docs
-    axionax_deploy -->|docs:reference(2)| axionax_devtools
-    axionax_devtools -->|docs:reference(4)| axionax_core
-    axionax_devtools -->|docs:reference(4)| axionax_web
-    axionax_devtools -->|docs:reference(4)| axionax_sdk_ts
-    axionax_devtools -->|docs:reference(2)| axionax_marketplace
-    axionax_devtools -->|docs:reference(2)| axionax_docs
-    axionax_devtools -->|docs:reference(2)| axionax_deploy
+    nakhara_core["✅ nakhara-core"]
+    nakhara_web["✅ nakhara-web"]
+    nakhara_sdk_ts["✅ nakhara-sdk-ts"]
+    nakhara_marketplace["✅ nakhara-marketplace"]
+    nakhara_docs["✅ nakhara-docs"]
+    nakhara_deploy["✅ nakhara-deploy"]
+    nakhara_devtools["✅ nakhara-devtools"]
+    nakhara_core -->|docs:reference(4)| nakhara_web
+    nakhara_core -->|docs:reference(9)| nakhara_sdk_ts
+    nakhara_core -->|docs:reference(4)| nakhara_marketplace
+    nakhara_core -->|docs:reference(6)| nakhara_docs
+    nakhara_core -->|docs:reference(4)| nakhara_deploy
+    nakhara_core -->|docs:reference(4)| nakhara_devtools
+    nakhara_web -->|docs:reference(7)| nakhara_core
+    nakhara_web -->|docs:reference(7)| nakhara_sdk_ts
+    nakhara_web -->|docs:reference(4)| nakhara_marketplace
+    nakhara_web -->|docs:reference(7)| nakhara_docs
+    nakhara_web -->|docs:reference(8)| nakhara_deploy
+    nakhara_web -->|docs:reference(4)| nakhara_devtools
+    nakhara_sdk_ts -->|docs:reference(4)| nakhara_core
+    nakhara_sdk_ts -->|docs:reference(1)| nakhara_web
+    nakhara_sdk_ts -->|docs:reference(1)| nakhara_marketplace
+    nakhara_marketplace -->|docs:reference(4)| nakhara_core
+    nakhara_marketplace -->|docs:reference(2)| nakhara_docs
+    nakhara_docs -->|docs:reference(11)| nakhara_core
+    nakhara_docs -->|docs:reference(5)| nakhara_web
+    nakhara_docs -->|docs:reference(4)| nakhara_sdk_ts
+    nakhara_docs -->|docs:reference(4)| nakhara_marketplace
+    nakhara_docs -->|docs:reference(5)| nakhara_deploy
+    nakhara_docs -->|docs:reference(4)| nakhara_devtools
+    nakhara_deploy -->|docs:reference(8)| nakhara_core
+    nakhara_deploy -->|docs:reference(5)| nakhara_web
+    nakhara_deploy -->|docs:reference(3)| nakhara_sdk_ts
+    nakhara_deploy -->|docs:reference(2)| nakhara_marketplace
+    nakhara_deploy -->|docs:reference(5)| nakhara_docs
+    nakhara_deploy -->|docs:reference(2)| nakhara_devtools
+    nakhara_devtools -->|docs:reference(4)| nakhara_core
+    nakhara_devtools -->|docs:reference(4)| nakhara_web
+    nakhara_devtools -->|docs:reference(4)| nakhara_sdk_ts
+    nakhara_devtools -->|docs:reference(2)| nakhara_marketplace
+    nakhara_devtools -->|docs:reference(2)| nakhara_docs
+    nakhara_devtools -->|docs:reference(2)| nakhara_deploy
 
     classDef coreStyle fill:#ff6b6b,stroke:#c92a2a,stroke-width:2px
     classDef webStyle fill:#4ecdc4,stroke:#219a91,stroke-width:2px
     classDef toolStyle fill:#ffe66d,stroke:#cca300,stroke-width:2px
     classDef sdkStyle fill:#a8e6cf,stroke:#64b58b,stroke-width:2px
 
-    class axionax_core coreStyle
-    class axionax_web,axionax_marketplace webStyle
-    class axionax_devtools,axionax_deploy toolStyle
-    class axionax_sdk_ts,axionax_docs sdkStyle
+    class nakhara_core coreStyle
+    class nakhara_web,nakhara_marketplace webStyle
+    class nakhara_devtools,nakhara_deploy toolStyle
+    class nakhara_sdk_ts,nakhara_docs sdkStyle
 ```
 
 ## Legend
 
-- 🔴 **Core**: axionax-core (main protocol implementation)
-- 🔵 **Web**: axionax-web, axionax-marketplace (web interfaces)
-- 🟡 **Tools**: axionax-devtools, axionax-deploy (development & deployment)
-- 🟢 **SDK/Docs**: axionax-sdk-ts, axionax-docs (libraries & documentation)
+- 🔴 **Core**: nakhara-core (main protocol implementation)
+- 🔵 **Web**: nakhara-web, nakhara-marketplace (web interfaces)
+- 🟡 **Tools**: nakhara-devtools, nakhara-deploy (development & deployment)
+- 🟢 **SDK/Docs**: nakhara-sdk-ts, nakhara-docs (libraries & documentation)

@@ -1,15 +1,15 @@
-//! Axionax CLI - Command Line Interface
+//! Nakhara CLI - Command Line Interface
 //!
-//! Usage: axionax <command> [options]
+//! Usage: nakhara <command> [options]
 
-use axionax_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
+use nakhara_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
 use clap::{Parser, Subcommand};
 use colored::*;
 use serde_json::Value;
 
 #[derive(Parser)]
-#[command(name = "axionax")]
-#[command(about = "Axionax Protocol CLI", long_about = None)]
+#[command(name = "nakhara")]
+#[command(about = "Nakhara Protocol CLI", long_about = None)]
 #[command(version)]
 struct Cli {
     /// RPC endpoint URL
@@ -108,7 +108,7 @@ async fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
 
     match cli.command {
         Commands::Status => {
-            println!("{}", "Axionax Node Status".cyan().bold());
+            println!("{}", "Nakhara Node Status".cyan().bold());
             println!("{}", "=".repeat(40));
 
             let height = rpc_call(&client, &cli.rpc, "eth_blockNumber", vec![]).await?;

@@ -1,7 +1,7 @@
 {
   "dashboard": {
     "title": "AxionAX Testnet Overview",
-    "tags": ["axionax", "testnet", "overview"],
+    "tags": ["nakhara", "testnet", "overview"],
     "timezone": "browser",
     "schemaVersion": 16,
     "version": 0,

@@ -9,7 +9,7 @@ x-logging: &default-logging
 services:
   # Self-sufficient/air-gapped: remove the two --telemetry lines below so the node does not depend on any external URL
   validator:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/nakhara-io}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -23,9 +23,9 @@ services:
       - --p2p
       - 0.0.0.0:30333
       - --telemetry
-      - https://telemetry.axionax.org/submit
+      - https://telemetry.nakhara.io/submit
     environment:
-      - AXIONAX_VALIDATOR_ADDRESS=${AXIONAX_VALIDATOR_ADDRESS}
+      - NAKHARA_VALIDATOR_ADDRESS=${NAKHARA_VALIDATOR_ADDRESS}
     env_file:
       - validator.env
     volumes:
@@ -38,7 +38,7 @@ services:
     logging: *default-logging
 
   rpc:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/nakhara-io}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -59,7 +59,7 @@ services:
     logging: *default-logging
 
   bootnode:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/nakhara-io}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -124,7 +124,7 @@ services:
     logging: *default-logging
 
   faucet:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/faucet:${FAUCET_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/nakhara-io}/faucet:${FAUCET_TAG:-latest}
     restart: unless-stopped
     env_file:
       - faucet.env

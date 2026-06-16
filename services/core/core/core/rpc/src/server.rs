@@ -94,11 +94,11 @@ pub async fn start_unified_server(config: UnifiedRpcConfig) -> anyhow::Result<Se
         Ok::<_, jsonrpsee::types::ErrorObjectOwned>(SystemStatus {
             chain_id,
             chain_name: if chain_id == 86137 {
-                "Axionax Testnet".to_string()
+                "Nakhara Testnet".to_string()
             } else if chain_id == 86150 {
-                "Axionax Mainnet".to_string()
+                "Nakhara Mainnet".to_string()
             } else {
-                "Axionax Dev".to_string()
+                "Nakhara Dev".to_string()
             },
             block_height: metrics::BLOCK_HEIGHT.get() as u64,
             peers: metrics::PEERS_CONNECTED.get() as usize,
@@ -140,7 +140,7 @@ pub async fn start_unified_server(config: UnifiedRpcConfig) -> anyhow::Result<Se
     module.register_method("system_version", |_, _, _| {
         Ok::<_, jsonrpsee::types::ErrorObjectOwned>(serde_json::json!({
             "version": env!("CARGO_PKG_VERSION"),
-            "name": "axionax-core",
+            "name": "nakhara-core",
             "build": "release",
         }))
     })?;

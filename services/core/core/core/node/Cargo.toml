@@ -8,7 +8,7 @@ license.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "axionax-node"
+name = "nakhara-node"
 path = "src/main.rs"
 
 [dependencies]

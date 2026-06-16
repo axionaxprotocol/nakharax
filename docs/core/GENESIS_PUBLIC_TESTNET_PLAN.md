@@ -25,19 +25,19 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 
 | VPS | IP | Role | Services |
 |-----|-----|------|----------|
-| **EU — Validator #1 + OS** | **217.216.109.5** | Consensus + RPC + **Axionax OS UI** | `axionax-node` + `apps/os-dashboard` (Next.js :3030, nginx → `app.axionax.org`) |
+| **EU — Validator #1 + OS** | **217.216.109.5** | Consensus + RPC + **Nakhara OS UI** | `nakhara-node` + `apps/os-dashboard` (Next.js :3030, nginx → `app.nakhara.io`) |
 | **AU — Validator #2 + Infra** | **46.250.244.4** | Consensus + public services | `docker-compose.vps.yml`: validator/RPC, nginx, explorer, api, faucet, postgres, redis, monitoring |
 
 ### Public endpoints
 
 | Domain | Backend | Host |
 |--------|---------|------|
-| `app.axionax.org` | os-dashboard :3030 | EU `217.216.109.5` |
-| `rpc.axionax.org` | `rpc-node:8545` | AU `46.250.244.4` |
-| `rpc-au.axionax.org` | `rpc-node:8545` | AU |
-| `explorer.axionax.org` | `explorer-backend:3001` | AU |
-| `api.axionax.org` | `explorer-backend:3001` | AU |
-| `faucet.axionax.org` | `faucet:3002` | AU |
+| `app.nakhara.io` | os-dashboard :3030 | EU `217.216.109.5` |
+| `rpc.nakhara.io` | `rpc-node:8545` | AU `46.250.244.4` |
+| `rpc-au.nakhara.io` | `rpc-node:8545` | AU |
+| `explorer.nakhara.io` | `explorer-backend:3001` | AU |
+| `api.nakhara.io` | `explorer-backend:3001` | AU |
+| `faucet.nakhara.io` | `faucet:3002` | AU |
 
 ### Rationale
 
@@ -79,7 +79,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 
 | Day | Task |
 |-----|------|
-| 1–2 | Copy `ops/deploy` to `/opt/axionax` on AU; `cp .env.example .env` |
+| 1–2 | Copy `ops/deploy` to `/opt/nakhara` on AU; `cp .env.example .env` |
 | 2–3 | `docker compose -f docker-compose.vps.yml up -d` |
 | 3–4 | DNS: rpc, explorer, api, faucet → `46.250.244.4` |
 | 4–5 | Test faucet + explorer; `check-vps-status.sh --detailed` |
@@ -89,7 +89,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 | Day | Task |
 |-----|------|
 | 1–2 | Certbot certificates (setup-vps.sh หรือ manual) |
-| 2–4 | Deploy OS on EU: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md); `NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org` |
+| 2–4 | Deploy OS on EU: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md); `NEXT_PUBLIC_RPC_URL=https://rpc.nakhara.io` |
 | 4–5 | MetaMask add network + faucet flow |
 
 ### Week 4: Go live
@@ -106,7 +106,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 - Genesis: `core/tools/create_genesis.py`, `core/core/genesis/src/lib.rs`
 - Validator update: `ops/deploy/scripts/update-validator-vps.sh`, `VPS_VALIDATOR_UPDATE.md`
 - **AU deploy:** `ops/deploy/VPS_AU_ALL_IN_ONE.md`, `docker-compose.vps.yml`
-- RPC check: `curl` eth_chainId ที่ `http://46.250.244.4:8545` หรือ `https://rpc.axionax.org`
+- RPC check: `curl` eth_chainId ที่ `http://46.250.244.4:8545` หรือ `https://rpc.nakhara.io`
 - Nginx: `ops/deploy/nginx/conf.d/`
 - Connectivity: `docs/core/CONNECTIVITY_OVERVIEW.md`
 
@@ -114,7 +114,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 
 ## 5. Allocation Summary
 
-- **217.216.109.5 (EU):** Validator #1 + RPC + Axionax OS (`app.axionax.org`)
+- **217.216.109.5 (EU):** Validator #1 + RPC + Nakhara OS (`app.nakhara.io`)
 - **46.250.244.4 (AU):** Validator #2 + RPC + nginx + explorer + api + faucet + DB
 
 **See also:** [TESTNET_READINESS.md](../TESTNET_READINESS.md) · [GITHUB_READINESS.md](GITHUB_READINESS.md)

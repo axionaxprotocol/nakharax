@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Repository Integration Testing Tool
-Tests actual connections and integrations between axionax repositories
+Tests actual connections and integrations between nakhara repositories
 Generates comprehensive test results and fix recommendations
 """
 
@@ -17,47 +17,47 @@ class RepoIntegrationTester:
     def __init__(self, base_path: str):
         self.base_path = Path(base_path)
         self.repos = {
-            'axionax-core': {
+            'nakhara-core': {
                 'type': 'rust',
                 'main_files': ['Cargo.toml', 'src/lib.rs', 'src/main.rs'],
                 'test_command': 'cargo check --lib',
                 'dependencies': []
             },
-            'axionax-sdk-ts': {
+            'nakhara-sdk-ts': {
                 'type': 'typescript',
                 'main_files': ['package.json', 'src/index.ts', 'tsconfig.json'],
                 'test_command': 'npm run build',
                 'dependencies': []
             },
-            'axionax-web': {
+            'nakhara-web': {
                 'type': 'nextjs',
                 'main_files': ['package.json', 'next.config.js', 'tsconfig.json'],
                 'test_command': 'npm run build',
-                'dependencies': ['axionax-sdk-ts']
+                'dependencies': ['nakhara-sdk-ts']
             },
-            'axionax-marketplace': {
+            'nakhara-marketplace': {
                 'type': 'react',
                 'main_files': ['package.json', 'src/App.tsx', 'tsconfig.json'],
                 'test_command': 'npm run build',
-                'dependencies': ['axionax-sdk-ts']
+                'dependencies': ['nakhara-sdk-ts']
             },
-            'axionax-docs': {
+            'nakhara-docs': {
                 'type': 'documentation',
                 'main_files': ['README.md', 'index.md'],
                 'test_command': None,
-                'dependencies': ['axionax-core', 'axionax-sdk-ts', 'axionax-web']
+                'dependencies': ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web']
             },
-            'axionax-deploy': {
+            'nakhara-deploy': {
                 'type': 'deployment',
                 'main_files': ['docker-compose.yaml', 'setup_validator.sh'],
                 'test_command': None,
-                'dependencies': ['axionax-core']
+                'dependencies': ['nakhara-core']
             },
-            'axionax-devtools': {
+            'nakhara-devtools': {
                 'type': 'tools',
                 'main_files': ['README.md', 'tools/'],
                 'test_command': None,
-                'dependencies': ['axionax-core']
+                'dependencies': ['nakhara-core']
             }
         }
         self.test_results = {}
@@ -202,10 +202,10 @@ class RepoIntegrationTester:
             result['details']['total_dependencies'] = len(deps)
             result['details']['total_dev_dependencies'] = len(dev_deps)
             
-            # Check for axionax dependencies
-            axionax_deps = [dep for dep in deps.keys() if 'axionax' in dep.lower()]
-            if axionax_deps:
-                result['details']['axionax_dependencies'] = axionax_deps
+            # Check for nakhara dependencies
+            nakhara_deps = [dep for dep in deps.keys() if 'nakhara' in dep.lower()]
+            if nakhara_deps:
+                result['details']['nakhara_dependencies'] = nakhara_deps
             
             # Check if node_modules exists
             node_modules = repo_path / 'node_modules'
@@ -259,8 +259,8 @@ class RepoIntegrationTester:
             if '[dependencies]' in content:
                 result['details']['has_dependencies'] = True
                 
-                # Count axionax-related dependencies
-                axionax_deps = []
+                # Count nakhara-related dependencies
+                nakhara_deps = []
                 lines = content.split('\n')
                 in_deps = False
                 for line in lines:
@@ -269,11 +269,11 @@ class RepoIntegrationTester:
                         continue
                     if line.strip().startswith('['):
                         in_deps = False
-                    if in_deps and 'axionax' in line.lower():
-                        axionax_deps.append(line.strip())
+                    if in_deps and 'nakhara' in line.lower():
+                        nakhara_deps.append(line.strip())
                 
-                if axionax_deps:
-                    result['details']['axionax_dependencies'] = axionax_deps
+                if nakhara_deps:
+                    result['details']['nakhara_dependencies'] = nakhara_deps
             
             # Check if target directory exists (indicates previous build)
             target_dir = repo_path / 'target'
@@ -364,13 +364,13 @@ class RepoIntegrationTester:
                         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                             content = f.read()
                         
-                        # Look for axionax imports that might be broken
+                        # Look for nakhara imports that might be broken
                         lines = content.split('\n')
                         for i, line in enumerate(lines, 1):
                             if 'import' in line or 'require' in line or 'from' in line:
-                                if 'axionax' in line.lower():
+                                if 'nakhara' in line.lower():
                                     # Check if it's a relative import that might be broken
-                                    if ('../' in line or './' in line) and 'axionax' in line:
+                                    if ('../' in line or './' in line) and 'nakhara' in line:
                                         unresolved_imports.append({
                                             'file': str(file_path.relative_to(repo_path)),
                                             'line': i,
@@ -649,7 +649,7 @@ class RepoIntegrationTester:
         """Generate comprehensive text report"""
         lines = []
         lines.append("=" * 80)
-        lines.append("AXIONAX REPOSITORY INTEGRATION TEST REPORT")
+        lines.append("NAKHARA REPOSITORY INTEGRATION TEST REPORT")
         lines.append("=" * 80)
         lines.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         lines.append("")
@@ -746,7 +746,7 @@ class RepoIntegrationTester:
         """Generate automated fix script"""
         script_lines = []
         script_lines.append("#!/bin/bash")
-        script_lines.append("# Automated Fix Script for axionax Repositories")
+        script_lines.append("# Automated Fix Script for nakhara Repositories")
         script_lines.append("# Generated: " + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         script_lines.append("")
         script_lines.append("set -e  # Exit on error")
@@ -762,7 +762,7 @@ class RepoIntegrationTester:
             if 'Build System' in rec['category']:
                 script_lines.append("")
                 script_lines.append("# Install dependencies for Node.js projects")
-                script_lines.append("for repo in axionax-web axionax-sdk-ts axionax-marketplace; do")
+                script_lines.append("for repo in nakhara-web nakhara-sdk-ts nakhara-marketplace; do")
                 script_lines.append("  if [ -d \"$repo\" ] && [ -f \"$repo/package.json\" ]; then")
                 script_lines.append("    echo \"  Installing dependencies for $repo...\"")
                 script_lines.append("    cd $repo")
@@ -775,7 +775,7 @@ class RepoIntegrationTester:
             if 'Git Status' in rec['category']:
                 script_lines.append("")
                 script_lines.append("# Check git status")
-                script_lines.append("for repo in axionax-*; do")
+                script_lines.append("for repo in nakhara-*; do")
                 script_lines.append("  if [ -d \"$repo/.git\" ]; then")
                 script_lines.append("    echo \"  Checking $repo...\"")
                 script_lines.append("    cd $repo")
@@ -794,7 +794,7 @@ class RepoIntegrationTester:
         return "\n".join(script_lines)
 
 def main():
-    print("🚀 axionax Repository Integration Tester")
+    print("🚀 nakhara Repository Integration Tester")
     print("=" * 80)
     
     base_path = os.getcwd()

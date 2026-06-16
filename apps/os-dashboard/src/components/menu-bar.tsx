@@ -5,7 +5,7 @@ import { Activity, Bell, Search } from "lucide-react";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 /**
- * MenuBar — the persistent top chrome for Axionax OS.
+ * MenuBar — the persistent top chrome for Nakhara OS.
  *
  * Information architecture (left → right):
  *   brand · menus · right cluster (status, actions, clock)
@@ -45,7 +45,7 @@ export function MenuBar() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
-              alt="Axionax"
+              alt="Nakhara"
               className="h-4 w-4 object-contain invert brightness-125 contrast-125 drop-shadow-[0_0_8px_rgba(94,234,212,0.8)]"
             />
             <span
@@ -53,7 +53,7 @@ export function MenuBar() {
               aria-label="Node online"
             />
           </div>
-          <span className="text-zinc-100 font-mono tracking-tight uppercase">Axionax OS</span>
+          <span className="text-zinc-100 font-mono tracking-tight uppercase">Nakhara OS</span>
         </div>
 
         {/* App menus */}

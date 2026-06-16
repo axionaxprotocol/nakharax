@@ -1,4 +1,4 @@
-# axionax Core - Production Testnet Ready 🚀
+# nakhara Core - Production Testnet Ready 🚀
 
 ## Development Summary
 
@@ -224,32 +224,32 @@ cargo build --release
 #### 2. **Configuration Environment Variables**
 ```bash
 # RPC Settings
-export axionax_RPC_ADDR="0.0.0.0:8545"
-export axionax_RPC_CORS_ORIGINS="https://app.axionax.org"
+export nakhara_RPC_ADDR="0.0.0.0:8545"
+export nakhara_RPC_CORS_ORIGINS="https://app.nakhara.io"
 
 # Network Settings
-export axionax_CHAIN_ID=86137
-export axionax_NETWORK_PORT=30303
+export nakhara_CHAIN_ID=86137
+export nakhara_NETWORK_PORT=30303
 
 # Database Path
-export axionax_STATE_PATH="/var/lib/axionax/testnet"
+export nakhara_STATE_PATH="/var/lib/nakhara/testnet"
 
 # Security Settings
-export axionax_RATE_LIMIT=100        # requests per minute
-export axionax_MAX_BATCH_SIZE=50
+export nakhara_RATE_LIMIT=100        # requests per minute
+export nakhara_MAX_BATCH_SIZE=50
 ```
 
 #### 3. **Systemd Service** (Linux)
 ```ini
 [Unit]
-Description=axionax Blockchain Node
+Description=nakhara Blockchain Node
 After=network.target
 
 [Service]
 Type=simple
-User=axionax
-WorkingDirectory=/opt/axionax
-ExecStart=/opt/axionax/target/release/node --config /etc/axionax/testnet.toml
+User=nakhara
+WorkingDirectory=/opt/nakhara
+ExecStart=/opt/nakhara/target/release/node --config /etc/nakhara/testnet.toml
 Restart=always
 RestartSec=10
 
@@ -258,7 +258,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/lib/axionax
+ReadWritePaths=/var/lib/nakhara
 
 [Install]
 WantedBy=multi-user.target
@@ -471,6 +471,6 @@ curl -X POST http://localhost:8545 \
 
 **Status**: 🟢 Ready for Testnet Deployment (after fixing build issues and security scan)
 
-**Developers**: GitHub Copilot + axionax Protocol Team  
+**Developers**: GitHub Copilot + nakhara Protocol Team  
 **Date**: November 5, 2025  
 **Version**: v0.1.0-testnet

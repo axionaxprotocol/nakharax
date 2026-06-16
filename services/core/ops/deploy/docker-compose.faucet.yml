@@ -11,8 +11,8 @@ services:
     build:
       context: ../../
       dockerfile: ops/deploy/Dockerfile.faucet
-    image: axionax-faucet:local
-    container_name: axionax-testnet-faucet
+    image: nakhara-faucet:local
+    container_name: nakhara-testnet-faucet
     restart: unless-stopped
     network_mode: host
     environment:

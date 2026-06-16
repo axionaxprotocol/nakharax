@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # VPS Deployment Setup Script
-# This script sets up the axionax protocol infrastructure on a VPS
+# This script sets up the nakhara protocol infrastructure on a VPS
 
 set -e
 
-echo "=== axionax VPS Deployment Setup ==="
+echo "=== nakhara VPS Deployment Setup ==="
 
 # Colors
 RED='\033[0;31m'
@@ -47,7 +47,7 @@ else
 fi
 
 # Create deployment directory
-DEPLOY_DIR="/opt/axionax"
+DEPLOY_DIR="/opt/nakhara"
 echo -e "${YELLOW}Creating deployment directory: ${DEPLOY_DIR}${NC}"
 mkdir -p ${DEPLOY_DIR}
 cd ${DEPLOY_DIR}
@@ -97,9 +97,9 @@ sleep 30
 echo -e "${YELLOW}Checking service health...${NC}"
 # Health checks use container_name from docker-compose.vps.yml
 health_checks=(
-    "axionax-rpc:8545/health:RPC Node"
-    "axionax-explorer-backend:3001/api/health:Explorer Backend"
-    "axionax-faucet:3002/health:Faucet"
+    "nakhara-rpc:8545/health:RPC Node"
+    "nakhara-explorer-backend:3001/api/health:Explorer Backend"
+    "nakhara-faucet:3002/health:Faucet"
 )
 for entry in "${health_checks[@]}"; do
     IFS=':' read -r container port_path label <<< "$entry"

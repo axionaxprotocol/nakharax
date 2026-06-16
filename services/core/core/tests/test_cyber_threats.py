@@ -1,5 +1,5 @@
 """
-Axionax Cyber Threat Simulation Suite
+Nakhara Cyber Threat Simulation Suite
 
 Tests the Mock RPC server and DeAI worker layer against cyber threats,
 injection attacks, malware patterns, and adversarial inputs.
@@ -303,9 +303,9 @@ class TestDeAIWorkerSecurity:
 
     def test_rpc_client_handles_timeout(self):
         """Pointing the RPC client at a non-existent host must not hang."""
-        from rpc_client import AxionaxRpcClient
+        from rpc_client import NakharaRpcClient
 
-        client = AxionaxRpcClient(rpc_url="http://192.0.2.1:1")  # RFC 5737 TEST-NET
+        client = NakharaRpcClient(rpc_url="http://192.0.2.1:1")  # RFC 5737 TEST-NET
         result = client.get_block_number()
         assert result == 0, "Unreachable host should return fallback 0"
 

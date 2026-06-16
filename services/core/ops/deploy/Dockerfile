@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1.7
 #
-# Axionax Core — multi-stage production image
+# Nakhara Core — multi-stage production image
 # ============================================
 #
 # Layout:
 #   1. chef        — install cargo-chef for reproducible dep caching
 #   2. planner     — produce a recipe.json describing all Rust deps
-#   3. rust-builder — cook deps once (cached), then build axionax-node
+#   3. rust-builder — cook deps once (cached), then build nakhara-node
 #   4. py-bridge   — build the PyO3 bridge wheel via maturin
 #   5. py-app      — install Python deps + DeAI worker code
 #   6. runtime     — distroless-style minimal Debian slim with non-root user
@@ -46,7 +46,7 @@ COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
 # ----------------------------------------------------------------------------
-# Stage 3 — rust-builder: cook deps (cached), then build axionax-node
+# Stage 3 — rust-builder: cook deps (cached), then build nakhara-node
 # ----------------------------------------------------------------------------
 FROM chef AS rust-builder
 
@@ -61,8 +61,8 @@ COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/build/target \
     cargo build --release -p node \
- && cp /build/target/release/axionax-node /usr/local/bin/axionax-node \
- && strip /usr/local/bin/axionax-node || true
+ && cp /build/target/release/nakhara-node /usr/local/bin/nakhara-node \
+ && strip /usr/local/bin/nakhara-node || true
 
 # ----------------------------------------------------------------------------
 # Stage 4 — py-bridge: build the PyO3 wheel via maturin
@@ -106,10 +106,10 @@ COPY deai/ ./deai/
 FROM debian:${DEBIAN_VERSION}-slim AS runtime
 
 ARG PYTHON_VERSION=3.11
-ARG AXIONAX_HOME=/home/axionax
+ARG NAKHARA_HOME=/home/nakhara
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    AXIONAX_HOME=${AXIONAX_HOME} \
+    NAKHARA_HOME=${NAKHARA_HOME} \
     PYTHONPATH=/usr/local/lib/python${PYTHON_VERSION}/site-packages:/app \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -125,25 +125,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Non-root user (uid 1000) for least-privilege execution.
-RUN groupadd --system --gid 1000 axionax \
- && useradd  --system --uid 1000 --gid axionax --home-dir ${AXIONAX_HOME} --create-home axionax
+RUN groupadd --system --gid 1000 nakhara \
+ && useradd  --system --uid 1000 --gid nakhara --home-dir ${NAKHARA_HOME} --create-home nakhara
 
 # Binary + Python runtime + DeAI app
-COPY --from=rust-builder /usr/local/bin/axionax-node /usr/local/bin/axionax-node
+COPY --from=rust-builder /usr/local/bin/nakhara-node /usr/local/bin/nakhara-node
 COPY --from=py-app /usr/local/lib/python${PYTHON_VERSION}/site-packages \
                    /usr/local/lib/python${PYTHON_VERSION}/site-packages
 COPY --from=py-app /app/deai /app/deai
 
-# Symlink for legacy callers expecting axionax_node (underscore variant).
-RUN ln -sf /usr/local/bin/axionax-node /usr/local/bin/axionax_node \
- && mkdir -p ${AXIONAX_HOME}/.axionax /app \
- && chown -R axionax:axionax ${AXIONAX_HOME} /app
+# Symlink for legacy callers expecting nakhara_node (underscore variant).
+RUN ln -sf /usr/local/bin/nakhara-node /usr/local/bin/nakhara_node \
+ && mkdir -p ${NAKHARA_HOME}/.nakhara /app \
+ && chown -R nakhara:nakhara ${NAKHARA_HOME} /app
 
-USER axionax
-WORKDIR ${AXIONAX_HOME}
+USER nakhara
+WORKDIR ${NAKHARA_HOME}
 
 # Persist chain state and node identity across container restarts.
-VOLUME ["${AXIONAX_HOME}/.axionax"]
+VOLUME ["${NAKHARA_HOME}/.nakhara"]
 
 # Ports — see header comment for usage.
 EXPOSE 8545 8546 8080 9100 30303
@@ -154,9 +154,9 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=4 \
         --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
         http://localhost:8545/ >/dev/null || exit 1
 
-# Use tini as PID 1 for proper signal forwarding to axionax-node.
-ENTRYPOINT ["/usr/bin/tini", "--", "axionax-node"]
+# Use tini as PID 1 for proper signal forwarding to nakhara-node.
+ENTRYPOINT ["/usr/bin/tini", "--", "nakhara-node"]
 CMD ["--role", "full", \
      "--rpc", "0.0.0.0:8545", \
-     "--state_path", "/home/axionax/.axionax/state", \
+     "--state_path", "/home/nakhara/.nakhara/state", \
      "--chain_id", "86137"]

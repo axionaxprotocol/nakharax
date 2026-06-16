@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import pytest
-import axionax_python as axx
+import nakhara_python as axx
 from deai.asr import AutoSelectionRouter, WorkerProfile
 from deai.fraud_detection import FraudDetector, ProofFeatures
 
@@ -17,7 +17,7 @@ class TestRustPythonBridge:
     
     def test_crypto_hashing(self):
         """Test hash functions exposed from Rust"""
-        data = b"Hello axionax"
+        data = b"Hello nakhara"
         
         # Test SHA3-256
         hash1 = axx.PyCrypto.sha3_256(list(data))

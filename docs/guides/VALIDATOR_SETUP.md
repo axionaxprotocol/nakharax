@@ -1,6 +1,6 @@
 # Validator Setup Guide
 
-> **Complete guide to setting up an Axionax validator node**
+> **Complete guide to setting up an Nakhara validator node**
 
 **Last Updated**: May 3, 2026  
 **Protocol Version**: v1.9.0-testnet
@@ -9,9 +9,9 @@
 
 ## Overview
 
-This guide covers setting up a validator node on the Axionax network. Validators participate in consensus, produce blocks, and secure the network through PoPC (Proof of Correct Computation) and PoS (Proof of Stake).
+This guide covers setting up a validator node on the Nakhara network. Validators participate in consensus, produce blocks, and secure the network through PoPC (Proof of Correct Computation) and PoS (Proof of Stake).
 
-**Primary Reference**: See [`../architecture/AXIONAX_PROTOCOL.md`](../architecture/AXIONAX_PROTOCOL.md) for complete protocol architecture, including:
+**Primary Reference**: See [`../architecture/NAKHARA_PROTOCOL.md`](../architecture/NAKHARA_PROTOCOL.md) for complete protocol architecture, including:
 - Core workflow: Post → Assign → Execute → Commit → DA Pre-commit → Wait k → Challenge → Prove → Verify → Seal → Fraud Window → Finalize
 - PoPC (Proof of Probabilistic Checking) with s=1000 samples
 - Delayed VRF for challenge generation (k≥2 blocks)
@@ -75,8 +75,8 @@ sudo ufw enable
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 ```
 
 ### 2. Configure Validator
@@ -130,35 +130,35 @@ curl -X POST http://localhost:8545 \
 ### 1. Download Binary
 
 ```bash
-wget https://github.com/axionaxprotocol/axionax-core/releases/download/v1.9.0/axionax-node-linux-amd64
-chmod +x axionax-node-linux-amd64
-sudo mv axionax-node-linux-amd64 /usr/local/bin/axionax-node
+wget https://github.com/nakhara-io/nakhara-core/releases/download/v1.9.0/nakhara-node-linux-amd64
+chmod +x nakhara-node-linux-amd64
+sudo mv nakhara-node-linux-amd64 /usr/local/bin/nakhara-node
 ```
 
 ### 2. Create Service User
 
 ```bash
-sudo useradd -r -s /bin/false axionax
-sudo mkdir -p /var/lib/axionax
-sudo chown axionax:axionax /var/lib/axionax
+sudo useradd -r -s /bin/false nakhara
+sudo mkdir -p /var/lib/nakhara
+sudo chown nakhara:nakhara /var/lib/nakhara
 ```
 
 ### 3. Create Systemd Service
 
-Create `/etc/systemd/system/axionax-validator.service`:
+Create `/etc/systemd/system/nakhara-validator.service`:
 
 ```ini
 [Unit]
-Description=Axionax Validator Node
+Description=Nakhara Validator Node
 After=network.target
 
 [Service]
 Type=simple
-User=axionax
-ExecStart=/usr/local/bin/axionax-node \
+User=nakhara
+ExecStart=/usr/local/bin/nakhara-node \
   --role validator \
-  --config /etc/axionax/validator-config.yaml \
-  --data-dir /var/lib/axionax
+  --config /etc/nakhara/validator-config.yaml \
+  --data-dir /var/lib/nakhara
 Restart=always
 RestartSec=10
 
@@ -170,8 +170,8 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable axionax-validator
-sudo systemctl start axionax-validator
+sudo systemctl enable nakhara-validator
+sudo systemctl start nakhara-validator
 ```
 
 ---
@@ -220,14 +220,14 @@ Validator exposes metrics on port 9615:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'axionax-validator'
+  - job_name: 'nakhara-validator'
     static_configs:
       - targets: ['localhost:9615']
 ```
 
 ### Grafana Dashboard
 
-Import the Axionax validator dashboard from the repository.
+Import the Nakhara validator dashboard from the repository.
 
 ### Health Checks
 
@@ -280,7 +280,7 @@ curl -X POST http://localhost:8545 \
   -d '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}'
 
 # Check logs
-journalctl -u axionax-validator -f
+journalctl -u nakhara-validator -f
 ```
 
 ### Validator Not Producing Blocks
@@ -312,18 +312,18 @@ db:
 
 ```bash
 # Stop service
-sudo systemctl stop axionax-validator
+sudo systemctl stop nakhara-validator
 
 # Backup data
-sudo cp -r /var/lib/axionax /var/lib/axionax.backup
+sudo cp -r /var/lib/nakhara /var/lib/nakhara.backup
 
 # Download new binary
-wget https://github.com/axionaxprotocol/axionax-core/releases/download/vX.Y.Z/axionax-node-linux-amd64
-chmod +x axionax-node-linux-amd64
-sudo mv axionax-node-linux-amd64 /usr/local/bin/axionax-node
+wget https://github.com/nakhara-io/nakhara-core/releases/download/vX.Y.Z/nakhara-node-linux-amd64
+chmod +x nakhara-node-linux-amd64
+sudo mv nakhara-node-linux-amd64 /usr/local/bin/nakhara-node
 
 # Start service
-sudo systemctl start axionax-validator
+sudo systemctl start nakhara-validator
 ```
 
 ---
@@ -331,7 +331,7 @@ sudo systemctl start axionax-validator
 ## See Also
 
 **Primary Protocol Reference:**
-- [AXIONAX_PROTOCOL.md](../architecture/AXIONAX_PROTOCOL.md) — Complete protocol architecture, PoPC, VRF, DA, security
+- [NAKHARA_PROTOCOL.md](../architecture/NAKHARA_PROTOCOL.md) — Complete protocol architecture, PoPC, VRF, DA, security
 
 **Additional Resources:**
 - [Node Hardware Specs](../core/NODE_SPECS.md)

@@ -1,4 +1,4 @@
-# เตรียม Deploy Web บน VPS (axionax-monolith)
+# เตรียม Deploy Web บน VPS (nakhara-monolith)
 
 ใช้กับ flow **clone/pull บนเซิร์ฟเวอร์ → pnpm build → Next standalone + PM2 → Nginx proxy ไปพอร์ต 3000**
 
@@ -14,7 +14,7 @@
 
 ## 2. โฟลเดอร์บนเซิร์ฟเวอร์ (ค่าเริ่มต้นในสคริปต์)
 
-- `APP_DIR` = `/opt/axionax-monolith`
+- `APP_DIR` = `/opt/nakhara-monolith`
 - Standalone รัน: `apps/web/.next/standalone/apps/web/server.js`
 - พอร์ต: `PORT=3000`
 
@@ -25,9 +25,9 @@
 ```env
 NODE_ENV=production
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_RPC_URL=https://rpc.axionax.org
-NEXT_PUBLIC_FAUCET_URL=https://faucet.axionax.org
-FAUCET_API_URL=https://faucet-api.axionax.org
+NEXT_PUBLIC_RPC_URL=https://rpc.nakhara.io
+NEXT_PUBLIC_FAUCET_URL=https://faucet.nakhara.io
+FAUCET_API_URL=https://faucet-api.nakhara.io
 ```
 
 ถ้าใช้ reverse proxy ภายในโดเมนเดียวกัน ให้ตั้ง `NEXT_PUBLIC_RPC_EU` / `NEXT_PUBLIC_RPC_AU` เป็น path เช่น `/rpc/eu` ตามที่ Nginx ตั้งไว้
@@ -37,10 +37,10 @@ FAUCET_API_URL=https://faucet-api.axionax.org
 **ตัวนับผู้เข้าชม (footer):** ค่าเก็บใน `apps/web/data/site-visitors.json` (สร้างอัตโนมัติ) ถ้า standalone รันแล้ว `cwd` เขียนไฟล์ไม่ได้หรืออยากให้เลขไม่หายทุกครั้งที่ deploy ให้ตั้ง:
 
 ```env
-VISITOR_DATA_DIR=/var/lib/axionax-web
+VISITOR_DATA_DIR=/var/lib/nakhara-web
 ```
 
-แล้วบน VPS: `sudo mkdir -p /var/lib/axionax-web && sudo chown $(whoami) /var/lib/axionax-web` (หรือ user ที่รัน PM2)
+แล้วบน VPS: `sudo mkdir -p /var/lib/nakhara-web && sudo chown $(whoami) /var/lib/nakhara-web` (หรือ user ที่รัน PM2)
 
 ## 4. ครั้งแรก (ติดตั้งจากศูนย์)
 
@@ -61,7 +61,7 @@ ssh root@YOUR_VPS_IP 'bash -s' < scripts/vps-update-and-restart.sh
 ให้รันแทน:
 
 ```powershell
-cd D:\axionax-monolith   # โฟลเดอร์ repo
+cd D:\nakhara-monolith   # โฟลเดอร์ repo
 .\scripts\vps-update-from-windows.ps1
 # หรือระบุ host: .\scripts\vps-update-from-windows.ps1 -HostName root@YOUR_VPS_IP
 ```
@@ -77,22 +77,22 @@ ssh root@YOUR_VPS_IP "sed -i 's/\r$//' /tmp/vps-update.sh && bash /tmp/vps-updat
 
 หรือคัดลอกคำสั่งจาก `scripts/vps-update-and-restart.sh` ไปรันทีละบล็อก:
 
-1. `cd /opt/axionax-monolith && git pull origin main`
+1. `cd /opt/nakhara-monolith && git pull origin main`
 2. `pnpm install --frozen-lockfile`
-3. `pnpm --filter @axionax/blockchain-utils build`
-4. `pnpm --filter @axionax/sdk build`
-5. `pnpm --filter @axionax/web build`
+3. `pnpm --filter @nakhara/blockchain-utils build`
+4. `pnpm --filter @nakhara/sdk build`
+5. `pnpm --filter @nakhara/web build`
 6. คัดลอก `.next/static` และ `public` เข้า standalone (ตามในสคริปต์)
-7. `pm2 restart axionax-web` (หรือ start ครั้งแรก)
+7. `pm2 restart nakhara-web` (หรือ start ครั้งแรก)
 
 ## 6. ตรวจสอบหลัง deploy
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3000/
-pm2 logs axionax-web --lines 30
+pm2 logs nakhara-web --lines 30
 ```
 
-Nginx: ดูตัวอย่าง `apps/web/nginx/conf.d/axionax-standalone.conf.example` และ `apps/web/nginx/conf.d/axionax.conf`
+Nginx: ดูตัวอย่าง `apps/web/nginx/conf.d/nakhara-standalone.conf.example` และ `apps/web/nginx/conf.d/nakhara.conf`
 
 ## 7. Docker (ถ้าใช้ root `docker-compose.yml` อย่างเดียว)
 

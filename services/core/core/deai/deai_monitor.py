@@ -10,7 +10,7 @@ Architecture:
                           --> sandbox.execute_python_script()
                           --> write result-*.json (hash, logs, retry count)
 
-For decentralized demo: run this on the cloud VPS (e.g. rpc.axionax.org)
+For decentralized demo: run this on the cloud VPS (e.g. rpc.nakhara.io)
 with access to the same queue directory (shared via scp/rsync or mounted).
 """
 

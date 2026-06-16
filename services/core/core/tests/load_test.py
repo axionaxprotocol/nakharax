@@ -238,7 +238,7 @@ async def main():
     
     print(f"""
 ╔════════════════════════════════════════════════════════════════════╗
-║              AXIONAX RPC LOAD TESTING SUITE                        ║
+║              NAKHARA RPC LOAD TESTING SUITE                        ║
 ╚════════════════════════════════════════════════════════════════════╝
 
 Target: {rpc_url}

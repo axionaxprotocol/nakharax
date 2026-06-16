@@ -1,9 +1,9 @@
 //! Genesis Block Generator
 //!
-//! Creates Block #0 for the Axionax network.
+//! Creates Block #0 for the Nakhara network.
 //!
 //! Total Supply : 1,000,000,000,000 AXX  (1 trillion, 18 decimals)
-//! Creator alias: axionaxius
+//! Creator alias: nakharaius
 
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -15,7 +15,7 @@ use std::collections::HashMap;
 // ---------------------------------------------------------------------------
 
 pub const CHAIN_ID: u64 = 86137;
-pub const CHAIN_NAME: &str = "Axionax Mainnet";
+pub const CHAIN_NAME: &str = "Nakhara Mainnet";
 pub const SYMBOL: &str = "AXX";
 pub const DECIMALS: u32 = 18;
 
@@ -86,9 +86,9 @@ impl Default for GenesisConfig {
             validators: vec![],
             balances: HashMap::new(),
             config: ProtocolConfig::default(),
-            extra_data: "axionaxius - Genesis Block #0 - Axionax Core Universe".to_string(),
+            extra_data: "nakharaius - Genesis Block #0 - Nakhara Core Universe".to_string(),
             total_supply: TOTAL_SUPPLY,
-            creator_alias: "axionaxius".to_string(),
+            creator_alias: "nakharaius".to_string(),
         }
     }
 }
@@ -309,7 +309,7 @@ impl GenesisGenerator {
     /// Build the canonical mainnet / testnet genesis with full token allocation.
     ///
     /// Total supply: 1 trillion AXX (1,000,000,000,000)
-    /// Creator alias: axionaxius (10 %)
+    /// Creator alias: nakharaius (10 %)
     pub fn mainnet() -> GenesisBlock {
         let validator_half = Self::alloc(ALLOC_VALIDATORS_BPS) / 2;
 
@@ -317,22 +317,22 @@ impl GenesisGenerator {
             chain_id: CHAIN_ID,
             chain_name: CHAIN_NAME.to_string(),
             timestamp: GENESIS_TIMESTAMP,
-            extra_data: "axionaxius - Genesis Block #0 - Axionax Core Universe".to_string(),
+            extra_data: "nakharaius - Genesis Block #0 - Nakhara Core Universe".to_string(),
             total_supply: TOTAL_SUPPLY,
-            creator_alias: "axionaxius".to_string(),
+            creator_alias: "nakharaius".to_string(),
             config: ProtocolConfig::default(),
             validators: vec![
                 GenesisValidator {
                     address: ADDR_VALIDATOR_EU.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc.axionax.org:30303".to_string(),
+                    node_url: "http://rpc.nakhara.io:30303".to_string(),
                 },
                 GenesisValidator {
                     address: ADDR_VALIDATOR_AU.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc-au.axionax.org:30303".to_string(),
+                    node_url: "http://rpc-au.nakhara.io:30303".to_string(),
                 },
             ],
             balances: HashMap::new(),
@@ -383,7 +383,7 @@ impl GenesisGenerator {
     pub fn localnet() -> GenesisBlock {
         let mut config = GenesisConfig {
             chain_id: 31337,
-            chain_name: "Axionax Localnet".to_string(),
+            chain_name: "Nakhara Localnet".to_string(),
             validators: vec![GenesisValidator {
                 address: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266".to_string(),
                 stake: 10_000 * ONE_AXX,
@@ -442,7 +442,7 @@ mod tests {
         assert_eq!(genesis.chain_id, CHAIN_ID);
         assert_eq!(genesis.config.validators.len(), 2);
         assert_eq!(genesis.config.balances.len(), 10);
-        assert_eq!(genesis.config.creator_alias, "axionaxius");
+        assert_eq!(genesis.config.creator_alias, "nakharaius");
         assert_eq!(genesis.config.total_supply, TOTAL_SUPPLY);
         assert_eq!(genesis.timestamp, GENESIS_TIMESTAMP);
 
@@ -473,7 +473,7 @@ mod tests {
 
         assert!(json.contains("chain_id"));
         assert!(json.contains("86137"));
-        assert!(json.contains("axionaxius"));
+        assert!(json.contains("nakharaius"));
     }
 
     #[test]

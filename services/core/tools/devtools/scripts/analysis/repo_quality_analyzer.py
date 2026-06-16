@@ -998,13 +998,13 @@ class RepositoryQualityAnalyzer:
 def analyze_all_repositories(base_path: Path) -> Dict[str, QualityScore]:
     """Analyze all repositories"""
     repos = [
-        'axionax-core',
-        'axionax-sdk-ts',
-        'axionax-web',
-        'axionax-marketplace',
-        'axionax-docs',
-        'axionax-deploy',
-        'axionax-devtools'
+        'nakhara-core',
+        'nakhara-sdk-ts',
+        'nakhara-web',
+        'nakhara-marketplace',
+        'nakhara-docs',
+        'nakhara-deploy',
+        'nakhara-devtools'
     ]
     
     results = {}
@@ -1078,7 +1078,7 @@ def save_json_report(results: Dict[str, QualityScore], output_path: Path):
 
 def main():
     print(f"\n{BOLD}{CYAN}{'='*70}{RESET}")
-    print(f"{BOLD}{CYAN}🔍 AXIONAX REPOSITORY QUALITY ANALYZER{RESET}")
+    print(f"{BOLD}{CYAN}🔍 NAKHARA REPOSITORY QUALITY ANALYZER{RESET}")
     print(f"{BOLD}{CYAN}{'='*70}{RESET}")
     
     # Get base path

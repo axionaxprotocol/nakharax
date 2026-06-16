@@ -1,4 +1,4 @@
-# All Node Types on the Axionax Network
+# All Node Types on the Nakhara Network
 
 Summary of **every node and service type** expected on the network (from config, deploy, and protocol in this repo).
 
@@ -16,7 +16,7 @@ Summary of **every node and service type** expected on the network (from config,
 
 ## 1. Blockchain Nodes (Chain / P2P Layer)
 
-Nodes running `axionax-node` (or equivalent), mode set via config or `--role`.
+Nodes running `nakhara-node` (or equivalent), mode set via config or `--role`.
 
 ### 1.1 Validator
 
@@ -32,8 +32,8 @@ Nodes running `axionax-node` (or equivalent), mode set via config or `--role`.
 
 | IP | Region | Role | RPC (direct) | Public HTTPS |
 |----|--------|------|--------------|--------------|
-| 217.216.109.5 | EU | Validator #1 + RPC + **Axionax OS** | http://217.216.109.5:8545 | `https://app.axionax.org` |
-| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.axionax.org` |
+| 217.216.109.5 | EU | Validator #1 + RPC + **Nakhara OS** | http://217.216.109.5:8545 | `https://app.nakhara.io` |
+| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.nakhara.io` |
 
 - EU OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) · AU stack: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -83,28 +83,28 @@ Not P2P nodes; services that connect to the chain via RPC.
 | Item | Details |
 |------|---------|
 | **Role** | Public RPC (testnet/mainnet) |
-| **Deploy** | Docker: `rpc-node` / `axionax-rpc` |
+| **Deploy** | Docker: `rpc-node` / `nakhara-rpc` |
 | **Ports** | 8545, 8546 |
-| **Domain** | rpc.axionax.org, testnet RPC per env |
+| **Domain** | rpc.nakhara.io, testnet RPC per env |
 
 ### 2.2 Block Explorer
 
 | Item | Details |
 |------|---------|
 | **Role** | UI + API for blocks, transactions, addresses |
-| **Stack** | Blockscout or axionax-explorer, PostgreSQL |
+| **Stack** | Blockscout or nakhara-explorer, PostgreSQL |
 | **Deploy** | `explorer`, `explorer-backend`, `setup_explorer.sh` |
 | **Ports** | 4000 (Blockscout) or 3001 (API) |
-| **Domain** | explorer.axionax.org, testnet-explorer.axionax.org |
+| **Domain** | explorer.nakhara.io, testnet-explorer.nakhara.io |
 
 ### 2.3 Faucet
 
 | Item | Details |
 |------|---------|
 | **Role** | Distribute testnet tokens (AXX) with rate limit |
-| **Deploy** | `axionax-faucet` (Rust) or Node image, `setup_faucet.sh` |
+| **Deploy** | `nakhara-faucet` (Rust) or Node image, `setup_faucet.sh` |
 | **Ports** | 8080 or 3002 |
-| **Domain** | faucet.axionax.org, testnet-faucet.axionax.org |
+| **Domain** | faucet.nakhara.io, testnet-faucet.nakhara.io |
 
 ### 2.4 Monitoring (Prometheus / Grafana)
 
@@ -164,6 +164,6 @@ Source: `core/core/network/src/protocol.rs` → `NodeCapabilities`, `PeerInfo.ca
 
 ---
 
-*This document is the single source of truth for node types on the Axionax network in this repo.*
+*This document is the single source of truth for node types on the Nakhara network in this repo.*
 
 → **Hardware specs (CPU, RAM, storage):** [NODE_SPECS.md](./NODE_SPECS.md)

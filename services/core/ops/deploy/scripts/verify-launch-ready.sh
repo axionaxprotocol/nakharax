@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# axionax Testnet Pre-Launch Verification Script
+# nakhara Testnet Pre-Launch Verification Script
 # Verifies all systems are ready for public testnet launch
 
 set -e
 
-echo "🚀 axionax Testnet Pre-Launch Verification"
+echo "🚀 nakhara Testnet Pre-Launch Verification"
 echo "=========================================="
 echo ""
 
@@ -60,13 +60,13 @@ if [ -n "$GENESIS_FILE" ]; then
     fi
     if [ "$CHAIN_ID_OK" -eq 0 ]; then
         LEGACY_CHAIN_ID=$(python3 -c "import json; d=json.load(open('$GENESIS_FILE')); print(d.get('chain_id',''))" 2>/dev/null || true)
-        if [ "$LEGACY_CHAIN_ID" = "axionax-testnet-1" ]; then
+        if [ "$LEGACY_CHAIN_ID" = "nakhara-testnet-1" ]; then
             check_pass "Chain ID is correct (legacy): $LEGACY_CHAIN_ID"
             CHAIN_ID_OK=1
         fi
     fi
     if [ "$CHAIN_ID_OK" -eq 0 ]; then
-        check_fail "Chain ID not found or not 86137 / axionax-testnet-1"
+        check_fail "Chain ID not found or not 86137 / nakhara-testnet-1"
     fi
     
     # Validators: accept config.chainId format (>=2) or legacy (>=4)
@@ -102,15 +102,15 @@ check_dns() {
     fi
 }
 
-check_dns "axionax.org" "GitHub Pages"
-check_dns "rpc.axionax.org" "VPS"
-check_dns "explorer.axionax.org" "VPS"
-check_dns "faucet.axionax.org" "VPS"
+check_dns "nakhara.io" "GitHub Pages"
+check_dns "rpc.nakhara.io" "VPS"
+check_dns "explorer.nakhara.io" "VPS"
+check_dns "faucet.nakhara.io" "VPS"
 echo ""
 
 # 3. Check RPC Endpoint
 echo "3. Checking RPC Endpoint..."
-RPC_URL="${RPC_URL:-https://rpc.axionax.org}"
+RPC_URL="${RPC_URL:-https://rpc.nakhara.io}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$RPC_URL/health" | grep -q "200"; then
     check_pass "RPC endpoint is accessible: $RPC_URL"
@@ -121,7 +121,7 @@ echo ""
 
 # 4. Check Explorer
 echo "4. Checking Block Explorer..."
-EXPLORER_URL="${EXPLORER_URL:-https://explorer.axionax.org}"
+EXPLORER_URL="${EXPLORER_URL:-https://explorer.nakhara.io}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$EXPLORER_URL" | grep -q "200\|301\|302"; then
     check_pass "Explorer is accessible: $EXPLORER_URL"
@@ -132,7 +132,7 @@ echo ""
 
 # 5. Check Faucet
 echo "5. Checking Faucet..."
-FAUCET_URL="${FAUCET_URL:-https://faucet.axionax.org}"
+FAUCET_URL="${FAUCET_URL:-https://faucet.nakhara.io}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$FAUCET_URL" | grep -q "200\|301\|302"; then
     check_pass "Faucet is accessible: $FAUCET_URL"
@@ -143,7 +143,7 @@ echo ""
 
 # 6. Check GitHub Pages
 echo "6. Checking Website..."
-WEBSITE_URL="${WEBSITE_URL:-https://axionax.org}"
+WEBSITE_URL="${WEBSITE_URL:-https://nakhara.io}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$WEBSITE_URL" | grep -q "200"; then
     check_pass "Website is accessible: $WEBSITE_URL"
@@ -164,9 +164,9 @@ check_ssl() {
     fi
 }
 
-check_ssl "rpc.axionax.org"
-check_ssl "explorer.axionax.org"
-check_ssl "faucet.axionax.org"
+check_ssl "rpc.nakhara.io"
+check_ssl "explorer.nakhara.io"
+check_ssl "faucet.nakhara.io"
 echo ""
 
 # 8. Check Docker Services
@@ -219,15 +219,15 @@ echo "10. Checking GitHub Repositories..."
 
 check_repo() {
     local repo=$1
-    if curl -f -s -o /dev/null -w "%{http_code}" "https://api.github.com/repos/axionaxprotocol/$repo" | grep -q "200"; then
+    if curl -f -s -o /dev/null -w "%{http_code}" "https://api.github.com/repos/nakhara-io/$repo" | grep -q "200"; then
         check_pass "Repository accessible: $repo"
     else
         check_warn "Repository not accessible: $repo"
     fi
 }
 
-check_repo "axionax-monolith"
-check_repo "axionax-monolith"
+check_repo "nakhara-monolith"
+check_repo "nakhara-monolith"
 echo ""
 
 # 11. Check Monitoring

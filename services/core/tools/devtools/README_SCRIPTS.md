@@ -3,7 +3,7 @@
 ## 📁 Directory Structure
 
 ```
-axionax-devtools/
+nakhara-devtools/
 ├── scripts/
 │   ├── testing/
 │   │   ├── testnet_readiness_checker.py  # Main readiness validation
@@ -170,14 +170,14 @@ For detailed guides, see:
 
 ## 🔗 Related Repositories
 
-- **axionax-core**: Core protocol implementation
-- **axionax-deploy**: Deployment scripts and configs
-- **axionax-sdk-ts**: TypeScript SDK
-- **axionax-docs**: Documentation and guides
+- **nakhara-core**: Core protocol implementation
+- **nakhara-deploy**: Deployment scripts and configs
+- **nakhara-sdk-ts**: TypeScript SDK
+- **nakhara-docs**: Documentation and guides
 
 ## 🆘 Support
 
 For issues or questions:
 1. Check [TESTNET_READINESS_GUIDE.md](docs/TESTNET_READINESS_GUIDE.md)
 2. Review [REPOSITORY_FLOW.md](docs/REPOSITORY_FLOW.md)
-3. Open issue in axionax-devtools repository
+3. Open issue in nakhara-devtools repository

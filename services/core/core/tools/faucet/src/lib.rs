@@ -1,4 +1,4 @@
-//! Axionax Faucet — testable pure helpers
+//! Nakhara Faucet — testable pure helpers
 //!
 //! This library exposes the core logic of the faucet binary as pure functions
 //! so they can be unit-tested without spinning up an HTTP server or touching

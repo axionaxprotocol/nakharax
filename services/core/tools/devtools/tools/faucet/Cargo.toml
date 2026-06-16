@@ -1,5 +1,5 @@
 [package]
-name = "axionax-faucet"
+name = "nakhara-faucet"
 version = "1.0.0"
 edition = "2021"
 

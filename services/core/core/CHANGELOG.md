@@ -40,8 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Block finality gadget (`FinalityTracker`): ≥ 2/3 majority confirmation before finalization
 - Block rewards: `BLOCK_REWARD = 1_000_000_000_000_000_000` (1 AXX) credited to proposer via `staking.record_block_produced()`
 - `BlockConfirmation` network message type and broadcast in `start_block_producer` + sync task
-- `validator_address` in `NodeConfig` with `--validator-address` CLI arg and `AXIONAX_VALIDATOR_ADDRESS` env var
-- Docker testnet: `AXIONAX_VALIDATOR_ADDRESS` env in validator service
+- `validator_address` in `NodeConfig` with `--validator-address` CLI arg and `NAKHARA_VALIDATOR_ADDRESS` env var
+- Docker testnet: `NAKHARA_VALIDATOR_ADDRESS` env in validator service
 
 **RPC & health:**
 - `/version` HTTP endpoint (`VersionResponse` with `version`, `chain_id`, `git_hash`, `build_time`, `uptime_secs`)
@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - `bincode` 2.0 (unmaintained) → **`postcard`** 1.x in `network` and `bridge` crates (resolves RUSTSEC advisory)
-- Criterion benchmark crate names fixed: `axionax_consensus_benchmarks`, `axionax_crypto_benchmarks`, `axionax_network_benchmarks`
+- Criterion benchmark crate names fixed: `nakhara_consensus_benchmarks`, `nakhara_crypto_benchmarks`, `nakhara_network_benchmarks`
 - `ARCHITECTURE_OVERVIEW.md` expanded: sections 6–11 added (consensus flow, economic layer, performance characteristics)
 
 ### Fixed
@@ -130,7 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Crypto primitives (Ed25519, SHA3, Blake2)
 - Python-Rust bridge for DeAI components
 
-[1.9.0]: https://github.com/axionaxprotocol/axionax-core/compare/v1.8.0...v1.9.0
-[1.8.0]: https://github.com/axionaxprotocol/axionax-core/compare/v1.7.0...v1.8.0
-[1.7.0]: https://github.com/axionaxprotocol/axionax-core/compare/v1.0.0...v1.7.0
-[1.0.0]: https://github.com/axionaxprotocol/axionax-core/releases/tag/v1.0.0
+[1.9.0]: https://github.com/nakhara-io/nakhara-core/compare/v1.8.0...v1.9.0
+[1.8.0]: https://github.com/nakhara-io/nakhara-core/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/nakhara-io/nakhara-core/compare/v1.0.0...v1.7.0
+[1.0.0]: https://github.com/nakhara-io/nakhara-core/releases/tag/v1.0.0

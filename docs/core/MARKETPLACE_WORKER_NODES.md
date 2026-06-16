@@ -1,6 +1,6 @@
 # Worker Nodes on the Marketplace — Expected Types
 
-Summary of **worker node types** the system and repo docs expect on the **Compute Marketplace** (axionax-marketplace / JobMarketplace).
+Summary of **worker node types** the system and repo docs expect on the **Compute Marketplace** (nakhara-marketplace / JobMarketplace).
 
 ---
 

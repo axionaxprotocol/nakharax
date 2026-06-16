@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Fix domain: axionax.org -> axionax.org
+Fix domain: nakhara.io -> nakhara.io
 """
 import os
 from pathlib import Path
 
-WORKSPACE_ROOT = Path(r"D:\Desktop\axionaxius01")
+WORKSPACE_ROOT = Path(r"D:\Desktop\nakharaius01")
 EXTENSIONS = [".md", ".ts", ".tsx", ".html", ".json", ".toml", ".rs", ".go", ".py", ".sh", ".yml", ".yaml", ".js", ".jsx"]
 EXCLUDE_DIRS = {"node_modules", ".git", "dist", "build", "target", "out", ".next", "__pycache__"}
 
@@ -17,17 +17,17 @@ def should_process(file_path):
     )
 
 def fix_domain(content):
-    """Replace axionax.org -> axionax.org"""
+    """Replace nakhara.io -> nakhara.io"""
     modified = False
     
-    if "axionax.org" in content:
-        content = content.replace("axionax.org", "axionax.org")
+    if "nakhara.io" in content:
+        content = content.replace("nakhara.io", "nakhara.io")
         modified = True
     
     return content, modified
 
 def main():
-    print("🔍 Scanning for axionax.org domain...")
+    print("🔍 Scanning for nakhara.io domain...")
     
     total_files = 0
     modified_files = 0
@@ -45,7 +45,7 @@ def main():
                 content = f.read()
             
             # Count before
-            before_count = content.count("axionax.org")
+            before_count = content.count("nakhara.io")
             
             if before_count == 0:
                 continue
@@ -58,7 +58,7 @@ def main():
                 with open(file_path, "w", encoding="utf-8", newline="") as f:
                     f.write(new_content)
                 
-                after_count = new_content.count("axionax.org")
+                after_count = new_content.count("nakhara.io")
                 replacements = before_count - after_count
                 total_replacements += replacements
                 

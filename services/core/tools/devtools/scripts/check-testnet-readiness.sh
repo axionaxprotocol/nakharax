@@ -28,7 +28,7 @@ fi
 # Banner
 echo ""
 echo -e "${CYAN}======================================================================${NC}"
-echo -e "${BOLD}${CYAN}  AXIONAX TESTNET READINESS CHECKER${NC}"
+echo -e "${BOLD}${CYAN}  NAKHARA TESTNET READINESS CHECKER${NC}"
 echo -e "${CYAN}======================================================================${NC}"
 echo ""
 
@@ -52,7 +52,7 @@ echo -e "${GREEN}  ✅ Python: $PYTHON_VERSION${NC}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Locate checker script
-CHECKER_SCRIPT="$SCRIPT_DIR/axionax-devtools/scripts/testing/testnet_readiness_checker.py"
+CHECKER_SCRIPT="$SCRIPT_DIR/nakhara-devtools/scripts/testing/testnet_readiness_checker.py"
 
 if [ ! -f "$CHECKER_SCRIPT" ]; then
     echo -e "${RED}  ❌ Readiness checker script not found at: $CHECKER_SCRIPT${NC}"

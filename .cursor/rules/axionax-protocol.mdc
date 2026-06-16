@@ -1,13 +1,13 @@
 ---
-description: Axionax monorepo engineering standards
+description: Nakhara monorepo engineering standards
 alwaysApply: true
 ---
 
-# Axionax Protocol Rule
+# Nakhara Protocol Rule
 
 ## Architecture
 - Check `packages/sdk` first for reusable business logic before implementing in apps.
-- Use workspace aliases only (for example `@axionax/sdk`), never cross-package relative imports.
+- Use workspace aliases only (for example `@nakhara/sdk`), never cross-package relative imports.
 - Use `pnpm` for workspace dependency and script operations.
 
 ## Frontend

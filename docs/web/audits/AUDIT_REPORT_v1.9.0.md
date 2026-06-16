@@ -1,4 +1,4 @@
-# Axionax Protocol Testnet Audit Report v1.9.0
+# Nakhara Protocol Testnet Audit Report v1.9.0
 
 **Date:** 2025-12-10
 **Auditor:** Senior System Architect (Cline)
@@ -7,11 +7,11 @@
 
 ## 1. Executive Summary
 
-Following the remediation of findings from the v1.0 audit, the axionax protocol has been upgraded to **v1.9.0** and successfully deployed to the testnet environment. All critical security vulnerabilities in the consensus layer have been addressed, and the infrastructure has been hardened with secure deployment practices.
+Following the remediation of findings from the v1.0 audit, the nakhara protocol has been upgraded to **v1.9.0** and successfully deployed to the testnet environment. All critical security vulnerabilities in the consensus layer have been addressed, and the infrastructure has been hardened with secure deployment practices.
 
 **Deployment Status:**
 
-- **Web Interface:** https://axionax.org (Active)
+- **Web Interface:** https://nakhara.io (Active)
 - **Infrastructure Node:** VPS (Active)
 - **Version:** v1.9.0-testnet
 
@@ -42,7 +42,7 @@ Following the remediation of findings from the v1.0 audit, the axionax protocol 
   - `deploy-to-vps.sh` has been sanitized to remove hardcoded credentials.
   - Deployment now requires environment variables for authentication.
   - Nginx configuration hardened with SSL, Rate Limiting, and Headers.
-  - Automated backups implemented (`/var/backups/axionax`).
+  - Automated backups implemented (`/var/backups/nakhara`).
 - **Status:** **RESOLVED**
 
 ## 3. Deployment Verification
@@ -50,9 +50,9 @@ Following the remediation of findings from the v1.0 audit, the axionax protocol 
 | Component         | Version | Status     | Endpoint                        |
 | ----------------- | ------- | ---------- | ------------------------------- |
 | **Core Protocol** | v1.9.0  | 🟢 Healthy | Internal (30303)                |
-| **Frontend**      | v1.9.0  | 🟢 Healthy | https://axionax.org             |
-| **Marketplace**   | v1.9.0  | 🟢 Healthy | https://axionax.org/marketplace |
-| **Explorer API**  | v1.9.0  | 🟢 Healthy | https://axionax.org/api/        |
+| **Frontend**      | v1.9.0  | 🟢 Healthy | https://nakhara.io             |
+| **Marketplace**   | v1.9.0  | 🟢 Healthy | https://nakhara.io/marketplace |
+| **Explorer API**  | v1.9.0  | 🟢 Healthy | https://nakhara.io/api/        |
 
 ## 4. Recommendations for Mainnet
 

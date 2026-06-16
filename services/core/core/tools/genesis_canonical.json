@@ -7,24 +7,24 @@
   "receipts_root": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "timestamp": 1775001600,
   "chain_id": 86137,
-  "chain_name": "Axionax Mainnet",
-  "extra_data": "axionaxius - Genesis Block #0 - Axionax Core Universe",
+  "chain_name": "Nakhara Mainnet",
+  "extra_data": "nakharaius - Genesis Block #0 - Nakhara Core Universe",
   "config": {
     "chain_id": 86137,
-    "chain_name": "Axionax Mainnet",
+    "chain_name": "Nakhara Mainnet",
     "timestamp": 1775001600,
     "validators": [
       {
         "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://rpc.axionax.org:30303"
+        "node_url": "http://rpc.nakhara.io:30303"
       },
       {
         "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://rpc-au.axionax.org:30303"
+        "node_url": "http://rpc-au.nakhara.io:30303"
       }
     ],
     "balances": {
@@ -59,8 +59,8 @@
         "pass_threshold_bps": 5000
       }
     },
-    "extra_data": "axionaxius - Genesis Block #0 - Axionax Core Universe",
+    "extra_data": "nakharaius - Genesis Block #0 - Nakhara Core Universe",
     "total_supply": 1000000000000000000000000000000,
-    "creator_alias": "axionaxius"
+    "creator_alias": "nakharaius"
   }
 }

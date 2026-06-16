@@ -1,4 +1,4 @@
-//! Binary Merkle Tree for Axionax state root computation.
+//! Binary Merkle Tree for Nakhara state root computation.
 //!
 //! # Design
 //! - Leaf  = blake2s_256(address_bytes || balance_be || nonce_be)

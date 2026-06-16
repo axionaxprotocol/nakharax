@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-P2P stability evidence collector for Axionax testnet validators.
+P2P stability evidence collector for Nakhara testnet validators.
 
 Produces a report directory containing:
 - peer-events.log
@@ -213,8 +213,8 @@ def write_incident_template(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Collect 24h P2P stability evidence.")
-    parser.add_argument("--rpc-a", default="https://rpc.axionax.org", help="Validator A RPC URL")
-    parser.add_argument("--rpc-b", default="https://rpc-au.axionax.org", help="Validator B RPC URL")
+    parser.add_argument("--rpc-a", default="https://rpc.nakhara.io", help="Validator A RPC URL")
+    parser.add_argument("--rpc-b", default="https://rpc-au.nakhara.io", help="Validator B RPC URL")
     parser.add_argument("--host-a", default="217.216.109.5", help="Validator A host for ping/traceroute")
     parser.add_argument("--host-b", default="46.250.244.4", help="Validator B host for ping/traceroute")
     parser.add_argument("--name-a", default="validator-a", help="Display name for validator A")

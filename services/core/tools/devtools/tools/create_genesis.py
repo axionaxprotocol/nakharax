@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Genesis Configuration Generator
-Creates genesis.json for axionax Testnet launch
+Creates genesis.json for nakhara Testnet launch
 """
 
 import json
@@ -25,7 +25,7 @@ class GenesisGenerator:
                 "istanbulBlock": 0,
                 "berlinBlock": 0,
                 "londonBlock": 0,
-                "axionax": {
+                "nakhara": {
                     "consensus": "popc",
                     "blockTime": 5,
                     "epochLength": 100,
@@ -201,7 +201,7 @@ def main():
     
     # Create generator
     print("=" * 60)
-    print("axionax Genesis Generator")
+    print("nakhara Genesis Generator")
     print("=" * 60)
     
     gen = GenesisGenerator(chain_id=86137)
@@ -254,7 +254,7 @@ def main():
     print(f"3. Announce genesis hash: 0x{genesis_hash}")
     print("4. Validators verify and initialize nodes")
     print("5. Coordinate launch time")
-    print("\nFor support: validators@axionax.org")
+    print("\nFor support: validators@nakhara.io")
 
 if __name__ == "__main__":
     main()

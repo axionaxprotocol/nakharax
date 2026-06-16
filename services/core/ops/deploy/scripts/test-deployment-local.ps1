@@ -55,7 +55,7 @@ function Write-Info {
 }
 
 # Main execution
-Write-Header "axionax VPS Deployment - Pre-Flight Check"
+Write-Header "nakhara VPS Deployment - Pre-Flight Check"
 
 $DeployDir = Split-Path -Parent $PSScriptRoot
 $ScriptsDir = Join-Path $DeployDir "scripts"
@@ -267,17 +267,17 @@ Write-Host ""
 
 Write-ColorOutput "Step 1: Upload files to VPS" "Yellow"
 Write-Host "# Using SCP (from this directory):"
-Write-ColorOutput "scp -r ../axionax-deploy root@${vpsIP}:/opt/" "Cyan"
+Write-ColorOutput "scp -r ../nakhara-deploy root@${vpsIP}:/opt/" "Cyan"
 Write-Host ""
 Write-Host "# OR using Git (on VPS):"
 Write-ColorOutput "ssh root@$vpsIP" "Cyan"
 Write-ColorOutput "cd /opt" "Cyan"
-Write-ColorOutput "git clone https://github.com/axionaxprotocol/axionax-deploy.git" "Cyan"
+Write-ColorOutput "git clone https://github.com/nakhara-io/nakhara-deploy.git" "Cyan"
 Write-Host ""
 
 Write-ColorOutput "Step 2: Configure environment" "Yellow"
 Write-ColorOutput "ssh root@$vpsIP" "Cyan"
-Write-ColorOutput "cd /opt/axionax-deploy" "Cyan"
+Write-ColorOutput "cd /opt/nakhara-deploy" "Cyan"
 Write-ColorOutput "cp .env.example .env" "Cyan"
 Write-ColorOutput "nano .env  # Edit with your values" "Cyan"
 Write-Host ""
@@ -328,12 +328,12 @@ Write-Host ""
 Write-ColorOutput "Quick connect command:" "Yellow"
 Write-ColorOutput "ssh root@$vpsIP" "Cyan"
 Write-Host ""
-Write-Info "After connecting, navigate to: cd /opt/axionax-deploy"
+Write-Info "After connecting, navigate to: cd /opt/nakhara-deploy"
 Write-Host ""
 
 # Save connection info to file
 $connectionInfo = @"
-# axionax VPS Connection Info
+# nakhara VPS Connection Info
 # Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 VPS_IP=$vpsIP
@@ -342,10 +342,10 @@ VPS_IP=$vpsIP
 ssh root@$vpsIP
 
 # Upload Files
-scp -r ../axionax-deploy root@${vpsIP}:/opt/
+scp -r ../nakhara-deploy root@${vpsIP}:/opt/
 
 # After connecting
-cd /opt/axionax-deploy
+cd /opt/nakhara-deploy
 chmod +x scripts/*.sh
 sudo ./scripts/deploy-all-services.sh --check-only
 sudo ./scripts/deploy-all-services.sh --full

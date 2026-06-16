@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-# Build and (re)start Axionax OS Dashboard on EU VPS (217.216.109.5)
+# Build and (re)start Nakhara OS Dashboard on EU VPS (217.216.109.5)
 # Run from monorepo root: bash apps/os-dashboard/scripts/vps-deploy.sh
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 APP_DIR="${ROOT}/apps/os-dashboard"
-APP_NAME="axionax-os"
+APP_NAME="nakhara-os"
 PORT="${PORT:-3030}"
 
-echo "==> Axionax OS deploy (root: ${ROOT})"
+echo "==> Nakhara OS deploy (root: ${ROOT})"
 
 cd "${ROOT}"
 pnpm install
-pnpm --filter axionax-os-dashboard build
+pnpm --filter nakhara-os-dashboard build
 
 STANDALONE="${APP_DIR}/.next/standalone/apps/os-dashboard"
 if [[ ! -f "${STANDALONE}/server.js" ]]; then

@@ -20,18 +20,18 @@ If bootstrap list is empty, stop and publish bootstrap values first.
 ## 2) Run from scratch
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 
-export AXIONAX_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
-test -n "$AXIONAX_BOOTSTRAP_NODES"
+export NAKHARA_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
+test -n "$NAKHARA_BOOTSTRAP_NODES"
 
 cd ops/deploy/scripts
-chmod +x axionax-node-bootstrap.sh
-./axionax-node-bootstrap.sh build
+chmod +x nakhara-node-bootstrap.sh
+./nakhara-node-bootstrap.sh build
 
-sudo ./axionax-node-bootstrap.sh setup --role full --data-dir /var/lib/axionax-node
-sudo timeout 300 ./axionax-node-bootstrap.sh run --data-dir /var/lib/axionax-node
+sudo ./nakhara-node-bootstrap.sh setup --role full --data-dir /var/lib/nakhara-node
+sudo timeout 300 ./nakhara-node-bootstrap.sh run --data-dir /var/lib/nakhara-node
 ```
 
 Notes:
@@ -77,7 +77,7 @@ LOCAL_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
 
 PUBLIC_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.axionax.org | jq -r '.result')
+  https://rpc.nakhara.io | jq -r '.result')
 
 python3 - <<'PY'
 import os

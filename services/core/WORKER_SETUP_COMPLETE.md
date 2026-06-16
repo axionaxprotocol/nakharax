@@ -1,4 +1,4 @@
-# 🎉 axionax Worker Node - Windows Setup Complete!
+# 🎉 nakhara Worker Node - Windows Setup Complete!
 
 **Date**: 2025-11-25  
 **Platform**: Windows 11 Pro (Local Machine)  
@@ -35,7 +35,7 @@ Environment:
 ### 1. Activate Environment
 
 ```powershell
-cd D:\axionax-monolith
+cd D:\nakhara-monolith
 .\worker-env\Scripts\Activate.ps1
 ```
 
@@ -70,7 +70,7 @@ vram = 4
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.axionax.org"
+rpc_url = "https://rpc.nakhara.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -81,17 +81,17 @@ target_uptime = 0.95
 batch_size = 32
 
 [storage]
-data_dir = "D:\\axionax-worker\\data"
-models_dir = "D:\\axionax-worker\\models"
-logs_dir = "D:\\axionax-worker\\logs"
+data_dir = "D:\\nakhara-worker\\data"
+models_dir = "D:\\nakhara-worker\\models"
+logs_dir = "D:\\nakhara-worker\\logs"
 ```
 
 ### 4. Create Directories
 
 ```powershell
-mkdir D:\axionax-worker\data
-mkdir D:\axionax-worker\models
-mkdir D:\axionax-worker\logs
+mkdir D:\nakhara-worker\data
+mkdir D:\nakhara-worker\models
+mkdir D:\nakhara-worker\logs
 ```
 
 ---
@@ -142,13 +142,13 @@ deactivate
 
 ---
 
-## 🌐 Connect to axionax Network
+## 🌐 Connect to nakhara Network
 
 ### Test RPC Connection
 
 ```powershell
 # Test connection to your RPC node
-curl https://rpc.axionax.org -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
+curl https://rpc.nakhara.io -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
 ```
 
 ### Register Worker (Future)
@@ -193,7 +193,7 @@ Get-Process python | Format-Table Name,CPU,WorkingSet -AutoSize
 ## 📁 Project Structure
 
 ```
-D:\axionax-monolith\
+D:\nakhara-monolith\
 ├── worker-env\              # Virtual environment ✅
 ├── core\
 │   ├── deai\               # DeAI components
@@ -206,7 +206,7 @@ D:\axionax-monolith\
     ├── WORKER_LOCAL_WINDOWS_AMD.md  # Full guide
     └── ...
 
-D:\axionax-worker\          # Worker data (create this)
+D:\nakhara-worker\          # Worker data (create this)
 ├── data\
 ├── models\
 └── logs\
@@ -277,7 +277,7 @@ pip install --force-reinstall torch
 
 ## 🎊 Congratulations!
 
-**Your Windows machine is now an axionax Worker Node!**
+**Your Windows machine is now an nakhara Worker Node!**
 
 This machine is ready for:
 - ✅ Development & Testing

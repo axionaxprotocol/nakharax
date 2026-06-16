@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 
-Write-Host 'axionax Testnet Pre-Launch Verification'
+Write-Host 'nakhara Testnet Pre-Launch Verification'
 Write-Host '======================================='
 Write-Host ''
 
@@ -63,8 +63,8 @@ if ($genesisFile) {
     if ($genesis) {
         $chainOk = $false
         if ($genesis.config -and "$($genesis.config.chainId)" -eq '86137') { Check-Pass 'Chain ID is correct (EVM): 86137'; $chainOk = $true }
-        if (-not $chainOk -and "$($genesis.chain_id)" -eq 'axionax-testnet-1') { Check-Pass 'Chain ID is correct (legacy): axionax-testnet-1'; $chainOk = $true }
-        if (-not $chainOk) { Check-Fail 'Chain ID not found or not 86137 / axionax-testnet-1' }
+        if (-not $chainOk -and "$($genesis.chain_id)" -eq 'nakhara-testnet-1') { Check-Pass 'Chain ID is correct (legacy): nakhara-testnet-1'; $chainOk = $true }
+        if (-not $chainOk) { Check-Fail 'Chain ID not found or not 86137 / nakhara-testnet-1' }
 
         $count = 0
         if ($genesis.validators -is [System.Collections.IEnumerable]) { $count = @($genesis.validators).Count }
@@ -78,37 +78,37 @@ if ($genesisFile) {
 Write-Host ''
 
 Write-Host '2. Checking DNS Configuration...'
-@('axionax.org', 'rpc.axionax.org', 'explorer.axionax.org', 'faucet.axionax.org') | ForEach-Object {
+@('nakhara.io', 'rpc.nakhara.io', 'explorer.nakhara.io', 'faucet.nakhara.io') | ForEach-Object {
     if (Test-DnsResolve $_) { Check-Pass ("DNS resolves: " + $_) } else { Check-Fail ("DNS does not resolve: " + $_) }
 }
 Write-Host ''
 
 Write-Host '3. Checking RPC Endpoint...'
-$rpcUrl = if ($env:RPC_URL) { $env:RPC_URL } else { 'https://rpc.axionax.org' }
+$rpcUrl = if ($env:RPC_URL) { $env:RPC_URL } else { 'https://rpc.nakhara.io' }
 $rpcStatus = Get-HttpStatusCode ($rpcUrl + '/health')
 if ($rpcStatus -eq 200) { Check-Pass ("RPC endpoint is accessible: " + $rpcUrl) } else { Check-Fail ("RPC endpoint is not accessible: " + $rpcUrl) }
 Write-Host ''
 
 Write-Host '4. Checking Block Explorer...'
-$explorerUrl = if ($env:EXPLORER_URL) { $env:EXPLORER_URL } else { 'https://explorer.axionax.org' }
+$explorerUrl = if ($env:EXPLORER_URL) { $env:EXPLORER_URL } else { 'https://explorer.nakhara.io' }
 $explorerStatus = Get-HttpStatusCode $explorerUrl
 if ($explorerStatus -in @(200, 301, 302)) { Check-Pass ("Explorer is accessible: " + $explorerUrl) } else { Check-Fail ("Explorer is not accessible: " + $explorerUrl) }
 Write-Host ''
 
 Write-Host '5. Checking Faucet...'
-$faucetUrl = if ($env:FAUCET_URL) { $env:FAUCET_URL } else { 'https://faucet.axionax.org' }
+$faucetUrl = if ($env:FAUCET_URL) { $env:FAUCET_URL } else { 'https://faucet.nakhara.io' }
 $faucetStatus = Get-HttpStatusCode $faucetUrl
 if ($faucetStatus -in @(200, 301, 302)) { Check-Pass ("Faucet is accessible: " + $faucetUrl) } else { Check-Fail ("Faucet is not accessible: " + $faucetUrl) }
 Write-Host ''
 
 Write-Host '6. Checking Website...'
-$websiteUrl = if ($env:WEBSITE_URL) { $env:WEBSITE_URL } else { 'https://axionax.org' }
+$websiteUrl = if ($env:WEBSITE_URL) { $env:WEBSITE_URL } else { 'https://nakhara.io' }
 $websiteStatus = Get-HttpStatusCode $websiteUrl
 if ($websiteStatus -eq 200) { Check-Pass ("Website is accessible: " + $websiteUrl) } else { Check-Fail ("Website is not accessible: " + $websiteUrl) }
 Write-Host ''
 
 Write-Host '7. Checking SSL Certificates...'
-@('rpc.axionax.org', 'explorer.axionax.org', 'faucet.axionax.org') | ForEach-Object {
+@('rpc.nakhara.io', 'explorer.nakhara.io', 'faucet.nakhara.io') | ForEach-Object {
     if (Test-SslCertificate $_) { Check-Pass ("SSL certificate valid: " + $_) } else { Check-Warn ("SSL certificate issue: " + $_) }
 }
 Write-Host ''
@@ -138,8 +138,8 @@ if (Test-Path $envFile) {
 Write-Host ''
 
 Write-Host '10. Checking GitHub Repositories...'
-@('axionax-monolith', 'axionax-monolith') | ForEach-Object {
-    $status = Get-HttpStatusCode ('https://api.github.com/repos/axionaxprotocol/' + $_)
+@('nakhara-monolith', 'nakhara-monolith') | ForEach-Object {
+    $status = Get-HttpStatusCode ('https://api.github.com/repos/nakhara-io/' + $_)
     if ($status -eq 200) { Check-Pass ('Repository accessible: ' + $_) } else { Check-Warn ('Repository not accessible: ' + $_) }
 }
 Write-Host ''

@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - axionax-deploy
+# 🚀 Quick Start Guide - nakhara-deploy
 
 ## Overview
 
-**axionax-deploy** is a deployment and infrastructure repository for deploying axionax protocol nodes, monitoring, and infrastructure management
+**nakhara-deploy** is a deployment and infrastructure repository for deploying nakhara protocol nodes, monitoring, and infrastructure management
 
-**Repository:** https://github.com/axionaxprotocol/axionax-deploy
+**Repository:** https://github.com/nakhara-io/nakhara-deploy
 
 ---
 
@@ -36,8 +36,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-deploy.git
-cd axionax-deploy
+git clone https://github.com/nakhara-io/nakhara-deploy.git
+cd nakhara-deploy
 ```
 
 ### 2. Install Dependencies
@@ -86,7 +86,7 @@ nano .env
 npm run deploy:local
 
 # This will:
-# 1. Build axionax-core
+# 1. Build nakhara-core
 # 2. Start local node
 # 3. Setup monitoring
 # 4. Create test accounts
@@ -99,10 +99,10 @@ curl http://localhost:8545
 
 ```bash
 # Build Docker image
-docker build -t axionax-node .
+docker build -t nakhara-node .
 
 # Run single node
-docker run -p 8545:8545 -p 30333:30333 axionax-node
+docker run -p 8545:8545 -p 30333:30333 nakhara-node
 
 # Run with Docker Compose (full stack)
 docker-compose up -d
@@ -111,7 +111,7 @@ docker-compose up -d
 docker-compose ps
 
 # View logs
-docker-compose logs -f axionax-node
+docker-compose logs -f nakhara-node
 ```
 
 ### Cloud Deployment
@@ -134,7 +134,7 @@ npm run deploy:monitoring
 ## 🏗️ Project Structure
 
 ```
-axionax-deploy/
+nakhara-deploy/
 ├── ansible/                    # Ansible playbooks
 │   ├── playbooks/              # Deployment playbooks
 │   │   ├── deploy-node.yml     # Deploy node
@@ -195,11 +195,11 @@ ansible-playbook ansible/playbooks/deploy-node.yml \
 
 # Using Docker
 docker run -d \
-  --name axionax-node \
+  --name nakhara-node \
   -p 8545:8545 \
   -p 30333:30333 \
   -v $(pwd)/data:/data \
-  axionax-node:latest
+  nakhara-node:latest
 ```
 
 ### Deploy Validator
@@ -228,7 +228,7 @@ npm run validator:start
 ansible-playbook ansible/playbooks/setup-loadbalancer.yml
 
 # Test RPC endpoints
-curl http://rpc.axionax.org/health
+curl http://rpc.nakhara.io/health
 ```
 
 ---
@@ -256,16 +256,16 @@ npm run deploy:monitoring
 
 ```bash
 # Docker logs
-docker-compose logs -f axionax-node
+docker-compose logs -f nakhara-node
 
 # Kubernetes logs
-kubectl logs -f axionax-node-0
+kubectl logs -f nakhara-node-0
 
 # System logs
-journalctl -u axionax-node -f
+journalctl -u nakhara-node -f
 
 # Application logs
-tail -f /var/log/axionax/node.log
+tail -f /var/log/nakhara/node.log
 ```
 
 ### Metrics Endpoints
@@ -307,7 +307,7 @@ terraform destroy
 
 ```hcl
 # terraform/aws/main.tf
-module "axionax_node" {
+module "nakhara_node" {
   source = "../modules/node"
   
   instance_type = "t3.large"
@@ -332,31 +332,31 @@ module "monitoring" {
 
 ```bash
 # Create namespace
-kubectl create namespace axionax
+kubectl create namespace nakhara
 
 # Deploy using manifests
 kubectl apply -f kubernetes/deployments/
 
 # Deploy using Helm
-helm install axionax kubernetes/helm/axionax \
-  --namespace axionax \
+helm install nakhara kubernetes/helm/nakhara \
+  --namespace nakhara \
   --set network=testnet
 
 # Check deployment
-kubectl get pods -n axionax
+kubectl get pods -n nakhara
 
 # Get service URL
-kubectl get svc -n axionax
+kubectl get svc -n nakhara
 ```
 
 ### Scale Deployment
 
 ```bash
 # Scale nodes
-kubectl scale deployment axionax-node --replicas=5
+kubectl scale deployment nakhara-node --replicas=5
 
 # Autoscaling
-kubectl autoscale deployment axionax-node \
+kubectl autoscale deployment nakhara-node \
   --min=3 --max=10 --cpu-percent=70
 ```
 
@@ -372,8 +372,8 @@ kubectl autoscale deployment axionax-node \
 
 # Setup Let's Encrypt
 certbot certonly --standalone \
-  -d rpc.axionax.org \
-  -d ws.axionax.org
+  -d rpc.nakhara.io \
+  -d ws.nakhara.io
 
 # Configure nginx with SSL
 ansible-playbook ansible/playbooks/setup-ssl.yml
@@ -386,54 +386,54 @@ ansible-playbook ansible/playbooks/setup-ssl.yml
 ./scripts/backup.sh
 
 # Backup to S3
-aws s3 sync /data/axionax s3://axionax-backups/
+aws s3 sync /data/nakhara s3://nakhara-backups/
 
 # Restore from backup
 ./scripts/restore.sh --backup-id 2024-01-01
 
 # Automated backups (cron)
-0 2 * * * /opt/axionax-deploy/scripts/backup.sh
+0 2 * * * /opt/nakhara-deploy/scripts/backup.sh
 ```
 
 ---
 
 ## 🔌 Integration with Other Repos
 
-### With axionax-core
+### With nakhara-core
 
 ```bash
-# Clone and build axionax-core
+# Clone and build nakhara-core
 cd ..
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 cargo build --release
 
 # Copy binary to deploy
-cp target/release/axionax-node ../axionax-deploy/binaries/
+cp target/release/nakhara-node ../nakhara-deploy/binaries/
 
 # Deploy with custom binary
-./scripts/deploy.sh --binary binaries/axionax-node
+./scripts/deploy.sh --binary binaries/nakhara-node
 ```
 
-### With axionax-sdk-ts
+### With nakhara-sdk-ts
 
 ```bash
 # Deploy includes RPC endpoints for SDK
 # SDK connects to deployed nodes:
 
-# In axionax-sdk-ts:
-const client = new AxionaxClient('https://rpc.axionax.org')
+# In nakhara-sdk-ts:
+const client = new NakharaClient('https://rpc.nakhara.io')
 ```
 
-### With axionax-web
+### With nakhara-web
 
 ```bash
 # Deploy web dashboard
-cd ../axionax-web
+cd ../nakhara-web
 npm run build
 
 # Copy to deployment
-cp -r out ../axionax-deploy/static/dashboard
+cp -r out ../nakhara-deploy/static/dashboard
 
 # Serve with nginx
 ansible-playbook ansible/playbooks/deploy-dashboard.yml
@@ -475,7 +475,7 @@ discovery_interval = 10
 
 ```bash
 # Check logs
-journalctl -u axionax-node -n 100
+journalctl -u nakhara-node -n 100
 
 # Verify configuration
 ./scripts/validate-config.sh
@@ -484,7 +484,7 @@ journalctl -u axionax-node -n 100
 telnet localhost 30333
 
 # Reset node data
-rm -rf /data/axionax/db
+rm -rf /data/nakhara/db
 ./scripts/deploy.sh --clean
 ```
 
@@ -531,8 +531,8 @@ ulimit -n 65535
 listen_addr = "0.0.0.0:30333"
 external_addr = "YOUR_PUBLIC_IP:30333"
 bootnodes = [
-  "/dns4/boot1.axionax.org/tcp/30333/p2p/...",
-  "/dns4/boot2.axionax.org/tcp/30333/p2p/..."
+  "/dns4/boot1.nakhara.io/tcp/30333/p2p/...",
+  "/dns4/boot2.nakhara.io/tcp/30333/p2p/..."
 ]
 
 [rpc]
@@ -552,8 +552,8 @@ key_path = "/keys/validator.key"
 version: '3.8'
 
 services:
-  axionax-node:
-    image: axionax/node:latest
+  nakhara-node:
+    image: nakhara/node:latest
     ports:
       - "8545:8545"
       - "30333:30333"
@@ -586,9 +586,9 @@ services:
 
 ## 🤝 Getting Help
 
-- **Issues:** Report issues on [GitHub Issues](https://github.com/axionaxprotocol/axionax-deploy/issues)
-- **Documentation:** Check [axionax-docs](https://github.com/axionaxprotocol/axionax-docs)
-- **Core Node:** See [axionax-core](https://github.com/axionaxprotocol/axionax-core)
+- **Issues:** Report issues on [GitHub Issues](https://github.com/nakhara-io/nakhara-deploy/issues)
+- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
+- **Core Node:** See [nakhara-core](https://github.com/nakhara-io/nakhara-core)
 
 ---
 
@@ -599,5 +599,5 @@ MIT - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the axionax protocol Team</sub>
+  <sub>Built with ❤️ by the nakhara protocol Team</sub>
 </p>

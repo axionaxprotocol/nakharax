@@ -1,10 +1,10 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 COMPOSE_FILE="${ROOT_DIR}/docker-compose.yaml"
-BINARY_NAME="${BINARY_NAME:-axionaxd}"
+BINARY_NAME="${BINARY_NAME:-nakharad}"
 GENESIS_FILE="${GENESIS_FILE:-${ROOT_DIR}/pkg/genesis/public/genesis.json}"
 INVENTORY_FILE="${INVENTORY_FILE:-${ROOT_DIR}/inventory.yaml}"
 
@@ -43,11 +43,11 @@ validate_container() {
 validate_container validator
 
 echo "Initialising validator home directory (safe to re-run)"
-docker compose -f "${COMPOSE_FILE}" exec validator ${BINARY_NAME} init validator-01 --chain-id axionax-testnet-1 >/dev/null 2>&1 || true
+docker compose -f "${COMPOSE_FILE}" exec validator ${BINARY_NAME} init validator-01 --chain-id nakhara-testnet-1 >/dev/null 2>&1 || true
 
 if [[ -f "${GENESIS_FILE}" ]]; then
   echo "Copying genesis file into validator container"
-  docker cp "${GENESIS_FILE}" "$(docker compose -f "${COMPOSE_FILE}" ps -q validator)":/data/axionax/config/genesis.json
+  docker cp "${GENESIS_FILE}" "$(docker compose -f "${COMPOSE_FILE}" ps -q validator)":/data/nakhara/config/genesis.json
 else
   echo "warning: genesis file not found at ${GENESIS_FILE}; skipped" >&2
 fi

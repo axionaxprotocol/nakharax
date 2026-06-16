@@ -1,4 +1,4 @@
-//! axionax RPC Server
+//! nakhara RPC Server
 //!
 //! JSON-RPC 2.0 API server for blockchain queries and transaction submission
 
@@ -131,7 +131,7 @@ impl From<Transaction> for TransactionResponse {
 
 /// Transaction receipt response format (Ethereum-compatible fields).
 ///
-/// Since axionax tx execution is all-or-nothing (tx is applied atomically when
+/// Since nakhara tx execution is all-or-nothing (tx is applied atomically when
 /// accepted via `eth_sendRawTransaction` or when included in a produced block),
 /// `status` is always `0x1` for successfully indexed receipts. If a tx is not
 /// found in the state DB, the RPC returns `None` (JSON `null`).
@@ -156,7 +156,7 @@ pub struct ReceiptResponse {
 
 /// Ethereum-compatible JSON-RPC API
 #[rpc(server)]
-pub trait AxionaxRpc {
+pub trait NakharaRpc {
     /// Get current block number (chain height)
     #[method(name = "eth_blockNumber")]
     async fn block_number(&self) -> RpcResult<String>;
@@ -219,13 +219,13 @@ pub trait AxionaxRpc {
 }
 
 /// RPC server implementation
-pub struct AxionaxRpcServerImpl {
+pub struct NakharaRpcServerImpl {
     state: Arc<StateDB>,
     mempool: Option<Arc<TransactionPool>>, // Optional for now to avoid breaking tests/other uses
     chain_id: u64,
 }
 
-impl AxionaxRpcServerImpl {
+impl NakharaRpcServerImpl {
     /// Create new RPC server
     pub fn new(state: Arc<StateDB>, chain_id: u64) -> Self {
         Self {
@@ -243,7 +243,7 @@ impl AxionaxRpcServerImpl {
 }
 
 #[async_trait]
-impl AxionaxRpcServer for AxionaxRpcServerImpl {
+impl NakharaRpcServer for NakharaRpcServerImpl {
     async fn block_number(&self) -> RpcResult<String> {
         let height = self.state.get_chain_height().map_err(RpcError::from)?;
 
@@ -461,7 +461,7 @@ pub async fn start_rpc_server(
         use http::Method;
         use tower_http::cors::{AllowHeaders, AllowMethods, AllowOrigin, CorsLayer};
 
-        let allowed_origins = std::env::var("AXIONAX_RPC_CORS_ORIGINS").unwrap_or_default();
+        let allowed_origins = std::env::var("NAKHARA_RPC_CORS_ORIGINS").unwrap_or_default();
 
         if allowed_origins.is_empty() || allowed_origins == "*" {
             CorsLayer::permissive()
@@ -477,7 +477,7 @@ pub async fn start_rpc_server(
         }
     };
 
-    let rate_limit_rps: u64 = std::env::var("AXIONAX_RPC_RATE_LIMIT")
+    let rate_limit_rps: u64 = std::env::var("NAKHARA_RPC_RATE_LIMIT")
         .ok()
         .and_then(|v| v.parse().ok())
         .unwrap_or(100);
@@ -501,7 +501,7 @@ pub async fn start_rpc_server(
         .build(addr)
         .await?;
 
-    let mut rpc_impl = AxionaxRpcServerImpl::new(state.clone(), chain_id);
+    let mut rpc_impl = NakharaRpcServerImpl::new(state.clone(), chain_id);
     if let Some(pool) = mempool {
         rpc_impl = rpc_impl.with_mempool(pool);
     }
@@ -542,7 +542,7 @@ pub async fn start_rpc_server_full(
     let cors = {
         use http::Method;
         use tower_http::cors::{AllowHeaders, AllowMethods, AllowOrigin, CorsLayer};
-        let allowed_origins = std::env::var("AXIONAX_RPC_CORS_ORIGINS").unwrap_or_default();
+        let allowed_origins = std::env::var("NAKHARA_RPC_CORS_ORIGINS").unwrap_or_default();
         if allowed_origins.is_empty() || allowed_origins == "*" {
             CorsLayer::permissive()
         } else {
@@ -556,7 +556,7 @@ pub async fn start_rpc_server_full(
                 .allow_headers(AllowHeaders::list([http::header::CONTENT_TYPE]))
         }
     };
-    let rate_limit_rps: u64 = std::env::var("AXIONAX_RPC_RATE_LIMIT")
+    let rate_limit_rps: u64 = std::env::var("NAKHARA_RPC_RATE_LIMIT")
         .ok()
         .and_then(|v| v.parse().ok())
         .unwrap_or(100);
@@ -582,7 +582,7 @@ pub async fn start_rpc_server_full(
 
     info!("RPC middleware: CORS + rate_limit={}/s", rate_limit_rps);
 
-    let mut rpc_impl = AxionaxRpcServerImpl::new(state.clone(), chain_id);
+    let mut rpc_impl = NakharaRpcServerImpl::new(state.clone(), chain_id);
     if let Some(pool) = mempool {
         rpc_impl = rpc_impl.with_mempool(pool);
     }
@@ -630,7 +630,7 @@ fn build_system_module(
             .unwrap_or(0);
         Ok::<_, ErrorObjectOwned>(serde_json::json!({
             "chain_id": chain_id,
-            "chain_name": if chain_id == 86137 { "Axionax Testnet" } else if chain_id == 86150 { "Axionax Mainnet" } else { "Axionax Dev" },
+            "chain_name": if chain_id == 86137 { "Nakhara Testnet" } else if chain_id == 86150 { "Nakhara Mainnet" } else { "Nakhara Dev" },
             "block_height": block_height,
             "peers": metrics::PEERS_CONNECTED.get(),
             "sync_status": "synced",
@@ -663,7 +663,7 @@ fn build_system_module(
     module.register_method("system_version", |_, _, _| {
         Ok::<_, ErrorObjectOwned>(serde_json::json!({
             "version": env!("CARGO_PKG_VERSION"),
-            "name": "axionax-core",
+            "name": "nakhara-core",
             "build": "release",
         }))
     })?;
@@ -833,7 +833,7 @@ mod tests {
     #[tokio::test]
     async fn test_rpc_block_number() {
         let state = create_test_state();
-        let rpc = AxionaxRpcServerImpl::new(state, 86137);
+        let rpc = NakharaRpcServerImpl::new(state, 86137);
 
         let result = rpc.block_number().await.unwrap();
         assert_eq!(result, "0x0"); // Genesis state
@@ -842,7 +842,7 @@ mod tests {
     #[tokio::test]
     async fn test_rpc_chain_id() {
         let state = create_test_state();
-        let rpc = AxionaxRpcServerImpl::new(state, 86137);
+        let rpc = NakharaRpcServerImpl::new(state, 86137);
 
         let result = rpc.chain_id().await.unwrap();
         assert_eq!(result, "0x15079"); // 86137 in hex
@@ -851,7 +851,7 @@ mod tests {
     #[tokio::test]
     async fn test_rpc_net_version() {
         let state = create_test_state();
-        let rpc = AxionaxRpcServerImpl::new(state, 86137);
+        let rpc = NakharaRpcServerImpl::new(state, 86137);
 
         let result = rpc.net_version().await.unwrap();
         assert_eq!(result, "86137");
@@ -886,7 +886,7 @@ mod tests {
     #[tokio::test]
     async fn test_rpc_get_block_not_found() {
         let state = create_test_state();
-        let rpc = AxionaxRpcServerImpl::new(state, 86137);
+        let rpc = NakharaRpcServerImpl::new(state, 86137);
 
         let result = rpc
             .get_block_by_number("0x999".to_string(), false)
@@ -898,7 +898,7 @@ mod tests {
     #[tokio::test]
     async fn test_rpc_get_transaction_not_found() {
         let state = create_test_state();
-        let rpc = AxionaxRpcServerImpl::new(state, 86137);
+        let rpc = NakharaRpcServerImpl::new(state, 86137);
 
         let hash = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
         let result = rpc.get_transaction_by_hash(hash.to_string()).await.unwrap();

@@ -1,8 +1,8 @@
-# axionax DAO Governance
+# nakhara DAO Governance
 
 ## Overview
 
-axionax is governed by a decentralized autonomous organization (DAO) where AXX token holders collectively make decisions about the protocol's future.
+nakhara is governed by a decentralized autonomous organization (DAO) where AXX token holders collectively make decisions about the protocol's future.
 
 ---
 
@@ -68,7 +68,7 @@ Time Multiplier:
 
 ### 1. Ideation Phase (Forum Discussion)
 
-**Where**: https://forum.axionax.org
+**Where**: https://forum.nakhara.io
 
 **Requirements**:
 
@@ -82,7 +82,7 @@ Time Multiplier:
 
 ### 2. Temperature Check (Off-chain Vote)
 
-**Where**: Snapshot (https://snapshot.org/#/axionax.eth)
+**Where**: Snapshot (https://snapshot.org/#/nakhara.eth)
 
 **Requirements**:
 
@@ -106,7 +106,7 @@ Time Multiplier:
 **Submission**: Via governance dashboard or CLI
 
 ```bash
-axionax-cli governance propose \
+nakhara-cli governance propose \
   --title "Adjust ASR parameter K to 128" \
   --description "..." \
   --type parameter-adjustment \
@@ -122,7 +122,7 @@ axionax-cli governance propose \
 - Vote can be changed during period
 
 ```bash
-axionax-core governance vote \
+nakhara-core governance vote \
   --proposal-id 42 \
   --choice for
 ```
@@ -226,7 +226,7 @@ axionax-core governance vote \
 
 **Recipient**: [Name/Team]
 **Amount**: 10,000,000 AXX ($100,000 at current price)
-**Purpose**: Build AI training marketplace on axionax
+**Purpose**: Build AI training marketplace on nakhara
 **Milestones**:
 
 1. MVP (25%): 2,500,000 AXX
@@ -337,11 +337,11 @@ axionax-core governance vote \
 
 ### Notifications
 
-- **Forum**: https://forum.axionax.org
-- **Discord #governance**: https://discord.gg/axionax
-- **Twitter**: @axionaxprotocol
-- **Governance Dashboard**: https://gov.axionax.org
-- **Snapshot**: https://snapshot.org/#/axionax.eth
+- **Forum**: https://forum.nakhara.io
+- **Discord #governance**: https://discord.gg/nakhara
+- **Twitter**: @nakhara-io
+- **Governance Dashboard**: https://gov.nakhara.io
+- **Snapshot**: https://snapshot.org/#/nakhara.eth
 
 ### Participation
 
@@ -370,17 +370,17 @@ axionax-core governance vote \
 
 ### Documentation
 
-- [Governance Portal](https://gov.axionax.org)
-- [How to Vote Guide](https://docs.axionax.org/governance/voting)
-- [Parameter Descriptions](https://docs.axionax.org/governance/parameters)
-- [Proposal Templates](https://github.com/axionaxprotocol/governance-proposals)
+- [Governance Portal](https://gov.nakhara.io)
+- [How to Vote Guide](https://docs.nakhara.io/governance/voting)
+- [Parameter Descriptions](https://docs.nakhara.io/governance/parameters)
+- [Proposal Templates](https://github.com/nakhara-io/governance-proposals)
 
 ### Tools
 
-- [Governance Dashboard](https://gov.axionax.org)
-- [Snapshot Voting](https://snapshot.org/#/axionax.eth)
-- [Forum](https://forum.axionax.org)
-- [Delegation Platform](https://delegate.axionax.org)
+- [Governance Dashboard](https://gov.nakhara.io)
+- [Snapshot Voting](https://snapshot.org/#/nakhara.eth)
+- [Forum](https://forum.nakhara.io)
+- [Delegation Platform](https://delegate.nakhara.io)
 
 ---
 

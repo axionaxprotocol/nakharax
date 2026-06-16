@@ -1,4 +1,4 @@
-# 🚀 axionax Worker Node - Vertex AI Workbench Setup
+# 🚀 nakhara Worker Node - Vertex AI Workbench Setup
 
 **Platform**: Google Cloud Vertex AI Workbench  
 **Credit**: $300 GCP Free Credit  
@@ -55,7 +55,7 @@ Operating System: Debian 11 (or Ubuntu 20.04)
 
 **Instance Details:**
 ```
-Name: axionax-worker-1
+Name: nakhara-worker-1
 Region: us-central1
 Zone: us-central1-a
 ```
@@ -91,7 +91,7 @@ Boot disk type: Balanced persistent disk
 
 When the instance is ready (status **RUNNING**):
 
-1. Find the instance named `axionax-worker-1`
+1. Find the instance named `nakhara-worker-1`
 2. Click **"OPEN JUPYTERLAB"**
 3. JupyterLab will open in a new tab
 
@@ -103,7 +103,7 @@ In JupyterLab:
 
 ---
 
-## 📦 Part 3: Setup axionax Worker (5-10 minutes)
+## 📦 Part 3: Setup nakhara Worker (5-10 minutes)
 
 ### Step 5: Verify GPU
 
@@ -131,7 +131,7 @@ python3 -c "import torch; print(f'PyTorch version: {torch.__version__}'); print(
 # GPU: Tesla T4
 ```
 
-### Step 7: Install Rust (for axionax core)
+### Step 7: Install Rust (for nakhara core)
 
 ```bash
 # Install Rust
@@ -143,20 +143,20 @@ rustc --version
 cargo --version
 ```
 
-### Step 8: Clone axionax Repository
+### Step 8: Clone nakhara Repository
 
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 ```
 
-### Step 9: Build axionax Core
+### Step 9: Build nakhara Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/axionax-monolith/services/core/core
+cd ~/nakhara-monolith/services/core/core
 cargo build --release
 ```
 
@@ -164,7 +164,7 @@ cargo build --release
 
 ```bash
 # DeAI dependencies
-cd ~/axionax-monolith/services/core/core/deai
+cd ~/nakhara-monolith/services/core/core/deai
 pip install -r requirements.txt
 
 # Additional ML libraries (if not already installed)
@@ -178,14 +178,14 @@ pip install transformers datasets scikit-learn scipy
 ### Step 11: Run Training Example
 
 ```bash
-cd ~/axionax-monolith/services/core/core/examples
+cd ~/nakhara-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
 **Expected output:**
 
 ```
-🚀 axionax DeAI - Simple Training Example
+🚀 nakhara DeAI - Simple Training Example
 ============================================================
 
 📋 Job Configuration:
@@ -261,7 +261,7 @@ Downloading...
 # Cell 1: Import and Setup
 import torch
 import sys
-sys.path.append('/home/jupyter/axionax-monolith/services/core/core/examples')
+sys.path.append('/home/jupyter/nakhara-monolith/services/core/core/examples')
 
 from deai_simple_training import SimpleCNN, train_epoch, test
 from torchvision import datasets, transforms
@@ -328,11 +328,11 @@ for epoch in range(5):
 **From CLI:**
 ```bash
 # Stop
-gcloud notebooks instances stop axionax-worker-1 \
+gcloud notebooks instances stop nakhara-worker-1 \
   --location=us-central1-a
 
 # Start
-gcloud notebooks instances start axionax-worker-1 \
+gcloud notebooks instances start nakhara-worker-1 \
   --location=us-central1-a
 ```
 
@@ -387,8 +387,8 @@ Credit lasts: 75 days (2.5 months)
 ### Create Worker Config
 
 ```bash
-mkdir -p ~/axionax-worker/config
-nano ~/axionax-worker/config/worker.toml
+mkdir -p ~/nakhara-worker/config
+nano ~/nakhara-worker/config/worker.toml
 ```
 
 **Content:**
@@ -407,7 +407,7 @@ cpu_cores = 4
 ram = 15
 
 [network]
-rpc_url = "https://rpc.axionax.org"
+rpc_url = "https://rpc.nakhara.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -481,7 +481,7 @@ trainer.train()
 - [ ] Verify GPU (nvidia-smi)
 - [ ] Verify PyTorch CUDA
 - [ ] Install Rust
-- [ ] Clone axionax repo
+- [ ] Clone nakhara repo
 - [ ] Build core successfully
 - [ ] Run training example successfully
 
@@ -505,8 +505,8 @@ trainer.train()
 # Kernel → Restart Kernel
 
 # Or restart instance
-gcloud notebooks instances stop axionax-worker-1 --location=us-central1-a
-gcloud notebooks instances start axionax-worker-1 --location=us-central1-a
+gcloud notebooks instances stop nakhara-worker-1 --location=us-central1-a
+gcloud notebooks instances start nakhara-worker-1 --location=us-central1-a
 ```
 
 ### Out of Memory
@@ -531,7 +531,7 @@ pip install --upgrade torch torchvision torchaudio
 - [Workbench Overview](https://cloud.google.com/vertex-ai/docs/workbench)
 - [Pre-built Containers](https://cloud.google.com/vertex-ai/docs/workbench/reference/container-images)
 
-**axionax Docs:**
+**nakhara Docs:**
 - Full Setup: `gcp-worker-setup.md`
 - Training Example: `core/examples/deai_simple_training.py`
 - Quick Guide: `WORKER_SETUP_QUICK_GUIDE.md`
@@ -545,7 +545,7 @@ pip install --upgrade torch torchvision torchaudio
    - Custom models
    - Distributed training
 
-2. **Connect to axionax Network**
+2. **Connect to nakhara Network**
    - Register worker
    - Receive jobs from network
    - Submit results

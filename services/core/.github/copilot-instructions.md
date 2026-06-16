@@ -1,6 +1,6 @@
-# Axionax Core Universe - AI Coding Agent Instructions
+# Nakhara Core Universe - AI Coding Agent Instructions
 
-**Project:** Axionax Protocol Layer-1 Blockchain  
+**Project:** Nakhara Protocol Layer-1 Blockchain  
 **Architecture:** Monorepo with Rust core, Python ML, TypeScript SDK, DevOps tooling  
 **Status:** Pre-testnet (v1.8.0) - targeting Q1 2026 public launch
 
@@ -11,7 +11,7 @@
 This is a **monorepo** with these components:
 
 ```
-axionax-monolith/services/core/
+nakhara-monolith/services/core/
 ├── core/              # Cargo workspace root — blockchain (Rust) + DeAI (Python)
 │   ├── core/          # Protocol crates (blockchain, consensus, network, ...)
 │   ├── bridge/       # PyO3 Rust↔Python bridge
@@ -414,7 +414,7 @@ def fraud_detection_probability(fraud_rate: float, sample_size: int) -> float:
 **Calling Rust from Python:**
 ```python
 # Import compiled Rust module (built via maturin)
-import axionax_python as axx
+import nakhara_python as axx
 
 # Use Rust types wrapped in Python
 vrf = axx.PyVRF()
@@ -462,7 +462,7 @@ maturin develop
 maturin build --release
 
 # Verify installation
-python -c "import axionax_python; print(axionax_python.__version__)"
+python -c "import nakhara_python; print(nakhara_python.__version__)"
 ```
 
 #### Rust Side: Exposing Functions to Python
@@ -521,7 +521,7 @@ impl PyConsensusEngine {
 
 // ✅ Pattern 3: Module registration
 #[pymodule]
-fn axionax_python(_py: Python, m: &PyModule) -> PyResult<()> {
+fn nakhara_python(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_hash, m)?)?;
     m.add_class::<PyConsensusEngine>()?;
     m.add_class::<PyVRF>()?;
@@ -535,7 +535,7 @@ fn axionax_python(_py: Python, m: &PyModule) -> PyResult<()> {
 ```python
 # File: core/deai/asr.py
 
-import axionax_python as axx
+import nakhara_python as axx
 import numpy as np
 from typing import List, Dict
 
@@ -585,7 +585,7 @@ class AutoSelectionRouter:
 # File: core/tests/integration_simple.py
 
 import pytest
-import axionax_python as axx
+import nakhara_python as axx
 
 def test_rust_python_bridge_basic():
     """Test basic PyO3 bridge functionality."""
@@ -717,7 +717,7 @@ cargo fmt --all --check
 
 **Configuration loading priority:**
 1. CLI arguments (`--config testnet`)
-2. Environment variables (`AXIONAX_RPC_ADDR=0.0.0.0:8545`)
+2. Environment variables (`NAKHARA_RPC_ADDR=0.0.0.0:8545`)
 3. Config files (`config/testnet.toml`)
 4. Hardcoded defaults
 
@@ -951,7 +951,7 @@ pub async fn process_transaction(tx_hash: String, data: Vec<u8>) -> Result<()> {
 }
 
 // Run with specific log levels
-// RUST_LOG=info,axionax::consensus=debug cargo run
+// RUST_LOG=info,nakhara::consensus=debug cargo run
 ```
 
 **Benchmark-Driven Development (Benchmark-driven)**
@@ -1027,7 +1027,7 @@ core/
 # core/tests/integration_simple.py
 def test_rust_python_bridge():
     """Verify PyO3 bridge works correctly."""
-    import axionax_python as axx
+    import nakhara_python as axx
     
     vrf = axx.PyVRF()
     proof, output = vrf.prove(b"test_input")
@@ -1109,12 +1109,12 @@ async fn test_connect_to_testnet() -> Result<()> {
     let config = NodeConfig {
         chain_id: 86137,
         bootstrap_nodes: vec![
-            "/ip4/testnet1.axionax.org/tcp/30303/p2p/...".to_string(),
+            "/ip4/testnet1.nakhara.io/tcp/30303/p2p/...".to_string(),
         ],
         ..Default::default()
     };
     
-    let node = AxionaxNode::new(config).await?;
+    let node = NakharaNode::new(config).await?;
     
     // Wait for peer connection
     tokio::time::sleep(Duration::from_secs(30)).await;
@@ -1308,7 +1308,7 @@ lsof -ti:8545 | xargs kill -9
 # Rebuild PyO3 bridge
 cd core/bridge/rust-python
 ./build.sh
-python -c "import axionax_python"  # Should not error
+python -c "import nakhara_python"  # Should not error
 ```
 
 ### Extended Troubleshooting Guide (Detailed troubleshooting guide)
@@ -1381,13 +1381,13 @@ sudo sysctl -p
 **Issue: "Database lock" (RocksDB)**
 ```bash
 # Check if another instance is running
-ps aux | grep axionax-node
+ps aux | grep nakhara-node
 
 # Kill if necessary
 kill -9 <PID>
 
 # Or remove lock file (if no other instance)
-rm -f /var/lib/axionax/testnet/LOCK
+rm -f /var/lib/nakhara/testnet/LOCK
 ```
 
 **Issue: "Connection refused" (P2P network)**
@@ -1396,7 +1396,7 @@ rm -f /var/lib/axionax/testnet/LOCK
 sudo netstat -tulpn | grep 30303
 
 # Test connectivity
-telnet bootstrap1.axionax.org 30303
+telnet bootstrap1.nakhara.io 30303
 
 # Check firewall
 sudo ufw status
@@ -1406,14 +1406,14 @@ sudo ufw allow 30303/tcp
 **Issue: High memory usage**
 ```bash
 # Monitor memory
-watch -n 1 'ps aux | grep axionax'
+watch -n 1 'ps aux | grep nakhara'
 
 # Check for memory leaks (using valgrind)
 cargo build
 valgrind --leak-check=full ./target/debug/node
 
 # Reduce RocksDB cache
-export AXIONAX_ROCKSDB_CACHE_SIZE=256  # MB
+export NAKHARA_ROCKSDB_CACHE_SIZE=256  # MB
 ```
 
 #### Testing Issues (Testing issues)
@@ -1448,7 +1448,7 @@ export RUST_TEST_TIMEOUT=120
 # Check if bridge is built
 ls -la core/deai/lib/
 
-# Should see: axionax_python.so (Linux) or .dylib (Mac) or .pyd (Windows)
+# Should see: nakhara_python.so (Linux) or .dylib (Mac) or .pyd (Windows)
 
 # Rebuild if missing
 cd core/bridge/rust-python
@@ -1466,10 +1466,10 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)/core/deai/lib
 grep "bootstrap_nodes" config/testnet.toml
 
 # Test DNS resolution
-nslookup bootstrap1.axionax.org
+nslookup bootstrap1.nakhara.io
 
 # Check if bootstrap nodes are reachable
-ping bootstrap1.axionax.org
+ping bootstrap1.nakhara.io
 
 # Try manual peer connection
 curl -X POST http://localhost:8545 \
@@ -1496,7 +1496,7 @@ let gossipsub_config = gossipsub::ConfigBuilder::default()
 **Issue: Slow block propagation**
 ```bash
 # Check network latency
-ping -c 10 peer1.axionax.org
+ping -c 10 peer1.nakhara.io
 
 # Monitor gossipsub stats
 RUST_LOG=libp2p_gossipsub=debug cargo run
@@ -1528,7 +1528,7 @@ grep -r "sha3_256" core/  # Find and replace with blake2s_256
 curl -X POST http://localhost:8545/admin/compact_db
 
 # Or programmatically
-let state = StateDB::open("/var/lib/axionax/testnet")?;
+let state = StateDB::open("/var/lib/nakhara/testnet")?;
 state.compact_range(None, None)?;
 
 # Adjust RocksDB settings
@@ -1553,13 +1553,13 @@ newgrp docker
 **Issue: Container keeps restarting**
 ```bash
 # Check logs
-docker logs axionax-node --tail 100
+docker logs nakhara-node --tail 100
 
 # Check health status
-docker inspect axionax-node | jq '.[0].State.Health'
+docker inspect nakhara-node | jq '.[0].State.Health'
 
 # Disable restart policy temporarily
-docker update --restart=no axionax-node
+docker update --restart=no nakhara-node
 ```
 
 **Issue: Out of disk space in container**
@@ -1572,7 +1572,7 @@ docker system prune -a
 docker volume prune
 
 # Increase volume size (recreate with larger volume)
-docker volume create --opt size=50G axionax-data
+docker volume create --opt size=50G nakhara-data
 ```
 
 ---
@@ -1672,5 +1672,5 @@ docker volume create --opt size=50G axionax-data
 ---
 
 **Last Updated:** November 24, 2025  
-**Maintainer:** Axionax Protocol Team  
+**Maintainer:** Nakhara Protocol Team  
 **Questions?** Open an issue or check component-specific instructions in subdirectories.

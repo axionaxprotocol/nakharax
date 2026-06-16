@@ -1,4 +1,4 @@
-# axionax protocol — Roadmap
+# nakhara protocol — Roadmap
 
 ## Vision
 
@@ -56,7 +56,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [x] Testnet genesis configuration
 - [x] Deploy initial validator infrastructure (2 validators: AU + ES)
 - [x] RPC infrastructure setup (Real nodes on port 8545)
-- [x] Block explorer deployment (axionax-web)
+- [x] Block explorer deployment (nakhara-web)
 - [x] Testnet faucet (port 3002)
 - [x] Monitoring and alerting systems (Grafana + Prometheus)
 - [x] All 9 services operational (100% deployment)
@@ -240,7 +240,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 **Network Expansion**
 
 - [ ] Geographic diversity initiatives
-- [ ] Hardware certification program (axionaxBox)
+- [ ] Hardware certification program (nakharaBox)
 - [ ] Enterprise node operator partnerships
 - [ ] Data center partnerships
 - [ ] 1,000+ nodes target
@@ -263,7 +263,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 **Deliverables**:
 
-- ✅ 50+ dApps using axionax
+- ✅ 50+ dApps using nakhara
 - ✅ 1,000+ nodes globally
 - ✅ 5,000+ active workers
 - ✅ $10M+ TVL in staking
@@ -360,10 +360,10 @@ This roadmap is living document. We follow agile principles:
 
 ## 📢 Stay Updated
 
-- **GitHub Projects**: https://github.com/axionaxprotocol/axionax-core/projects
-- **Discord**: https://discord.gg/axionax
-- **Blog**: https://blog.axionax.org
-- **Twitter**: @axionaxprotocol
+- **GitHub Projects**: https://github.com/nakhara-io/nakhara-core/projects
+- **Discord**: https://discord.gg/nakhara
+- **Blog**: https://blog.nakhara.io
+- **Twitter**: @nakhara-io
 
 ---
 

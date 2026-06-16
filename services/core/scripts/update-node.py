@@ -35,8 +35,8 @@ def require_project_root() -> None:
         return
     print("Project folder not found (must have core/, scripts/)")
     print("If you don't have it yet, clone the repo first:")
-    print("  git clone https://github.com/axionaxprotocol/axionax-core-universe.git")
-    print("  cd axionax-core-universe")
+    print("  git clone https://github.com/nakhara-io/nakhara-core-universe.git")
+    print("  cd nakhara-core-universe")
     print("  python3 scripts/update-node.py")
     sys.exit(1)
 
@@ -152,7 +152,7 @@ def main():
     activate_venv_if_needed()
 
     print("=" * 60)
-    print("  Axionax Node — Update (all machines, no IP needed)")
+    print("  Nakhara Node — Update (all machines, no IP needed)")
     print("=" * 60)
     venv_note = " (venv)" if _in_venv() else ""
     print(f"  Root: {ROOT}{venv_note}\n")
@@ -199,7 +199,7 @@ def main():
 
     # Step 3: suitability check
     print("[3] Running suitability check...")
-    run([sys.executable, "scripts/join-axionax.py", "--check-only"])
+    run([sys.executable, "scripts/join-nakhara.py", "--check-only"])
     print("")
 
     print("=" * 60)

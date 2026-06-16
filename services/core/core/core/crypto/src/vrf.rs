@@ -23,7 +23,7 @@ pub type VrfOutput = [u8; 32];
 pub type VrfProofBytes = [u8; 96];
 
 /// Context for VRF operations
-const VRF_CONTEXT: &[u8] = b"AxionaxVRF";
+const VRF_CONTEXT: &[u8] = b"NakharaVRF";
 
 /// ECVRF - Elliptic Curve Verifiable Random Function
 ///

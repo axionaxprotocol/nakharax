@@ -1,4 +1,4 @@
-# Security Audit Scope — Axionax Protocol
+# Security Audit Scope — Nakhara Protocol
 
 **Version:** 1.0  
 **Status:** Preparation for external audit  
@@ -32,7 +32,7 @@ This document defines the scope and deliverables for **external security audits*
 
 ## 3. Out of Scope (for initial audit)
 
-- Web frontend (axionax-monolith) — separate audit
+- Web frontend (nakhara-monolith) — separate audit
 - Third-party dependencies (libp2p, RocksDB, etc.) — rely on upstream security
 - Operational security (key storage on production servers) — infra review
 

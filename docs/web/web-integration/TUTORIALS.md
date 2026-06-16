@@ -1,6 +1,6 @@
 # Tutorials
 
-> Step-by-step guides to help you get started with axionax
+> Step-by-step guides to help you get started with nakhara
 
 ## 📚 Table of Contents
 
@@ -29,17 +29,17 @@
 ### Setup
 
 ```bash
-# Install axionax SDK
-npm install @axionax/sdk
+# Install nakhara SDK
+npm install @nakhara/sdk
 
 # Or use TypeScript
-npm install @axionax/sdk @types/node
+npm install @nakhara/sdk @types/node
 ```
 
 ### Create a Wallet
 
 ```typescript
-import { Wallet } from '@axionax/sdk';
+import { Wallet } from '@nakhara/sdk';
 
 // Generate new wallet
 const wallet = Wallet.generate();
@@ -54,7 +54,7 @@ console.log('Private Key:', wallet.privateKey);
 
 ```bash
 # Visit testnet faucet
-https://faucet.axionax.network
+https://faucet.nakhara.network
 
 # Enter your address
 # Receive 10 AXX for testing
@@ -63,10 +63,10 @@ https://faucet.axionax.network
 ### Send Transaction
 
 ```typescript
-import { AxionaxClient, Wallet } from '@axionax/sdk';
+import { NakharaClient, Wallet } from '@nakhara/sdk';
 
-const client = new AxionaxClient({
-  rpcUrl: 'https://testnet-rpc.axionax.network',
+const client = new NakharaClient({
+  rpcUrl: 'https://testnet-rpc.nakhara.network',
   chainId: 86137,
 });
 
@@ -105,7 +105,7 @@ Confirmed in block: 12345
 
 ```rust
 // contracts/counter.rs
-use axionax_sdk::prelude::*;
+use nakhara_sdk::prelude::*;
 
 #[contract]
 pub struct Counter {
@@ -143,7 +143,7 @@ cargo build --target wasm32-unknown-unknown --release
 ### Deploy
 
 ```typescript
-import { ContractFactory } from '@axionax/sdk';
+import { ContractFactory } from '@nakhara/sdk';
 import fs from 'fs';
 
 const wasm = fs.readFileSync('counter.wasm');
@@ -234,7 +234,7 @@ for (const event of events) {
 ### ERC20-like Token
 
 ```rust
-use axionax_sdk::prelude::*;
+use nakhara_sdk::prelude::*;
 
 #[contract]
 pub struct Token {
@@ -405,14 +405,14 @@ Coming soon! Learn:
 
 - [Developer Guide](./DEVELOPER_GUIDE.md)
 - [API Reference](./API_REFERENCE.md)
-- [Example Projects](https://github.com/axionaxprotocol/examples)
-- [Community Forum](https://forum.axionax.network)
+- [Example Projects](https://github.com/nakhara-io/examples)
+- [Community Forum](https://forum.nakhara.network)
 
 ## 💬 Get Help
 
-- [Discord](https://discord.gg/axionax)
-- [GitHub Discussions](https://github.com/axionaxprotocol/axionax-core/discussions)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/axionax)
+- [Discord](https://discord.gg/nakhara)
+- [GitHub Discussions](https://github.com/nakhara-io/nakhara-core/discussions)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/nakhara)
 
 ---
 

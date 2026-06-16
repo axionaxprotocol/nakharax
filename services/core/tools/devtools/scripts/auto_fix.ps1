@@ -1,4 +1,4 @@
-# Automated Fix Script for axionax Repositories (Windows PowerShell)
+# Automated Fix Script for nakhara Repositories (Windows PowerShell)
 # Generated: 2025-11-07
 
 Write-Host "🔧 Starting automated fixes..." -ForegroundColor Cyan
@@ -8,7 +8,7 @@ Write-Host ""
 Write-Host "📝 Fixing: UTF-8 BOM issues in JSON files" -ForegroundColor Yellow
 Write-Host ""
 
-$repos = @('axionax-marketplace', 'axionax-deploy')
+$repos = @('nakhara-marketplace', 'nakhara-deploy')
 foreach ($repo in $repos) {
     $packageJsonPath = Join-Path $repo "package.json"
     if (Test-Path $packageJsonPath) {
@@ -29,7 +29,7 @@ Write-Host ""
 Write-Host "📝 Fixing: Installing Node.js dependencies" -ForegroundColor Yellow
 Write-Host ""
 
-$nodeRepos = @('axionax-web', 'axionax-sdk-ts', 'axionax-marketplace')
+$nodeRepos = @('nakhara-web', 'nakhara-sdk-ts', 'nakhara-marketplace')
 foreach ($repo in $nodeRepos) {
     $packageJsonPath = Join-Path $repo "package.json"
     if ((Test-Path $repo) -and (Test-Path $packageJsonPath)) {
@@ -50,16 +50,16 @@ foreach ($repo in $nodeRepos) {
 
 Write-Host ""
 
-# 3. Check Cargo.toml structure in axionax-core
+# 3. Check Cargo.toml structure in nakhara-core
 Write-Host "📝 Checking: Cargo.toml structure" -ForegroundColor Yellow
 Write-Host ""
 
-$cargoPath = "axionax-core\Cargo.toml"
+$cargoPath = "nakhara-core\Cargo.toml"
 if (Test-Path $cargoPath) {
     $cargoContent = Get-Content $cargoPath -Raw
     
     if ($cargoContent -notmatch '\[package\]') {
-        Write-Host "  ⚠️  axionax-core/Cargo.toml appears to be a workspace root" -ForegroundColor Yellow
+        Write-Host "  ⚠️  nakhara-core/Cargo.toml appears to be a workspace root" -ForegroundColor Yellow
         Write-Host "     This is normal if it's configured as a workspace." -ForegroundColor Gray
         Write-Host "     Check for [workspace] section instead." -ForegroundColor Gray
     }
@@ -74,8 +74,8 @@ Write-Host ""
 Write-Host "📝 Checking: Git repository status" -ForegroundColor Yellow
 Write-Host ""
 
-$allRepos = @('axionax-core', 'axionax-web', 'axionax-sdk-ts', 'axionax-marketplace', 
-              'axionax-docs', 'axionax-deploy', 'axionax-devtools')
+$allRepos = @('nakhara-core', 'nakhara-web', 'nakhara-sdk-ts', 'nakhara-marketplace', 
+              'nakhara-docs', 'nakhara-deploy', 'nakhara-devtools')
 
 foreach ($repo in $allRepos) {
     if (Test-Path "$repo\.git") {

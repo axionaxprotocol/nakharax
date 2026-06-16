@@ -376,25 +376,25 @@ pub fn export() -> String {
     // Chain
     fmt_int_gauge(
         &mut buf,
-        "axionax_block_height",
+        "nakhara_block_height",
         "Current block height",
         &BLOCK_HEIGHT,
     );
     fmt_counter(
         &mut buf,
-        "axionax_transactions_total",
+        "nakhara_transactions_total",
         "Total transactions processed",
         &TX_TOTAL,
     );
     fmt_f64_gauge(
         &mut buf,
-        "axionax_tx_per_second",
+        "nakhara_tx_per_second",
         "Transactions per second",
         &TX_PER_SECOND,
     );
     fmt_histogram(
         &mut buf,
-        "axionax_block_time_seconds",
+        "nakhara_block_time_seconds",
         "Block time in seconds",
         &BLOCK_TIME,
     );
@@ -402,25 +402,25 @@ pub fn export() -> String {
     // Consensus
     fmt_int_gauge(
         &mut buf,
-        "axionax_validators_active",
+        "nakhara_validators_active",
         "Number of active validators",
         &VALIDATORS_ACTIVE,
     );
     fmt_f64_gauge(
         &mut buf,
-        "axionax_total_staked",
+        "nakhara_total_staked",
         "Total amount staked",
         &TOTAL_STAKED,
     );
     fmt_counter(
         &mut buf,
-        "axionax_challenges_issued_total",
+        "nakhara_challenges_issued_total",
         "Total challenges issued",
         &CHALLENGES_ISSUED,
     );
     fmt_counter(
         &mut buf,
-        "axionax_fraud_proofs_total",
+        "nakhara_fraud_proofs_total",
         "Total fraud proofs submitted",
         &FRAUD_PROOFS,
     );
@@ -428,25 +428,25 @@ pub fn export() -> String {
     // Network
     fmt_int_gauge(
         &mut buf,
-        "axionax_peers_connected",
+        "nakhara_peers_connected",
         "Number of connected peers",
         &PEERS_CONNECTED,
     );
     fmt_counter_vec(
         &mut buf,
-        "axionax_peer_messages_in_total",
+        "nakhara_peer_messages_in_total",
         "Messages received from peers",
         &PEER_MESSAGES_IN,
     );
     fmt_counter_vec(
         &mut buf,
-        "axionax_peer_messages_out_total",
+        "nakhara_peer_messages_out_total",
         "Messages sent to peers",
         &PEER_MESSAGES_OUT,
     );
     fmt_gauge_vec(
         &mut buf,
-        "axionax_peer_reputation",
+        "nakhara_peer_reputation",
         "Peer reputation scores",
         &PEER_REPUTATION,
     );
@@ -454,19 +454,19 @@ pub fn export() -> String {
     // RPC
     fmt_counter_vec(
         &mut buf,
-        "axionax_rpc_requests_total",
+        "nakhara_rpc_requests_total",
         "Total RPC requests",
         &RPC_REQUESTS,
     );
     fmt_histogram_vec(
         &mut buf,
-        "axionax_rpc_latency_seconds",
+        "nakhara_rpc_latency_seconds",
         "RPC request latency",
         &RPC_LATENCY,
     );
     fmt_counter_vec(
         &mut buf,
-        "axionax_rpc_errors_total",
+        "nakhara_rpc_errors_total",
         "Total RPC errors",
         &RPC_ERRORS,
     );
@@ -474,13 +474,13 @@ pub fn export() -> String {
     // Mempool
     fmt_int_gauge(
         &mut buf,
-        "axionax_mempool_size",
+        "nakhara_mempool_size",
         "Number of transactions in mempool",
         &MEMPOOL_SIZE,
     );
     fmt_int_gauge(
         &mut buf,
-        "axionax_mempool_bytes",
+        "nakhara_mempool_bytes",
         "Total bytes in mempool",
         &MEMPOOL_BYTES,
     );
@@ -488,19 +488,19 @@ pub fn export() -> String {
     // State
     fmt_int_gauge(
         &mut buf,
-        "axionax_state_db_bytes",
+        "nakhara_state_db_bytes",
         "State database size in bytes",
         &STATE_DB_SIZE,
     );
     fmt_counter(
         &mut buf,
-        "axionax_state_reads_total",
+        "nakhara_state_reads_total",
         "Total state reads",
         &STATE_READS,
     );
     fmt_counter(
         &mut buf,
-        "axionax_state_writes_total",
+        "nakhara_state_writes_total",
         "Total state writes",
         &STATE_WRITES,
     );
@@ -508,13 +508,13 @@ pub fn export() -> String {
     // Governance
     fmt_int_gauge(
         &mut buf,
-        "axionax_gov_active_proposals",
+        "nakhara_gov_active_proposals",
         "Number of active governance proposals",
         &GOV_ACTIVE_PROPOSALS,
     );
     fmt_counter(
         &mut buf,
-        "axionax_gov_votes_total",
+        "nakhara_gov_votes_total",
         "Total governance votes cast",
         &GOV_VOTES_CAST,
     );
@@ -522,13 +522,13 @@ pub fn export() -> String {
     // System
     fmt_int_gauge(
         &mut buf,
-        "axionax_uptime_seconds",
+        "nakhara_uptime_seconds",
         "Node uptime in seconds",
         &UPTIME_SECONDS,
     );
     fmt_int_gauge(
         &mut buf,
-        "axionax_memory_bytes",
+        "nakhara_memory_bytes",
         "Memory usage in bytes",
         &MEMORY_BYTES,
     );
@@ -694,12 +694,12 @@ mod tests {
         init();
         BLOCK_HEIGHT.set(42);
         let output = export();
-        assert!(output.contains("axionax_block_height"));
+        assert!(output.contains("nakhara_block_height"));
         // Check that a line with the metric name and a numeric value is present.
         // We avoid checking a specific value because global metrics are shared
         // across parallel tests (e.g. test_record_block sets BLOCK_HEIGHT to 100).
         assert!(output.lines().any(|l| {
-            l.starts_with("axionax_block_height ")
+            l.starts_with("nakhara_block_height ")
                 && l.split_whitespace()
                     .nth(1)
                     .and_then(|v| v.parse::<i64>().ok())

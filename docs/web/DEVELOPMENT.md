@@ -1,4 +1,4 @@
-# Axionax Development Environment
+# Nakhara Development Environment
 
 # Quick start scripts for full-stack development
 
@@ -6,10 +6,10 @@
 
 | Repo                                                                                  | Role                                                             |
 | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **axionax-monolith** (this repo)                                                  | Frontend (Next.js, Marketplace), SDK, Faucet API, docs           |
-| **[axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
+| **nakhara-monolith** (this repo)                                                  | Frontend (Next.js, Marketplace), SDK, Faucet API, docs           |
+| **[nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
 
-Validator node setup, persistence, Docker/volume config, and chain data live in **axionax-monolith**. This repo only connects to validators via RPC (e.g. 217.216.109.5, 46.250.244.4).
+Validator node setup, persistence, Docker/volume config, and chain data live in **nakhara-monolith**. This repo only connects to validators via RPC (e.g. 217.216.109.5, 46.250.244.4).
 
 **Solo maintainer (dual repo):** when you change chain parameters in core, mirror them here and log the pair — see [SOLO_CORE_WEB_SYNC.md](SOLO_CORE_WEB_SYNC.md) and [CORE_WEB_COMPAT.md](CORE_WEB_COMPAT.md).
 
@@ -27,8 +27,8 @@ Validator node setup, persistence, Docker/volume config, and chain data live in 
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 
 # Install dependencies
 pnpm install
@@ -52,7 +52,7 @@ Remove-Item -Recurse -Force node_modules, apps\web\node_modules, packages\*\node
 pnpm install
 ```
 
-`@axionax/sdk` and `@axionax/blockchain-utils` resolve **`src/`** in this monorepo (see each package `package.json` `exports`) so Next.js does not depend on a pre-built `dist/` for local dev. CI can still run `pnpm --filter @axionax/sdk build` to emit `dist/` for release.
+`@nakhara/sdk` and `@nakhara/blockchain-utils` resolve **`src/`** in this monorepo (see each package `package.json` `exports`) so Next.js does not depend on a pre-built `dist/` for local dev. CI can still run `pnpm --filter @nakhara/sdk build` to emit `dist/` for release.
 
 ### 2. Development Modes
 
@@ -68,7 +68,7 @@ pnpm dev
 
 #### 🐳 Full Stack (Local Blockchain)
 
-Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith) to `./core-universe` and uncomment the `axionax-node` service in `docker-compose.dev.yml`.
+Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith) to `./core-universe` and uncomment the `nakhara-node` service in `docker-compose.dev.yml`.
 
 ```bash
 # Start services (web, DB, Redis, Prometheus, Grafana, Adminer)
@@ -95,8 +95,8 @@ Core (blockchain node) is in a separate repository. For local node development:
 
 ```bash
 # Clone core repo (optional, for full-stack local dev)
-git clone https://github.com/axionaxprotocol/axionax-monolith.git core-universe
-cd axionax-monolith/services/core/core
+git clone https://github.com/nakhara-io/nakhara-monolith.git core-universe
+cd nakhara-monolith/services/core/core
 
 # Build & run
 cargo build --release
@@ -110,7 +110,7 @@ cargo run --release -- --dev
 docker-compose -f docker-compose.dev.yml build web
 
 # View specific logs
-docker-compose -f docker-compose.dev.yml logs -f axionax-node
+docker-compose -f docker-compose.dev.yml logs -f nakhara-node
 
 # Stop all
 docker-compose -f docker-compose.dev.yml down
@@ -119,10 +119,10 @@ docker-compose -f docker-compose.dev.yml down
 docker-compose -f docker-compose.dev.yml down -v
 ```
 
-### 4. Project Structure (this repo only; backend = axionax-monolith)
+### 4. Project Structure (this repo only; backend = nakhara-monolith)
 
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── apps/
 │   ├── web/                 # Next.js 14 website
 │   ├── marketplace/         # Vite + React marketplace
@@ -159,7 +159,7 @@ To refresh to latest within semver: `pnpm update -r`. To check for newer majors:
 
 ### 5a. Cloud / automation workspace bootstrap
 
-Cursor and similar automation may run [scripts/cloud-agent-startup.sh](../scripts/cloud-agent-startup.sh) from the repo root before tasks. It performs `pnpm install --frozen-lockfile` and runs the TypeScript checker for `@axionax/blockchain-utils`. If agent or CI steps fail on install or `tsc`, reproduce locally with the same script.
+Cursor and similar automation may run [scripts/cloud-agent-startup.sh](../scripts/cloud-agent-startup.sh) from the repo root before tasks. It performs `pnpm install --frozen-lockfile` and runs the TypeScript checker for `@nakhara/blockchain-utils`. If agent or CI steps fail on install or `tsc`, reproduce locally with the same script.
 
 ### 6. Environment Variables
 
@@ -175,7 +175,7 @@ cp apps/marketplace/.env.example apps/marketplace/.env
 
 | Variable | Where it applies | Role |
 | -------- | ---------------- | ---- |
-| `NEXT_PUBLIC_RPC_URL` | `apps/web` (Next.js) | Primary HTTP RPC for the site (client bundles and server code that read `process.env.NEXT_PUBLIC_RPC_URL`). If unset at build/runtime, UI falls back to `RPC_URLS` from `@axionax/blockchain-utils` (see Explorer and `web3` config). |
+| `NEXT_PUBLIC_RPC_URL` | `apps/web` (Next.js) | Primary HTTP RPC for the site (client bundles and server code that read `process.env.NEXT_PUBLIC_RPC_URL`). If unset at build/runtime, UI falls back to `RPC_URLS` from `@nakhara/blockchain-utils` (see Explorer and `web3` config). |
 | `NEXT_PUBLIC_RPC_EU` / `NEXT_PUBLIC_RPC_AU` | `apps/web` | Optional region endpoints for `/api/stats` and related routes (see `docs/web/REALTIME_METRICS.md`). |
 | `RPC_URL` | `apps/api`, `apps/faucet-api`, `docker-compose.dev.yml` | **Backend** services and test containers — not read by `apps/web` source. |
 | `VITE_RPC_URL` | `apps/marketplace` | Vite client for the marketplace dApp. |
@@ -186,7 +186,7 @@ cp apps/marketplace/.env.example apps/marketplace/.env
 
 RPC Endpoints:
 
-- **HTTPS (Recommended)**: https://axionax.org/rpc/
+- **HTTPS (Recommended)**: https://nakhara.io/rpc/
 - **EU Validator**: http://217.216.109.5:8545
 - **AU Validator**: http://46.250.244.4:8545
 
@@ -194,13 +194,13 @@ Chain ID: `86137` (0x15079)
 
 ### 8. Validator node persistence (EU/AU)
 
-Validator nodes (EU/AU) run from the **backend repo [axionax-monolith](https://github.com/axionaxprotocol/axionax-monolith)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
+Validator nodes (EU/AU) run from the **backend repo [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
 
 If you restart a validator and its **block height drops to a low number** (e.g. ~29 while the other is at 800k+), the node is starting from a fresh chain because **chain data was not persisted**.
 
 **Cause (summary):** Data directory not on a persistent volume, or wiped, or node started with a dev/fresh flag.
 
-**Fix (see axionax-monolith for details):** Use a persistent volume for chain data; set the other validator as bootnode/peer so the restarted node can sync; avoid `--dev` in production. The dashboard in this repo will show the restarted node’s height climbing as it syncs.
+**Fix (see nakhara-monolith for details):** Use a persistent volume for chain data; set the other validator as bootnode/peer so the restarted node can sync; avoid `--dev` in production. The dashboard in this repo will show the restarted node’s height climbing as it syncs.
 
 ---
 
@@ -208,11 +208,11 @@ If you restart a validator and its **block height drops to a low number** (e.g. 
 
 - [Web README](../apps/web/README.md)
 - [Marketplace README](../apps/marketplace/README.md)
-- [Core Universe](https://github.com/axionaxprotocol/axionax-monolith) (separate repo)
+- [Core Universe](https://github.com/nakhara-io/nakhara-monolith) (separate repo)
 - [SDK README](../packages/sdk/README.md)
 
 ## 🔗 Links
 
-- **Website**: https://axionax.org
-- **Explorer**: https://axionax.org/explorer
-- **GitHub**: https://github.com/axionaxprotocol
+- **Website**: https://nakhara.io
+- **Explorer**: https://nakhara.io/explorer
+- **GitHub**: https://github.com/nakhara-io

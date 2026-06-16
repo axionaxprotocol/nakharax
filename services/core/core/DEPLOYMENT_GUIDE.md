@@ -1,4 +1,4 @@
-# axionax Core Testnet Deployment Guide
+# nakhara Core Testnet Deployment Guide
 
 ## 🚀 Quick Start
 
@@ -31,8 +31,8 @@ brew install llvm pkg-config openssl
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 
 # Build release version
 cargo build --release
@@ -55,24 +55,24 @@ cargo test -p crypto
 Create `.env` file:
 ```bash
 # Network Configuration
-AXIONAX_CHAIN_ID=86137
-AXIONAX_NETWORK_PORT=30303
-AXIONAX_BOOTSTRAP_NODES="/ip4/bootstrap1.axionax.org/tcp/30303/p2p/...,/ip4/bootstrap2.axionax.org/tcp/30303/p2p/..."
+NAKHARA_CHAIN_ID=86137
+NAKHARA_NETWORK_PORT=30303
+NAKHARA_BOOTSTRAP_NODES="/ip4/bootstrap1.nakhara.io/tcp/30303/p2p/...,/ip4/bootstrap2.nakhara.io/tcp/30303/p2p/..."
 
 # RPC Configuration
-AXIONAX_RPC_ADDR=0.0.0.0:8545
-AXIONAX_RPC_CORS_ORIGINS=https://app.axionax.org,https://wallet.axionax.org
+NAKHARA_RPC_ADDR=0.0.0.0:8545
+NAKHARA_RPC_CORS_ORIGINS=https://app.nakhara.io,https://wallet.nakhara.io
 
 # Security Configuration
-AXIONAX_RATE_LIMIT_MAX_REQUESTS=100
-AXIONAX_RATE_LIMIT_WINDOW_SECS=60
-AXIONAX_RATE_LIMIT_BURST=20
+NAKHARA_RATE_LIMIT_MAX_REQUESTS=100
+NAKHARA_RATE_LIMIT_WINDOW_SECS=60
+NAKHARA_RATE_LIMIT_BURST=20
 
 # Database Configuration
-AXIONAX_STATE_PATH=/var/lib/axionax/testnet
+NAKHARA_STATE_PATH=/var/lib/nakhara/testnet
 
 # Logging
-RUST_LOG=info,axionax=debug
+RUST_LOG=info,nakhara=debug
 ```
 
 ### 2. Configuration Files
@@ -83,16 +83,16 @@ RUST_LOG=info,axionax=debug
 chain_id = 86137
 port = 30303
 bootstrap_nodes = [
-    "/ip4/testnet1.axionax.org/tcp/30303/p2p/12D3KooW...",
-    "/ip4/testnet2.axionax.org/tcp/30303/p2p/12D3KooW...",
+    "/ip4/testnet1.nakhara.io/tcp/30303/p2p/12D3KooW...",
+    "/ip4/testnet2.nakhara.io/tcp/30303/p2p/12D3KooW...",
 ]
 max_peers = 50
 
 [rpc]
 addr = "0.0.0.0:8545"
 cors_origins = [
-    "https://testnet.axionax.org",
-    "https://wallet-testnet.axionax.org"
+    "https://testnet.nakhara.io",
+    "https://wallet-testnet.nakhara.io"
 ]
 rate_limit = 100
 max_batch_size = 50
@@ -103,7 +103,7 @@ max_block_size = 1048576
 gas_limit = 30000000
 
 [state]
-path = "/var/lib/axionax/testnet"
+path = "/var/lib/nakhara/testnet"
 cache_size_mb = 512
 
 [consensus]
@@ -131,16 +131,16 @@ cargo run --release -- --config dev
 cargo run --release -- --config config/custom.toml
 
 # With environment overrides
-RUST_LOG=debug AXIONAX_RPC_ADDR=127.0.0.1:8545 cargo run --release
+RUST_LOG=debug NAKHARA_RPC_ADDR=127.0.0.1:8545 cargo run --release
 ```
 
 ### Production Mode (Testnet)
 ```bash
 # Using systemd service
-sudo systemctl start axionax-node
+sudo systemctl start nakhara-node
 
 # Or directly
-./target/release/node --config /etc/axionax/testnet.toml
+./target/release/node --config /etc/nakhara/testnet.toml
 
 # With custom log level
 RUST_LOG=info ./target/release/node --config testnet
@@ -153,16 +153,16 @@ RUST_LOG=info ./target/release/node --config testnet
 ### Build Docker Image
 ```bash
 # Build image
-docker build -t axionax/node:testnet .
+docker build -t nakhara/node:testnet .
 
 # Run container
 docker run -d \
-  --name axionax-node \
+  --name nakhara-node \
   -p 8545:8545 \
   -p 30303:30303 \
-  -v /var/lib/axionax:/var/lib/axionax \
+  -v /var/lib/nakhara:/var/lib/nakhara \
   -e RUST_LOG=info \
-  axionax/node:testnet --config testnet
+  nakhara/node:testnet --config testnet
 ```
 
 ### Docker Compose
@@ -170,20 +170,20 @@ docker run -d \
 version: '3.8'
 
 services:
-  axionax-node:
-    image: axionax/node:testnet
-    container_name: axionax-testnet
+  nakhara-node:
+    image: nakhara/node:testnet
+    container_name: nakhara-testnet
     restart: unless-stopped
     ports:
       - "8545:8545"
       - "30303:30303"
     volumes:
-      - axionax-data:/var/lib/axionax
-      - ./config:/etc/axionax:ro
+      - nakhara-data:/var/lib/nakhara
+      - ./config:/etc/nakhara:ro
     environment:
-      - RUST_LOG=info,axionax=debug
-      - AXIONAX_CHAIN_ID=86137
-    command: --config /etc/axionax/testnet.toml
+      - RUST_LOG=info,nakhara=debug
+      - NAKHARA_CHAIN_ID=86137
+    command: --config /etc/nakhara/testnet.toml
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8545/health"]
       interval: 30s
@@ -191,34 +191,34 @@ services:
       retries: 3
 
 volumes:
-  axionax-data:
+  nakhara-data:
 ```
 
 ---
 
 ## 🔧 Systemd Service (Linux)
 
-### `/etc/systemd/system/axionax-node.service`
+### `/etc/systemd/system/nakhara-node.service`
 ```ini
 [Unit]
-Description=axionax Blockchain Node (Testnet)
+Description=nakhara Blockchain Node (Testnet)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=axionax
-Group=axionax
+User=nakhara
+Group=nakhara
 
 # Working directory
-WorkingDirectory=/opt/axionax
+WorkingDirectory=/opt/nakhara
 
 # Environment
-EnvironmentFile=/etc/axionax/environment
+EnvironmentFile=/etc/nakhara/environment
 Environment=RUST_LOG=info
 
 # Execution
-ExecStart=/opt/axionax/bin/node --config /etc/axionax/testnet.toml
+ExecStart=/opt/nakhara/bin/node --config /etc/nakhara/testnet.toml
 ExecReload=/bin/kill -HUP $MAINPID
 
 # Restart policy
@@ -232,7 +232,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/lib/axionax /var/log/axionax
+ReadWritePaths=/var/lib/nakhara /var/log/nakhara
 ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
@@ -247,7 +247,7 @@ LimitNPROC=512
 # Logging
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=axionax-node
+SyslogIdentifier=nakhara-node
 
 [Install]
 WantedBy=multi-user.target
@@ -256,29 +256,29 @@ WantedBy=multi-user.target
 ### Setup and Start
 ```bash
 # Create user
-sudo useradd -r -s /bin/false axionax
+sudo useradd -r -s /bin/false nakhara
 
 # Create directories
-sudo mkdir -p /opt/axionax/bin /etc/axionax /var/lib/axionax /var/log/axionax
-sudo chown -R axionax:axionax /var/lib/axionax /var/log/axionax
+sudo mkdir -p /opt/nakhara/bin /etc/nakhara /var/lib/nakhara /var/log/nakhara
+sudo chown -R nakhara:nakhara /var/lib/nakhara /var/log/nakhara
 
 # Copy binary
-sudo cp target/release/node /opt/axionax/bin/
-sudo chmod +x /opt/axionax/bin/node
+sudo cp target/release/node /opt/nakhara/bin/
+sudo chmod +x /opt/nakhara/bin/node
 
 # Copy configuration
-sudo cp config/testnet.toml /etc/axionax/
+sudo cp config/testnet.toml /etc/nakhara/
 
 # Enable and start service
 sudo systemctl daemon-reload
-sudo systemctl enable axionax-node
-sudo systemctl start axionax-node
+sudo systemctl enable nakhara-node
+sudo systemctl start nakhara-node
 
 # Check status
-sudo systemctl status axionax-node
+sudo systemctl status nakhara-node
 
 # View logs
-sudo journalctl -u axionax-node -f
+sudo journalctl -u nakhara-node -f
 ```
 
 ---
@@ -303,7 +303,7 @@ curl -X POST http://localhost:8545 \
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'axionax'
+  - job_name: 'nakhara'
     static_configs:
       - targets: ['localhost:9090']
 ```
@@ -311,13 +311,13 @@ scrape_configs:
 ### Log Aggregation
 ```bash
 # Using journald
-sudo journalctl -u axionax-node -o json | jq
+sudo journalctl -u nakhara-node -o json | jq
 
 # Export to file
-sudo journalctl -u axionax-node --since today > axionax-$(date +%Y%m%d).log
+sudo journalctl -u nakhara-node --since today > nakhara-$(date +%Y%m%d).log
 
 # Follow logs with filter
-sudo journalctl -u axionax-node -f | grep -i error
+sudo journalctl -u nakhara-node -f | grep -i error
 ```
 
 ---
@@ -343,7 +343,7 @@ limit_req_zone $binary_remote_addr zone=rpc_limit:10m rate=10r/s;
 
 server {
     listen 80;
-    server_name rpc.testnet.axionax.org;
+    server_name rpc.testnet.nakhara.io;
 
     location / {
         limit_req zone=rpc_limit burst=20 nodelay;
@@ -363,7 +363,7 @@ server {
 sudo apt-get install certbot python3-certbot-nginx
 
 # Obtain certificate
-sudo certbot --nginx -d rpc.testnet.axionax.org
+sudo certbot --nginx -d rpc.testnet.nakhara.io
 
 # Auto-renewal
 sudo certbot renew --dry-run
@@ -375,10 +375,10 @@ sudo certbot renew --dry-run
 # Use environment variables or secrets manager
 
 # AWS Secrets Manager example
-aws secretsmanager get-secret-value --secret-id axionax/testnet/jwt-secret
+aws secretsmanager get-secret-value --secret-id nakhara/testnet/jwt-secret
 
 # HashiCorp Vault example
-vault kv get secret/axionax/testnet
+vault kv get secret/nakhara/testnet
 ```
 
 ---
@@ -401,7 +401,7 @@ curl http://localhost:8545/health
 
 # Test CORS
 echo -e "\n\nTesting CORS..."
-curl -H "Origin: https://app.axionax.org" \
+curl -H "Origin: https://app.nakhara.io" \
      -H "Access-Control-Request-Method: POST" \
      -H "Access-Control-Request-Headers: Content-Type" \
      -X OPTIONS http://localhost:8545 -v
@@ -437,20 +437,20 @@ sudo kill -9 <PID>
 #### 2. Permission Denied
 ```bash
 # Fix ownership
-sudo chown -R axionax:axionax /var/lib/axionax
+sudo chown -R nakhara:nakhara /var/lib/nakhara
 
 # Fix permissions
-sudo chmod -R 755 /var/lib/axionax
+sudo chmod -R 755 /var/lib/nakhara
 ```
 
 #### 3. Database Corruption
 ```bash
 # Backup first
-cp -r /var/lib/axionax/testnet /backup/
+cp -r /var/lib/nakhara/testnet /backup/
 
 # Remove and resync
-rm -rf /var/lib/axionax/testnet/*
-sudo systemctl restart axionax-node
+rm -rf /var/lib/nakhara/testnet/*
+sudo systemctl restart nakhara-node
 ```
 
 #### 4. Memory Issues
@@ -468,16 +468,16 @@ sudo swapon /swapfile
 ### Log Analysis
 ```bash
 # Find errors
-sudo journalctl -u axionax-node | grep -i error
+sudo journalctl -u nakhara-node | grep -i error
 
 # Check panic messages
-sudo journalctl -u axionax-node | grep -i panic
+sudo journalctl -u nakhara-node | grep -i panic
 
 # Performance issues
-sudo journalctl -u axionax-node | grep -i "slow\|timeout"
+sudo journalctl -u nakhara-node | grep -i "slow\|timeout"
 
 # Network issues
-sudo journalctl -u axionax-node | grep -i "peer\|connection"
+sudo journalctl -u nakhara-node | grep -i "peer\|connection"
 ```
 
 ---
@@ -487,10 +487,10 @@ sudo journalctl -u axionax-node | grep -i "peer\|connection"
 ### System Limits
 ```bash
 # /etc/security/limits.conf
-axionax soft nofile 65536
-axionax hard nofile 65536
-axionax soft nproc 4096
-axionax hard nproc 4096
+nakhara soft nofile 65536
+nakhara hard nofile 65536
+nakhara soft nproc 4096
+nakhara hard nproc 4096
 ```
 
 ### Kernel Parameters
@@ -526,10 +526,10 @@ sudo sysctl -p
 
 ## 📞 Support
 
-- **Documentation**: https://docs.axionax.org
-- **GitHub Issues**: https://github.com/axionaxprotocol/axionax-core/issues
-- **Discord**: https://discord.gg/axionax
-- **Telegram**: https://t.me/axionax
+- **Documentation**: https://docs.nakhara.io
+- **GitHub Issues**: https://github.com/nakhara-io/nakhara-core/issues
+- **Discord**: https://discord.gg/nakhara
+- **Telegram**: https://t.me/nakhara
 
 ---
 

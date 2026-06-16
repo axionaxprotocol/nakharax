@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - axionax-devtools
+# 🚀 Quick Start Guide - nakhara-devtools
 
 ## Overview
 
-**axionax-devtools** is a collection of development tools and testing utilities for the axionax protocol, including scripts for testing, refactoring, fixing, and analysis
+**nakhara-devtools** is a collection of development tools and testing utilities for the nakhara protocol, including scripts for testing, refactoring, fixing, and analysis
 
-**Repository:** https://github.com/axionaxprotocol/axionax-devtools
+**Repository:** https://github.com/nakhara-io/nakhara-devtools
 
 ---
 
@@ -29,8 +29,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-devtools.git
-cd axionax-devtools
+git clone https://github.com/nakhara-io/nakhara-devtools.git
+cd nakhara-devtools
 ```
 
 ### 2. Setup Python Environment
@@ -63,7 +63,7 @@ python scripts/testing/check_repo_health.py
 ## 🏗️ Repository Structure
 
 ```
-axionax-devtools/
+nakhara-devtools/
 ├── scripts/                    # All development scripts
 │   ├── testing/                # Testing scripts
 │   │   ├── test_repo_integration.py    # 49 integration tests
@@ -81,7 +81,7 @@ axionax-devtools/
 │   │   ├── fix_warnings.py             # Warning fixes
 │   │   ├── fix_npm_workspaces.py       # NPM workspace setup
 │   │   ├── fix_protocol_names.py       # Name corrections
-│   │   ├── fix_axionax_name.py         # Brand corrections
+│   │   ├── fix_nakhara_name.py         # Brand corrections
 │   │   └── fix_domain.py               # Domain changes
 │   │
 │   ├── analysis/               # Analysis scripts
@@ -129,9 +129,9 @@ python scripts/testing/test_repo_integration.py
 python scripts/testing/check_repo_health.py
 
 # Output shows scores:
-# - axionax-web: 85.7/100 🟢
-# - axionax-core: 78.6/100 🟡
-# - axionax-marketplace: 71.4/100 🟡
+# - nakhara-web: 85.7/100 🟢
+# - nakhara-core: 78.6/100 🟡
+# - nakhara-marketplace: 71.4/100 🟡
 # - etc.
 ```
 
@@ -166,7 +166,7 @@ python scripts/refactoring/analyze_code_quality.py
 python scripts/refactoring/refactor_and_clean.py
 
 # Clean specific repo
-python scripts/refactoring/refactor_and_clean.py --repo axionax-web
+python scripts/refactoring/refactor_and_clean.py --repo nakhara-web
 
 # Skip formatting (only lint)
 python scripts/refactoring/refactor_and_clean.py --skip-formatting
@@ -290,7 +290,7 @@ python scripts/testing/test_repo_links.py --errors-only
 python scripts/refactoring/refactor_and_clean.py
 
 # Specific repo
-python scripts/refactoring/refactor_and_clean.py --repo axionax-core
+python scripts/refactoring/refactor_and_clean.py --repo nakhara-core
 
 # Skip formatting
 python scripts/refactoring/refactor_and_clean.py --skip-formatting
@@ -327,7 +327,7 @@ python scripts/refactoring/refactor_and_clean.py --dry-run
 python scripts/refactoring/analyze_code_quality.py
 
 # Specific repo
-python scripts/refactoring/analyze_code_quality.py --repo axionax-web
+python scripts/refactoring/analyze_code_quality.py --repo nakhara-web
 
 # Generate report
 python scripts/refactoring/analyze_code_quality.py --output quality_report.txt
@@ -354,7 +354,7 @@ python scripts/refactoring/master_refactor.py
 python scripts/refactoring/master_refactor.py --skip-tests
 
 # Specific repos only
-python scripts/refactoring/master_refactor.py --repos axionax-core,axionax-web
+python scripts/refactoring/master_refactor.py --repos nakhara-core,nakhara-web
 ```
 
 ---
@@ -441,35 +441,35 @@ python scripts/fixing/fix_npm_workspaces.py
 
 ## 🔌 Integration with Other Repos
 
-### Testing axionax-core
+### Testing nakhara-core
 
 ```bash
-cd ../axionax-core
+cd ../nakhara-core
 
 # Run devtools tests on core
-python ../axionax-devtools/scripts/testing/test_repo_integration.py
+python ../nakhara-devtools/scripts/testing/test_repo_integration.py
 
 # Analyze core code quality
-python ../axionax-devtools/scripts/refactoring/analyze_code_quality.py --repo axionax-core
+python ../nakhara-devtools/scripts/refactoring/analyze_code_quality.py --repo nakhara-core
 ```
 
-### Refactoring axionax-web
+### Refactoring nakhara-web
 
 ```bash
-cd ../axionax-web
+cd ../nakhara-web
 
 # Clean and refactor
-python ../axionax-devtools/scripts/refactoring/refactor_and_clean.py --repo axionax-web
+python ../nakhara-devtools/scripts/refactoring/refactor_and_clean.py --repo nakhara-web
 
 # Check results
-python ../axionax-devtools/scripts/testing/check_repo_health.py
+python ../nakhara-devtools/scripts/testing/check_repo_health.py
 ```
 
 ### Full Workspace Testing
 
 ```bash
 # From workspace root
-cd axionax-devtools
+cd nakhara-devtools
 
 # Test all repos
 python scripts/testing/test_repo_integration.py
@@ -573,8 +573,8 @@ python scripts/refactoring/analyze_code_quality.py --verbose
 ### Script Not Found
 
 ```bash
-# Make sure you're in axionax-devtools directory
-cd axionax-devtools
+# Make sure you're in nakhara-devtools directory
+cd nakhara-devtools
 
 # Check file exists
 ls scripts/testing/test_repo_integration.py
@@ -616,7 +616,7 @@ chmod +x scripts/*.sh
 
 ```bash
 # Set workspace root (if needed)
-export AXIONAX_WORKSPACE=D:\Desktop\axionaxius01
+export NAKHARA_WORKSPACE=D:\Desktop\nakharaius01
 
 # Set Python path
 export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -632,14 +632,14 @@ export DEBUG=1
 - **Main README:** [README.md](README.md)
 - **Refactoring Guide:** [docs/REFACTORING_GUIDE.md](docs/REFACTORING_GUIDE.md)
 - **Integration Summary:** [docs/INTEGRATION_SUMMARY.md](docs/INTEGRATION_SUMMARY.md)
-- **axionax Docs:** [axionax-docs](https://github.com/axionaxprotocol/axionax-docs)
+- **nakhara Docs:** [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/axionaxprotocol/axionax-devtools/issues)
-- **Documentation:** Check [axionax-docs](https://github.com/axionaxprotocol/axionax-docs)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakhara-io/nakhara-devtools/issues)
+- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
 - **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
@@ -651,5 +651,5 @@ MIT - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the axionax protocol Team</sub>
+  <sub>Built with ❤️ by the nakhara protocol Team</sub>
 </p>

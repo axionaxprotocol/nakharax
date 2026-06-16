@@ -1,6 +1,6 @@
-﻿# axionax Crypto Module - Usage Guide
+# nakhara Crypto Module - Usage Guide
 
-Complete guide for using cryptographic functions in axionax Core.
+Complete guide for using cryptographic functions in nakhara Core.
 
 ## 📚 Table of Contents
 

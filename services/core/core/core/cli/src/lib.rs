@@ -1,4 +1,4 @@
-//! Axionax CLI — library of testable helpers
+//! Nakhara CLI — library of testable helpers
 
 use serde_json::Value;
 

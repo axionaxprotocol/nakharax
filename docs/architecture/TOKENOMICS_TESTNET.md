@@ -1,4 +1,4 @@
-# axionax Testnet Tokenomics
+# nakhara Testnet Tokenomics
 
 > **Current Testnet Configuration** — Genesis Public Testnet (Phase 1)
 
@@ -10,7 +10,7 @@
 
 ## Overview
 
-The Axionax Testnet uses a simplified token model designed for testing and development purposes. This configuration differs significantly from the planned mainnet tokenomics.
+The Nakhara Testnet uses a simplified token model designed for testing and development purposes. This configuration differs significantly from the planned mainnet tokenomics.
 
 ---
 
@@ -19,7 +19,7 @@ The Axionax Testnet uses a simplified token model designed for testing and devel
 | Parameter | Value |
 |-----------|-------|
 | **Token Symbol** | AXXt |
-| **Token Name** | Axionax Testnet Token |
+| **Token Name** | Nakhara Testnet Token |
 | **Total Supply** | 1,000,000,000 AXXt (1 Billion) |
 | **Supply Model** | Fixed (no inflation) |
 | **Precision** | 18 decimals |
@@ -39,7 +39,7 @@ The Axionax Testnet uses a simplified token model designed for testing and devel
 
 ### Faucet Details
 
-- **URL**: `https://faucet.axionax.org` (planned) / Direct RPC request
+- **URL**: `https://faucet.nakhara.io` (planned) / Direct RPC request
 - **Daily Limit**: 1,000 AXXt per address
 - **Rate Limiting**: 1 request per hour per IP
 - **Minimum Balance**: 0.01 AXXt (for gas)

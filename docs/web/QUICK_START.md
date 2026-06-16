@@ -1,6 +1,6 @@
 # Quick Start Guide 🚀
 
-Get up and running with Axionax Web Universe in 5 minutes!
+Get up and running with Nakhara Web Universe in 5 minutes!
 
 ---
 
@@ -27,8 +27,8 @@ Optional:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 ```
 
 ### 2️⃣ Install Dependencies
@@ -53,8 +53,8 @@ nano .env
 
 ```bash
 CHAIN_ID=86137
-NETWORK_NAME=axionax-testnet-1
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.axionax.org
+NETWORK_NAME=nakhara-testnet-1
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakhara.io
 ```
 
 ### 4️⃣ Start Development Servers
@@ -78,13 +78,13 @@ This will start:
 
 ```bash
 # Web application only
-pnpm --filter @axionax/web dev
+pnpm --filter @nakhara/web dev
 
 # Marketplace only
-pnpm --filter @axionax/marketplace dev
+pnpm --filter @nakhara/marketplace dev
 
 # SDK development
-pnpm --filter @axionax/sdk dev
+pnpm --filter @nakhara/sdk dev
 ```
 
 ### Option B: Run All Apps (Recommended)
@@ -156,7 +156,7 @@ pnpm docker:logs      # View Docker logs
 ## 📁 Project Structure
 
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── 📱 apps/
 │   ├── web/              # Next.js website
 │   ├── marketplace/      # React marketplace
@@ -200,7 +200,7 @@ After starting the development servers:
 
 ### 1. Check Web App
 
-Open http://localhost:3000 in your browser. You should see the Axionax homepage.
+Open http://localhost:3000 in your browser. You should see the Nakhara homepage.
 
 ### 2. Test RPC Connection
 
@@ -236,16 +236,16 @@ All tests should pass ✅
 4. Enter details:
 
 ```
-Network Name: Axionax Testnet
-RPC URL: https://testnet-rpc.axionax.org
+Network Name: Nakhara Testnet
+RPC URL: https://testnet-rpc.nakhara.io
 Chain ID: 86137
 Currency Symbol: AXX
-Block Explorer: https://explorer.axionax.org
+Block Explorer: https://explorer.nakhara.io
 ```
 
 ### Get Test Tokens
 
-Visit the faucet: https://faucet.axionax.org
+Visit the faucet: https://faucet.nakhara.io
 
 Enter your wallet address and claim 10 AXX (once per 24 hours).
 
@@ -326,10 +326,10 @@ Now that you're set up:
 
 Need help? We're here:
 
-- **Discord**: https://discord.gg/axionax (#dev-help)
+- **Discord**: https://discord.gg/nakhara (#dev-help)
 - **GitHub Discussions**: Ask questions
 - **GitHub Issues**: Report bugs
-- **Documentation**: https://docs.axionax.org
+- **Documentation**: https://docs.nakhara.io
 
 ---
 

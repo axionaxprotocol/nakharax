@@ -1,36 +1,36 @@
 #!/bin/bash
-# Systemd Service Setup for axionax Validator
+# Systemd Service Setup for nakhara Validator
 # Run as root: sudo bash setup_systemd.sh
 
 set -e
 
-AXIONAX_USER="axionax"
-SERVICE_FILE="/etc/systemd/system/axionax-validator.service"
+NAKHARA_USER="nakhara"
+SERVICE_FILE="/etc/systemd/system/nakhara-validator.service"
 
-echo "Setting up axionax Validator systemd service..."
+echo "Setting up nakhara Validator systemd service..."
 
 # Create service file
 cat > $SERVICE_FILE << 'EOF'
 [Unit]
-Description=axionax Validator Node
+Description=nakhara Validator Node
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=axionax
-Group=axionax
-WorkingDirectory=/home/axionax/axionax-monolith
+User=nakhara
+Group=nakhara
+WorkingDirectory=/home/nakhara/nakhara-monolith
 
 # Environment
-Environment="AXIONAX_HOME=/home/axionax/.axionax"
+Environment="NAKHARA_HOME=/home/nakhara/.nakhara"
 Environment="RUST_LOG=info"
 Environment="RUST_BACKTRACE=1"
-Environment="PYTHONPATH=/home/axionax/axionax-monolith/services/core/core/deai"
+Environment="PYTHONPATH=/home/nakhara/nakhara-monolith/services/core/core/deai"
 
 # Start command
-ExecStart=/usr/local/bin/axionax-core start \
-    --config /home/axionax/.axionax/config/config.yaml \
+ExecStart=/usr/local/bin/nakhara-core start \
+    --config /home/nakhara/.nakhara/config/config.yaml \
     --validator
 
 # Restart policy
@@ -45,9 +45,9 @@ ProtectSystem=full
 ProtectHome=read-only
 
 # Logging
-StandardOutput=append:/home/axionax/.axionax/logs/validator.log
-StandardError=append:/home/axionax/.axionax/logs/validator.error.log
-SyslogIdentifier=axionax-validator
+StandardOutput=append:/home/nakhara/.nakhara/logs/validator.log
+StandardError=append:/home/nakhara/.nakhara/logs/validator.error.log
+SyslogIdentifier=nakhara-validator
 
 [Install]
 WantedBy=multi-user.target
@@ -60,14 +60,14 @@ systemctl daemon-reload
 echo "Systemd reloaded"
 
 # Enable service
-systemctl enable axionax-validator
+systemctl enable nakhara-validator
 echo "Service enabled (will start on boot)"
 
 echo ""
 echo "Setup complete! To control the validator:"
-echo "  Start:   sudo systemctl start axionax-validator"
-echo "  Stop:    sudo systemctl stop axionax-validator"
-echo "  Restart: sudo systemctl restart axionax-validator"
-echo "  Status:  sudo systemctl status axionax-validator"
-echo "  Logs:    journalctl -u axionax-validator -f"
+echo "  Start:   sudo systemctl start nakhara-validator"
+echo "  Stop:    sudo systemctl stop nakhara-validator"
+echo "  Restart: sudo systemctl restart nakhara-validator"
+echo "  Status:  sudo systemctl status nakhara-validator"
+echo "  Logs:    journalctl -u nakhara-validator -f"
 echo ""

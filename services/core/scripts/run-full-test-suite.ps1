@@ -1,4 +1,4 @@
-# Axionax Full Test Suite
+# Nakhara Full Test Suite
 # Run: .\scripts\run-full-test-suite.ps1
 
 $ErrorActionPreference = "Stop"
@@ -7,7 +7,7 @@ Set-Location $Root
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "  AXIONAX — Full Test Suite" -ForegroundColor Cyan
+Write-Host "  NAKHARA — Full Test Suite" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host ""
 

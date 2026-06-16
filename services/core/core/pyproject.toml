@@ -1,9 +1,9 @@
 [project]
-name = "axionax-deai"
+name = "nakhara-deai"
 version = "1.8.0"
-description = "DeAI analytics and safety modules for the axionax core."
+description = "DeAI analytics and safety modules for the nakhara core."
 authors = [
-    { name = "axionax protocol Team", email = "team@axionax.org" }
+    { name = "nakhara protocol Team", email = "team@nakhara.io" }
 ]
 license = { text = "MIT" }
 requires-python = ">=3.10"

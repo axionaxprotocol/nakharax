@@ -51,7 +51,7 @@ function Write-ColorOutput {
 # Banner
 Write-Host ""
 Write-ColorOutput "======================================================================" "Cyan"
-Write-ColorOutput "  AXIONAX TESTNET READINESS CHECKER" "Cyan"
+Write-ColorOutput "  NAKHARA TESTNET READINESS CHECKER" "Cyan"
 Write-ColorOutput "======================================================================" "Cyan"
 Write-Host ""
 

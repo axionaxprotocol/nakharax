@@ -1,9 +1,9 @@
-# Axionax RPC API Reference
-# API Guide for Axionax Protocol
+# Nakhara RPC API Reference
+# API Guide for Nakhara Protocol
 
 ## Overview
 
-Axionax Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the blockchain
+Nakhara Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the blockchain
 
 **URL:** `http://your-node:8545`
 

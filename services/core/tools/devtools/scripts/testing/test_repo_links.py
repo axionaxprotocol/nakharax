@@ -25,38 +25,38 @@ class RepoLinkTester:
     def __init__(self, workspace_root: str):
         self.workspace_root = Path(workspace_root)
         self.repos = {
-            'axionax-core': {
-                'path': self.workspace_root / 'axionax-core',
+            'nakhara-core': {
+                'path': self.workspace_root / 'nakhara-core',
                 'type': 'rust',
                 'dependencies': []
             },
-            'axionax-sdk-ts': {
-                'path': self.workspace_root / 'axionax-sdk-ts',
+            'nakhara-sdk-ts': {
+                'path': self.workspace_root / 'nakhara-sdk-ts',
                 'type': 'typescript',
                 'dependencies': []
             },
-            'axionax-web': {
-                'path': self.workspace_root / 'axionax-web',
+            'nakhara-web': {
+                'path': self.workspace_root / 'nakhara-web',
                 'type': 'typescript',
-                'dependencies': ['@axionax/sdk']
+                'dependencies': ['@nakhara/sdk']
             },
-            'axionax-marketplace': {
-                'path': self.workspace_root / 'axionax-marketplace',
+            'nakhara-marketplace': {
+                'path': self.workspace_root / 'nakhara-marketplace',
                 'type': 'typescript',
-                'dependencies': ['@axionax/sdk']
+                'dependencies': ['@nakhara/sdk']
             },
-            'axionax-docs': {
-                'path': self.workspace_root / 'axionax-docs',
+            'nakhara-docs': {
+                'path': self.workspace_root / 'nakhara-docs',
                 'type': 'documentation',
                 'dependencies': []
             },
-            'axionax-deploy': {
-                'path': self.workspace_root / 'axionax-deploy',
+            'nakhara-deploy': {
+                'path': self.workspace_root / 'nakhara-deploy',
                 'type': 'deployment',
-                'dependencies': ['@axionax/sdk']
+                'dependencies': ['@nakhara/sdk']
             },
-            'axionax-devtools': {
-                'path': self.workspace_root / 'axionax-devtools',
+            'nakhara-devtools': {
+                'path': self.workspace_root / 'nakhara-devtools',
                 'type': 'tools',
                 'dependencies': []
             }
@@ -72,7 +72,7 @@ class RepoLinkTester:
     def print_header(self):
         """Print report header"""
         print(f"\n{BOLD}{'='*80}{RESET}")
-        print(f"{BOLD}{BLUE}AXIONAX REPOSITORY DIRECT LINK TEST{RESET}")
+        print(f"{BOLD}{BLUE}NAKHARA REPOSITORY DIRECT LINK TEST{RESET}")
         print(f"{BOLD}{'='*80}{RESET}")
         print(f"Test time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Workspace: {self.workspace_root}")
@@ -99,14 +99,14 @@ class RepoLinkTester:
             dev_dependencies = package_data.get('devDependencies', {})
             all_deps = {**dependencies, **dev_dependencies}
             
-            # Check @axionax/sdk dependencies
-            axionax_deps = {k: v for k, v in all_deps.items() if '@axionax' in k}
+            # Check @nakhara/sdk dependencies
+            nakhara_deps = {k: v for k, v in all_deps.items() if '@nakhara' in k}
             
-            if not axionax_deps:
+            if not nakhara_deps:
                 return {
                     'test': test_name,
                     'status': 'skip',
-                    'message': 'No @axionax dependencies',
+                    'message': 'No @nakhara dependencies',
                     'details': {}
                 }
             
@@ -115,7 +115,7 @@ class RepoLinkTester:
             has_npm_link = False
             has_file_link = False
             
-            for dep_name, dep_version in axionax_deps.items():
+            for dep_name, dep_version in nakhara_deps.items():
                 link_type = 'unknown'
                 is_valid = False
                 target_repo = None
@@ -156,7 +156,7 @@ class RepoLinkTester:
                     # Version number (from npm registry)
                     link_type = 'npm'
                     has_npm_link = True
-                    is_valid = False  # @axionax/sdk not yet published on npm
+                    is_valid = False  # @nakhara/sdk not yet published on npm
                 
                 link_results.append({
                     'dependency': dep_name,
@@ -375,22 +375,22 @@ class RepoLinkTester:
                     }
                 }
             
-            # Check if @axionax/sdk is in node_modules
-            axionax_sdk = node_modules / '@axionax' / 'sdk'
+            # Check if @nakhara/sdk is in node_modules
+            nakhara_sdk = node_modules / '@nakhara' / 'sdk'
             
-            if axionax_sdk.exists():
+            if nakhara_sdk.exists():
                 # Check if it's a symlink or actual directory
-                is_symlink = axionax_sdk.is_symlink()
+                is_symlink = nakhara_sdk.is_symlink()
                 
                 if is_symlink:
-                    real_path = axionax_sdk.resolve()
+                    real_path = nakhara_sdk.resolve()
                     # Check if symlink points to the actual repo
-                    is_valid = (real_path.parent.parent == self.workspace_root / 'axionax-sdk-ts')
+                    is_valid = (real_path.parent.parent == self.workspace_root / 'nakhara-sdk-ts')
                     
                     return {
                         'test': test_name,
                         'status': 'pass' if is_valid else 'warn',
-                        'message': f'{"✓" if is_valid else "⚠"} @axionax/sdk is a symlink to {real_path.parent.parent.name}',
+                        'message': f'{"✓" if is_valid else "⚠"} @nakhara/sdk is a symlink to {real_path.parent.parent.name}',
                         'details': {
                             'is_symlink': True,
                             'target': str(real_path),
@@ -402,15 +402,15 @@ class RepoLinkTester:
                     return {
                         'test': test_name,
                         'status': 'warn',
-                        'message': '⚠ @axionax/sdk is a copied directory (not a link)',
+                        'message': '⚠ @nakhara/sdk is a copied directory (not a link)',
                         'details': {'is_symlink': False}
                     }
             else:
-                # No @axionax/sdk
+                # No @nakhara/sdk
                 return {
                     'test': test_name,
                     'status': 'skip',
-                    'message': 'No @axionax/sdk dependency',
+                    'message': 'No @nakhara/sdk dependency',
                     'details': {}
                 }
         
@@ -523,7 +523,7 @@ class RepoLinkTester:
                         print(f"  {YELLOW}→ Should change from 'workspace:*' to 'file:../repo-name'{RESET}")
                     
                     if not details.get('has_file_link') and details.get('total_deps', 0) > 0:
-                        print(f"  {YELLOW}→ Should use 'file:../axionax-sdk-ts' for direct linking{RESET}")
+                        print(f"  {YELLOW}→ Should use 'file:../nakhara-sdk-ts' for direct linking{RESET}")
                     
                     if 'invalid_members' in details and details['invalid_members']:
                         print(f"  {YELLOW}→ Remove non-existent members from Cargo.toml{RESET}")
@@ -534,7 +534,7 @@ class RepoLinkTester:
         
         with open(report_file, 'w', encoding='utf-8') as f:
             f.write("="*80 + "\n")
-            f.write("AXIONAX REPOSITORY DIRECT LINK TEST REPORT\n")
+            f.write("NAKHARA REPOSITORY DIRECT LINK TEST REPORT\n")
             f.write("="*80 + "\n")
             f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             

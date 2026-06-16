@@ -1,6 +1,6 @@
-# Node Hardware Specifications — Axionax Network
+# Node Hardware Specifications — Nakhara Network
 
-Hardware requirements for all node and service types on the Axionax network.
+Hardware requirements for all node and service types on the Nakhara network.
 
 ---
 
@@ -212,6 +212,6 @@ PostgreSQL + indexer + UI.
 
 ---
 
-*Hardware specs for Axionax network nodes. Adjust for chain growth and load.*
+*Hardware specs for Nakhara network nodes. Adjust for chain growth and load.*
 
 **Version:** 2026-02

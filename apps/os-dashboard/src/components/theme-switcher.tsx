@@ -27,10 +27,10 @@ type CustomColors = {
   blob4: string;
 };
 
-const KEY_THEME = "axionax-theme";
-const KEY_MODE = "axionax-mode";
-const KEY_ANIM = "axionax-anim";
-const KEY_CUSTOM = "axionax-custom";
+const KEY_THEME = "nakhara-theme";
+const KEY_MODE = "nakhara-mode";
+const KEY_ANIM = "nakhara-anim";
+const KEY_CUSTOM = "nakhara-custom";
 
 const DEFAULT_CUSTOM: CustomColors = {
   base: "#050810",

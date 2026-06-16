@@ -33,7 +33,7 @@ chmod +x check-testnet-readiness.sh
 
 ### Python (Direct)
 ```bash
-python axionax-devtools/scripts/testing/testnet_readiness_checker.py
+python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ## 📊 What It Checks
@@ -231,21 +231,21 @@ Category Scores:
 ### Pre-Commit Checks
 Run quick validation before committing:
 ```bash
-python axionax-devtools/scripts/testing/testnet_readiness_checker.py --quick
+python nakhara-devtools/scripts/testing/testnet_readiness_checker.py --quick
 ```
 
 ### CI/CD Pipeline
 Integrate into GitHub Actions:
 ```yaml
 - name: Testnet Readiness Check
-  run: python axionax-devtools/scripts/testing/testnet_readiness_checker.py
+  run: python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ### Weekly Reviews
 Schedule weekly readiness checks:
 ```bash
 # Cron job (Linux)
-0 9 * * 1 cd /path/to/axionaxius02 && ./check-testnet-readiness.sh
+0 9 * * 1 cd /path/to/nakharaius02 && ./check-testnet-readiness.sh
 ```
 
 ## 📅 Testnet Launch Checklist
@@ -292,12 +292,12 @@ If critical issues are discovered post-launch:
 ## 📞 Support
 
 ### Documentation
-- Full docs: `axionax-docs/TESTING_GUIDE.md`
-- Developer guide: `axionax-docs/DEVELOPER_GUIDE.md`
-- Deployment: `axionax-docs/VPS_VALIDATOR_SETUP.md`
+- Full docs: `nakhara-docs/TESTING_GUIDE.md`
+- Developer guide: `nakhara-docs/DEVELOPER_GUIDE.md`
+- Deployment: `nakhara-docs/VPS_VALIDATOR_SETUP.md`
 
 ### Contact
-- GitHub: https://github.com/axionaxprotocol
+- GitHub: https://github.com/nakhara-io
 - Discord: (coming soon)
 - Email: (coming soon)
 
@@ -312,7 +312,7 @@ python --version
 pip install -r requirements.txt
 
 # Verify script location
-ls axionax-devtools/scripts/testing/testnet_readiness_checker.py
+ls nakhara-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ### False Positives

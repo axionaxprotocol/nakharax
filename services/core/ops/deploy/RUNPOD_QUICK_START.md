@@ -1,6 +1,6 @@
 # 🚀 RunPod A40 Worker - Quick Start
 
-Set up a RunPod A40 GPU as a worker node for the axionax testnet in 3 steps
+Set up a RunPod A40 GPU as a worker node for the nakhara testnet in 3 steps
 
 ## ⚡ Quick Setup (20 minutes)
 
@@ -23,14 +23,14 @@ ssh root@abc123.runpod.io -p 22456 -i ~/. ssh/id_ed25519_runpod
 ### 3. Run Setup Script
 ```bash
 # Download and run setup script
-wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 chmod +x setup-runpod-worker.sh
 ./setup-runpod-worker.sh
 ```
 
 The script will install everything automatically:
 - ✅ Rust toolchain
-- ✅ axionax core
+- ✅ nakhara core
 - ✅ DeAI dependencies
 - ✅ Worker configuration
 - ✅ Helper scripts
@@ -38,7 +38,7 @@ The script will install everything automatically:
 ### 4. Configure Wallet
 ```bash
 # Edit worker config
-nano /workspace/axionax-worker/config/worker.toml
+nano /workspace/nakhara-worker/config/worker.toml
 
 # Edit this line:
 address = "0xYOUR_WALLET_ADDRESS_HERE"
@@ -48,11 +48,11 @@ address = "0xYOUR_WALLET_ADDRESS_HERE"
 ### 5. Start Worker
 ```bash
 # Start worker in tmux
-tmux new -s axionax-worker
+tmux new -s nakhara-worker
 ~/start-worker.sh
 
 # Detach: Press Ctrl+B then D
-# Re-attach: tmux attach -t axionax-worker
+# Re-attach: tmux attach -t nakhara-worker
 ```
 
 ✅ **Done!** The worker is running and ready to receive jobs from the testnet
@@ -69,7 +69,7 @@ nvidia-smi
 ~/monitor-worker.sh
 
 # View logs
-tail -f /workspace/axionax-worker/logs/worker.log
+tail -f /workspace/nakhara-worker/logs/worker.log
 ```
 
 ---

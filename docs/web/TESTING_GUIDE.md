@@ -1,10 +1,10 @@
-# axionax Core - Testnet Testing Guide
+# nakhara Core - Testnet Testing Guide
 
 วันที่: 22 ตุลาคม 2025
 
 ## 🎯 วิธีการทดสอบ Testnet
 
-มี 2 วิธีในการทดสอบ axionax Core:
+มี 2 วิธีในการทดสอบ nakhara Core:
 
 ---
 
@@ -36,7 +36,7 @@ CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 
 ```powershell
 # 1. ไปยังโฟลเดอร์ Testnet
-cd axionax_v1.5_Testnet_in_a_Box
+cd nakhara_v1.5_Testnet_in_a_Box
 
 # 2. เริ่ม services ทั้งหมด
 docker compose up -d
@@ -83,21 +83,21 @@ http://localhost:4001
 http://localhost:8080
 ```
 
-### รัน axionax Node
+### รัน nakhara Node
 
 ```powershell
 # กลับไปโฟลเดอร์หลัก
 cd ..
 
 # เริ่ม node (เชื่อมต่อกับ Anvil)
-.\build\axionax-core.exe start --network testnet
+.\build\nakhara-core.exe start --network testnet
 ```
 
 คุณจะเห็น:
 
 ```
-🚀 Starting axionax Core v1.5.0-testnet
-📂 Data directory: .axionax
+🚀 Starting nakhara Core v1.5.0-testnet
+📂 Data directory: .nakhara
 🌐 Network: testnet
 🔌 RPC address: 127.0.0.1:8545
 
@@ -118,10 +118,10 @@ Press Ctrl+C to stop...
 
 ```powershell
 # สร้าง config
-.\build\axionax-core.exe config init
+.\build\nakhara-core.exe config init
 
 # แสดง config ปัจจุบัน
-.\build\axionax-core.exe config show
+.\build\nakhara-core.exe config show
 ```
 
 **ผลลัพธ์:**
@@ -130,7 +130,7 @@ Press Ctrl+C to stop...
 📋 Current Configuration:
   Chain ID: 31337
   Network: testnet
-  Data Dir: .axionax
+  Data Dir: .nakhara
   PoPC Sample Size: 1000
   ASR Top K: 64
 ```
@@ -139,23 +139,23 @@ Press Ctrl+C to stop...
 
 ```powershell
 # สร้าง validator key
-.\build\axionax-core.exe keys generate --type validator
+.\build\nakhara-core.exe keys generate --type validator
 
 # สร้าง worker key
-.\build\axionax-core.exe keys generate --type worker
+.\build\nakhara-core.exe keys generate --type worker
 
 # แสดงรายการ keys
-.\build\axionax-core.exe keys list
+.\build\nakhara-core.exe keys list
 ```
 
 ### 3. ทดสอบ Validator Commands
 
 ```powershell
 # ดูสถานะ validator (mock data)
-.\build\axionax-core.exe validator status
+.\build\nakhara-core.exe validator status
 
 # จำลอง validator start
-.\build\axionax-core.exe validator start
+.\build\nakhara-core.exe validator start
 ```
 
 **ผลลัพธ์:**
@@ -187,10 +187,10 @@ $specs = @"
 $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 # Register worker
-.\build\axionax-core.exe worker register --specs worker-specs.json
+.\build\nakhara-core.exe worker register --specs worker-specs.json
 
 # Check worker status
-.\build\axionax-core.exe worker status
+.\build\nakhara-core.exe worker status
 ```
 
 **ผลลัพธ์:**
@@ -207,13 +207,13 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # Check balance
-.\build\axionax-core.exe stake balance
+.\build\nakhara-core.exe stake balance
 
 # Deposit stake (mock)
-.\build\axionax-core.exe stake deposit 10000 --address 0x1234...
+.\build\nakhara-core.exe stake deposit 10000 --address 0x1234...
 
 # Withdraw stake
-.\build\axionax-core.exe stake withdraw 5000
+.\build\nakhara-core.exe stake withdraw 5000
 ```
 
 ---
@@ -224,7 +224,7 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # แสดงข้อมูล PoPC configuration
-.\build\axionax-core.exe config show
+.\build\nakhara-core.exe config show
 ```
 
 ดู:
@@ -236,7 +236,7 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # Worker registration แสดงการทำงานของ ASR
-.\build\axionax-core.exe worker register --specs worker-specs.json
+.\build\nakhara-core.exe worker register --specs worker-specs.json
 ```
 
 ASR จะ:
@@ -249,7 +249,7 @@ ASR จะ:
 
 ```powershell
 # แสดง pricing information
-.\build\axionax-core.exe config show
+.\build\nakhara-core.exe config show
 ```
 
 ดู PPC parameters:
@@ -428,9 +428,9 @@ docker compose logs blockscout
 
 ## 🆘 ต้องการความช่วยเหลือ?
 
-- **Documentation:** https://docs.axionax.org
-- **GitHub:** https://github.com/axionaxprotocol/axionax-core
-- **Discord:** https://discord.gg/axionax
+- **Documentation:** https://docs.nakhara.io
+- **GitHub:** https://github.com/nakhara-io/nakhara-core
+- **Discord:** https://discord.gg/nakhara
 
 ---
 

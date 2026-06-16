@@ -1,5 +1,5 @@
 """
-Axionax DeAI Worker Node (v1.9.0 Optimized)
+Nakhara DeAI Worker Node (v1.9.0 Optimized)
 
 Connects to the blockchain, listens for compute jobs, and executes them
 in a secure Docker sandbox with model caching and preloading capabilities.
@@ -24,7 +24,7 @@ try:
 except ImportError:
     import tomli as tomllib
 
-from rpc_client import AxionaxRpcClient
+from rpc_client import NakharaRpcClient
 from wallet_manager import WalletManager
 from contract_manager import ContractManager
 from network_manager import NetworkManager
@@ -205,7 +205,7 @@ class ModelCache:
 class WorkerConfig:
     """Worker configuration loaded from TOML"""
     # Worker
-    name: str = "axionax-worker-local"
+    name: str = "nakhara-worker-local"
     version: str = "1.9.0"
     environment: str = "development"
     
@@ -327,12 +327,12 @@ class WorkerConfig:
 
 
 # =============================================================================
-# Axionax Worker (Optimized)
+# Nakhara Worker (Optimized)
 # =============================================================================
 
-class AxionaxWorker:
+class NakharaWorker:
     """
-    Axionax DeAI Worker Node (v1.9.0 Optimized)
+    Nakhara DeAI Worker Node (v1.9.0 Optimized)
     
     Features:
     - Model caching for zero-latency inference
@@ -365,14 +365,14 @@ class AxionaxWorker:
         self.network = NetworkManager(config_path)
         self.client = self.network.get_client()
         
-        # Wallet: AXIONAX_WALLET_PATH env, or worker_key.json next to config
-        wallet_path = os.environ.get("AXIONAX_WALLET_PATH", "").strip()
+        # Wallet: NAKHARA_WALLET_PATH env, or worker_key.json next to config
+        wallet_path = os.environ.get("NAKHARA_WALLET_PATH", "").strip()
         if not wallet_path:
             wallet_path = str(Path(config_path).resolve().parent / "worker_key.json")
         self.wallet = WalletManager(key_file=wallet_path)
         
         # Initialize Contract Manager
-        contract_address = os.environ.get("AXIONAX_MARKETPLACE_ADDRESS", "").strip()
+        contract_address = os.environ.get("NAKHARA_MARKETPLACE_ADDRESS", "").strip()
         if not contract_address:
             try:
                 import toml as _toml
@@ -553,7 +553,7 @@ class AxionaxWorker:
     def start(self):
         """Start the worker main loop"""
         logger.info("=" * 60)
-        logger.info("Starting Axionax Worker Node (v1.9.0 Optimized)")
+        logger.info("Starting Nakhara Worker Node (v1.9.0 Optimized)")
         logger.info("=" * 60)
         self.is_running = True
         
@@ -811,7 +811,7 @@ if __name__ == "__main__":
     import argparse
     import sys
 
-    parser = argparse.ArgumentParser(description="Axionax DeAI Worker Node (v1.9.0)")
+    parser = argparse.ArgumentParser(description="Nakhara DeAI Worker Node (v1.9.0)")
     parser.add_argument("--config", default="worker_config.toml", help="Config file path")
     parser.add_argument("--no-sandbox", action="store_true", help="Disable Docker sandbox (UNSAFE!)")
     args = parser.parse_args()
@@ -828,7 +828,7 @@ if __name__ == "__main__":
     if args.no_sandbox:
         logger.warning("Running WITHOUT sandbox - NOT RECOMMENDED for production!")
 
-    worker = AxionaxWorker(
+    worker = NakharaWorker(
         config_path=config_path,
         use_sandbox=not args.no_sandbox,
     )

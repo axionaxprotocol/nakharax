@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - axionax-core
+# 🚀 Quick Start Guide - nakhara-core
 
 ## Overview
 
-**axionax-core** is a blockchain protocol core written in Rust with a DeAI (Decentralized AI) system written in Python
+**nakhara-core** is a blockchain protocol core written in Rust with a DeAI (Decentralized AI) system written in Python
 
-**Repository:** https://github.com/axionaxprotocol/axionax-core
+**Repository:** https://github.com/nakhara-io/nakhara-core
 
 ---
 
@@ -28,8 +28,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 ```
 
 ### 2. Rust Setup
@@ -162,7 +162,7 @@ python -m pytest tests/integration/
 ## 🏗️ Project Structure
 
 ```
-axionax-core/
+nakhara-core/
 ├── src/                        # Rust source code
 │   ├── consensus/              # Consensus mechanism (PoPC)
 │   ├── network/                # P2P networking
@@ -267,7 +267,7 @@ export RUST_LOG=debug
 cargo run
 
 # Specific module logs
-export RUST_LOG=axionax_core::consensus=trace
+export RUST_LOG=nakhara_core::consensus=trace
 cargo run
 
 # Log to file
@@ -281,9 +281,9 @@ cargo run 2> debug.log
 # VS Code: Install "CodeLLDB" extension
 
 # Run with debugger
-rust-lldb target/debug/axionax-core
+rust-lldb target/debug/nakhara-core
 # or
-rust-gdb target/debug/axionax-core
+rust-gdb target/debug/nakhara-core
 ```
 
 ### Performance Profiling
@@ -339,35 +339,35 @@ curl -X POST http://localhost:8545 \
 
 ## 🔄 Integration with Other Repos
 
-### With axionax-sdk-ts
+### With nakhara-sdk-ts
 
 ```bash
 # The SDK connects to your local node
 # Make sure core node is running on http://localhost:8545
 
-# In axionax-sdk-ts:
-# import { AxionaxClient } from '@axionax/sdk'
-# const client = new AxionaxClient('http://localhost:8545')
+# In nakhara-sdk-ts:
+# import { NakharaClient } from '@nakhara/sdk'
+# const client = new NakharaClient('http://localhost:8545')
 ```
 
-### With axionax-deploy
+### With nakhara-deploy
 
 ```bash
 # Deploy scripts use the built binaries
-cd ../axionax-deploy
+cd ../nakhara-deploy
 npm run deploy:local
 
-# This will start your axionax-core node
+# This will start your nakhara-core node
 ```
 
-### With axionax-devtools
+### With nakhara-devtools
 
 ```bash
 # Run integration tests
-cd ../axionax-devtools
+cd ../nakhara-devtools
 python scripts/testing/test_repo_integration.py
 
-# This tests axionax-core along with other repos
+# This tests nakhara-core along with other repos
 ```
 
 ---
@@ -456,19 +456,19 @@ pip install -r requirements.txt
 
 ## 📚 Additional Resources
 
-- **Main Documentation:** https://axionaxprotocol.github.io/axionax-docs/
-- **API Reference:** https://docs.axionax.org/api
+- **Main Documentation:** https://nakhara-io.github.io/nakhara-docs/
+- **API Reference:** https://docs.nakhara.io/api
 - **Architecture Guide:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Issue Tracker:** https://github.com/axionaxprotocol/axionax-core/issues
+- **Issue Tracker:** https://github.com/nakhara-io/nakhara-core/issues
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/axionaxprotocol/axionax-core/issues)
-- **Documentation:** Check [axionax-docs](https://github.com/axionaxprotocol/axionax-docs)
-- **Development Tools:** Use [axionax-devtools](https://github.com/axionaxprotocol/axionax-devtools)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakhara-io/nakhara-core/issues)
+- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
+- **Development Tools:** Use [nakhara-devtools](https://github.com/nakhara-io/nakhara-devtools)
 
 ---
 
@@ -479,5 +479,5 @@ AGPLv3 - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the axionax protocol Team</sub>
+  <sub>Built with ❤️ by the nakhara protocol Team</sub>
 </p>

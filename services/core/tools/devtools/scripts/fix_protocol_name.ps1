@@ -1,12 +1,12 @@
-# Fix "AxionAX protocol" to "axionax protocol" across all files
+# Fix "AxionAX protocol" to "nakhara protocol" across all files
 # Run this script from the workspace root
 
 Write-Host "🔍 Searching for 'AxionAX protocol' or 'AxionAX Protocol'..." -ForegroundColor Cyan
 
 $replacements = @(
-    @{ Old = "AxionAX Protocol"; New = "axionax protocol" },
-    @{ Old = "AxionAX protocol"; New = "axionax protocol" },
-    @{ Old = "Axionax Protocol"; New = "axionax protocol" }
+    @{ Old = "AxionAX Protocol"; New = "nakhara protocol" },
+    @{ Old = "AxionAX protocol"; New = "nakhara protocol" },
+    @{ Old = "Nakhara Protocol"; New = "nakhara protocol" }
 )
 
 $extensions = @("*.md", "*.ts", "*.tsx", "*.html", "*.json", "*.toml", "*.rs", "*.go", "*.py", "*.sh", "*.yml", "*.yaml")

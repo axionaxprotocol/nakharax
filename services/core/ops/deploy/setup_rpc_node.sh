@@ -1,15 +1,15 @@
 #!/bin/bash
 #
-# axionax RPC Node Setup Script
+# nakhara RPC Node Setup Script
 # Sets up a dedicated RPC/WebSocket node for public testnet access
 #
 # Usage: bash setup_rpc_node.sh [OPTIONS]
 # Options:
 #   --rpc-port PORT        RPC HTTP port (default: 8545)
 #   --ws-port PORT         WebSocket port (default: 8546)
-#   --data-dir PATH        Data directory (default: /var/lib/axionax)
+#   --data-dir PATH        Data directory (default: /var/lib/nakhara)
 #   --chain-id ID          Chain ID (default: 86137)
-#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.axionax.org)
+#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakhara.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 
 set -e
@@ -24,7 +24,7 @@ NC='\033[0m' # No Color
 # Default configuration
 RPC_PORT=8545
 WS_PORT=8546
-DATA_DIR="/var/lib/axionax"
+DATA_DIR="/var/lib/nakhara"
 CHAIN_ID=86137
 DOMAIN=""
 SSL_EMAIL=""
@@ -66,7 +66,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   axionax RPC Node Setup${NC}"
+echo -e "${BLUE}   nakhara RPC Node Setup${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo -e "${GREEN}Configuration:${NC}"
@@ -112,12 +112,12 @@ else
   echo -e "${BLUE}[3/8]${NC} Rust already installed ($(rustc --version))"
 fi
 
-# Create axionax user if doesn't exist
-if ! id -u axionax &> /dev/null; then
-  echo -e "${BLUE}[4/8]${NC} Creating axionax user..."
-  useradd -r -m -s /bin/bash axionax
+# Create nakhara user if doesn't exist
+if ! id -u nakhara &> /dev/null; then
+  echo -e "${BLUE}[4/8]${NC} Creating nakhara user..."
+  useradd -r -m -s /bin/bash nakhara
 else
-  echo -e "${BLUE}[4/8]${NC} User axionax already exists"
+  echo -e "${BLUE}[4/8]${NC} User nakhara already exists"
 fi
 
 # Create data directory
@@ -125,35 +125,35 @@ echo -e "${BLUE}[5/8]${NC} Setting up data directory..."
 mkdir -p "$DATA_DIR"
 mkdir -p "$DATA_DIR/state"
 mkdir -p "$DATA_DIR/logs"
-chown -R axionax:axionax "$DATA_DIR"
+chown -R nakhara:nakhara "$DATA_DIR"
 chmod 755 "$DATA_DIR"
 
-# Clone and build axionax (if not already built)
-AXIONAX_HOME="/home/axionax/axionax-monolith"
-if [ ! -d "$AXIONAX_HOME" ]; then
-  echo -e "${BLUE}[6/8]${NC} Cloning axionax repository..."
-  sudo -u axionax git clone https://github.com/axionaxprotocol/axionax-monolith.git "$AXIONAX_HOME"
+# Clone and build nakhara (if not already built)
+NAKHARA_HOME="/home/nakhara/nakhara-monolith"
+if [ ! -d "$NAKHARA_HOME" ]; then
+  echo -e "${BLUE}[6/8]${NC} Cloning nakhara repository..."
+  sudo -u nakhara git clone https://github.com/nakhara-io/nakhara-monolith.git "$NAKHARA_HOME"
 else
-  echo -e "${BLUE}[6/8]${NC} Updating axionax repository..."
-  cd "$AXIONAX_HOME"
-  sudo -u axionax git pull
+  echo -e "${BLUE}[6/8]${NC} Updating nakhara repository..."
+  cd "$NAKHARA_HOME"
+  sudo -u nakhara git pull
 fi
 
-cd "$AXIONAX_HOME/core"
+cd "$NAKHARA_HOME/core"
 
 # Build in release mode
-echo -e "${BLUE}[7/8]${NC} Building axionax (this may take 10-15 minutes)..."
-sudo -u axionax cargo build --release
+echo -e "${BLUE}[7/8]${NC} Building nakhara (this may take 10-15 minutes)..."
+sudo -u nakhara cargo build --release
 
 # Copy binary to /usr/local/bin
-cp target/release/axionax-core /usr/local/bin/
-chmod +x /usr/local/bin/axionax-core
+cp target/release/nakhara-core /usr/local/bin/
+chmod +x /usr/local/bin/nakhara-core
 
 # Create configuration file
 echo -e "${BLUE}[8/8]${NC} Creating configuration..."
 
 cat > "$DATA_DIR/config.toml" <<EOF
-# axionax RPC Node Configuration
+# nakhara RPC Node Configuration
 # Generated: $(date)
 
 [network]
@@ -181,7 +181,7 @@ cache_size = 1024  # MB
 
 [logging]
 level = "info"
-log_file = "$DATA_DIR/logs/axionax.log"
+log_file = "$DATA_DIR/logs/nakhara.log"
 max_size = 100  # MB
 max_backups = 10
 
@@ -190,25 +190,25 @@ enabled = true
 listen_addr = "127.0.0.1:9090"
 EOF
 
-chown axionax:axionax "$DATA_DIR/config.toml"
+chown nakhara:nakhara "$DATA_DIR/config.toml"
 
 # Create systemd service
-cat > /etc/systemd/system/axionax-rpc.service <<EOF
+cat > /etc/systemd/system/nakhara-rpc.service <<EOF
 [Unit]
-Description=axionax RPC Node
+Description=nakhara RPC Node
 After=network.target
 
 [Service]
 Type=simple
-User=axionax
-Group=axionax
+User=nakhara
+Group=nakhara
 WorkingDirectory=$DATA_DIR
-ExecStart=/usr/local/bin/axionax-core --config $DATA_DIR/config.toml
+ExecStart=/usr/local/bin/nakhara-core --config $DATA_DIR/config.toml
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=axionax-rpc
+SyslogIdentifier=nakhara-rpc
 
 # Security
 NoNewPrivileges=true
@@ -230,7 +230,7 @@ ufw --force enable
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
-ufw allow 30303/tcp comment 'axionax P2P'
+ufw allow 30303/tcp comment 'nakhara P2P'
 ufw allow 80/tcp comment 'HTTP'
 ufw allow 443/tcp comment 'HTTPS'
 
@@ -239,15 +239,15 @@ if [ -n "$DOMAIN" ]; then
   echo -e "${GREEN}Configuring nginx for $DOMAIN...${NC}"
   
   # Create nginx config
-  cat > /etc/nginx/sites-available/axionax-rpc <<EOF
-# axionax RPC Reverse Proxy
+  cat > /etc/nginx/sites-available/nakhara-rpc <<EOF
+# nakhara RPC Reverse Proxy
 # HTTP RPC endpoint
-upstream axionax_rpc {
+upstream nakhara_rpc {
     server 127.0.0.1:$RPC_PORT;
 }
 
 # WebSocket endpoint
-upstream axionax_ws {
+upstream nakhara_ws {
     server 127.0.0.1:$WS_PORT;
 }
 
@@ -264,7 +264,7 @@ server {
 
     # RPC endpoint
     location / {
-        proxy_pass http://axionax_rpc;
+        proxy_pass http://nakhara_rpc;
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
@@ -296,7 +296,7 @@ server {
     server_name ws.$DOMAIN;
 
     location / {
-        proxy_pass http://axionax_ws;
+        proxy_pass http://nakhara_ws;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "Upgrade";
@@ -308,7 +308,7 @@ server {
 EOF
 
   # Enable site
-  ln -sf /etc/nginx/sites-available/axionax-rpc /etc/nginx/sites-enabled/
+  ln -sf /etc/nginx/sites-available/nakhara-rpc /etc/nginx/sites-enabled/
   rm -f /etc/nginx/sites-enabled/default
   
   # Test nginx config
@@ -326,7 +326,7 @@ fi
 
 # Reload systemd and enable service
 systemctl daemon-reload
-systemctl enable axionax-rpc
+systemctl enable nakhara-rpc
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
@@ -336,13 +336,13 @@ echo ""
 echo -e "${YELLOW}Next Steps:${NC}"
 echo ""
 echo "1. Start the RPC node:"
-echo "   ${BLUE}sudo systemctl start axionax-rpc${NC}"
+echo "   ${BLUE}sudo systemctl start nakhara-rpc${NC}"
 echo ""
 echo "2. Check status:"
-echo "   ${BLUE}sudo systemctl status axionax-rpc${NC}"
+echo "   ${BLUE}sudo systemctl status nakhara-rpc${NC}"
 echo ""
 echo "3. View logs:"
-echo "   ${BLUE}sudo journalctl -u axionax-rpc -f${NC}"
+echo "   ${BLUE}sudo journalctl -u nakhara-rpc -f${NC}"
 echo ""
 echo "4. Test RPC endpoint:"
 echo "   ${BLUE}curl -X POST http://localhost:$RPC_PORT \\${NC}"

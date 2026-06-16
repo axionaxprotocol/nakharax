@@ -1,16 +1,16 @@
-# Axionax Core - Quick Test Script
-Write-Host "Axionax Core - Quick Test" -ForegroundColor Cyan
+# Nakhara Core - Quick Test Script
+Write-Host "Nakhara Core - Quick Test" -ForegroundColor Cyan
 Write-Host "==========================" -ForegroundColor Cyan
 Write-Host ""
 
 # 1. Check Binary
-Write-Host "Step 1: Check Axionax Core Binary" -ForegroundColor Green
-if (Test-Path ".\build\axionax-core.exe") {
+Write-Host "Step 1: Check Nakhara Core Binary" -ForegroundColor Green
+if (Test-Path ".\build\nakhara-core.exe") {
     Write-Host "  OK - Binary found" -ForegroundColor Green
-    .\build\axionax-core.exe version
+    .\build\nakhara-core.exe version
 } else {
     Write-Host "  ERROR - Binary not found!" -ForegroundColor Red
-    Write-Host "  Run: go build -o build\axionax-core.exe .\cmd\axionax" -ForegroundColor Yellow
+    Write-Host "  Run: go build -o build\nakhara-core.exe .\cmd\nakhara" -ForegroundColor Yellow
     exit 1
 }
 
@@ -18,22 +18,22 @@ Write-Host ""
 
 # 2. Test Configuration
 Write-Host "Step 2: Test Configuration" -ForegroundColor Green
-.\build\axionax-core.exe config init
+.\build\nakhara-core.exe config init
 Write-Host ""
 
 # 3. Test Key Generation
 Write-Host "Step 3: Test Key Management" -ForegroundColor Green
-.\build\axionax-core.exe keys generate --type validator
+.\build\nakhara-core.exe keys generate --type validator
 Write-Host ""
 
 # 4. Test Status Commands
 Write-Host "Step 4: Test Status Commands" -ForegroundColor Green
 Write-Host "  Validator Status:" -ForegroundColor Yellow
-.\build\axionax-core.exe validator status
+.\build\nakhara-core.exe validator status
 Write-Host ""
 
 Write-Host "  Worker Status:" -ForegroundColor Yellow
-.\build\axionax-core.exe worker status
+.\build\nakhara-core.exe worker status
 Write-Host ""
 
 # 5. Check Docker
@@ -63,10 +63,10 @@ Write-Host "==========================" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Useful Commands:" -ForegroundColor Cyan
-Write-Host "  .\build\axionax-core.exe start --network testnet" -ForegroundColor White
-Write-Host "  .\build\axionax-core.exe validator start" -ForegroundColor White
-Write-Host "  .\build\axionax-core.exe worker register" -ForegroundColor White
-Write-Host "  .\build\axionax-core.exe --help" -ForegroundColor White
+Write-Host "  .\build\nakhara-core.exe start --network testnet" -ForegroundColor White
+Write-Host "  .\build\nakhara-core.exe validator start" -ForegroundColor White
+Write-Host "  .\build\nakhara-core.exe worker register" -ForegroundColor White
+Write-Host "  .\build\nakhara-core.exe --help" -ForegroundColor White
 Write-Host ""
 
 Write-Host "Public testnet (Docker):" -ForegroundColor Cyan

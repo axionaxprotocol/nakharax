@@ -1,8 +1,8 @@
 /**
- * Axionax SDK - Governance Client
+ * Nakhara SDK - Governance Client
  * 
  * Copy this file to: packages/sdk/src/clients/governance.ts
- * For use in @axionax/sdk
+ * For use in @nakhara/sdk
  */
 
 import {
@@ -183,7 +183,7 @@ export class GovernanceClient {
 /**
  * Example hook for React
  *
- * import { useGovernance } from '@axionax/sdk';
+ * import { useGovernance } from '@nakhara/sdk';
  *
  * function GovernancePage() {
  *   const { proposals, stats, loading, vote, createProposal } = useGovernance();

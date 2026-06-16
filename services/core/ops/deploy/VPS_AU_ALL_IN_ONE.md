@@ -6,14 +6,14 @@
 
 | บทบาท | Container | พอร์ตภายใน | โดเมน (DNS → 46.250.244.4) |
 |--------|-----------|------------|----------------------------|
-| Validator + RPC + P2P | `axionax-rpc` | 8545, 8546, 30303 | `rpc.axionax.org`, `rpc-au.axionax.org` |
-| Explorer (backend + UI proxy) | `axionax-explorer-backend` | 3001 | `explorer.axionax.org` |
-| REST / indexer API | same as explorer | 3001 | `api.axionax.org` |
-| Faucet | `axionax-faucet` | 3002 | `faucet.axionax.org` |
-| TLS + reverse proxy | `axionax-nginx` | 80, 443 | ทุก subdomain ด้านบน |
+| Validator + RPC + P2P | `nakhara-rpc` | 8545, 8546, 30303 | `rpc.nakhara.io`, `rpc-au.nakhara.io` |
+| Explorer (backend + UI proxy) | `nakhara-explorer-backend` | 3001 | `explorer.nakhara.io` |
+| REST / indexer API | same as explorer | 3001 | `api.nakhara.io` |
+| Faucet | `nakhara-faucet` | 3002 | `faucet.nakhara.io` |
+| TLS + reverse proxy | `nakhara-nginx` | 80, 443 | ทุก subdomain ด้านบน |
 | Postgres / Redis | internal | — | ไม่เปิดสู่ internet |
 
-โหนด **217.216.109.5 (EU)** เป็น **Validator #1 + RPC** และโฮสต์ **Axionax OS** (`apps/os-dashboard`) — ดู [VPS_EU_OS_DASHBOARD.md](../../../docs/web/VPS_EU_OS_DASHBOARD.md)
+โหนด **217.216.109.5 (EU)** เป็น **Validator #1 + RPC** และโฮสต์ **Nakhara OS** (`apps/os-dashboard`) — ดู [VPS_EU_OS_DASHBOARD.md](../../../docs/web/VPS_EU_OS_DASHBOARD.md)
 
 ---
 
@@ -22,7 +22,7 @@
 ```bash
 # บน VPS AU
 ssh root@46.250.244.4
-mkdir -p /opt/axionax && cd /opt/axionax
+mkdir -p /opt/nakhara && cd /opt/nakhara
 # copy ops/deploy/* (compose, nginx, configs, .env.example) หรือ clone repo
 
 cp .env.example .env
@@ -42,11 +42,11 @@ bash scripts/check-vps-status.sh --detailed
 
 | Host | ใช้สำหรับ |
 |------|-----------|
-| `rpc.axionax.org` | JSON-RPC HTTPS (+ `/ws` WebSocket) |
-| `rpc-au.axionax.org` | RPC สำรอง / region AU |
-| `explorer.axionax.org` | Block explorer UI |
-| `api.axionax.org` | Explorer REST API (proxy ไป `explorer-backend:3001`) |
-| `faucet.axionax.org` | Testnet faucet |
+| `rpc.nakhara.io` | JSON-RPC HTTPS (+ `/ws` WebSocket) |
+| `rpc-au.nakhara.io` | RPC สำรอง / region AU |
+| `explorer.nakhara.io` | Block explorer UI |
+| `api.nakhara.io` | Explorer REST API (proxy ไป `explorer-backend:3001`) |
+| `faucet.nakhara.io` | Testnet faucet |
 
 ---
 
@@ -71,7 +71,7 @@ curl -s -X POST http://localhost:8545 \
 # คาดหวัง "0x15079" (86137)
 
 # จากภายนอก (หลัง DNS + SSL)
-curl -s -X POST https://rpc.axionax.org \
+curl -s -X POST https://rpc.nakhara.io \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```

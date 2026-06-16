@@ -6,7 +6,7 @@ from typing import Dict
 # Add current directory to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from worker_node import AxionaxWorker
+from worker_node import NakharaWorker
 
 def test_job_execution():
     """Test worker job execution logic. Skips if worker init fails (e.g. RPC down)."""
@@ -14,7 +14,7 @@ def test_job_execution():
     print("Testing Worker Job Execution Logic...")
     worker = None
     try:
-        worker = AxionaxWorker()
+        worker = NakharaWorker()
     except Exception as e:
         print(f"Worker init warning (RPC might be down): {e}")
         pytest.skip("Worker init failed (network/config); skipping job execution test")

@@ -27,13 +27,13 @@ Instead, please use one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 
-1. Go to the [Security tab](https://github.com/axionaxprotocol/axionax-monolith/security)
+1. Go to the [Security tab](https://github.com/nakhara-io/nakhara-monolith/security)
 2. Click "Report a vulnerability"
 3. Fill out the form with details
 
 #### 2. Email
 
-Send details to: **security@axionax.org**
+Send details to: **security@nakhara.io**
 
 Encrypt sensitive information using our PGP key (available upon request).
 
@@ -41,7 +41,7 @@ Encrypt sensitive information using our PGP key (available upon request).
 
 Direct message to: `@security-team` in our Discord server
 
-- Join: https://discord.gg/axionax
+- Join: https://discord.gg/nakhara
 - Request private channel for disclosure
 
 ---
@@ -285,9 +285,9 @@ In case of a security incident:
 
 ### Emergency Contacts
 
-- **Security Team**: security@axionax.org
+- **Security Team**: security@nakhara.io
 - **Discord**: @security-team (for urgent issues)
-- **Status Page**: https://status.axionax.org
+- **Status Page**: https://status.nakhara.io
 
 ---
 
@@ -297,8 +297,8 @@ Subscribe to security notifications:
 
 - **GitHub Watch**: Enable "Security alerts"
 - **Discord**: #security-announcements channel
-- **Twitter**: [@axionax](https://twitter.com/axionax)
-- **Email**: Subscribe at https://axionax.org/subscribe
+- **Twitter**: [@nakhara](https://twitter.com/nakhara)
+- **Email**: Subscribe at https://nakhara.io/subscribe
 
 ---
 
@@ -340,7 +340,7 @@ Before submitting code:
 
 ## Compliance
 
-Axionax complies with:
+Nakhara complies with:
 
 - ✅ GDPR (General Data Protection Regulation)
 - ✅ SOC 2 Type II (in progress)
@@ -352,8 +352,8 @@ Axionax complies with:
 
 For security-related questions:
 
-- **Email**: security@axionax.org
-- **Discord**: https://discord.gg/axionax (#security)
+- **Email**: security@nakhara.io
+- **Discord**: https://discord.gg/nakhara (#security)
 - **GitHub**: Open a Security Advisory
 
 ---

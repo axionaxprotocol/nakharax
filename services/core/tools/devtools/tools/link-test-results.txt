@@ -1,4 +1,4 @@
-﻿Axionax Link Validation Results
+Nakhara Link Validation Results
 Generated: 2025-11-11 17:20:28
 Duration: 25.12 seconds
 

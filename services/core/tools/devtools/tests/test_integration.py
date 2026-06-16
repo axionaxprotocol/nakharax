@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Integration Tests for axionax DevTools
+Integration Tests for nakhara DevTools
 Tests cross-repository integration and connectivity
 """
 
@@ -20,24 +20,24 @@ class TestRepositoryConnectivity(unittest.TestCase):
         self.workspace_root = self.devtools_dir.parent
         
     def test_core_repository_accessible(self):
-        """Test that axionax-core repository is accessible"""
-        core_path = self.workspace_root / "axionax-core"
+        """Test that nakhara-core repository is accessible"""
+        core_path = self.workspace_root / "nakhara-core"
         if core_path.exists():
             self.assertTrue(core_path.is_dir())
             self.assertTrue((core_path / "Cargo.toml").exists())
             self.assertTrue((core_path / "README.md").exists())
             
     def test_sdk_repository_accessible(self):
-        """Test that axionax-sdk-ts repository is accessible"""
-        sdk_path = self.workspace_root / "axionax-sdk-ts"
+        """Test that nakhara-sdk-ts repository is accessible"""
+        sdk_path = self.workspace_root / "nakhara-sdk-ts"
         if sdk_path.exists():
             self.assertTrue(sdk_path.is_dir())
             self.assertTrue((sdk_path / "package.json").exists())
             self.assertTrue((sdk_path / "README.md").exists())
             
     def test_web_repository_accessible(self):
-        """Test that axionax-web repository is accessible"""
-        web_path = self.workspace_root / "axionax-web"
+        """Test that nakhara-web repository is accessible"""
+        web_path = self.workspace_root / "nakhara-web"
         if web_path.exists():
             self.assertTrue(web_path.is_dir())
             self.assertTrue((web_path / "package.json").exists())
@@ -69,7 +69,7 @@ class TestGitIntegration(unittest.TestCase):
                 timeout=5
             )
             self.assertEqual(result.returncode, 0)
-            self.assertIn("axionaxprotocol", result.stdout)
+            self.assertIn("nakhara-io", result.stdout)
         except (subprocess.TimeoutExpired, FileNotFoundError):
             self.skipTest("Git not available or timeout")
             
@@ -123,14 +123,14 @@ class TestCrossRepoLinks(unittest.TestCase):
         self.workspace_root = self.devtools_dir.parent
         
     def test_readme_references_core(self):
-        """Test that README references axionax-core correctly"""
+        """Test that README references nakhara-core correctly"""
         readme = self.devtools_dir / "README.md"
         if readme.exists():
             content = readme.read_text(encoding='utf-8')
             # Should reference core repository
             self.assertTrue(
-                "axionax-core" in content,
-                "README should reference axionax-core"
+                "nakhara-core" in content,
+                "README should reference nakhara-core"
             )
             
     def test_no_monorepo_references(self):
@@ -140,7 +140,7 @@ class TestCrossRepoLinks(unittest.TestCase):
             content = readme.read_text(encoding='utf-8')
             # Should NOT reference old monorepo
             self.assertNotIn(
-                "axionaxiues",
+                "nakharaiues",
                 content,
                 "README should not reference old monorepo"
             )
@@ -166,7 +166,7 @@ def run_integration_tests():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("axionax DevTools - Integration Tests")
+    print("nakhara DevTools - Integration Tests")
     print("=" * 70)
     print()
     

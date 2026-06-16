@@ -1,4 +1,4 @@
-# Axionax Documentation Changelog
+# Nakhara Documentation Changelog
 
 > **History of documentation changes** — Last Updated: May 3, 2026
 
@@ -43,7 +43,7 @@
 ### Migration
 - `docs/compossor-and-cascade-playbook.md` → `docs/playbook/`
 - `docs/monorepo-audit.md` → `docs/playbook/`
-- `apps/web/apps/docs/ARCHITECTURE.md` → `docs/architecture/AXIONAX_PROTOCOL.md`
+- `apps/web/apps/docs/ARCHITECTURE.md` → `docs/architecture/NAKHARA_PROTOCOL.md`
 - `apps/web/apps/docs/ROADMAP.md` → `docs/architecture/ROADMAP.md`
 - `apps/web/apps/docs/API_REFERENCE.md` → `docs/api/JSON_RPC.md`
 
@@ -53,7 +53,7 @@
 
 ### Added
 - **Testnet Configuration**: Chain ID 86137, Symbol AXXt
-- **Validator Infrastructure**: EU `217.216.109.5` (validator + Axionax OS / `app.axionax.org`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
+- **Validator Infrastructure**: EU `217.216.109.5` (validator + Nakhara OS / `app.nakhara.io`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
 - **Faucet Service**: Port 3002 for testnet token distribution
 - **P2P Network**: Bootstrap nodes operational on port 30303
 
@@ -89,7 +89,7 @@
 
 ### Structure
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── apps/
 │   ├── web/              # Next.js dApp + marketplace
 │   └── os-dashboard/     # Node OS UI
@@ -121,7 +121,7 @@ axionax-monolith/
 ### Added
 - **Protocol v1.8.0 Compliance**: Full architecture documentation
 - **RPC Infrastructure**: Mock + Real node setup
-- **Block Explorer**: axionax-web deployment
+- **Block Explorer**: nakhara-web deployment
 - **Monitoring**: Grafana + Prometheus dashboards
 
 ### Documents

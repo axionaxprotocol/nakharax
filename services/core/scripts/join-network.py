@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-One-step check before joining the Axionax DeAI network.
+One-step check before joining the Nakhara DeAI network.
 Runs health-check and prints security reminder + next command.
 Usage: from repo root:  python scripts/join-network.py [--config path] [--skip-wallet]
 """
@@ -16,7 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Verify setup and print next steps to join the Axionax DeAI network"
+        description="Verify setup and print next steps to join the Nakhara DeAI network"
     )
     ap.add_argument(
         "--config",

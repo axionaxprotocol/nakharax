@@ -1,6 +1,6 @@
 # Worker Setup Guide
 
-> **Complete guide to setting up an Axionax compute worker node**
+> **Complete guide to setting up an Nakhara compute worker node**
 
 **Last Updated**: May 3, 2026  
 **Protocol Version**: v1.9.0-testnet
@@ -9,9 +9,9 @@
 
 ## Overview
 
-This guide covers setting up a worker node on the Axionax Compute Marketplace. Workers receive compute jobs (Inference, Training, DataProcessing) from the marketplace and submit results with PoPC proofs.
+This guide covers setting up a worker node on the Nakhara Compute Marketplace. Workers receive compute jobs (Inference, Training, DataProcessing) from the marketplace and submit results with PoPC proofs.
 
-**Primary Reference**: See [`../architecture/AXIONAX_PROTOCOL.md`](../architecture/AXIONAX_PROTOCOL.md) for complete protocol architecture, including:
+**Primary Reference**: See [`../architecture/NAKHARA_PROTOCOL.md`](../architecture/NAKHARA_PROTOCOL.md) for complete protocol architecture, including:
 - Core workflow: Post → Assign → Execute → Commit → DA Pre-commit → Wait k → Challenge → Prove → Verify → Seal → Fraud Window → Finalize
 - ASR (Auto-Selection Router) with K=64 and weighted VRF
 - PoPC (Proof of Probabilistic Checking) with s=1000 samples
@@ -22,7 +22,7 @@ This guide covers setting up a worker node on the Axionax Compute Marketplace. W
 - Python 3.9+
 - Docker (optional, for sandboxing)
 - GPU/NPU (optional, for accelerated compute)
-- Access to Axionax RPC endpoint
+- Access to Nakhara RPC endpoint
 
 ---
 
@@ -76,8 +76,8 @@ This guide covers setting up a worker node on the Axionax Compute Marketplace. W
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith/services/core
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith/services/core
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -95,7 +95,7 @@ Create `worker-config.yaml`:
 ```yaml
 worker:
   private_key: "YOUR_PRIVATE_KEY_HERE"
-  rpc_url: "http://testnet.axionax.org:8545"  # or local RPC
+  rpc_url: "http://testnet.nakhara.io:8545"  # or local RPC
 
   # Hardware specs
   device: "cuda"  # or "cpu", "hailo0", "hailo1"
@@ -104,7 +104,7 @@ worker:
   ram_gb: 64
   storage_gb: 1000
 
-  # Capabilities (see AXIONAX_PROTOCOL.md for ASR scoring)
+  # Capabilities (see NAKHARA_PROTOCOL.md for ASR scoring)
   compute_type: "SILICON"  # SILICON, NPU, PHOTONIC, HYBRID
   hardware_tier: 2  # 1 (PC), 2 (Cloud), 3 (Monolith)
   optical_bridge_available: false
@@ -124,7 +124,7 @@ worker:
     - "tensorflow"
 ```
 
-**Note**: ASR (Auto-Selection Router) uses these specs for job assignment. See [`../architecture/AXIONAX_PROTOCOL.md#2-asr--auto-selection-router`](../architecture/AXIONAX_PROTOCOL.md#2-asr--auto-selection-router) for details on scoring and eligibility.
+**Note**: ASR (Auto-Selection Router) uses these specs for job assignment. See [`../architecture/NAKHARA_PROTOCOL.md#2-asr--auto-selection-router`](../architecture/NAKHARA_PROTOCOL.md#2-asr--auto-selection-router) for details on scoring and eligibility.
 
 ### 3. Register Worker
 
@@ -154,7 +154,7 @@ python worker_node.py start --config worker-config.yaml
 ```bash
 # Flash Raspberry Pi OS to SD card
 # Enable SSH on boot
-# Set hostname to axionax-sentinel or axionax-worker
+# Set hostname to nakhara-sentinel or nakhara-worker
 ```
 
 ### 2. Install Hailo SDK
@@ -176,7 +176,7 @@ Create `monolith-worker-config.yaml`:
 ```yaml
 worker:
   private_key: "YOUR_PRIVATE_KEY_HERE"
-  rpc_url: "http://testnet.axionax.org:8545"
+  rpc_url: "http://testnet.nakhara.io:8545"
   
   device: "hailo1"  # hailo0 for Sentinel, hailo1 for Worker
   gpu: null
@@ -219,10 +219,10 @@ python3 worker_node.py start --config monolith-worker-config.yaml
 ```yaml
 # RunPod template
 docker:
-  image: axionax/worker:latest
+  image: nakhara/worker:latest
   env:
     - WORKER_PRIVATE_KEY=YOUR_PRIVATE_KEY
-    - RPC_URL=http://testnet.axionax.org:8545
+    - RPC_URL=http://testnet.nakhara.io:8545
     - DEVICE=cuda
     - COMPUTE_TYPE=SILICON
     - HARDWARE_TIER=2
@@ -242,7 +242,7 @@ python worker_node.py start
 
 ## Job Submission and Execution
 
-**Protocol Workflow**: Workers participate in the core workflow defined in [`../architecture/AXIONAX_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล`](../architecture/AXIONAX_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล):
+**Protocol Workflow**: Workers participate in the core workflow defined in [`../architecture/NAKHARA_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล`](../architecture/NAKHARA_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล):
 1. Assign (via ASR) → 2. Execute → 3. Commit + DA Pre-commit → 4. Wait k → 5. Challenge → 6. Prove → 7. Verify
 
 ### 1. Receive Job
@@ -269,7 +269,7 @@ model = load_model(job.model_id)
 result = model.predict(job.input_data)
 
 # Generate PoPC proof (s=1000 samples)
-# See AXIONAX_PROTOCOL.md#4-popc--proof-of-probabilistic-checking for details
+# See NAKHARA_PROTOCOL.md#4-popc--proof-of-probabilistic-checking for details
 proof = popc.generate_proof(
     job_id=job.id,
     samples=job.samples,
@@ -315,7 +315,7 @@ Worker exposes metrics on port 9616:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'axionax-worker'
+  - job_name: 'nakhara-worker'
     static_configs:
       - targets: ['localhost:9616']
 ```
@@ -324,10 +324,10 @@ scrape_configs:
 
 ```bash
 # View worker logs
-tail -f /var/log/axionax/worker.log
+tail -f /var/log/nakhara/worker.log
 
 # Filter for specific job
-grep "job_abc123" /var/log/axionax/worker.log
+grep "job_abc123" /var/log/nakhara/worker.log
 ```
 
 ### Performance Tracking
@@ -456,7 +456,7 @@ python worker_node.py start
 ## See Also
 
 **Primary Protocol Reference:**
-- [AXIONAX_PROTOCOL.md](../architecture/AXIONAX_PROTOCOL.md) — Complete protocol architecture, ASR, PoPC, DA, security
+- [NAKHARA_PROTOCOL.md](../architecture/NAKHARA_PROTOCOL.md) — Complete protocol architecture, ASR, PoPC, DA, security
 
 **Additional Resources:**
 - [Marketplace Worker Nodes](../core/MARKETPLACE_WORKER_NODES.md)

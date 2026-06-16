@@ -1,4 +1,4 @@
-# Axionax Core Universe - Development Guide
+# Nakhara Core Universe - Development Guide
 
 ## 🚀 Quick Start
 
@@ -12,8 +12,8 @@
 
 ```bash
 # Clone with submodules
-git clone --recursive https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone --recursive https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 
 # Or if already cloned, init submodules
 git submodule update --init --recursive
@@ -48,7 +48,7 @@ cargo bench
 docker-compose -f docker-compose.dev.yml up -d
 
 # View logs
-docker-compose -f docker-compose.dev.yml logs -f axionax-node
+docker-compose -f docker-compose.dev.yml logs -f nakhara-node
 
 # Stop all
 docker-compose -f docker-compose.dev.yml down
@@ -64,7 +64,7 @@ docker-compose -f docker-compose.dev.yml down
 | 🛒 Marketplace | http://localhost:5173 | React marketplace |
 | 💧 Faucet | http://localhost:3002 | Token faucet |
 | 📊 Prometheus | http://localhost:9090 | Metrics |
-| 📈 Grafana | http://localhost:3030 | Dashboards (admin/axionax) |
+| 📈 Grafana | http://localhost:3030 | Dashboards (admin/nakhara) |
 | 🗄️ PostgreSQL | localhost:5432 | Database |
 
 #### 🌐 Web Development (from submodule)
@@ -81,7 +81,7 @@ pnpm dev
 ### 3. Project Structure
 
 ```
-axionax-monolith/services/core/
+nakhara-monolith/services/core/
 ├── core/                    # 🦀 Rust Blockchain Core
 │   ├── src/
 │   │   ├── blockchain/      # Block & chain management
@@ -146,14 +146,14 @@ Instead of running a local node, connect to live validators:
 ```bash
 # In web-universe
 cd web-universe
-echo "NEXT_PUBLIC_RPC_URL=https://axionax.org/rpc/" > apps/web/.env.local
+echo "NEXT_PUBLIC_RPC_URL=https://nakhara.io/rpc/" > apps/web/.env.local
 pnpm dev
 ```
 
 **RPC Endpoints:**
-- **HTTPS**: https://axionax.org/rpc/
-- **EU Validator**: https://rpc.axionax.org
-- **AU Validator**: https://rpc-au.axionax.org
+- **HTTPS**: https://nakhara.io/rpc/
+- **EU Validator**: https://rpc.nakhara.io
+- **AU Validator**: https://rpc-au.nakhara.io
 
 **Chain ID:** 86137 (0x15079)
 
@@ -202,10 +202,10 @@ docker-compose -f monitoring/docker-compose.yaml up -d
 
 ## 🔗 Links
 
-- **Website**: https://axionax.org
-- **Explorer**: https://axionax.org/explorer
-- **GitHub**: https://github.com/axionaxprotocol
+- **Website**: https://nakhara.io
+- **Explorer**: https://nakhara.io/explorer
+- **GitHub**: https://github.com/nakhara-io
 
 ---
 
-**Built with ❤️ by the Axionax Team**
+**Built with ❤️ by the Nakhara Team**

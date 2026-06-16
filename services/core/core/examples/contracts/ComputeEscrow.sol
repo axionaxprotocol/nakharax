@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 /**
  * @title ComputeEscrow
  * @dev Secure escrow contract for DeAI compute job payments
- * @author Axionax Protocol
+ * @author Nakhara Protocol
  * 
  * This contract holds funds in escrow during job execution and handles:
  * - Deposits from job submitters

@@ -1,6 +1,6 @@
-# Cascade Prompt Playbook — Axionax Protocol
+# Cascade Prompt Playbook — Nakhara Protocol
 
-> Curated prompts for working with **Windsurf (Cascade)** on Axionax — an L1 DePIN protocol with Rust core, Python DeAI workers, and a TypeScript Web Universe.
+> Curated prompts for working with **Windsurf (Cascade)** on Nakhara — an L1 DePIN protocol with Rust core, Python DeAI workers, and a TypeScript Web Universe.
 > Use these as starting points; refine with `@file` references for best results.
 
 ---
@@ -14,9 +14,9 @@ For the recurring "nodes connect on localhost but not over public IPs" class of 
 - [x] Resolve duplicate Cargo workspace roots (`services/core/Cargo.toml` conflict).
 - [x] Add and run network handshake tests (`handshake_test`).
 - [x] Verify ignored mDNS handshake test passes with `--ignored`.
-- [x] Diagnose zero-peer state (empty `AXIONAX_BOOTSTRAP_NODES` + unreachable P2P path).
+- [x] Diagnose zero-peer state (empty `NAKHARA_BOOTSTRAP_NODES` + unreachable P2P path).
 - [x] Fix peer identity / bootstrap setup and confirm both nodes show `peers: 1`.
-- [x] Add runbook for `identity.key` and `AXIONAX_BOOTSTRAP_NODES` in `README.md`.
+- [x] Add runbook for `identity.key` and `NAKHARA_BOOTSTRAP_NODES` in `README.md`.
 - [x] Rename playbook to `docs/compossor-and-cascade-playbook.md` and update references.
 
 ### Analyze P2P discovery logic
@@ -114,18 +114,18 @@ _Last updated: 2026-05-01_
 
 ---
 
-# Playbook — Phase 2 (Axionax OS · P2P Deep · Integration · Design)
+# Playbook — Phase 2 (Nakhara OS · P2P Deep · Integration · Design)
 
 > Added 2026-04-30 to extend the original playbook now that the OS Dashboard
 > is up and the focus shifts to a true Command Center experience.
 
-## 5. Axionax OS — Frontend & UX
+## 5. Nakhara OS — Frontend & UX
 
 The "Obsidian Matte Black" command-center aesthetic.
 
 ### Window Management System
 
-> Implement a **Window Management System** for Axionax OS in `@apps/os-dashboard/` using React. I need draggable + resizable windows with the Matte Black glassmorphism we already have on `.glass`/`.glass-strong`. Each window should host a different component (Terminal, Node Monitor, App Store, Settings). Reuse the existing `glass-strong` utility and `app-icon-shadow` filter; persist window position/size in `localStorage`; add z-index focus management.
+> Implement a **Window Management System** for Nakhara OS in `@apps/os-dashboard/` using React. I need draggable + resizable windows with the Matte Black glassmorphism we already have on `.glass`/`.glass-strong`. Each window should host a different component (Terminal, Node Monitor, App Store, Settings). Reuse the existing `glass-strong` utility and `app-icon-shadow` filter; persist window position/size in `localStorage`; add z-index focus management.
 
 ### Real-time Node Dashboard widget
 
@@ -133,7 +133,7 @@ The "Obsidian Matte Black" command-center aesthetic.
 
 ### Web-based Terminal
 
-> Create `@apps/os-dashboard/src/components/terminal.tsx` that accepts a small allow-list of commands (`axionax --status`, `p2p --check-peers`, `node --logs --tail 100`). Use `xterm.js` for the renderer; pipe output from a tiny WebSocket endpoint we'll add to the Rust node (see §7). Monospaced font, command history (↑/↓), tab completion against the allow-list.
+> Create `@apps/os-dashboard/src/components/terminal.tsx` that accepts a small allow-list of commands (`nakhara --status`, `p2p --check-peers`, `node --logs --tail 100`). Use `xterm.js` for the renderer; pipe output from a tiny WebSocket endpoint we'll add to the Rust node (see §7). Monospaced font, command history (↑/↓), tab completion against the allow-list.
 
 ---
 
@@ -151,7 +151,7 @@ For when the diagnostic logs we added in `@services/core/core/core/network/src/m
 
 ### Kademlia routing-table inspector
 
-> Analyze how the **Kademlia DHT** is initialized in `@services/core/core/core/network/src/behaviour.rs`. Verify `bootstrap()` is called after dialing seed peers. Add a `kad_routing_table()` method on `NetworkManager` that snapshots the current k-buckets. Expose it via `axionaxctl debug routing-table` so we can see *which* peers our node believes it knows about, vs. which it has open connections to.
+> Analyze how the **Kademlia DHT** is initialized in `@services/core/core/core/network/src/behaviour.rs`. Verify `bootstrap()` is called after dialing seed peers. Add a `kad_routing_table()` method on `NetworkManager` that snapshots the current k-buckets. Expose it via `nakharactl debug routing-table` so we can see *which* peers our node believes it knows about, vs. which it has open connections to.
 
 ---
 
@@ -159,11 +159,11 @@ For when the diagnostic logs we added in `@services/core/core/core/network/src/m
 
 ### Typed RPC wrapper for the OS dashboard
 
-> Generate a TypeScript wrapper at `@packages/sdk/src/rpc.ts` (we'll create the package per the monorepo audit) that types the Axionax JSON-RPC: `getPeerCount`, `getLatestBlock`, `getBlockByNumber`, `sendTransaction`, `getBalance`. Handle `Node Offline`, timeouts, and EIP-1474 errors gracefully — return a discriminated union `{ ok: true, data } | { ok: false, error }`. The OS dashboard's `lib/rpc.ts` should re-export from `@axionax/sdk`.
+> Generate a TypeScript wrapper at `@packages/sdk/src/rpc.ts` (we'll create the package per the monorepo audit) that types the Nakhara JSON-RPC: `getPeerCount`, `getLatestBlock`, `getBlockByNumber`, `sendTransaction`, `getBalance`. Handle `Node Offline`, timeouts, and EIP-1474 errors gracefully — return a discriminated union `{ ok: true, data } | { ok: false, error }`. The OS dashboard's `lib/rpc.ts` should re-export from `@nakhara/sdk`.
 
 ### Real-time log streaming via WebSocket
 
-> Propose a way to stream Rust core logs to the Axionax OS Terminal in real-time. Recommendation: spawn a tracing-subscriber `Layer` that fan-outs to a `tokio::sync::broadcast` channel; expose the channel over a WebSocket endpoint at `ws://localhost:8546/logs?level=info&target=p2p`. Provide a basic implementation under `@services/core/core/core/rpc/src/ws_logs.rs` and the matching client hook in `@apps/os-dashboard/src/lib/use-log-stream.ts`.
+> Propose a way to stream Rust core logs to the Nakhara OS Terminal in real-time. Recommendation: spawn a tracing-subscriber `Layer` that fan-outs to a `tokio::sync::broadcast` channel; expose the channel over a WebSocket endpoint at `ws://localhost:8546/logs?level=info&target=p2p`. Provide a basic implementation under `@services/core/core/core/rpc/src/ws_logs.rs` and the matching client hook in `@apps/os-dashboard/src/lib/use-log-stream.ts`.
 
 ### Worker → OS notification bus
 
@@ -175,7 +175,7 @@ For when the diagnostic logs we added in `@services/core/core/core/network/src/m
 
 ### Tailwind palette
 
-> Generate a `tailwind.config.ts` patch for `@apps/os-dashboard/` that defines an **Axionax-Dark** palette:
+> Generate a `tailwind.config.ts` patch for `@apps/os-dashboard/` that defines an **Nakhara-Dark** palette:
 > - `obsidian.{900..950}` for surfaces
 > - `matte.{700..900}` for borders/dividers
 > - `accent.ai` (neon teal #5EEAD4) for AI actions
@@ -185,7 +185,7 @@ For when the diagnostic logs we added in `@services/core/core/core/network/src/m
 
 ### Minimalist icon set
 
-> Suggest 6 ultra-thin (1.25px stroke) SVG icons for Axionax OS representing **Neural Network · Blockchain Node · Peer Discovery · Security Shield · DeAI Worker · Edge Device**. Match the visual weight of `lucide-react` so they can sit next to existing icons. Place them under `@apps/os-dashboard/src/icons/` and export a unified `<Icon name="..." />` component.
+> Suggest 6 ultra-thin (1.25px stroke) SVG icons for Nakhara OS representing **Neural Network · Blockchain Node · Peer Discovery · Security Shield · DeAI Worker · Edge Device**. Match the visual weight of `lucide-react` so they can sit next to existing icons. Place them under `@apps/os-dashboard/src/icons/` and export a unified `<Icon name="..." />` component.
 
 ### Sound + motion language (optional)
 
@@ -217,7 +217,7 @@ This forces Cascade to ground its analysis in the actual symptom rather than gue
 ---
 
 _Phase 2 added 2026-04-30. Sections will be reorganized when this list grows past §10._  
-_Checklist execution updated 2026-05-02 (Hello DeAI + Axionax OS DoD)._
+_Checklist execution updated 2026-05-02 (Hello DeAI + Nakhara OS DoD)._
 
 ---
 
@@ -234,10 +234,10 @@ Version focused on real-world execution across tech, testnet operations, finance
   - Execution runbook (24h window):
     - Command (from repo root):
       - `python services/core/scripts/p2p_stability_monitor.py --duration-hours 24 --interval-seconds 30`
-      - Or wrappers: `bash services/core/scripts/run-p2p-stability-24h.sh` / `pwsh services/core/scripts/run-p2p-stability-24h.ps1` (optional env `AXIONAX_P2P_WEBHOOK`).
+      - Or wrappers: `bash services/core/scripts/run-p2p-stability-24h.sh` / `pwsh services/core/scripts/run-p2p-stability-24h.ps1` (optional env `NAKHARA_P2P_WEBHOOK`).
     - Output folder:
       - `services/core/reports/p2p-stability-<timestamp>/`
-    - Start both nodes with persistent logs (`journalctl -u axionax-node -f` or container logs) and NTP sync enabled.
+    - Start both nodes with persistent logs (`journalctl -u nakhara-node -f` or container logs) and NTP sync enabled.
     - Poll every 30s from each node: `net_peerCount`, `eth_blockNumber`, and `system_status`; persist timeline in `sync-height.csv` and transition events in `peer-events.log`.
     - Alert condition: `net_peerCount == 0` for more than 60s on either node.
     - Sync-stall condition: block height unchanged for more than 120s while peer is still producing blocks.
@@ -252,7 +252,7 @@ Version focused on real-world execution across tech, testnet operations, finance
   - DoD: Python workload is sent end-to-end from a main node to a worker node.
   - DoD: result hash, execution logs, and retry/failure path are captured.
   - Evidence: demo script and runbook.
-- [x] **Axionax OS (Obsidian Matte Black)**
+- [x] **Nakhara OS (Obsidian Matte Black)**
   - DoD: design tokens cover color, spacing, and typography.
   - DoD: core dashboard pages are complete (node health, jobs, logs, wallet/actions).
   - DoD: Lighthouse and responsive targets pass agreed thresholds (`apps/os-dashboard`: `pnpm lighthouse:report`; gates in README).
@@ -273,7 +273,7 @@ Version focused on real-world execution across tech, testnet operations, finance
 
 ### Phase 3: Physical Realm
 
-- [ ] **Axionax Estate blueprint**
+- [ ] **Nakhara Estate blueprint**
   - DoD: version-1 masterplan for 10 rai is complete with zoning (compute, living, utility, security).
 - [ ] **Solar + BOI feasibility**
   - DoD: CAPEX/OPEX table, payback period, and latest legal/BOI constraints are documented.

@@ -14,7 +14,7 @@ from datetime import datetime
 
 # Add lib path for Rust bindings
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'deai', 'lib'))
-import axionax_python as axx
+import nakhara_python as axx
 
 
 @dataclass

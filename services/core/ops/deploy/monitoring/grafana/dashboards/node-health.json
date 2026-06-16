@@ -379,12 +379,12 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "up{job=\"axionax-rpc\"}",
+                    "expr": "up{job=\"nakhara-rpc\"}",
                     "legendFormat": "RPC Node",
                     "refId": "A"
                 },
                 {
-                    "expr": "up{job=\"axionax-api\"}",
+                    "expr": "up{job=\"nakhara-api\"}",
                     "legendFormat": "API Server",
                     "refId": "B"
                 },
@@ -569,7 +569,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "axionax_peers_connected",
+                    "expr": "nakhara_peers_connected",
                     "legendFormat": "Peers",
                     "refId": "A"
                 }
@@ -580,7 +580,7 @@
     "schemaVersion": 38,
     "style": "dark",
     "tags": [
-        "axionax",
+        "nakhara",
         "infrastructure",
         "health"
     ],
@@ -594,7 +594,7 @@
     "timepicker": {},
     "timezone": "",
     "title": "Node Health Dashboard",
-    "uid": "axionax-node-health",
+    "uid": "nakhara-node-health",
     "version": 1,
     "weekStart": ""
 }

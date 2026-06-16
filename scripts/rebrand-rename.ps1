@@ -1,112 +1,99 @@
 <#
 .SYNOPSIS
-    Rebrand helper: preview / apply Axionax -> nakhara.io identifier renames by category.
+    Rebrand helper: preview / apply Nakhara -> nakhara.io identifier renames.
 
 .DESCRIPTION
     DRY-RUN BY DEFAULT. Prints every file + match count for the chosen scope and changes nothing.
-    Pass -Execute to actually rewrite files. Always excludes build/vendor dirs and binary files,
-    and only touches git-tracked text files.
+    Pass -Execute to actually rewrite files. Only touches git-tracked text files; always skips
+    generated lockfiles, binaries, and meta-docs that intentionally reference the old name.
 
     Categories map to docs/REBRAND_MIGRATION.md:
-      A  Safe / internal Rust strings (network-advertised identity)   [low risk]
-      B  Frontend internal (@axionax/sdk, dashboard package)          [verify with pnpm build]
-      C  Deploy-coupled (binary, AXIONAX_* env, domain)              [needs server cut-over]
-      D  On-chain token (AXX -> NAK)                                  [token phase]
+      Full  Ordered, case-aware identifier rename (domain-first). Excludes the token symbol.
+      A/B/C Sub-scopes (Rust strings / frontend pkg / deploy-coupled) — kept for targeted runs.
+      D     On-chain token AXX -> NAK (surgical; review every hit before -Execute).
 
-    !! Never run -Execute on category C or D without the matching server/chain change staged. !!
+    Order matters: the domain (.org -> .io) and the GitHub org are replaced BEFORE the generic
+    'nakhara' -> 'nakhara', so we never produce 'nakhara.org'.
 
 .EXAMPLE
-    pwsh scripts/rebrand-rename.ps1 -Category B            # preview frontend rename
-    pwsh scripts/rebrand-rename.ps1 -Category B -Execute   # apply it (then: pnpm install && build)
-    pwsh scripts/rebrand-rename.ps1 -Old 'foo' -New 'bar'  # custom preview
+    pwsh scripts/rebrand-rename.ps1 -Category Full            # preview everything (no token)
+    pwsh scripts/rebrand-rename.ps1 -Category Full -Execute   # apply, then rebuild + test
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('A', 'B', 'C', 'D')]
+    [ValidateSet('Full', 'A', 'B', 'C', 'D')]
     [string]$Category,
     [string]$Old,
     [string]$New,
-    [switch]$Execute
+    [switch]$Execute,
+    # Path substrings to skip (defaults preserve docs that intentionally keep the old name).
+    [string[]]$ExcludePath = @(
+        'docs/REBRAND_MIGRATION.md', 'docs/NORTH_STAR.md', 'docs/REALITY_MAP.md',
+        'README.md', 'reports/SECURITY_AUDIT'
+    )
 )
 
 $ErrorActionPreference = 'Stop'
 
-# Ordered (from -> to) pairs per category. Order matters: longest/most-specific first.
+# Ordered replacements. MOST-SPECIFIC FIRST.
+$domainFirst = @(
+    @{ From = 'nakhara.io';     To = 'nakhara.io' },
+    @{ From = 'nakhara-io'; To = 'nakhara-io' }   # GitHub org (rename the repo to match)
+)
+$generic = @(
+    @{ From = 'NAKHARA'; To = 'NAKHARA' },   # env-var prefix, RUST_LOG, etc.
+    @{ From = 'Nakhara'; To = 'Nakhara' },   # prose / TitleCase
+    @{ From = 'nakhara'; To = 'nakhara' }     # crates, binary, packages, paths, imports
+)
 $presets = @{
-    A = @(
-        @{ From = '"axionax-core"'; To = '"nakhara-core"' },
-        @{ From = 'axionax-core/';  To = 'nakhara-core/' }
-    )
-    B = @(
-        @{ From = '@axionax/sdk';        To = '@nakhara/sdk' },
-        @{ From = 'axionax-os-dashboard'; To = 'nakhara-os-dashboard' }
-    )
-    C = @(
-        @{ From = 'AXIONAX_'; To = 'NAKHARA_' },
-        @{ From = 'axionax-node'; To = 'nakhara-node' },
-        @{ From = 'axionax.org'; To = 'nakhara.io' }
-    )
-    D = @(
-        @{ From = 'AXXt'; To = 'NAKt' },
-        @{ From = 'AXX';  To = 'NAK' }
-    )
+    Full = $domainFirst + $generic
+    A    = @( @{ From = '"nakhara-core"'; To = '"nakhara-core"' }, @{ From = 'nakhara-core/'; To = 'nakhara-core/' } )
+    B    = @( @{ From = '@nakhara/sdk'; To = '@nakhara/sdk' }, @{ From = 'nakhara-os-dashboard'; To = 'nakhara-os-dashboard' } )
+    C    = @( @{ From = 'NAKHARA_'; To = 'NAKHARA_' }, @{ From = 'nakhara-node'; To = 'nakhara-node' }, @{ From = 'nakhara.io'; To = 'nakhara.io' } )
+    D    = @( @{ From = 'AXXt'; To = 'NAKt' }, @{ From = 'MockAXXToken'; To = 'MockNAKToken' }, @{ From = "'AXX'"; To = "'NAK'" }, @{ From = '"AXX"'; To = '"NAK"' }, @{ From = '`AXX`'; To = '`NAK`' } )
 }
 
-# Build the work list of replacements.
 $pairs = @()
 if ($Category) { $pairs += $presets[$Category] }
 if ($Old) {
     if (-not $New) { throw '-Old requires -New' }
     $pairs += @{ From = $Old; To = $New }
 }
-if (-not $pairs) { throw 'Provide -Category <A|B|C|D> and/or -Old/-New.' }
+if (-not $pairs) { throw 'Provide -Category <Full|A|B|C|D> and/or -Old/-New.' }
 
-# Repo root = parent of this script's dir.
 $root = Split-Path -Parent $PSScriptRoot
 Push-Location $root
 try {
-    # Only git-tracked files (keeps us out of node_modules/.next/target and untracked junk).
     $tracked = & git ls-files
-    $excludeExt = @('.png','.jpg','.jpeg','.ico','.pdf','.so','.lock','.woff','.woff2','.gz','.zip','.bin')
+    $skipExt  = @('.png','.jpg','.jpeg','.ico','.pdf','.so','.lock','.woff','.woff2','.gz','.zip','.bin')
+    $skipName = @('pnpm-lock.yaml','package-lock.json','Cargo.lock')
 
-    $totalFiles = 0
-    $totalHits = 0
+    $totalFiles = 0; $totalHits = 0
     foreach ($rel in $tracked) {
-        $ext = [System.IO.Path]::GetExtension($rel).ToLower()
-        if ($excludeExt -contains $ext) { continue }
-        $full = Join-Path $root $rel
-        if (-not (Test-Path $full)) { continue }
+        $name = [System.IO.Path]::GetFileName($rel)
+        $ext  = [System.IO.Path]::GetExtension($rel).ToLower()
+        if ($skipExt -contains $ext) { continue }
+        if ($skipName -contains $name) { continue }
+        if ($ExcludePath | Where-Object { $rel -like "*$_*" }) { continue }
 
+        $full = Join-Path $root $rel
         $content = Get-Content -Raw -LiteralPath $full -ErrorAction SilentlyContinue
         if ($null -eq $content) { continue }
 
-        $fileHits = 0
-        $updated = $content
+        $hits = 0; $updated = $content
         foreach ($p in $pairs) {
-            $count = ([regex]::Matches($updated, [regex]::Escape($p.From))).Count
-            if ($count -gt 0) {
-                $fileHits += $count
-                $updated = $updated.Replace($p.From, $p.To)
-            }
+            $c = ([regex]::Matches($updated, [regex]::Escape($p.From))).Count
+            if ($c -gt 0) { $hits += $c; $updated = $updated.Replace($p.From, $p.To) }
         }
-
-        if ($fileHits -gt 0) {
-            $totalFiles++
-            $totalHits += $fileHits
-            "{0,5}  {1}" -f $fileHits, $rel
-            if ($Execute) {
-                Set-Content -LiteralPath $full -Value $updated -NoNewline -Encoding utf8
-            }
+        if ($hits -gt 0) {
+            $totalFiles++; $totalHits += $hits
+            "{0,5}  {1}" -f $hits, $rel
+            if ($Execute) { Set-Content -LiteralPath $full -Value $updated -NoNewline -Encoding utf8 }
         }
     }
-
     ''
     $mode = if ($Execute) { 'APPLIED' } else { 'DRY-RUN (no files changed)' }
     "[$mode] $totalHits matches across $totalFiles files."
-    if (-not $Execute -and $totalHits -gt 0) {
-        'Re-run with -Execute to apply. Then rebuild + test before committing.'
-    }
+    if (-not $Execute -and $totalHits -gt 0) { 'Re-run with -Execute to apply, then rebuild + test before committing.' }
 }
-finally {
-    Pop-Location
-}
+finally { Pop-Location }

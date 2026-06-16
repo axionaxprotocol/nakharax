@@ -1,4 +1,4 @@
-# Axionax Core — Rust Test Report
+# Nakhara Core — Rust Test Report
 
 **Date:** 2026-03-28  
 **Time:** 13:01 (UTC+7)  

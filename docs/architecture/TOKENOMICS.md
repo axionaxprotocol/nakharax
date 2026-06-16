@@ -1,4 +1,4 @@
-# axionax Tokenomics
+# nakhara Tokenomics
 
 > ⚠️ **IMPORTANT NOTICE**
 >
@@ -13,12 +13,12 @@
 
 ## Overview
 
-The AXX token is the native utility token of the axionax protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
+The AXX token is the native utility token of the nakhara protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
 
 ## Mainnet Token Supply (Production Plan)
 
 - **Token Symbol**: AXX (Mainnet Token)
-- **Token Name**: Axionax Token
+- **Token Name**: Nakhara Token
 - **Total Supply**: 1,000,000,000,000 AXX (1 Trillion)
 - **Supply Model**: Fixed cap (no inflation beyond initial distribution)
 - **Precision**: 18 decimals
@@ -123,7 +123,7 @@ Worker Reward_i = Job_Value × (1 - Protocol_Fee) × Quality_Score_i
 
 ```mermaid
 flowchart LR
-    Client[Client] -->|Pay AXX| Protocol[axionax protocol]
+    Client[Client] -->|Pay AXX| Protocol[nakhara protocol]
     Protocol -->|PPC Pricing| ASR[ASR Router]
     ASR -->|Assign Job| Worker[Worker]
     Worker -->|Stake| Protocol

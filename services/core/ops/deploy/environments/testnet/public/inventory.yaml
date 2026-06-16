@@ -1,4 +1,4 @@
-﻿all:
+all:
   children:
     validator:
       hosts:
@@ -32,6 +32,6 @@
           region: us-west-2
 vars:
   ansible_user: deployer
-  ansible_ssh_private_key_file: ~/.ssh/axionax-testnet
-  container_registry: ghcr.io/axionaxprotocol
+  ansible_ssh_private_key_file: ~/.ssh/nakhara-testnet
+  container_registry: ghcr.io/nakhara-io
   network: public-testnet

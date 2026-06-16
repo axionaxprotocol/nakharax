@@ -1,7 +1,7 @@
-# วิธีเข้าร่วม Axionax Testnet 🚀
+# วิธีเข้าร่วม Nakhara Testnet 🚀
 
 **เวอร์ชัน**: v1.9.0-testnet (Genesis Public Testnet)  
-**Synced core ref**: `axionax-monolith@28f42cf`  
+**Synced core ref**: `nakhara-monolith@28f42cf`  
 **อัพเดทล่าสุด**: 24 เมษายน 2026  
 **ภาษา**: ไทย 🇹🇭
 
@@ -22,7 +22,7 @@
 
 ### Network Details
 
-- **ชื่อเครือข่าย**: Axionax Testnet
+- **ชื่อเครือข่าย**: Nakhara Testnet
 - **Chain ID**: 86137 (0x15079)
 - **สัญลักษณ์**: AXX (18 decimals)
 - **Block Time**: 2 วินาที (ตาม genesis)
@@ -31,13 +31,13 @@
 
 ### Endpoints
 
-- **RPC URL**: `https://rpc.axionax.org` (nginx บน AU `46.250.244.4` → local validator)
-- **WebSocket**: `wss://rpc.axionax.org/ws`
-- **Explorer**: https://explorer.axionax.org (AU)
-- **API**: https://api.axionax.org (AU — explorer backend)
-- **Faucet**: https://faucet.axionax.org (AU)
-- **Axionax OS**: https://app.axionax.org (EU `217.216.109.5`)
-- **Website**: https://axionax.org
+- **RPC URL**: `https://rpc.nakhara.io` (nginx บน AU `46.250.244.4` → local validator)
+- **WebSocket**: `wss://rpc.nakhara.io/ws`
+- **Explorer**: https://explorer.nakhara.io (AU)
+- **API**: https://api.nakhara.io (AU — explorer backend)
+- **Faucet**: https://faucet.nakhara.io (AU)
+- **Nakhara OS**: https://app.nakhara.io (EU `217.216.109.5`)
+- **Website**: https://nakhara.io
 
 ### Validator Nodes (direct RPC fallback)
 
@@ -52,10 +52,10 @@ Deploy: [VPS_AU_ALL_IN_ONE.md](../../../services/core/ops/deploy/VPS_AU_ALL_IN_O
 
 ### วิธีที่ 1: เพิ่มแบบอัตโนมัติ (แนะนำ)
 
-1. เข้าไปที่ https://axionax.org
+1. เข้าไปที่ https://nakhara.io
 2. คลิกปุ่ม **"Connect Wallet"**
 3. เลือก MetaMask
-4. คลิก **"Add axionax Network"**
+4. คลิก **"Add nakhara Network"**
 5. อนุมัติการเพิ่มเครือข่ายใน MetaMask
 
 ### วิธีที่ 2: เพิ่มด้วยตนเอง
@@ -70,10 +70,10 @@ Deploy: [VPS_AU_ALL_IN_ONE.md](../../../services/core/ops/deploy/VPS_AU_ALL_IN_O
 
 ```
 Network Name (ชื่อเครือข่าย):
-axionax Testnet
+nakhara Testnet
 
 New RPC URL:
-https://rpc.axionax.org
+https://rpc.nakhara.io
 
 Chain ID:
 86137
@@ -82,13 +82,13 @@ Currency Symbol:
 AXX
 
 Block Explorer URL (optional):
-https://explorer.axionax.org
+https://explorer.nakhara.io
 ```
 
 #### ขั้นตอนที่ 3: บันทึก
 
 - คลิก **"Save"** หรือ **"บันทึก"**
-- เครือข่าย axionax Testnet จะปรากฏในรายการ
+- เครือข่าย nakhara Testnet จะปรากฏในรายการ
 
 ---
 
@@ -96,7 +96,7 @@ https://explorer.axionax.org
 
 ### ก่อนเริ่ม
 
-- ต้องมี MetaMask ที่เชื่อมต่อกับ axionax Testnet แล้ว
+- ต้องมี MetaMask ที่เชื่อมต่อกับ nakhara Testnet แล้ว
 - ต้องมี Twitter/Discord account (สำหรับ anti-spam)
 
 ### ขั้นตอน
@@ -104,8 +104,8 @@ https://explorer.axionax.org
 #### วิธีที่ 1: ผ่านเว็บไซต์
 
 1. **เข้าไปที่ Faucet**
-   - URL: https://faucet.axionax.org
-   - หรือไปที่ https://axionax.org → คลิก "Faucet"
+   - URL: https://faucet.nakhara.io
+   - หรือไปที่ https://nakhara.io → คลิก "Faucet"
 
 2. **เชื่อมต่อ Wallet**
    - คลิกปุ่ม "Connect Wallet"
@@ -125,7 +125,7 @@ https://explorer.axionax.org
 
 ```bash
 # ขอเหรียญผ่าน API
-curl -X POST https://faucet.axionax.org/api/request \
+curl -X POST https://faucet.nakhara.io/api/request \
   -H "Content-Type: application/json" \
   -d '{
     "address": "0xYourAddressHere",
@@ -141,7 +141,7 @@ curl -X POST https://faucet.axionax.org/api/request \
 
 ### ถ้าต้องการเหรียญมากขึ้น
 
-- เข้า Discord: https://discord.gg/axionax
+- เข้า Discord: https://discord.gg/nakhara
 - ติดต่อทีม Community Manager
 - อธิบายว่าจะใช้ทำอะไร (development, testing, etc.)
 
@@ -151,7 +151,7 @@ curl -X POST https://faucet.axionax.org/api/request \
 
 ### เข้าใช้งาน
 
-- URL: https://explorer.axionax.org
+- URL: https://explorer.nakhara.io
 - ไม่ต้อง login หรือเชื่อมต่อ wallet
 
 ### ฟีเจอร์หลัก
@@ -190,7 +190,7 @@ curl -X POST https://faucet.axionax.org/api/request \
 **ตรวจสอบ transaction ของคุณ:**
 
 1. Copy transaction hash จาก MetaMask
-2. ไปที่ https://explorer.axionax.org
+2. ไปที่ https://explorer.nakhara.io
 3. Paste hash ในช่องค้นหา
 4. กด Enter
 5. ดูรายละเอียด: status, gas used, block number
@@ -235,8 +235,8 @@ require('@nomicfoundation/hardhat-toolbox');
 module.exports = {
   solidity: '0.8.20',
   networks: {
-    axionax: {
-      url: 'https://rpc.axionax.org',
+    nakhara: {
+      url: 'https://rpc.nakhara.io',
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY],
     },
@@ -253,7 +253,7 @@ out = "out"
 libs = ["lib"]
 
 [rpc_endpoints]
-axionax = "https://rpc.axionax.org"
+nakhara = "https://rpc.nakhara.io"
 ```
 
 ### Deploy Contract
@@ -262,13 +262,13 @@ axionax = "https://rpc.axionax.org"
 
 ```bash
 # เขียน deploy script ใน scripts/deploy.js
-npx hardhat run scripts/deploy.js --network axionax
+npx hardhat run scripts/deploy.js --network nakhara
 ```
 
 #### ด้วย Foundry
 
 ```bash
-forge create --rpc-url axionax \
+forge create --rpc-url nakhara \
   --private-key $PRIVATE_KEY \
   src/MyContract.sol:MyContract
 ```
@@ -277,7 +277,7 @@ forge create --rpc-url axionax \
 
 ```bash
 # Hardhat
-npx hardhat verify --network axionax \
+npx hardhat verify --network nakhara \
   DEPLOYED_CONTRACT_ADDRESS \
   "Constructor Arg 1" "Constructor Arg 2"
 
@@ -303,7 +303,7 @@ forge verify-contract \
 
 ```bash
 # ทดสอบ RPC connection
-curl -X POST https://rpc.axionax.org \
+curl -X POST https://rpc.nakhara.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 
@@ -345,7 +345,7 @@ curl -X POST https://rpc.axionax.org \
 
 ```javascript
 // เช็ค transaction status
-curl -X POST https://rpc.axionax.org \
+curl -X POST https://rpc.nakhara.io \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc":"2.0",
@@ -380,7 +380,7 @@ curl -X POST https://rpc.axionax.org \
 ```bash
 # ทดสอบ estimate gas ก่อน
 cast estimate \
-  --rpc-url https://rpc.axionax.org \
+  --rpc-url https://rpc.nakhara.io \
   --from YOUR_ADDRESS \
   CONTRACT_BYTECODE
 ```
@@ -401,10 +401,10 @@ cast estimate \
 
 ### หาความช่วยเหลือ
 
-- **Discord**: https://discord.gg/axionax (ช่อง #testnet-support)
-- **GitHub Issues**: https://github.com/axionaxprotocol/axionax-monolith/issues
-- **Twitter**: https://twitter.com/axionax (@axionax)
-- **Email**: support@axionax.org
+- **Discord**: https://discord.gg/nakhara (ช่อง #testnet-support)
+- **GitHub Issues**: https://github.com/nakhara-io/nakhara-monolith/issues
+- **Twitter**: https://twitter.com/nakhara (@nakhara)
+- **Email**: support@nakhara.io
 
 ### รายงานปัญหา
 
@@ -428,13 +428,13 @@ cast estimate \
    - Simple DeFi protocols
 
 2. **สำรวจ Ecosystem**
-   - Marketplace: https://marketplace.axionax.org
-   - Documentation: https://docs.axionax.org
-   - GitHub: https://github.com/axionaxprotocol
+   - Marketplace: https://marketplace.nakhara.io
+   - Documentation: https://docs.nakhara.io
+   - GitHub: https://github.com/nakhara-io
 
 3. **ร่วมพัฒนา**
    - อ่าน [Contributing Guide](./CONTRIBUTING.md)
-   - ดู [Good First Issues](https://github.com/axionaxprotocol/axionax-monolith/labels/good%20first%20issue)
+   - ดู [Good First Issues](https://github.com/nakhara-io/nakhara-monolith/labels/good%20first%20issue)
    - เข้า Developer Channel บน Discord
 
 ---
@@ -449,6 +449,6 @@ cast estimate \
 
 ---
 
-**สนุกกับการพัฒนาบน axionax Testnet! 🚀**
+**สนุกกับการพัฒนาบน nakhara Testnet! 🚀**
 
 _Last Updated: December 5, 2025 | v1.8.0-testnet_

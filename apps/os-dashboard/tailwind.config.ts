@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Axionax OS — "Data-Dense Dashboard" design tokens.
+ * Nakhara OS — "Data-Dense Dashboard" design tokens.
  *
  * Pattern: Real-Time / Operations Landing
  * Colors: Primary #0F172A, Background #020617, Accent #22C55E

@@ -13,7 +13,7 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = $PSScriptRoot
 for ($i = 0; $i -lt 3; $i++) { $RepoRoot = Split-Path -Parent $RepoRoot }
 $GenesisPath = Join-Path $RepoRoot "core\tools\genesis.json"
-$RemoteDir = "~/.axionax/config"
+$RemoteDir = "~/.nakhara/config"
 $RemotePath = "$RemoteDir/genesis.json"
 
 if (-not (Test-Path $GenesisPath)) {

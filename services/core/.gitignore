@@ -37,7 +37,7 @@ Thumbs.db
 logs/
 
 # Built node package (optional; run scripts/make-node-package.py to create)
-axionax-node-package.zip
+nakhara-node-package.zip
 
 # Local node state and test artifacts
 .local-node-state/

@@ -55,7 +55,7 @@
 
 - [ ] **VPS / Validators** — ตัดสินใจใช้ชุด VPS เดียวกับ testnet หรือแยก (แนะนำแยกหรือ re-image สำหรับ mainnet เพื่อไม่ปน key/config testnet)
 - [ ] **Spec** — ตาม [NODE_SPECS.md](../core/docs/NODE_SPECS.md); พิจารณาเพิ่ม resource ถ้า mainnet load สูงกว่า testnet
-- [ ] **RPC** — Nginx/SSL, domain (เช่น rpc.axionax.org ชี้ mainnet หรือแยก mainnet.axionax.org); rate limit และ CORS ตั้งไว้
+- [ ] **RPC** — Nginx/SSL, domain (เช่น rpc.nakhara.io ชี้ mainnet หรือแยก mainnet.nakhara.io); rate limit และ CORS ตั้งไว้
 - [ ] **Ulimit / OS** — ใช้ค่า nofile และ tuning ตามที่แก้ใน testnet (เช่น [GENESIS_LAUNCH_DAY_CHECKLIST.md#แก้ปัญหา-too-many-open-files](GENESIS_LAUNCH_DAY_CHECKLIST.md))
 
 ### 3.5 Monitoring & Runbook
@@ -103,4 +103,4 @@
 - Security audit: [SECURITY_AUDIT_SCOPE.md](SECURITY_AUDIT_SCOPE.md), [SECURITY_REMEDIATION_PLAN.md](../SECURITY_REMEDIATION_PLAN.md)
 - Runbook: [core/docs/RUNBOOK.md](../core/docs/RUNBOOK.md)
 - Node spec: [core/docs/NODE_SPECS.md](../core/docs/NODE_SPECS.md)
-- Bible: [AXIONAX_BIBLE.md](AXIONAX_BIBLE.md)
+- Bible: [NAKHARA_BIBLE.md](NAKHARA_BIBLE.md)

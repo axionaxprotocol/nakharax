@@ -23,7 +23,7 @@ Hardware blueprint for Project Monolith from Edge AI to Planetary Intelligence.
 |-----------|----------------|------------------|--------------------|---------------------|
 | **Codename** | **Vanguard** / **Origin** | **Prism** | **Ethereal** | **Gaia** (The Living Node) |
 | **Timeline** | 2026 (Ready to Build) | 2027 – 2028 | 2029 – 2032 | 2035+ |
-| **Core tech** | Silicon (ARM + NPU)<br/>RPi 5 + Hailo / Jetson | Custom ASIC / FPGA<br/>Axionax-specific chip | Photonic Computing<br/>Light-based compute | Bio-Synthetic / Quantum<br/>Biological + quantum chip |
+| **Core tech** | Silicon (ARM + NPU)<br/>RPi 5 + Hailo / Jetson | Custom ASIC / FPGA<br/>Nakhara-specific chip | Photonic Computing<br/>Light-based compute | Bio-Synthetic / Quantum<br/>Biological + quantum chip |
 | **Compute** | 80 – 100 TOPS<br/>Edge AI | 1,000+ TOPS<br/>Enterprise AI | ExaFLOPS<br/>Speed of Light | Infinite / Unknown<br/>Planetary Intelligence |
 | **Design** | **Obsidian Tower** — matte black, heat fins, bold | **Crystalline** — transparent, visible circuits, light in chassis | **The Void Cube** — Vantablack, seamless, levitating | **Organic Morph** — liquid metal or synthetic tissue, shape-shifting |
 | **Cooling** | Active Air (fan + heatsink) | Liquid Cooling (closed loop / oil immersion) | Zero Heat (light does not heat like electricity) | Homeostasis (fluid circulation like blood) |
@@ -43,4 +43,4 @@ Hardware blueprint for Project Monolith from Edge AI to Planetary Intelligence.
 
 ---
 
-*This document is the single source of truth for Monolith hardware generations in Axionax Core Universe.*
+*This document is the single source of truth for Monolith hardware generations in Nakhara Core Universe.*

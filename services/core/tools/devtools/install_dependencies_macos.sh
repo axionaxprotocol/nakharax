@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# axionax Dependency Installer for macOS
+# nakhara Dependency Installer for macOS
 # Supports: macOS 10.15+ (Catalina and later)
 #
 
@@ -14,7 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   axionax Dependency Installer${NC}"
+echo -e "${BLUE}   nakhara Dependency Installer${NC}"
 echo -e "${BLUE}   macOS Edition${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
@@ -265,10 +265,10 @@ echo "   ${BLUE}node --version${NC}"
 echo "   ${BLUE}python3 --version${NC}"
 echo ""
 echo "4. Clone repository:"
-echo "   ${BLUE}git clone https://github.com/axionaxprotocol/axionax-core.git${NC}"
+echo "   ${BLUE}git clone https://github.com/nakhara-io/nakhara-core.git${NC}"
 echo ""
 echo "5. Build project:"
-echo "   ${BLUE}cd axionax-core${NC}"
+echo "   ${BLUE}cd nakhara-core${NC}"
 echo "   ${BLUE}cargo build --release${NC}"
 echo ""
 echo -e "${YELLOW}Development Tools:${NC}"

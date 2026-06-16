@@ -1,6 +1,6 @@
 # Documentation Principles
 
-Documentation in this repository is the **canonical** source for Axionax Protocol Core — the primary reference for developers, operators, and audit.
+Documentation in this repository is the **canonical** source for Nakhara Protocol Core — the primary reference for developers, operators, and audit.
 
 ---
 
@@ -44,4 +44,4 @@ Documentation in this repository is the **canonical** source for Axionax Protoco
 
 ---
 
-*This document defines the documentation principles for axionax-monolith: canonical, formal, and citable. All documentation is in English.*
+*This document defines the documentation principles for nakhara-monolith: canonical, formal, and citable. All documentation is in English.*

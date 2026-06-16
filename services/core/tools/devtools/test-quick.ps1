@@ -1,7 +1,7 @@
-# Axionax Core - Quick Test Script
-# Script for quickly testing Axionax Core
+# Nakhara Core - Quick Test Script
+# Script for quickly testing Nakhara Core
 
-Write-Host "🚀 Axionax Core - Quick Test" -ForegroundColor Cyan
+Write-Host "🚀 Nakhara Core - Quick Test" -ForegroundColor Cyan
 Write-Host "================================`n" -ForegroundColor Cyan
 
 $ErrorActionPreference = "Continue"
@@ -15,31 +15,31 @@ function Test-Command {
 }
 
 # 1. Check Binary
-Write-Host "Step 1: Check Axionax Core Binary" -ForegroundColor Green
-if (Test-Path ".\build\axionax-core.exe") {
+Write-Host "Step 1: Check Nakhara Core Binary" -ForegroundColor Green
+if (Test-Path ".\build\nakhara-core.exe") {
     Write-Host "✅ Binary found!" -ForegroundColor Green
-    Test-Command "Version" ".\build\axionax-core.exe version"
+    Test-Command "Version" ".\build\nakhara-core.exe version"
 } else {
-    Write-Host "❌ Binary not found! Please build first: go build -o build\axionax-core.exe .\cmd\axionax" -ForegroundColor Red
+    Write-Host "❌ Binary not found! Please build first: go build -o build\nakhara-core.exe .\cmd\nakhara" -ForegroundColor Red
     exit 1
 }
 
 # 2. Test Configuration
 Write-Host "Step 2: Test Configuration" -ForegroundColor Green
-Test-Command "Config Init" ".\build\axionax-core.exe config init"
-Test-Command "Config Show" ".\build\axionax-core.exe config show"
+Test-Command "Config Init" ".\build\nakhara-core.exe config init"
+Test-Command "Config Show" ".\build\nakhara-core.exe config show"
 
 # 3. Test Key Generation
 Write-Host "Step 3: Test Key Management" -ForegroundColor Green
-Test-Command "Generate Validator Key" ".\build\axionax-core.exe keys generate --type validator"
-Test-Command "Generate Worker Key" ".\build\axionax-core.exe keys generate --type worker"
-Test-Command "List Keys" ".\build\axionax-core.exe keys list"
+Test-Command "Generate Validator Key" ".\build\nakhara-core.exe keys generate --type validator"
+Test-Command "Generate Worker Key" ".\build\nakhara-core.exe keys generate --type worker"
+Test-Command "List Keys" ".\build\nakhara-core.exe keys list"
 
 # 4. Test Status Commands
 Write-Host "Step 4: Test Status Commands" -ForegroundColor Green
-Test-Command "Validator Status" ".\build\axionax-core.exe validator status"
-Test-Command "Worker Status" ".\build\axionax-core.exe worker status"
-Test-Command "Stake Balance" ".\build\axionax-core.exe stake balance"
+Test-Command "Validator Status" ".\build\nakhara-core.exe validator status"
+Test-Command "Worker Status" ".\build\nakhara-core.exe worker status"
+Test-Command "Stake Balance" ".\build\nakhara-core.exe stake balance"
 
 # 5. Create Worker Specs
 Write-Host "Step 5: Create Worker Specifications" -ForegroundColor Green
@@ -92,19 +92,19 @@ Write-Host "Useful commands:" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Start Node:" -ForegroundColor Green
-Write-Host "   .\build\axionax-core.exe start --network testnet" -ForegroundColor White
+Write-Host "   .\build\nakhara-core.exe start --network testnet" -ForegroundColor White
 Write-Host ""
 Write-Host "Start Validator:" -ForegroundColor Green
-Write-Host "   .\build\axionax-core.exe validator start" -ForegroundColor White
+Write-Host "   .\build\nakhara-core.exe validator start" -ForegroundColor White
 Write-Host ""
 Write-Host "Register Worker:" -ForegroundColor Green
-Write-Host "   .\build\axionax-core.exe worker register --specs worker-specs.json" -ForegroundColor White
+Write-Host "   .\build\nakhara-core.exe worker register --specs worker-specs.json" -ForegroundColor White
 Write-Host ""
 Write-Host "Deposit Stake:" -ForegroundColor Green
-Write-Host "   .\build\axionax-core.exe stake deposit 10000 --address 0x..." -ForegroundColor White
+Write-Host "   .\build\nakhara-core.exe stake deposit 10000 --address 0x..." -ForegroundColor White
 Write-Host ""
 Write-Host "Help:" -ForegroundColor Green
-Write-Host "   .\build\axionax-core.exe --help" -ForegroundColor White
+Write-Host "   .\build\nakhara-core.exe --help" -ForegroundColor White
 Write-Host ""
 
 # 8. Test RPC endpoint (if Docker is running)

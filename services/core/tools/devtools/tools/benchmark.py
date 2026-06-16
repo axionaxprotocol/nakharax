@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance benchmark suite for axionax v1.6
+Performance benchmark suite for nakhara v1.6
 Compares Rust implementation performance across different operations
 """
 
@@ -15,7 +15,7 @@ import json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'deai', 'lib'))
 
 try:
-    import axionax_python as axx
+    import nakhara_python as axx
     RUST_AVAILABLE = True
 except ImportError:
     print("⚠️  Rust bindings not available, skipping benchmarks")
@@ -83,7 +83,7 @@ class Benchmarker:
 def main():
     """Run all benchmarks"""
     print("=" * 70)
-    print("⚡ axionax v1.6 Performance Benchmarks")
+    print("⚡ nakhara v1.6 Performance Benchmarks")
     print("=" * 70)
     
     benchmarker = Benchmarker()

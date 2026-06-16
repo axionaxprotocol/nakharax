@@ -1,6 +1,6 @@
-# Axionax Protocol - Refactoring & Code Quality Tools
+# Nakhara Protocol - Refactoring & Code Quality Tools
 
-Tools for refactoring and improving code quality across the entire Axionax Protocol
+Tools for refactoring and improving code quality across the entire Nakhara Protocol
 
 ## 📚 Available Scripts
 
@@ -81,7 +81,7 @@ python refactor_and_clean.py --skip-formatting
 python refactor_and_clean.py --skip-linting
 
 # Refactor specific repo
-python refactor_and_clean.py --repo axionax-core
+python refactor_and_clean.py --repo nakhara-core
 ```
 
 **Actions:**
@@ -290,4 +290,4 @@ MIT License - see LICENSE file
 
 ## 🎉 Happy Refactoring!
 
-Made with ❤️ for Axionax Protocol
+Made with ❤️ for Nakhara Protocol

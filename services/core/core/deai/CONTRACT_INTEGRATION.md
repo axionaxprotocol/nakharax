@@ -22,10 +22,10 @@ DeAI workers talk to the **JobMarketplace** smart contract for registration, job
      [network]
      contract_address = "0xYourDeployedContractAddress"
      ```
-   - **Environment:** `AXIONAX_MARKETPLACE_ADDRESS=0xYourDeployedContractAddress`
-3. **ABI:** The worker loads the ABI from `core/deai/job_marketplace.json`. If you use a different path, set it (or patch the code to use `AXIONAX_ABI_PATH`).
-4. **Wallet:** Worker must have AXX for gas and (if required) stake. Use `AXIONAX_WALLET_PATH` / `WORKER_PRIVATE_KEY` / `WORKER_KEY_PASSWORD` as in [README](README.md).
-5. **RPC:** `[network] bootnodes` or `AXIONAX_RPC_URL` must point to a node of the same chain (e.g. Chain ID 86137 for testnet).
+   - **Environment:** `NAKHARA_MARKETPLACE_ADDRESS=0xYourDeployedContractAddress`
+3. **ABI:** The worker loads the ABI from `core/deai/job_marketplace.json`. If you use a different path, set it (or patch the code to use `NAKHARA_ABI_PATH`).
+4. **Wallet:** Worker must have AXX for gas and (if required) stake. Use `NAKHARA_WALLET_PATH` / `WORKER_PRIVATE_KEY` / `WORKER_KEY_PASSWORD` as in [README](README.md).
+5. **RPC:** `[network] bootnodes` or `NAKHARA_RPC_URL` must point to a node of the same chain (e.g. Chain ID 86137 for testnet).
 
 After that, restart the worker. Logs will show `ContractManager [LIVE]` and registration/result submission will send real transactions.
 

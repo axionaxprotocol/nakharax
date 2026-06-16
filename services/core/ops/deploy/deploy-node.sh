@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy axionax-monolith node to VPS
+# Deploy nakhara-monolith node to VPS
 # Usage: ./deploy-node.sh <PUBLIC_IP> [BOOTSTRAP_MULTIADDR]
 
 set -e
@@ -7,31 +7,31 @@ set -e
 PUBLIC_IP=${1:-$(curl -s ifconfig.me)}
 BOOTSTRAP_NODE=${2:-""}
 
-echo "=== Axionax Monolith Node Deployment ==="
+echo "=== Nakhara Monolith Node Deployment ==="
 echo "Public IP: $PUBLIC_IP"
 echo "Bootstrap Node: ${BOOTSTRAP_NODE:-None (bootstrapping as first node)}"
 echo ""
 
 # Clone or update repository
-if [ -d "axionax-monolith" ]; then
+if [ -d "nakhara-monolith" ]; then
     echo "Updating existing repository..."
-    cd axionax-monolith
+    cd nakhara-monolith
     git pull
 else
-    echo "Cloning axionax-monolith..."
-    git clone https://github.com/axionaxprotocol/axionax-monolith.git
-    cd axionax-monolith
+    echo "Cloning nakhara-monolith..."
+    git clone https://github.com/nakhara-io/nakhara-monolith.git
+    cd nakhara-monolith
 fi
 
 # Create .env file
 echo "Creating .env file..."
 cd services/core/ops/deploy
 cat > .env << EOF
-AXIONAX_PUBLIC_IP=$PUBLIC_IP
+NAKHARA_PUBLIC_IP=$PUBLIC_IP
 EOF
 
 if [ -n "$BOOTSTRAP_NODE" ]; then
-    echo "AXIONAX_BOOTSTRAP_NODES=$BOOTSTRAP_NODE" >> .env
+    echo "NAKHARA_BOOTSTRAP_NODES=$BOOTSTRAP_NODE" >> .env
 fi
 
 # Detect docker compose command
@@ -55,5 +55,5 @@ $COMPOSE_CMD -f docker-compose.yaml up -d
 
 echo ""
 echo "=== Deployment Complete ==="
-echo "Check logs: docker logs -f axionax-node"
-echo "Get Peer ID: docker logs axionax-node 2>&1 | grep 'Local peer ID'"
+echo "Check logs: docker logs -f nakhara-node"
+echo "Get Peer ID: docker logs nakhara-node 2>&1 | grep 'Local peer ID'"

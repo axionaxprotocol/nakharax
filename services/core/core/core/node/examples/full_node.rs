@@ -1,4 +1,4 @@
-//! Full axionax Node Example
+//! Full nakhara Node Example
 //!
 //! Demonstrates running a complete blockchain node with:
 //! - P2P networking (libp2p)
@@ -9,7 +9,7 @@
 
 use blockchain::{Block, Transaction};
 use clap::Parser;
-use node::{AxionaxNode, NodeConfig};
+use node::{NakharaNode, NodeConfig};
 use std::net::SocketAddr;
 use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -17,12 +17,12 @@ use tokio::time::{sleep, Duration};
 use tracing::{info, Level};
 use tracing_subscriber::fmt;
 
-/// axionax Full Node
+/// nakhara Full Node
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// Path to the state database
-    #[arg(long, default_value = "/tmp/axionax-state")]
+    #[arg(long, default_value = "/tmp/nakhara-state")]
     state_path: PathBuf,
 
     /// RPC address to listen on
@@ -49,7 +49,7 @@ async fn main() -> anyhow::Result<()> {
         "
 ╔════════════════════════════════════════════╗"
     );
-    println!("║             axionax Full Node             ║");
+    println!("║             nakhara Full Node             ║");
     println!(
         "╚════════════════════════════════════════════╝
 "
@@ -84,8 +84,8 @@ async fn main() -> anyhow::Result<()> {
     println!();
 
     // Create and start node
-    println!("🚀 Starting axionax node!\n");
-    let mut node = AxionaxNode::new(config).await?;
+    println!("🚀 Starting nakhara node!\n");
+    let mut node = NakharaNode::new(config).await?;
     node.start("validator").await?;
 
     // Give RPC server time to start
@@ -178,7 +178,7 @@ async fn main() -> anyhow::Result<()> {
     }
 }
 
-async fn run_demo_sequence(node: &mut AxionaxNode) -> anyhow::Result<()> {
+async fn run_demo_sequence(node: &mut NakharaNode) -> anyhow::Result<()> {
     println!("📦 Creating genesis block...");
     let genesis = Block {
         number: 0,

@@ -1,10 +1,10 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 COMPOSE_FILE="${ROOT_DIR}/docker-compose.yaml"
-BINARY_NAME="${BINARY_NAME:-axionaxd}"
+BINARY_NAME="${BINARY_NAME:-nakharad}"
 SNAPSHOT_URL="${SNAPSHOT_URL:-}"
 STATE_SYNC_RPC="${STATE_SYNC_RPC:-}"
 STATE_SYNC_TRUST_HEIGHT="${STATE_SYNC_TRUST_HEIGHT:-0}"
@@ -51,7 +51,7 @@ download_snapshot() {
     return
   fi
   echo "Downloading snapshot from ${url}"
-  docker compose -f "${COMPOSE_FILE}" exec rpc bash -c "curl -fsSL '${url}' | lz4 -d | tar -x -C /data/axionax" || {
+  docker compose -f "${COMPOSE_FILE}" exec rpc bash -c "curl -fsSL '${url}' | lz4 -d | tar -x -C /data/nakhara" || {
     echo "warning: snapshot download failed" >&2
   }
 }
@@ -69,7 +69,7 @@ configure_state_sync() {
 
 cleanup_old_state() {
   echo "Pruning any existing blockchain data"
-  docker compose -f "${COMPOSE_FILE}" exec rpc bash -c "rm -rf /data/axionax/data && mkdir -p /data/axionax/data"
+  docker compose -f "${COMPOSE_FILE}" exec rpc bash -c "rm -rf /data/nakhara/data && mkdir -p /data/nakhara/data"
 }
 
 cleanup_old_state

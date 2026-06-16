@@ -16,15 +16,15 @@ mkdir -p "$TARGET_DIR"
 
 # Find the built library
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    LIB_NAME="libaxionax_python.so"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/axionax_python.so"
+    LIB_NAME="libnakhara_python.so"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.so"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    LIB_NAME="libaxionax_python.dylib"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/axionax_python.so"
+    LIB_NAME="libnakhara_python.dylib"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.so"
 else
-    LIB_NAME="axionax_python.dll"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/axionax_python.pyd"
+    LIB_NAME="nakhara_python.dll"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.pyd"
 fi
 
 echo "✅ Built and copied to $TARGET_DIR"
-echo "✅ Python can now: import axionax_python"
+echo "✅ Python can now: import nakhara_python"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Axionax RPC Performance Benchmark
+Nakhara RPC Performance Benchmark
 Test RPC performance under load and measure rate limiting effectiveness
 """
 
@@ -198,7 +198,7 @@ class RPCBenchmark:
         }
 
 def main():
-    parser = argparse.ArgumentParser(description="Axionax RPC Performance Benchmark")
+    parser = argparse.ArgumentParser(description="Nakhara RPC Performance Benchmark")
     parser.add_argument("--rpc", default="http://127.0.0.1:8545", help="RPC URL")
     parser.add_argument("--method", help="Specific method to test")
     parser.add_argument("--concurrency", type=int, default=10, help="Concurrent requests")

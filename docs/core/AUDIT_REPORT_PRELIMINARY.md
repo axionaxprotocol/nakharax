@@ -39,7 +39,7 @@
 
 - **eval / exec / subprocess (อันตราย):** ไม่พบ
 - **Secrets:** ไม่พบ `password = "..."`, `api_key = "..."`, private key แบบ 64-char hex ในโค้ด
-- **Config / secrets:** ใช้ `os.environ.get("AXIONAX_*", "WORKER_*")` อย่างสม่ำเสมอ
+- **Config / secrets:** ใช้ `os.environ.get("NAKHARA_*", "WORKER_*")` อย่างสม่ำเสมอ
 - **Sandbox (sandbox.py):** ใช้ Docker API (`docker.from_env()`), มี ResourceLimits, timeout — ไม่พบการรัน raw shell command
 
 ### 2.3 Config / Repo

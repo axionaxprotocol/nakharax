@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# axionax Protocol - VPS Status Check Script
+# nakhara Protocol - VPS Status Check Script
 # =============================================================================
 # This script checks the status of all services and system resources
 # Usage: ./check-vps-status.sh [--detailed]
@@ -133,10 +133,10 @@ check_service_health() {
         ["nginx-ssl"]="HTTPS|443|nc -z localhost 443"
         ["grafana"]="Grafana|3030|curl -sf http://localhost:3030/api/health"
         ["rpc-node"]="RPC HTTP|8545|curl -sf -X POST -H 'Content-Type: application/json' --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_version\",\"params\":[],\"id\":67}' http://localhost:8545"
-        ["faucet"]="Faucet API|3002|[ -n \"\$(docker ps -q --filter name=axionax-faucet --filter status=running)\" ]"
-        ["prometheus"]="Prometheus|9090|[ -n \"\$(docker ps -q --filter name=axionax-prometheus --filter status=running)\" ]"
-        ["postgres"]="PostgreSQL|5432|docker exec axionax-postgres pg_isready -U explorer"
-        ["redis"]="Redis|6379|docker exec axionax-redis redis-cli -a \"${REDIS_PASSWORD}\" ping"
+        ["faucet"]="Faucet API|3002|[ -n \"\$(docker ps -q --filter name=nakhara-faucet --filter status=running)\" ]"
+        ["prometheus"]="Prometheus|9090|[ -n \"\$(docker ps -q --filter name=nakhara-prometheus --filter status=running)\" ]"
+        ["postgres"]="PostgreSQL|5432|docker exec nakhara-postgres pg_isready -U explorer"
+        ["redis"]="Redis|6379|docker exec nakhara-redis redis-cli -a \"${REDIS_PASSWORD}\" ping"
     )
     
     printf "%-20s %-8s %-10s\n" "Service" "Port" "Status"
@@ -249,19 +249,19 @@ show_recent_errors() {
 check_database() {
     print_header "DATABASE STATUS"
     
-    if docker ps | grep -q "axionax-postgres"; then
+    if docker ps | grep -q "nakhara-postgres"; then
         print_success "PostgreSQL container is running"
         
         # Database size
-        DB_SIZE=$(docker exec axionax-postgres psql -U explorer -d explorer -t -c "SELECT pg_size_pretty(pg_database_size('explorer'));" 2>/dev/null | xargs)
+        DB_SIZE=$(docker exec nakhara-postgres psql -U explorer -d explorer -t -c "SELECT pg_size_pretty(pg_database_size('explorer'));" 2>/dev/null | xargs)
         echo -e "Database Size:     ${DB_SIZE}"
         
         # Connection count
-        CONNECTIONS=$(docker exec axionax-postgres psql -U explorer -d explorer -t -c "SELECT count(*) FROM pg_stat_activity;" 2>/dev/null | xargs)
+        CONNECTIONS=$(docker exec nakhara-postgres psql -U explorer -d explorer -t -c "SELECT count(*) FROM pg_stat_activity;" 2>/dev/null | xargs)
         echo -e "Active Connections: ${CONNECTIONS}"
         
         # Table count
-        TABLES=$(docker exec axionax-postgres psql -U explorer -d explorer -t -c "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';" 2>/dev/null | xargs)
+        TABLES=$(docker exec nakhara-postgres psql -U explorer -d explorer -t -c "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';" 2>/dev/null | xargs)
         echo -e "Tables:            ${TABLES}"
     else
         print_error "PostgreSQL container is not running"
@@ -269,15 +269,15 @@ check_database() {
     
     echo ""
     
-    if docker ps | grep -q "axionax-redis"; then
+    if docker ps | grep -q "nakhara-redis"; then
         print_success "Redis container is running"
         
         # Redis memory usage
-        REDIS_MEM=$(docker exec axionax-redis redis-cli -a "${REDIS_PASSWORD}" INFO memory 2>/dev/null | grep "used_memory_human" | cut -d: -f2 | tr -d '\r')
+        REDIS_MEM=$(docker exec nakhara-redis redis-cli -a "${REDIS_PASSWORD}" INFO memory 2>/dev/null | grep "used_memory_human" | cut -d: -f2 | tr -d '\r')
         echo -e "Redis Memory:      ${REDIS_MEM}"
         
         # Redis keys
-        REDIS_KEYS=$(docker exec axionax-redis redis-cli -a "${REDIS_PASSWORD}" DBSIZE 2>/dev/null | awk '{print $2}')
+        REDIS_KEYS=$(docker exec nakhara-redis redis-cli -a "${REDIS_PASSWORD}" DBSIZE 2>/dev/null | awk '{print $2}')
         echo -e "Redis Keys:        ${REDIS_KEYS}"
     else
         print_error "Redis container is not running"
@@ -334,7 +334,7 @@ show_summary() {
 # Main execution
 main() {
     clear
-    print_header "axionax VPS Status Check"
+    print_header "nakhara VPS Status Check"
     echo -e "${BLUE}Timestamp: $(date)${NC}"
     echo -e "${BLUE}Hostname:  $(hostname)${NC}"
     echo -e "${BLUE}IP:        $(hostname -I | awk '{print $1}')${NC}"

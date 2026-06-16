@@ -1,4 +1,4 @@
-# axionax Protocol - VPS Quick Reference Card
+# nakhara Protocol - VPS Quick Reference Card
 
 ## 🚀 Essential Commands
 
@@ -29,7 +29,7 @@ sudo ./scripts/deploy-all-services.sh --full
 ### View Logs
 ```bash
 # All services
-cd /opt/axionax-deploy && docker-compose -f docker-compose.vps.yml logs -f
+cd /opt/nakhara-deploy && docker-compose -f docker-compose.vps.yml logs -f
 
 # Specific service
 ./scripts/manage-services.sh logs faucet
@@ -66,12 +66,12 @@ docker-compose -f docker-compose.vps.yml logs --tail=100 rpc-node
 - **Grafana:** `http://217.216.109.5:3000`
 
 ### With Domain (if DNS configured)
-- **RPC:** `https://rpc.axionax.org`
-- **Explorer:** `https://explorer.axionax.org`
-- **Faucet:** `https://faucet.axionax.org`
+- **RPC:** `https://rpc.nakhara.io`
+- **Explorer:** `https://explorer.nakhara.io`
+- **Faucet:** `https://faucet.nakhara.io`
 
 ### Direct Access (No SSL)
-- **RPC HTTP:** `https://rpc.axionax.org`
+- **RPC HTTP:** `https://rpc.nakhara.io`
 - **RPC WS:** `ws://217.216.109.5:8546`
 - **Explorer API:** `http://217.216.109.5:3001`
 - **Faucet API:** `http://217.216.109.5:3002`
@@ -111,7 +111,7 @@ docker stats
 ### Database Issues
 ```bash
 # Check database
-docker exec axionax-postgres pg_isready -U explorer
+docker exec nakhara-postgres pg_isready -U explorer
 
 # View logs
 ./scripts/manage-services.sh logs postgres
@@ -126,7 +126,7 @@ docker exec axionax-postgres pg_isready -U explorer
 nc -zv localhost 8545
 
 # Check nginx config
-docker exec axionax-nginx nginx -t
+docker exec nakhara-nginx nginx -t
 
 # Restart nginx
 ./scripts/manage-services.sh restart nginx
@@ -154,14 +154,14 @@ docker exec axionax-nginx nginx -t
 
 ### Update Services
 ```bash
-cd /opt/axionax-deploy
+cd /opt/nakhara-deploy
 docker-compose -f docker-compose.vps.yml pull
 ./scripts/manage-services.sh restart all
 ```
 
 ### Backup Database
 ```bash
-docker exec axionax-postgres pg_dump -U explorer explorer > backup.sql
+docker exec nakhara-postgres pg_dump -U explorer explorer > backup.sql
 ```
 
 ### Clean Docker
@@ -209,7 +209,7 @@ free -h && df -h
 
 ### Everything is down
 ```bash
-cd /opt/axionax-deploy
+cd /opt/nakhara-deploy
 docker-compose -f docker-compose.vps.yml down
 docker-compose -f docker-compose.vps.yml up -d
 ./scripts/check-vps-status.sh
@@ -234,10 +234,10 @@ sudo reboot
 
 ## 📍 File Locations
 
-- **Scripts:** `/opt/axionax-deploy/scripts/`
-- **Config:** `/opt/axionax-deploy/.env`
-- **Logs:** `/opt/axionax-deploy/deployment.log`
-- **Compose:** `/opt/axionax-deploy/docker-compose.vps.yml`
+- **Scripts:** `/opt/nakhara-deploy/scripts/`
+- **Config:** `/opt/nakhara-deploy/.env`
+- **Logs:** `/opt/nakhara-deploy/deployment.log`
+- **Compose:** `/opt/nakhara-deploy/docker-compose.vps.yml`
 
 ---
 

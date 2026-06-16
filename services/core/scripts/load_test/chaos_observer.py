@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Axionax Chaos Engineering — Observer Script (runs from local Windows)
+Nakhara Chaos Engineering — Observer Script (runs from local Windows)
 
 This script monitors the testnet while the operator manually stops/starts
 a validator on one of the VPS nodes. It does NOT require SSH access.
 
 Usage:
-  python chaos_observer.py --monitor-rpc https://rpc.axionax.org --duration 120
+  python chaos_observer.py --monitor-rpc https://rpc.nakhara.io --duration 120
 
 The operator should:
   1. Start this script
@@ -60,7 +60,7 @@ def run_chaos_observer(
         providers[label] = w3
 
     print(f"\n{'='*70}")
-    print(f"  🔥 AXIONAX CHAOS OBSERVER")
+    print(f"  🔥 NAKHARA CHAOS OBSERVER")
     print(f"  Monitoring {len(providers)} RPC endpoint(s) for {duration_sec}s")
     print(f"  Poll interval: {poll_interval}s")
     print(f"{'='*70}\n")
@@ -160,13 +160,13 @@ def run_chaos_observer(
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Axionax Chaos Observer")
+    ap = argparse.ArgumentParser(description="Nakhara Chaos Observer")
     ap.add_argument(
         "--monitor-rpc",
         nargs="+",
         default=[
-            os.environ.get("AXIONAX_RPC_EU", "https://rpc.axionax.org"),
-            os.environ.get("AXIONAX_RPC_AU", "https://rpc-au.axionax.org"),
+            os.environ.get("NAKHARA_RPC_EU", "https://rpc.nakhara.io"),
+            os.environ.get("NAKHARA_RPC_AU", "https://rpc-au.nakhara.io"),
         ],
         help="RPC endpoint(s) to monitor",
     )

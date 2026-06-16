@@ -1,4 +1,4 @@
-# 🚀 axionax Worker Node - Quick Setup Guide
+# 🚀 nakhara Worker Node - Quick Setup Guide
 
 **For**: GCP $300 Credit  
 **Time Required**: 30-45 minutes  
@@ -18,7 +18,7 @@
 
 #### 📝 Basic Info
 ```
-Name: axionax-worker-1
+Name: nakhara-worker-1
 Region: us-central1
 Zone: us-central1-a
 ```
@@ -68,18 +68,18 @@ Size (GB): 100
 
 **Method 2: Via gcloud CLI**
 ```bash
-gcloud compute ssh axionax-worker-1 --zone=us-central1-a
+gcloud compute ssh nakhara-worker-1 --zone=us-central1-a
 ```
 
 ### Step 4: Download Setup Script
 
 ```bash
 # Download script
-wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 
 # Or if the repo is not yet public
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith/services/core/ops/deploy/scripts
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith/services/core/ops/deploy/scripts
 chmod +x setup-gcp-worker.sh
 ```
 
@@ -96,7 +96,7 @@ sudo ./setup-gcp-worker.sh
 - ✅ Python 3.10+ and venv
 - ✅ PyTorch with CUDA
 - ✅ ML libraries (numpy, pandas, sklearn, etc.)
-- ✅ axionax core and DeAI
+- ✅ nakhara core and DeAI
 
 ### Step 6: Reboot (required!)
 
@@ -130,7 +130,7 @@ nvidia-smi
 source ~/activate-worker.sh
 
 # Expected output:
-# ✅ axionax Worker environment activated
+# ✅ nakhara Worker environment activated
 # 🔧 CUDA: 12.2
 # 🦀 Rust: rustc 1.75.x
 # 🐍 Python: Python 3.10.x
@@ -149,13 +149,13 @@ python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); 
 ### Step 10: Run Training Example
 
 ```bash
-cd ~/axionax-monolith/services/core/core/examples
+cd ~/nakhara-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
 **Expected output:**
 ```
-🚀 axionax DeAI - Simple Training Example
+🚀 nakhara DeAI - Simple Training Example
 ============================================================
 🔧 Using device: cuda
 🎮 GPU: Tesla T4
@@ -190,7 +190,7 @@ python deai_simple_training.py
 ### Step 11: Create Worker Config
 
 ```bash
-nano ~/axionax-worker/config/worker.toml
+nano ~/nakhara-worker/config/worker.toml
 ```
 
 **Enter the following:**
@@ -210,7 +210,7 @@ ram = 15  # GB
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.axionax.org"
+rpc_url = "https://rpc.nakhara.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -230,8 +230,8 @@ logs_dir = "/home/YOUR_USERNAME/logs"
 
 ```bash
 # Create a wallet for the worker
-cd ~/axionax-monolith/services/core/core
-cargo run --bin keygen -- generate --output ~/axionax-worker/keys/worker-key.json
+cd ~/nakhara-monolith/services/core/core
+cargo run --bin keygen -- generate --output ~/nakhara-worker/keys/worker-key.json
 
 # Or if you already have a wallet, copy the private key into the config
 ```
@@ -254,10 +254,10 @@ gcloud compute instances list --format="table(name,zone,status)"
 
 ```bash
 # Stop instance when not in use
-gcloud compute instances stop axionax-worker-1 --zone=us-central1-a
+gcloud compute instances stop nakhara-worker-1 --zone=us-central1-a
 
 # Start when needed
-gcloud compute instances start axionax-worker-1 --zone=us-central1-a
+gcloud compute instances start nakhara-worker-1 --zone=us-central1-a
 ```
 
 **💡 Tips:**
@@ -320,7 +320,7 @@ python deai_simple_training.py
 - [ ] Connect to RPC node
 
 **Next Steps:**
-- [ ] Connect to axionax Network
+- [ ] Connect to nakhara Network
 - [ ] Register worker on testnet
 - [ ] Receive first DeAI jobs
 
@@ -341,7 +341,7 @@ sudo reboot
 **Problem: PyTorch does not find CUDA**
 ```bash
 # Reinstall PyTorch
-source ~/axionax-env/bin/activate
+source ~/nakhara-env/bin/activate
 pip install --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
@@ -356,9 +356,9 @@ pip install --force-reinstall torch torchvision torchaudio --index-url https://d
 
 ## 📞 Need Help?
 
-- **Documentation**: `~/axionax-monolith/services/core/ops/deploy/gcp-worker-setup.md`
-- **Training Example**: `~/axionax-monolith/services/core/core/examples/deai_simple_training.py`
-- **Setup Script**: `~/axionax-monolith/services/core/ops/deploy/scripts/setup-gcp-worker.sh`
+- **Documentation**: `~/nakhara-monolith/services/core/ops/deploy/gcp-worker-setup.md`
+- **Training Example**: `~/nakhara-monolith/services/core/core/examples/deai_simple_training.py`
+- **Setup Script**: `~/nakhara-monolith/services/core/ops/deploy/scripts/setup-gcp-worker.sh`
 
 ---
 

@@ -1,6 +1,6 @@
-//! axionax Node - Integrated blockchain node combining Network, State, and RPC
+//! nakhara Node - Integrated blockchain node combining Network, State, and RPC
 //!
-//! The Node module provides a high-level API for running a complete axionax blockchain node
+//! The Node module provides a high-level API for running a complete nakhara blockchain node
 //! that handles peer-to-peer networking, persistent storage, JSON-RPC API endpoints,
 //! and block production (when running as a validator).
 
@@ -68,7 +68,7 @@ impl NodeConfig {
         Self {
             network: NetworkConfig::dev(),
             rpc_addr: DEFAULT_RPC_ADDR,
-            state_path: "/tmp/axionax-dev".to_string(),
+            state_path: "/tmp/nakhara-dev".to_string(),
             validator_address: None,
         }
     }
@@ -78,7 +78,7 @@ impl NodeConfig {
         Self {
             network: NetworkConfig::testnet(),
             rpc_addr: DEFAULT_RPC_ADDR,
-            state_path: "/var/lib/axionax/testnet".to_string(),
+            state_path: "/var/lib/nakhara/testnet".to_string(),
             validator_address: None,
         }
     }
@@ -88,7 +88,7 @@ impl NodeConfig {
         Self {
             network: NetworkConfig::mainnet(),
             rpc_addr: DEFAULT_RPC_ADDR,
-            state_path: "/var/lib/axionax/mainnet".to_string(),
+            state_path: "/var/lib/nakhara/mainnet".to_string(),
             validator_address: None,
         }
     }
@@ -141,8 +141,8 @@ pub struct NodeStats {
     pub peer_count: usize,
 }
 
-/// axionax blockchain node
-pub struct AxionaxNode {
+/// nakhara blockchain node
+pub struct NakharaNode {
     config: NodeConfig,
     network: Arc<tokio::sync::Mutex<NetworkManager>>,
     state: Arc<StateDB>,
@@ -157,10 +157,10 @@ pub struct AxionaxNode {
     local_peer_id: libp2p::PeerId,
 }
 
-impl AxionaxNode {
+impl NakharaNode {
     /// Create a new node
     pub async fn new(config: NodeConfig) -> anyhow::Result<Self> {
-        info!("Initializing axionax node with config: {:?}", config);
+        info!("Initializing nakhara node with config: {:?}", config);
 
         // Initialize state database
         let state_path = Path::new(&config.state_path);
@@ -249,7 +249,7 @@ impl AxionaxNode {
 
     /// Start the node (network, sync, RPC server, and optionally block producer)
     pub async fn start(&mut self, role: &str) -> anyhow::Result<()> {
-        info!("Starting axionax node...");
+        info!("Starting nakhara node...");
 
         // Start network manager
         {
@@ -329,7 +329,7 @@ impl AxionaxNode {
             );
         }
 
-        info!("✅ axionax node fully operational!");
+        info!("✅ nakhara node fully operational!");
         Ok(())
     }
 
@@ -850,7 +850,7 @@ impl AxionaxNode {
 
     /// Shutdown the node gracefully
     pub async fn shutdown(&mut self) -> anyhow::Result<()> {
-        info!("Shutting down axionax node...");
+        info!("Shutting down nakhara node...");
 
         // Stop sync task
         if let Some(handle) = self.sync_handle.take() {
@@ -885,13 +885,13 @@ mod tests {
     use super::*;
     use tempfile::TempDir;
 
-    async fn create_test_node() -> (AxionaxNode, TempDir) {
+    async fn create_test_node() -> (NakharaNode, TempDir) {
         let temp_dir = TempDir::new().unwrap();
         let mut config = NodeConfig::dev();
         config.state_path = temp_dir.path().to_str().unwrap().to_string();
         config.rpc_addr = "127.0.0.1:0".parse().unwrap(); // Random port
 
-        let node = AxionaxNode::new(config).await.unwrap();
+        let node = NakharaNode::new(config).await.unwrap();
         (node, temp_dir)
     }
 

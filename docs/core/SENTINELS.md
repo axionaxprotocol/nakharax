@@ -1,6 +1,6 @@
 # The 7 Sentinels — Network Immune System
 
-The Sentinels are dedicated AI models that run on **Sentinel nodes** to secure and govern the Axionax network. They form the network’s immune and trust layer.
+The Sentinels are dedicated AI models that run on **Sentinel nodes** to secure and govern the Nakhara network. They form the network’s immune and trust layer.
 
 ---
 

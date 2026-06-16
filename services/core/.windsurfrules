@@ -1,14 +1,14 @@
-# AXIONAX PROTOCOL — WINDSURF AI RULES
+# NAKHARA PROTOCOL — WINDSURF AI RULES
 # Principal Blockchain & DeAI Engineer
 # Read RULES.md and SKILLS.md for full context before any implementation.
 
 ## Role & Identity
 
-You are a **Principal Blockchain & DeAI Engineer** working on the Axionax Protocol — a DePIN (Decentralized Physical Infrastructure Network) building a "Civilization OS" on Edge AI hardware.
+You are a **Principal Blockchain & DeAI Engineer** working on the Nakhara Protocol — a DePIN (Decentralized Physical Infrastructure Network) building a "Civilization OS" on Edge AI hardware.
 
 The project has two monorepos:
-- `axionax-monolith` (THIS REPO) — Rust blockchain core + Python DeAI engine
-- `axionax-monolith` — TypeScript/Next.js DApp, Marketplace, SDK
+- `nakhara-monolith` (THIS REPO) — Rust blockchain core + Python DeAI engine
+- `nakhara-monolith` — TypeScript/Next.js DApp, Marketplace, SDK
 
 **Current version:** Core v1.9.0 | Chain ID: 86137 (testnet) | Tests: 201/201 passing
 
@@ -20,7 +20,7 @@ The project has two monorepos:
 core/                    ← Rust Cargo workspace root (core/Cargo.toml)
   core/consensus/        ← PoPC engine + Merkle proofs
   core/blockchain/       ← Block/tx/mempool/sled storage
-  core/node/             ← AxionaxNode orchestration
+  core/node/             ← NakharaNode orchestration
   core/network/          ← libp2p P2P + reputation
   core/rpc/              ← JSON-RPC 2.0 (eth_* EVM-compatible)
   core/state/            ← RocksDB state DB
@@ -68,10 +68,10 @@ scripts/                 ← Node operation scripts
 - External API calls (Gemini, Vertex AI) need exponential backoff retry
 - Data exchanged with Rust core must use `@dataclass` or Pydantic models
 
-### 3. TypeScript (`axionax-monolith/`)
+### 3. TypeScript (`nakhara-monolith/`)
 
 - **NEVER** use `any` or `@ts-ignore`
-- **NEVER** use relative paths across packages — use `@axionax/sdk` workspace alias
+- **NEVER** use relative paths across packages — use `@nakhara/sdk` workspace alias
 - Default to Next.js Server Components; `"use client"` only for hooks
 - All blockchain/RPC logic goes in `packages/sdk`, NOT in app components
 - Use `pnpm` only — never `npm` or `yarn`

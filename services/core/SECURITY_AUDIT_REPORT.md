@@ -1,4 +1,4 @@
-# Axionax Protocol — Comprehensive Cybersecurity Audit Report
+# Nakhara Protocol — Comprehensive Cybersecurity Audit Report
 
 **Date:** 2026-03-05
 **Scope:** Full repository — Rust Core, Python DeAI, TypeScript SDK, Deployment Infrastructure
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This audit reviewed the entire Axionax Protocol codebase. A total of **130 findings** were identified across all severity levels. The most critical issues center around:
+This audit reviewed the entire Nakhara Protocol codebase. A total of **130 findings** were identified across all severity levels. The most critical issues center around:
 
 1. **Complete lack of authentication on all state-mutating RPC endpoints** — enabling impersonation of any address for staking, voting, and transaction submission.
 2. **Broken network identity** — Gossipsub uses throwaway keypairs instead of the node's actual identity, defeating peer authentication.
@@ -69,7 +69,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
   - Any node can forge messages appearing to come from any other node
   - Eclipse attacks become trivial — attacker can inject arbitrary blocks, transactions, and consensus votes
   - Message deduplication based on source PeerId is defeated
-- **Recommendation:** Modify `AxionaxBehaviour::new()` to accept the node's `Keypair` as a parameter and use it for both `MessageAuthenticity::Signed()` and `identify::Config::new()`.
+- **Recommendation:** Modify `NakharaBehaviour::new()` to accept the node's `Keypair` as a parameter and use it for both `MessageAuthenticity::Signed()` and `identify::Config::new()`.
 
 ### HIGH
 
@@ -478,7 +478,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 
 - **Files:** `core/deai/rpc_client.py` line 10, `core/deai/worker_config.toml` lines 17–19
 - **Category:** Insecure Communication
-- **Description:** RPC client defaults to `https://rpc.axionax.org`. All RPC traffic — including signed transactions — is sent unencrypted.
+- **Description:** RPC client defaults to `https://rpc.nakhara.io`. All RPC traffic — including signed transactions — is sent unencrypted.
 - **Impact:** Man-in-the-middle attacks can intercept, modify, or replay transactions.
 - **Recommendation:** Use HTTPS/TLS for all RPC endpoints. Validate certificates.
 
@@ -486,7 +486,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 
 #### PH-1: Faucet ERC-20 Endpoint Accepts User-Controlled Amount
 
-- **File:** `ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/faucet/index.js`, line 86 *(โฟลเดอร์นี้ถูกลบออกจาก repo แล้ว — อ้างอิงประวัติการ audit เท่านั้น)*
+- **File:** `ops/deploy/environments/testnet/Nakhara_v1.6_Testnet_in_a_Box/faucet/index.js`, line 86 *(โฟลเดอร์นี้ถูกลบออกจาก repo แล้ว — อ้างอิงประวัติการ audit เท่านั้น)*
 - **Category:** Business Logic
 - **Description:** `/request-erc20` accepts a user-supplied `amount` query parameter. An attacker can request `amount=999999999999999`.
 - **Impact:** Complete drain of faucet's ERC-20 balance in a single request.
@@ -494,7 +494,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 
 #### PH-2: Faucet server.js Variant Has No Rate Limiting
 
-- **File:** `ops/deploy/environments/testnet/Axionax_v1.6_Testnet_in_a_Box/faucet/server.js`, line 33 *(โฟลเดอร์นี้ถูกลบออกจาก repo แล้ว — อ้างอิงประวัติการ audit เท่านั้น)*
+- **File:** `ops/deploy/environments/testnet/Nakhara_v1.6_Testnet_in_a_Box/faucet/server.js`, line 33 *(โฟลเดอร์นี้ถูกลบออกจาก repo แล้ว — อ้างอิงประวัติการ audit เท่านั้น)*
 - **Description:** Unlike `index.js`, this variant has no `express-rate-limit`.
 - **Recommendation:** Add rate limiting.
 
@@ -656,7 +656,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 
 - **File:** `ops/deploy/setup_validator.sh`, line 44
 - **Category:** Secret Management
-- **Description:** `echo "$AXIONAX_USER:axionax2025" | chpasswd` — publicly visible password committed to repo.
+- **Description:** `echo "$NAKHARA_USER:nakhara2025" | chpasswd` — publicly visible password committed to repo.
 - **Impact:** Full system access to any validator provisioned with this script.
 - **Recommendation:** Generate random password or require SSH key-only auth.
 
@@ -673,13 +673,13 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 #### DH-1: Hardcoded PostgreSQL Credentials
 
 - **Files:** `docker-compose.dev.yml:75–77`, `testnet docker-compose.yml:63–65`
-- **Description:** `POSTGRES_PASSWORD: blockscout` / `axionax_dev_2026` committed.
+- **Description:** `POSTGRES_PASSWORD: blockscout` / `nakhara_dev_2026` committed.
 - **Recommendation:** Use env variable substitution with `.env` files.
 
 #### DH-2: Hardcoded Grafana Admin Password
 
 - **File:** `docker-compose.dev.yml`, line 203
-- **Description:** `GF_SECURITY_ADMIN_PASSWORD=axionax`.
+- **Description:** `GF_SECURITY_ADMIN_PASSWORD=nakhara`.
 - **Recommendation:** Use env variable.
 
 #### DH-3: Default "admin:password" Basic Auth
@@ -783,7 +783,7 @@ This audit reviewed the entire Axionax Protocol codebase. A total of **130 findi
 #### DM-10: Deterministic Faucet Key Generation
 
 - **File:** `scripts/generate-faucet-key.py`, lines 27, 41
-- **Description:** Testnet faucet key derived from `sha256(b"axionax_faucet_mainnet_q2_2026")`.
+- **Description:** Testnet faucet key derived from `sha256(b"nakhara_faucet_mainnet_q2_2026")`.
 - **Recommendation:** Ensure testnet-only; rename seed.
 
 ### LOW

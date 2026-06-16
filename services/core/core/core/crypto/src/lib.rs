@@ -1,6 +1,6 @@
-//! axionax Cryptography
+//! nakhara Cryptography
 //!
-//! Cryptographic primitives for axionax blockchain:
+//! Cryptographic primitives for nakhara blockchain:
 //! - **ECVRF**: Production-grade VRF using schnorrkel (recommended)
 //! - **VRF**: Legacy VRF implementation (deprecated)
 //! - **Hash**: SHA3-256, Keccak256, Blake2s-256, Blake2b-512

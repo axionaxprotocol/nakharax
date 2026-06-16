@@ -13,8 +13,8 @@ Use this before public announcement to verify that an external operator can run 
 
 ## B. Reproducibility from a fresh machine
 
-- [ ] Fresh machine can clone repo and build `axionax-node` with documented commands only.
-- [ ] `axionax-node-bootstrap.sh setup --role full` works without manual file patching.
+- [ ] Fresh machine can clone repo and build `nakhara-node` with documented commands only.
+- [ ] `nakhara-node-bootstrap.sh setup --role full` works without manual file patching.
 - [ ] Node starts with `run` or `install-systemd` and keeps running for at least 15 minutes.
 - [ ] `eth_chainId` returns `0x15079`.
 - [ ] Block height increases over time locally.

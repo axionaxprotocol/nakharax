@@ -26,11 +26,11 @@
 
 ### RPC / AU services (46.250.244.4)
 
-- [ ] **RPC proxy ขึ้น** — `https://rpc.axionax.org` ตอบ
+- [ ] **RPC proxy ขึ้น** — `https://rpc.nakhara.io` ตอบ
   ```bash
   curl -s -X POST -H "Content-Type: application/json" \
     -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-    https://rpc.axionax.org
+    https://rpc.nakhara.io
   # คาดหวัง: "result":"0x15079"
   ```
 - [ ] **Nginx / Certbot** — SSL ยังใช้งานได้ ไม่หมดอายุ
@@ -64,15 +64,15 @@
 
 - [ ] **Latency พอใช้** — วัดเวลา response จาก frontend หรือ script (เช่น `eth_blockNumber` < 2s)
 - [ ] **Rate limit ไม่หนักเกินไป** — ผู้ใช้ / dApp เรียก RPC ได้ไม่ถูก block บ่อย
-- [ ] **CORS ถูกต้อง** — frontend (axionax.org) เรียก RPC ได้ไม่มี CORS error
-- [ ] **HTTPS ใช้งานได้** — ใช้ `https://rpc.axionax.org` ไม่ fallback เป็น HTTP
-- [ ] **Optimize suite (Python)** — จำลองโหลดอ่านแบบเบาและ (ถ้าต้องการ) ทดสอบความทนทาน RPC ต่อทราฟฟิกผิดรูปแบบ บน **เครือข่ายที่คุณเป็น operator หรือได้รับอนุญาตเท่านั้น** — รันจาก **root ของ repo**: `python scripts/run_optimize_suite.py …` หรือถ้าอยู่ในโฟลเดอร์ `scripts` แล้วใช้ `python run_optimize_suite.py …` (อย่าใช้ `python scripts/run_optimize_suite.py` ขณะ `cd` อยู่ใน `scripts` เพราะ path จะกลายเป็น `scripts/scripts/...`) — โหมด `--mode smoke` / `light` / `full`; stress ต้องมี `--cyber`; ชี้ RPC ด้วย `--rpc` หรือ `AXIONAX_RPC_URL`
+- [ ] **CORS ถูกต้อง** — frontend (nakhara.io) เรียก RPC ได้ไม่มี CORS error
+- [ ] **HTTPS ใช้งานได้** — ใช้ `https://rpc.nakhara.io` ไม่ fallback เป็น HTTP
+- [ ] **Optimize suite (Python)** — จำลองโหลดอ่านแบบเบาและ (ถ้าต้องการ) ทดสอบความทนทาน RPC ต่อทราฟฟิกผิดรูปแบบ บน **เครือข่ายที่คุณเป็น operator หรือได้รับอนุญาตเท่านั้น** — รันจาก **root ของ repo**: `python scripts/run_optimize_suite.py …` หรือถ้าอยู่ในโฟลเดอร์ `scripts` แล้วใช้ `python run_optimize_suite.py …` (อย่าใช้ `python scripts/run_optimize_suite.py` ขณะ `cd` อยู่ใน `scripts` เพราะ path จะกลายเป็น `scripts/scripts/...`) — โหมด `--mode smoke` / `light` / `full`; stress ต้องมี `--cyber`; ชี้ RPC ด้วย `--rpc` หรือ `NAKHARA_RPC_URL`
 
 ---
 
 ## 4. Faucet & Token Distribution
 
-- [ ] **Faucet ขึ้น** — `https://faucet.axionax.org` ตอบ (ตาม [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md))
+- [ ] **Faucet ขึ้น** — `https://faucet.nakhara.io` ตอบ (ตาม [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md))
 - [ ] **Balance faucet พอ** — ตรวจ balance ของ faucet address; เติมหรือปรับ amount ต่อ request ถ้าจำเป็น
 - [ ] **Rate limit สมเหตุสมผล** — จำกัดต่อ IP/address (เช่น 24h) ไม่ให้ abuse แต่ยังให้ทดสอบได้
 - [ ] **Request สำเร็จ** — ทดสอบขอ AXX จาก faucet แล้วได้ token; ดู log ถ้ามี error (RPC timeout, gas)
@@ -89,14 +89,14 @@
 
 ```powershell
 # สรุปสถานะ RPC + block
-$rpc = "https://rpc.axionax.org"
+$rpc = "https://rpc.nakhara.io"
 $body = '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 Invoke-RestMethod -Uri $rpc -Method Post -Body $body -ContentType "application/json"
 ```
 
 ```bash
 # เช็กทั้งสอง validator + public RPC
-for url in http://217.216.109.5:8545 http://46.250.244.4:8545 https://rpc.axionax.org; do
+for url in http://217.216.109.5:8545 http://46.250.244.4:8545 https://rpc.nakhara.io; do
   echo -n "$url: "
   curl -s -X POST -H "Content-Type: application/json" \
     -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' "$url" | jq -r '.result'

@@ -1,6 +1,6 @@
 # 🚀 GCP Worker Node Setup Guide
 
-**For**: axionax DeAI Worker Node  
+**For**: nakhara DeAI Worker Node  
 **Credit**: $300 GCP Free Credit  
 **Objective**: Test DeAI Training Workloads
 
@@ -20,7 +20,7 @@ https://console.cloud.google.com/compute/instances
 **Click "CREATE INSTANCE"** and configure as follows:
 
 #### Basic Configuration
-- **Name**: `axionax-worker-1`
+- **Name**: `nakhara-worker-1`
 - **Region**: `us-central1` (cheapest)
 - **Zone**: `us-central1-a` (has T4 GPUs)
 
@@ -56,7 +56,7 @@ https://console.cloud.google.com/compute/instances
 
 ```bash
 # From your local machine
-gcloud compute ssh axionax-worker-1 --zone=us-central1-a
+gcloud compute ssh nakhara-worker-1 --zone=us-central1-a
 
 # Or click "SSH" in the GCP Console
 ```
@@ -93,7 +93,7 @@ sudo reboot
 
 ```bash
 # SSH back in after reboot
-gcloud compute ssh axionax-worker-1 --zone=us-central1-a
+gcloud compute ssh nakhara-worker-1 --zone=us-central1-a
 
 # Verify GPU
 nvidia-smi
@@ -112,7 +112,7 @@ nvidia-smi
 
 ---
 
-## 📋 Step 3: Install axionax Worker Software
+## 📋 Step 3: Install nakhara Worker Software
 
 ### 3.1 Install Rust
 
@@ -137,8 +137,8 @@ sudo apt-get install -y \
     python3-dev
 
 # Create virtual environment
-python3 -m venv ~/axionax-env
-source ~/axionax-env/bin/activate
+python3 -m venv ~/nakhara-env
+source ~/nakhara-env/bin/activate
 
 # Install PyTorch with CUDA support
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
@@ -150,13 +150,13 @@ pip install numpy pandas scikit-learn scipy transformers datasets
 python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}')"
 ```
 
-### 3.3 Clone axionax Repository
+### 3.3 Clone nakhara Repository
 
 ```bash
 # Clone repository
 cd ~
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakhara-io/nakhara-monolith.git
+cd nakhara-monolith
 
 # Build core
 cd core
@@ -175,8 +175,8 @@ pip install -r requirements.txt
 
 ```bash
 # Create config file
-mkdir -p ~/axionax-worker/config
-nano ~/axionax-worker/config/worker.toml
+mkdir -p ~/nakhara-worker/config
+nano ~/nakhara-worker/config/worker.toml
 ```
 
 **Content of `worker.toml`:**
@@ -197,7 +197,7 @@ ram = 15  # GB
 
 [network]
 # RPC endpoint (connect to testnet)
-rpc_url = "https://rpc.axionax.org"
+rpc_url = "https://rpc.nakhara.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -208,9 +208,9 @@ target_uptime = 0.99
 
 [storage]
 # Storage paths
-data_dir = "/home/axionax/worker-data"
-models_dir = "/home/axionax/models"
-logs_dir = "/home/axionax/logs"
+data_dir = "/home/nakhara/worker-data"
+models_dir = "/home/nakhara/models"
+logs_dir = "/home/nakhara/logs"
 ```
 
 ### 4.2 Create Directories
@@ -280,23 +280,23 @@ print(f"💾 GPU Memory Used: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
 **Run the test:**
 
 ```bash
-source ~/axionax-env/bin/activate
+source ~/nakhara-env/bin/activate
 python3 ~/test_gpu.py
 ```
 
 ---
 
-## 📋 Step 6: Connect to axionax Network
+## 📋 Step 6: Connect to nakhara Network
 
 ### 6.1 Generate Worker Wallet
 
 ```bash
 # Create a wallet for the worker
-cd ~/axionax-monolith/services/core/tools
-cargo run --bin keygen -- --output ~/axionax-worker/keys/worker-key.json
+cd ~/nakhara-monolith/services/core/tools
+cargo run --bin keygen -- --output ~/nakhara-worker/keys/worker-key.json
 
 # Backup key (very important!)
-cat ~/axionax-worker/keys/worker-key.json
+cat ~/nakhara-worker/keys/worker-key.json
 # Copy and store in a safe place
 ```
 
@@ -304,7 +304,7 @@ cat ~/axionax-worker/keys/worker-key.json
 
 ```bash
 # Connect to testnet RPC
-export AXIONAX_RPC="https://rpc.axionax.org"
+export NAKHARA_RPC="https://rpc.nakhara.io"
 
 # Register worker (requires AXX tokens for gas)
 # An auto-register script will be available in the future
@@ -352,20 +352,20 @@ export AXIONAX_RPC="https://rpc.axionax.org"
 
 ```bash
 # Start instance
-gcloud compute instances start axionax-worker-1 --zone=us-central1-a
+gcloud compute instances start nakhara-worker-1 --zone=us-central1-a
 
 # Stop instance (save credit)
-gcloud compute instances stop axionax-worker-1 --zone=us-central1-a
+gcloud compute instances stop nakhara-worker-1 --zone=us-central1-a
 
 # SSH
-gcloud compute ssh axionax-worker-1 --zone=us-central1-a
+gcloud compute ssh nakhara-worker-1 --zone=us-central1-a
 
 # Monitor costs
 gcloud billing accounts list
 gcloud billing projects describe PROJECT_ID
 
 # Delete instance (when testing is complete)
-gcloud compute instances delete axionax-worker-1 --zone=us-central1-a
+gcloud compute instances delete nakhara-worker-1 --zone=us-central1-a
 ```
 
 ---
@@ -391,7 +391,7 @@ df -h
 - [ ] Install NVIDIA drivers and CUDA
 - [ ] Install Rust and Python
 - [ ] Test GPU with PyTorch
-- [ ] Clone axionax repository
+- [ ] Clone nakhara repository
 - [ ] Create worker configuration
 - [ ] Test training script
 - [ ] Generate worker wallet

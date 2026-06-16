@@ -30,7 +30,7 @@ def run_command(description: str, command: list):
 
 def main():
     print(f"\n{BOLD}{MAGENTA}{'='*80}{RESET}")
-    print(f"{BOLD}{MAGENTA}🚀 AXIONAX PROTOCOL - MASTER REFACTOR & CLEAN{RESET}")
+    print(f"{BOLD}{MAGENTA}🚀 NAKHARA PROTOCOL - MASTER REFACTOR & CLEAN{RESET}")
     print(f"{BOLD}{MAGENTA}{'='*80}{RESET}\n")
     
     scripts = [

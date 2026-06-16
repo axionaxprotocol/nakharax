@@ -47,7 +47,7 @@ class TestnetReadinessChecker:
         self.start_time = time.time()
         
         print(f"\n{CYAN}{'='*70}{RESET}")
-        print(f"{BOLD}{CYAN}  AXIONAX TESTNET READINESS CHECKER{RESET}")
+        print(f"{BOLD}{CYAN}  NAKHARA TESTNET READINESS CHECKER{RESET}")
         print(f"{CYAN}{'='*70}{RESET}\n")
         print(f"⏰ Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         
@@ -125,12 +125,12 @@ class TestnetReadinessChecker:
     def _check_repo_structure(self):
         """Verify all required repositories exist"""
         required_repos = [
-            'axionax-core',
-            'axionax-sdk-ts', 
-            'axionax-web',
-            'axionax-docs',
-            'axionax-deploy',
-            'axionax-devtools'
+            'nakhara-core',
+            'nakhara-sdk-ts', 
+            'nakhara-web',
+            'nakhara-docs',
+            'nakhara-deploy',
+            'nakhara-devtools'
         ]
         
         found = []
@@ -209,12 +209,12 @@ class TestnetReadinessChecker:
         tools = {}
         
         # Check Rust build
-        core_path = self.workspace_root / 'axionax-core'
+        core_path = self.workspace_root / 'nakhara-core'
         if core_path.exists():
             tools['rust_build'] = self._check_command(['cargo', 'check'], cwd=core_path)
         
         # Check Node build
-        sdk_path = self.workspace_root / 'axionax-sdk-ts'
+        sdk_path = self.workspace_root / 'nakhara-sdk-ts'
         if sdk_path.exists() and (sdk_path / 'package.json').exists():
             tools['node_build'] = (sdk_path / 'node_modules').exists()
         
@@ -242,7 +242,7 @@ class TestnetReadinessChecker:
     def _check_code_quality(self):
         """Check code quality metrics"""
         # Run quality analyzer if available
-        analyzer_path = self.workspace_root / 'axionax-devtools' / 'scripts' / 'analysis' / 'repo_quality_analyzer.py'
+        analyzer_path = self.workspace_root / 'nakhara-devtools' / 'scripts' / 'analysis' / 'repo_quality_analyzer.py'
         
         if not analyzer_path.exists():
             return False, 0, "Quality analyzer not found", None
@@ -275,7 +275,7 @@ class TestnetReadinessChecker:
     
     def _check_test_coverage(self):
         """Check test suite execution"""
-        test_runner = self.workspace_root / 'axionax-devtools' / 'run_all_tests.py'
+        test_runner = self.workspace_root / 'nakhara-devtools' / 'run_all_tests.py'
         
         if not test_runner.exists():
             return False, 0, "Test runner not found", None
@@ -315,7 +315,7 @@ class TestnetReadinessChecker:
         builds = {}
         
         # Check Rust build
-        core_path = self.workspace_root / 'axionax-core'
+        core_path = self.workspace_root / 'nakhara-core'
         if core_path.exists():
             try:
                 result = subprocess.run(
@@ -329,7 +329,7 @@ class TestnetReadinessChecker:
                 builds['rust'] = False
         
         # Check TypeScript builds
-        for project in ['axionax-sdk-ts', 'axionax-web']:
+        for project in ['nakhara-sdk-ts', 'nakhara-web']:
             project_path = self.workspace_root / project
             if project_path.exists() and (project_path / 'package.json').exists():
                 try:
@@ -360,7 +360,7 @@ class TestnetReadinessChecker:
         lint_configs = []
         
         # Check for linting configs
-        for repo in ['axionax-core', 'axionax-sdk-ts', 'axionax-web']:
+        for repo in ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web']:
             repo_path = self.workspace_root / repo
             if repo_path.exists():
                 if (repo_path / 'clippy.toml').exists():
@@ -424,7 +424,7 @@ class TestnetReadinessChecker:
         
         findings = []
         
-        for repo in ['axionax-core', 'axionax-sdk-ts', 'axionax-web', 'axionax-deploy', 'axionax-devtools']:
+        for repo in ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web', 'nakhara-deploy', 'nakhara-devtools']:
             repo_path = self.workspace_root / repo
             if not repo_path.exists():
                 continue
@@ -473,7 +473,7 @@ class TestnetReadinessChecker:
         # Check if npm audit shows vulnerabilities
         vulnerable = []
         
-        for repo in ['axionax-sdk-ts', 'axionax-web', 'axionax-marketplace']:
+        for repo in ['nakhara-sdk-ts', 'nakhara-web', 'nakhara-marketplace']:
             repo_path = self.workspace_root / repo
             if repo_path.exists() and (repo_path / 'package.json').exists():
                 try:
@@ -517,7 +517,7 @@ class TestnetReadinessChecker:
         
         found_audits = []
         for filename in audit_files:
-            for repo in ['axionax-core', 'axionax-docs']:
+            for repo in ['nakhara-core', 'nakhara-docs']:
                 audit_path = self.workspace_root / repo / filename
                 if audit_path.exists():
                     found_audits.append(str(audit_path.relative_to(self.workspace_root)))
@@ -532,7 +532,7 @@ class TestnetReadinessChecker:
         configs = []
         
         # Check for .gitignore
-        for repo in ['axionax-core', 'axionax-sdk-ts', 'axionax-web', 'axionax-deploy']:
+        for repo in ['nakhara-core', 'nakhara-sdk-ts', 'nakhara-web', 'nakhara-deploy']:
             gitignore = self.workspace_root / repo / '.gitignore'
             if gitignore.exists():
                 configs.append(f'{repo}/.gitignore')
@@ -561,7 +561,7 @@ class TestnetReadinessChecker:
         bench_files = []
         
         # Check Rust benchmarks
-        core_benches = self.workspace_root / 'axionax-core' / 'benches'
+        core_benches = self.workspace_root / 'nakhara-core' / 'benches'
         if core_benches.exists():
             bench_files.extend(list(core_benches.glob('*.rs')))
         
@@ -583,14 +583,14 @@ class TestnetReadinessChecker:
         optimizations = []
         
         # Check Rust release profile
-        core_cargo = self.workspace_root / 'axionax-core' / 'Cargo.toml'
+        core_cargo = self.workspace_root / 'nakhara-core' / 'Cargo.toml'
         if core_cargo.exists():
             content = core_cargo.read_text(encoding='utf-8')
             if '[profile.release]' in content and 'opt-level = 3' in content:
                 optimizations.append('rust_release_profile')
         
         # Check TypeScript optimization
-        for repo in ['axionax-sdk-ts', 'axionax-web']:
+        for repo in ['nakhara-sdk-ts', 'nakhara-web']:
             tsconfig = self.workspace_root / repo / 'tsconfig.json'
             if tsconfig.exists():
                 content = tsconfig.read_text(encoding='utf-8')
@@ -642,7 +642,7 @@ class TestnetReadinessChecker:
         found_docs = []
         
         for doc in required_docs:
-            for repo in ['axionax-core', 'axionax-docs']:
+            for repo in ['nakhara-core', 'nakhara-docs']:
                 doc_path = self.workspace_root / repo / doc
                 if doc_path.exists():
                     found_docs.append(doc)
@@ -660,7 +660,7 @@ class TestnetReadinessChecker:
         """Check API documentation"""
         api_docs = []
         
-        for repo in ['axionax-core', 'axionax-docs', 'axionax-sdk-ts']:
+        for repo in ['nakhara-core', 'nakhara-docs', 'nakhara-sdk-ts']:
             api_path = self.workspace_root / repo / 'docs' / 'API_REFERENCE.md'
             if not api_path.exists():
                 api_path = self.workspace_root / repo / 'API_REFERENCE.md'
@@ -676,7 +676,7 @@ class TestnetReadinessChecker:
         """Check deployment documentation"""
         deployment_docs = []
         
-        for repo in ['axionax-deploy', 'axionax-docs']:
+        for repo in ['nakhara-deploy', 'nakhara-docs']:
             for doc_name in ['DEPLOYMENT_GUIDE.md', 'DEPLOYMENT.md', 'VPS_VALIDATOR_SETUP.md']:
                 doc_path = self.workspace_root / repo / doc_name
                 if doc_path.exists():
@@ -690,7 +690,7 @@ class TestnetReadinessChecker:
         """Check for code examples"""
         example_dirs = []
         
-        for repo in ['axionax-core', 'axionax-sdk-ts']:
+        for repo in ['nakhara-core', 'nakhara-sdk-ts']:
             examples_path = self.workspace_root / repo / 'examples'
             if examples_path.exists() and examples_path.is_dir():
                 example_files = list(examples_path.glob('*.*'))
@@ -724,7 +724,7 @@ class TestnetReadinessChecker:
         """Check Docker configuration"""
         docker_files = []
         
-        for repo in ['axionax-core', 'axionax-web', 'axionax-deploy']:
+        for repo in ['nakhara-core', 'nakhara-web', 'nakhara-deploy']:
             dockerfile = self.workspace_root / repo / 'Dockerfile'
             if dockerfile.exists():
                 docker_files.append(f'{repo}/Dockerfile')
@@ -741,7 +741,7 @@ class TestnetReadinessChecker:
         """Check environment configurations"""
         env_configs = []
         
-        for repo in ['axionax-core', 'axionax-web', 'axionax-deploy']:
+        for repo in ['nakhara-core', 'nakhara-web', 'nakhara-deploy']:
             repo_path = self.workspace_root / repo
             if repo_path.exists():
                 for env_file in ['.env.example', '.env.testnet', 'config.testnet.toml']:
@@ -757,7 +757,7 @@ class TestnetReadinessChecker:
         """Check deployment automation scripts"""
         scripts = []
         
-        deploy_path = self.workspace_root / 'axionax-deploy'
+        deploy_path = self.workspace_root / 'nakhara-deploy'
         if deploy_path.exists():
             for script_name in ['setup_rpc_node.sh', 'setup_validator.sh', 'setup_faucet.sh', 'setup_explorer.sh']:
                 script_path = deploy_path / script_name
@@ -788,7 +788,7 @@ class TestnetReadinessChecker:
         # Look for logging configs
         log_configs = []
         
-        for repo in ['axionax-core', 'axionax-web']:
+        for repo in ['nakhara-core', 'nakhara-web']:
             repo_path = self.workspace_root / repo
             if repo_path.exists():
                 # Check Rust logging
@@ -814,7 +814,7 @@ class TestnetReadinessChecker:
         # Look for metrics endpoints or Prometheus configs
         metrics_files = []
         
-        for repo in ['axionax-core', 'axionax-deploy']:
+        for repo in ['nakhara-core', 'nakhara-deploy']:
             repo_path = self.workspace_root / repo
             if repo_path.exists():
                 for metrics_file in ['prometheus.yml', 'metrics.toml', 'grafana-dashboard.json']:
@@ -835,7 +835,7 @@ class TestnetReadinessChecker:
         health_checks = []
         
         # Check in core
-        core_src = self.workspace_root / 'axionax-core' / 'src'
+        core_src = self.workspace_root / 'nakhara-core' / 'src'
         if core_src.exists():
             for rs_file in core_src.rglob('*.rs'):
                 content = rs_file.read_text(encoding='utf-8', errors='ignore')
@@ -1003,7 +1003,7 @@ def main():
         workspace_root = workspace_root.parent.parent.parent
     elif workspace_root.name == 'scripts':
         workspace_root = workspace_root.parent.parent
-    elif workspace_root.name == 'axionax-devtools':
+    elif workspace_root.name == 'nakhara-devtools':
         workspace_root = workspace_root.parent
     
     # Run readiness checks

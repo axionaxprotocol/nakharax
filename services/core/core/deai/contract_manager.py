@@ -6,7 +6,7 @@ Supports two modes:
   - MOCK:  MARKETPLACE_ADDRESS is 0x0 (default) → logs actions without sending transactions
 
 Set the contract address in your config TOML under [network] contract_address,
-or via the AXIONAX_MARKETPLACE_ADDRESS environment variable.
+or via the NAKHARA_MARKETPLACE_ADDRESS environment variable.
 """
 
 import hashlib
@@ -21,22 +21,22 @@ from eth_account.signers.local import LocalAccount
 from web3 import Web3
 from web3.exceptions import ContractLogicError
 
-logger = logging.getLogger("axionax.contract")
+logger = logging.getLogger("nakhara.contract")
 
 ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 def _abi_path() -> Path:
-    """ABI path: AXIONAX_ABI_PATH env or default job_marketplace.json beside this module."""
-    env_path = os.environ.get("AXIONAX_ABI_PATH", "").strip()
+    """ABI path: NAKHARA_ABI_PATH env or default job_marketplace.json beside this module."""
+    env_path = os.environ.get("NAKHARA_ABI_PATH", "").strip()
     if env_path and Path(env_path).exists():
         return Path(env_path)
     return Path(__file__).parent / "job_marketplace.json"
 
 MARKETPLACE_ADDRESS = os.environ.get(
-    "AXIONAX_MARKETPLACE_ADDRESS", ZERO_ADDRESS
+    "NAKHARA_MARKETPLACE_ADDRESS", ZERO_ADDRESS
 ).strip()
 
-CHAIN_ID = int(os.environ.get("AXIONAX_CHAIN_ID", "86137"))
+CHAIN_ID = int(os.environ.get("NAKHARA_CHAIN_ID", "86137"))
 
 
 def _load_abi() -> list:
@@ -70,12 +70,12 @@ class ContractManager:
     ) -> None:
         """
         Args:
-            rpc_url: HTTP/HTTPS URL of the Axionax JSON-RPC endpoint.
+            rpc_url: HTTP/HTTPS URL of the Nakhara JSON-RPC endpoint.
             account: An ``eth_account.Account`` instance (use
                      ``Account.from_key(private_key)`` or
                      ``WalletManager.account`` directly).
             contract_address: Deployed JobMarketplace address.  Defaults to
-                              the ``AXIONAX_MARKETPLACE_ADDRESS`` env var, or
+                              the ``NAKHARA_MARKETPLACE_ADDRESS`` env var, or
                               ZERO_ADDRESS (mock mode) if unset.
         """
         self.w3 = Web3(Web3.HTTPProvider(rpc_url))

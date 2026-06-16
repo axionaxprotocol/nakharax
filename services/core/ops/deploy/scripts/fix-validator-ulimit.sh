@@ -1,12 +1,12 @@
 #!/bin/bash
 # Fix "Too many open files" on validator/RPC container by recreating with higher ulimit.
 # Usage: bash fix-validator-ulimit.sh [CONTAINER_NAME]
-# Default container: axionax-validator-eu
+# Default container: nakhara-validator-eu
 # Run on the VPS where the container runs.
 
 set -e
 
-CONTAINER="${1:-axionax-validator-eu}"
+CONTAINER="${1:-nakhara-validator-eu}"
 ULIMIT="65536"
 
 if ! docker ps -a --format '{{.Names}}' | grep -qx "$CONTAINER"; then

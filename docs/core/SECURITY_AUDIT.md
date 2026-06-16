@@ -1,4 +1,4 @@
-# Security Audit — Axionax Core
+# Security Audit — Nakhara Core
 
 Security review of genesis, keys, faucet, RPC, and operational practices.
 

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 ###############################################################################
-# axionax DeAI Worker Node - GCP Quick Setup Script
+# nakhara DeAI Worker Node - GCP Quick Setup Script
 ###############################################################################
 # 
 # For setting up a Worker Node on GCP Compute Engine
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/axionaxprotocol/axionax-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+#   wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 #   chmod +x setup-gcp-worker.sh
 #   sudo ./setup-gcp-worker.sh
 #
@@ -43,7 +43,7 @@ log_error() {
 # Header
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║         axionax DeAI Worker Node Setup (GCP)             ║"
+echo "║         nakhara DeAI Worker Node Setup (GCP)             ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 
@@ -123,61 +123,61 @@ log_success "Python installed"
 
 # Step 7: Create Python virtual environment
 log_info "Step 7: Creating Python virtual environment..."
-sudo -u $ACTUAL_USER python3 -m venv "$USER_HOME/axionax-env"
-log_success "Virtual environment created at $USER_HOME/axionax-env"
+sudo -u $ACTUAL_USER python3 -m venv "$USER_HOME/nakhara-env"
+log_success "Virtual environment created at $USER_HOME/nakhara-env"
 
 # Step 8: Install PyTorch with CUDA
 log_info "Step 8: Installing PyTorch with CUDA support..."
-sudo -u $ACTUAL_USER sh -c "source $USER_HOME/axionax-env/bin/activate && \
+sudo -u $ACTUAL_USER sh -c "source $USER_HOME/nakhara-env/bin/activate && \
     pip install --upgrade pip && \
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
 log_success "PyTorch with CUDA installed"
 
 # Step 9: Install ML libraries
 log_info "Step 9: Installing ML libraries..."
-sudo -u $ACTUAL_USER sh -c "source $USER_HOME/axionax-env/bin/activate && \
+sudo -u $ACTUAL_USER sh -c "source $USER_HOME/nakhara-env/bin/activate && \
     pip install numpy pandas scikit-learn scipy transformers datasets"
 log_success "ML libraries installed"
 
-# Step 10: Clone axionax repository
-log_info "Step 10: Cloning axionax repository..."
-if [ ! -d "$USER_HOME/axionax-monolith" ]; then
-    sudo -u $ACTUAL_USER git clone https://github.com/axionaxprotocol/axionax-monolith.git "$USER_HOME/axionax-monolith"
+# Step 10: Clone nakhara repository
+log_info "Step 10: Cloning nakhara repository..."
+if [ ! -d "$USER_HOME/nakhara-monolith" ]; then
+    sudo -u $ACTUAL_USER git clone https://github.com/nakhara-io/nakhara-monolith.git "$USER_HOME/nakhara-monolith"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."
-    cd "$USER_HOME/axionax-monolith"
+    cd "$USER_HOME/nakhara-monolith"
     sudo -u $ACTUAL_USER git pull
 fi
 
 # Step 11: Build Rust core
-log_info "Step 11: Building axionax core..."
-cd "$USER_HOME/axionax-monolith/services/core/core"
+log_info "Step 11: Building nakhara core..."
+cd "$USER_HOME/nakhara-monolith/services/core/core"
 sudo -u $ACTUAL_USER sh -c 'source $HOME/.cargo/env && cargo build --release'
 log_success "Core built successfully"
 
 # Step 12: Install DeAI dependencies
 log_info "Step 12: Installing DeAI dependencies..."
-cd "$USER_HOME/axionax-monolith/services/core/core/deai"
-sudo -u $ACTUAL_USER sh -c "source $USER_HOME/axionax-env/bin/activate && \
+cd "$USER_HOME/nakhara-monolith/services/core/core/deai"
+sudo -u $ACTUAL_USER sh -c "source $USER_HOME/nakhara-env/bin/activate && \
     pip install -r requirements.txt"
 log_success "DeAI dependencies installed"
 
 # Step 13: Create worker directories
 log_info "Step 13: Creating worker directories..."
-sudo -u $ACTUAL_USER mkdir -p "$USER_HOME/axionax-worker"/{config,keys,data,models,logs}
+sudo -u $ACTUAL_USER mkdir -p "$USER_HOME/nakhara-worker"/{config,keys,data,models,logs}
 log_success "Worker directories created"
 
 # Step 14: Create activation helper script
 log_info "Step 14: Creating activation helper..."
 cat > "$USER_HOME/activate-worker.sh" << 'EOF'
 #!/bin/bash
-# axionax Worker Environment Activation
+# nakhara Worker Environment Activation
 export PATH=/usr/local/cuda-12.2/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64:$LD_LIBRARY_PATH
 source $HOME/.cargo/env
-source $HOME/axionax-env/bin/activate
-echo "✅ axionax Worker environment activated"
+source $HOME/nakhara-env/bin/activate
+echo "✅ nakhara Worker environment activated"
 echo "🔧 CUDA: $(nvcc --version | grep release | awk '{print $5}')"
 echo "🦀 Rust: $(rustc --version)"
 echo "🐍 Python: $(python --version)"
@@ -207,7 +207,7 @@ echo "  4. Test PyTorch CUDA:"
 echo "     ${YELLOW}python -c 'import torch; print(f\"CUDA: {torch.cuda.is_available()}\")'${NC}"
 echo ""
 echo "  5. Run training example:"
-echo "     ${YELLOW}cd ~/axionax-monolith/services/core/core/examples${NC}"
+echo "     ${YELLOW}cd ~/nakhara-monolith/services/core/core/examples${NC}"
 echo "     ${YELLOW}python deai_simple_training.py${NC}"
 echo ""
 log_warning "⚠️  IMPORTANT: System reboot required for GPU drivers!"

@@ -1,6 +1,6 @@
-# Contributing to Axionax Web Universe
+# Contributing to Nakhara Web Universe
 
-Thank you for your interest in contributing to Axionax! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to Nakhara! This document provides guidelines and instructions for contributing to the project.
 
 ## 📋 Table of Contents
 
@@ -42,13 +42,13 @@ By participating in this project, you agree to abide by our Code of Conduct:
 2. Clone your fork locally:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/axionax-monolith.git
-   cd axionax-monolith
+   git clone https://github.com/YOUR_USERNAME/nakhara-monolith.git
+   cd nakhara-monolith
    ```
 
 3. Add upstream remote:
    ```bash
-   git remote add upstream https://github.com/axionaxprotocol/axionax-monolith.git
+   git remote add upstream https://github.com/nakhara-io/nakhara-monolith.git
    ```
 
 ### Install Dependencies
@@ -70,8 +70,8 @@ pnpm build
 pnpm dev
 
 # Start specific app
-pnpm --filter @axionax/web dev
-pnpm --filter @axionax/marketplace dev
+pnpm --filter @nakhara/web dev
+pnpm --filter @nakhara/marketplace dev
 ```
 
 ---
@@ -117,7 +117,7 @@ pnpm type-check
 pnpm test
 
 # Run specific app tests
-pnpm --filter @axionax/web test
+pnpm --filter @nakhara/web test
 ```
 
 ### 4. Commit Your Changes
@@ -297,7 +297,7 @@ apps/
       types/          # TypeScript types
       styles/         # Global styles
 packages/
-  sdk/              # Axionax SDK
+  sdk/              # Nakhara SDK
   ui/               # Shared UI components
   contracts/        # Smart contracts
 ```
@@ -391,10 +391,10 @@ pnpm test:e2e
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: General questions and ideas
 - **Discord**: Real-time chat and support
-  - Join: https://discord.gg/axionax
+  - Join: https://discord.gg/nakhara
   - Channel: #contributors
 - **Twitter**: Updates and announcements
-  - Follow: [@axionax](https://twitter.com/axionax)
+  - Follow: [@nakhara](https://twitter.com/nakhara)
 
 ### Getting Help
 
@@ -434,13 +434,13 @@ Look for issues labeled `good-first-issue` for beginner-friendly tasks.
 
 ## 📄 License
 
-By contributing to Axionax, you agree that your contributions will be licensed under the same license as the project (see [LICENSE](./LICENSE)).
+By contributing to Nakhara, you agree that your contributions will be licensed under the same license as the project (see [LICENSE](./LICENSE)).
 
 ---
 
 ## 🙏 Thank You
 
-Thank you for contributing to Axionax! Your efforts help make the project better for everyone.
+Thank you for contributing to Nakhara! Your efforts help make the project better for everyone.
 
 **Questions?** Feel free to reach out in Discord or open a GitHub Discussion.
 

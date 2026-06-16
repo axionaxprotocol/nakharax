@@ -246,7 +246,7 @@ Until professional audit is completed:
 
 **Project Contact:**  
 Email: [email protected]  
-GitHub: https://github.com/axionaxprotocol  
+GitHub: https://github.com/nakhara-io  
 Discord: [Invite link to be added]
 
 **Audit Coordinator:**  

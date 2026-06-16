@@ -1,4 +1,4 @@
-# Contributing to Axionax Documentation
+# Contributing to Nakhara Documentation
 
 > **Guidelines for writing and maintaining documentation**
 
@@ -11,7 +11,7 @@
 ### Prerequisites
 
 - Familiarity with Markdown syntax
-- Understanding of Axionax domain separation (Web ↔ Core)
+- Understanding of Nakhara domain separation (Web ↔ Core)
 - Git workflow knowledge
 
 ### File Locations
@@ -133,10 +133,10 @@
 
 ```markdown
 <!-- GitHub -->
-[Repository](https://github.com/axionaxprotocol/axionax-monolith)
+[Repository](https://github.com/nakhara-io/nakhara-monolith)
 
 <!-- Website -->
-[Protocol](https://axionax.org)
+[Protocol](https://nakhara.io)
 ```
 
 ### Link Validation
@@ -292,8 +292,8 @@ _Last updated: YYYY-MM-DD_
 
 ## Questions?
 
-- Open an issue: [GitHub Issues](https://github.com/axionaxprotocol/axionax-monolith/issues)
-- Discord: [#documentation](https://discord.gg/axionax)
+- Open an issue: [GitHub Issues](https://github.com/nakhara-io/nakhara-monolith/issues)
+- Discord: [#documentation](https://discord.gg/nakhara)
 
 ---
 

@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 /**
  * @title JobMarketplace
  * @dev Decentralized marketplace for DeAI compute jobs
- * @author Axionax Protocol
+ * @author Nakhara Protocol
  */
 contract JobMarketplace is ReentrancyGuard, Ownable {
     // ==========================================================================

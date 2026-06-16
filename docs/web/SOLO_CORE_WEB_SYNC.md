@@ -1,18 +1,18 @@
 # Solo maintainer: web ↔ core (dual repo)
 
-Lightweight discipline when you are the only person touching **axionax-monolith** and **axionax-monolith**.
+Lightweight discipline when you are the only person touching **nakhara-monolith** and **nakhara-monolith**.
 
 ## Rules of thumb
 
 1. **Core is the source of truth** for anything the chain actually uses: chain ID, genesis-related values, consensus/staking params in `core/.env.example` and `core/DEPLOYMENT_GUIDE.md`.
-2. **This repo mirrors** those values in `packages/blockchain-utils` (and anything that imports it, including `@axionax/sdk`). See [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md) for the file mapping.
+2. **This repo mirrors** those values in `packages/blockchain-utils` (and anything that imports it, including `@nakhara/sdk`). See [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md) for the file mapping.
 3. **Record the pair** whenever you change mirrored values: update [CORE_WEB_COMPAT.md](CORE_WEB_COMPAT.md) (core tag or SHA + this repo ref + date).
 
 ## Checklist (after you change core)
 
 - [ ] Open core: `core/.env.example`, `core/DEPLOYMENT_GUIDE.md`, or the files you actually changed.
 - [ ] Open web: `packages/blockchain-utils/src/constants.ts` (and any other files listed in PARAMETERS_SYNC).
-- [ ] Align numbers/names; run `pnpm --filter @axionax/blockchain-utils type-check` (or `pnpm --filter @axionax/sdk test`) from the monorepo root.
+- [ ] Align numbers/names; run `pnpm --filter @nakhara/blockchain-utils type-check` (or `pnpm --filter @nakhara/sdk test`) from the monorepo root.
 - [ ] Update [CORE_WEB_COMPAT.md](CORE_WEB_COMPAT.md).
 - [ ] Commit this repo with a message that mentions core, for example:
   - `chore(blockchain-utils): sync chain params with core (tag v0.x.y)`
@@ -28,6 +28,6 @@ If you start missing sync steps or forget which core revision matches production
 
 ## Links
 
-- Core repo: https://github.com/axionaxprotocol/axionax-monolith  
+- Core repo: https://github.com/nakhara-io/nakhara-monolith  
 - Parameter map: [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md)  
 - Dev setup: [DEVELOPMENT.md](DEVELOPMENT.md)

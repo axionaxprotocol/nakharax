@@ -1,4 +1,4 @@
-# Axionax Protocol Glossary
+# Nakhara Protocol Glossary
 
 > **Technical Terms & Definitions** — Reference for developers and users
 
@@ -15,7 +15,7 @@ Top-K weighted VRF-based router for assigning compute jobs to workers. Uses K=64
 
 ### AXX
 **Type**: Token  
-Native utility token of Axionax protocol. Mainnet: 1 trillion supply. Testnet (AXXt): 1 billion supply.
+Native utility token of Nakhara protocol. Mainnet: 1 trillion supply. Testnet (AXXt): 1 billion supply.
 
 ### AXXt
 **Type**: Token  
@@ -131,7 +131,7 @@ Decentralized compute marketplace where users submit jobs and workers bid/accept
 
 ### Monolith
 **Type**: Architecture  
-Unified repository containing both Web and Core domains in `axionax-monolith/`.
+Unified repository containing both Web and Core domains in `nakhara-monolith/`.
 
 ### Monolith Scout
 **Type**: Node Configuration  
@@ -143,7 +143,7 @@ Raspberry Pi 5 + Hailo-8 NPU edge device for AI tasks.
 
 ### Node
 **Type**: Network Participant  
-Software running Axionax protocol. Types: Validator, RPC, Full, Light, Worker.
+Software running Nakhara protocol. Types: Validator, RPC, Full, Light, Worker.
 
 ---
 
@@ -247,7 +247,7 @@ Ability to upgrade without stopping the network.
 
 | Acronym | Full Name | Category |
 |---------|-----------|----------|
-| AXX | Axionax Token | Token |
+| AXX | Nakhara Token | Token |
 | ASR | Auto Selection Router | Component |
 | DA | Data Availability | Layer |
 | DAO | Decentralized Autonomous Organization | Governance |

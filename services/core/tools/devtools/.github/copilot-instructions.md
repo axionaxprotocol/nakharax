@@ -1,4 +1,4 @@
-# Axionax DevTools - Copilot Instructions
+# Nakhara DevTools - Copilot Instructions
 # Target Model: GPT-5.1 (Instant)
 
 **Context:** CLI Tools, Benchmarking Scripts, Migration Utilities.

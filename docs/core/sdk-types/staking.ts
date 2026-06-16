@@ -1,8 +1,8 @@
 /**
- * Axionax SDK - Staking Types
+ * Nakhara SDK - Staking Types
  * 
  * Copy this file to: packages/sdk/src/types/staking.ts
- * For use in @axionax/sdk
+ * For use in @nakhara/sdk
  */
 
 // =============================================================================

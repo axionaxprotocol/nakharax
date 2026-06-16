@@ -1,13 +1,13 @@
-# สรุปผลทดสอบ Performance เครือข่าย (Axionax)
+# สรุปผลทดสอบ Performance เครือข่าย (Nakhara)
 
 **สร้างอัตโนมัติ:** 2026-03-21 15:20:53 UTC
-**RPC ที่ทดสอบ:** `https://rpc.axionax.org`
+**RPC ที่ทดสอบ:** `https://rpc.nakhara.io`
 
 ---
 
 ## 1. Optimize suite
 
-คำสั่ง: `python scripts/run_optimize_suite.py -q --mode full --rpc https://rpc.axionax.org --light-duration 45.0 --light-rps 2.5 --json-out reports/optimize_suite_last.json`
+คำสั่ง: `python scripts/run_optimize_suite.py -q --mode full --rpc https://rpc.nakhara.io --light-duration 45.0 --light-rps 2.5 --json-out reports/optimize_suite_last.json`
 
 - **สถานะรวม:** PASS
 
@@ -42,7 +42,7 @@
 
 ## 2. Block timing (`tps_finality_test.py` — block-time)
 
-คำสั่ง: `python scripts/load_test/tps_finality_test.py --mode block-time --rpc https://rpc.axionax.org --duration 45 --json-out reports/block_time_last.json`
+คำสั่ง: `python scripts/load_test/tps_finality_test.py --mode block-time --rpc https://rpc.nakhara.io --duration 45 --json-out reports/block_time_last.json`
 
 | Metric | ค่า |
 |--------|-----|

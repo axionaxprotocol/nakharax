@@ -3,11 +3,11 @@ import json
 import time
 from typing import Any, Dict, List, Optional
 
-class AxionaxRpcClient:
+class NakharaRpcClient:
     """
-    Simple JSON-RPC client for Axionax Chain
+    Simple JSON-RPC client for Nakhara Chain
     """
-    def __init__(self, rpc_url: str = "https://rpc.axionax.org"):
+    def __init__(self, rpc_url: str = "https://rpc.nakhara.io"):
         self.rpc_url = rpc_url
         self.headers = {'content-type': 'application/json'}
         self.id_counter = 0

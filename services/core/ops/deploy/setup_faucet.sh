@@ -1,16 +1,16 @@
 #!/bin/bash
 #
-# axionax Faucet Setup Script
+# nakhara Faucet Setup Script
 # Deploys testnet faucet application
 #
 # Usage: bash setup_faucet.sh [OPTIONS]
 # Options:
-#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.axionax.org)
+#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.nakhara.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 #   --rpc-url URL         RPC endpoint URL (default: http://localhost:8545)
 #   --chain-id ID         Chain ID (default: 86137)
 #   --private-key KEY     Faucet wallet private key
-#   --data-dir PATH       Data directory (default: /var/lib/axionax-faucet)
+#   --data-dir PATH       Data directory (default: /var/lib/nakhara-faucet)
 
 set -e
 
@@ -27,7 +27,7 @@ SSL_EMAIL=""
 RPC_URL="http://localhost:8545"
 CHAIN_ID=86137
 PRIVATE_KEY=""
-DATA_DIR="/var/lib/axionax-faucet"
+DATA_DIR="/var/lib/nakhara-faucet"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -79,7 +79,7 @@ if [ -z "$PRIVATE_KEY" ]; then
 fi
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   axionax Faucet Setup${NC}"
+echo -e "${BLUE}   nakhara Faucet Setup${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo -e "${GREEN}Configuration:${NC}"
@@ -138,10 +138,10 @@ mkdir -p "$DATA_DIR/logs"
 chown -R faucet:faucet "$DATA_DIR"
 
 # Clone and build faucet
-FAUCET_HOME="/home/faucet/axionax-core"
+FAUCET_HOME="/home/faucet/nakhara-core"
 if [ ! -d "$FAUCET_HOME" ]; then
-  echo -e "${BLUE}[6/8]${NC} Cloning axionax repository..."
-  sudo -u faucet git clone https://github.com/axionaxprotocol/axionax-core.git "$FAUCET_HOME"
+  echo -e "${BLUE}[6/8]${NC} Cloning nakhara repository..."
+  sudo -u faucet git clone https://github.com/nakhara-io/nakhara-core.git "$FAUCET_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating repository..."
   cd "$FAUCET_HOME"
@@ -155,8 +155,8 @@ echo -e "${BLUE}[7/8]${NC} Building faucet (this may take 5-10 minutes)..."
 sudo -u faucet cargo build --release
 
 # Copy binary
-cp target/release/axionax-faucet /usr/local/bin/
-chmod +x /usr/local/bin/axionax-faucet
+cp target/release/nakhara-faucet /usr/local/bin/
+chmod +x /usr/local/bin/nakhara-faucet
 
 # Copy frontend files
 mkdir -p /var/www/faucet
@@ -175,9 +175,9 @@ chmod 600 "$DATA_DIR/.env"
 chown faucet:faucet "$DATA_DIR/.env"
 
 # Create systemd service
-cat > /etc/systemd/system/axionax-faucet.service <<EOF
+cat > /etc/systemd/system/nakhara-faucet.service <<EOF
 [Unit]
-Description=axionax Testnet Faucet
+Description=nakhara Testnet Faucet
 After=network.target
 
 [Service]
@@ -186,12 +186,12 @@ User=faucet
 Group=faucet
 WorkingDirectory=$DATA_DIR
 EnvironmentFile=$DATA_DIR/.env
-ExecStart=/usr/local/bin/axionax-faucet
+ExecStart=/usr/local/bin/nakhara-faucet
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=axionax-faucet
+SyslogIdentifier=nakhara-faucet
 
 # Security
 NoNewPrivileges=true
@@ -208,7 +208,7 @@ EOF
 
 # Configure nginx
 echo -e "${BLUE}[8/8]${NC} Configuring nginx..."
-cat > /etc/nginx/sites-available/axionax-faucet <<EOF
+cat > /etc/nginx/sites-available/nakhara-faucet <<EOF
 # Faucet API backend
 upstream faucet_api {
     server 127.0.0.1:3000;
@@ -272,7 +272,7 @@ server {
 EOF
 
 # Enable site
-ln -sf /etc/nginx/sites-available/axionax-faucet /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/nakhara-faucet /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
 # Test nginx
@@ -290,8 +290,8 @@ ufw allow 443/tcp
 # Start services
 echo -e "${GREEN}Starting services...${NC}"
 systemctl daemon-reload
-systemctl enable axionax-faucet
-systemctl start axionax-faucet
+systemctl enable nakhara-faucet
+systemctl start nakhara-faucet
 systemctl restart nginx
 
 # Wait for service
@@ -302,7 +302,7 @@ if curl -sf http://localhost:3000/health > /dev/null 2>&1; then
   echo -e "${GREEN}✓ Faucet service is running${NC}"
 else
   echo -e "${RED}✗ Warning: Faucet service may not be running properly${NC}"
-  echo -e "${YELLOW}Check logs: journalctl -u axionax-faucet -f${NC}"
+  echo -e "${YELLOW}Check logs: journalctl -u nakhara-faucet -f${NC}"
 fi
 
 # Setup SSL
@@ -311,7 +311,7 @@ certbot --nginx -d "$DOMAIN" --email "$SSL_EMAIL" --agree-tos --non-interactive 
 
 # Save configuration
 cat > "$DATA_DIR/config.txt" <<EOF
-axionax Faucet Configuration
+nakhara Faucet Configuration
 ============================
 Domain: https://$DOMAIN
 Chain ID: $CHAIN_ID
@@ -338,16 +338,16 @@ echo ""
 echo -e "${YELLOW}Management Commands:${NC}"
 echo ""
 echo "Check status:"
-echo "  ${BLUE}sudo systemctl status axionax-faucet${NC}"
+echo "  ${BLUE}sudo systemctl status nakhara-faucet${NC}"
 echo ""
 echo "View logs:"
-echo "  ${BLUE}sudo journalctl -u axionax-faucet -f${NC}"
+echo "  ${BLUE}sudo journalctl -u nakhara-faucet -f${NC}"
 echo ""
 echo "Restart faucet:"
-echo "  ${BLUE}sudo systemctl restart axionax-faucet${NC}"
+echo "  ${BLUE}sudo systemctl restart nakhara-faucet${NC}"
 echo ""
 echo "Stop faucet:"
-echo "  ${BLUE}sudo systemctl stop axionax-faucet${NC}"
+echo "  ${BLUE}sudo systemctl stop nakhara-faucet${NC}"
 echo ""
 echo -e "${YELLOW}Testing:${NC}"
 echo ""

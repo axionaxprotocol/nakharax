@@ -56,9 +56,9 @@ def _make_cm(contract_address: str = "", abi_override: list | None = None) -> An
         json.dump(abi_override or _MINIMAL_ABI, f)
         abi_path = f.name
 
-    env = {"AXIONAX_ABI_PATH": abi_path}
+    env = {"NAKHARA_ABI_PATH": abi_path}
     if contract_address:
-        env["AXIONAX_MARKETPLACE_ADDRESS"] = contract_address
+        env["NAKHARA_MARKETPLACE_ADDRESS"] = contract_address
 
     with patch.dict(os.environ, env):
         from contract_manager import ContractManager  # local import after env patch
@@ -94,7 +94,7 @@ class TestContractManagerInit:
         assert cm.account is _DUMMY_ACCOUNT
 
     def test_missing_abi_file_defaults_to_empty(self) -> None:
-        with patch.dict(os.environ, {"AXIONAX_ABI_PATH": "/nonexistent/path/abi.json"}):
+        with patch.dict(os.environ, {"NAKHARA_ABI_PATH": "/nonexistent/path/abi.json"}):
             from contract_manager import ContractManager
             cm = ContractManager(
                 rpc_url="http://127.0.0.1:8545",
@@ -189,7 +189,7 @@ class TestHashHelpers:
 
     def test_to_bytes32_deterministic(self) -> None:
         from contract_manager import _to_bytes32
-        assert _to_bytes32("axionax") == _to_bytes32("axionax")
+        assert _to_bytes32("nakhara") == _to_bytes32("nakhara")
 
     def test_to_bytes32_unique_inputs(self) -> None:
         from contract_manager import _to_bytes32
@@ -213,7 +213,7 @@ class TestABILoading:
     def test_default_abi_path_is_job_marketplace_json(self) -> None:
         from contract_manager import _abi_path
         with patch.dict(os.environ, {}, clear=False):
-            os.environ.pop("AXIONAX_ABI_PATH", None)
+            os.environ.pop("NAKHARA_ABI_PATH", None)
             path = _abi_path()
         assert path.name == "job_marketplace.json"
 
@@ -222,7 +222,7 @@ class TestABILoading:
             f.write(b"[]")
             tmp = f.name
         try:
-            with patch.dict(os.environ, {"AXIONAX_ABI_PATH": tmp}):
+            with patch.dict(os.environ, {"NAKHARA_ABI_PATH": tmp}):
                 from contract_manager import _abi_path
                 assert str(_abi_path()) == tmp
         finally:

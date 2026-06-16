@@ -1,4 +1,4 @@
-﻿global:
+global:
   scrape_interval: 15s
   evaluation_interval: 15s
   scrape_timeout: 10s
@@ -14,7 +14,7 @@ scrape_configs:
           - validator:26660
         labels:
           service: validator
-          network: axionax-public-testnet
+          network: nakhara-public-testnet
 
   - job_name: rpc
     metrics_path: /metrics
@@ -23,7 +23,7 @@ scrape_configs:
           - rpc:26660
         labels:
           service: rpc
-          network: axionax-public-testnet
+          network: nakhara-public-testnet
 
   - job_name: bootnode
     metrics_path: /metrics
@@ -32,7 +32,7 @@ scrape_configs:
           - bootnode:26660
         labels:
           service: bootnode
-          network: axionax-public-testnet
+          network: nakhara-public-testnet
 
   - job_name: explorer
     metrics_path: /metrics
@@ -41,7 +41,7 @@ scrape_configs:
           - explorer:9100
         labels:
           service: explorer
-          network: axionax-public-testnet
+          network: nakhara-public-testnet
 
   - job_name: faucet
     metrics_path: /metrics
@@ -50,7 +50,7 @@ scrape_configs:
           - faucet:9100
         labels:
           service: faucet
-          network: axionax-public-testnet
+          network: nakhara-public-testnet
 
   - job_name: node-exporter
     static_configs:
@@ -58,4 +58,4 @@ scrape_configs:
           - node-exporter:9100
         labels:
           service: node-exporter
-          network: axionax-public-testnet
+          network: nakhara-public-testnet

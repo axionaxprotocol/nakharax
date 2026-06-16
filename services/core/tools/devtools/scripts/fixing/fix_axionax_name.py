@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Fix naming: axionax -> axionax (without "Protocol" suffix)
+Fix naming: nakhara -> nakhara (without "Protocol" suffix)
 """
 import os
 import re
 from pathlib import Path
 
-WORKSPACE_ROOT = Path(r"D:\Desktop\axionaxius01")
+WORKSPACE_ROOT = Path(r"D:\Desktop\nakharaius01")
 EXTENSIONS = [".md", ".ts", ".tsx", ".html", ".json", ".toml", ".rs", ".go", ".py", ".sh", ".yml", ".yaml"]
 EXCLUDE_DIRS = {"node_modules", ".git", "dist", "build", "target", "out", ".next", "__pycache__"}
 
@@ -18,12 +18,12 @@ def should_process(file_path):
     )
 
 def fix_names(content):
-    """Replace axionax -> axionax (case-sensitive, avoid double replacement)"""
+    """Replace nakhara -> nakhara (case-sensitive, avoid double replacement)"""
     replacements = [
         # Specific patterns first to avoid conflicts
-        (r"axionax protocol", "axionax protocol"),  # Already done, but keep for safety
-        (r"axionax", "axionax"),  # Main replacement
-        (r"axionax", "axionax"),  # Normalize capitalization
+        (r"nakhara protocol", "nakhara protocol"),  # Already done, but keep for safety
+        (r"nakhara", "nakhara"),  # Main replacement
+        (r"nakhara", "nakhara"),  # Normalize capitalization
     ]
     
     modified = False
@@ -38,7 +38,7 @@ def fix_names(content):
     return content, modified
 
 def main():
-    print("🔍 Scanning for axionax and axionax...")
+    print("🔍 Scanning for nakhara and nakhara...")
     
     total_files = 0
     modified_files = 0
@@ -56,7 +56,7 @@ def main():
                 content = f.read()
             
             # Count occurrences before replacement
-            before_count = content.count("axionax") + content.count("axionax")
+            before_count = content.count("nakhara") + content.count("nakhara")
             
             # Fix names
             new_content, modified = fix_names(content)
@@ -66,7 +66,7 @@ def main():
                 with open(file_path, "w", encoding="utf-8", newline="") as f:
                     f.write(new_content)
                 
-                after_count = new_content.count("axionax") + new_content.count("axionax")
+                after_count = new_content.count("nakhara") + new_content.count("nakhara")
                 replacements = before_count - after_count
                 total_replacements += replacements
                 

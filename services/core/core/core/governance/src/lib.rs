@@ -1,4 +1,4 @@
-//! On-chain Governance Module for Axionax Protocol
+//! On-chain Governance Module for Nakhara Protocol
 //!
 //! Provides decentralized governance without external voting services:
 //! - Proposal creation and management

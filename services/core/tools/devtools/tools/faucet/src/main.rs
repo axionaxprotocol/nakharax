@@ -124,7 +124,7 @@ impl IntoResponse for FaucetError {
 async fn health() -> impl IntoResponse {
     Json(serde_json::json!({
         "status": "ok",
-        "service": "axionax-faucet",
+        "service": "nakhara-faucet",
         "version": "1.0.0"
     }))
 }
@@ -135,7 +135,7 @@ async fn info(State(state): State<FaucetState>) -> impl IntoResponse {
         "chain_id": state.chain_id,
         "amount": format!("{} AXX", FAUCET_AMOUNT / 1_000_000_000_000_000_000),
         "cooldown_hours": COOLDOWN_HOURS,
-        "network": "axionax Testnet"
+        "network": "nakhara Testnet"
     }))
 }
 

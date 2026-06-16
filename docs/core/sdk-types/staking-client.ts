@@ -1,8 +1,8 @@
 /**
- * Axionax SDK - Staking Client
+ * Nakhara SDK - Staking Client
  * 
  * Copy this file to: packages/sdk/src/clients/staking.ts
- * For use in @axionax/sdk
+ * For use in @nakhara/sdk
  */
 
 import {
@@ -192,7 +192,7 @@ export class StakingClient {
 /**
  * Example hook for React
  *
- * import { useStaking } from '@axionax/sdk';
+ * import { useStaking } from '@nakhara/sdk';
  *
  * function StakingPage() {
  *   const { validators, stats, loading, stake, delegate } = useStaking();

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Fix protocol naming: axionax protocol -> axionax protocol
+Fix protocol naming: nakhara protocol -> nakhara protocol
 """
 import os
 import re
 from pathlib import Path
 
-WORKSPACE_ROOT = Path(r"D:\Desktop\axionaxius01")
+WORKSPACE_ROOT = Path(r"D:\Desktop\nakharaius01")
 EXTENSIONS = [".md", ".ts", ".tsx", ".html", ".json", ".toml", ".rs", ".go", ".py", ".sh", ".yml", ".yaml"]
 EXCLUDE_DIRS = {"node_modules", ".git", "dist", "build", "target", "out", ".next", "__pycache__"}
 
@@ -20,9 +20,9 @@ def should_process(file_path):
 def fix_protocol_name(content):
     """Replace protocol names"""
     replacements = [
-        (r"axionax protocol", "axionax protocol"),
-        (r"axionax protocol", "axionax protocol"),
-        (r"axionax protocol", "axionax protocol"),
+        (r"nakhara protocol", "nakhara protocol"),
+        (r"nakhara protocol", "nakhara protocol"),
+        (r"nakhara protocol", "nakhara protocol"),
     ]
     
     modified = False

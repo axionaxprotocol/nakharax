@@ -3,17 +3,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { ArrowDownLeft, ArrowUpRight, Copy, Check, RefreshCw } from "lucide-react";
 import { createPublicClient, createWalletClient, http, formatEther, parseEther } from "viem";
-import { axionaxLocal, burnerAccount } from "@/lib/web3/config";
+import { nakharaLocal, burnerAccount } from "@/lib/web3/config";
 
 // Setup clients outside component to avoid re-creation
 const publicClient = createPublicClient({
-  chain: axionaxLocal,
+  chain: nakharaLocal,
   transport: http(),
 });
 
 const walletClient = createWalletClient({
   account: burnerAccount,
-  chain: axionaxLocal,
+  chain: nakharaLocal,
   transport: http(),
 });
 

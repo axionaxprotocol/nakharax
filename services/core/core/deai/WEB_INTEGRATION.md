@@ -1,10 +1,10 @@
 # 🌐 Web Integration Guide
 
-This document provides the necessary constants and ABI for integrating the **axionax Frontend** with the DeAI Core.
+This document provides the necessary constants and ABI for integrating the **nakhara Frontend** with the DeAI Core.
 
 ## 🔗 Network Details
-- **RPC Endpoint (Primary)**: `https://rpc.axionax.org` (EU Validator)
-- **RPC Endpoint (Backup)**: `https://rpc-au.axionax.org` (AU Validator)
+- **RPC Endpoint (Primary)**: `https://rpc.nakhara.io` (EU Validator)
+- **RPC Endpoint (Backup)**: `https://rpc-au.nakhara.io` (AU Validator)
   > **✅ CONFIRMED**: These are the Oldest Validator Nodes, ensuring correct Block Height and consensus data.
 - **Chain ID**: `86137`
 - **Currency**: `AXX`
@@ -32,5 +32,5 @@ The Python worker runs locally on the user's machine.
 
 ## 🧪 Testing
 To verify the system is running:
-1.  Check RPC: `curl https://rpc.axionax.org`
+1.  Check RPC: `curl https://rpc.nakhara.io`
 2.  Check Worker: `python core/deai/worker_node.py`

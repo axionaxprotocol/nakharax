@@ -4,7 +4,7 @@ Checklist for updating both **Validator VPS**: **217.216.109.5** (EU) and **46.2
 
 | VPS | IP | Stack |
 |-----|-----|--------|
-| EU | 217.216.109.5 | Validator + RPC + **Axionax OS** (`apps/os-dashboard`, port 3030) |
+| EU | 217.216.109.5 | Validator + RPC + **Nakhara OS** (`apps/os-dashboard`, port 3030) |
 | AU | 46.250.244.4 | Validator + RPC + **chain services** (`docker-compose.vps.yml`) |
 
 **EU OS deploy:** [VPS_EU_OS_DASHBOARD.md](../../../docs/web/VPS_EU_OS_DASHBOARD.md)  
@@ -28,10 +28,10 @@ ssh root@217.216.109.5 'bash /tmp/update-validator-vps.sh'
 ssh root@46.250.244.4 'bash /tmp/update-validator-vps.sh'
 ```
 
-Or if the VPS already has a cloned repo (e.g. `/opt/axionax-monolith` or `/opt/axionax-deploy`):
+Or if the VPS already has a cloned repo (e.g. `/opt/nakhara-monolith` or `/opt/nakhara-deploy`):
 
 ```bash
-cd /opt/axionax-monolith/services/core/ops/deploy   # or the path containing scripts/
+cd /opt/nakhara-monolith/services/core/ops/deploy   # or the path containing scripts/
 sudo bash scripts/update-validator-vps.sh
 ```
 
@@ -52,7 +52,7 @@ cd ops\deploy
 
 | Action | Command/Notes |
 |--------|---------------|
-| **Pull latest image** | If running with Docker: `docker pull ghcr.io/axionaxprotocol/axionax-core:latest` then `docker compose -f docker-compose.vps.yml up -d rpc-node` (or restart rpc-node) |
+| **Pull latest image** | If running with Docker: `docker pull ghcr.io/nakhara-io/nakhara-core:latest` then `docker compose -f docker-compose.vps.yml up -d rpc-node` (or restart rpc-node) |
 | **Update OS** | `sudo apt update && sudo apt upgrade -y` (choose a time with low traffic) |
 
 ---
@@ -95,10 +95,10 @@ On each VPS (or from another machine):
 # RPC
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.axionax.org
+  https://rpc.nakhara.io
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.axionax.org
+  https://rpc-au.nakhara.io
 ```
 
 If running Docker Compose on the VPS:
@@ -116,13 +116,13 @@ cd /path/to/ops/deploy
 รันผ่าน `docker-compose.vps.yml` บน AU เท่านั้น:
 
 ```bash
-cd /opt/axionax   # path ที่มี compose + nginx
+cd /opt/nakhara   # path ที่มี compose + nginx
 docker compose -f docker-compose.vps.yml ps
 bash scripts/check-vps-status.sh
 ```
 
-- **Explorer:** `docker logs axionax-explorer-backend`; เปิด `nginx/conf.d/explorer.conf` (ย้ายจาก `.disabled`)
-- **API:** `api.axionax.org` → same `explorer-backend:3001`
+- **Explorer:** `docker logs nakhara-explorer-backend`; เปิด `nginx/conf.d/explorer.conf` (ย้ายจาก `.disabled`)
+- **API:** `api.nakhara.io` → same `explorer-backend:3001`
 - **Faucet:** `FAUCET_PRIVATE_KEY` ใน `.env`; `RPC_URL` ชี้ `http://rpc-node:8545` ใน compose แล้ว
 
 EU (217.216.109.5) ไม่ต้องรัน explorer/faucet แยก — ใช้โดเมนที่ชี้ AU

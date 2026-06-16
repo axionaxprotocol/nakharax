@@ -198,8 +198,8 @@ sudo systemctl start postgresql
 sudo systemctl enable postgresql
 
 # Create user and database
-sudo -u postgres createuser axionax
-sudo -u postgres createdb axionax_testnet
+sudo -u postgres createuser nakhara
+sudo -u postgres createdb nakhara_testnet
 
 # Verify installation
 psql --version
@@ -330,8 +330,8 @@ brew install postgresql@14
 brew services start postgresql@14
 
 # Create database
-createuser axionax
-createdb axionax_testnet
+createuser nakhara
+createdb nakhara_testnet
 
 # Verify installation
 psql --version
@@ -382,14 +382,14 @@ For a containerized development environment without installing dependencies:
 
 ```bash
 # Clone repository
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 
 # Build Docker image
-docker build -t axionax-core .
+docker build -t nakhara-core .
 
 # Run container
-docker run -it --rm -p 8545:8545 -p 30303:30303 axionax-core
+docker run -it --rm -p 8545:8545 -p 30303:30303 nakhara-core
 
 # Or use Docker Compose
 docker-compose up -d
@@ -398,7 +398,7 @@ docker-compose up -d
 ### Docker Compose Services
 ```yaml
 # Included services:
-- axionax-core    # Blockchain node
+- nakhara-core    # Blockchain node
 - postgres        # Database
 - redis           # Cache
 - prometheus      # Metrics
@@ -473,8 +473,8 @@ pip install jupyter>=1.0.0                # Notebooks
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 
 # 2. Build Rust components
 cargo build --release
@@ -491,8 +491,8 @@ cp .env.example .env
 # Edit .env with your settings
 
 # 5. Initialize database
-psql -U postgres -c "CREATE DATABASE axionax_testnet;"
-psql -U postgres -d axionax_testnet -f scripts/init_db.sql
+psql -U postgres -c "CREATE DATABASE nakhara_testnet;"
+psql -U postgres -d nakhara_testnet -f scripts/init_db.sql
 
 # 6. Run tests
 cargo test
@@ -600,6 +600,6 @@ wsl sudo service redis-server start
 ## 💬 Support
 
 Need help? 
-- Check [GitHub Issues](https://github.com/axionaxprotocol/axionax-core/issues)
-- Join our [Discord](https://discord.gg/axionax)
-- Read [Documentation](https://docs.axionax.org)
+- Check [GitHub Issues](https://github.com/nakhara-io/nakhara-core/issues)
+- Join our [Discord](https://discord.gg/nakhara)
+- Read [Documentation](https://docs.nakhara.io)

@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-/// Network message types for axionax protocol
+/// Network message types for nakhara protocol
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum NetworkMessage {
     /// New block propagation
@@ -175,10 +175,10 @@ impl MessageType {
     /// Get Gossipsub topic name
     pub fn topic_name(&self) -> String {
         match self {
-            MessageType::Blocks => "/axionax/blocks/1.0.0".to_string(),
-            MessageType::Transactions => "/axionax/txs/1.0.0".to_string(),
-            MessageType::Consensus => "/axionax/consensus/1.0.0".to_string(),
-            MessageType::Status => "/axionax/status/1.0.0".to_string(),
+            MessageType::Blocks => "/nakhara/blocks/1.0.0".to_string(),
+            MessageType::Transactions => "/nakhara/txs/1.0.0".to_string(),
+            MessageType::Consensus => "/nakhara/consensus/1.0.0".to_string(),
+            MessageType::Status => "/nakhara/status/1.0.0".to_string(),
         }
     }
 }
@@ -237,11 +237,11 @@ mod tests {
 
     #[test]
     fn test_topic_names() {
-        assert_eq!(MessageType::Blocks.topic_name(), "/axionax/blocks/1.0.0");
-        assert_eq!(MessageType::Transactions.topic_name(), "/axionax/txs/1.0.0");
+        assert_eq!(MessageType::Blocks.topic_name(), "/nakhara/blocks/1.0.0");
+        assert_eq!(MessageType::Transactions.topic_name(), "/nakhara/txs/1.0.0");
         assert_eq!(
             MessageType::Consensus.topic_name(),
-            "/axionax/consensus/1.0.0"
+            "/nakhara/consensus/1.0.0"
         );
     }
 }

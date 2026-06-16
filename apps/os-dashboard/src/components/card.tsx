@@ -2,7 +2,7 @@ import { cn } from "@/lib/cn";
 import type { ReactNode } from "react";
 
 /**
- * Card — the primary surface primitive for Axionax OS pages.
+ * Card — the primary surface primitive for Nakhara OS pages.
  *
  * Defaults:
  *   - `bg-bg-card` with `glass` shadow and `rounded-os-md`

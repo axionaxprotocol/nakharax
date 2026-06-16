@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8545;
 const WS_PORT = process.env.WS_PORT || 8546;
 const HOST = process.env.HOST || '127.0.0.1';
 const CHAIN_ID = process.env.CHAIN_ID || '86137';
-const NETWORK = process.env.NETWORK || 'axionax-testnet';
+const NETWORK = process.env.NETWORK || 'nakhara-testnet';
 const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '5000'); // 5 seconds
 
 app.use(express.json({ strict: false, type: 'application/json' }));
@@ -25,7 +25,7 @@ let logs = [];
 let pendingTransactions = [];
 let contracts = {};
 
-// Validators and Workers (Axionax-specific)
+// Validators and Workers (Nakhara-specific)
 let validators = [];
 let workers = {};
 let jobs = {};
@@ -129,7 +129,7 @@ function generateBlock(num) {
     miner: validators[num % validators.length]?.address || generateAddress(),
     difficulty: '0x1',
     totalDifficulty: toHex(num),
-    extraData: '0x617869616e617820706f7063', // "axionax popc"
+    extraData: '0x617869616e617820706f7063', // "nakhara popc"
     size: toHex(500 + Math.floor(Math.random() * 500)),
     gasLimit: '0x1c9c380', // 30M
     gasUsed: toHex(21000 * Math.floor(Math.random() * 10)),
@@ -469,7 +469,7 @@ function handleRpcMethod(method, params, id) {
     }
 
     // =========================================================================
-    // Axionax-Specific Methods
+    // Nakhara-Specific Methods
     // =========================================================================
     case 'axn_getValidatorSet':
       return jsonRpcResponse(id, validators);
@@ -545,7 +545,7 @@ function handleRpcMethod(method, params, id) {
     // Web3 Methods
     // =========================================================================
     case 'web3_clientVersion':
-      return jsonRpcResponse(id, 'Axionax/v1.9.0/mock-rpc');
+      return jsonRpcResponse(id, 'Nakhara/v1.9.0/mock-rpc');
 
     case 'web3_sha3': {
       const [data] = params;
@@ -641,7 +641,7 @@ wss.on('connection', (ws) => {
 server.listen(PORT, HOST, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
-║  Axionax Mock RPC Server v1.9.0                               ║
+║  Nakhara Mock RPC Server v1.9.0                               ║
 ╠═══════════════════════════════════════════════════════════════╣
 ║  Network:        ${NETWORK.padEnd(44)}║
 ║  Chain ID:       ${CHAIN_ID.padEnd(44)}║
@@ -651,7 +651,7 @@ server.listen(PORT, HOST, () => {
 ║  WebSocket:      ws://${HOST}:${WS_PORT.toString().padEnd(33 - HOST.length)}║
 ║  Health:         http://${HOST}:${PORT}/health${' '.repeat(23 - HOST.length)}║
 ╠═══════════════════════════════════════════════════════════════╣
-║  Methods:        40+ (ETH + Axionax)                          ║
+║  Methods:        40+ (ETH + Nakhara)                          ║
 ║  Validators:     ${validators.length.toString().padEnd(44)}║
 ║  Accounts:       ${Object.keys(accounts).length.toString().padEnd(44)}║
 ╠═══════════════════════════════════════════════════════════════╣

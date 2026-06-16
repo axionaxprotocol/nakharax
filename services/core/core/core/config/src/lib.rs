@@ -1,4 +1,4 @@
-//! axionax Protocol Configuration Module
+//! nakhara Protocol Configuration Module
 //!
 //! Centralized configuration for all protocol parameters aligned with ARCHITECTURE v1.5
 
@@ -209,7 +209,7 @@ impl NetworkConfig {
     pub fn testnet() -> Self {
         Self {
             chain_id: 86137,
-            network_name: "axionax-testnet".to_string(),
+            network_name: "nakhara-testnet".to_string(),
             block_time_seconds: 5,
             max_peers: 50,
             bootstrap_nodes: vec![],
@@ -220,7 +220,7 @@ impl NetworkConfig {
     pub fn mainnet() -> Self {
         Self {
             chain_id: 86150,
-            network_name: "axionax-mainnet".to_string(),
+            network_name: "nakhara-mainnet".to_string(),
             block_time_seconds: 5,
             max_peers: 100,
             bootstrap_nodes: vec![],
@@ -334,14 +334,14 @@ mod tests {
     fn test_network_testnet() {
         let config = NetworkConfig::testnet();
         assert_eq!(config.chain_id, 86137);
-        assert_eq!(config.network_name, "axionax-testnet");
+        assert_eq!(config.network_name, "nakhara-testnet");
     }
 
     #[test]
     fn test_network_mainnet() {
         let config = NetworkConfig::mainnet();
         assert_eq!(config.chain_id, 86150);
-        assert_eq!(config.network_name, "axionax-mainnet");
+        assert_eq!(config.network_name, "nakhara-mainnet");
     }
 
     #[test]

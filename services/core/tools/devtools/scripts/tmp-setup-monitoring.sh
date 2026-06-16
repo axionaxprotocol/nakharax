@@ -1,12 +1,12 @@
 #!/bin/bash
-# Setup monitoring and backups for axionax testnet
+# Setup monitoring and backups for nakhara testnet
 
 mkdir -p /root/monitoring /root/backups
 
 # Create Prometheus alert rules
 cat > /root/monitoring/alert-rules.yml << 'EOFAL'
 groups:
-  - name: axionax_alerts
+  - name: nakhara_alerts
     interval: 30s
     rules:
       - alert: ServiceDown
@@ -49,12 +49,12 @@ echo "Starting backup: $DATE"
 
 # Backup PostgreSQL
 echo "Backing up PostgreSQL..."
-docker exec axionax-postgres pg_dumpall -U postgres > "$BACKUP_DIR/postgres_$DATE.sql"
+docker exec nakhara-postgres pg_dumpall -U postgres > "$BACKUP_DIR/postgres_$DATE.sql"
 
 # Backup Redis
 echo "Backing up Redis..."
-docker exec axionax-redis redis-cli SAVE
-docker cp axionax-redis:/data/dump.rdb "$BACKUP_DIR/redis_$DATE.rdb"
+docker exec nakhara-redis redis-cli SAVE
+docker cp nakhara-redis:/data/dump.rdb "$BACKUP_DIR/redis_$DATE.rdb"
 
 # Compress backups older than 1 day
 echo "Compressing old backups..."
@@ -72,7 +72,7 @@ chmod +x /root/backups/backup.sh
 echo "✅ Backup script created and made executable"
 
 # Add cron job for daily backups at 2 AM
-(crontab -l 2>/dev/null | grep -v "axionax-backup"; echo "0 2 * * * /root/backups/backup.sh >> /var/log/axionax-backup.log 2>&1") | crontab -
+(crontab -l 2>/dev/null | grep -v "nakhara-backup"; echo "0 2 * * * /root/backups/backup.sh >> /var/log/nakhara-backup.log 2>&1") | crontab -
 echo "✅ Cron job added (daily at 2 AM)"
 
 # Run initial backup
