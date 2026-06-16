@@ -1,5 +1,5 @@
 [package]
-name = "axionax-core"
+name = "nakhara-core"
 version = "1.8.0"
 edition = "2021"
 authors = ["axionax protocol Team <team@axionax.org>"]
