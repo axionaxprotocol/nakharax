@@ -158,7 +158,7 @@ class WalletManager:
     def sign_transaction(self, tx: dict) -> bytes:
         """Sign a transaction"""
         signed = self.account.sign_transaction(tx)
-        return signed.rawTransaction
+        return signed.raw_transaction
 
 
 if __name__ == "__main__":
