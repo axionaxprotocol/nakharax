@@ -6,6 +6,18 @@
 >
 > Generated 2026-06-16 from a precise inventory (`axionax` = 784+ refs across 186 files).
 
+## ✅ Status (2026-06-16): in-repo rename COMPLETE
+
+All categories below (A–D) have been executed in the repository and verified green
+(`cargo test --workspace`, `pytest` deai 30/2, frontend typecheck). The tables below are kept as
+the historical plan. **What remains is external/coordinated, not a repo edit:**
+
+- Rename the **GitHub repo/org** so `github.com/...` URLs resolve.
+- Stand up **`nakhara.io` DNS + SSL**, then **redeploy** nodes from this renamed tree (the live
+  VPS still serve `axionax.org` and read the old env-var names until redeployed).
+- Regenerate build artifacts that can't be text-renamed: `README.pdf`, the bridge
+  `nakhara_python.so` (rebuild PyO3), and the two `package-lock.json` (`npm install`).
+
 ## Risk categories
 
 | Cat | Meaning | Action |
