@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tx = Transaction {
         from: hex::encode(&public_key),
         to: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb".to_string(),
-        value: 1_000_000_000_000_000_000, // 1 AXX
+        value: 1_000_000_000_000_000_000, // 1 NAK
         nonce: 0,
         gas_limit: 21000,
         gas_price: 1_000_000_000, // 1 Gwei

@@ -77,7 +77,7 @@ let block_hash = SHA3(parent_hash || block_number.to_le_bytes() || timestamp.to_
 // Finality: require >= 2/3 of active_validators before marking a block finalized
 fn is_finalized(votes: usize, active: usize) -> bool { votes * 3 >= active * 2 }
 
-// Block reward (1 AXX)
+// Block reward (1 NAK)
 const BLOCK_REWARD: u128 = 1_000_000_000_000_000_000;
 ```
 

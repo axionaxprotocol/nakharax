@@ -21,7 +21,7 @@ This guide covers setting up a validator node on the Nakhara network. Validators
 **Prerequisites:**
 - Linux server (Ubuntu 20.04+ recommended)
 - Static IP address
-- Minimum 10,000 AXX staked
+- Minimum 10,000 NAK staked
 - Docker and Docker Compose installed
 - Basic command-line knowledge
 
@@ -101,7 +101,7 @@ node:
 
 validator:
   private_key: "YOUR_PRIVATE_KEY_HERE"
-  min_stake: 10000  # AXX
+  min_stake: 10000  # NAK
   commission_bps: 500  # 5%
 ```
 
@@ -180,7 +180,7 @@ sudo systemctl start nakhara-validator
 
 ### 1. Fund Validator Address
 
-Ensure your validator address has at least 10,000 AXX.
+Ensure your validator address has at least 10,000 NAK.
 
 ### 2. Stake Tokens
 

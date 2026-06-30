@@ -7,7 +7,7 @@ pragma solidity ^0.8.20;
  * @notice Stake tokens and earn rewards over time
  */
 contract SimpleStaking {
-    // Staking token (could be AXX or any ERC-20)
+    // Staking token (could be NAK or any ERC-20)
     address public stakingToken;
     
     // Reward rate: tokens per second per staked token (in wei)
@@ -32,14 +32,14 @@ contract SimpleStaking {
     
     /**
      * @dev Constructor
-     * @param _stakingToken Address of the token to stake (use address(0) for native AXX)
+     * @param _stakingToken Address of the token to stake (use address(0) for native NAK)
      */
     constructor(address _stakingToken) {
         stakingToken = _stakingToken;
     }
     
     /**
-     * @dev Stake tokens (or native AXX if stakingToken is address(0))
+     * @dev Stake tokens (or native NAK if stakingToken is address(0))
      */
     function stake() public payable {
         require(msg.value > 0, "Must stake some amount");
@@ -170,7 +170,7 @@ contract SimpleStaking {
     }
     
     /**
-     * @dev Allow contract to receive AXX
+     * @dev Allow contract to receive NAK
      */
     receive() external payable {}
     

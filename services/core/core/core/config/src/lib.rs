@@ -44,7 +44,7 @@ impl Default for PoPCConfig {
             fraud_window_seconds: 3600,                    // 1 hour (Δt_fraud)
             vrf_delay_blocks: 2,                           // k ≥ 2 blocks
             false_pass_penalty_bps: 500,                   // 5% (≥500 bps)
-            min_validator_stake: 10_000 * 10_u128.pow(18), // 10,000 AXX
+            min_validator_stake: 10_000 * 10_u128.pow(18), // 10,000 NAK
         }
     }
 }

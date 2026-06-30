@@ -15,7 +15,7 @@ Nakhara uses **PoPC** (not PoW, PoS, or BFT alone). The agent must understand:
 - **Challenge generation:** Deterministic via VRF seed → SHA3 hash chain → sample indices (deduplicated since v1.9.0).
 - **Merkle proof verification:** Each sampled chunk must produce a valid `MerkleProof` against the expected root. See `core/core/consensus/src/merkle.rs`.
 - **False-pass penalty:** `false_pass_penalty_bps = 500` (5%) slashed from validator stake on fraud.
-- **Key parameters (testnet):** `sample_size=1000`, `min_confidence=0.99`, `fraud_window=3600s`, `min_validator_stake=10,000 AXX`.
+- **Key parameters (testnet):** `sample_size=1000`, `min_confidence=0.99`, `fraud_window=3600s`, `min_validator_stake=10,000 NAK`.
 - **FinalityTracker (v1.9.0):** Block is finalized when ≥ 2/3 active validators send `BlockConfirmation`. Tracked in `core/core/node/src/lib.rs`.
 
 ### 1.2 Cryptographic Primitives
@@ -99,7 +99,7 @@ AI models running on Sentinel nodes for autonomous security:
 ### 2.4 Economic Flow (Compute Marketplace)
 
 ```
-Job Requester → lock AXX (Escrow Smart Contract)
+Job Requester → lock NAK (Escrow Smart Contract)
              → ASR selects Worker (VRF + reputation)
              → Worker executes in DockerSandbox
              → Worker submits result + Merkle root
@@ -161,7 +161,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 - **Server Components first** — fetch data on server, pass to client; add `"use client"` only for interactivity.
 - **SDK-first business logic** — never put RPC calls or contract ABI in app components.
 - **Cyberpunk/Futuristic dark theme** — Tailwind CSS, dark mode default, consistent with brand identity.
-- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakhara.io`, token symbol `AXX`, decimals `18`.
+- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakhara.io`, token symbol `NAK`, decimals `18`.
 
 ---
 

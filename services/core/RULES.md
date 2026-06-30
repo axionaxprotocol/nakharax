@@ -170,8 +170,8 @@ docs(deai): update worker_config.toml field descriptions
 |---|---|---|
 | Testnet Chain ID | `86137` | Pre-Testnet Phase 2 |
 | Mainnet Chain ID | `86150` | Future |
-| Block reward | `1_000_000_000_000_000_000` wei (1 AXX) | Credited to proposer |
-| Min validator stake | `10_000 × 10^18` (10,000 AXX) | |
+| Block reward | `1_000_000_000_000_000_000` wei (1 NAK) | Credited to proposer |
+| Min validator stake | `10_000 × 10^18` (10,000 NAK) | |
 | Finality threshold | ≥ 2/3 active validators | FinalityTracker |
 | PoPC sample size | `1000` (capped to output size) | Deduplication enforced |
 | Fraud window | ~3600 blocks (~1 hour at 2s/block) | |

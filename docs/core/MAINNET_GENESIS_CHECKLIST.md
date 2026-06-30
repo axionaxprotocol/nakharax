@@ -9,7 +9,7 @@ Pre-launch checklist for Nakhara Mainnet Genesis Block #0.
 | Item | Status |
 |------|--------|
 | Creator alias | nakharaius |
-| Total supply | 1,000,000,000,000 AXX (1 trillion) |
+| Total supply | 1,000,000,000,000 NAK (1 trillion) |
 | Creator allocation | 10% |
 | Genesis timestamp | 2026-04-01 00:00:00 UTC |
 | Chain ID | 86137 |
@@ -80,7 +80,7 @@ The following addresses receive allocations. Ensure private keys are secured:
 | EU-01 | 217.216.109.5 | `0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326` |
 | AU-01 | 46.250.244.4 | `0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb` |
 
-Each receives 25,000,000,000 AXX (2.5% of supply) as bootstrap stake.
+Each receives 25,000,000,000 NAK (2.5% of supply) as bootstrap stake.
 
 ---
 

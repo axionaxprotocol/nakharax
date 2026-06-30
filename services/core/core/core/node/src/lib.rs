@@ -40,7 +40,7 @@ fn hash_to_hex(hash: &[u8; 32]) -> String {
     format!("0x{}", hex::encode(hash))
 }
 
-/// Block reward per block (1 AXX in base units)
+/// Block reward per block (1 NAK in base units)
 pub const BLOCK_REWARD: u128 = 1_000_000_000_000_000_000;
 
 /// Node configuration
@@ -214,7 +214,7 @@ impl NakharaNode {
         tokio::spawn(async move {
             use genesis::{ADDR_VALIDATOR_EU, ADDR_VALIDATOR_AU};
             const ONE_AXX: u128 = 10_u128.pow(18);
-            const VALIDATOR_STAKE: u128 = 25_000_000 * ONE_AXX; // 25M AXX per validator (5% of total / 2)
+            const VALIDATOR_STAKE: u128 = 25_000_000 * ONE_AXX; // 25M NAK per validator (5% of total / 2)
 
             let _ = staking_clone
                 .write()

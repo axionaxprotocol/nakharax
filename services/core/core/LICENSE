@@ -22,7 +22,7 @@ Copyright (c) 2025 Nakhara Protocol
 These additional terms supplement the GNU Affero General Public License v3.0:
 
 1. TRADEMARK RESTRICTION
-   The names "Nakhara", "Nakhara Protocol", "AXX Token", the Nakhara logo,
+   The names "Nakhara", "Nakhara Protocol", "NAK Token", the Nakhara logo,
    and all related trademarks are the exclusive property of Nakhara Foundation.
    
    Use of these marks requires explicit written permission from:
@@ -43,7 +43,7 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    ❌ PROHIBITED without explicit authorization:
    - Launching public mainnets with economic tokens claiming to be "Nakhara"
    - Operating networks that could confuse users with the official Nakhara Network
-   - Creating token systems branded as "AXX" or "Nakhara Token"
+   - Creating token systems branded as "NAK" or "Nakhara Token"
    
    Authorization requests: mainnet-auth@nakhara.io
 
@@ -55,7 +55,7 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    - NOT misrepresent itself as the official Nakhara Network
    
    Official chain IDs:
-   - Testnet: 86137 (AXX testnet)
+   - Testnet: 86137 (NAK testnet)
    - Mainnet: 86150 (reserved, not yet launched)
 
 4. NETWORK COMPATIBILITY

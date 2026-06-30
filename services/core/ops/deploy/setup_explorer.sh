@@ -182,7 +182,7 @@ services:
       
       # Chain configuration
       CHAIN_ID: '$CHAIN_ID'
-      COIN: 'AXX'
+      COIN: 'NAK'
       SUBNETWORK: 'nakhara Testnet'
       NETWORK: 'nakhara'
       LOGO: '/images/nakhara_logo.svg'

@@ -82,7 +82,7 @@ function initMockState() {
   
   knownAddresses.forEach((addr, i) => {
     accounts[addr.toLowerCase()] = {
-      balance: toHex(BigInt('50000000000000000000000')), // 50,000 AXX
+      balance: toHex(BigInt('50000000000000000000000')), // 50,000 NAK
       nonce: 0,
       code: null
     };

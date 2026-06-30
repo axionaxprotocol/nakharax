@@ -17,9 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 7 integration tests in `state/src/lib.rs` covering empty root, determinism, mutation-sensitivity, insertion-order independence
 
 **Worker Registration — Contract Integration (replaces full mock):**
-- `contracts/MockAXXToken.sol`: standalone ERC-20 testnet token (no external imports, includes `mint()`)
+- `contracts/MockNAKToken.sol`: standalone ERC-20 testnet token (no external imports, includes `mint()`)
 - `contracts/JobMarketplaceStandalone.sol`: production-grade JobMarketplace contract — matches `job_marketplace.json` ABI exactly; inline IERC20 interface, mutex reentrancy guard, full job lifecycle (register/assign/submit/claim/dispute/cancel/slash)
-- `ops/scripts/deploy_marketplace.py`: one-command deployment script using `py-solc-x` + `web3.py`; deploys MockAXXToken then JobMarketplace; writes addresses to `ops/deploy/marketplace_addresses.json`
+- `ops/scripts/deploy_marketplace.py`: one-command deployment script using `py-solc-x` + `web3.py`; deploys MockNAKToken then JobMarketplace; writes addresses to `ops/deploy/marketplace_addresses.json`
 - `core/deai/test_contract_manager.py`: 26 unit tests for `ContractManager` (mock mode, ABI validation, hash helpers, constructor) — all passing
 - `core/deai/requirements.txt`: added `py-solc-x>=0.3.0,<1.0`
 
@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Mainnet readiness features:**
 - Dynamic validator count sourced from `staking.get_active_validators()` — replaces hardcoded `3`
 - Block finality gadget (`FinalityTracker`): ≥ 2/3 majority confirmation before finalization
-- Block rewards: `BLOCK_REWARD = 1_000_000_000_000_000_000` (1 AXX) credited to proposer via `staking.record_block_produced()`
+- Block rewards: `BLOCK_REWARD = 1_000_000_000_000_000_000` (1 NAK) credited to proposer via `staking.record_block_produced()`
 - `BlockConfirmation` network message type and broadcast in `start_block_producer` + sync task
 - `validator_address` in `NodeConfig` with `--validator-address` CLI arg and `NAKHARA_VALIDATOR_ADDRESS` env var
 - Docker testnet: `NAKHARA_VALIDATOR_ADDRESS` env in validator service

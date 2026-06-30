@@ -239,7 +239,7 @@ All tests should pass ✅
 Network Name: Nakhara Testnet
 RPC URL: https://testnet-rpc.nakhara.io
 Chain ID: 86137
-Currency Symbol: AXX
+Currency Symbol: NAK
 Block Explorer: https://explorer.nakhara.io
 ```
 
@@ -247,7 +247,7 @@ Block Explorer: https://explorer.nakhara.io
 
 Visit the faucet: https://faucet.nakhara.io
 
-Enter your wallet address and claim 10 AXX (once per 24 hours).
+Enter your wallet address and claim 10 NAK (once per 24 hours).
 
 ---
 

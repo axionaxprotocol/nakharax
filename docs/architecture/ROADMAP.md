@@ -148,7 +148,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 - ✅ Fully functional DAO governance
 - ✅ Permissionless validator/worker registration
-- ✅ Governance UI for AXX holders
+- ✅ Governance UI for NAK holders
 - ✅ Decentralized parameter tuning
 - ✅ Emergency response system
 
@@ -334,7 +334,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 ### Governance Metrics
 
-- **Voter Participation**: >40% of staked AXX
+- **Voter Participation**: >40% of staked NAK
 - **Proposals per Quarter**: 5-10
 - **DAO Treasury Growth**: Sustainable funding for 5+ years
 

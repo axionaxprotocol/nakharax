@@ -10,7 +10,7 @@
     Categories map to docs/REBRAND_MIGRATION.md:
       Full  Ordered, case-aware identifier rename (domain-first). Excludes the token symbol.
       A/B/C Sub-scopes (Rust strings / frontend pkg / deploy-coupled) — kept for targeted runs.
-      D     On-chain token AXX -> NAK (surgical; review every hit before -Execute).
+      D     On-chain token NAK -> NAK (surgical; review every hit before -Execute).
 
     Order matters: the domain (.org -> .io) and the GitHub org are replaced BEFORE the generic
     'nakhara' -> 'nakhara', so we never produce 'nakhara.org'.
@@ -50,7 +50,7 @@ $presets = @{
     A    = @( @{ From = '"nakhara-core"'; To = '"nakhara-core"' }, @{ From = 'nakhara-core/'; To = 'nakhara-core/' } )
     B    = @( @{ From = '@nakhara/sdk'; To = '@nakhara/sdk' }, @{ From = 'nakhara-os-dashboard'; To = 'nakhara-os-dashboard' } )
     C    = @( @{ From = 'NAKHARA_'; To = 'NAKHARA_' }, @{ From = 'nakhara-node'; To = 'nakhara-node' }, @{ From = 'nakhara.io'; To = 'nakhara.io' } )
-    D    = @( @{ From = 'AXXt'; To = 'NAKt' }, @{ From = 'MockAXXToken'; To = 'MockNAKToken' }, @{ From = "'AXX'"; To = "'NAK'" }, @{ From = '"AXX"'; To = '"NAK"' }, @{ From = '`AXX`'; To = '`NAK`' } )
+    D    = @( @{ From = 'NAKt'; To = 'NAKt' }, @{ From = 'MockNAKToken'; To = 'MockNAKToken' }, @{ From = "'NAK'"; To = "'NAK'" }, @{ From = '"NAK"'; To = '"NAK"' }, @{ From = '`NAK`'; To = '`NAK`' } )
 }
 
 $pairs = @()

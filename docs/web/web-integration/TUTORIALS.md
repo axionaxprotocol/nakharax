@@ -57,7 +57,7 @@ console.log('Private Key:', wallet.privateKey);
 https://faucet.nakhara.network
 
 # Enter your address
-# Receive 10 AXX for testing
+# Receive 10 NAK for testing
 ```
 
 ### Send Transaction
@@ -76,7 +76,7 @@ async function sendTransaction() {
   const tx = await client.sendTransaction({
     from: wallet.address,
     to: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-    value: '1000000000000000000', // 1 AXX
+    value: '1000000000000000000', // 1 NAK
     gasLimit: 21000,
   });
 
@@ -209,7 +209,7 @@ console.log('Gas used:', tx.gasUsed);
 // Get balance
 const balance = await client.getBalance('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
 
-console.log('Balance:', balance, 'AXX');
+console.log('Balance:', balance, 'NAK');
 ```
 
 ### Query Events

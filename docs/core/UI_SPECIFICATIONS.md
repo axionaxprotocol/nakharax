@@ -18,15 +18,15 @@ This document specifies the UI components to build in `nakhara-monolith` for Sta
 │                                                              │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
 │  │ Total Staked │  │ Your Stake  │  │ APY         │          │
-│  │ 45.2M AXX    │  │ 10,000 AXX  │  │ ~6.0%       │          │
+│  │ 45.2M NAK    │  │ 10,000 NAK  │  │ ~6.0%       │          │
 │  └─────────────┘  └─────────────┘  └─────────────┘          │
 │                                                              │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │ Your Position                                         │  │
 │  │ ┌─────────────────────────────────────────────────┐   │  │
-│  │ │ Staked:    10,000 AXX                           │   │  │
-│  │ │ Delegated: 5,000 AXX (to validator1)            │   │  │
-│  │ │ Rewards:   125.5 AXX (unclaimed)                │   │  │
+│  │ │ Staked:    10,000 NAK                           │   │  │
+│  │ │ Delegated: 5,000 NAK (to validator1)            │   │  │
+│  │ │ Rewards:   125.5 NAK (unclaimed)                │   │  │
 │  │ │ [Claim Rewards]  [Stake More]  [Unstake]        │   │  │
 │  │ └─────────────────────────────────────────────────┘   │  │
 │  └───────────────────────────────────────────────────────┘  │
@@ -36,9 +36,9 @@ This document specifies the UI components to build in `nakhara-monolith` for Sta
 │  │ ┌─────────────────────────────────────────────────┐   │  │
 │  │ │ Validator          Stake        APY    Action   │   │  │
 │  │ │─────────────────────────────────────────────────│   │  │
-│  │ │ validator1.axn    5M AXX       6.2%   [Delegate]│   │  │
-│  │ │ validator2.axn    3.2M AXX     5.8%   [Delegate]│   │  │
-│  │ │ validator3.axn    2.1M AXX     6.0%   [Delegate]│   │  │
+│  │ │ validator1.axn    5M NAK       6.2%   [Delegate]│   │  │
+│  │ │ validator2.axn    3.2M NAK     5.8%   [Delegate]│   │  │
+│  │ │ validator3.axn    2.1M NAK     6.0%   [Delegate]│   │  │
 │  │ └─────────────────────────────────────────────────┘   │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
@@ -138,7 +138,7 @@ await rpc.call('staking_claimRewards', [address]);
 │  │                                                        │  │
 │  │ ┌─────────────────────────────────────────────────┐   │  │
 │  │ │ #2: Treasury Spend - Marketing                  │   │  │
-│  │ │ Type: Treasury • Amount: 500,000 AXX            │   │  │
+│  │ │ Type: Treasury • Amount: 500,000 NAK            │   │  │
 │  │ │ Status: Active • Ends in 5 days                 │   │  │
 │  │ │ ████░░░░░░░░░░░░░░░░ For: 25% Against: 5%       │   │  │
 │  │ │ [Vote For] [Vote Against] [Abstain] [Details]   │   │  │
@@ -251,7 +251,7 @@ await rpc.call('gov_executeProposal', [proposalId]);
 │                                                              │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
 │  │ Self Stake  │  │ Delegated   │  │ Total Power │          │
-│  │ 50,000 AXX  │  │ 25,000 AXX  │  │ 75,000 AXX  │          │
+│  │ 50,000 NAK  │  │ 25,000 NAK  │  │ 75,000 NAK  │          │
 │  └─────────────┘  └─────────────┘  └─────────────┘          │
 │                                                              │
 │  ┌───────────────────────────────────────────────────────┐  │
@@ -263,9 +263,9 @@ await rpc.call('gov_executeProposal', [proposalId]);
 │                                                              │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │ Delegators (5)                                        │  │
-│  │ 0xabc...123  10,000 AXX                               │  │
-│  │ 0xdef...456   8,000 AXX                               │  │
-│  │ 0x789...abc   7,000 AXX                               │  │
+│  │ 0xabc...123  10,000 NAK                               │  │
+│  │ 0xdef...456   8,000 NAK                               │  │
+│  │ 0x789...abc   7,000 NAK                               │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -285,9 +285,9 @@ await rpc.call('gov_executeProposal', [proposalId]);
 │                                                              │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │ Voting Results                                        │  │
-│  │ For:     65,000 AXX (65%)  ████████████░░░░░░░        │  │
-│  │ Against: 20,000 AXX (20%)  ████░░░░░░░░░░░░░░░        │  │
-│  │ Abstain: 15,000 AXX (15%)  ███░░░░░░░░░░░░░░░░        │  │
+│  │ For:     65,000 NAK (65%)  ████████████░░░░░░░        │  │
+│  │ Against: 20,000 NAK (20%)  ████░░░░░░░░░░░░░░░        │  │
+│  │ Abstain: 15,000 NAK (15%)  ███░░░░░░░░░░░░░░░░        │  │
 │  │ Quorum:  ✅ Reached (100K / 30K required)             │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                                                              │
@@ -327,7 +327,7 @@ await rpc.call('gov_executeProposal', [proposalId]);
 ### Typography
 - Main heading: `text-2xl font-bold`
 - Subheading: `text-lg font-semibold`
-- Numbers: `font-mono` (for AXX amounts)
+- Numbers: `font-mono` (for NAK amounts)
 
 ---
 

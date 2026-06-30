@@ -190,7 +190,7 @@ let signing_key = signature::generate_keypair();
 let verifying_key = signing_key.verifying_key();
 
 // Sign message
-let message = b"Transfer 100 AXX to 0x123...";
+let message = b"Transfer 100 NAK to 0x123...";
 let signature = signature::sign(&signing_key, message);
 
 // Verify signature

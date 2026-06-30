@@ -41,9 +41,9 @@ flowchart TD
     subgraph Staking_Reg ["2. การลงทะเบียน Worker Node"]
         W[Worker Node]:::worker
         SC[JobMarketplace Contract]:::smartcontract
-        AXX[AXX ERC20 Token]:::smartcontract
+        NAK[NAK ERC20 Token]:::smartcontract
         
-        W -- 4. Approve & Stake AXX --▶ AXX
+        W -- 4. Approve & Stake NAK --▶ NAK
         W -- 5. registerWorker --▶ SC
         SC -- 6. Store Stake & Set Active --▶ SC
     end
@@ -52,7 +52,7 @@ flowchart TD
         User[User / Client OS Dashboard]:::client
         Router[Auto-Selection Router - ASR]:::infra
         
-        User -- 7. createJob + Pay AXX --▶ SC
+        User -- 7. createJob + Pay NAK --▶ SC
         SC -- 8. Emit JobCreated event --▶ Router
         Router -- 9. Select Best Worker <br> VRF Weighted Match --▶ SC
         SC -- 10. assignJob to Worker --▶ SC
@@ -91,7 +91,7 @@ flowchart TD
     %% Apply Classes
     class B,N,Router,Val,HAL infra;
     class User client;
-    class SC,AXX smartcontract;
+    class SC,NAK smartcontract;
     class W,DP worker;
 ```
 
@@ -102,7 +102,7 @@ flowchart TD
 | ขั้นตอน | ส่วนที่เกี่ยวข้อง | คำอธิบายรายละเอียดกระบวนการทำงาน |
 | :--- | :--- | :--- |
 | **Step 1-3** | **P2P Peering** | โหนดใหม่ทำการรันและเชื่อมต่อไปยัง Bootstrap Node เพื่อดึงข้อมูลตารางเส้นทางผ่าน Kademlia DHT และเริ่มทำการ Synchronize บล็อกล่าสุด รวมถึงการเข้าสมัครรับข้อมูลข่าวสาร (Gossipsub) สำหรับ Blocks และ Transactions |
-| **Step 4-6** | **Worker Registration** | ผู้ให้บริการประมวลผล (DeAI Worker) ฝากเหรียญค้ำประกันขั้นต่ำ (AXX Tokens) ใน Smart Contract `JobMarketplace` เพื่อแสดงความน่าเชื่อถือทางเศรษฐกิจ และระบุสเปคเครื่อง (GPU VRAM, CPU, NPU) เข้าระบบ |
+| **Step 4-6** | **Worker Registration** | ผู้ให้บริการประมวลผล (DeAI Worker) ฝากเหรียญค้ำประกันขั้นต่ำ (NAK Tokens) ใน Smart Contract `JobMarketplace` เพื่อแสดงความน่าเชื่อถือทางเศรษฐกิจ และระบุสเปคเครื่อง (GPU VRAM, CPU, NPU) เข้าระบบ |
 | **Step 7-8** | **Job Creation** | ผู้ใช้สร้างงานประเภทประมวลผล AI (Inference, Training, Data Processing) ผ่านหน้าจอแดชบอร์ด โดยกำหนดค่าจ้าง (Reward) + เงินมัดจำ (Deposit 10%) และส่งคำสั่งเข้าระบบทำให้ Smart Contract ปล่อย Event `JobCreated` ออกมา |
 | **Step 9-10** | **ASR Matching** | เครือข่ายใช้ระบบ **Auto-Selection Router (ASR)** ทำการคำนวณถ่วงน้ำหนักด้วยคะแนนชื่อเสียง (Reputation) และกำลังของฮาร์ดแวร์เพื่อเลือก Worker ที่เหมาะสมที่สุดในการจัดสรรงาน |
 | **Step 11-14** | **Off-chain AI Compute** | Python Worker Daemon ตรวจพบงานที่ได้รับมอบหมาย จึงทำการดึงข้อมูลมาประมวลผลภายใน Sandbox โดยประสานงานกับ Hardware Abstraction Layer (HAL) เมื่อได้ผลลัพธ์แล้วจะทำการสร้าง Merkle Tree จากขั้นตอนประมวลผลทั้งหมดเพื่อทำเป็น Proof และส่ง `submitResult` กลับขึ้นบล็อกเชน |
@@ -116,7 +116,7 @@ flowchart TD
 | มิติ (Dimension) | เทคโนโลยีที่ถูกใช้ (Technology Stack) | หน้าที่ในการทำงาน |
 | :--- | :--- | :--- |
 | **เครือข่ายบล็อกเชน** | Rust, libp2p, Kademlia DHT, Gossipsub | เชื่อมโยง Validator Node ทั้งหมดเป็นเครือข่ายแบบไร้ศูนย์กลาง (Decentralized Network) |
-| **ความมั่นคงทางเศรษฐกิจ** | Solidity Smart Contracts, AXX ERC20, Hardhat | บริหารจัดการการวางค้ำประกัน (Staking), การทำข้อตกลงจ้างงาน และการลงโทษหักเงินค้ำประกัน (Slashing) |
+| **ความมั่นคงทางเศรษฐกิจ** | Solidity Smart Contracts, NAK ERC20, Hardhat | บริหารจัดการการวางค้ำประกัน (Staking), การทำข้อตกลงจ้างงาน และการลงโทษหักเงินค้ำประกัน (Slashing) |
 | **การประสานงานประมวลผล** | Python Core Node API, WebOS (Next.js SDK) | ติดต่อสื่อสารแบบสองทางระหว่างโมดูลหน้าบ้าน (Web/Wallet) และหลังบ้าน (JSON-RPC) |
 | **การประมวลผล AI & Edge** | Python Daemon, Docker Sandbox, HAILO NPU SDK | ควบคุมความปลอดภัยในการรันคำสั่งประมวลผลปัญญาประดิษฐ์และเรียกใช้ความสามารถของฮาร์ดแวร์ |
 | **ชั้นความปลอดภัยทางคณิตศาสตร์** | ECVRF (Schnorrkel) & Merkle Trees | คำนวณแบบสุ่มและให้ค่าความน่าจะเป็นที่ทุจริตได้ยากยิ่ง (>99.99% Fraud Detection) |

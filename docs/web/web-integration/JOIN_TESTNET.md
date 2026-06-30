@@ -24,7 +24,7 @@
 
 - **ชื่อเครือข่าย**: Nakhara Testnet
 - **Chain ID**: 86137 (0x15079)
-- **สัญลักษณ์**: AXX (18 decimals)
+- **สัญลักษณ์**: NAK (18 decimals)
 - **Block Time**: 2 วินาที (ตาม genesis)
 - **Consensus**: Proof of Probabilistic Checking (PoPC)
 - **Genesis SHA-256**: `0xed1bdac7c278e5b4f58a1eceb7594a4238e39bb63e1018e38ec18a555c762b55`
@@ -79,7 +79,7 @@ Chain ID:
 86137
 
 Currency Symbol:
-AXX
+NAK
 
 Block Explorer URL (optional):
 https://explorer.nakhara.io
@@ -115,11 +115,11 @@ https://explorer.nakhara.io
 3. **ขอเหรียญ**
    - คลิกปุ่ม "Request Tokens"
    - รอ 5-10 วินาที
-   - ได้รับ **10 AXX** (ฟรี!)
+   - ได้รับ **10 NAK** (ฟรี!)
 
 4. **ตรวจสอบยอด**
    - เปิด MetaMask
-   - ดูยอดเงิน AXX ที่เพิ่มขึ้น
+   - ดูยอดเงิน NAK ที่เพิ่มขึ้น
 
 #### วิธีที่ 2: ผ่าน API (สำหรับนักพัฒนา)
 
@@ -135,9 +135,9 @@ curl -X POST https://faucet.nakhara.io/api/request \
 
 ### ข้อจำกัด
 
-- **จำนวนต่อครั้ง**: 10 AXX
+- **จำนวนต่อครั้ง**: 10 NAK
 - **ความถี่**: 1 ครั้งต่อ 24 ชั่วโมง ต่อ address
-- **Maximum**: 100 AXX ต่อวัน (ทั้งระบบ)
+- **Maximum**: 100 NAK ต่อวัน (ทั้งระบบ)
 
 ### ถ้าต้องการเหรียญมากขึ้น
 
@@ -387,7 +387,7 @@ cast estimate \
 
 #### 5. เงินหายหลัง Deploy
 
-**สาเหตุ**: ส่ง native AXX ไปในขณะ deploy
+**สาเหตุ**: ส่ง native NAK ไปในขณะ deploy
 
 **ป้องกัน**:
 

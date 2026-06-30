@@ -4,7 +4,7 @@
 
 **Last Updated**: May 3, 2026  
 **Network**: Testnet (Chain ID: 86137)  
-**Token Symbol**: AXXt (Testnet Token)
+**Token Symbol**: NAKt (Testnet Token)
 
 ---
 
@@ -18,9 +18,9 @@ The Nakhara Testnet uses a simplified token model designed for testing and devel
 
 | Parameter | Value |
 |-----------|-------|
-| **Token Symbol** | AXXt |
+| **Token Symbol** | NAKt |
 | **Token Name** | Nakhara Testnet Token |
-| **Total Supply** | 1,000,000,000 AXXt (1 Billion) |
+| **Total Supply** | 1,000,000,000 NAKt (1 Billion) |
 | **Supply Model** | Fixed (no inflation) |
 | **Precision** | 18 decimals |
 | **Network** | Testnet |
@@ -33,16 +33,16 @@ The Nakhara Testnet uses a simplified token model designed for testing and devel
 
 | Allocation | Amount | Purpose |
 |------------|--------|---------|
-| **Testnet Faucet** | 500,000,000 AXXt | Free distribution for developers and testers |
-| **Validator Rewards** | 300,000,000 AXXt | Block rewards for testnet validators |
-| **Development Reserve** | 200,000,000 AXXt | Core team testing and development |
+| **Testnet Faucet** | 500,000,000 NAKt | Free distribution for developers and testers |
+| **Validator Rewards** | 300,000,000 NAKt | Block rewards for testnet validators |
+| **Development Reserve** | 200,000,000 NAKt | Core team testing and development |
 
 ### Faucet Details
 
 - **URL**: `https://faucet.nakhara.io` (planned) / Direct RPC request
-- **Daily Limit**: 1,000 AXXt per address
+- **Daily Limit**: 1,000 NAKt per address
 - **Rate Limiting**: 1 request per hour per IP
-- **Minimum Balance**: 0.01 AXXt (for gas)
+- **Minimum Balance**: 0.01 NAKt (for gas)
 
 ---
 
@@ -50,7 +50,7 @@ The Nakhara Testnet uses a simplified token model designed for testing and devel
 
 | Feature | Testnet | Mainnet (Planned) |
 |---------|---------|-------------------|
-| **Total Supply** | 1 Billion AXXt | 1 Trillion AXX |
+| **Total Supply** | 1 Billion NAKt | 1 Trillion NAK |
 | **Vesting** | None (immediate) | Yes (4-year vesting) |
 | **Value** | No real value | Market-determined |
 | **Faucet** | Free unlimited | N/A (purchase only) |
@@ -64,20 +64,20 @@ The Nakhara Testnet uses a simplified token model designed for testing and devel
 ### 1. Gas Fees
 
 - **Purpose**: Pay for transaction execution
-- **Cost**: Minimal (0.001-0.1 AXXt per transaction)
+- **Cost**: Minimal (0.001-0.1 NAKt per transaction)
 - **Burned**: No (recycled to faucet)
 
 ### 2. Staking (Testing)
 
-- **Minimum Stake**: 1,000 AXXt (testnet)
-- **Mainnet Equivalent**: 10,000 AXX
-- **Rewards**: 1 AXXt per block (distributed to validator)
+- **Minimum Stake**: 1,000 NAKt (testnet)
+- **Mainnet Equivalent**: 10,000 NAK
+- **Rewards**: 1 NAKt per block (distributed to validator)
 - **Unstaking Period**: 1 block (testnet) vs 21 days (mainnet)
 
 ### 3. Compute Marketplace (PoPC)
 
-- **Job Payment**: AXXt for compute jobs
-- **Worker Collateral**: 100 AXXt minimum
+- **Job Payment**: NAKt for compute jobs
+- **Worker Collateral**: 100 NAKt minimum
 - **Price Mechanism**: Posted Price Controller (testing)
 
 ---
@@ -106,7 +106,7 @@ Contact testnet validators for development allocation:
 
 ### Method 3: Block Rewards
 
-Run a validator node and earn block rewards (1 AXXt per block).
+Run a validator node and earn block rewards (1 NAKt per block).
 
 ---
 
@@ -114,17 +114,17 @@ Run a validator node and earn block rewards (1 AXXt per block).
 
 ### Block Rewards
 
-- **Reward per Block**: 1.0 AXXt
+- **Reward per Block**: 1.0 NAKt
 - **Block Time**: ~2 seconds
-- **Daily Emission**: ~43,200 AXXt
+- **Daily Emission**: ~43,200 NAKt
 - **Target**: Sustainable for multi-year testing
 
 ### Validator Economics
 
 | Metric | Testnet Value |
 |--------|---------------|
-| **Min Stake** | 1,000 AXXt |
-| **Block Reward** | 1.0 AXXt |
+| **Min Stake** | 1,000 NAKt |
+| **Block Reward** | 1.0 NAKt |
 | **Expected ROI** | N/A (testing) |
 | **Validator Count** | 2 (target: 10+) |
 
@@ -132,7 +132,7 @@ Run a validator node and earn block rewards (1 AXXt per block).
 
 ## Migration to Mainnet
 
-⚠️ **Important**: Testnet tokens (AXXt) have no value and will not be convertible to mainnet AXX.
+⚠️ **Important**: Testnet tokens (NAKt) have no value and will not be convertible to mainnet NAK.
 
 ### Mainnet Launch
 
@@ -147,7 +147,7 @@ Run a validator node and earn block rewards (1 AXXt per block).
 | Parameter | Value |
 |-----------|-------|
 | **Chain ID** | 86137 (0x15079) |
-| **Symbol** | AXXt |
+| **Symbol** | NAKt |
 | **Decimals** | 18 |
 | **Block Time** | 2 seconds |
 | **Genesis** | April 24, 2026 |

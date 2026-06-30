@@ -79,7 +79,7 @@ Validators secure the network by performing PoPC validation.
 
 **Requirements:**
 
-- Minimum 10,000 AXX stake
+- Minimum 10,000 NAK stake
 - Reliable uptime
 - Fast verification capabilities
 
@@ -92,7 +92,7 @@ Validators secure the network by performing PoPC validation.
 # Your address: 0xYourValidatorAddress
 ```
 
-2. **Get testnet AXX:**
+2. **Get testnet NAK:**
 
 ```bash
 # Using curl
@@ -102,7 +102,7 @@ curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
 # Or visit http://localhost:8080 in browser
 ```
 
-3. **Stake AXX:**
+3. **Stake NAK:**
 
 ```bash
 ./build/nakhara-core stake deposit 10000 --address 0xYourValidatorAddress
@@ -125,7 +125,7 @@ curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
 ```
 📊 Validator Status:
   Status: Active
-  Stake: 10,000 AXX
+  Stake: 10,000 NAK
   Validations: 0
   Success Rate: N/A (new validator)
 ```
@@ -169,7 +169,7 @@ EOF
 ./build/nakhara-core keys generate --type worker
 ```
 
-3. **Get testnet AXX from faucet** (same as validator)
+3. **Get testnet NAK from faucet** (same as validator)
 
 4. **Register as worker:**
 
@@ -358,7 +358,7 @@ docker compose restart
 
 ### Insufficient Funds
 
-**Problem:** Not enough AXX for transactions
+**Problem:** Not enough NAK for transactions
 
 **Solution:** Request more from faucet:
 

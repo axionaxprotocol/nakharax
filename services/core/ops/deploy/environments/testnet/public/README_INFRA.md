@@ -59,7 +59,7 @@ If the explorer API does not respond, see [TESTNET_DEPLOYMENT_PLAN](../../../too
 ## Faucet
 
 - **Image:** `ghcr.io/nakhara-io/faucet:latest` (build from `core/` with `ops/deploy/Dockerfile.faucet` if needed).
-- **Config:** `faucet.env` — **must set** `FAUCET_PRIVATE_KEY` (hex) for sending AXX.  
+- **Config:** `faucet.env` — **must set** `FAUCET_PRIVATE_KEY` (hex) for sending NAK.  
   Template: `cp faucet.env.example faucet.env` then edit (file is gitignored).
 - **Endpoints:** Health/info and request endpoints per faucet docs.
 

@@ -2,7 +2,7 @@
 
 ## Issue Summary
 
-ผู้ใช้ไม่สามารถเพิ่ม AXX Token บน MetaMask ได้
+ผู้ใช้ไม่สามารถเพิ่ม NAK Token บน MetaMask ได้
 
 ## Root Cause Analysis
 
@@ -13,7 +13,7 @@
      ```json
      {
        "erc20": {
-         "symbol": "AXX",
+         "symbol": "NAK",
          "address": "0x...",
          "decimals": 18
        }
@@ -21,7 +21,7 @@
      ```
    - แต่ไฟล์ UI (`index.html`) คาดหวังว่า `cfg.erc20` จะเป็น **string address** โดยตรง:
      ```javascript
-     options: { address: CFG.erc20, symbol: 'AXX', decimals: 18 }
+     options: { address: CFG.erc20, symbol: 'NAK', decimals: 18 }
      ```
 
 2. **Insufficient Error Handling**
@@ -53,7 +53,7 @@ const erc20Addr =
     : typeof cfg.erc20 === 'string'
       ? cfg.erc20
       : null;
-const erc20Symbol = typeof cfg.erc20 === 'object' && cfg.erc20?.symbol ? cfg.erc20.symbol : 'AXX';
+const erc20Symbol = typeof cfg.erc20 === 'object' && cfg.erc20?.symbol ? cfg.erc20.symbol : 'NAK';
 const erc20Decimals =
   typeof cfg.erc20 === 'object' && cfg.erc20?.decimals ? cfg.erc20.decimals : 18;
 
@@ -77,7 +77,7 @@ async function addToken() {
     if (!ethereum) throw new Error('MetaMask ยังไม่ได้เชื่อมต่อ');
 
     const tokenAddress = CFG.erc20;
-    const tokenSymbol = CFG.erc20Symbol || 'AXX';
+    const tokenSymbol = CFG.erc20Symbol || 'NAK';
     const tokenDecimals = CFG.erc20Decimals || 18;
 
     log(`กำลังเพิ่มโทเค็น ${tokenSymbol} (${tokenAddress})...`);
@@ -155,7 +155,7 @@ export const addTokenToMetaMask = async (params: AddTokenParams): Promise<boolea
 export const addAXXToken = async (tokenAddress: string): Promise<boolean> => {
   return addTokenToMetaMask({
     address: tokenAddress,
-    symbol: 'AXX',
+    symbol: 'NAK',
     decimals: 18,
   });
 };
@@ -170,7 +170,7 @@ export const addAXXToken = async (tokenAddress: string): Promise<boolean> => {
 - เพิ่ม import `addAXXToken` จาก `@/lib/web3`
 - เพิ่ม state `isAddingToken` สำหรับ loading state
 - เพิ่มฟังก์ชัน `handleAddToken`
-- เพิ่มปุ่ม "Add AXX Token" ใน dropdown menu
+- เพิ่มปุ่ม "Add NAK Token" ใน dropdown menu
 
 ```tsx
 const handleAddToken = async (tokenAddress: string): Promise<void> => {
@@ -183,7 +183,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
   try {
     const wasAdded = await addAXXToken(tokenAddress);
     if (wasAdded) {
-      alert('เพิ่ม AXX Token ลง MetaMask สำเร็จ! ✅');
+      alert('เพิ่ม NAK Token ลง MetaMask สำเร็จ! ✅');
     } else {
       alert('ผู้ใช้ปฏิเสธการเพิ่ม token');
     }
@@ -207,7 +207,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
   <svg className="w-4 h-4" ...>
     <path d="M12 4v16m8-8H4" />
   </svg>
-  {isAddingToken ? 'Adding...' : 'Add AXX Token'}
+  {isAddingToken ? 'Adding...' : 'Add NAK Token'}
 </button>
 ```
 
@@ -231,7 +231,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 
 - [ ] เปิด `index.html` ใน browser
 - [ ] คลิก "Connect Wallet" และเชื่อมต่อกับ MetaMask
-- [ ] คลิก "Add AXX Token"
+- [ ] คลิก "Add NAK Token"
 - [ ] ตรวจสอบว่า MetaMask แสดงหน้าต่างยืนยัน
 - [ ] คลิก "Add Token" ใน MetaMask
 - [ ] ตรวจสอบว่า token ปรากฏใน Assets list
@@ -242,7 +242,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 - [ ] คลิก "Connect Wallet"
 - [ ] เชื่อมต่อกับ MetaMask
 - [ ] คลิก wallet dropdown (แสดง address และ balance)
-- [ ] คลิก "Add AXX Token"
+- [ ] คลิก "Add NAK Token"
 - [ ] ตรวจสอบว่า token ถูกเพิ่มสำเร็จ
 
 ### Error Scenarios

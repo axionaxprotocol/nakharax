@@ -134,8 +134,8 @@ contract JobMarketplace is ReentrancyGuard, Ownable {
     // ==========================================================================
     
     /**
-     * @dev Register as a worker by staking AXX tokens
-     * @param stakeAmount Amount of AXX to stake
+     * @dev Register as a worker by staking NAK tokens
+     * @param stakeAmount Amount of NAK to stake
      */
     function registerWorker(uint256 stakeAmount) external nonReentrant {
         require(stakeAmount >= minStake, "Stake too low");
@@ -201,7 +201,7 @@ contract JobMarketplace is ReentrancyGuard, Ownable {
     /**
      * @dev Create a new compute job
      * @param jobType Type of job (Inference, Training, etc.)
-     * @param reward Reward amount in AXX tokens
+     * @param reward Reward amount in NAK tokens
      * @param timeout Maximum time for job completion (seconds)
      * @param inputHash IPFS hash of job input data
      */

@@ -307,7 +307,7 @@ impl Blockchain {
         Ok(())
     }
 
-    /// Creates genesis block from canonical mainnet config (1T AXX, nakharaius, validators).
+    /// Creates genesis block from canonical mainnet config (1T NAK, nakharaius, validators).
     /// Uses the genesis crate so block hash, state_root, and timestamp match genesis.json.
     pub fn create_genesis() -> Result<Block> {
         let g = GenesisGenerator::mainnet();

@@ -16,7 +16,7 @@
 
 - Docker + Docker Compose
 - Nginx (มีอยู่แล้วจาก check-vps3)
-- `FAUCET_PRIVATE_KEY` ที่ตรงกับ address ใน genesis (มี AXX จาก allocation)
+- `FAUCET_PRIVATE_KEY` ที่ตรงกับ address ใน genesis (มี NAK จาก allocation)
 
 ---
 
@@ -87,7 +87,7 @@ curl -s http://127.0.0.1:3002/info
 
 ---
 
-## 6. ทดสอบขอ AXX
+## 6. ทดสอบขอ NAK
 
 ```bash
 curl -X POST http://127.0.0.1:3002/request \

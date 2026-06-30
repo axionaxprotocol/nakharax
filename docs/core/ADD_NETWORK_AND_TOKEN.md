@@ -1,6 +1,6 @@
-# Add Nakhara Network and AXX Token in MetaMask and Other Wallets
+# Add Nakhara Network and NAK Token in MetaMask and Other Wallets
 
-How to add **Nakhara Testnet** and the **AXX** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
+How to add **Nakhara Testnet** and the **NAK** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
 
 **Web UI guide (with Add Token button):** [nakhara-monolith → Add Token to MetaMask](https://github.com/nakhara-io/nakhara-monolith/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
 
@@ -13,7 +13,7 @@ How to add **Nakhara Testnet** and the **AXX** token in MetaMask, Rabby, Coinbas
 | **Network name** | Nakhara Testnet |
 | **RPC URL** | `https://rpc.nakhara.io` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
 | **Chain ID** | `86137` |
-| **Currency symbol** | AXX |
+| **Currency symbol** | NAK |
 | **Decimals** | 18 |
 | **Block explorer** | https://explorer.nakhara.io |
 
@@ -31,12 +31,12 @@ How to add **Nakhara Testnet** and the **AXX** token in MetaMask, Rabby, Coinbas
    | **Network name** | `Nakhara Testnet` |
    | **RPC URL** | `https://rpc.nakhara.io` |
    | **Chain ID** | `86137` |
-   | **Currency symbol** | `AXX` |
+   | **Currency symbol** | `NAK` |
    | **Block explorer URL** | Leave blank or set when available |
 
 3. Click **Save** and switch to **Nakhara Testnet**.
 
-After adding the network, **native AXX** appears in the wallet automatically; no separate "Import token" is required for the native token.
+After adding the network, **native NAK** appears in the wallet automatically; no separate "Import token" is required for the native token.
 
 ### Adding an ERC-20 token (separate contract)
 
@@ -64,13 +64,13 @@ Same idea: add a **Custom network / Custom RPC** with the parameters above.
 | Network name | Nakhara Testnet |
 | RPC URL | `https://rpc.nakhara.io` |
 | Chain ID | `86137` |
-| Symbol | AXX |
+| Symbol | NAK |
 
-**Native AXX** is shown when this network is selected; no separate token import is needed.
+**Native NAK** is shown when this network is selected; no separate token import is needed.
 
 ---
 
-## 3. Receive AXX Testnet (Claim from Faucet)
+## 3. Receive NAK Testnet (Claim from Faucet)
 
 A zero balance is resolved by **receiving from the Faucet** only. The "Add funds" button in MetaMask is for buying with fiat, not for testnet tokens.
 
@@ -80,7 +80,7 @@ A zero balance is resolved by **receiving from the Faucet** only. The "Add funds
    - **https://faucet.nakhara.io**
 2. **Copy your wallet address** from MetaMask (click "Account 1" or the address at the top → Copy).
 3. Paste the address into the Faucet page → click Request / Claim.
-4. Wait a moment (typically 100 AXX per request; 24h cooldown per address).
+4. Wait a moment (typically 100 NAK per request; 24h cooldown per address).
 
 ### Option 2: Faucet API (when a Faucet is running)
 
@@ -93,7 +93,7 @@ curl -X POST https://faucet.nakhara.io/request \
   -d '{"address": "0xYOUR_METAMASK_ADDRESS"}'
 ```
 
-A successful response includes `"success": true` and `tx_hash`; the AXX balance in MetaMask should update shortly (refresh if needed).
+A successful response includes `"success": true` and `tx_hash`; the NAK balance in MetaMask should update shortly (refresh if needed).
 
 ### If claim fails or no tokens appear
 
@@ -111,10 +111,10 @@ A successful response includes `"success": true` and `tx_hash`; the AXX balance 
 
 | Goal | Method |
 |------|--------|
-| **See AXX in MetaMask/wallet** | Add Nakhara Testnet (RPC + Chain ID 86137 + symbol AXX) → native AXX appears automatically |
+| **See NAK in MetaMask/wallet** | Add Nakhara Testnet (RPC + Chain ID 86137 + symbol NAK) → native NAK appears automatically |
 | **See another ERC-20 token** | On Nakhara Testnet → Import token with contract address |
 | **Mainnet (future)** | Chain ID will be `86150` — same add-network steps with the announced Chain ID and RPC |
 
 ---
 
-*Updated from README and genesis: Chain ID 86137, symbol AXX, decimals 18.*
+*Updated from README and genesis: Chain ID 86137, symbol NAK, decimals 18.*

@@ -75,7 +75,7 @@
 - [ ] **Faucet ขึ้น** — `https://faucet.nakhara.io` ตอบ (ตาม [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md))
 - [ ] **Balance faucet พอ** — ตรวจ balance ของ faucet address; เติมหรือปรับ amount ต่อ request ถ้าจำเป็น
 - [ ] **Rate limit สมเหตุสมผล** — จำกัดต่อ IP/address (เช่น 24h) ไม่ให้ abuse แต่ยังให้ทดสอบได้
-- [ ] **Request สำเร็จ** — ทดสอบขอ AXX จาก faucet แล้วได้ token; ดู log ถ้ามี error (RPC timeout, gas)
+- [ ] **Request สำเร็จ** — ทดสอบขอ NAK จาก faucet แล้วได้ token; ดู log ถ้ามี error (RPC timeout, gas)
 
 ---
 

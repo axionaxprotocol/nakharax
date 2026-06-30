@@ -7,19 +7,19 @@
 > **Current Testnet Configuration:**
 >
 > - Testnet uses simplified token model for testing
-> - Total Supply: 1 Billion AXXt (for testing)
+> - Total Supply: 1 Billion NAKt (for testing)
 > - No vesting implementation (immediate distribution)
 > - See [TOKENOMICS_TESTNET.md](./TOKENOMICS_TESTNET.md) for current testnet configuration
 
 ## Overview
 
-The AXX token is the native utility token of the nakhara protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
+The NAK token is the native utility token of the nakhara protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
 
 ## Mainnet Token Supply (Production Plan)
 
-- **Token Symbol**: AXX (Mainnet Token)
+- **Token Symbol**: NAK (Mainnet Token)
 - **Token Name**: Nakhara Token
-- **Total Supply**: 1,000,000,000,000 AXX (1 Trillion)
+- **Total Supply**: 1,000,000,000,000 NAK (1 Trillion)
 - **Supply Model**: Fixed cap (no inflation beyond initial distribution)
 - **Precision**: 18 decimals
 - **Network**: Mainnet (Future Launch)
@@ -28,34 +28,34 @@ The AXX token is the native utility token of the nakhara protocol, designed to a
 
 ### 1. Gas Fees (Transaction Costs)
 
-- All on-chain transactions require AXX for gas
+- All on-chain transactions require NAK for gas
 - Dynamic fee market based on network congestion
 - Fee burn mechanism (optional, governance-controlled)
 
 ### 2. Staking
 
-- **Validators**: Stake AXX to participate in consensus
-  - Minimum stake: 100,000 AXX (governance parameter)
+- **Validators**: Stake NAK to participate in consensus
+  - Minimum stake: 100,000 NAK (governance parameter)
   - Slashing for misbehavior
-- **Workers**: Stake AXX as collateral for compute jobs
+- **Workers**: Stake NAK as collateral for compute jobs
   - Stake amount proportional to job value
   - Slashing for fraud or DA unavailability
 
 ### 3. Medium of Exchange
 
-- Workers receive AXX for completed compute jobs
-- Clients pay AXX for compute resources
+- Workers receive NAK for completed compute jobs
+- Clients pay NAK for compute resources
 - Settlement via Posted Price Controller (PPC)
 
 ### 4. Governance
 
-- AXX holders participate in DAO governance
-- Voting power proportional to staked AXX
+- NAK holders participate in DAO governance
+- Voting power proportional to staked NAK
 - Vote on protocol parameters, upgrades, treasury allocation
 
 ## Token Allocation (Suggested Distribution)
 
-| Allocation              | Percentage | Amount (AXX)    | Vesting       | Purpose                               |
+| Allocation              | Percentage | Amount (NAK)    | Vesting       | Purpose                               |
 | ----------------------- | ---------- | --------------- | ------------- | ------------------------------------- |
 | **Ecosystem Reserve**   | 45%        | 450,000,000,000 | N/A           | Staking rewards, grants, partnerships |
 | **Team & Advisors**     | 20%        | 200,000,000,000 | 4-year linear | Core contributors                     |
@@ -111,7 +111,7 @@ Worker Reward_i = Job_Value × (1 - Protocol_Fee) × Quality_Score_i
 
 | Parameter                   | Initial Value | Description                   |
 | --------------------------- | ------------- | ----------------------------- |
-| **Validator Min Stake**     | 100,000 AXX   | Minimum to become validator   |
+| **Validator Min Stake**     | 100,000 NAK   | Minimum to become validator   |
 | **Worker Stake Ratio**      | 10-20%        | Stake as % of job value       |
 | **Protocol Fee**            | 5%            | Fee on compute jobs           |
 | **Slash Rate (Fraud)**      | 100%          | Penalty for proven fraud      |
@@ -123,7 +123,7 @@ Worker Reward_i = Job_Value × (1 - Protocol_Fee) × Quality_Score_i
 
 ```mermaid
 flowchart LR
-    Client[Client] -->|Pay AXX| Protocol[nakhara protocol]
+    Client[Client] -->|Pay NAK| Protocol[nakhara protocol]
     Protocol -->|PPC Pricing| ASR[ASR Router]
     ASR -->|Assign Job| Worker[Worker]
     Worker -->|Stake| Protocol
@@ -136,7 +136,7 @@ flowchart LR
 
     Treasury -->|Grants| Ecosystem[Ecosystem Projects]
 
-    DAO[AXX Holders] -->|Vote| Protocol
+    DAO[NAK Holders] -->|Vote| Protocol
 ```
 
 ## Fee Structure
@@ -199,21 +199,21 @@ Distribution:
 
 ### Year 1 (Testnet → Mainnet)
 
-- **Circulating Supply**: ~150B AXX (15%)
+- **Circulating Supply**: ~150B NAK (15%)
 - **Staked %**: Target 40-50%
 - **Validator Count**: 100+
 - **Worker Nodes**: 500+
 
 ### Year 3 (Mature Network)
 
-- **Circulating Supply**: ~400B AXX (40%)
+- **Circulating Supply**: ~400B NAK (40%)
 - **Staked %**: Target 50-60%
 - **Validator Count**: 500+
 - **Worker Nodes**: 5,000+
 
 ### Year 5 (Fully Distributed)
 
-- **Circulating Supply**: ~800B AXX (80%)
+- **Circulating Supply**: ~800B NAK (80%)
 - **Staked %**: Target 50-60%
 - **Validator Count**: 1,000+
 - **Worker Nodes**: 20,000+

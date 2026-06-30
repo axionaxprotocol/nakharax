@@ -68,7 +68,7 @@ Returns the current chain ID.
 
 ### eth_getBalance
 
-Get AXX balance of an address.
+Get NAK balance of an address.
 
 **Parameters:**
 
@@ -451,8 +451,8 @@ On-chain voting and proposal management.
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `min_validator_stake` | 10,000 AXX | Minimum stake to become a validator |
-| `min_delegation` | 100 AXX | Minimum delegation amount |
+| `min_validator_stake` | 10,000 NAK | Minimum stake to become a validator |
+| `min_delegation` | 100 NAK | Minimum delegation amount |
 | `unstaking_lock_blocks` | 725,760 | Lock period after unstaking (~21 days) |
 | `epoch_reward_rate_bps` | 50 | Reward rate 0.5% per epoch |
 | `max_slash_rate_bps` | 5,000 | Maximum slash rate 50% |
@@ -461,7 +461,7 @@ On-chain voting and proposal management.
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `min_proposal_stake` | 100,000 AXX | Minimum stake to create a proposal |
+| `min_proposal_stake` | 100,000 NAK | Minimum stake to create a proposal |
 | `voting_period_blocks` | 241,920 | Voting period (~7 days) |
 | `execution_delay_blocks` | 69,120 | Delay after vote passes (~2 days) |
 | `quorum_bps` | 3,000 | At least 30% participation required |
@@ -610,7 +610,7 @@ Submit PoPC proof (workers only).
 | -32603 | Internal error     | Internal JSON-RPC error                |
 | -32000 | Job not found      | Job ID does not exist                  |
 | -32001 | Worker not found   | Worker address not registered          |
-| -32002 | Insufficient stake | Not enough staked AXX                  |
+| -32002 | Insufficient stake | Not enough staked NAK                  |
 | -32003 | Invalid specs      | Hardware specs don't meet requirements |
 | -32004 | Quota exceeded     | Worker has exceeded epoch quota        |
 | -32005 | Validation failed  | PoPC validation failed                 |

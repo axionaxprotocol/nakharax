@@ -77,7 +77,7 @@ This repository contains many documents. This file is the central index: content
 | [ops/deploy/VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) | Deploy chain services on 46.250.244.4 (AU) |
 | [web/VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) | Deploy Nakhara OS on 217.216.109.5 (EU) |
 | [CONNECTIVITY_OVERVIEW.md](CONNECTIVITY_OVERVIEW.md) | How Local full node, VPS Validator, and Frontend connect |
-| [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Nakhara Testnet and AXX token in MetaMask; receive from Faucet |
+| [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Nakhara Testnet and NAK token in MetaMask; receive from Faucet |
 | [ops/deploy/VPS_VALIDATOR_UPDATE.md](../ops/deploy/VPS_VALIDATOR_UPDATE.md) | Validator VPS update (217.216.109.5, 46.250.244.4) and checklist |
 | [ops/deploy/VPS_FULL_NODE_RUNBOOK.md](../ops/deploy/VPS_FULL_NODE_RUNBOOK.md) | Run full node on VPS (chain_id 86137, RPC 8545, P2P 30303) |
 | [RUN_PUBLIC_FULL_NODE.md](RUN_PUBLIC_FULL_NODE.md) | Permissionless public testnet full node — genesis, bootstrap, build, verify (any operator worldwide) |
@@ -153,7 +153,7 @@ This repository contains many documents. This file is the central index: content
 - **Understand vision and principles** → Book I + MASTER_SUMMARY
 - **Run node/Worker** → Book III + README + RUN
 - **Deploy Testnet / Validator** → Book IV + GENESIS_PUBLIC_TESTNET_PLAN
-- **Add network / receive AXX in MetaMask** → ADD_NETWORK_AND_TOKEN
+- **Add network / receive NAK in MetaMask** → ADD_NETWORK_AND_TOKEN
 - **Check launch readiness** → Book V + verify-launch-ready.sh
 
 ---

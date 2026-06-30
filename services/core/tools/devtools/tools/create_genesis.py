@@ -29,7 +29,7 @@ class GenesisGenerator:
                     "consensus": "popc",
                     "blockTime": 5,
                     "epochLength": 100,
-                    "minValidatorStake": "10000000000000000000000",  # 10,000 AXX
+                    "minValidatorStake": "10000000000000000000000",  # 10,000 NAK
                     "maxValidators": 100,
                     "slashingRate": 0.1,
                     "falsPassPenalty": 500  # 5% in basis points
@@ -116,7 +116,7 @@ class GenesisGenerator:
             self.add_validator(
                 address=v["address"],
                 name=v["name"],
-                stake=v.get("stake", "50000000000000000000000"),  # 50K AXX default
+                stake=v.get("stake", "50000000000000000000000"),  # 50K NAK default
                 commission=v.get("commission", 0.10),
                 enode=v.get("enode", "")
             )
@@ -156,7 +156,7 @@ class GenesisGenerator:
         print(f"\nValidation Results:")
         print(f"  Validators: {len(self.genesis['validators'])}")
         print(f"  Allocations: {len(self.genesis['alloc'])}")
-        print(f"  Total Supply: {total_supply / 10**18:.2f} AXX")
+        print(f"  Total Supply: {total_supply / 10**18:.2f} NAK")
         
         if errors:
             print("\nErrors:")
@@ -226,14 +226,14 @@ def main():
         # Foundation
         gen.add_allocation(
             "0xF0UNDA7I0N0000000000000000000000000000001",
-            "300000000000000000000000000",  # 300M AXX
+            "300000000000000000000000000",  # 300M NAK
             vesting=True,
             vesting_schedule="4 years linear"
         )
         # Rewards Pool
         gen.add_allocation(
             "0xREWARD5P00L0000000000000000000000000000002",
-            "250000000000000000000000000",  # 250M AXX
+            "250000000000000000000000000",  # 250M NAK
         )
     
     # Validate

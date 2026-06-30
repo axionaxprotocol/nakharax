@@ -306,7 +306,7 @@ cat ~/nakhara-worker/keys/worker-key.json
 # Connect to testnet RPC
 export NAKHARA_RPC="https://rpc.nakhara.io"
 
-# Register worker (requires AXX tokens for gas)
+# Register worker (requires NAK tokens for gas)
 # An auto-register script will be available in the future
 ```
 

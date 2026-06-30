@@ -2,7 +2,7 @@
 """
 Nakhara Genesis Block #0 Generator
 
-Total Supply : 1,000,000,000,000 AXX  (1 trillion, 18 decimals)
+Total Supply : 1,000,000,000,000 NAK  (1 trillion, 18 decimals)
 Creator alias: nakharaius
 
 Usage:
@@ -21,10 +21,10 @@ CHAIN_ID_TESTNET = 86137
 CHAIN_ID_MAINNET = 86150
 CHAIN_ID = CHAIN_ID_TESTNET
 CHAIN_NAME = "Nakhara Testnet"
-SYMBOL = "AXX"
+SYMBOL = "NAK"
 DECIMALS = 18
 ONE_AXX = 10 ** DECIMALS
-TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion AXX
+TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion NAK
 TOTAL_SUPPLY_WEI = TOTAL_SUPPLY * ONE_AXX
 
 # Q2 2026 Mainnet Genesis — 2026-04-01 00:00:00 UTC

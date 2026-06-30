@@ -12,7 +12,7 @@
 | Item                     | Value                                                                                    |
 | ------------------------ | ---------------------------------------------------------------------------------------- |
 | Chain ID                 | `86137` (`0x15079`)                                                                      |
-| Native token             | AXX (18 decimals)                                                                        |
+| Native token             | NAK (18 decimals)                                                                        |
 | Genesis file             | `core/tools/genesis.json`                                                                |
 | Genesis SHA-256          | `0xed1bdac7c278e5b4f58a1eceb7594a4238e39bb63e1018e38ec18a555c762b55`                     |
 | Block time               | 2 s (genesis)                                                                            |

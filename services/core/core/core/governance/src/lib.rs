@@ -93,7 +93,7 @@ impl GovernanceConfig {
         };
         let blocks_per_day = (24 * 3600) / block_time;
         Self {
-            min_proposal_stake: 100_000 * 10_u128.pow(18), // 100,000 AXX
+            min_proposal_stake: 100_000 * 10_u128.pow(18), // 100,000 NAK
             voting_period_blocks: blocks_per_day * 7,      // 7 days
             execution_delay_blocks: blocks_per_day * 2,    // 2 days
             quorum_bps: 3000,                              // 30% quorum

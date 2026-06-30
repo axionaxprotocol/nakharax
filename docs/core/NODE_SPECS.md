@@ -34,7 +34,7 @@ Same as Full Node + block production. Higher availability required.
 | **Production** | 8+ cores | 32 GB | 500 GB NVMe | 6 TB/mo | — |
 
 **Notes:**
-- Must meet `min_validator_stake` (genesis: 10,000 AXX)
+- Must meet `min_validator_stake` (genesis: 10,000 NAK)
 - 99.9%+ uptime target
 - DDoS protection recommended
 

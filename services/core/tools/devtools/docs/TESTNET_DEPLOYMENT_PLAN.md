@@ -31,10 +31,10 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - **Faucet API** (Port 3002): Container running, service not responding
 
 ### ✅ Recent Achievements
-- MetaMask wallet integration with AXX token support
+- MetaMask wallet integration with NAK token support
 - Auto-network configuration (Chain ID 86137)
 - Web3 Context Provider and ConnectButton component
-- Token terminology corrected (AXN → AXX per TOKENOMICS.md)
+- Token terminology corrected (AXN → NAK per TOKENOMICS.md)
 - Production builds verified and deployed
 
 ---
@@ -267,7 +267,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 ### Phase 1 Success Criteria
 - ✅ 100% service uptime (9/9 operational)
 - ✅ Explorer API response time < 500ms
-- ✅ Faucet successfully distributes AXX tokens
+- ✅ Faucet successfully distributes NAK tokens
 - ✅ MetaMask auto-configures network
 - ✅ All documentation complete
 

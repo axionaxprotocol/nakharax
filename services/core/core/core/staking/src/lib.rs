@@ -81,8 +81,8 @@ impl StakingConfig {
         };
         let blocks_per_day = (24 * 3600) / block_time;
         Self {
-            min_validator_stake: 10_000 * 10_u128.pow(18), // 10,000 AXX
-            min_delegation: 100 * 10_u128.pow(18),         // 100 AXX
+            min_validator_stake: 10_000 * 10_u128.pow(18), // 10,000 NAK
+            min_delegation: 100 * 10_u128.pow(18),         // 100 NAK
             unstaking_lock_blocks: blocks_per_day * 21,    // 21 days
             epoch_reward_rate_bps: 50,                     // 0.5% per epoch (~6% APY)
             blocks_per_epoch: blocks_per_day / 2,          // 12 hours
@@ -641,7 +641,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_record_block_produced_credits_reward() {
-        const REWARD: u128 = 1_000_000_000_000_000_000; // 1 AXX in wei
+        const REWARD: u128 = 1_000_000_000_000_000_000; // 1 NAK in wei
         let staking = Staking::new(default_config());
         staking.stake("validator1".to_string(), 1000).await.unwrap();
 

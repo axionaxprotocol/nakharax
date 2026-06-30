@@ -110,7 +110,7 @@ Nakhara Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the 
   "method": "gov_createProposal",
   "params": [
     "0x1234...proposer_address",          // Proposer address
-    "0x152d02c7e14af6800000",             // Minimum stake (100,000 AXX)
+    "0x152d02c7e14af6800000",             // Minimum stake (100,000 NAK)
     "Increase Base Fee",                   // Title
     "Propose to increase base fee to reduce spam", // Description
     "parameter:base_fee=2000000000"        // Type: parameter change
@@ -144,8 +144,8 @@ Nakhara Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the 
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `min_validator_stake` | 10,000 AXX | Minimum stake to become a validator |
-| `min_delegation` | 100 AXX | Minimum delegation amount |
+| `min_validator_stake` | 10,000 NAK | Minimum stake to become a validator |
+| `min_delegation` | 100 NAK | Minimum delegation amount |
 | `unstaking_lock_blocks` | 725,760 | Lock period after unstaking (~21 days) |
 | `epoch_reward_rate_bps` | 50 | Reward rate 0.5% per epoch |
 | `max_slash_rate_bps` | 5,000 | Maximum slash rate 50% |
@@ -154,7 +154,7 @@ Nakhara Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the 
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `min_proposal_stake` | 100,000 AXX | Minimum stake to create a proposal |
+| `min_proposal_stake` | 100,000 NAK | Minimum stake to create a proposal |
 | `voting_period_blocks` | 241,920 | Voting period (~7 days) |
 | `execution_delay_blocks` | 69,120 | Delay after vote passes (~2 days) |
 | `quorum_bps` | 3,000 | At least 30% participation required |

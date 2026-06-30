@@ -2,7 +2,7 @@
 //!
 //! Creates Block #0 for the Nakhara network.
 //!
-//! Total Supply : 1,000,000,000,000 AXX  (1 trillion, 18 decimals)
+//! Total Supply : 1,000,000,000,000 NAK  (1 trillion, 18 decimals)
 //! Creator alias: nakharaius
 
 use chrono::Utc;
@@ -16,13 +16,13 @@ use std::collections::HashMap;
 
 pub const CHAIN_ID: u64 = 86137;
 pub const CHAIN_NAME: &str = "Nakhara Mainnet";
-pub const SYMBOL: &str = "AXX";
+pub const SYMBOL: &str = "NAK";
 pub const DECIMALS: u32 = 18;
 
-/// 1 AXX in wei
+/// 1 NAK in wei
 const ONE_AXX: u128 = 10_u128.pow(18);
 
-/// Total supply: 1 trillion AXX
+/// Total supply: 1 trillion NAK
 pub const TOTAL_SUPPLY: u128 = 1_000_000_000_000 * ONE_AXX;
 
 /// Genesis timestamp — Q2 2026 Mainnet: 2026-04-01 00:00:00 UTC
@@ -308,7 +308,7 @@ impl GenesisGenerator {
 
     /// Build the canonical mainnet / testnet genesis with full token allocation.
     ///
-    /// Total supply: 1 trillion AXX (1,000,000,000,000)
+    /// Total supply: 1 trillion NAK (1,000,000,000,000)
     /// Creator alias: nakharaius (10 %)
     pub fn mainnet() -> GenesisBlock {
         let validator_half = Self::alloc(ALLOC_VALIDATORS_BPS) / 2;

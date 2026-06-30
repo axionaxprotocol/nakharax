@@ -22,7 +22,7 @@
       "falsPassPenalty": 500,
       "totalSupply": "1000000000000000000000000000000",
       "decimals": 18,
-      "symbol": "AXX"
+      "symbol": "NAK"
     }
   },
   "nonce": "0x0",
@@ -39,7 +39,7 @@
   },
   "tokenomics": {
     "name": "Nakhara",
-    "symbol": "AXX",
+    "symbol": "NAK",
     "decimals": 18,
     "totalSupply": "1000000000000",
     "totalSupplyWei": "1000000000000000000000000000000",

@@ -147,7 +147,7 @@ export function toHex(value: bigint): string {
 }
 
 /**
- * Format AXX amount for readability
+ * Format NAK amount for readability
  */
 export function formatAXX(value: bigint, decimals = 18): string {
   const divisor = 10n ** BigInt(decimals);
@@ -155,11 +155,11 @@ export function formatAXX(value: bigint, decimals = 18): string {
   const fraction = value % divisor;
   
   if (fraction === 0n) {
-    return `${whole.toLocaleString()} AXX`;
+    return `${whole.toLocaleString()} NAK`;
   }
   
   const fractionStr = fraction.toString().padStart(decimals, '0').slice(0, 2);
-  return `${whole.toLocaleString()}.${fractionStr} AXX`;
+  return `${whole.toLocaleString()}.${fractionStr} NAK`;
 }
 
 /**

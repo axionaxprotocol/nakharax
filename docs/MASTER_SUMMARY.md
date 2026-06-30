@@ -140,7 +140,7 @@ Dedicated AI models on Sentinel nodes for security verification:
 | Phase       | Name            | Timeline | Key Goals                                                           |
 | ----------- | --------------- | -------- | ------------------------------------------------------------------- |
 | **Phase 1** | The Incarnation | Q1 2026  | Public Testnet, Monolith Scout/Vanguard sales, Geo-Hierarchy launch |
-| **Phase 2** | Genesis         | Q3 2026  | Mainnet launch, AXX listing, live Marketplace                       |
+| **Phase 2** | Genesis         | Q3 2026  | Mainnet launch, NAK listing, live Marketplace                       |
 | **Phase 3** | Evolution       | 2027     | Photonic chip, Enterprise API                                       |
 | **Phase 4** | Ascension       | 2028+    | Space nodes, Global Neural Grid                                     |
 

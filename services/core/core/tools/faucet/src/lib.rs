@@ -43,11 +43,11 @@ pub fn is_within_cooldown(last_request_ts: u64, now_ts: u64, cooldown_secs: u64)
     now_ts.saturating_sub(last_request_ts) <= cooldown_secs
 }
 
-/// Format a raw wei amount as a human-readable AXX string with four decimal
-/// places, e.g. `"1.0000 AXX"` for `1 × 10¹⁸` wei.
+/// Format a raw wei amount as a human-readable NAK string with four decimal
+/// places, e.g. `"1.0000 NAK"` for `1 × 10¹⁸` wei.
 pub fn format_amount_axx(wei: u128) -> String {
     let axx = wei as f64 / 1e18;
-    format!("{:.4} AXX", axx)
+    format!("{:.4} NAK", axx)
 }
 
 /// Build a JSON-RPC 2.0 `eth_getTransactionCount` request body that can be
@@ -186,17 +186,17 @@ mod tests {
 
     #[test]
     fn test_format_amount_1_axx() {
-        assert_eq!(format_amount_axx(1_000_000_000_000_000_000), "1.0000 AXX");
+        assert_eq!(format_amount_axx(1_000_000_000_000_000_000), "1.0000 NAK");
     }
 
     #[test]
     fn test_format_amount_half_axx() {
-        assert_eq!(format_amount_axx(500_000_000_000_000_000), "0.5000 AXX");
+        assert_eq!(format_amount_axx(500_000_000_000_000_000), "0.5000 NAK");
     }
 
     #[test]
     fn test_format_amount_zero() {
-        assert_eq!(format_amount_axx(0), "0.0000 AXX");
+        assert_eq!(format_amount_axx(0), "0.0000 NAK");
     }
 
     // ── RPC request builders ──────────────────────────────────────────────────

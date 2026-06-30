@@ -47,8 +47,8 @@ alwaysApply: false
 ```
 Chain ID (testnet):    86137
 Chain ID (mainnet):    86150
-Block reward:          1_000_000_000_000_000_000 wei (1 AXX)
-Min validator stake:   10_000 * 10^18 (10,000 AXX)
+Block reward:          1_000_000_000_000_000_000 wei (1 NAK)
+Min validator stake:   10_000 * 10^18 (10,000 NAK)
 Finality threshold:    votes * 3 >= active_validators * 2  (≥2/3)
 PoPC sample size:      1000 (config: protocol.testnet.yaml)
 Transaction signing:   Ed25519, payload = from+to+value+gas_price+gas_limit+nonce+data
@@ -77,7 +77,7 @@ P2P port:              30303 (libp2p)
 | Phase | Timeline | Focus |
 |-------|----------|-------|
 | Phase 1 (Incarnation) | Q1 2026 | Public testnet, Monolith Scout/Vanguard sales |
-| Phase 2 (Genesis) | Q3 2026 | Mainnet launch, AXX listing, live Marketplace |
+| Phase 2 (Genesis) | Q3 2026 | Mainnet launch, NAK listing, live Marketplace |
 | Phase 3 (Evolution) | 2027 | Photonic chip, Enterprise API |
 | Phase 4 (Ascension) | 2028+ | Space nodes, Global Neural Grid |
 

@@ -45,7 +45,7 @@ export const NAKHARA_TESTNET_CONFIG = {
   chainIdHex: "0x15079",
   name: "Nakhara Testnet",
   rpcUrl: process.env.NEXT_PUBLIC_RPC_URL ?? "https://rpc.nakhara.io",
-  currency: { name: "AXX", symbol: "AXX", decimals: 18 },
+  currency: { name: "NAK", symbol: "NAK", decimals: 18 },
   explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL ?? "",
 }
 ```

@@ -2,11 +2,11 @@
 pragma solidity ^0.8.20;
 
 /**
- * @title MockAXXToken
- * @dev Minimal ERC-20 used on testnet to simulate AXX stake/reward flows.
+ * @title MockNAKToken
+ * @dev Minimal ERC-20 used on testnet to simulate NAK stake/reward flows.
  *      Anyone can mint (testnet only — NOT for production).
  */
-contract MockAXXToken {
+contract MockNAKToken {
     string public constant name     = "Nakhara Token (Testnet)";
     string public constant symbol   = "tAXX";
     uint8  public constant decimals = 18;

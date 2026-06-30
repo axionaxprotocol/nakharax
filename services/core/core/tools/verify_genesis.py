@@ -19,7 +19,7 @@ from pathlib import Path
 EXPECTED_CHAIN_ID = 86137
 EXPECTED_CONSENSUS = "popc"
 EXPECTED_CREATOR = "nakharaius"
-EXPECTED_TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion AXX
+EXPECTED_TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion NAK
 EXPECTED_TOTAL_SUPPLY_WEI = EXPECTED_TOTAL_SUPPLY * (10 ** 18)
 EXPECTED_DECIMALS = 18
 
@@ -83,7 +83,7 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
     for v in validators:
         print(f"    - {v.get('name', 'Unnamed')} @ {v.get('ip', 'N/A')}")
         stake_wei = int(v.get("stake", "0"))
-        print(f"      Stake: {stake_wei / 10**18:,.0f} AXX")
+        print(f"      Stake: {stake_wei / 10**18:,.0f} NAK")
 
     print()
     print(f"  Allocations : {len(alloc)} addresses")
@@ -93,10 +93,10 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
         total_wei += bal
         label = data.get("label", addr[:20])
         pct = data.get("percent", "")
-        print(f"    {label:<36} {pct:>5}  {bal / 10**18:>22,.0f} AXX")
+        print(f"    {label:<36} {pct:>5}  {bal / 10**18:>22,.0f} NAK")
 
     print(f"    {'':->64}")
-    print(f"    {'TOTAL':<36}       {total_wei / 10**18:>22,.0f} AXX")
+    print(f"    {'TOTAL':<36}       {total_wei / 10**18:>22,.0f} NAK")
 
     issues = []
     warnings = []

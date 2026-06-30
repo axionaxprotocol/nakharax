@@ -66,7 +66,7 @@
 
 ### 3.6 Docs & Communication
 
-- [ ] **Add Network** — อัปเดต [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) ให้มี mainnet (Chain ID 86150, RPC URL, symbol AXX)
+- [ ] **Add Network** — อัปเดต [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) ให้มี mainnet (Chain ID 86150, RPC URL, symbol NAK)
 - [ ] **Frontend** — ตั้ง RPC mainnet; แยกหรือสลับ network testnet/mainnet ตาม UI
 - [ ] **ประกาศ** — กำหนดวันเปิด mainnet, RPC URL, Chain ID 86150, วิธี Add Network และข้อควรระวัง (ไม่มี faucet หรือ rate limit)
 
@@ -89,7 +89,7 @@
 | Chain ID | 86137 | 86150 |
 | Genesis | genesis.json (testnet) | genesis ใหม่เฉพาะ mainnet |
 | Validator key | key testnet | key ใหม่ mainnet only |
-| Faucet | เปิดให้ขอ AXX | จำกัดมากหรือปิด; ไม่ใช้ seed เดียวกับ testnet |
+| Faucet | เปิดให้ขอ NAK | จำกัดมากหรือปิด; ไม่ใช้ seed เดียวกับ testnet |
 | ค่า/โทเคน | ไม่มีมูลค่าจริง | มีมูลค่า — security และ key management เข้มขึ้น |
 
 ---

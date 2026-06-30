@@ -1,5 +1,5 @@
 """
-deploy_marketplace.py — Deploy MockAXXToken + JobMarketplace to Nakhara testnet.
+deploy_marketplace.py — Deploy MockNAKToken + JobMarketplace to Nakhara testnet.
 
 Usage:
     python ops/scripts/deploy_marketplace.py [--rpc RPC_URL] [--chain-id CHAIN_ID]
@@ -98,12 +98,12 @@ def _deploy(w3, abi: list, bytecode: str, deployer, constructor_args: list, chai
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Deploy MockAXXToken + JobMarketplace")
+    parser = argparse.ArgumentParser(description="Deploy MockNAKToken + JobMarketplace")
     parser.add_argument("--rpc",      default=os.environ.get("NAKHARA_RPC_URL", "http://127.0.0.1:8545"))
     parser.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARA_CHAIN_ID", "86137")))
     parser.add_argument(
         "--initial-supply", type=int, default=1_000_000,
-        help="MockAXXToken initial supply (whole tokens, not wei). Default: 1 000 000 tAXX",
+        help="MockNAKToken initial supply (whole tokens, not wei). Default: 1 000 000 tAXX",
     )
     parser.add_argument(
         "--min-stake", type=int, default=10_000,
@@ -143,17 +143,17 @@ def main() -> None:
     log.info("Connected to %s  (chain %s)", args.rpc, args.chain_id)
     log.info("Deployer: %s", deployer.address)
     balance_eth = w3.from_wei(w3.eth.get_balance(deployer.address), "ether")
-    log.info("Balance: %s AXX", balance_eth)
+    log.info("Balance: %s NAK", balance_eth)
 
-    # 1 ── MockAXXToken
+    # 1 ── MockNAKToken
     log.info("─" * 50)
-    log.info("Compiling MockAXXToken …")
-    mock_sol   = _contracts_path() / "MockAXXToken.sol"
-    mock_abi, mock_bin = _compile_contract(mock_sol, "MockAXXToken", args.solc_version)
+    log.info("Compiling MockNAKToken …")
+    mock_sol   = _contracts_path() / "MockNAKToken.sol"
+    mock_abi, mock_bin = _compile_contract(mock_sol, "MockNAKToken", args.solc_version)
 
     decimals        = 10 ** 18
     initial_wei     = args.initial_supply * decimals
-    log.info("Deploying MockAXXToken (supply=%s tAXX) …", args.initial_supply)
+    log.info("Deploying MockNAKToken (supply=%s tAXX) …", args.initial_supply)
     token_address   = _deploy(w3, mock_abi, mock_bin, deployer, [initial_wei], args.chain_id)
 
     # 2 ── JobMarketplace
@@ -178,7 +178,7 @@ def main() -> None:
         "chain_id":           args.chain_id,
         "rpc":                args.rpc,
         "deployer":           deployer.address,
-        "MockAXXToken":       token_address,
+        "MockNAKToken":       token_address,
         "JobMarketplace":     market_address,
     }
     _OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -187,7 +187,7 @@ def main() -> None:
 
     log.info("─" * 50)
     log.info("✅  Deployment complete!")
-    log.info("    MockAXXToken  : %s", token_address)
+    log.info("    MockNAKToken  : %s", token_address)
     log.info("    JobMarketplace: %s", market_address)
     log.info("    Saved to      : %s", out_file)
     log.info("")

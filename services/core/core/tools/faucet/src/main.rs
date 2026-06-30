@@ -161,7 +161,7 @@ async fn main() -> anyhow::Result<()> {
         cooldown_secs,
         cooldown_secs / 3600
     );
-    info!("Amount per request: {} AXX", amount);
+    info!("Amount per request: {} NAK", amount);
     info!("Gas price (wei): {}", gas_price);
 
     let app_state = AppState {

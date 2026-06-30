@@ -15,7 +15,7 @@ use tower_http::cors::{Any, CorsLayer};
 use tracing::{error, info, warn};
 
 // Configuration
-const FAUCET_AMOUNT: u64 = 100_000_000_000_000_000_000; // 100 AXX (in wei)
+const FAUCET_AMOUNT: u64 = 100_000_000_000_000_000_000; // 100 NAK (in wei)
 const COOLDOWN_HOURS: u64 = 24;
 const MAX_REQUESTS_PER_IP: usize = 3;
 
@@ -133,7 +133,7 @@ async fn health() -> impl IntoResponse {
 async fn info(State(state): State<FaucetState>) -> impl IntoResponse {
     Json(serde_json::json!({
         "chain_id": state.chain_id,
-        "amount": format!("{} AXX", FAUCET_AMOUNT / 1_000_000_000_000_000_000),
+        "amount": format!("{} NAK", FAUCET_AMOUNT / 1_000_000_000_000_000_000),
         "cooldown_hours": COOLDOWN_HOURS,
         "network": "nakhara Testnet"
     }))
@@ -186,7 +186,7 @@ async fn request_tokens(
     }
 
     // Send transaction
-    info!("Sending {} AXX to {}", FAUCET_AMOUNT / 1_000_000_000_000_000_000, address);
+    info!("Sending {} NAK to {}", FAUCET_AMOUNT / 1_000_000_000_000_000_000, address);
     
     match send_transaction(&state, &address, FAUCET_AMOUNT).await {
         Ok(tx_hash) => {
@@ -198,7 +198,7 @@ async fn request_tokens(
                 ip_requests.entry(ip).or_insert_with(Vec::new).push(now);
             }
 
-            info!("✓ Sent {} AXX to {} (tx: {})", 
+            info!("✓ Sent {} NAK to {} (tx: {})", 
                   FAUCET_AMOUNT / 1_000_000_000_000_000_000, 
                   address, 
                   tx_hash);
@@ -206,7 +206,7 @@ async fn request_tokens(
             Ok(Json(FaucetResponse {
                 success: true,
                 tx_hash: Some(tx_hash),
-                amount: Some(format!("{} AXX", FAUCET_AMOUNT / 1_000_000_000_000_000_000)),
+                amount: Some(format!("{} NAK", FAUCET_AMOUNT / 1_000_000_000_000_000_000)),
                 message: Some("Tokens sent successfully!".to_string()),
                 error: None,
             }))
@@ -225,14 +225,14 @@ async fn stats(State(state): State<FaucetState>) -> impl IntoResponse {
     let total_distributed = total_requests as u64 * FAUCET_AMOUNT;
 
     // Get faucet balance (mock for now)
-    let faucet_balance = "1000 AXX"; // Would call RPC in production
+    let faucet_balance = "1000 NAK"; // Would call RPC in production
 
     Json(StatsResponse {
         total_requests,
-        total_distributed: format!("{} AXX", total_distributed / 1_000_000_000_000_000_000),
+        total_distributed: format!("{} NAK", total_distributed / 1_000_000_000_000_000_000),
         faucet_balance: faucet_balance.to_string(),
         cooldown_hours: COOLDOWN_HOURS,
-        amount_per_request: format!("{} AXX", FAUCET_AMOUNT / 1_000_000_000_000_000_000),
+        amount_per_request: format!("{} NAK", FAUCET_AMOUNT / 1_000_000_000_000_000_000),
     })
 }
 
@@ -309,7 +309,7 @@ async fn main() -> anyhow::Result<()> {
     info!("🚰 Faucet server starting on {}", addr);
     info!("   Chain ID: {}", chain_id);
     info!("   RPC: {}", rpc_url);
-    info!("   Amount: {} AXX", FAUCET_AMOUNT / 1_000_000_000_000_000_000);
+    info!("   Amount: {} NAK", FAUCET_AMOUNT / 1_000_000_000_000_000_000);
     info!("   Cooldown: {} hours", COOLDOWN_HOURS);
 
     axum::Server::bind(&addr)

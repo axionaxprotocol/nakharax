@@ -328,7 +328,7 @@ This audit reviewed the entire Nakhara Protocol codebase. A total of **130 findi
 
 - **File:** `core/core/node/src/lib.rs` lines 329, 386
 - **Category:** Data Integrity
-- **Description:** Transaction values are cast from `u128` to `u64` when publishing to network, silently truncating values > ~18.4 AXX.
+- **Description:** Transaction values are cast from `u128` to `u64` when publishing to network, silently truncating values > ~18.4 NAK.
 - **Recommendation:** Use `u128` throughout or implement checked conversion.
 
 #### SH-6: `execute_proposal` Has No Access Control
@@ -606,7 +606,7 @@ This audit reviewed the entire Nakhara Protocol codebase. A total of **130 findi
 
 #### PL-6: Solidity Contract Missing Zero-Address Checks
 
-- **File:** `deployer/contracts/AXX.sol`, lines 32, 53–56
+- **File:** `deployer/contracts/NAK.sol`, lines 32, 53–56
 - **Description:** `transfer()` and `_transfer()` don't check for `address(0)`.
 - **Recommendation:** Add `require(to != address(0))`.
 

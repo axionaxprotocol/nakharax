@@ -7,7 +7,7 @@ This document provides the necessary constants and ABI for integrating the **nak
 - **RPC Endpoint (Backup)**: `https://rpc-au.nakhara.io` (AU Validator)
   > **✅ CONFIRMED**: These are the Oldest Validator Nodes, ensuring correct Block Height and consensus data.
 - **Chain ID**: `86137`
-- **Currency**: `AXX`
+- **Currency**: `NAK`
 
 ## 📜 Smart Contracts
 

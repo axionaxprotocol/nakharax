@@ -101,7 +101,7 @@ Not P2P nodes; services that connect to the chain via RPC.
 
 | Item | Details |
 |------|---------|
-| **Role** | Distribute testnet tokens (AXX) with rate limit |
+| **Role** | Distribute testnet tokens (NAK) with rate limit |
 | **Deploy** | `nakhara-faucet` (Rust) or Node image, `setup_faucet.sh` |
 | **Ports** | 8080 or 3002 |
 | **Domain** | faucet.nakhara.io, testnet-faucet.nakhara.io |

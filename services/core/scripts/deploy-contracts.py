@@ -15,7 +15,7 @@ Usage:
 Environment variables (alternative to CLI args):
   NAKHARA_RPC_URL          RPC endpoint
   DEPLOYER_PRIVATE_KEY     Deployer account private key
-  AXX_TOKEN_ADDRESS        AXX ERC20 token address (if already deployed)
+  AXX_TOKEN_ADDRESS        NAK ERC20 token address (if already deployed)
 """
 
 import argparse
@@ -100,7 +100,7 @@ def main():
     ap.add_argument("--key", default=os.environ.get("DEPLOYER_PRIVATE_KEY", ""))
     ap.add_argument("--axx-token", default=os.environ.get("AXX_TOKEN_ADDRESS", ""))
     ap.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARA_CHAIN_ID", "86137")))
-    ap.add_argument("--min-stake", type=int, default=100 * 10**18, help="Min stake in wei (default 100 AXX)")
+    ap.add_argument("--min-stake", type=int, default=100 * 10**18, help="Min stake in wei (default 100 NAK)")
     ap.add_argument("--fee-rate", type=int, default=250, help="Platform fee in basis points (250 = 2.5%%)")
     ap.add_argument("--dispute-period", type=int, default=3600, help="Dispute period in seconds (default 1h)")
     args = ap.parse_args()
@@ -149,18 +149,18 @@ def main():
     # Step 2: Deploy
     axx_token = args.axx_token
     if not axx_token:
-        print("  No AXX token address provided.")
+        print("  No NAK token address provided.")
         print("  You can deploy a test ERC20 token or provide an existing one.")
-        axx_token = input("  AXX token address (or press Enter to skip): ").strip()
+        axx_token = input("  NAK token address (or press Enter to skip): ").strip()
 
     if not axx_token:
-        print("  Skipping deployment — need AXX token address.")
+        print("  Skipping deployment — need NAK token address.")
         print("  Deploy a test token first, then re-run with --axx-token 0x...")
         return
 
     print(f"\n[2] Deploying JobMarketplace ...")
-    print(f"  AXX Token:      {axx_token}")
-    print(f"  Min Stake:      {args.min_stake} wei ({args.min_stake // 10**18} AXX)")
+    print(f"  NAK Token:      {axx_token}")
+    print(f"  Min Stake:      {args.min_stake} wei ({args.min_stake // 10**18} NAK)")
     print(f"  Fee Rate:       {args.fee_rate} bps ({args.fee_rate / 100}%)")
     print(f"  Dispute Period: {args.dispute_period}s")
     print()

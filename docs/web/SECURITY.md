@@ -193,7 +193,7 @@ We offer rewards for valid security vulnerabilities:
 
 **Payment Methods**:
 
-- AXX tokens (vested)
+- NAK tokens (vested)
 - USDC/USDT
 - ETH
 

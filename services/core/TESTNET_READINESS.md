@@ -10,7 +10,7 @@
 | Doc | Description |
 |-----|-------------|
 | [docs/GENESIS_PUBLIC_TESTNET_PLAN.md](docs/GENESIS_PUBLIC_TESTNET_PLAN.md) | Testnet launch plan + allocation of 3 VPS |
-| [docs/ADD_NETWORK_AND_TOKEN.md](docs/ADD_NETWORK_AND_TOKEN.md) | Add Nakhara network and AXX token in MetaMask / receive from Faucet |
+| [docs/ADD_NETWORK_AND_TOKEN.md](docs/ADD_NETWORK_AND_TOKEN.md) | Add Nakhara network and NAK token in MetaMask / receive from Faucet |
 | [docs/CONNECTIVITY_OVERVIEW.md](docs/CONNECTIVITY_OVERVIEW.md) | Connectivity: Local node, Validator, Frontend |
 | [docs/GITHUB_READINESS.md](docs/GITHUB_READINESS.md) | GitHub repository readiness |
 | [ops/deploy/scripts/verify-launch-ready.sh](ops/deploy/scripts/verify-launch-ready.sh) | Pre-launch verification script (Genesis, DNS, RPC, Faucet, docs) |

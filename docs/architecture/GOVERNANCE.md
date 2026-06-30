@@ -2,7 +2,7 @@
 
 ## Overview
 
-nakhara is governed by a decentralized autonomous organization (DAO) where AXX token holders collectively make decisions about the protocol's future.
+nakhara is governed by a decentralized autonomous organization (DAO) where NAK token holders collectively make decisions about the protocol's future.
 
 ---
 
@@ -10,10 +10,10 @@ nakhara is governed by a decentralized autonomous organization (DAO) where AXX t
 
 ### Participants
 
-**AXX Holders**
+**NAK Holders**
 
-- Anyone holding AXX tokens
-- Voting power proportional to staked AXX
+- Anyone holding NAK tokens
+- Voting power proportional to staked NAK
 - Can submit and vote on proposals
 
 **Core Contributors**
@@ -36,7 +36,7 @@ nakhara is governed by a decentralized autonomous organization (DAO) where AXX t
 ### Voting Power
 
 ```
-Voting Power = Staked AXX × Time Multiplier
+Voting Power = Staked NAK × Time Multiplier
 
 Time Multiplier:
 - < 1 month: 1.0x
@@ -99,7 +99,7 @@ Time Multiplier:
 **Requirements**:
 
 - Passed temperature check
-- Minimum stake: 100,000 AXX
+- Minimum stake: 100,000 NAK
 - Complete proposal template
 - Implementation plan
 
@@ -225,13 +225,13 @@ nakhara-core governance vote \
 ### Treasury Allocation Proposal
 
 **Recipient**: [Name/Team]
-**Amount**: 10,000,000 AXX ($100,000 at current price)
+**Amount**: 10,000,000 NAK ($100,000 at current price)
 **Purpose**: Build AI training marketplace on nakhara
 **Milestones**:
 
-1. MVP (25%): 2,500,000 AXX
-2. Beta launch (50%): 5,000,000 AXX
-3. Production + 1000 users (25%): 2,500,000 AXX
+1. MVP (25%): 2,500,000 NAK
+2. Beta launch (50%): 5,000,000 NAK
+3. Production + 1000 users (25%): 2,500,000 NAK
    **Reporting**: Monthly progress reports to DAO
    **KPIs**:
 
@@ -326,7 +326,7 @@ nakhara-core governance vote \
 
 | Parameter           | Current     | Range    | Description          |
 | ------------------- | ----------- | -------- | -------------------- |
-| Validator min stake | 100,000 AXX | 50k-500k | Min validator stake  |
+| Validator min stake | 100,000 NAK | 50k-500k | Min validator stake  |
 | Worker stake ratio  | 15%         | 10-30%   | Stake % of job value |
 | Protocol fee        | 5%          | 3-10%    | Job fee percentage   |
 | Emission rate       | 2.25% APY   | 1-5%     | Staking reward rate  |
@@ -398,7 +398,7 @@ nakhara-core governance vote \
 
 These require 90% approval to change:
 
-1. **Fixed Supply**: 1 Trillion AXX, no inflation
+1. **Fixed Supply**: 1 Trillion NAK, no inflation
 2. **Consensus Type**: PoPC-based validation
 3. **Open Source**: Code remains open source (MIT)
 4. **Censorship Resistance**: No privileged access
@@ -410,7 +410,7 @@ These require 90% approval to change:
 
 **Ready to participate?**
 
-1. Acquire AXX tokens
+1. Acquire NAK tokens
 2. Stake tokens for voting power
 3. Join Discord #governance
 4. Follow forum discussions

@@ -140,11 +140,11 @@ class ContractManager:
 
     def register_worker(self, specs: Dict[str, Any], stake_amount: int = 0) -> Optional[str]:
         """
-        Register this worker on-chain by staking AXX tokens.
+        Register this worker on-chain by staking NAK tokens.
 
         Args:
             specs: Worker capability dict (logged locally, not sent on-chain).
-            stake_amount: Amount of AXX tokens to stake (in wei).
+            stake_amount: Amount of NAK tokens to stake (in wei).
                           If 0, the contract's minStake is used.
 
         Returns:

@@ -7,7 +7,7 @@ pub fn hex_to_decimal(hex: &str) -> u64 {
     u64::from_str_radix(hex.trim_start_matches("0x"), 16).unwrap_or(0)
 }
 
-/// Format balance from wei hex string to AXX (divide by 10^18)
+/// Format balance from wei hex string to NAK (divide by 10^18)
 pub fn wei_to_axx(hex: &str) -> f64 {
     let wei = u128::from_str_radix(hex.trim_start_matches("0x"), 16).unwrap_or(0);
     wei as f64 / 1e18
@@ -53,14 +53,14 @@ mod tests {
 
     #[test]
     fn test_wei_to_axx() {
-        // 1 AXX = 1e18 wei
+        // 1 NAK = 1e18 wei
         let one_axx = format!("0x{:x}", 1_000_000_000_000_000_000u128);
         assert!((wei_to_axx(&one_axx) - 1.0).abs() < 1e-9);
 
         // 0 wei
         assert_eq!(wei_to_axx("0x0"), 0.0);
 
-        // 0.5 AXX
+        // 0.5 NAK
         let half_axx = format!("0x{:x}", 500_000_000_000_000_000u128);
         assert!((wei_to_axx(&half_axx) - 0.5).abs() < 1e-9);
     }

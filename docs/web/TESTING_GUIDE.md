@@ -256,7 +256,7 @@ ASR จะ:
 
 - Target Utilization: 0.7 (70%)
 - Target Queue Time: 60s
-- Price Range: 0.001 - 10.0 AXX
+- Price Range: 0.001 - 10.0 NAK
 
 ---
 

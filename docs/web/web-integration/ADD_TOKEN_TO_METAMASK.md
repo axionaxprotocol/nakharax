@@ -1,8 +1,8 @@
-# วิธีเพิ่ม AXX Token บน MetaMask 🦊
+# วิธีเพิ่ม NAK Token บน MetaMask 🦊
 
 ## ปัญหาที่พบบ่อย
 
-หากคุณไม่สามารถเพิ่ม AXX Token บน MetaMask ได้ อาจเกิดจากสาเหตุต่อไปนี้:
+หากคุณไม่สามารถเพิ่ม NAK Token บน MetaMask ได้ อาจเกิดจากสาเหตุต่อไปนี้:
 
 ### 1. ⚠️ ยังไม่ได้เชื่อมต่อกับ Nakhara Network
 
@@ -17,7 +17,7 @@
 Network Name: Nakhara Testnet
 RPC URL: https://testnet-rpc.nakhara.io
 Chain ID: 86137
-Currency Symbol: AXX
+Currency Symbol: NAK
 Block Explorer: https://explorer.nakhara.io
 ```
 
@@ -56,7 +56,7 @@ Testnet: (ตรวจสอบจาก config.json หรือ faucet)
 
 ```
 Token Contract Address: 0x0000000000000000000000000000000000001000
-Token Symbol: AXX
+Token Symbol: NAK
 Token Decimal: 18
 ```
 
@@ -65,7 +65,7 @@ Token Decimal: 18
 
 ### ✅ เสร็จสิ้น!
 
-ตอนนี้คุณจะเห็น AXX Token ในรายการ Assets ของ MetaMask แล้ว
+ตอนนี้คุณจะเห็น NAK Token ในรายการ Assets ของ MetaMask แล้ว
 
 ---
 
@@ -76,7 +76,7 @@ Token Decimal: 18
 1. เชื่อมต่อ wallet ที่ https://nakhara.io
 2. คลิกที่ปุ่ม **Connect Wallet**
 3. เมื่อเชื่อมต่อสำเร็จ คลิกที่ dropdown wallet menu
-4. คลิกปุ่ม **"Add AXX Token"**
+4. คลิกปุ่ม **"Add NAK Token"**
 5. MetaMask จะเปิดหน้าต่างยืนยัน ให้คลิก **"Add Token"**
 
 ### จาก Local Testnet UI
@@ -85,7 +85,7 @@ Token Decimal: 18
 
 1. เปิดไฟล์ `index.html` ใน browser
 2. คลิกปุ่ม **"Connect Wallet"**
-3. คลิกปุ่ม **"Add AXX Token"**
+3. คลิกปุ่ม **"Add NAK Token"**
 4. MetaMask จะเปิดหน้าต่างยืนยัน ให้คลิก **"Add Token"**
 
 ---
@@ -99,7 +99,7 @@ Token Decimal: 18
 ```javascript
 async function addAXXToken() {
   const tokenAddress = '0x0000000000000000000000000000000000001000';
-  const tokenSymbol = 'AXX';
+  const tokenSymbol = 'NAK';
   const tokenDecimals = 18;
 
   try {
@@ -136,7 +136,7 @@ const handleAddToken = async () => {
   try {
     const wasAdded = await addTokenToMetaMask({
       address: '0x0000000000000000000000000000000000001000',
-      symbol: 'AXX',
+      symbol: 'NAK',
       decimals: 18,
     });
 

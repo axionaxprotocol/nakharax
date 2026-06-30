@@ -13,13 +13,13 @@
 **Type**: Core Component  
 Top-K weighted VRF-based router for assigning compute jobs to workers. Uses K=64 with max_quota=12.5% per worker.
 
-### AXX
+### NAK
 **Type**: Token  
-Native utility token of Nakhara protocol. Mainnet: 1 trillion supply. Testnet (AXXt): 1 billion supply.
+Native utility token of Nakhara protocol. Mainnet: 1 trillion supply. Testnet (NAKt): 1 billion supply.
 
-### AXXt
+### NAKt
 **Type**: Token  
-Testnet version of AXX token. Used for testing purposes only, no real value.
+Testnet version of NAK token. Used for testing purposes only, no real value.
 
 ---
 
@@ -81,7 +81,7 @@ Error-correcting code for data redundancy. Reed-Solomon and Fountain codes under
 
 ### Faucet
 **Type**: Service  
-Distributes free testnet tokens (AXXt). Rate limited: 1,000 AXXt per address per day.
+Distributes free testnet tokens (NAKt). Rate limited: 1,000 NAKt per address per day.
 
 ### Finality
 **Type**: Network Property  
@@ -99,7 +99,7 @@ Initial block of the blockchain.
 
 ### Governance
 **Type**: DAO  
-Decentralized decision-making via AXX token holder voting.
+Decentralized decision-making via NAK token holder voting.
 
 ---
 
@@ -191,7 +191,7 @@ Economical punishment for validator misbehavior (disabled on testnet).
 
 ### Staking
 **Type**: Economics  
-Locking AXX tokens to participate in consensus. Min: 10,000 AXX (mainnet), 1,000 AXXt (testnet).
+Locking NAK tokens to participate in consensus. Min: 10,000 NAK (mainnet), 1,000 NAKt (testnet).
 
 ---
 
@@ -207,7 +207,7 @@ Target: 45,000 TPS with <0.5s finality.
 
 ### TVL (Total Value Locked)
 **Type**: Economic Metric  
-Total AXX tokens staked in the network.
+Total NAK tokens staked in the network.
 
 ---
 
@@ -247,7 +247,7 @@ Ability to upgrade without stopping the network.
 
 | Acronym | Full Name | Category |
 |---------|-----------|----------|
-| AXX | Nakhara Token | Token |
+| NAK | Nakhara Token | Token |
 | ASR | Auto Selection Router | Component |
 | DA | Data Availability | Layer |
 | DAO | Decentralized Autonomous Organization | Governance |
