@@ -1,10 +1,10 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    AxionAx Testnet Readiness Checker - PowerShell Wrapper
+    Nakhara Testnet Readiness Checker - PowerShell Wrapper
 
 .DESCRIPTION
-    Comprehensive pre-launch validation for AxionAx Protocol testnet deployment.
+    Comprehensive pre-launch validation for Nakhara Protocol testnet deployment.
     Checks infrastructure, security, performance, documentation, and deployment readiness.
 
 .EXAMPLE
@@ -15,7 +15,7 @@
 
 .NOTES
     Version: 1.0.0
-    Author: AxionAx Protocol Team
+    Author: Nakhara Protocol Team
     Last Updated: November 15, 2025
 #>
 

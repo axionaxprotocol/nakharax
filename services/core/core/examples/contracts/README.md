@@ -1,6 +1,6 @@
-# AxionAX Example Smart Contracts
+# Nakhara Example Smart Contracts
 
-Example Solidity contracts for testing and learning on AxionAX Testnet.
+Example Solidity contracts for testing and learning on Nakhara Testnet.
 
 ## 📋 Contracts
 
@@ -89,7 +89,7 @@ string memory uri = nft.tokenURI(tokenId);
 Basic staking contract for earning rewards over time.
 
 **Features:**
-- ✅ Stake native AXX tokens
+- ✅ Stake native NAK tokens
 - ✅ Automatic reward calculation
 - ✅ Claim rewards anytime
 - ✅ Unstake with automatic reward claim
@@ -98,14 +98,14 @@ Basic staking contract for earning rewards over time.
 
 **Deployment Example:**
 ```solidity
-// address(0) means staking native AXX
+// address(0) means staking native NAK
 SimpleStaking staking = new SimpleStaking(address(0));
 ```
 
 **Usage:**
 ```solidity
-// Stake AXX tokens
-staking.stake{value: 10 ether}(); // Stake 10 AXX
+// Stake NAK tokens
+staking.stake{value: 10 ether}(); // Stake 10 NAK
 
 // Check pending rewards
 uint256 pending = staking.pendingRewards(userAddress);
@@ -131,36 +131,36 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 **Reward Calculation:**
 - Default: 0.001 tokens per second per staked token
 - Rewards = (stakedAmount × rewardRate × stakingDuration) / 1e18
-- Example: Stake 100 AXX for 1 day = ~8.64 AXX rewards
+- Example: Stake 100 NAK for 1 day = ~8.64 NAK rewards
 
 ---
 
-## 🚀 Deployment on AxionAX Testnet
+## 🚀 Deployment on Nakhara Testnet
 
 ### Prerequisites
-1. MetaMask with AxionAX Testnet configured
-2. Testnet AXX tokens from faucet
+1. MetaMask with Nakhara Testnet configured
+2. Testnet NAK tokens from faucet
 3. Remix IDE or Hardhat/Foundry
 
 ### Using Remix IDE
 
-1. **Add AxionAX Testnet to MetaMask:**
-   - Network Name: AxionAX Testnet
-   - RPC URL: https://rpc.axionax.org
+1. **Add Nakhara Testnet to MetaMask:**
+   - Network Name: Nakhara Testnet
+   - RPC URL: https://rpc.nakhara.io
    - Chain ID: 86137
-   - Currency Symbol: AXX
-   - Block Explorer: http://rpc.axionax.org:3000/explorer
+   - Currency Symbol: NAK
+   - Block Explorer: http://rpc.nakhara.io:3000/explorer
 
 2. **Get Testnet Tokens:**
-   - Visit: http://rpc.axionax.org:3000/faucet
-   - Request 1 AXX (60 minute cooldown)
+   - Visit: http://rpc.nakhara.io:3000/faucet
+   - Request 1 NAK (60 minute cooldown)
 
 3. **Deploy with Remix:**
    - Open [Remix IDE](https://remix.ethereum.org)
    - Create new file and paste contract code
    - Compile with Solidity 0.8.20+
    - Select "Injected Provider - MetaMask"
-   - Ensure MetaMask is on AxionAX Testnet
+   - Ensure MetaMask is on Nakhara Testnet
    - Fill constructor parameters
    - Click "Deploy"
 
@@ -170,8 +170,8 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 // hardhat.config.js
 module.exports = {
   networks: {
-    axionax: {
-      url: "https://rpc.axionax.org",
+    nakhara: {
+      url: "https://rpc.nakhara.io",
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY]
     }
@@ -182,7 +182,7 @@ module.exports = {
 
 ```bash
 # Deploy
-npx hardhat run scripts/deploy.js --network axionax
+npx hardhat run scripts/deploy.js --network nakhara
 ```
 
 ### Using Foundry
@@ -190,19 +190,19 @@ npx hardhat run scripts/deploy.js --network axionax
 ```bash
 # Deploy SimpleToken
 forge create SimpleToken \
-  --rpc-url https://rpc.axionax.org \
+  --rpc-url https://rpc.nakhara.io \
   --constructor-args "Test Token" "TEST" 1000000 \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleNFT
 forge create SimpleNFT \
-  --rpc-url https://rpc.axionax.org \
+  --rpc-url https://rpc.nakhara.io \
   --constructor-args "My NFT" "MNFT" \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleStaking
 forge create SimpleStaking \
-  --rpc-url https://rpc.axionax.org \
+  --rpc-url https://rpc.nakhara.io \
   --constructor-args 0x0000000000000000000000000000000000000000 \
   --private-key $PRIVATE_KEY
 ```
@@ -240,7 +240,7 @@ console.log("Owner:", owner);
 
 ### Test SimpleStaking
 ```javascript
-// Stake 10 AXX
+// Stake 10 NAK
 await staking.stake({ value: ethers.parseEther("10") });
 
 // Wait some time...
@@ -258,12 +258,12 @@ await staking.claimRewards();
 
 ## 📚 Resources
 
-- **Testnet Website**: http://rpc.axionax.org:3000
-- **Faucet**: http://rpc.axionax.org:3000/faucet
-- **Explorer**: http://rpc.axionax.org:3000/explorer
-- **RPC Endpoint**: https://rpc.axionax.org
+- **Testnet Website**: http://rpc.nakhara.io:3000
+- **Faucet**: http://rpc.nakhara.io:3000/faucet
+- **Explorer**: http://rpc.nakhara.io:3000/explorer
+- **RPC Endpoint**: https://rpc.nakhara.io
 - **Chain ID**: 86137
-- **Documentation**: https://github.com/axionaxprotocol/axionax-docs
+- **Documentation**: https://github.com/nakhara-io/nakhara-docs
 
 ---
 
@@ -293,4 +293,4 @@ MIT License - Free to use and modify
 
 ---
 
-Made with 💜 by the AxionAX Team
+Made with 💜 by the Nakhara Team

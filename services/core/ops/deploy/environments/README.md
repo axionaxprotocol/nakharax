@@ -1,6 +1,6 @@
-# axionax Environments
+# nakhara Environments
 
-Environment-specific configurations and deployment files for axionax Core.
+Environment-specific configurations and deployment files for nakhara Core.
 
 ## Directory structure
 
@@ -22,7 +22,7 @@ environments/
 ## Mainnet
 
 - **Chain ID:** 86150 (reserved, not launched)
-- Verify official network info at https://axionax.org/networks
+- Verify official network info at https://nakhara.io/networks
 
 ## Configuration
 
@@ -48,4 +48,4 @@ For the **public testnet** stack, use `testnet/public/docker-compose.yaml` (see 
 
 ## Security
 
-See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@axionax.org.
+See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@nakhara.io.

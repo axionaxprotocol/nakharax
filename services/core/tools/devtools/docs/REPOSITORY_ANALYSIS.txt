@@ -182,7 +182,7 @@ Total Connections Found: 35
 
 🔗 Import Statements (11 found):
      if 'nakhara' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'u
-     # Should use lowercase 'nakhara', not 'AxionAX' or 'Nakhara'
+     # Should use lowercase 'nakhara', not 'Nakhara' or 'Nakhara'
      # Look for nakhara imports that might be broken
      nakhara_imports = set()
      return nakhara_imports

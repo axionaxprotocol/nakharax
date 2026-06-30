@@ -1,4 +1,4 @@
-# AxionAx DevTools - Scripts Organization
+# Nakhara DevTools - Scripts Organization
 
 ## 📁 Directory Structure
 
@@ -146,7 +146,7 @@ python scripts/fixing/fix_protocol_names.py
 
 **Actions:**
 - Scans for inconsistent protocol names
-- Applies standardized naming (AxionAx)
+- Applies standardized naming (Nakhara)
 - Updates imports and references
 
 ### Create Genesis Block

@@ -1,6 +1,6 @@
-﻿# axionax Public Testnet Environment
+# nakhara Public Testnet Environment
 
-This directory contains infrastructure definitions for the axionax public testnet rollout.
+This directory contains infrastructure definitions for the nakhara public testnet rollout.
 
 ## Components
 

@@ -1,4 +1,4 @@
-# AxionAX Mock RPC Server
+# Nakhara Mock RPC Server
 
 Lightweight JSON-RPC 2.0 server for testing blockchain interactions without a full node.
 
@@ -46,7 +46,7 @@ Lightweight JSON-RPC 2.0 server for testing blockchain interactions without a fu
 - `PORT` - HTTP RPC port (default: 8545)
 - `WS_PORT` - WebSocket port (default: 8546)
 - `CHAIN_ID` - Network chain ID (default: 888)
-- `NETWORK` - Network name (default: axionax-testnet-1)
+- `NETWORK` - Network name (default: nakhara-testnet-1)
 
 ## Usage
 
@@ -61,10 +61,10 @@ npm start
 
 ```bash
 # Build
-docker build -t axionax-mock-rpc .
+docker build -t nakhara-mock-rpc .
 
 # Run
-docker run -p 8545:8545 -p 8546:8546 axionax-mock-rpc
+docker run -p 8545:8545 -p 8546:8546 nakhara-mock-rpc
 ```
 
 ### Test Requests

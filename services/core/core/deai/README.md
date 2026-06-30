@@ -1,6 +1,6 @@
-# axionax DeAI - AI/ML Layer for Security and Auto Selection
+# nakhara DeAI - AI/ML Layer for Security and Auto Selection
 
-**Python-based AI/ML components for the axionax protocol**
+**Python-based AI/ML components for the nakhara protocol**
 
 ## Modules
 

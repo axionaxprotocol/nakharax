@@ -1,6 +1,6 @@
-# `@axionax/sdk`
+# `@nakhara/sdk`
 
-Typed JSON-RPC client + shared chain primitives for Axionax Protocol.
+Typed JSON-RPC client + shared chain primitives for Nakhara Protocol.
 
 Used by:
 - `apps/os-dashboard` (Node OS UI)
@@ -13,7 +13,7 @@ Already wired via pnpm workspaces — just add to a package's `package.json`:
 
 ```json
 "dependencies": {
-  "@axionax/sdk": "workspace:*"
+  "@nakhara/sdk": "workspace:*"
 }
 ```
 
@@ -22,7 +22,7 @@ then `pnpm install`.
 ## Usage
 
 ```ts
-import { getNodeStatus, DEFAULT_NODES, rpcCall } from "@axionax/sdk";
+import { getNodeStatus, DEFAULT_NODES, rpcCall } from "@nakhara/sdk";
 
 const statuses = await Promise.all(DEFAULT_NODES.map(getNodeStatus));
 

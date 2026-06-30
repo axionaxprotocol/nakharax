@@ -1,8 +1,8 @@
-# Axionax OS Dashboard
+# Nakhara OS Dashboard
 
-A self-hosted, Umbrel-style web dashboard for managing an Axionax node (Obsidian OS UI).
+A self-hosted, Umbrel-style web dashboard for managing an Nakhara node (Obsidian OS UI).
 
-**Production host (EU):** `217.216.109.5` → `https://app.axionax.org`  
+**Production host (EU):** `217.216.109.5` → `https://app.nakhara.io`  
 Deploy guide: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md)
 
 ## Features (alpha)
@@ -72,13 +72,13 @@ Reports are written to `lighthouse-results/` (`lhr.report.html`, `lhr.report.jso
 
 The repo root **`netlify.toml`** builds this app with:
 
-`pnpm install && pnpm --filter axionax-os-dashboard build`
+`pnpm install && pnpm --filter nakhara-os-dashboard build`
 
 and **`@netlify/plugin-nextjs`** (workspace root devDependency). Do not deploy the
 `.next` folder as a plain static site without that runtime — routing and SSR will
 break and the UI will look missing or 404.
 
-1. Connect the **monorepo root** (not `apps/os-dashboard` only) so `pnpm-workspace.yaml` resolves `@axionax/sdk`.
+1. Connect the **monorepo root** (not `apps/os-dashboard` only) so `pnpm-workspace.yaml` resolves `@nakhara/sdk`.
 2. Leave **Base directory** empty in Netlify unless you know you need a subfolder; the root `netlify.toml` drives the build.
 3. Optional env vars in Site settings: `NEXT_PUBLIC_MONITOR_API_URL`, `NEXT_PUBLIC_CHAIN_NAME`, `NEXT_PUBLIC_REFRESH_MS`.
 4. Redeploy after pulling the fixed `netlify.toml`.

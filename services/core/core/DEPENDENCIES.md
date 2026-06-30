@@ -1,6 +1,6 @@
-# Dependencies Installation Guide - AxionAx Core
+# Dependencies Installation Guide - Nakhara Core
 
-Complete guide for installing all required dependencies for AxionAx Protocol development.
+Complete guide for installing all required dependencies for Nakhara Protocol development.
 
 ## 📋 Dependency Checklist
 

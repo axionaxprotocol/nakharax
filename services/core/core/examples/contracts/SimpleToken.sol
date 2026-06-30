@@ -3,8 +3,8 @@ pragma solidity ^0.8.20;
 
 /**
  * @title SimpleToken
- * @dev Basic ERC-20 Token Implementation for AxionAX Testnet
- * @notice This is an example token contract for testing on AxionAX testnet
+ * @dev Basic ERC-20 Token Implementation for Nakhara Testnet
+ * @notice This is an example token contract for testing on Nakhara testnet
  */
 contract SimpleToken {
     string public name;

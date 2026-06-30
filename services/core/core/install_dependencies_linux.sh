@@ -1,11 +1,11 @@
 #!/bin/bash
-# AxionAx Core - Linux Dependency Installation Script
+# Nakhara Core - Linux Dependency Installation Script
 # Installs Rust, Node.js, Python, and other required dependencies
 
 set -e
 
 echo "================================================"
-echo "AxionAx Core - Linux Dependency Installer"
+echo "Nakhara Core - Linux Dependency Installer"
 echo "================================================"
 
 # Colors

@@ -148,12 +148,12 @@ foreach ($repo in $repos) {
         $content = Get-Content $readmePath -Raw
         
         # Check for inconsistent branding
-        $nakharaCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
+        $nakharaCount = ([regex]::Matches($content, '\bNakhara\b')).Count
         $nakharaCapCount = ([regex]::Matches($content, '\bNakhara\b')).Count
         
         if ($nakharaCount -gt 0 -or $nakharaCapCount -gt 0) {
             Write-Host "  [WARN] Inconsistent branding in $($repo.Name)" -ForegroundColor Yellow
-            Write-Host "         AxionAX: $nakharaCount, Nakhara: $nakharaCapCount" -ForegroundColor Gray
+            Write-Host "         Nakhara: $nakharaCount, Nakhara: $nakharaCapCount" -ForegroundColor Gray
             $Warnings++
         } else {
             Write-Host "  [OK] $($repo.Name) branding consistent" -ForegroundColor Green
@@ -182,9 +182,9 @@ if (Test-Path $webPath) {
         Write-Host "       Found $githubLinks GitHub repository links" -ForegroundColor Gray
         
         # Check for branding
-        $nakharaCount = ([regex]::Matches($content, '\bAxionAX\b')).Count
+        $nakharaCount = ([regex]::Matches($content, '\bNakhara\b')).Count
         if ($nakharaCount -gt 0) {
-            Write-Host "       [WARN] Found $nakharaCount instances of 'AxionAX' (should be 'nakhara')" -ForegroundColor Yellow
+            Write-Host "       [WARN] Found $nakharaCount instances of 'Nakhara' (should be 'nakhara')" -ForegroundColor Yellow
             $Warnings++
         } else {
             Write-Host "       Branding consistent (nakhara)" -ForegroundColor Gray

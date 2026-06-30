@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# AxionAx Testnet Readiness Checker - Bash Wrapper
-# Comprehensive pre-launch validation for AxionAx Protocol testnet deployment
+# Nakhara Testnet Readiness Checker - Bash Wrapper
+# Comprehensive pre-launch validation for Nakhara Protocol testnet deployment
 #
 # Usage:
 #   ./check-testnet-readiness.sh

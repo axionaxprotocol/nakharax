@@ -1,4 +1,4 @@
-# Prometheus Configuration for AxionAx Protocol Monitoring
+# Prometheus Configuration for Nakhara Protocol Monitoring
 
 global:
   scrape_interval: 15s       # Scrape targets every 15 seconds
@@ -20,7 +20,7 @@ rule_files:
 
 # Scrape configurations
 scrape_configs:
-  # AxionAx Core Node Metrics
+  # Nakhara Core Node Metrics
   - job_name: 'nakhara-core'
     static_configs:
       - targets: ['localhost:9090']

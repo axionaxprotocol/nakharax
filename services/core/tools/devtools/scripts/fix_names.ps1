@@ -13,8 +13,8 @@ Get-ChildItem -Path D:\Desktop\nakharaius01 -Recurse -Include $extensions -File 
     
     if ($null -eq $content) { return }
     
-    $newContent = $content -replace "AxionAX Protocol", "nakhara protocol"
-    $newContent = $newContent -replace "AxionAX protocol", "nakhara protocol"
+    $newContent = $content -replace "Nakhara Protocol", "nakhara protocol"
+    $newContent = $newContent -replace "Nakhara protocol", "nakhara protocol"
     $newContent = $newContent -replace "Nakhara Protocol", "nakhara protocol"
     
     if ($content -ne $newContent) {

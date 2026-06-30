@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Testnet Readiness Checker
-Automated pre-launch validation for AxionAx Protocol testnet deployment
+Automated pre-launch validation for Nakhara Protocol testnet deployment
 """
 
 import os

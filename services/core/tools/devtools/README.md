@@ -1,11 +1,11 @@
-# axionax DevTools
+# nakhara DevTools
 
-Development tools and scripts for axionax Protocol.
+Development tools and scripts for nakhara Protocol.
 
 ## 📁 Directory Structure
 
 ```
-axionax-devtools/
+nakhara-devtools/
 ├── scripts/
 │   ├── testing/          # Testing scripts
 │   ├── refactoring/      # Code refactoring tools
@@ -43,7 +43,7 @@ axionax-devtools/
 ## 📖 About
 
 Developer tools and automation scripts for building, testing, and maintaining
-the **axionax protocol** ecosystem.
+the **nakhara protocol** ecosystem.
 
 🔥 **Current Phase:**
 - Running comprehensive test suites
@@ -53,19 +53,19 @@ the **axionax protocol** ecosystem.
 
 📦 **Tools Ready:** All testing utilities validated and production-ready
 
-### Part of axionax Ecosystem
+### Part of nakhara Ecosystem
 
-These tools support the entire axionax protocol development workflow:
+These tools support the entire nakhara protocol development workflow:
 
-- **Protocol Core**: [`axionax-core`](https://github.com/axionaxprotocol/axionax-core) - Main development target
-- **Web Interface**: [`axionax-web`](https://github.com/axionaxprotocol/axionax-web) - Frontend development & testing
-- **SDK**: [`axionax-sdk-ts`](https://github.com/axionaxprotocol/axionax-sdk-ts) - SDK testing & validation
-- **Marketplace**: [`axionax-marketplace`](https://github.com/axionaxprotocol/axionax-marketplace) - dApp testing
-- **Documentation**: [`axionax-docs`](https://github.com/axionaxprotocol/axionax-docs) - Doc link validation
-- **Deployment**: [`axionax-deploy`](https://github.com/axionaxprotocol/axionax-deploy) - Infrastructure testing
-- **Issue Manager**: [`issue-manager`](https://github.com/axionaxprotocol/issue-manager) - Task automation
+- **Protocol Core**: [`nakhara-core`](https://github.com/nakhara-io/nakhara-core) - Main development target
+- **Web Interface**: [`nakhara-web`](https://github.com/nakhara-io/nakhara-web) - Frontend development & testing
+- **SDK**: [`nakhara-sdk-ts`](https://github.com/nakhara-io/nakhara-sdk-ts) - SDK testing & validation
+- **Marketplace**: [`nakhara-marketplace`](https://github.com/nakhara-io/nakhara-marketplace) - dApp testing
+- **Documentation**: [`nakhara-docs`](https://github.com/nakhara-io/nakhara-docs) - Doc link validation
+- **Deployment**: [`nakhara-deploy`](https://github.com/nakhara-io/nakhara-deploy) - Infrastructure testing
+- **Issue Manager**: [`issue-manager`](https://github.com/nakhara-io/issue-manager) - Task automation
 
-**GitHub Organization**: https://github.com/axionaxprotocol
+**GitHub Organization**: https://github.com/nakhara-io
 
 **Pre-Testnet Status:** All testing tools operational, active test execution phase
 
@@ -94,7 +94,7 @@ Automated installers for all major platforms:
 
 Located in `tools/`:
 
-- **`benchmark.py`** - Performance benchmarks for axionax protocol
+- **`benchmark.py`** - Performance benchmarks for nakhara protocol
   - VRF operations (22,817 ops/sec target)
   - Block validation (3,500 blocks/sec target)
   - Transaction verification (45,000 tx/sec target)
@@ -106,7 +106,7 @@ Located in `tools/`:
 
 ### Development Utilities
 
-- **`create_genesis.py`** - Genesis block generator for axionax protocol
+- **`create_genesis.py`** - Genesis block generator for nakhara protocol
 - **`migrate_go_to_rust.py`** - Migration utilities (legacy)
 - **`check-links.sh`** - Documentation link validator
 
@@ -116,13 +116,13 @@ Located in `tools/`:
 
 ### From workspace root:
 ```bash
-python axionax-devtools/scripts/testing/test_repo_integration.py
-python axionax-devtools/scripts/refactoring/master_refactor.py
+python nakhara-devtools/scripts/testing/test_repo_integration.py
+python nakhara-devtools/scripts/refactoring/master_refactor.py
 ```
 
 ### From devtools directory:
 ```bash
-cd axionax-devtools
+cd nakhara-devtools
 python scripts/testing/test_repo_integration.py
 ```
 
@@ -135,6 +135,6 @@ See `docs/` directory for detailed guides:
 
 ## 🔗 Links
 
-- Main Protocol: [../axionax-core](../axionax-core)
-- SDK: [../axionax-sdk-ts](../axionax-sdk-ts)
-- Web: [../axionax-web](../axionax-web)
+- Main Protocol: [../nakhara-core](../nakhara-core)
+- SDK: [../nakhara-sdk-ts](../nakhara-sdk-ts)
+- Web: [../nakhara-web](../nakhara-web)

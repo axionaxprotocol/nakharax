@@ -1,11 +1,11 @@
 #!/bin/bash
-# AxionAx Core - macOS Dependency Installation Script
+# Nakhara Core - macOS Dependency Installation Script
 # Installs Rust, Node.js, Python, and other required dependencies
 
 set -e
 
 echo "================================================"
-echo "AxionAx Core - macOS Dependency Installer"
+echo "Nakhara Core - macOS Dependency Installer"
 echo "================================================"
 
 # Colors

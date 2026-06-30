@@ -1,10 +1,10 @@
-# axionax Testnet Faucet
+# nakhara Testnet Faucet
 
-Web application for distributing testnet AXX tokens to developers and testers.
+Web application for distributing testnet NAK tokens to developers and testers.
 
 ## Features
 
-- 🚰 **Automated Distribution**: Send 100 AXX tokens per request
+- 🚰 **Automated Distribution**: Send 100 NAK tokens per request
 - ⏰ **Rate Limiting**: 24-hour cooldown per address, 3 requests per IP
 - 🦊 **MetaMask Integration**: One-click wallet connection
 - 🛡️ **Security**: Rate limiting, input validation, transaction signing
@@ -36,9 +36,9 @@ Web application for distributing testnet AXX tokens to developers and testers.
 
 # Deploy faucet
 sudo bash scripts/setup_faucet.sh \
-  --domain testnet-faucet.axionax.org \
-  --ssl-email admin@axionax.org \
-  --rpc-url https://testnet-rpc.axionax.org \
+  --domain testnet-faucet.nakhara.io \
+  --ssl-email admin@nakhara.io \
+  --rpc-url https://testnet-rpc.nakhara.io \
   --chain-id 86137 \
   --private-key "YOUR_PRIVATE_KEY_HERE"
 ```
@@ -65,14 +65,14 @@ cargo build --release
 ```bash
 # EXAMPLE - Replace with your actual values (NEVER commit real keys)
 export FAUCET_PRIVATE_KEY="0x0000000000000000000000000000000000000000000000000000000000000000"
-export RPC_URL="https://testnet-rpc.axionax.org"
+export RPC_URL="https://testnet-rpc.nakhara.io"
 export CHAIN_ID="86137"
 ```
 
 #### 3. Run Backend
 
 ```bash
-./target/release/axionax-faucet
+./target/release/nakhara-faucet
 ```
 
 Backend runs on port 3000 by default.
@@ -96,7 +96,7 @@ Health check endpoint.
 ```json
 {
   "status": "ok",
-  "service": "axionax-faucet",
+  "service": "nakhara-faucet",
   "version": "1.0.0"
 }
 ```
@@ -109,9 +109,9 @@ Get faucet configuration.
 ```json
 {
   "chain_id": 86137,
-  "amount": "100 AXX",
+  "amount": "100 NAK",
   "cooldown_hours": 24,
-  "network": "axionax Testnet"
+  "network": "nakhara Testnet"
 }
 ```
 
@@ -131,7 +131,7 @@ Request testnet tokens.
 {
   "success": true,
   "tx_hash": "0xabc123...",
-  "amount": "100 AXX",
+  "amount": "100 NAK",
   "message": "Tokens sent successfully!"
 }
 ```
@@ -152,10 +152,10 @@ Get faucet statistics.
 ```json
 {
   "total_requests": 1234,
-  "total_distributed": "123400 AXX",
-  "faucet_balance": "10000 AXX",
+  "total_distributed": "123400 NAK",
+  "faucet_balance": "10000 NAK",
   "cooldown_hours": 24,
-  "amount_per_request": "100 AXX"
+  "amount_per_request": "100 NAK"
 }
 ```
 
@@ -166,7 +166,7 @@ Get faucet statistics.
 Edit `src/main.rs`:
 
 ```rust
-const FAUCET_AMOUNT: u64 = 100_000_000_000_000_000_000; // 100 AXX
+const FAUCET_AMOUNT: u64 = 100_000_000_000_000_000_000; // 100 NAK
 const COOLDOWN_HOURS: u64 = 24;
 const MAX_REQUESTS_PER_IP: usize = 3;
 ```
@@ -176,8 +176,8 @@ const MAX_REQUESTS_PER_IP: usize = 3;
 Edit `public/index.html`:
 
 ```javascript
-const FAUCET_API = 'https://testnet-faucet.axionax.org';
-const EXPLORER_URL = 'https://testnet-explorer.axionax.org';
+const FAUCET_API = 'https://testnet-faucet.nakhara.io';
+const EXPLORER_URL = 'https://testnet-explorer.nakhara.io';
 ```
 
 ## Security
@@ -211,13 +211,13 @@ Multiple layers of protection:
 
 ```bash
 # Service status
-sudo systemctl status axionax-faucet
+sudo systemctl status nakhara-faucet
 
 # Logs
-sudo journalctl -u axionax-faucet -f
+sudo journalctl -u nakhara-faucet -f
 
 # API health
-curl https://testnet-faucet.axionax.org/health
+curl https://testnet-faucet.nakhara.io/health
 ```
 
 ### Monitor Balance
@@ -225,7 +225,7 @@ curl https://testnet-faucet.axionax.org/health
 ```bash
 # Get faucet wallet address from private key
 # Check balance via RPC
-curl -X POST https://testnet-rpc.axionax.org \
+curl -X POST https://testnet-rpc.nakhara.io \
   -H 'Content-Type: application/json' \
   -d '{
     "jsonrpc":"2.0",
@@ -240,8 +240,8 @@ curl -X POST https://testnet-rpc.axionax.org \
 When balance is low, send tokens to faucet address:
 
 ```bash
-# From funded wallet, send AXX to faucet address
-# Amount: 10,000+ AXX recommended
+# From funded wallet, send NAK to faucet address
+# Amount: 10,000+ NAK recommended
 ```
 
 ## Troubleshooting
@@ -250,13 +250,13 @@ When balance is low, send tokens to faucet address:
 
 ```bash
 # Check logs
-sudo journalctl -u axionax-faucet -n 50
+sudo journalctl -u nakhara-faucet -n 50
 
 # Verify environment variables
-cat /var/lib/axionax-faucet/.env
+cat /var/lib/nakhara-faucet/.env
 
 # Test binary manually
-sudo -u faucet /usr/local/bin/axionax-faucet
+sudo -u faucet /usr/local/bin/nakhara-faucet
 ```
 
 ### Frontend Not Loading
@@ -283,10 +283,10 @@ sudo systemctl restart nginx
 
 ```bash
 # View rate limit settings
-grep -A 5 "limit_req_zone" /etc/nginx/sites-available/axionax-faucet
+grep -A 5 "limit_req_zone" /etc/nginx/sites-available/nakhara-faucet
 
 # Adjust if needed
-sudo nano /etc/nginx/sites-available/axionax-faucet
+sudo nano /etc/nginx/sites-available/nakhara-faucet
 sudo systemctl reload nginx
 ```
 
@@ -319,7 +319,7 @@ Common enhancements:
 ## Production Checklist
 
 - [ ] Generate secure private key
-- [ ] Fund faucet wallet (10,000+ AXX)
+- [ ] Fund faucet wallet (10,000+ NAK)
 - [ ] Deploy with setup script
 - [ ] Configure DNS records
 - [ ] Setup SSL certificates
@@ -334,9 +334,9 @@ Common enhancements:
 
 ## Support
 
-- **Documentation**: https://docs.axionax.org
-- **Issues**: https://github.com/axionaxprotocol/axionax-core/issues
-- **Discord**: https://discord.gg/axionax
+- **Documentation**: https://docs.nakhara.io
+- **Issues**: https://github.com/nakhara-io/nakhara-core/issues
+- **Discord**: https://discord.gg/nakhara
 
 ## License
 

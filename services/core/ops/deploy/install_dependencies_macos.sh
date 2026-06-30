@@ -1,10 +1,10 @@
 #!/bin/bash
-# AxionAx SDK TypeScript - macOS Installation Script
+# Nakhara SDK TypeScript - macOS Installation Script
 
 set -e
 
 echo "================================================"
-echo "AxionAx SDK TypeScript - macOS Installer"
+echo "Nakhara SDK TypeScript - macOS Installer"
 echo "================================================"
 
 GREEN='\033[0;32m'

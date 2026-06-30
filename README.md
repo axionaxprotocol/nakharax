@@ -4,7 +4,7 @@
 
 ### Cheap, accessible compute for everyone — a paid, verifiable grid for parallel science & AI
 
-<sub>formerly **Axionax** — rebrand in progress. Code identifiers, env vars, and live endpoints still use `axionax` during migration; see [Naming & rebrand](#naming--rebrand).</sub>
+<sub>formerly **Axionax**. See [Naming & rebrand](#naming--rebrand) for migration status.</sub>
 
 [![Chain ID](https://img.shields.io/badge/Testnet-86137-orange?style=flat-square)](#network)
 [![Rust](https://img.shields.io/badge/Rust-1.81%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
@@ -23,7 +23,7 @@
 This repository is the **monolithic working tree** for **nakhara.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
 
 ```
-axionax-monolith/
+nakhara-monolith/
 ├── apps/
 │   ├── web/              # Public dApp + marketplace (Next.js · TypeScript)
 │   └── os-dashboard/     # Self-hosted node OS UI (Next.js · Tailwind)
@@ -40,16 +40,22 @@ axionax-monolith/
 
 ## Naming & rebrand
 
-The project is being renamed **Axionax → nakhara.io**. This is a **phased** migration:
+The project was renamed **Axionax → nakhara.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
 
-| Layer | New | Status |
-|---|---|---|
-| Brand / docs / UI | **nakhara.io** | 🔄 in progress (this pass) |
-| Native token | **NAK** (was `AXX`) | ⏳ pending on-chain (contract + genesis) |
-| Domain | **nakhara.io** (was `axionax.org`) | ⏳ pending DNS/SSL migration |
-| Code identifiers | crate/package names, `AXIONAX_*` env vars | ⏳ deferred — **do not change yet** (would break the build + live testnet) |
+| Layer | Result |
+|---|---|
+| Brand / docs / UI | ✅ nakhara.io |
+| Code identifiers | ✅ crates, binary `nakhara-node`, packages (`@nakhara/sdk`), import paths |
+| Env vars | ✅ `NAKHARA_*` (was `AXIONAX_*`) |
+| Domain refs | ✅ `nakhara.io` in configs/SDK (was `axionax.org`) |
+| Native token | ✅ `NAK` (was `AXX`) — contract, genesis, tokenomics |
 
-> ⚠️ Until the deeper phases land, **live endpoints, env-var names, crate/package names, and the on-chain token symbol still read `axionax`/`AXX`.** Use them as-is. The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
+**Remaining (external / coordinated — not a repo edit):**
+- Rename the GitHub repo/org so `github.com/...` URLs resolve.
+- Stand up `nakhara.io` DNS + SSL, then redeploy nodes from this renamed tree.
+- A handful of filenames still contain `axionax` (deploy scripts, a stale build artifact) — tracked in [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md).
+
+The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
 
 ---
 
@@ -70,8 +76,8 @@ NPU acceleration (Hailo-8) is optional but recommended for AI-task workers.
 
 ```bash
 # 1. Clone with submodules / from monolith
-git clone https://github.com/axionaxprotocol/axionax-monolith.git
-cd axionax-monolith
+git clone https://github.com/nakharaprotocol/nakhara-monolith.git
+cd nakhara-monolith
 
 # 2. Bring up the full dev stack (node + validator + faucet + explorer + grafana)
 cd services/core
@@ -102,7 +108,7 @@ cd services/core
 python3 scripts/update-node.py
 
 # 2. Pick a role
-python3 scripts/join-axionax.py
+python3 scripts/join-nakhara.py
 #   1) Worker (PC/Server)
 #   2) Monolith Scout (single Hailo)
 #   3) HYDRA (Sentinel + Worker)
@@ -116,13 +122,13 @@ python3 scripts/join-axionax.py
 
 | Validator | IP | Role | RPC (direct) |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Validator + RPC + **Axionax OS** | `http://217.216.109.5:8545` · `https://app.axionax.org` |
+| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakhara OS** | `http://217.216.109.5:8545` · `https://app.nakhara.io` |
 | #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
 
-**Public HTTPS (AU):** `https://rpc.axionax.org` · `explorer` · `api` · `faucet`  
-**Axionax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
+**Public HTTPS (AU):** `https://rpc.nakhara.io` · `explorer` · `api` · `faucet`  
+**Nakhara OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
-P2P bootnodes are advertised via `AXIONAX_BOOTSTRAP_NODES` — see `services/core/configs/`.
+P2P bootnodes are advertised via `NAKHARA_BOOTSTRAP_NODES` — see `services/core/configs/`.
 
 Current validated status (2026-05-01):
 - AU (`46.250.244.4`) and EU (`217.216.109.5`) nodes are connected and report `peers: 1`.
@@ -137,8 +143,8 @@ Current validated status (2026-05-01):
 | P2P port | `30303` (TCP + QUIC) |
 | Health port | `8080` |
 | Metrics port | `9100` |
-| Block reward | `1.0 AXX` |
-| Min validator stake | `10,000 AXX` |
+| Block reward | `1.0 NAK` |
+| Min validator stake | `10,000 NAK` |
 | Finality threshold | `≥ 2/3` active validators |
 
 ---
@@ -168,14 +174,14 @@ If your node sees zero peers across the public internet:
 
 Full diagnostics live in [`docs/compossor-and-cascade-playbook.md`](./docs/compossor-and-cascade-playbook.md) under *§1 Debugging — P2P & Network*.
 
-### Runbook: `identity.key` + `AXIONAX_BOOTSTRAP_NODES`
+### Runbook: `identity.key` + `NAKHARA_BOOTSTRAP_NODES`
 
 Use this when nodes show `peers: 0`, or logs include `Local peer ID` connection errors.
 
-1. **Ensure each node has a unique identity key.** If two machines accidentally share `/var/lib/axionax-node/identity.key`, they will fail to peer.
+1. **Ensure each node has a unique identity key.** If two machines accidentally share `/var/lib/nakhara-node/identity.key`, they will fail to peer.
 2. **Set at least one valid bootstrap multiaddr** with peer id:
    ```bash
-   export AXIONAX_BOOTSTRAP_NODES="/ip4/<BOOTSTRAP_IP>/tcp/30303/p2p/<BOOTSTRAP_PEER_ID>"
+   export NAKHARA_BOOTSTRAP_NODES="/ip4/<BOOTSTRAP_IP>/tcp/30303/p2p/<BOOTSTRAP_PEER_ID>"
    ```
 3. **Open network path end-to-end** on the bootstrap node (`30303/tcp`, and optionally `30303/udp` for QUIC).
 4. **Restart node and verify peer count**:
@@ -189,10 +195,10 @@ Use this when nodes show `peers: 0`, or logs include `Local peer ID` connection 
 If identity collision is suspected, rotate one node key:
 
 ```bash
-systemctl stop axionax-node
-cp /var/lib/axionax-node/identity.key /var/lib/axionax-node/identity.key.bak.$(date +%s)
-rm -f /var/lib/axionax-node/identity.key
-systemctl start axionax-node
+systemctl stop nakhara-node
+cp /var/lib/nakhara-node/identity.key /var/lib/nakhara-node/identity.key.bak.$(date +%s)
+rm -f /var/lib/nakhara-node/identity.key
+systemctl start nakhara-node
 ```
 
 ---
@@ -202,23 +208,23 @@ systemctl start axionax-node
 ```bash
 # Web universe (apps/)
 pnpm install                                  # at repo root, hydrates all workspaces
-pnpm --filter axionax-os-dashboard dev        # dashboard on :3030
+pnpm --filter nakhara-os-dashboard dev        # dashboard on :3030
 
 # Core universe (services/core)
 cd services/core/core
 cargo test --workspace                        # 201/201 expected
 cargo clippy --workspace -- -D warnings
-cargo build --release -p node                 # produces axionax-node
+cargo build --release -p node                 # produces nakhara-node
 ```
 
 Useful commands:
 
 | Command | Purpose |
 |---|---|
-| `pnpm --filter axionax-os-dashboard icons:resize` | Rebuild optimized logo + favicon set via sharp |
+| `pnpm --filter nakhara-os-dashboard icons:resize` | Rebuild optimized logo + favicon set via sharp |
 | `./scripts/check-node-sync.sh` | Compare local vs. peer block height |
 | `python3 services/core/scripts/health-check.py` | Worker config + RPC reachability check |
-| `docker compose -f services/core/docker-compose.dev.yml logs -f axionax-node` | Tail node logs |
+| `docker compose -f services/core/docker-compose.dev.yml logs -f nakhara-node` | Tail node logs |
 
 ---
 

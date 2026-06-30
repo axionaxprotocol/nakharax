@@ -1,4 +1,4 @@
-# AxionAX Testnet Deployment Report
+# Nakhara Testnet Deployment Report
 **Generated:** November 12, 2025  
 **VPS:** 217.216.109.5 (vmi2895217)  
 **Status:** ✅ Infrastructure Ready, 🔄 Services Partially Deployed
@@ -7,7 +7,7 @@
 
 ## 📊 Executive Summary
 
-Successfully deployed core infrastructure and automation tools for AxionAX Protocol testnet on VPS 217.216.109.5. Infrastructure services (databases, caching, web server, monitoring) are operational. Mock RPC server deployed for testing. Several application services require attention.
+Successfully deployed core infrastructure and automation tools for Nakhara Protocol testnet on VPS 217.216.109.5. Infrastructure services (databases, caching, web server, monitoring) are operational. Mock RPC server deployed for testing. Several application services require attention.
 
 ---
 

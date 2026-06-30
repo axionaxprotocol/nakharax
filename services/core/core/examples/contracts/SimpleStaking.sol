@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title SimpleStaking
- * @dev Basic staking contract for AxionAX Testnet
+ * @dev Basic staking contract for Nakhara Testnet
  * @notice Stake tokens and earn rewards over time
  */
 contract SimpleStaking {

@@ -2,7 +2,7 @@
 
 **"The age of electricity ends here. The age of light begins."**
 
-This directory documents the **Optical Logic Simulation** for Axionax Monolith Mark-II. The actual simulation code lives in:
+This directory documents the **Optical Logic Simulation** for Nakhara Monolith Mark-II. The actual simulation code lives in:
 
 | Component | Location | Description |
 |-----------|----------|-------------|
@@ -10,7 +10,7 @@ This directory documents the **Optical Logic Simulation** for Axionax Monolith M
 | **PoL** (Proof-of-Light Consensus) | [`../core/consensus/src/proof_of_light.rs`](../core/consensus/src/proof_of_light.rs) | Rust: `LightValidator`, photonic interference verification |
 | **Interconnect** (concept) | — | Lithium Niobate waveguides: latency fs, throughput exabytes, 0° heat |
 
-## Simulation Report (vs Axionax v1.9 Silicon)
+## Simulation Report (vs Nakhara v1.9 Silicon)
 
 | Metric | v1.9 (Silicon) | Mark-II (Photonic) | Improvement |
 |--------|----------------|-------------------|-------------|

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Load Testing Suite for AxionAx RPC Endpoints
+Load Testing Suite for Nakhara RPC Endpoints
 Tests throughput, latency, and reliability under various load conditions
 """
 

@@ -9,7 +9,7 @@ Scripts to validate protocol targets:
 
 - Python 3.10+
 - `web3` (e.g. `pip install web3`)
-- Running Axionax RPC (e.g. `https://rpc.axionax.org` or local node)
+- Running Nakhara RPC (e.g. `https://rpc.nakhara.io` or local node)
 
 ## 1. Block timing & finality (no funded account)
 
@@ -23,10 +23,10 @@ Output: blocks per second, average block time (s), approximate finality.
 
 ## 2. TPS test (requires funded account)
 
-Sends many transactions and measures throughput. Needs a wallet with AXX for gas.
+Sends many transactions and measures throughput. Needs a wallet with NAK for gas.
 
 ```bash
-export AXIONAX_PRIVATE_KEY=0x...   # optional, or use --key file
+export NAKHARA_PRIVATE_KEY=0x...   # optional, or use --key file
 python tps_finality_test.py --rpc http://localhost:8545 --mode tps --duration 30 --tx-rate 1000
 ```
 

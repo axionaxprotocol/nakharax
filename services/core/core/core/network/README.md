@@ -1,6 +1,6 @@
-# axionax Network Layer
+# nakhara Network Layer
 
-Peer-to-peer networking layer for axionax blockchain using libp2p.
+Peer-to-peer networking layer for nakhara blockchain using libp2p.
 
 ## Overview
 
@@ -22,7 +22,7 @@ The network layer provides decentralized communication capabilities including:
    - Handles message publishing and event processing
    - Provides peer management APIs
 
-2. **axionaxBehaviour** (`behaviour.rs`)
+2. **nakharaBehaviour** (`behaviour.rs`)
    - Combines multiple libp2p protocols:
      - **Gossipsub**: Message propagation (pub/sub)
      - **mDNS**: Local network peer discovery
@@ -131,26 +131,26 @@ let manager = NetworkManager::new(config).await?;
 ## Message Types
 
 ### Block Messages
-Propagated via `axionax/blocks` topic:
+Propagated via `nakhara/blocks` topic:
 - Block number, hash, parent hash
 - Timestamp and proposer
 - Transaction list
 - State root
 
 ### Transaction Messages
-Propagated via `axionax/transactions` topic:
+Propagated via `nakhara/transactions` topic:
 - Transaction hash, from, to
 - Value, data, nonce
 - Signature
 
 ### Consensus Messages
-Propagated via `axionax/consensus` topic:
+Propagated via `nakhara/consensus` topic:
 - **Challenge**: PoPc challenge messages
 - **Proof**: PoPc proof submissions
 - **Vote**: Validator votes
 
 ### Status Messages
-Propagated via `axionax/status` topic:
+Propagated via `nakhara/status` topic:
 - Peer chain height and state
 - Sync status
 

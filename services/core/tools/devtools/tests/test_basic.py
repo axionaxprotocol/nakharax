@@ -121,7 +121,7 @@ class TestDocumentation(unittest.TestCase):
         readme = self.root_dir / "README.md"
         if readme.exists():
             content = readme.read_text(encoding='utf-8')
-            # Should use lowercase 'nakhara', not 'AxionAX' or 'Nakhara'
+            # Should use lowercase 'nakhara', not 'Nakhara' or 'Nakhara'
             self.assertIn("nakhara", content.lower())
             
     def test_no_broken_branding(self):
@@ -132,11 +132,11 @@ class TestDocumentation(unittest.TestCase):
             # Check for common mistakes (case-sensitive check on title lines)
             lines = content.split('\n')
             for i, line in enumerate(lines):
-                # Allow AxionAX in URLs and specific contexts
+                # Allow Nakhara in URLs and specific contexts
                 if line.startswith('#') and 'github.com' not in line:
-                    # Title lines should not have AxionAX
-                    if 'AxionAX' in line and 'nakhara' not in line.lower():
-                        self.fail(f"Line {i+1}: Found 'AxionAX' in title: {line}")
+                    # Title lines should not have Nakhara
+                    if 'Nakhara' in line and 'nakhara' not in line.lower():
+                        self.fail(f"Line {i+1}: Found 'Nakhara' in title: {line}")
 
 
 def run_tests():

@@ -5,7 +5,7 @@ Example: Worker selection using Auto Selection Router
 from deai.asr import AutoSelectionRouter, Worker
 
 def main():
-    print("AxionAx ASR Worker Selection Example\n")
+    print("Nakhara ASR Worker Selection Example\n")
     
     # Initialize ASR
     asr = AutoSelectionRouter(

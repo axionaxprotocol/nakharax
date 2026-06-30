@@ -1,6 +1,6 @@
-# axionax Protocol Core 🦀🐍
+# nakhara Protocol Core 🦀🐍
 
-> **The Heart of axionax: High-Performance Blockchain Protocol
+> **The Heart of nakhara: High-Performance Blockchain Protocol
 > Implementation**  
 > Multi-language architecture combining Rust (core), Python (ML), and TypeScript
 > (SDK)
@@ -8,30 +8,30 @@
 [![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.75+-orange)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
-[![Protocol](https://img.shields.io/badge/Protocol-axionax-purple)](https://axionax.org)
+[![Protocol](https://img.shields.io/badge/Protocol-nakhara-purple)](https://nakhara.io)
 
 ---
 
-## 🎯 About axionax Protocol
+## 🎯 About nakhara Protocol
 
-**axionax** is a Layer-1 blockchain that unifies **Execution**, **Validation
+**nakhara** is a Layer-1 blockchain that unifies **Execution**, **Validation
 (PoPC)**, **Data Availability**, and **Settlement** with emphasis on
 performance, transparency, and security for decentralized compute markets.
 
 This repository contains the **core protocol implementation** - the foundation
-of the entire axionax ecosystem.
+of the entire nakhara ecosystem.
 
-### Part of axionax Ecosystem
+### Part of nakhara Ecosystem
 
-This is the **core component** of the axionax Protocol. Complete ecosystem repositories:
+This is the **core component** of the nakhara Protocol. Complete ecosystem repositories:
 
-- **Core Protocol**: [axionax-core](https://github.com/axionaxprotocol/axionax-core) - Blockchain implementation (this repo)
-- **Web Interface**: [axionax-web](https://github.com/axionaxprotocol/axionax-web) - Official website & dashboard
-- **TypeScript SDK**: [axionax-sdk-ts](https://github.com/axionaxprotocol/axionax-sdk-ts) - Developer SDK
-- **Documentation**: [axionax-docs](https://github.com/axionaxprotocol/axionax-docs) - Protocol documentation
-- **Marketplace**: [axionax-marketplace](https://github.com/axionaxprotocol/axionax-marketplace) - Compute marketplace dApp
-- **DevTools**: [axionax-devtools](https://github.com/axionaxprotocol/axionax-devtools) - Development utilities
-- **Deployment**: [axionax-deploy](https://github.com/axionaxprotocol/axionax-deploy) - Infrastructure scripts
+- **Core Protocol**: [nakhara-core](https://github.com/nakhara-io/nakhara-core) - Blockchain implementation (this repo)
+- **Web Interface**: [nakhara-web](https://github.com/nakhara-io/nakhara-web) - Official website & dashboard
+- **TypeScript SDK**: [nakhara-sdk-ts](https://github.com/nakhara-io/nakhara-sdk-ts) - Developer SDK
+- **Documentation**: [nakhara-docs](https://github.com/nakhara-io/nakhara-docs) - Protocol documentation
+- **Marketplace**: [nakhara-marketplace](https://github.com/nakhara-io/nakhara-marketplace) - Compute marketplace dApp
+- **DevTools**: [nakhara-devtools](https://github.com/nakhara-io/nakhara-devtools) - Development utilities
+- **Deployment**: [nakhara-deploy](https://github.com/nakhara-io/nakhara-deploy) - Infrastructure scripts
 
 ---
 
@@ -45,9 +45,9 @@ This is the **core component** of the axionax Protocol. Complete ecosystem repos
 - **Mainnet**: Chain ID `86150` (reserved, not launched)
 - **Local Dev**: Chain ID `31337` (local development only, not a public network)
 
-**ANY network claiming to be "axionax Mainnet" is a SCAM.**
+**ANY network claiming to be "nakhara Mainnet" is a SCAM.**
 
-Verify at: https://axionax.org/networks
+Verify at: https://nakhara.io/networks
 
 ---
 
@@ -89,7 +89,7 @@ We've created a comprehensive **Multi-Repo Issue Manager** to track all pre-laun
 
 **Current Focus:** Security audits, performance testing, and documentation completion before public testnet launch.
 
-**Want to contribute?** Check our [Issue Tracker](https://github.com/axionaxprotocol/axionax-core/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
+**Want to contribute?** Check our [Issue Tracker](https://github.com/nakhara-io/nakhara-core/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
 
 ---
 
@@ -185,7 +185,7 @@ flowchart LR
 
     ASR[ASR Router] --> Exec
     PPC[Price Controller] -.-> ASR
-    DeAI[DeAI Sentinel] -.-> DAO[axionax DAO]
+    DeAI[DeAI Sentinel] -.-> DAO[nakhara DAO]
     DAO -.-> ASR
     DAO -.-> PPC
 ```
@@ -216,19 +216,19 @@ We provide automated dependency installers for all major platforms:
 #### 🐧 Linux (Ubuntu/Debian/CentOS/RHEL/Arch/Alpine)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/axionaxprotocol/axionax-core/main/scripts/install_dependencies_linux.sh | bash
+curl -sSL https://raw.githubusercontent.com/nakhara-io/nakhara-core/main/scripts/install_dependencies_linux.sh | bash
 ```
 
 #### 🪟 Windows (PowerShell as Administrator)
 
 ```powershell
-irm https://raw.githubusercontent.com/axionaxprotocol/axionax-core/main/scripts/install_dependencies_windows.ps1 | iex
+irm https://raw.githubusercontent.com/nakhara-io/nakhara-core/main/scripts/install_dependencies_windows.ps1 | iex
 ```
 
 #### 🍎 macOS (10.15+)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/axionaxprotocol/axionax-core/main/scripts/install_dependencies_macos.sh | bash
+curl -sSL https://raw.githubusercontent.com/nakhara-io/nakhara-core/main/scripts/install_dependencies_macos.sh | bash
 ```
 
 **These scripts install:**
@@ -248,8 +248,8 @@ manual setup.
 
 ```bash
 # Clone the repository
-git clone https://github.com/axionaxprotocol/axionax-core.git
-cd axionax-core
+git clone https://github.com/nakhara-io/nakhara-core.git
+cd nakhara-core
 
 # Build the Rust core and Python bridge
 cargo build --release
@@ -274,14 +274,14 @@ curl -X POST -H "Content-Type: application/json" \
 
 ```bash
 # View TypeScript SDK examples
-cd ../axionax-sdk-ts/examples
+cd ../nakhara-sdk-ts/examples
 
 # Run basic example
 npm install
 npm run basic
 
 # Or check Python integration
-cd ../../axionax-core/tests
+cd ../../nakhara-core/tests
 python integration_simple.py
 ```
 
@@ -291,7 +291,7 @@ After installation:
 
 1. **📖 Read Documentation**: Check [docs/](docs/) for detailed guides
 2. **🧪 Run Tests**: `cargo test --all` for unit tests
-3. **🎯 Try Examples**: Explore SDK examples in [axionax-sdk-ts](../axionax-sdk-ts)
+3. **🎯 Try Examples**: Explore SDK examples in [nakhara-sdk-ts](../nakhara-sdk-ts)
 4. **🤝 Contribute**: See [Contributing Guide](#-contributing) below
 5. **💬 Join Community**: Discord, Twitter (Coming Q1 2026)
 
@@ -307,7 +307,7 @@ After installation:
 - Install PyO3: `pip install maturin`
 - Rebuild: `cd bridge/rust-python && maturin develop`
 
-**Need help?** Open an issue: https://github.com/axionaxprotocol/axionax-core/issues
+**Need help?** Open an issue: https://github.com/nakhara-io/nakhara-core/issues
 
 ### Manual Prerequisites
 
@@ -341,7 +341,7 @@ If you prefer to install dependencies manually:
 #### Using Python Bindings
 
 ```python
-import axionax_python as axx
+import nakhara_python as axx
 
 # VRF operations
 vrf = axx.PyVRF()
@@ -364,9 +364,9 @@ height = blockchain.latest_block_number()
 #### Using TypeScript SDK
 
 ```typescript
-import { axionaxClient } from '@axionax/sdk';
+import { nakharaClient } from '@nakhara/sdk';
 
-const client = new axionaxClient('http://localhost:8545');
+const client = new nakharaClient('http://localhost:8545');
 
 // Submit computation job
 const jobId = await client.submitJob({
@@ -380,30 +380,30 @@ const status = await client.getJobStatus(jobId);
 ```
 
 📖 **[Python API Docs](docs/PYTHON_API.md)** | 📖
-**[TypeScript SDK Docs](../axionax-sdk-ts/README.md)**
+**[TypeScript SDK Docs](../nakhara-sdk-ts/README.md)**
 
-## 🔗 axionax Protocol Ecosystem
+## 🔗 nakhara Protocol Ecosystem
 
-This core implementation is part of the complete axionax Protocol ecosystem:
+This core implementation is part of the complete nakhara Protocol ecosystem:
 
 | Component            | Description                  | Location                                     | Status      |
 | -------------------- | ---------------------------- | -------------------------------------------- | ----------- |
-| **Core** (this repo) | Protocol implementation      | `axionax-core/`                              | ✅ Ready    |
-| **Web**              | Official website & interface | [`../axionax-web`](../axionax-web)           | ✅ Ready    |
-| **SDK**              | TypeScript developer SDK     | [`../axionax-sdk-ts`](../axionax-sdk-ts)     | ✅ Ready    |
-| **Docs**             | Protocol documentation       | [`../axionax-docs`](../axionax-docs)         | 📝 Active   |
-| **Marketplace**      | Compute marketplace dApp     | [`../axionax-marketplace`](../axionax-marketplace) | 🚧 Beta |
-| **DevTools**         | Development utilities        | [`../axionax-devtools`](../axionax-devtools) | ✅ Ready    |
-| **Deploy**           | Infrastructure & deployment  | [`../axionax-deploy`](../axionax-deploy)     | 🔥 Testing  |
+| **Core** (this repo) | Protocol implementation      | `nakhara-core/`                              | ✅ Ready    |
+| **Web**              | Official website & interface | [`../nakhara-web`](../nakhara-web)           | ✅ Ready    |
+| **SDK**              | TypeScript developer SDK     | [`../nakhara-sdk-ts`](../nakhara-sdk-ts)     | ✅ Ready    |
+| **Docs**             | Protocol documentation       | [`../nakhara-docs`](../nakhara-docs)         | 📝 Active   |
+| **Marketplace**      | Compute marketplace dApp     | [`../nakhara-marketplace`](../nakhara-marketplace) | 🚧 Beta |
+| **DevTools**         | Development utilities        | [`../nakhara-devtools`](../nakhara-devtools) | ✅ Ready    |
+| **Deploy**           | Infrastructure & deployment  | [`../nakhara-deploy`](../nakhara-deploy)     | 🔥 Testing  |
 | **Issue Manager**    | Task automation              | [`../issue-manager`](../issue-manager)       | 🎉 New!     |
 
-**Organization**: [github.com/axionaxprotocol](https://github.com/axionaxprotocol)
+**Organization**: [github.com/nakhara-io](https://github.com/nakhara-io)
 
 ---
 
 ## 📊 Tokenomics
 
-- **Total Supply**: 1,000,000,000,000 AXX (1 Trillion, fixed cap)
+- **Total Supply**: 1,000,000,000,000 NAK (1 Trillion, fixed cap)
 - **Emission Rate**: ~2.25% APY from Ecosystem Reserve
 - **Token Utilities**: Gas fees, Staking, Medium of Exchange, Governance
 
@@ -442,7 +442,7 @@ This core implementation is part of the complete axionax Protocol ecosystem:
 - **[Integration README](docs/INTEGRATION_README.md)** - Integration overview
 - **[Contributing Guide](docs/CONTRIBUTING.md)** - How to contribute
 - **[Python API Docs](docs/PYTHON_API.md)** - Python bindings reference
-- **[TypeScript SDK Docs](../axionax-sdk-ts/README.md)** - TypeScript SDK reference
+- **[TypeScript SDK Docs](../nakhara-sdk-ts/README.md)** - TypeScript SDK reference
 - **[Testing Guide](docs/TESTING_GUIDE.md)** - Testing strategies
 
 ### Network & Hardware
@@ -480,9 +480,9 @@ This core implementation is part of the complete axionax Protocol ecosystem:
 - 🔥 Documentation completion
 
 ### Phase 3: Public Testnet Launch 🎯 (Target: Q1 2026)
-- 🔜 Deploy RPC nodes (https://rpc.axionax.org)
-- 🔜 Launch block explorer (https://explorer.axionax.org)
-- 🔜 Token faucet service (https://faucet.axionax.org)
+- 🔜 Deploy RPC nodes (https://rpc.nakhara.io)
+- 🔜 Launch block explorer (https://explorer.nakhara.io)
+- 🔜 Token faucet service (https://faucet.nakhara.io)
 - 🔜 Community channels (Discord, Twitter, Telegram)
 - 🔜 Developer documentation & tutorials
 - 🔜 Bug bounty program
@@ -540,7 +540,7 @@ Key security mechanisms:
 - **Fraud-Proof Window** with validator accountability
 - **DA Pre-commit** with live audits
 
-🐛 **Found a vulnerability?** Please report to security@axionax.org (PGP key
+🐛 **Found a vulnerability?** Please report to security@nakhara.io (PGP key
 available)
 
 ## 🤝 Contributing
@@ -553,16 +553,16 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 - **💡 Propose Features**: Discuss new ideas in GitHub Discussions
 - **📝 Improve Docs**: Fix typos, add examples, clarify guides
 - **🧪 Write Tests**: Increase test coverage and quality
-- **🔧 Fix Issues**: Check [good first issue](https://github.com/axionaxprotocol/axionax-core/labels/good%20first%20issue) label
-- **🔐 Security**: Report vulnerabilities to security@axionax.org
+- **🔧 Fix Issues**: Check [good first issue](https://github.com/nakhara-io/nakhara-core/labels/good%20first%20issue) label
+- **🔐 Security**: Report vulnerabilities to security@nakhara.io
 
 ### 📋 Development Workflow
 
 1. **Fork & Clone**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/axionax-core.git
-   cd axionax-core
-   git remote add upstream https://github.com/axionaxprotocol/axionax-core.git
+   git clone https://github.com/YOUR_USERNAME/nakhara-core.git
+   cd nakhara-core
+   git remote add upstream https://github.com/nakhara-io/nakhara-core.git
    ```
 
 2. **Create Feature Branch**
@@ -655,35 +655,35 @@ This project is licensed under the **GNU Affero General Public License v3.0
 
 ## 🔗 Links
 
-### axionax Protocol
+### nakhara Protocol
 
-- **GitHub Organization**: https://github.com/axionaxprotocol
-- **Core Repository**: https://github.com/axionaxprotocol/axionax-core
-- **Website**: https://axionax.org
-- **Documentation**: https://docs.axionax.org (see [`../axionax-docs`](../axionax-docs))
+- **GitHub Organization**: https://github.com/nakhara-io
+- **Core Repository**: https://github.com/nakhara-io/nakhara-core
+- **Website**: https://nakhara.io
+- **Documentation**: https://docs.nakhara.io (see [`../nakhara-docs`](../nakhara-docs))
 
 ### Network Endpoints
 
-- **Testnet RPC**: https://rpc.axionax.org (Q1 2026)
-- **Block Explorer**: https://explorer.axionax.org (Q1 2026)
-- **Token Faucet**: https://faucet.axionax.org (Q1 2026)
+- **Testnet RPC**: https://rpc.nakhara.io (Q1 2026)
+- **Block Explorer**: https://explorer.nakhara.io (Q1 2026)
+- **Token Faucet**: https://faucet.nakhara.io (Q1 2026)
 
 ### Development
 
-- **GitHub Issues**: https://github.com/axionaxprotocol/axionax-core/issues
+- **GitHub Issues**: https://github.com/nakhara-io/nakhara-core/issues
 - **Contributing**: See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ### Community (Coming Q1 2026)
 
-- **Discord**: https://discord.gg/axionax
-- **Twitter**: https://twitter.com/axionaxprotocol
-- **Telegram**: https://t.me/axionax
+- **Discord**: https://discord.gg/nakhara
+- **Twitter**: https://twitter.com/nakhara-io
+- **Telegram**: https://t.me/nakhara
 
 ---
 
 ## 🙏 Acknowledgments
 
-Built with 💜 by the axionax Protocol community
+Built with 💜 by the nakhara Protocol community
 
 **Core Technologies**:
 
@@ -702,9 +702,9 @@ Built with 💜 by the axionax Protocol community
 
 ---
 
-**⚠️ Development Notice**: axionax Protocol v1.6 core is complete. Network layer
+**⚠️ Development Notice**: nakhara Protocol v1.6 core is complete. Network layer
 (v1.7) in progress. Testnet launch planned Q2 2026. Mainnet Q4 2026.
 
-Made with 💜 by the axionax Protocol Team
+Made with 💜 by the nakhara Protocol Team
 
 **Last Updated**: November 7, 2025

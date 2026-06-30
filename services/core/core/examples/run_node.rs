@@ -1,4 +1,4 @@
-// Example: Run a local AxionAx node
+// Example: Run a local Nakhara node
 use nakhara_node::{Node, NodeConfig};
 use nakhara_rpc::RpcServer;
 use std::sync::Arc;
@@ -6,7 +6,7 @@ use tokio;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Starting AxionAx Node...\n");
+    println!("Starting Nakhara Node...\n");
 
     // Load configuration
     let config = NodeConfig {

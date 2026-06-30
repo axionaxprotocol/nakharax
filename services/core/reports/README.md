@@ -37,6 +37,6 @@ Wrappers (set working directory to repo root automatically):
 - **Linux / macOS / WSL:** `bash services/core/scripts/run-p2p-stability-24h.sh`
 - **Windows PowerShell:** `pwsh services/core/scripts/run-p2p-stability-24h.ps1`
 
-Optional Discord alerts: pass `--webhook <url>` or set env **`AXIONAX_P2P_WEBHOOK`** before running a wrapper.
+Optional Discord alerts: pass `--webhook <url>` or set env **`NAKHARA_P2P_WEBHOOK`** before running a wrapper.
 
 `network-quality.txt` uses **ping** on all platforms; **tracert** on Windows and **traceroute** / **tracepath** on Unix when installed.

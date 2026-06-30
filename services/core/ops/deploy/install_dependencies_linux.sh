@@ -1,10 +1,10 @@
 #!/bin/bash
-# AxionAx SDK TypeScript - Linux Installation Script
+# Nakhara SDK TypeScript - Linux Installation Script
 
 set -e
 
 echo "================================================"
-echo "AxionAx SDK TypeScript - Linux Installer"
+echo "Nakhara SDK TypeScript - Linux Installer"
 echo "================================================"
 
 GREEN='\033[0;32m'

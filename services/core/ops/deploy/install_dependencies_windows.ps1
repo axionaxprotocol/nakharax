@@ -1,7 +1,7 @@
-# AxionAx SDK TypeScript - Windows Installation Script
+# Nakhara SDK TypeScript - Windows Installation Script
 
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "AxionAx SDK TypeScript - Windows Installer" -ForegroundColor Cyan
+Write-Host "Nakhara SDK TypeScript - Windows Installer" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 
 # Install Node.js if not present

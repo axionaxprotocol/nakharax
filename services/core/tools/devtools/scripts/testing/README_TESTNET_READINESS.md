@@ -1,6 +1,6 @@
 # Testnet Readiness Checker
 
-Comprehensive automated validation tool for AxionAx Protocol testnet deployment readiness.
+Comprehensive automated validation tool for Nakhara Protocol testnet deployment readiness.
 
 ## Overview
 

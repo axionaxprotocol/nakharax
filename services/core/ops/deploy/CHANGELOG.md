@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to AxionAx Web will be documented in this file.
+All notable changes to Nakhara Web will be documented in this file.
 
 ## [1.8.0] - 2025-11-15
 

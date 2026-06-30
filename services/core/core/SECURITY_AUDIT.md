@@ -1,6 +1,6 @@
 # Security Audit Report
 
-**Project:** AxionAx Protocol  
+**Project:** Nakhara Protocol  
 **Audit Firm:** [Pending - To be contracted]  
 **Lead Auditor:** [To be assigned]  
 **Audit Date:** [Scheduled Q4 2025]  
@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-This document serves as a template for the comprehensive security audit to be conducted by a professional third-party security firm before AxionAx Protocol testnet launch.
+This document serves as a template for the comprehensive security audit to be conducted by a professional third-party security firm before Nakhara Protocol testnet launch.
 
 ### Audit Scope
 

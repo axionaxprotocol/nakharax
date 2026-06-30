@@ -1,10 +1,10 @@
-# AxionAx Testnet Readiness Checker
+# Nakhara Testnet Readiness Checker
 
-**Comprehensive pre-launch validation for AxionAx Protocol testnet deployment**
+**Comprehensive pre-launch validation for Nakhara Protocol testnet deployment**
 
 ## 📋 Overview
 
-The Testnet Readiness Checker is an automated validation tool that performs comprehensive checks across 7 critical categories to ensure the AxionAx Protocol is ready for testnet launch. It validates infrastructure, security, performance, documentation, deployment configurations, and monitoring setup.
+The Testnet Readiness Checker is an automated validation tool that performs comprehensive checks across 7 critical categories to ensure the Nakhara Protocol is ready for testnet launch. It validates infrastructure, security, performance, documentation, deployment configurations, and monitoring setup.
 
 ## 🎯 Purpose
 

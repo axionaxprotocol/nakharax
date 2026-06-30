@@ -1,6 +1,6 @@
 # Core documentation
 
-Central docs for the Axionax Core Universe (blockchain, network, DeAI, hardware).
+Central docs for the Nakhara Core Universe (blockchain, network, DeAI, hardware).
 
 > **Cross-cutting docs (protocol-wide)**: See [`../../../docs/README.md`](../../../docs/README.md)  
 > **Setup guides**: See [`../../../docs/guides/`](../../../docs/guides/) — Validator & worker setup guides  

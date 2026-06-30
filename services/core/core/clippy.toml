@@ -1,4 +1,4 @@
-# Clippy configuration for AxionAx Core
+# Clippy configuration for Nakhara Core
 
 # Deny warnings in CI
 warn-on-all-wildcard-imports = true

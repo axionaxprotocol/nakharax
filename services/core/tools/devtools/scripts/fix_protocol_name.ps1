@@ -1,11 +1,11 @@
-# Fix "AxionAX protocol" to "nakhara protocol" across all files
+# Fix "Nakhara protocol" to "nakhara protocol" across all files
 # Run this script from the workspace root
 
-Write-Host "🔍 Searching for 'AxionAX protocol' or 'AxionAX Protocol'..." -ForegroundColor Cyan
+Write-Host "🔍 Searching for 'Nakhara protocol' or 'Nakhara Protocol'..." -ForegroundColor Cyan
 
 $replacements = @(
-    @{ Old = "AxionAX Protocol"; New = "nakhara protocol" },
-    @{ Old = "AxionAX protocol"; New = "nakhara protocol" },
+    @{ Old = "Nakhara Protocol"; New = "nakhara protocol" },
+    @{ Old = "Nakhara protocol"; New = "nakhara protocol" },
     @{ Old = "Nakhara Protocol"; New = "nakhara protocol" }
 )
 

@@ -1,9 +1,9 @@
-// Example: Create and send a transaction using AxionAx SDK
+// Example: Create and send a transaction using Nakhara SDK
 use nakhara_blockchain::{Blockchain, Transaction};
 use nakhara_crypto::{generate_keypair, sign_message};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("AxionAx Transaction Example\n");
+    println!("Nakhara Transaction Example\n");
 
     // Initialize blockchain
     let mut blockchain = Blockchain::new();

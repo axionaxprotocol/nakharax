@@ -1,8 +1,8 @@
-# AxionAx Core API Reference
+# Nakhara Core API Reference
 
 ## Overview
 
-AxionAx Core provides a modular blockchain infrastructure with Proof of Probabilistic Checking (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
+Nakhara Core provides a modular blockchain infrastructure with Proof of Probabilistic Checking (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
 
 ---
 
@@ -91,7 +91,7 @@ pub fn sign_message(
 ```rust
 use nakhara_crypto::sign_message;
 
-let signature = sign_message(&private_key, b"Hello AxionAx")?;
+let signature = sign_message(&private_key, b"Hello Nakhara")?;
 ```
 
 #### `verify_signature`
@@ -270,14 +270,14 @@ def select_workers(
 
 ## TypeScript SDK API
 
-### AxionAxProvider
+### NakharaProvider
 
-Main provider for interacting with AxionAx blockchain.
+Main provider for interacting with Nakhara blockchain.
 
 ```typescript
-import { AxionAxProvider } from '@nakhara/sdk';
+import { NakharaProvider } from '@nakhara/sdk';
 
-const provider = new AxionAxProvider('http://localhost:8545');
+const provider = new NakharaProvider('http://localhost:8545');
 ```
 
 #### Methods
@@ -425,7 +425,7 @@ asr:
 
 network:
   chain_id: 86137
-  network_name: "AxionAx Testnet"
+  network_name: "Nakhara Testnet"
   block_time_seconds: 5
   max_peers: 50
 ```
@@ -445,7 +445,7 @@ let config = ProtocolConfig::from_yaml("config.yaml")?;
 ### Common Error Types
 
 ```rust
-pub enum AxionAxError {
+pub enum NakharaError {
     BlockchainError(String),
     ConsensusError(String),
     NetworkError(String),
@@ -457,12 +457,12 @@ pub enum AxionAxError {
 **Example:**
 
 ```rust
-use nakhara_core::AxionAxError;
+use nakhara_core::NakharaError;
 
-fn process_block(block: Block) -> Result<(), AxionAxError> {
+fn process_block(block: Block) -> Result<(), NakharaError> {
     // Validate block
     if !block.is_valid() {
-        return Err(AxionAxError::BlockchainError(
+        return Err(NakharaError::BlockchainError(
             "Invalid block".to_string()
         ));
     }

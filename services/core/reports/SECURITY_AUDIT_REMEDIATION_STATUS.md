@@ -44,7 +44,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 | **Remediated** | Current code appears to address the finding; spot-checked in repo. |
 | **Partial** | Improved materially; audit recommendation not fully met or deployment-dependent. |
 | **Open** | No evidence of fix in this pass, or still structurally true (e.g. HTTP without TLS). |
-| **Dev / out of scope** | Applies to mocks, examples, or repos not in `axionax-monolith`; accept risk for dev only. |
+| **Dev / out of scope** | Applies to mocks, examples, or repos not in `nakhara-monolith`; accept risk for dev only. |
 
 ---
 
@@ -68,7 +68,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 |----|--------|------------------|
 | RC-1 | **Remediated** | Legacy `VRF` removed; `core/core/crypto/src/lib.rs` documents use `ECVRF` only. |
 | RC-2 | **Remediated** | Same as RC-1 (legacy construction removed). |
-| RC-3 | **Remediated** | `AxionaxBehaviour::new` takes real `keypair`; Gossipsub `Signed(keypair)`, Identify uses `keypair.public()` (`behaviour.rs`). |
+| RC-3 | **Remediated** | `NakharaBehaviour::new` takes real `keypair`; Gossipsub `Signed(keypair)`, Identify uses `keypair.public()` (`behaviour.rs`). |
 | RH-1 | **Remediated** | `output_size == 0` guard in `consensus/src/lib.rs`. |
 | RH-2 | **Remediated** | `deserialize_proofs`: caps `num_proofs` (10_000), `num_siblings` (64); tests for huge counts (`merkle.rs`). |
 | RH-3 | **Partial** | `load_or_generate_keypair` when `key_file` set (`manager.rs`); **ephemeral** if `key_file` is `None`. |
@@ -163,7 +163,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 
 ## §4 — TypeScript SDK & website
 
-All findings marked **Dev / other repo** — tracked in `axionax-monolith`, not verified here.
+All findings marked **Dev / other repo** — tracked in `nakhara-monolith`, not verified here.
 
 ---
 
