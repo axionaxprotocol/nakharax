@@ -158,4 +158,4 @@ This repository contains many documents. This file is the central index: content
 
 ---
 
-*Nakharax Bible — central index of canonical documentation for nakharax-monolith.*
+*Nakharax Bible — central index of canonical documentation for nakharax.*

@@ -146,13 +146,13 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 
 1. **Add Nakharax Testnet to MetaMask:**
    - Network Name: Nakharax Testnet
-   - RPC URL: https://rpc.nakharaxx.io
+   - RPC URL: https://rpc.nakharax.io
    - Chain ID: 86137
    - Currency Symbol: NAK
-   - Block Explorer: http://rpc.nakharaxx.io:3000/explorer
+   - Block Explorer: http://rpc.nakharax.io:3000/explorer
 
 2. **Get Testnet Tokens:**
-   - Visit: http://rpc.nakharaxx.io:3000/faucet
+   - Visit: http://rpc.nakharax.io:3000/faucet
    - Request 1 NAK (60 minute cooldown)
 
 3. **Deploy with Remix:**
@@ -171,7 +171,7 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 module.exports = {
   networks: {
     nakharax: {
-      url: "https://rpc.nakharaxx.io",
+      url: "https://rpc.nakharax.io",
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY]
     }
@@ -190,19 +190,19 @@ npx hardhat run scripts/deploy.js --network nakharax
 ```bash
 # Deploy SimpleToken
 forge create SimpleToken \
-  --rpc-url https://rpc.nakharaxx.io \
+  --rpc-url https://rpc.nakharax.io \
   --constructor-args "Test Token" "TEST" 1000000 \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleNFT
 forge create SimpleNFT \
-  --rpc-url https://rpc.nakharaxx.io \
+  --rpc-url https://rpc.nakharax.io \
   --constructor-args "My NFT" "MNFT" \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleStaking
 forge create SimpleStaking \
-  --rpc-url https://rpc.nakharaxx.io \
+  --rpc-url https://rpc.nakharax.io \
   --constructor-args 0x0000000000000000000000000000000000000000 \
   --private-key $PRIVATE_KEY
 ```
@@ -258,10 +258,10 @@ await staking.claimRewards();
 
 ## 📚 Resources
 
-- **Testnet Website**: http://rpc.nakharaxx.io:3000
-- **Faucet**: http://rpc.nakharaxx.io:3000/faucet
-- **Explorer**: http://rpc.nakharaxx.io:3000/explorer
-- **RPC Endpoint**: https://rpc.nakharaxx.io
+- **Testnet Website**: http://rpc.nakharax.io:3000
+- **Faucet**: http://rpc.nakharax.io:3000/faucet
+- **Explorer**: http://rpc.nakharax.io:3000/explorer
+- **RPC Endpoint**: https://rpc.nakharax.io
 - **Chain ID**: 86137
 - **Documentation**: https://github.com/nakharax-io/nakharax-docs
 

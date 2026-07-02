@@ -5,7 +5,7 @@
 #
 # Usage: bash setup_explorer.sh [OPTIONS]
 # Options:
-#   --domain DOMAIN        Domain for explorer (e.g., testnet-explorer.nakharaxx.io)
+#   --domain DOMAIN        Domain for explorer (e.g., testnet-explorer.nakharax.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 #   --rpc-url URL         RPC endpoint URL (default: http://localhost:8545)
 #   --ws-url URL          WebSocket URL (default: ws://localhost:8546)

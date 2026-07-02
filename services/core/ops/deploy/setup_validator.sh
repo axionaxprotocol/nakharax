@@ -14,8 +14,8 @@ NC='\033[0m' # No Color
 # Configuration
 NAKHARAX_USER="nakharax"
 NAKHARAX_HOME="/home/$NAKHARAX_USER/.nakharax"
-REPO_URL="https://github.com/nakharax-io/nakharax-monolith.git"
-REPO_DIR="nakharax-monolith"
+REPO_URL="https://github.com/nakharax-io/nakharax.git"
+REPO_DIR="nakharax"
 BRANCH="main"
 
 echo -e "${GREEN}================================================${NC}"
@@ -100,21 +100,21 @@ EOF
 # Step 7: Build Node
 echo -e "\n${YELLOW}[7/9] Building nakharax node (this may take 10-15 minutes)...${NC}"
 su - $NAKHARAX_USER << 'EOF'
-cd ~/nakharax-monolith/services/core/core
+cd ~/nakharax/services/core/core
 source $HOME/.cargo/env
 cargo build --release
 echo "Build completed successfully"
 EOF
 
 # Install binary to system path
-cp /home/$NAKHARAX_USER/nakharax-monolith/services/core/core/target/release/nakharax-core /usr/local/bin/
+cp /home/$NAKHARAX_USER/nakharax/services/core/core/target/release/nakharax-core /usr/local/bin/
 chmod +x /usr/local/bin/nakharax-core
 echo "Binary installed to /usr/local/bin/nakharax-core"
 
 # Step 8: Setup Python Environment
 echo -e "\n${YELLOW}[8/9] Setting up Python DeAI environment...${NC}"
 su - $NAKHARAX_USER << 'EOF'
-cd ~/nakharax-monolith/services/core/core/deai
+cd ~/nakharax/services/core/core/deai
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
@@ -131,8 +131,8 @@ chmod 700 ~/.nakharax
 chmod 700 ~/.nakharax/keystore
 
 # Copy example config if present (else user creates manually)
-if [ -f "$HOME/nakharax-monolith/services/core/ops/deploy/configs/rpc-config.toml" ]; then
-    cp "$HOME/nakharax-monolith/services/core/ops/deploy/configs/rpc-config.toml" ~/.nakharax/config/
+if [ -f "$HOME/nakharax/services/core/ops/deploy/configs/rpc-config.toml" ]; then
+    cp "$HOME/nakharax/services/core/ops/deploy/configs/rpc-config.toml" ~/.nakharax/config/
 fi
 if [ ! -f ~/.nakharax/config/config.yaml ]; then
     echo "Create ~/.nakharax/config/config.yaml (validator mode, bootstrap nodes). See docs."
@@ -147,7 +147,7 @@ export NAKHARAX_CONFIG="$NAKHARAX_HOME/config/config.yaml"
 export NAKHARAX_KEYSTORE="$NAKHARAX_HOME/keystore"
 export RUST_LOG=info
 export RUST_BACKTRACE=1
-export PYTHONPATH="$HOME/nakharax-monolith/services/core/core/deai:$PYTHONPATH"
+export PYTHONPATH="$HOME/nakharax/services/core/core/deai:$PYTHONPATH"
 ENVEOF
 
 source ~/.bashrc
@@ -172,13 +172,13 @@ echo -e "   - Set validator name"
 echo -e "   - Configure bootstrap nodes"
 echo ""
 echo -e "4. Wait for genesis.json from coordinator:"
-echo -e "   ${YELLOW}wget https://testnet.nakharaxx.io/genesis.json -O ~/.nakharax/config/genesis.json${NC}"
+echo -e "   ${YELLOW}wget https://testnet.nakharax.io/genesis.json -O ~/.nakharax/config/genesis.json${NC}"
 echo ""
 echo -e "5. Initialize node:"
 echo -e "   ${YELLOW}nakharax-core init --config ~/.nakharax/config/config.yaml --genesis ~/.nakharax/config/genesis.json${NC}"
 echo ""
 echo -e "6. Setup systemd service (as root):"
-echo -e "   ${YELLOW}sudo bash ~/nakharax-monolith/services/core/ops/deploy/scripts/setup_systemd.sh${NC}"
+echo -e "   ${YELLOW}sudo bash ~/nakharax/services/core/ops/deploy/scripts/setup_systemd.sh${NC}"
 echo ""
 echo -e "7. Start validator:"
 echo -e "   ${YELLOW}sudo systemctl start nakharax-validator${NC}"
@@ -190,6 +190,6 @@ echo -e "   - Never share private keys"
 echo -e "   - Setup SSH key authentication"
 echo -e "   - Disable password SSH login"
 echo ""
-echo -e "For support: validators@nakharaxx.io"
-echo -e "Documentation: https://docs.nakharaxx.io"
+echo -e "For support: validators@nakharax.io"
+echo -e "Documentation: https://docs.nakharax.io"
 echo ""

@@ -35,7 +35,7 @@ def require_project_root() -> None:
         return
     print("Project folder not found (must have core/, scripts/)")
     print("If you don't have it yet, clone the repo first:")
-    print("  git clone https://github.com/nakharax-io/nakharax-core-universe.git")
+    print("  git clone https://github.com/nakharax-io/nakharax-universe.git")
     print("  cd nakharax-core-universe")
     print("  python3 scripts/update-node.py")
     sys.exit(1)

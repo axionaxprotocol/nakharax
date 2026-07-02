@@ -8,7 +8,7 @@ Production-grade testnet readiness checks.
 
 Run from repo root:
   python scripts/check_testnet_production_readiness.py
-  python scripts/check_testnet_production_readiness.py --skip-validators --public-rpc https://rpc.nakharaxx.io
+  python scripts/check_testnet_production_readiness.py --skip-validators --public-rpc https://rpc.nakharax.io
 
 Requires: requests (scripts/requirements.txt). Validator URLs must be reachable from this host.
 """
@@ -422,8 +422,8 @@ def main() -> int:
         default=None,
         help="Validator JSON-RPC URL (repeatable). Default: two IPs from checklist.",
     )
-    ap.add_argument("--public-rpc", default="https://rpc.nakharaxx.io")
-    ap.add_argument("--faucet-url", default="https://faucet.nakharaxx.io")
+    ap.add_argument("--public-rpc", default="https://rpc.nakharax.io")
+    ap.add_argument("--faucet-url", default="https://faucet.nakharax.io")
     ap.add_argument("--expected-chain-id", default="0x15079")
     ap.add_argument(
         "--max-validator-height-diff",
@@ -449,8 +449,8 @@ def main() -> int:
     args = ap.parse_args()
 
     validators = args.validator or [
-        "https://rpc.nakharaxx.io",
-        "https://rpc-au.nakharaxx.io",
+        "https://rpc.nakharax.io",
+        "https://rpc-au.nakharax.io",
     ]
     if args.skip_validators:
         validators = []

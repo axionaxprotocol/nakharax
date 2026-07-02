@@ -26,7 +26,7 @@ Ensure you have:
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax-core.git
+git clone https://github.com/nakharax-io/nakharax.git
 cd nakharax-core
 
 # Build nakharax Core
@@ -395,8 +395,8 @@ docker compose up -d
 
 ## 🆘 Getting Help
 
-- **Documentation:** https://docs.nakharaxx.io
-- **GitHub Issues:** https://github.com/nakharax-io/nakharax-core/issues
+- **Documentation:** https://docs.nakharax.io
+- **GitHub Issues:** https://github.com/nakharax-io/nakharax/issues
 - **Discord:** https://discord.gg/nakharax
 - **Telegram:** https://t.me/nakharax
 

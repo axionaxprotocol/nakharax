@@ -101,7 +101,7 @@ docker-compose stop faucet-api
 #### Pull Latest Code
 
 ```bash
-cd /var/www/nakharax-monolith
+cd /var/www/nakharax
 git fetch origin
 git checkout main
 git pull origin main
@@ -203,54 +203,54 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Homepage loads
-curl -I https://nakharaxx.io | grep "200 OK"
+curl -I https://nakharax.io | grep "200 OK"
 
 # Assets loading
-curl -I https://nakharaxx.io/_next/static/chunks/main.js | grep "200 OK"
+curl -I https://nakharax.io/_next/static/chunks/main.js | grep "200 OK"
 
 # API endpoints
-curl https://nakharaxx.io/api/health
-curl https://nakharaxx.io/api/stats
+curl https://nakharax.io/api/health
+curl https://nakharax.io/api/stats
 ```
 
 #### Test Explorer API
 
 ```bash
 # Health check
-curl https://explorer-api.nakharaxx.io/api/health
+curl https://explorer-api.nakharax.io/api/health
 
 # Recent blocks
-curl https://explorer-api.nakharaxx.io/api/blocks?limit=10
+curl https://explorer-api.nakharax.io/api/blocks?limit=10
 
 # Recent transactions
-curl https://explorer-api.nakharaxx.io/api/transactions?limit=10
+curl https://explorer-api.nakharax.io/api/transactions?limit=10
 ```
 
 #### Test Faucet API
 
 ```bash
 # Health check
-curl https://faucet-api.nakharaxx.io/api/health
+curl https://faucet-api.nakharax.io/api/health
 
 # Faucet info
-curl https://faucet-api.nakharaxx.io/api/info
+curl https://faucet-api.nakharax.io/api/info
 ```
 
 #### Test RPC Server
 
 ```bash
 # Block number
-curl -X POST https://testnet-rpc.nakharaxx.io \
+curl -X POST https://testnet-rpc.nakharax.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 
 # Chain ID
-curl -X POST https://testnet-rpc.nakharaxx.io \
+curl -X POST https://testnet-rpc.nakharax.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
 
 # Network version
-curl -X POST https://testnet-rpc.nakharaxx.io \
+curl -X POST https://testnet-rpc.nakharax.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"net_version","params":[],"id":1}'
 ```
@@ -288,10 +288,10 @@ pnpm test:api
 
 ```bash
 # Measure page load time
-curl -o /dev/null -s -w "time_total: %{time_total}s\n" https://nakharaxx.io
+curl -o /dev/null -s -w "time_total: %{time_total}s\n" https://nakharax.io
 
 # Check Core Web Vitals
-npx lighthouse https://nakharaxx.io \
+npx lighthouse https://nakharax.io \
   --only-categories=performance \
   --chrome-flags="--headless"
 ```
@@ -318,7 +318,7 @@ top -bn1 | head -20
 
 ```bash
 # Access Grafana
-open https://grafana.nakharaxx.io
+open https://grafana.nakharax.io
 
 # Verify dashboards showing new version
 # Check for any new metrics
@@ -378,7 +378,7 @@ curl -X POST https://discord.com/api/webhooks/YOUR_WEBHOOK \
 #### Update Status Page
 
 ```bash
-# Update status.nakharaxx.io if you have one
+# Update status.nakharax.io if you have one
 # Or update #announcements Discord channel
 ```
 
@@ -504,7 +504,7 @@ echo "✅ Rollback complete"
 
 ```bash
 # Check version
-curl https://nakharaxx.io/api/version
+curl https://nakharax.io/api/version
 
 # Check all services
 ./scripts/health-check.sh
@@ -537,10 +537,10 @@ NEXT_PUBLIC_CHAIN_ID=86137
 NEXT_PUBLIC_NETWORK_NAME=nakharax-testnet-1
 
 # API Endpoints
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharaxx.io
-NEXT_PUBLIC_WS_URL=wss://testnet-ws.nakharaxx.io
-NEXT_PUBLIC_EXPLORER_API_URL=https://explorer-api.nakharaxx.io
-NEXT_PUBLIC_FAUCET_API_URL=https://faucet-api.nakharaxx.io
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharax.io
+NEXT_PUBLIC_WS_URL=wss://testnet-ws.nakharax.io
+NEXT_PUBLIC_EXPLORER_API_URL=https://explorer-api.nakharax.io
+NEXT_PUBLIC_FAUCET_API_URL=https://faucet-api.nakharax.io
 
 # Database
 DATABASE_URL=postgresql://nakharax:STRONG_PASSWORD@postgres:5432/nakharax_testnet
@@ -549,7 +549,7 @@ REDIS_URL=redis://redis:6379
 # Security
 JWT_SECRET=RANDOM_256_BIT_SECRET
 SESSION_SECRET=RANDOM_256_BIT_SECRET
-CORS_ORIGIN=https://nakharaxx.io,https://www.nakharaxx.io
+CORS_ORIGIN=https://nakharax.io,https://www.nakharax.io
 
 # Monitoring
 SENTRY_DSN=https://xxx@sentry.io/xxx
@@ -569,7 +569,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 # Email (if applicable)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=noreply@nakharaxx.io
+SMTP_USER=noreply@nakharax.io
 SMTP_PASS=APP_SPECIFIC_PASSWORD
 ```
 
@@ -585,10 +585,10 @@ NEXT_PUBLIC_CHAIN_ID=86137
 NEXT_PUBLIC_NETWORK_NAME=nakharax-staging
 
 # API Endpoints
-NEXT_PUBLIC_RPC_URL=https://staging-rpc.nakharaxx.io
-NEXT_PUBLIC_WS_URL=wss://staging-ws.nakharaxx.io
-NEXT_PUBLIC_EXPLORER_API_URL=https://staging-explorer-api.nakharaxx.io
-NEXT_PUBLIC_FAUCET_API_URL=https://staging-faucet-api.nakharaxx.io
+NEXT_PUBLIC_RPC_URL=https://staging-rpc.nakharax.io
+NEXT_PUBLIC_WS_URL=wss://staging-ws.nakharax.io
+NEXT_PUBLIC_EXPLORER_API_URL=https://staging-explorer-api.nakharax.io
+NEXT_PUBLIC_FAUCET_API_URL=https://staging-faucet-api.nakharax.io
 
 # Database
 DATABASE_URL=postgresql://nakharax:PASSWORD@staging-postgres:5432/nakharax_staging
@@ -597,7 +597,7 @@ REDIS_URL=redis://staging-redis:6379
 # Security (different secrets than production!)
 JWT_SECRET=DIFFERENT_SECRET_FOR_STAGING
 SESSION_SECRET=DIFFERENT_SECRET_FOR_STAGING
-CORS_ORIGIN=https://staging.nakharaxx.io
+CORS_ORIGIN=https://staging.nakharax.io
 
 # Monitoring
 SENTRY_DSN=https://yyy@sentry.io/yyy
@@ -781,10 +781,10 @@ check_rpc() {
 }
 
 # Run checks
-check_endpoint "Web Application" "https://nakharaxx.io" "200"
-check_endpoint "Explorer API" "https://explorer-api.nakharaxx.io/api/health" "200"
-check_endpoint "Faucet API" "https://faucet-api.nakharaxx.io/api/health" "200"
-check_rpc "RPC Server" "https://testnet-rpc.nakharaxx.io"
+check_endpoint "Web Application" "https://nakharax.io" "200"
+check_endpoint "Explorer API" "https://explorer-api.nakharax.io/api/health" "200"
+check_endpoint "Faucet API" "https://faucet-api.nakharax.io/api/health" "200"
+check_rpc "RPC Server" "https://testnet-rpc.nakharax.io"
 
 # Database check
 echo -n "Checking PostgreSQL... "
@@ -905,8 +905,8 @@ Deployment completed successfully. Performance improvements observed due to opti
 
 ## Links
 
-- Release notes: https://github.com/nakharax-io/nakharax-monolith/releases/tag/v1.8.0
-- PR: https://github.com/nakharax-io/nakharax-monolith/pull/123
+- Release notes: https://github.com/nakharax-io/nakharax/releases/tag/v1.8.0
+- PR: https://github.com/nakharax-io/nakharax/pull/123
 ```
 
 ---
@@ -926,7 +926,7 @@ Backup: @cto
 
 - **Urgent**: Signal group "nakharax-oncall"
 - **Non-urgent**: Discord #deployments
-- **Escalation**: Email cto@nakharaxx.io
+- **Escalation**: Email cto@nakharax.io
 
 ---
 

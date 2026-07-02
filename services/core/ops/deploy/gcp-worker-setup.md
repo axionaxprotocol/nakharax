@@ -155,8 +155,8 @@ python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}');
 ```bash
 # Clone repository
 cd ~
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 
 # Build core
 cd core
@@ -197,7 +197,7 @@ ram = 15  # GB
 
 [network]
 # RPC endpoint (connect to testnet)
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -292,7 +292,7 @@ python3 ~/test_gpu.py
 
 ```bash
 # Create a wallet for the worker
-cd ~/nakharax-monolith/services/core/tools
+cd ~/nakharax/services/core/tools
 cargo run --bin keygen -- --output ~/nakharax-worker/keys/worker-key.json
 
 # Backup key (very important!)
@@ -304,7 +304,7 @@ cat ~/nakharax-worker/keys/worker-key.json
 
 ```bash
 # Connect to testnet RPC
-export NAKHARAX_RPC="https://rpc.nakharaxx.io"
+export NAKHARAX_RPC="https://rpc.nakharax.io"
 
 # Register worker (requires NAK tokens for gas)
 # An auto-register script will be available in the future

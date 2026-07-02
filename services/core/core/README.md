@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.75+-orange)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
-[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharaxx.io)
+[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.io)
 
 ---
 
@@ -25,7 +25,7 @@ of the entire nakharax ecosystem.
 
 This is the **core component** of the nakharax Protocol. Complete ecosystem repositories:
 
-- **Core Protocol**: [nakharax-core](https://github.com/nakharax-io/nakharax-core) - Blockchain implementation (this repo)
+- **Core Protocol**: [nakharax-core](https://github.com/nakharax-io/nakharax) - Blockchain implementation (this repo)
 - **Web Interface**: [nakharax-web](https://github.com/nakharax-io/nakharax-web) - Official website & dashboard
 - **TypeScript SDK**: [nakharax-sdk-ts](https://github.com/nakharax-io/nakharax-sdk-ts) - Developer SDK
 - **Documentation**: [nakharax-docs](https://github.com/nakharax-io/nakharax-docs) - Protocol documentation
@@ -47,7 +47,7 @@ This is the **core component** of the nakharax Protocol. Complete ecosystem repo
 
 **ANY network claiming to be "nakharax Mainnet" is a SCAM.**
 
-Verify at: https://nakharaxx.io/networks
+Verify at: https://nakharax.io/networks
 
 ---
 
@@ -89,7 +89,7 @@ We've created a comprehensive **Multi-Repo Issue Manager** to track all pre-laun
 
 **Current Focus:** Security audits, performance testing, and documentation completion before public testnet launch.
 
-**Want to contribute?** Check our [Issue Tracker](https://github.com/nakharax-io/nakharax-core/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
+**Want to contribute?** Check our [Issue Tracker](https://github.com/nakharax-io/nakharax/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
 
 ---
 
@@ -248,7 +248,7 @@ manual setup.
 
 ```bash
 # Clone the repository
-git clone https://github.com/nakharax-io/nakharax-core.git
+git clone https://github.com/nakharax-io/nakharax.git
 cd nakharax-core
 
 # Build the Rust core and Python bridge
@@ -307,7 +307,7 @@ After installation:
 - Install PyO3: `pip install maturin`
 - Rebuild: `cd bridge/rust-python && maturin develop`
 
-**Need help?** Open an issue: https://github.com/nakharax-io/nakharax-core/issues
+**Need help?** Open an issue: https://github.com/nakharax-io/nakharax/issues
 
 ### Manual Prerequisites
 
@@ -480,9 +480,9 @@ This core implementation is part of the complete nakharax Protocol ecosystem:
 - 🔥 Documentation completion
 
 ### Phase 3: Public Testnet Launch 🎯 (Target: Q1 2026)
-- 🔜 Deploy RPC nodes (https://rpc.nakharaxx.io)
-- 🔜 Launch block explorer (https://explorer.nakharaxx.io)
-- 🔜 Token faucet service (https://faucet.nakharaxx.io)
+- 🔜 Deploy RPC nodes (https://rpc.nakharax.io)
+- 🔜 Launch block explorer (https://explorer.nakharax.io)
+- 🔜 Token faucet service (https://faucet.nakharax.io)
 - 🔜 Community channels (Discord, Twitter, Telegram)
 - 🔜 Developer documentation & tutorials
 - 🔜 Bug bounty program
@@ -540,7 +540,7 @@ Key security mechanisms:
 - **Fraud-Proof Window** with validator accountability
 - **DA Pre-commit** with live audits
 
-🐛 **Found a vulnerability?** Please report to security@nakharaxx.io (PGP key
+🐛 **Found a vulnerability?** Please report to security@nakharax.io (PGP key
 available)
 
 ## 🤝 Contributing
@@ -553,8 +553,8 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 - **💡 Propose Features**: Discuss new ideas in GitHub Discussions
 - **📝 Improve Docs**: Fix typos, add examples, clarify guides
 - **🧪 Write Tests**: Increase test coverage and quality
-- **🔧 Fix Issues**: Check [good first issue](https://github.com/nakharax-io/nakharax-core/labels/good%20first%20issue) label
-- **🔐 Security**: Report vulnerabilities to security@nakharaxx.io
+- **🔧 Fix Issues**: Check [good first issue](https://github.com/nakharax-io/nakharax/labels/good%20first%20issue) label
+- **🔐 Security**: Report vulnerabilities to security@nakharax.io
 
 ### 📋 Development Workflow
 
@@ -562,7 +562,7 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
    ```bash
    git clone https://github.com/YOUR_USERNAME/nakharax-core.git
    cd nakharax-core
-   git remote add upstream https://github.com/nakharax-io/nakharax-core.git
+   git remote add upstream https://github.com/nakharax-io/nakharax.git
    ```
 
 2. **Create Feature Branch**
@@ -658,19 +658,19 @@ This project is licensed under the **GNU Affero General Public License v3.0
 ### nakharax Protocol
 
 - **GitHub Organization**: https://github.com/nakharax-io
-- **Core Repository**: https://github.com/nakharax-io/nakharax-core
-- **Website**: https://nakharaxx.io
-- **Documentation**: https://docs.nakharaxx.io (see [`../nakharax-docs`](../nakharax-docs))
+- **Core Repository**: https://github.com/nakharax-io/nakharax
+- **Website**: https://nakharax.io
+- **Documentation**: https://docs.nakharax.io (see [`../nakharax-docs`](../nakharax-docs))
 
 ### Network Endpoints
 
-- **Testnet RPC**: https://rpc.nakharaxx.io (Q1 2026)
-- **Block Explorer**: https://explorer.nakharaxx.io (Q1 2026)
-- **Token Faucet**: https://faucet.nakharaxx.io (Q1 2026)
+- **Testnet RPC**: https://rpc.nakharax.io (Q1 2026)
+- **Block Explorer**: https://explorer.nakharax.io (Q1 2026)
+- **Token Faucet**: https://faucet.nakharax.io (Q1 2026)
 
 ### Development
 
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax-core/issues
+- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
 - **Contributing**: See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ### Community (Coming Q1 2026)

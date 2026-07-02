@@ -25,19 +25,19 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 
 | VPS | IP | Role | Services |
 |-----|-----|------|----------|
-| **EU — Validator #1 + OS** | **217.216.109.5** | Consensus + RPC + **Nakharax OS UI** | `nakharax-node` + `apps/os-dashboard` (Next.js :3030, nginx → `app.nakharaxx.io`) |
+| **EU — Validator #1 + OS** | **217.216.109.5** | Consensus + RPC + **Nakharax OS UI** | `nakharax-node` + `apps/os-dashboard` (Next.js :3030, nginx → `app.nakharax.io`) |
 | **AU — Validator #2 + Infra** | **46.250.244.4** | Consensus + public services | `docker-compose.vps.yml`: validator/RPC, nginx, explorer, api, faucet, postgres, redis, monitoring |
 
 ### Public endpoints
 
 | Domain | Backend | Host |
 |--------|---------|------|
-| `app.nakharaxx.io` | os-dashboard :3030 | EU `217.216.109.5` |
-| `rpc.nakharaxx.io` | `rpc-node:8545` | AU `46.250.244.4` |
-| `rpc-au.nakharaxx.io` | `rpc-node:8545` | AU |
-| `explorer.nakharaxx.io` | `explorer-backend:3001` | AU |
-| `api.nakharaxx.io` | `explorer-backend:3001` | AU |
-| `faucet.nakharaxx.io` | `faucet:3002` | AU |
+| `app.nakharax.io` | os-dashboard :3030 | EU `217.216.109.5` |
+| `rpc.nakharax.io` | `rpc-node:8545` | AU `46.250.244.4` |
+| `rpc-au.nakharax.io` | `rpc-node:8545` | AU |
+| `explorer.nakharax.io` | `explorer-backend:3001` | AU |
+| `api.nakharax.io` | `explorer-backend:3001` | AU |
+| `faucet.nakharax.io` | `faucet:3002` | AU |
 
 ### Rationale
 
@@ -89,7 +89,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 | Day | Task |
 |-----|------|
 | 1–2 | Certbot certificates (setup-vps.sh หรือ manual) |
-| 2–4 | Deploy OS on EU: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md); `NEXT_PUBLIC_RPC_URL=https://rpc.nakharaxx.io` |
+| 2–4 | Deploy OS on EU: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md); `NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.io` |
 | 4–5 | MetaMask add network + faucet flow |
 
 ### Week 4: Go live
@@ -106,7 +106,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 - Genesis: `core/tools/create_genesis.py`, `core/core/genesis/src/lib.rs`
 - Validator update: `ops/deploy/scripts/update-validator-vps.sh`, `VPS_VALIDATOR_UPDATE.md`
 - **AU deploy:** `ops/deploy/VPS_AU_ALL_IN_ONE.md`, `docker-compose.vps.yml`
-- RPC check: `curl` eth_chainId ที่ `http://46.250.244.4:8545` หรือ `https://rpc.nakharaxx.io`
+- RPC check: `curl` eth_chainId ที่ `http://46.250.244.4:8545` หรือ `https://rpc.nakharax.io`
 - Nginx: `ops/deploy/nginx/conf.d/`
 - Connectivity: `docs/core/CONNECTIVITY_OVERVIEW.md`
 
@@ -114,7 +114,7 @@ Use **two VPS** (spec: 4 vCPU, 8 GB RAM, 75 GB NVMe / 150 GB SSD, 200 Mbit/s) pl
 
 ## 5. Allocation Summary
 
-- **217.216.109.5 (EU):** Validator #1 + RPC + Nakharax OS (`app.nakharaxx.io`)
+- **217.216.109.5 (EU):** Validator #1 + RPC + Nakharax OS (`app.nakharax.io`)
 - **46.250.244.4 (AU):** Validator #2 + RPC + nginx + explorer + api + faucet + DB
 
 **See also:** [TESTNET_READINESS.md](../TESTNET_READINESS.md) · [GITHUB_READINESS.md](GITHUB_READINESS.md)

@@ -36,8 +36,8 @@ Verify: `node -v` (v20.x), `pnpm -v`, `git --version`
 
 ```bash
 # Clone (or use single script below)
-export APP_DIR=/opt/nakharax-monolith
-git clone --depth 1 -b main https://github.com/nakharax-io/nakharax-monolith.git $APP_DIR
+export APP_DIR=/opt/nakharax
+git clone --depth 1 -b main https://github.com/nakharax-io/nakharax.git $APP_DIR
 cd $APP_DIR
 
 # Install + Build (build packages first — web uses @nakharax/sdk, @nakharax/blockchain-utils)
@@ -71,7 +71,7 @@ npm install -g pm2
 
 # Run app
 # ⚠️ Important: must use path apps/web/server.js (outputFileTracingRoot = monorepo root)
-cd /opt/nakharax-monolith/apps/web/.next/standalone
+cd /opt/nakharax/apps/web/.next/standalone
 PORT=3000 pm2 start apps/web/server.js --name nakharax-web
 
 # Save + auto-start after reboot
@@ -104,7 +104,7 @@ upstream web_frontend {
 
 server {
     listen 80;
-    server_name nakharaxx.io www.nakharaxx.io;   # Change to your domain or IP
+    server_name nakharax.io www.nakharax.io;   # Change to your domain or IP
 
     location /api/ {
         proxy_pass http://web_frontend;
@@ -142,7 +142,7 @@ sudo systemctl reload nginx
 
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d nakharaxx.io -d www.nakharaxx.io
+sudo certbot --nginx -d nakharax.io -d www.nakharax.io
 ```
 
 Certbot will auto-update Nginx for HTTPS.

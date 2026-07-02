@@ -66,12 +66,12 @@ docker-compose -f docker-compose.vps.yml logs --tail=100 rpc-node
 - **Grafana:** `http://217.216.109.5:3000`
 
 ### With Domain (if DNS configured)
-- **RPC:** `https://rpc.nakharaxx.io`
-- **Explorer:** `https://explorer.nakharaxx.io`
-- **Faucet:** `https://faucet.nakharaxx.io`
+- **RPC:** `https://rpc.nakharax.io`
+- **Explorer:** `https://explorer.nakharax.io`
+- **Faucet:** `https://faucet.nakharax.io`
 
 ### Direct Access (No SSL)
-- **RPC HTTP:** `https://rpc.nakharaxx.io`
+- **RPC HTTP:** `https://rpc.nakharax.io`
 - **RPC WS:** `ws://217.216.109.5:8546`
 - **Explorer API:** `http://217.216.109.5:3001`
 - **Faucet API:** `http://217.216.109.5:3002`

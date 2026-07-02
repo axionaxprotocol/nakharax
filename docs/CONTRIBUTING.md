@@ -133,10 +133,10 @@
 
 ```markdown
 <!-- GitHub -->
-[Repository](https://github.com/nakharax-io/nakharax-monolith)
+[Repository](https://github.com/nakharax-io/nakharax)
 
 <!-- Website -->
-[Protocol](https://nakharaxx.io)
+[Protocol](https://nakharax.io)
 ```
 
 ### Link Validation
@@ -292,7 +292,7 @@ _Last updated: YYYY-MM-DD_
 
 ## Questions?
 
-- Open an issue: [GitHub Issues](https://github.com/nakharax-io/nakharax-monolith/issues)
+- Open an issue: [GitHub Issues](https://github.com/nakharax-io/nakharax/issues)
 - Discord: [#documentation](https://discord.gg/nakharax)
 
 ---

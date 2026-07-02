@@ -1,13 +1,13 @@
 # สรุปผลทดสอบ Performance เครือข่าย (Nakharax)
 
 **สร้างอัตโนมัติ:** 2026-03-21 15:20:53 UTC
-**RPC ที่ทดสอบ:** `https://rpc.nakharaxx.io`
+**RPC ที่ทดสอบ:** `https://rpc.nakharax.io`
 
 ---
 
 ## 1. Optimize suite
 
-คำสั่ง: `python scripts/run_optimize_suite.py -q --mode full --rpc https://rpc.nakharaxx.io --light-duration 45.0 --light-rps 2.5 --json-out reports/optimize_suite_last.json`
+คำสั่ง: `python scripts/run_optimize_suite.py -q --mode full --rpc https://rpc.nakharax.io --light-duration 45.0 --light-rps 2.5 --json-out reports/optimize_suite_last.json`
 
 - **สถานะรวม:** PASS
 
@@ -42,7 +42,7 @@
 
 ## 2. Block timing (`tps_finality_test.py` — block-time)
 
-คำสั่ง: `python scripts/load_test/tps_finality_test.py --mode block-time --rpc https://rpc.nakharaxx.io --duration 45 --json-out reports/block_time_last.json`
+คำสั่ง: `python scripts/load_test/tps_finality_test.py --mode block-time --rpc https://rpc.nakharax.io --duration 45 --json-out reports/block_time_last.json`
 
 | Metric | ค่า |
 |--------|-----|

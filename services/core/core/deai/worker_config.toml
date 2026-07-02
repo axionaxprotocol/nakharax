@@ -14,8 +14,8 @@ environment = "development"
 [network]
 # List of Bootnodes (Validators) to discover the network
 bootnodes = [
-    "https://rpc.nakharaxx.io",       # EU Validator
-    "https://rpc-au.nakharaxx.io"     # AU Validator
+    "https://rpc.nakharax.io",       # EU Validator
+    "https://rpc-au.nakharax.io"     # AU Validator
 ]
 chain_id = 86137
 contract_address = "0x0000000000000000000000000000000000000000"  # Placeholder

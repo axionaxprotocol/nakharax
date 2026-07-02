@@ -116,7 +116,7 @@ docker logs <CONTAINER> --tail 50
 
 # ตรวจ config ว่า chain_id 86137 (path ขึ้นกับที่ deploy — มักอยู่ข้าง docker-compose)
 grep -E "chain_id|genesis" /opt/nakharax-deploy/configs/rpc-config.toml 2>/dev/null || \
-grep -E "chain_id|genesis" ~/nakharax-monolith/services/core/ops/deploy/configs/rpc-config.toml 2>/dev/null || \
+grep -E "chain_id|genesis" ~/nakharax/services/core/ops/deploy/configs/rpc-config.toml 2>/dev/null || \
 find /opt /root -name "rpc-config.toml" -o -name "config.toml" 2>/dev/null | head -5
 ```
 
@@ -134,7 +134,7 @@ find /opt /root -name "rpc-config.toml" -o -name "config.toml" 2>/dev/null | hea
 - [ ] ตรวจ P2P peer count = 1 ระหว่างสอง validator
 - [ ] เปิด stack บน AU (`46.250.244.4`): [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) — `docker-compose.vps.yml`, DNS rpc / explorer / api / faucet → AU
 - [ ] ตั้ง `FAUCET_PRIVATE_KEY` ใน `.env` บน AU
-- [ ] Frontend ตั้ง `NEXT_PUBLIC_RPC_URL=https://rpc.nakharaxx.io` และทดสอบ Add Network (86137) + รับ NAK จาก Faucet
+- [ ] Frontend ตั้ง `NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.io` และทดสอบ Add Network (86137) + รับ NAK จาก Faucet
 - [ ] รัน verify-launch-ready (หลัง RPC/DNS พร้อม): จาก repo root  
   `bash ops/deploy/scripts/verify-launch-ready.sh`
 
@@ -159,7 +159,7 @@ ssh root@217.216.109.5 'bash /tmp/fix-validator-ulimit.sh nakharax-validator-eu'
 หรือถ้า SSH เข้า VPS อยู่แล้ว:
 
 ```bash
-cd /root/nakharax-monolith
+cd /root/nakharax
 bash ops/deploy/scripts/fix-validator-ulimit.sh nakharax-validator-eu
 ```
 

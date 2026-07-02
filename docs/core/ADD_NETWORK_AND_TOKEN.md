@@ -2,7 +2,7 @@
 
 How to add **Nakharax Testnet** and the **NAK** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
 
-**Web UI guide (with Add Token button):** [nakharax-monolith → Add Token to MetaMask](https://github.com/nakharax-io/nakharax-monolith/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
+**Web UI guide (with Add Token button):** [nakharax → Add Token to MetaMask](https://github.com/nakharax-io/nakharax/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
 
 ---
 
@@ -11,11 +11,11 @@ How to add **Nakharax Testnet** and the **NAK** token in MetaMask, Rabby, Coinba
 | Item | Value |
 |------|-------|
 | **Network name** | Nakharax Testnet |
-| **RPC URL** | `https://rpc.nakharaxx.io` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
+| **RPC URL** | `https://rpc.nakharax.io` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
 | **Chain ID** | `86137` |
 | **Currency symbol** | NAK |
 | **Decimals** | 18 |
-| **Block explorer** | https://explorer.nakharaxx.io |
+| **Block explorer** | https://explorer.nakharax.io |
 
 ---
 
@@ -29,7 +29,7 @@ How to add **Nakharax Testnet** and the **NAK** token in MetaMask, Rabby, Coinba
    | Field | Value |
    |-------|-------|
    | **Network name** | `Nakharax Testnet` |
-   | **RPC URL** | `https://rpc.nakharaxx.io` |
+   | **RPC URL** | `https://rpc.nakharax.io` |
    | **Chain ID** | `86137` |
    | **Currency symbol** | `NAK` |
    | **Block explorer URL** | Leave blank or set when available |
@@ -62,7 +62,7 @@ Same idea: add a **Custom network / Custom RPC** with the parameters above.
 | Field | Value |
 |-------|-------|
 | Network name | Nakharax Testnet |
-| RPC URL | `https://rpc.nakharaxx.io` |
+| RPC URL | `https://rpc.nakharax.io` |
 | Chain ID | `86137` |
 | Symbol | NAK |
 
@@ -76,19 +76,19 @@ A zero balance is resolved by **receiving from the Faucet** only. The "Add funds
 
 ### Option 1: Web Faucet (recommended)
 
-1. Open the **official Faucet** (from [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith)):
-   - **https://faucet.nakharaxx.io**
+1. Open the **official Faucet** (from [nakharax](https://github.com/nakharax-io/nakharax)):
+   - **https://faucet.nakharax.io**
 2. **Copy your wallet address** from MetaMask (click "Account 1" or the address at the top → Copy).
 3. Paste the address into the Faucet page → click Request / Claim.
 4. Wait a moment (typically 100 NAK per request; 24h cooldown per address).
 
 ### Option 2: Faucet API (when a Faucet is running)
 
-If a Faucet is running at the given URL (e.g. `https://faucet.nakharaxx.io`):
+If a Faucet is running at the given URL (e.g. `https://faucet.nakharax.io`):
 
 ```bash
 # Replace 0xYOUR_METAMASK_ADDRESS with your address from MetaMask
-curl -X POST https://faucet.nakharaxx.io/request \
+curl -X POST https://faucet.nakharax.io/request \
   -H "Content-Type: application/json" \
   -d '{"address": "0xYOUR_METAMASK_ADDRESS"}'
 ```
@@ -99,7 +99,7 @@ A successful response includes `"success": true` and `tx_hash`; the NAK balance 
 
 | Cause | Action |
 |-------|--------|
-| **Faucet web not available or URL changed** | Check [nakharaxx.io](https://nakharaxx.io), Discord, or GitHub for the current Faucet URL |
+| **Faucet web not available or URL changed** | Check [nakharax.io](https://nakharax.io), Discord, or GitHub for the current Faucet URL |
 | **Invalid address** | Must be EVM format: `0x` + 40 hex characters (42 total) — copy directly from MetaMask |
 | **24h cooldown** | Faucet limits one request per address per 24h — wait or use another address |
 | **Faucet out of funds** | Contact the team/community to refill the Faucet |

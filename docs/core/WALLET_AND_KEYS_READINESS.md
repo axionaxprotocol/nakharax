@@ -68,7 +68,7 @@ python scripts/generate-faucet-key.py --env         # เขียน .env.fauce
   - Worker: `WalletManager` (สร้างจาก Python)
   - Faucet: `generate-faucet-key.py`
   - Node: ส่ง `--identity-key` แล้วให้ node สร้างไฟล์ครั้งแรก
-- **Wallet UI / dApp:** อยู่ repo อื่น (เช่น nakharax-monolith)
+- **Wallet UI / dApp:** อยู่ repo อื่น (เช่น nakharax)
 
 ---
 

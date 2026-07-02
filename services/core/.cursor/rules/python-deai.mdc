@@ -57,10 +57,10 @@ def poll_jobs(self) -> List[ComputeJob]:
 ### 3. Secrets — Never Hardcode
 ```python
 # CORRECT
-rpc_url: str = os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharaxx.io")
+rpc_url: str = os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharax.io")
 
 # WRONG
-rpc_url = "https://rpc.nakharaxx.io"  # hardcoded
+rpc_url = "https://rpc.nakharax.io"  # hardcoded
 api_key = "sk-abc123"                   # NEVER
 ```
 
@@ -90,7 +90,7 @@ async def call_gemini_with_retry(prompt: str, max_retries: int = 3) -> str:
 
 | Variable | Default | Notes |
 |---|---|---|
-| `NAKHARAX_RPC_URL` | `https://rpc.nakharaxx.io` | Primary RPC endpoint |
+| `NAKHARAX_RPC_URL` | `https://rpc.nakharax.io` | Primary RPC endpoint |
 | `NAKHARAX_BOOTNODES` | (from config) | Comma-separated RPC URLs |
 | `NAKHARAX_CHAIN_ID` | `86137` | |
 | `NAKHARAX_WALLET_PATH` | `worker_key.json` | Path to wallet file |

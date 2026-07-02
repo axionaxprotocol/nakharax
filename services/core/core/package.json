@@ -4,7 +4,7 @@
   "description": "Official TypeScript SDK for nakharax protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://nakharaxx.io",
+  "homepage": "https://nakharax.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/nakharax-io/nakharax-sdk-ts.git"
@@ -25,7 +25,7 @@
     "sdk",
     "typescript"
   ],
-  "author": "nakharax protocol Team <team@nakharaxx.io>",
+  "author": "nakharax protocol Team <team@nakharax.io>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.0.0",

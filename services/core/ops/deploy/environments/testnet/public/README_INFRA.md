@@ -4,7 +4,7 @@ Single place for **RPC (multi-region), Block Explorer, Faucet, Monitoring**.
 
 ## Telemetry (optional — self-sufficient mode)
 
-For **air-gapped / self-sufficient** operation (no dependency on external URLs), remove the two `--telemetry` lines from the **validator** service command in `docker-compose.yaml`. The node will run without sending data to telemetry.nakharaxx.io.
+For **air-gapped / self-sufficient** operation (no dependency on external URLs), remove the two `--telemetry` lines from the **validator** service command in `docker-compose.yaml`. The node will run without sending data to telemetry.nakharax.io.
 
 ## One-command stack
 

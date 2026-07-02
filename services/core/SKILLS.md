@@ -142,7 +142,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 
 ---
 
-## 4. Web3 Frontend & DApp (`nakharax-monolith`)
+## 4. Web3 Frontend & DApp (`nakharax`)
 
 ### 4.1 Stack
 
@@ -161,7 +161,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 - **Server Components first** — fetch data on server, pass to client; add `"use client"` only for interactivity.
 - **SDK-first business logic** — never put RPC calls or contract ABI in app components.
 - **Cyberpunk/Futuristic dark theme** — Tailwind CSS, dark mode default, consistent with brand identity.
-- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakharaxx.io`, token symbol `NAK`, decimals `18`.
+- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakharax.io`, token symbol `NAK`, decimals `18`.
 
 ---
 
@@ -245,7 +245,7 @@ Constraints:
 
 ### Web Frontend (TypeScript / Next.js)
 ```
-Context: Working in `nakharax-monolith/apps/web/` (Next.js 14 App Router)
+Context: Working in `nakharax/apps/web/` (Next.js 14 App Router)
 Task: [describe UI component or page]
 Constraints:
 - TypeScript strict mode, no `any`

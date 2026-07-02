@@ -3,7 +3,7 @@
 Entry point for the Nakharax optimization suite (adds scripts/ on sys.path).
 
 Usage (from repo root):
-  python scripts/run_optimize_suite.py --mode smoke --rpc https://rpc.nakharaxx.io
+  python scripts/run_optimize_suite.py --mode smoke --rpc https://rpc.nakharax.io
   python scripts/run_optimize_suite.py --mode full --cyber --json-out reports/optimize.json
 
 If your shell is already in the ``scripts/`` folder, run ``python run_optimize_suite.py ...`` (not ``python scripts/run_optimize_suite.py``).

@@ -3,7 +3,7 @@
 
 ## Overview
 
-This document specifies the UI components to build in `nakharax-monolith` for Staking and Governance
+This document specifies the UI components to build in `nakharax` for Staking and Governance
 
 ---
 

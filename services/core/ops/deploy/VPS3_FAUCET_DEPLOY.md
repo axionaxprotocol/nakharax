@@ -37,16 +37,16 @@ python3 -c "import hashlib; print(hashlib.sha256(b'nakharax_faucet_mainnet_q2_20
 **จากเครื่องคุณ (สร้างโฟลเดอร์ให้ก่อนแล้วส่งไฟล์ไป VPS3):**
 
 ```powershell
-ssh root@217.216.109.5 "mkdir -p /root/nakharax-monolith/services/core/ops/deploy/scripts"
-scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/nakharax-monolith/services/core/ops/deploy/
-scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/nakharax-monolith/services/core/ops/deploy/scripts/
-scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/nakharax-monolith/services/core/ops/deploy/
+ssh root@217.216.109.5 "mkdir -p /root/nakharax/services/core/ops/deploy/scripts"
+scp ops\deploy\docker-compose.vps3-faucet.yml root@217.216.109.5:/root/nakharax/services/core/ops/deploy/
+scp ops\deploy\scripts\deploy-faucet-vps3.sh root@217.216.109.5:/root/nakharax/services/core/ops/deploy/scripts/
+scp ops\deploy\env.vps3-faucet.example root@217.216.109.5:/root/nakharax/services/core/ops/deploy/
 ```
 
 **บน VPS3 (SSH เข้าไปแล้ว):**
 
 ```bash
-cd /root/nakharax-monolith/services/core/ops/deploy
+cd /root/nakharax/services/core/ops/deploy
 
 # สร้าง .env.vps3-faucet และใส่ FAUCET_PRIVATE_KEY
 cp env.vps3-faucet.example .env.vps3-faucet
@@ -76,14 +76,14 @@ curl -s http://127.0.0.1:3002/info
 
 ---
 
-## 5. Nginx (ให้ faucet.nakharaxx.io ชี้มาที่ Faucet)
+## 5. Nginx (ให้ faucet.nakharax.io ชี้มาที่ Faucet)
 
 ถ้า Nginx รันบน host (ไม่ใช่ใน Docker) และ Faucet รันใน container ที่ bind port 3002:
 
 - ใช้ `proxy_pass http://127.0.0.1:3002` (ไม่ใช้ `http://faucet:3002`)
 - ตัวอย่าง config: `ops/deploy/nginx/conf.d/faucet-vps3.conf.example`
-- ตั้ง DNS: faucet.nakharaxx.io → 217.216.109.5
-- ออก SSL: `certbot --nginx -d faucet.nakharaxx.io`
+- ตั้ง DNS: faucet.nakharax.io → 217.216.109.5
+- ออก SSL: `certbot --nginx -d faucet.nakharax.io`
 
 ---
 

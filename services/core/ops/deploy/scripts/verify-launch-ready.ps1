@@ -78,37 +78,37 @@ if ($genesisFile) {
 Write-Host ''
 
 Write-Host '2. Checking DNS Configuration...'
-@('nakharaxx.io', 'rpc.nakharaxx.io', 'explorer.nakharaxx.io', 'faucet.nakharaxx.io') | ForEach-Object {
+@('nakharax.io', 'rpc.nakharax.io', 'explorer.nakharax.io', 'faucet.nakharax.io') | ForEach-Object {
     if (Test-DnsResolve $_) { Check-Pass ("DNS resolves: " + $_) } else { Check-Fail ("DNS does not resolve: " + $_) }
 }
 Write-Host ''
 
 Write-Host '3. Checking RPC Endpoint...'
-$rpcUrl = if ($env:RPC_URL) { $env:RPC_URL } else { 'https://rpc.nakharaxx.io' }
+$rpcUrl = if ($env:RPC_URL) { $env:RPC_URL } else { 'https://rpc.nakharax.io' }
 $rpcStatus = Get-HttpStatusCode ($rpcUrl + '/health')
 if ($rpcStatus -eq 200) { Check-Pass ("RPC endpoint is accessible: " + $rpcUrl) } else { Check-Fail ("RPC endpoint is not accessible: " + $rpcUrl) }
 Write-Host ''
 
 Write-Host '4. Checking Block Explorer...'
-$explorerUrl = if ($env:EXPLORER_URL) { $env:EXPLORER_URL } else { 'https://explorer.nakharaxx.io' }
+$explorerUrl = if ($env:EXPLORER_URL) { $env:EXPLORER_URL } else { 'https://explorer.nakharax.io' }
 $explorerStatus = Get-HttpStatusCode $explorerUrl
 if ($explorerStatus -in @(200, 301, 302)) { Check-Pass ("Explorer is accessible: " + $explorerUrl) } else { Check-Fail ("Explorer is not accessible: " + $explorerUrl) }
 Write-Host ''
 
 Write-Host '5. Checking Faucet...'
-$faucetUrl = if ($env:FAUCET_URL) { $env:FAUCET_URL } else { 'https://faucet.nakharaxx.io' }
+$faucetUrl = if ($env:FAUCET_URL) { $env:FAUCET_URL } else { 'https://faucet.nakharax.io' }
 $faucetStatus = Get-HttpStatusCode $faucetUrl
 if ($faucetStatus -in @(200, 301, 302)) { Check-Pass ("Faucet is accessible: " + $faucetUrl) } else { Check-Fail ("Faucet is not accessible: " + $faucetUrl) }
 Write-Host ''
 
 Write-Host '6. Checking Website...'
-$websiteUrl = if ($env:WEBSITE_URL) { $env:WEBSITE_URL } else { 'https://nakharaxx.io' }
+$websiteUrl = if ($env:WEBSITE_URL) { $env:WEBSITE_URL } else { 'https://nakharax.io' }
 $websiteStatus = Get-HttpStatusCode $websiteUrl
 if ($websiteStatus -eq 200) { Check-Pass ("Website is accessible: " + $websiteUrl) } else { Check-Fail ("Website is not accessible: " + $websiteUrl) }
 Write-Host ''
 
 Write-Host '7. Checking SSL Certificates...'
-@('rpc.nakharaxx.io', 'explorer.nakharaxx.io', 'faucet.nakharaxx.io') | ForEach-Object {
+@('rpc.nakharax.io', 'explorer.nakharax.io', 'faucet.nakharax.io') | ForEach-Object {
     if (Test-SslCertificate $_) { Check-Pass ("SSL certificate valid: " + $_) } else { Check-Warn ("SSL certificate issue: " + $_) }
 }
 Write-Host ''
@@ -138,7 +138,7 @@ if (Test-Path $envFile) {
 Write-Host ''
 
 Write-Host '10. Checking GitHub Repositories...'
-@('nakharax-monolith', 'nakharax-monolith') | ForEach-Object {
+@('nakharax', 'nakharax') | ForEach-Object {
     $status = Get-HttpStatusCode ('https://api.github.com/repos/nakharax-io/' + $_)
     if ($status -eq 200) { Check-Pass ('Repository accessible: ' + $_) } else { Check-Warn ('Repository not accessible: ' + $_) }
 }

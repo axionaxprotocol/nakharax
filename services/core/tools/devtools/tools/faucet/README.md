@@ -36,9 +36,9 @@ Web application for distributing testnet NAK tokens to developers and testers.
 
 # Deploy faucet
 sudo bash scripts/setup_faucet.sh \
-  --domain testnet-faucet.nakharaxx.io \
-  --ssl-email admin@nakharaxx.io \
-  --rpc-url https://testnet-rpc.nakharaxx.io \
+  --domain testnet-faucet.nakharax.io \
+  --ssl-email admin@nakharax.io \
+  --rpc-url https://testnet-rpc.nakharax.io \
   --chain-id 86137 \
   --private-key "YOUR_PRIVATE_KEY_HERE"
 ```
@@ -65,7 +65,7 @@ cargo build --release
 ```bash
 # EXAMPLE - Replace with your actual values (NEVER commit real keys)
 export FAUCET_PRIVATE_KEY="0x0000000000000000000000000000000000000000000000000000000000000000"
-export RPC_URL="https://testnet-rpc.nakharaxx.io"
+export RPC_URL="https://testnet-rpc.nakharax.io"
 export CHAIN_ID="86137"
 ```
 
@@ -176,8 +176,8 @@ const MAX_REQUESTS_PER_IP: usize = 3;
 Edit `public/index.html`:
 
 ```javascript
-const FAUCET_API = 'https://testnet-faucet.nakharaxx.io';
-const EXPLORER_URL = 'https://testnet-explorer.nakharaxx.io';
+const FAUCET_API = 'https://testnet-faucet.nakharax.io';
+const EXPLORER_URL = 'https://testnet-explorer.nakharax.io';
 ```
 
 ## Security
@@ -217,7 +217,7 @@ sudo systemctl status nakharax-faucet
 sudo journalctl -u nakharax-faucet -f
 
 # API health
-curl https://testnet-faucet.nakharaxx.io/health
+curl https://testnet-faucet.nakharax.io/health
 ```
 
 ### Monitor Balance
@@ -225,7 +225,7 @@ curl https://testnet-faucet.nakharaxx.io/health
 ```bash
 # Get faucet wallet address from private key
 # Check balance via RPC
-curl -X POST https://testnet-rpc.nakharaxx.io \
+curl -X POST https://testnet-rpc.nakharax.io \
   -H 'Content-Type: application/json' \
   -d '{
     "jsonrpc":"2.0",
@@ -334,8 +334,8 @@ Common enhancements:
 
 ## Support
 
-- **Documentation**: https://docs.nakharaxx.io
-- **Issues**: https://github.com/nakharax-io/nakharax-core/issues
+- **Documentation**: https://docs.nakharax.io
+- **Issues**: https://github.com/nakharax-io/nakharax/issues
 - **Discord**: https://discord.gg/nakharax
 
 ## License

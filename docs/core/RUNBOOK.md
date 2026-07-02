@@ -17,7 +17,7 @@ Operational procedures for Nakharax validators, RPC nodes, and incident response
    ```
 3. **Build node**:
    ```bash
-   git clone <repo> && cd nakharax-monolith/services/core/core
+   git clone <repo> && cd nakharax/services/core/core
    cargo build --release -p nakharax-core
    ```
 4. **Place genesis**:

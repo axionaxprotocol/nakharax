@@ -55,7 +55,7 @@
 
 - [ ] **VPS / Validators** — ตัดสินใจใช้ชุด VPS เดียวกับ testnet หรือแยก (แนะนำแยกหรือ re-image สำหรับ mainnet เพื่อไม่ปน key/config testnet)
 - [ ] **Spec** — ตาม [NODE_SPECS.md](../core/docs/NODE_SPECS.md); พิจารณาเพิ่ม resource ถ้า mainnet load สูงกว่า testnet
-- [ ] **RPC** — Nginx/SSL, domain (เช่น rpc.nakharaxx.io ชี้ mainnet หรือแยก mainnet.nakharaxx.io); rate limit และ CORS ตั้งไว้
+- [ ] **RPC** — Nginx/SSL, domain (เช่น rpc.nakharax.io ชี้ mainnet หรือแยก mainnet.nakharax.io); rate limit และ CORS ตั้งไว้
 - [ ] **Ulimit / OS** — ใช้ค่า nofile และ tuning ตามที่แก้ใน testnet (เช่น [GENESIS_LAUNCH_DAY_CHECKLIST.md#แก้ปัญหา-too-many-open-files](GENESIS_LAUNCH_DAY_CHECKLIST.md))
 
 ### 3.5 Monitoring & Runbook

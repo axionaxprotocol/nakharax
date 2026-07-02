@@ -30,9 +30,9 @@ Built with 💜 by the nakharax team
 Production-ready deployment infrastructure for **nakharax protocol** services.
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharaxx.io)
+[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)](https://www.docker.com/)
-[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/nakharax-io/nakharax-core)
+[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/nakharax-io/nakharax)
 
 ---
 
@@ -67,7 +67,7 @@ Protocol** infrastructure stack on a VPS or cloud environment.
 
 Deploys the full nakharax protocol stack:
 
-- **Protocol Node**: [`nakharax-core`](https://github.com/nakharax-io/nakharax-core) - nakharax RPC node
+- **Protocol Node**: [`nakharax-core`](https://github.com/nakharax-io/nakharax) - nakharax RPC node
 - **Block Explorer**: Blockchain data visualization
 - **Testnet Faucet**: NAK token distribution
 - **Web Interface**: [`nakharax-web`](https://github.com/nakharax-io/nakharax-web) - Static frontend
@@ -140,7 +140,7 @@ REDIS_PASSWORD=your_redis_password
 FAUCET_PRIVATE_KEY=0x...
 GRAFANA_PASSWORD=your_grafana_password
 VPS_IP=YOUR_VPS_IP
-DOMAIN=nakharaxx.io
+DOMAIN=nakharax.io
 ```
 
 ### 3. Run Setup Script
@@ -162,8 +162,8 @@ The script automatically:
 ```
 
          Nginx Reverse Proxy (SSL)
-    rpc.nakharaxx.io | explorer.nakharaxx.io
-         faucet.nakharaxx.io
+    rpc.nakharax.io | explorer.nakharax.io
+         faucet.nakharax.io
 
 
 
@@ -188,7 +188,7 @@ The script automatically:
 - HTTP JSON-RPC endpoint
 - WebSocket support
 - CORS enabled for public access
-- Health check: `https://rpc.nakharaxx.io/health`
+- Health check: `https://rpc.nakharax.io/health`
 
 ### Block Explorer (Port 3001)
 
@@ -430,8 +430,8 @@ Use our [Issue Manager](../issue-manager) to track:
 ### External Resources
 
 - **GitHub Organization**: https://github.com/nakharax-io
-- **Protocol Website**: https://nakharaxx.io
-- **Documentation**: https://docs.nakharaxx.io
+- **Protocol Website**: https://nakharax.io
+- **Documentation**: https://docs.nakharax.io
 
 ---
 
@@ -457,7 +457,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## Support
 
 - **Issues**: https://github.com/nakharax-io/nakharax-deploy/issues
-- **Docs**: https://docs.nakharaxx.io or [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs)
+- **Docs**: https://docs.nakharax.io or [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs)
 - **GitHub Organization**: https://github.com/nakharax-io
 
 ### Community (Coming Q1 2026)

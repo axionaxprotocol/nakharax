@@ -20,8 +20,8 @@ If bootstrap list is empty, stop and publish bootstrap values first.
 ## 2) Run from scratch
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 
 export NAKHARAX_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
 test -n "$NAKHARAX_BOOTSTRAP_NODES"
@@ -77,7 +77,7 @@ LOCAL_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
 
 PUBLIC_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharaxx.io | jq -r '.result')
+  https://rpc.nakharax.io | jq -r '.result')
 
 python3 - <<'PY'
 import os

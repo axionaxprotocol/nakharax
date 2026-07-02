@@ -525,4 +525,4 @@ The Node module successfully integrates:
 
 **Contributors**: GitHub Copilot + User  
 **License**: MIT  
-**Repository**: https://github.com/nakharax-io/nakharax-core
+**Repository**: https://github.com/nakharax-io/nakharax

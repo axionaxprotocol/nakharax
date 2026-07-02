@@ -8,8 +8,8 @@
 
 เมื่อโหนดใหม่ทำการรันในระบบนิเวศของ Nakharax ระบบจะใช้วิธี **Bootstrapping** ผ่าน [libp2p](https://libp2p.io/) ร่วมกับ **Kademlia DHT** โดยมีกลไกการค้นหาโหนดและเชื่อมต่อกันดังนี้:
 
-1. **Bootstrap Node Entry**: โหนดใหม่ต้องการเพียงแค่ที่อยู่ของ **Bootstrap Node** อย่างน้อย 1 โหนด ซึ่งตั้งค่าไว้ในไฟล์คอนฟิก [protocol.testnet.yaml](file:///D:/nakharax-monolith/services/core/core/configs/protocol.testnet.yaml) หรือผ่านตัวแปรสภาพแวดล้อม `NAKHARAX_BOOTSTRAP_NODES` ในรูปแบบ Multiaddress (เช่น `/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWQY...`)
-2. **Kademlia DHT Lookup**: หลังจากต่อเข้ากับ Bootstrap Node สำเร็จ ฟังก์ชัน `swarm.behaviour_mut().kad.bootstrap()` ใน [manager.rs](file:///D:/nakharax-monolith/services/core/core/core/network/src/manager.rs#L337-L343) จะถูกเรียกเพื่อสืบค้นข้อมูลตารางเส้นทาง (Routing Table) จาก Peer ที่เชื่อมต่อ
+1. **Bootstrap Node Entry**: โหนดใหม่ต้องการเพียงแค่ที่อยู่ของ **Bootstrap Node** อย่างน้อย 1 โหนด ซึ่งตั้งค่าไว้ในไฟล์คอนฟิก [protocol.testnet.yaml](file:///D:/nakharax/services/core/core/configs/protocol.testnet.yaml) หรือผ่านตัวแปรสภาพแวดล้อม `NAKHARAX_BOOTSTRAP_NODES` ในรูปแบบ Multiaddress (เช่น `/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWQY...`)
+2. **Kademlia DHT Lookup**: หลังจากต่อเข้ากับ Bootstrap Node สำเร็จ ฟังก์ชัน `swarm.behaviour_mut().kad.bootstrap()` ใน [manager.rs](file:///D:/nakharax/services/core/core/core/network/src/manager.rs#L337-L343) จะถูกเรียกเพื่อสืบค้นข้อมูลตารางเส้นทาง (Routing Table) จาก Peer ที่เชื่อมต่อ
 3. **Peer Discovery & Identify**: ระบบจะใช้โปรโตคอล `Identify` และ `mDNS` (สำหรับวง Local) ในการแลกเปลี่ยน Multiaddress และ Peer ID ของโหนดอื่นๆ ในเครือข่ายอัตโนมัติ ทำให้โหนดใหม่รู้จักและเชื่อมต่อกับเครือข่ายทั้งหมดได้เองโดยไม่ต้องระบุ IP ของโหนดอื่นๆ ในตอนแรก
 
 > [!NOTE]

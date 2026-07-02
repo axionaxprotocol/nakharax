@@ -6,13 +6,13 @@ alwaysApply: false
 
 # NAKHARAX BACKEND — Core Universe
 
-This repo is `nakharax-monolith`: Rust blockchain core + Python DeAI + ops + tools.  
+This repo is `nakharax`: Rust blockchain core + Python DeAI + ops + tools.  
 **Version:** Core v1.9.0 | Tests: 201/201 | Chain ID: 86137 (testnet)
 
 ## Repository Layout
 
 ```
-nakharax-monolith/services/core/
+nakharax/services/core/
 ├── core/                  ← Rust Cargo workspace (core/Cargo.toml)
 │   ├── core/<crate>/      ← 18 Rust crates (consensus, blockchain, node, rpc, ...)
 │   ├── bridge/rust-python/← PyO3 FFI
@@ -87,8 +87,8 @@ python hydra_manager.py                                             # HYDRA dual
 
 | Node | IP | Role | Public URLs |
 |---|---|---|---|
-| EU | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `https://app.nakharaxx.io`, `http://217.216.109.5:8545` |
-| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakharaxx.io`, explorer, api, faucet |
+| EU | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `https://app.nakharax.io`, `http://217.216.109.5:8545` |
+| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakharax.io`, explorer, api, faucet |
 
 EU OS: `docs/web/VPS_EU_OS_DASHBOARD.md` · AU chain: `ops/deploy/VPS_AU_ALL_IN_ONE.md`
 

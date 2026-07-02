@@ -11,7 +11,7 @@ enable_mdns = true
 enabled = true
 host = "0.0.0.0"
 port = 8545
-cors_origins = ["https://nakharaxx.io", "https://www.nakharaxx.io", "https://explorer.nakharaxx.io", "https://faucet.nakharaxx.io", "https://api.nakharaxx.io"]
+cors_origins = ["https://nakharax.io", "https://www.nakharax.io", "https://explorer.nakharax.io", "https://faucet.nakharax.io", "https://api.nakharax.io"]
 allowed_methods = [
     "eth_blockNumber",
     "eth_getBalance",

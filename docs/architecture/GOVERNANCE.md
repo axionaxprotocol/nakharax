@@ -68,7 +68,7 @@ Time Multiplier:
 
 ### 1. Ideation Phase (Forum Discussion)
 
-**Where**: https://forum.nakharaxx.io
+**Where**: https://forum.nakharax.io
 
 **Requirements**:
 
@@ -337,10 +337,10 @@ nakharax-core governance vote \
 
 ### Notifications
 
-- **Forum**: https://forum.nakharaxx.io
+- **Forum**: https://forum.nakharax.io
 - **Discord #governance**: https://discord.gg/nakharax
 - **Twitter**: @nakharax-io
-- **Governance Dashboard**: https://gov.nakharaxx.io
+- **Governance Dashboard**: https://gov.nakharax.io
 - **Snapshot**: https://snapshot.org/#/nakharax.eth
 
 ### Participation
@@ -370,17 +370,17 @@ nakharax-core governance vote \
 
 ### Documentation
 
-- [Governance Portal](https://gov.nakharaxx.io)
-- [How to Vote Guide](https://docs.nakharaxx.io/governance/voting)
-- [Parameter Descriptions](https://docs.nakharaxx.io/governance/parameters)
+- [Governance Portal](https://gov.nakharax.io)
+- [How to Vote Guide](https://docs.nakharax.io/governance/voting)
+- [Parameter Descriptions](https://docs.nakharax.io/governance/parameters)
 - [Proposal Templates](https://github.com/nakharax-io/governance-proposals)
 
 ### Tools
 
-- [Governance Dashboard](https://gov.nakharaxx.io)
+- [Governance Dashboard](https://gov.nakharax.io)
 - [Snapshot Voting](https://snapshot.org/#/nakharax.eth)
-- [Forum](https://forum.nakharaxx.io)
-- [Delegation Platform](https://delegate.nakharaxx.io)
+- [Forum](https://forum.nakharax.io)
+- [Delegation Platform](https://delegate.nakharax.io)
 
 ---
 

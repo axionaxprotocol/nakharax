@@ -31,7 +31,7 @@ brew install llvm pkg-config openssl
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax-core.git
+git clone https://github.com/nakharax-io/nakharax.git
 cd nakharax-core
 
 # Build release version
@@ -57,11 +57,11 @@ Create `.env` file:
 # Network Configuration
 NAKHARAX_CHAIN_ID=86137
 NAKHARAX_NETWORK_PORT=30303
-NAKHARAX_BOOTSTRAP_NODES="/ip4/bootstrap1.nakharaxx.io/tcp/30303/p2p/...,/ip4/bootstrap2.nakharaxx.io/tcp/30303/p2p/..."
+NAKHARAX_BOOTSTRAP_NODES="/ip4/bootstrap1.nakharax.io/tcp/30303/p2p/...,/ip4/bootstrap2.nakharax.io/tcp/30303/p2p/..."
 
 # RPC Configuration
 NAKHARAX_RPC_ADDR=0.0.0.0:8545
-NAKHARAX_RPC_CORS_ORIGINS=https://app.nakharaxx.io,https://wallet.nakharaxx.io
+NAKHARAX_RPC_CORS_ORIGINS=https://app.nakharax.io,https://wallet.nakharax.io
 
 # Security Configuration
 NAKHARAX_RATE_LIMIT_MAX_REQUESTS=100
@@ -83,16 +83,16 @@ RUST_LOG=info,nakharax=debug
 chain_id = 86137
 port = 30303
 bootstrap_nodes = [
-    "/ip4/testnet1.nakharaxx.io/tcp/30303/p2p/12D3KooW...",
-    "/ip4/testnet2.nakharaxx.io/tcp/30303/p2p/12D3KooW...",
+    "/ip4/testnet1.nakharax.io/tcp/30303/p2p/12D3KooW...",
+    "/ip4/testnet2.nakharax.io/tcp/30303/p2p/12D3KooW...",
 ]
 max_peers = 50
 
 [rpc]
 addr = "0.0.0.0:8545"
 cors_origins = [
-    "https://testnet.nakharaxx.io",
-    "https://wallet-testnet.nakharaxx.io"
+    "https://testnet.nakharax.io",
+    "https://wallet-testnet.nakharax.io"
 ]
 rate_limit = 100
 max_batch_size = 50
@@ -343,7 +343,7 @@ limit_req_zone $binary_remote_addr zone=rpc_limit:10m rate=10r/s;
 
 server {
     listen 80;
-    server_name rpc.testnet.nakharaxx.io;
+    server_name rpc.testnet.nakharax.io;
 
     location / {
         limit_req zone=rpc_limit burst=20 nodelay;
@@ -363,7 +363,7 @@ server {
 sudo apt-get install certbot python3-certbot-nginx
 
 # Obtain certificate
-sudo certbot --nginx -d rpc.testnet.nakharaxx.io
+sudo certbot --nginx -d rpc.testnet.nakharax.io
 
 # Auto-renewal
 sudo certbot renew --dry-run
@@ -401,7 +401,7 @@ curl http://localhost:8545/health
 
 # Test CORS
 echo -e "\n\nTesting CORS..."
-curl -H "Origin: https://app.nakharaxx.io" \
+curl -H "Origin: https://app.nakharax.io" \
      -H "Access-Control-Request-Method: POST" \
      -H "Access-Control-Request-Headers: Content-Type" \
      -X OPTIONS http://localhost:8545 -v
@@ -526,8 +526,8 @@ sudo sysctl -p
 
 ## 📞 Support
 
-- **Documentation**: https://docs.nakharaxx.io
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax-core/issues
+- **Documentation**: https://docs.nakharax.io
+- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
 - **Discord**: https://discord.gg/nakharax
 - **Telegram**: https://t.me/nakharax
 

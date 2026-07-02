@@ -11,13 +11,13 @@ Nakharax Protocol is split into two main repositories:
 
 | Repository | Stack | Purpose |
 |---|---|---|
-| `nakharax-monolith` (this repo) | Rust + Python | Blockchain Core, PoPC Consensus, DeAI Engine, Node, RPC, Ops |
-| `nakharax-monolith` | TypeScript / Next.js | DApp Portal, Marketplace, SDK, Mobile API |
+| `nakharax` (this repo) | Rust + Python | Blockchain Core, PoPC Consensus, DeAI Engine, Node, RPC, Ops |
+| `nakharax` | TypeScript / Next.js | DApp Portal, Marketplace, SDK, Mobile API |
 
 ### Core Universe Structure
 
 ```
-nakharax-monolith/services/core/
+nakharax/services/core/
 ├── core/                  ← Rust Cargo workspace (core/Cargo.toml is the root)
 │   ├── core/consensus/    ← PoPC consensus engine + Merkle proofs
 │   ├── core/blockchain/   ← Block/tx management, mempool, sled storage
@@ -105,7 +105,7 @@ cargo audit                               # run before release (audit.toml confi
 | **Docker sandbox** | All untrusted compute jobs run in `DockerSandbox` — never execute arbitrary code on the host |
 | **Tests** | `pytest` from `core/deai/`; run with `python -m pytest . -v --tb=short` |
 
-### 3.3 TypeScript (`nakharax-monolith/`)
+### 3.3 TypeScript (`nakharax/`)
 
 | Rule | Detail |
 |---|---|

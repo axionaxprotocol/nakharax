@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fix domain: nakharaxx.io -> nakharaxx.io
+Fix domain: nakharax.io -> nakharax.io
 """
 import os
 from pathlib import Path
@@ -17,17 +17,17 @@ def should_process(file_path):
     )
 
 def fix_domain(content):
-    """Replace nakharaxx.io -> nakharaxx.io"""
+    """Replace nakharax.io -> nakharax.io"""
     modified = False
     
-    if "nakharaxx.io" in content:
-        content = content.replace("nakharaxx.io", "nakharaxx.io")
+    if "nakharax.io" in content:
+        content = content.replace("nakharax.io", "nakharax.io")
         modified = True
     
     return content, modified
 
 def main():
-    print("🔍 Scanning for nakharaxx.io domain...")
+    print("🔍 Scanning for nakharax.io domain...")
     
     total_files = 0
     modified_files = 0
@@ -45,7 +45,7 @@ def main():
                 content = f.read()
             
             # Count before
-            before_count = content.count("nakharaxx.io")
+            before_count = content.count("nakharax.io")
             
             if before_count == 0:
                 continue
@@ -58,7 +58,7 @@ def main():
                 with open(file_path, "w", encoding="utf-8", newline="") as f:
                     f.write(new_content)
                 
-                after_count = new_content.count("nakharaxx.io")
+                after_count = new_content.count("nakharax.io")
                 replacements = before_count - after_count
                 total_replacements += replacements
                 

@@ -29,7 +29,7 @@ core/tools/genesis.json
 
 ```bash
 curl -fsSL -o genesis.json \
-  https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/core/tools/genesis.json
+  https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/core/tools/genesis.json
 ```
 
 Verify the file is JSON and contains `"chainId": 86137` (or `86137` under `config` per your file layout).
@@ -84,8 +84,8 @@ Without a valid `NAKHARAX_BOOTSTRAP_NODES`, your node may start but **not** find
 ## 5. Build the binary
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith/services/core/core
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax/services/core/core
 cargo build --release -p node
 ```
 
@@ -102,7 +102,7 @@ target/release/nakharax-node
 From the repository, use the bootstrap script (build → data directory → `run.sh` → optional systemd):
 
 ```bash
-cd nakharax-monolith/services/core/ops/deploy/scripts
+cd nakharax/services/core/ops/deploy/scripts
 chmod +x nakharax-node-bootstrap.sh
 
 ./nakharax-node-bootstrap.sh build
@@ -141,7 +141,7 @@ Expect `"result":"0x15079"`. Compare block height with the public endpoint (read
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharaxx.io
+  https://rpc.nakharax.io
 ```
 
 Heights should move toward the same network over time once peers connect.
@@ -158,7 +158,7 @@ Script:
 
 | Endpoint | Role |
 |----------|------|
-| `https://rpc.nakharaxx.io` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
+| `https://rpc.nakharax.io` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
 | Your node’s `:8545` | Your own RPC after sync — under **your** security and rate limits |
 
 Running a full node does **not** replace the public RPC URL in MetaMask unless you choose to point MetaMask at **your** server.
@@ -184,4 +184,4 @@ cd ops/deploy/scripts
 
 ---
 
-*Canonical public full-node guide for nakharax-monolith.*
+*Canonical public full-node guide for nakharax.*

@@ -175,7 +175,7 @@ EOF
 ```bash
 # Download setup script
 cd ~
-wget https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 
 # Make executable
 chmod +x setup-runpod-worker.sh
@@ -212,15 +212,15 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 ```
 
 #### Step 8: Build nakharax Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/nakharax-monolith/services/core/core
+cd ~/nakharax/services/core/core
 cargo build --release
 ```
 
@@ -231,7 +231,7 @@ cargo build --release
 pip install --upgrade pip
 
 # Install DeAI requirements
-cd ~/nakharax-monolith/services/core/core/deai
+cd ~/nakharax/services/core/core/deai
 pip install -r requirements.txt
 
 # Install additional ML libraries
@@ -246,7 +246,7 @@ pip install transformers datasets accelerate
 
 ```bash
 # Run simple training example
-cd ~/nakharax-monolith/services/core/core/examples
+cd ~/nakharax/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -339,7 +339,7 @@ ram = 64
 
 [network]
 # nakharax Testnet RPC
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -377,7 +377,7 @@ ls -la /workspace/nakharax-worker/
 
 ```bash
 # Generate wallet (using nakharax tools)
-cd ~/nakharax-monolith/services/core/tools
+cd ~/nakharax/services/core/tools
 python generate_worker_wallet.py
 
 # Or use an existing wallet
@@ -391,7 +391,7 @@ python generate_worker_wallet.py
 ### Step 14: Run Worker
 
 ```bash
-cd ~/nakharax-monolith/services/core/core
+cd ~/nakharax/services/core/core
 
 # Activate environment
 source ~/.cargo/env
@@ -420,7 +420,7 @@ cargo run --release --bin nakharax-worker -- \
   GPU: NVIDIA A40 (48GB)
   Network: Testnet
 
-🔧 Connecting to RPC: https://rpc.nakharaxx.io
+🔧 Connecting to RPC: https://rpc.nakharax.io
 ✅ Connected to nakharax Testnet
 ✅ Worker registered successfully
 
@@ -595,7 +595,7 @@ gradient_checkpointing = true
 
 ```bash
 # Check connection
-curl https://rpc.nakharaxx.io
+curl https://rpc.nakharax.io
 
 # Check logs
 tail -f ~/nakharax-worker/logs/worker.log

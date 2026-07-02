@@ -27,13 +27,13 @@ Instead, please use one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 
-1. Go to the [Security tab](https://github.com/nakharax-io/nakharax-monolith/security)
+1. Go to the [Security tab](https://github.com/nakharax-io/nakharax/security)
 2. Click "Report a vulnerability"
 3. Fill out the form with details
 
 #### 2. Email
 
-Send details to: **security@nakharaxx.io**
+Send details to: **security@nakharax.io**
 
 Encrypt sensitive information using our PGP key (available upon request).
 
@@ -285,9 +285,9 @@ In case of a security incident:
 
 ### Emergency Contacts
 
-- **Security Team**: security@nakharaxx.io
+- **Security Team**: security@nakharax.io
 - **Discord**: @security-team (for urgent issues)
-- **Status Page**: https://status.nakharaxx.io
+- **Status Page**: https://status.nakharax.io
 
 ---
 
@@ -298,7 +298,7 @@ Subscribe to security notifications:
 - **GitHub Watch**: Enable "Security alerts"
 - **Discord**: #security-announcements channel
 - **Twitter**: [@nakharax](https://twitter.com/nakharax)
-- **Email**: Subscribe at https://nakharaxx.io/subscribe
+- **Email**: Subscribe at https://nakharax.io/subscribe
 
 ---
 
@@ -352,7 +352,7 @@ Nakharax complies with:
 
 For security-related questions:
 
-- **Email**: security@nakharaxx.io
+- **Email**: security@nakharax.io
 - **Discord**: https://discord.gg/nakharax (#security)
 - **GitHub**: Open a Security Advisory
 

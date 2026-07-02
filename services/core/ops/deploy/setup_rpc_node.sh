@@ -9,7 +9,7 @@
 #   --ws-port PORT         WebSocket port (default: 8546)
 #   --data-dir PATH        Data directory (default: /var/lib/nakharax)
 #   --chain-id ID          Chain ID (default: 86137)
-#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakharaxx.io)
+#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakharax.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 
 set -e
@@ -129,10 +129,10 @@ chown -R nakharax:nakharax "$DATA_DIR"
 chmod 755 "$DATA_DIR"
 
 # Clone and build nakharax (if not already built)
-NAKHARAX_HOME="/home/nakharax/nakharax-monolith"
+NAKHARAX_HOME="/home/nakharax/nakharax"
 if [ ! -d "$NAKHARAX_HOME" ]; then
   echo -e "${BLUE}[6/8]${NC} Cloning nakharax repository..."
-  sudo -u nakharax git clone https://github.com/nakharax-io/nakharax-monolith.git "$NAKHARAX_HOME"
+  sudo -u nakharax git clone https://github.com/nakharax-io/nakharax.git "$NAKHARAX_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating nakharax repository..."
   cd "$NAKHARAX_HOME"

@@ -1,7 +1,7 @@
 # วิธีเข้าร่วม Nakharax Testnet 🚀
 
 **เวอร์ชัน**: v1.9.0-testnet (Genesis Public Testnet)  
-**Synced core ref**: `nakharax-monolith@28f42cf`  
+**Synced core ref**: `nakharax@28f42cf`  
 **อัพเดทล่าสุด**: 24 เมษายน 2026  
 **ภาษา**: ไทย 🇹🇭
 
@@ -31,13 +31,13 @@
 
 ### Endpoints
 
-- **RPC URL**: `https://rpc.nakharaxx.io` (nginx บน AU `46.250.244.4` → local validator)
-- **WebSocket**: `wss://rpc.nakharaxx.io/ws`
-- **Explorer**: https://explorer.nakharaxx.io (AU)
-- **API**: https://api.nakharaxx.io (AU — explorer backend)
-- **Faucet**: https://faucet.nakharaxx.io (AU)
-- **Nakharax OS**: https://app.nakharaxx.io (EU `217.216.109.5`)
-- **Website**: https://nakharaxx.io
+- **RPC URL**: `https://rpc.nakharax.io` (nginx บน AU `46.250.244.4` → local validator)
+- **WebSocket**: `wss://rpc.nakharax.io/ws`
+- **Explorer**: https://explorer.nakharax.io (AU)
+- **API**: https://api.nakharax.io (AU — explorer backend)
+- **Faucet**: https://faucet.nakharax.io (AU)
+- **Nakharax OS**: https://app.nakharax.io (EU `217.216.109.5`)
+- **Website**: https://nakharax.io
 
 ### Validator Nodes (direct RPC fallback)
 
@@ -52,7 +52,7 @@ Deploy: [VPS_AU_ALL_IN_ONE.md](../../../services/core/ops/deploy/VPS_AU_ALL_IN_O
 
 ### วิธีที่ 1: เพิ่มแบบอัตโนมัติ (แนะนำ)
 
-1. เข้าไปที่ https://nakharaxx.io
+1. เข้าไปที่ https://nakharax.io
 2. คลิกปุ่ม **"Connect Wallet"**
 3. เลือก MetaMask
 4. คลิก **"Add nakharax Network"**
@@ -73,7 +73,7 @@ Network Name (ชื่อเครือข่าย):
 nakharax Testnet
 
 New RPC URL:
-https://rpc.nakharaxx.io
+https://rpc.nakharax.io
 
 Chain ID:
 86137
@@ -82,7 +82,7 @@ Currency Symbol:
 NAK
 
 Block Explorer URL (optional):
-https://explorer.nakharaxx.io
+https://explorer.nakharax.io
 ```
 
 #### ขั้นตอนที่ 3: บันทึก
@@ -104,8 +104,8 @@ https://explorer.nakharaxx.io
 #### วิธีที่ 1: ผ่านเว็บไซต์
 
 1. **เข้าไปที่ Faucet**
-   - URL: https://faucet.nakharaxx.io
-   - หรือไปที่ https://nakharaxx.io → คลิก "Faucet"
+   - URL: https://faucet.nakharax.io
+   - หรือไปที่ https://nakharax.io → คลิก "Faucet"
 
 2. **เชื่อมต่อ Wallet**
    - คลิกปุ่ม "Connect Wallet"
@@ -125,7 +125,7 @@ https://explorer.nakharaxx.io
 
 ```bash
 # ขอเหรียญผ่าน API
-curl -X POST https://faucet.nakharaxx.io/api/request \
+curl -X POST https://faucet.nakharax.io/api/request \
   -H "Content-Type: application/json" \
   -d '{
     "address": "0xYourAddressHere",
@@ -151,7 +151,7 @@ curl -X POST https://faucet.nakharaxx.io/api/request \
 
 ### เข้าใช้งาน
 
-- URL: https://explorer.nakharaxx.io
+- URL: https://explorer.nakharax.io
 - ไม่ต้อง login หรือเชื่อมต่อ wallet
 
 ### ฟีเจอร์หลัก
@@ -190,7 +190,7 @@ curl -X POST https://faucet.nakharaxx.io/api/request \
 **ตรวจสอบ transaction ของคุณ:**
 
 1. Copy transaction hash จาก MetaMask
-2. ไปที่ https://explorer.nakharaxx.io
+2. ไปที่ https://explorer.nakharax.io
 3. Paste hash ในช่องค้นหา
 4. กด Enter
 5. ดูรายละเอียด: status, gas used, block number
@@ -236,7 +236,7 @@ module.exports = {
   solidity: '0.8.20',
   networks: {
     nakharax: {
-      url: 'https://rpc.nakharaxx.io',
+      url: 'https://rpc.nakharax.io',
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY],
     },
@@ -253,7 +253,7 @@ out = "out"
 libs = ["lib"]
 
 [rpc_endpoints]
-nakharax = "https://rpc.nakharaxx.io"
+nakharax = "https://rpc.nakharax.io"
 ```
 
 ### Deploy Contract
@@ -303,7 +303,7 @@ forge verify-contract \
 
 ```bash
 # ทดสอบ RPC connection
-curl -X POST https://rpc.nakharaxx.io \
+curl -X POST https://rpc.nakharax.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 
@@ -345,7 +345,7 @@ curl -X POST https://rpc.nakharaxx.io \
 
 ```javascript
 // เช็ค transaction status
-curl -X POST https://rpc.nakharaxx.io \
+curl -X POST https://rpc.nakharax.io \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc":"2.0",
@@ -380,7 +380,7 @@ curl -X POST https://rpc.nakharaxx.io \
 ```bash
 # ทดสอบ estimate gas ก่อน
 cast estimate \
-  --rpc-url https://rpc.nakharaxx.io \
+  --rpc-url https://rpc.nakharax.io \
   --from YOUR_ADDRESS \
   CONTRACT_BYTECODE
 ```
@@ -402,9 +402,9 @@ cast estimate \
 ### หาความช่วยเหลือ
 
 - **Discord**: https://discord.gg/nakharax (ช่อง #testnet-support)
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax-monolith/issues
+- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
 - **Twitter**: https://twitter.com/nakharax (@nakharax)
-- **Email**: support@nakharaxx.io
+- **Email**: support@nakharax.io
 
 ### รายงานปัญหา
 
@@ -428,13 +428,13 @@ cast estimate \
    - Simple DeFi protocols
 
 2. **สำรวจ Ecosystem**
-   - Marketplace: https://marketplace.nakharaxx.io
-   - Documentation: https://docs.nakharaxx.io
+   - Marketplace: https://marketplace.nakharax.io
+   - Documentation: https://docs.nakharax.io
    - GitHub: https://github.com/nakharax-io
 
 3. **ร่วมพัฒนา**
    - อ่าน [Contributing Guide](./CONTRIBUTING.md)
-   - ดู [Good First Issues](https://github.com/nakharax-io/nakharax-monolith/labels/good%20first%20issue)
+   - ดู [Good First Issues](https://github.com/nakharax-io/nakharax/labels/good%20first%20issue)
    - เข้า Developer Channel บน Discord
 
 ---

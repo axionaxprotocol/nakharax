@@ -44,4 +44,4 @@ Documentation in this repository is the **canonical** source for Nakharax Protoc
 
 ---
 
-*This document defines the documentation principles for nakharax-monolith: canonical, formal, and citable. All documentation is in English.*
+*This document defines the documentation principles for nakharax: canonical, formal, and citable. All documentation is in English.*

@@ -1,4 +1,4 @@
-# System Architecture Report: nakharax-monolith
+# System Architecture Report: nakharax
 
 **Date:** December 13, 2025 (reference update Feb 2026)  
 **Protocol:** v2.1 — Series Seed Preparation ([Master Summary](../MASTER_SUMMARY.md))  
@@ -11,7 +11,7 @@
 
 ## 1. High-Level Architecture
 
-`nakharax-monolith` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
+`nakharax` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
 
 ```mermaid
 graph TD
@@ -97,7 +97,7 @@ Website manages blockchain connection directly, not via SDK.
 2. **Process**:
    - `Web3Context` calls `connectWallet()` from `lib/web3.ts`
    - Uses `window.ethereum` for account access
-   - Hardcoded RPCs: `https://nakharaxx.io/rpc/`, `http://217.216.109.5:8545`
+   - Hardcoded RPCs: `https://nakharax.io/rpc/`, `http://217.216.109.5:8545`
 3. **Output**: App state (`account`, `balance`) updated via `zustand` or Context
 
 ---

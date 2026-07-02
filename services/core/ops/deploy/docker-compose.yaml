@@ -20,7 +20,7 @@ services:
       - NAKHARAX_PUBLIC_IP=${NAKHARAX_PUBLIC_IP}
       - NAKHARAX_BOOTSTRAP_NODES=${NAKHARAX_BOOTSTRAP_NODES}
     restart: unless-stopped
-  # Explorer: use image from GHCR or build from nakharax-monolith repo
+  # Explorer: use image from GHCR or build from nakharax repo
   # explorer:
   #   image: ghcr.io/nakharax-io/nakharax-explorer:latest
   #   container_name: nakharax-explorer

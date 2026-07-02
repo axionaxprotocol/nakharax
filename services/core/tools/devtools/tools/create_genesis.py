@@ -254,7 +254,7 @@ def main():
     print(f"3. Announce genesis hash: 0x{genesis_hash}")
     print("4. Validators verify and initialize nodes")
     print("5. Coordinate launch time")
-    print("\nFor support: validators@nakharaxx.io")
+    print("\nFor support: validators@nakharax.io")
 
 if __name__ == "__main__":
     main()

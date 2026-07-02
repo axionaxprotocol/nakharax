@@ -35,7 +35,7 @@ Environment:
 ### 1. Activate Environment
 
 ```powershell
-cd D:\nakharax-monolith
+cd D:\nakharax
 .\worker-env\Scripts\Activate.ps1
 ```
 
@@ -70,7 +70,7 @@ vram = 4
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -148,7 +148,7 @@ deactivate
 
 ```powershell
 # Test connection to your RPC node
-curl https://rpc.nakharaxx.io -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
+curl https://rpc.nakharax.io -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
 ```
 
 ### Register Worker (Future)
@@ -193,7 +193,7 @@ Get-Process python | Format-Table Name,CPU,WorkingSet -AutoSize
 ## 📁 Project Structure
 
 ```
-D:\nakharax-monolith\
+D:\nakharax\
 ├── worker-env\              # Virtual environment ✅
 ├── core\
 │   ├── deai\               # DeAI components

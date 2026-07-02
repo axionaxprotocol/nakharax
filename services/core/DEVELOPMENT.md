@@ -12,8 +12,8 @@
 
 ```bash
 # Clone with submodules
-git clone --recursive https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone --recursive https://github.com/nakharax-io/nakharax.git
+cd nakharax
 
 # Or if already cloned, init submodules
 git submodule update --init --recursive
@@ -81,7 +81,7 @@ pnpm dev
 ### 3. Project Structure
 
 ```
-nakharax-monolith/services/core/
+nakharax/services/core/
 ├── core/                    # 🦀 Rust Blockchain Core
 │   ├── src/
 │   │   ├── blockchain/      # Block & chain management
@@ -146,14 +146,14 @@ Instead of running a local node, connect to live validators:
 ```bash
 # In web-universe
 cd web-universe
-echo "NEXT_PUBLIC_RPC_URL=https://nakharaxx.io/rpc/" > apps/web/.env.local
+echo "NEXT_PUBLIC_RPC_URL=https://nakharax.io/rpc/" > apps/web/.env.local
 pnpm dev
 ```
 
 **RPC Endpoints:**
-- **HTTPS**: https://nakharaxx.io/rpc/
-- **EU Validator**: https://rpc.nakharaxx.io
-- **AU Validator**: https://rpc-au.nakharaxx.io
+- **HTTPS**: https://nakharax.io/rpc/
+- **EU Validator**: https://rpc.nakharax.io
+- **AU Validator**: https://rpc-au.nakharax.io
 
 **Chain ID:** 86137 (0x15079)
 
@@ -202,8 +202,8 @@ docker-compose -f monitoring/docker-compose.yaml up -d
 
 ## 🔗 Links
 
-- **Website**: https://nakharaxx.io
-- **Explorer**: https://nakharaxx.io/explorer
+- **Website**: https://nakharax.io
+- **Explorer**: https://nakharax.io/explorer
 - **GitHub**: https://github.com/nakharax-io
 
 ---

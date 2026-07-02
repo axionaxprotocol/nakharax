@@ -131,7 +131,7 @@ Decentralized compute marketplace where users submit jobs and workers bid/accept
 
 ### Monolith
 **Type**: Architecture  
-Unified repository containing both Web and Core domains in `nakharax-monolith/`.
+Unified repository containing both Web and Core domains in `nakharax/`.
 
 ### Monolith Scout
 **Type**: Node Configuration  

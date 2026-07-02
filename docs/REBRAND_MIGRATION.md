@@ -1,4 +1,4 @@
-# Rebrand migration runbook — Axionax → nakharaxx.io
+# Rebrand migration runbook — Axionax → nakharax.io
 
 > Companion to [README → Naming & rebrand](../README.md#naming--rebrand). This is the **executable
 > plan** for renaming code identifiers, env vars, the binary, the domain, and the token. It exists
@@ -13,7 +13,7 @@ All categories below (A–D) have been executed in the repository and verified g
 the historical plan. **What remains is external/coordinated, not a repo edit:**
 
 - Rename the **GitHub repo/org** so `github.com/...` URLs resolve.
-- Stand up **`nakharaxx.io` DNS + SSL**, then **redeploy** nodes from this renamed tree (the live
+- Stand up **`nakharax.io` DNS + SSL**, then **redeploy** nodes from this renamed tree (the live
   VPS still serve `axionax.org` and read the old env-var names until redeployed).
 - Regenerate build artifacts that can't be text-renamed: `README.pdf`, the bridge
   `nakharax_python.so` (rebuild PyO3), and the two `package-lock.json` (`npm install`).
@@ -52,7 +52,7 @@ the historical plan. **What remains is external/coordinated, not a repo edit:**
 |---|---|---|
 | Node binary | `axionax-node` → `nakharax-node` | `docker-compose.yml` (container_name + build target), systemd units, deploy scripts, `/var/lib/axionax-node`, docs |
 | **Env vars (13)** | `AXIONAX_*` → `NAKHARAX_*` | Set in VPS `.env` / worker configs. Renaming code-only breaks running nodes. |
-| Live RPC/domain | `*.axionax.org` → `*.nakharaxx.io` | DNS/SSL on live VPS; SDK `DEFAULT_NODES`, nginx, configs |
+| Live RPC/domain | `*.axionax.org` → `*.nakharax.io` | DNS/SSL on live VPS; SDK `DEFAULT_NODES`, nginx, configs |
 | PyO3 bridge | `axionax-python` / `import axionax_python` | Built `.so` name; Python import in `bridge/` + tests |
 | Log target / paths / containers | `axionax=debug`, `/var/lib/axionax-node`, container names | systemd, docker, runbooks on VPS |
 
@@ -86,7 +86,7 @@ genesis allocations — flip during a **testnet reset** or a token-migration con
 3. Cat B: frontend rename → `pnpm build` green → redeploy dashboard.
 4. Cat C: env-var dual-read shim → deploy → switch VPS `.env` → drop fallback.
 5. Cat C: binary + paths + container names → coordinated node redeploy.
-6. Cat C: domain — stand up `nakharaxx.io` DNS/SSL alongside `axionax.org`, switch `DEFAULT_NODES` +
+6. Cat C: domain — stand up `nakharax.io` DNS/SSL alongside `axionax.org`, switch `DEFAULT_NODES` +
    nginx, keep a redirect.
 7. Cat D: token `AXX → NAK` at the next testnet reset.
 

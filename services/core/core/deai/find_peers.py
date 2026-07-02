@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from rpc_client import NakharaxRpcClient
 
 def find_peers():
-    print("🔍 Scanning Network for Peers (via rpc.nakharaxx.io)...")
+    print("🔍 Scanning Network for Peers (via rpc.nakharax.io)...")
     client = NakharaxRpcClient()
     
     # 1. Check Node Version

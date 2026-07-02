@@ -4,9 +4,9 @@
 
 ### Blockchain Core Only — High-Performance Protocol · DeAI · DePIN
 
-> **Scope:** This repository is the **blockchain core** of Nakharax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith)).
+> **Scope:** This repository is the **blockchain core** of Nakharax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakharax](https://github.com/nakharax-io/nakharax)).
 
-[![CI](https://github.com/nakharax-io/nakharax-monolith/services/core/actions/workflows/ci.yml/badge.svg)](https://github.com/nakharax-io/nakharax-monolith/services/core/actions)
+[![CI](https://github.com/nakharax-io/nakharax/actions/workflows/ci.yml/badge.svg)](https://github.com/nakharax-io/nakharax/actions)
 [![License](https://img.shields.io/badge/License-AGPLv3%2FMIT-orange?style=flat-square)](#license)
 [![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
@@ -14,7 +14,7 @@
 
 **PoPC Consensus** · **45,000+ TPS** · **<0.5s Finality** · **DeAI at the Edge**
 
-[Website](https://nakharaxx.io) · [Documentation](https://nakharax-io.github.io/nakharax-docs/) · [Web Universe](https://github.com/nakharax-io/nakharax-monolith)
+[Website](https://nakharax.io) · [Documentation](https://nakharax-io.github.io/nakharax-docs/) · [Web Universe](https://github.com/nakharax-io/nakharax)
 
 </div>
 
@@ -51,15 +51,15 @@
 
 ## Quick Start — Join the Network
 
-> **End users** → [nakharaxx.io](https://nakharaxx.io)
+> **End users** → [nakharax.io](https://nakharax.io)
 >
 > **Node Operators** — follow the steps below to run your own node.
 
 ### 1. Clone & Update
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 python3 scripts/update-node.py
 ```
 
@@ -99,7 +99,7 @@ python3 hydra_manager.py
 Run on any machine that runs a node:
 
 ```bash
-cd ~/nakharax-monolith
+cd ~/nakharax
 git pull
 python3 scripts/update-node.py
 ```
@@ -116,8 +116,8 @@ python3 scripts/update-node.py --full-deps
 
 | Node | IP | Role | RPC |
 |------|-----|------|-----|
-| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharaxx.io` |
-| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharaxx.io` |
+| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharax.io` |
+| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharax.io` |
 
 EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) · AU: [ops/deploy/VPS_AU_ALL_IN_ONE.md](ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -130,7 +130,7 @@ EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakharaxx.io
+  https://rpc-au.nakharax.io
 ```
 
 **Run your own full node (anywhere on the Internet)** — no allowlist: build `nakharax-node`, use the same genesis as testnet, set `NAKHARAX_BOOTSTRAP_NODES`, open P2P port **30303**. Step-by-step: [docs/RUN_PUBLIC_FULL_NODE.md](docs/RUN_PUBLIC_FULL_NODE.md) · bootstrap list template: [docs/PUBLIC_TESTNET_BOOTSTRAPS.txt](docs/PUBLIC_TESTNET_BOOTSTRAPS.txt)
@@ -189,8 +189,8 @@ cp core/deai/.env.example core/deai/.env
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 python3 scripts/update-node.py --full-deps
 
 # Single Core (one Hailo)
@@ -222,7 +222,7 @@ sudo systemctl enable --now nakharax-hydra
 ## Repository Overview
 
 ```
-nakharax-monolith/services/core/
+nakharax/services/core/
 ├── core/                       # Blockchain Protocol Core
 │   ├── blockchain/             # Block and chain management
 │   ├── consensus/              # PoPC consensus mechanism
@@ -384,13 +384,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related Projects (separate repositories)
 
-- [**nakharax Web Universe**](https://github.com/nakharax-io/nakharax-monolith) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
+- [**nakharax Web Universe**](https://github.com/nakharax-io/nakharax) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
 
 ---
 
 ## Support
 
-[Website](https://nakharaxx.io) · [Docs](https://nakharax-io.github.io/nakharax-docs/) · [Issues](https://github.com/nakharax-io/nakharax-monolith/services/core/issues)
+[Website](https://nakharax.io) · [Docs](https://nakharax-io.github.io/nakharax-docs/) · [Issues](https://github.com/nakharax-io/nakharax/issues)
 
 ---
 

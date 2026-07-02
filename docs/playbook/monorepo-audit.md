@@ -1,6 +1,6 @@
 # Monorepo Structure Audit
 
-> **Scope:** `nakharax-monolith` working tree, captured 2026-05-01.
+> **Scope:** `nakharax` working tree, captured 2026-05-01.
 > **Goal:** identify drift, recommend a folder hierarchy that scales for an L1 protocol with both blockchain core and Web Universe.
 
 ---
@@ -8,7 +8,7 @@
 ## 1. Current shape
 
 ```
-nakharax-monolith/
+nakharax/
 ├── apps/
 │   ├── os-dashboard/      # Next.js OS-style dashboard (this repo's "OS")
 │   └── web/               # Public dApp + marketplace (335 items, deeply nested)
@@ -153,7 +153,7 @@ Pairs naturally with the `services/core/.windsurfrules` golden rules ("no unwrap
 ## 4. Proposed target hierarchy
 
 ```
-nakharax-monolith/
+nakharax/
 ├── .github/                   # CI for the whole monolith (workspace tests + lints)
 ├── .windsurf/workflows/       # slash-commands (already in place)
 ├── .windsurfrules             # Web ↔ Core boundaries (already in place)

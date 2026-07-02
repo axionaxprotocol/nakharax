@@ -411,7 +411,7 @@ Coming soon! Learn:
 ## 💬 Get Help
 
 - [Discord](https://discord.gg/nakharax)
-- [GitHub Discussions](https://github.com/nakharax-io/nakharax-core/discussions)
+- [GitHub Discussions](https://github.com/nakharax-io/nakharax/discussions)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/nakharax)
 
 ---

@@ -15,10 +15,10 @@
 
 ```
 Network Name: Nakharax Testnet
-RPC URL: https://testnet-rpc.nakharaxx.io
+RPC URL: https://testnet-rpc.nakharax.io
 Chain ID: 86137
 Currency Symbol: NAK
-Block Explorer: https://explorer.nakharaxx.io
+Block Explorer: https://explorer.nakharax.io
 ```
 
 ### 2. ⚠️ ใช้ Token Address ไม่ถูกต้อง
@@ -73,7 +73,7 @@ Token Decimal: 18
 
 ### จาก Web Interface
 
-1. เชื่อมต่อ wallet ที่ https://nakharaxx.io
+1. เชื่อมต่อ wallet ที่ https://nakharax.io
 2. คลิกที่ปุ่ม **Connect Wallet**
 3. เมื่อเชื่อมต่อสำเร็จ คลิกที่ dropdown wallet menu
 4. คลิกปุ่ม **"Add NAK Token"**
@@ -175,7 +175,7 @@ const handleAddToken = async () => {
 **วิธีแก้:**
 
 1. Switch ไปยัง Nakharax Network
-2. ขอ test tokens จาก faucet: https://faucet.nakharaxx.io
+2. ขอ test tokens จาก faucet: https://faucet.nakharax.io
 3. Refresh MetaMask (Lock -> Unlock)
 
 ### ❌ "User rejected the request"
@@ -204,11 +204,11 @@ const handleAddToken = async () => {
 หากยังมีปัญหา กรุณาติดต่อ:
 
 - **Discord**: [Nakharax Community](https://discord.gg/nakharax)
-- **GitHub Issues**: [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith/issues)
-- **Email**: support@nakharaxx.io
+- **GitHub Issues**: [nakharax](https://github.com/nakharax-io/nakharax/issues)
+- **Email**: support@nakharax.io
 
 ---
 
 **อัปเดตล่าสุด:** เมษายน 2026  
-**Synced core ref:** `nakharax-monolith@28f42cf`  
+**Synced core ref:** `nakharax@28f42cf`  
 **Version:** 1.1.0 (Genesis Public Testnet)

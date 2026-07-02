@@ -38,7 +38,7 @@ For testnet, the default deterministic key is used (no extra step).
 ### 2.2 Regenerate Genesis
 
 ```bash
-cd nakharax-monolith
+cd nakharax
 python core/tools/create_genesis.py --verify
 ```
 

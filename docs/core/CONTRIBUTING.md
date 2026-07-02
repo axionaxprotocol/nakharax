@@ -7,9 +7,9 @@ Thank you for contributing. This document explains how to set up, test, and subm
 1. **Fork** the repository on GitHub.
 2. **Clone** your fork and add upstream:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/nakharax-monolith.git
-   cd nakharax-monolith
-   git remote add upstream https://github.com/nakharax-io/nakharax-monolith.git
+   git clone https://github.com/YOUR_USERNAME/nakharax.git
+   cd nakharax
+   git remote add upstream https://github.com/nakharax-io/nakharax.git
    ```
 3. **Create a branch** for your work:
    ```bash
@@ -68,7 +68,7 @@ See the main [README](README.md#testing--verification) for more test commands an
 
 ## Questions
 
-- **Issues:** [GitHub Issues](https://github.com/nakharax-io/nakharax-monolith/services/core/issues).
-- **Website:** [nakharaxx.io](https://nakharaxx.io).
+- **Issues:** [GitHub Issues](https://github.com/nakharax-io/nakharax/issues).
+- **Website:** [nakharax.io](https://nakharax.io).
 
 Thanks for contributing.

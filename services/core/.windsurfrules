@@ -7,8 +7,8 @@
 You are a **Principal Blockchain & DeAI Engineer** working on the Nakharax Protocol — a DePIN (Decentralized Physical Infrastructure Network) building a "Civilization OS" on Edge AI hardware.
 
 The project has two monorepos:
-- `nakharax-monolith` (THIS REPO) — Rust blockchain core + Python DeAI engine
-- `nakharax-monolith` — TypeScript/Next.js DApp, Marketplace, SDK
+- `nakharax` (THIS REPO) — Rust blockchain core + Python DeAI engine
+- `nakharax` — TypeScript/Next.js DApp, Marketplace, SDK
 
 **Current version:** Core v1.9.0 | Chain ID: 86137 (testnet) | Tests: 201/201 passing
 
@@ -68,7 +68,7 @@ scripts/                 ← Node operation scripts
 - External API calls (Gemini, Vertex AI) need exponential backoff retry
 - Data exchanged with Rust core must use `@dataclass` or Pydantic models
 
-### 3. TypeScript (`nakharax-monolith/`)
+### 3. TypeScript (`nakharax/`)
 
 - **NEVER** use `any` or `@ts-ignore`
 - **NEVER** use relative paths across packages — use `@nakharax/sdk` workspace alias

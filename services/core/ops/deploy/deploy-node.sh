@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy nakharax-monolith node to VPS
+# Deploy nakharax node to VPS
 # Usage: ./deploy-node.sh <PUBLIC_IP> [BOOTSTRAP_MULTIADDR]
 
 set -e
@@ -13,14 +13,14 @@ echo "Bootstrap Node: ${BOOTSTRAP_NODE:-None (bootstrapping as first node)}"
 echo ""
 
 # Clone or update repository
-if [ -d "nakharax-monolith" ]; then
+if [ -d "nakharax" ]; then
     echo "Updating existing repository..."
-    cd nakharax-monolith
+    cd nakharax
     git pull
 else
-    echo "Cloning nakharax-monolith..."
-    git clone https://github.com/nakharax-io/nakharax-monolith.git
-    cd nakharax-monolith
+    echo "Cloning nakharax..."
+    git clone https://github.com/nakharax-io/nakharax.git
+    cd nakharax
 fi
 
 # Create .env file

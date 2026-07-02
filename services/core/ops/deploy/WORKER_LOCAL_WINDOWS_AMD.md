@@ -55,7 +55,7 @@ Software:
 
 ```powershell
 # Create virtual environment
-cd d:\nakharax-monolith
+cd d:\nakharax
 python -m venv worker-env
 
 # Activate
@@ -287,7 +287,7 @@ cpu_threads = 12
 ram = 16  # Adjust to your actual RAM
 
 [network]
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

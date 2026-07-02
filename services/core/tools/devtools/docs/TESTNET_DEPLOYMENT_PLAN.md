@@ -324,7 +324,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 ## 📞 Support & Communication
 
 ### Development Team Channels
-- **GitHub**: https://github.com/nakharax-io/nakharax-core
+- **GitHub**: https://github.com/nakharax-io/nakharax
 - **Issues**: Track progress and bugs
 - **Discussions**: Technical Q&A
 - **Pull Requests**: Code review process
@@ -336,7 +336,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - **Medium/Blog**: Technical articles, tutorials
 
 ### Documentation Sites
-- **Main Docs**: https://docs.nakharaxx.io
+- **Main Docs**: https://docs.nakharax.io
 - **API Reference**: In progress
 - **Tutorials**: To be created
 - **Network Status**: Grafana dashboards

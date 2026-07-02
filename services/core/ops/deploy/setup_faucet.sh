@@ -5,7 +5,7 @@
 #
 # Usage: bash setup_faucet.sh [OPTIONS]
 # Options:
-#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.nakharaxx.io)
+#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.nakharax.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 #   --rpc-url URL         RPC endpoint URL (default: http://localhost:8545)
 #   --chain-id ID         Chain ID (default: 86137)
@@ -141,7 +141,7 @@ chown -R faucet:faucet "$DATA_DIR"
 FAUCET_HOME="/home/faucet/nakharax-core"
 if [ ! -d "$FAUCET_HOME" ]; then
   echo -e "${BLUE}[6/8]${NC} Cloning nakharax repository..."
-  sudo -u faucet git clone https://github.com/nakharax-io/nakharax-core.git "$FAUCET_HOME"
+  sudo -u faucet git clone https://github.com/nakharax-io/nakharax.git "$FAUCET_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating repository..."
   cd "$FAUCET_HOME"

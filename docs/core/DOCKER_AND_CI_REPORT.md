@@ -68,7 +68,7 @@ Cache ใช้ `core/target` และ `core/Cargo.lock` — ถูกต้อ
 - **node build:** จาก `context: ../nakharax-core` เป็น `context: ../../core` (ชี้ไปที่ `core/` ใน repo นี้)
 - **dockerfile:** ใช้ `Dockerfile` (ไฟล์ใน `ops/deploy/`)
 - **ports:** ใช้ 8545 (RPC), 8546 (WS), 30303 (P2P) ให้ตรงกับ node จริง
-- **explorer:** comment ไว้ ใช้ image จาก GHCR หรือ build จาก repo nakharax-monolith แยก
+- **explorer:** comment ไว้ ใช้ image จาก GHCR หรือ build จาก repo nakharax แยก
 
 ### 2.4 ไฟล์อื่น
 
@@ -104,4 +104,4 @@ docker build -f ops/deploy/Dockerfile -t ghcr.io/nakharax-io/nakharax-core:lates
 
 ---
 
-*สร้างจากผลการตรวจ Docker และ CI ใน nakharax-monolith*
+*สร้างจากผลการตรวจ Docker และ CI ใน nakharax*

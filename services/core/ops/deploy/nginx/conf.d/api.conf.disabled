@@ -1,11 +1,11 @@
-# API Backend - api.nakharaxx.io
+# API Backend - api.nakharax.io
 # Reverse proxy to explorer-backend:3001 (Block Explorer Indexer & REST API)
 
 limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
 
 server {
     listen 80;
-    server_name api.nakharaxx.io;
+    server_name api.nakharax.io;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -18,10 +18,10 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name api.nakharaxx.io;
+    server_name api.nakharax.io;
 
-    ssl_certificate /etc/letsencrypt/live/api.nakharaxx.io/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.nakharaxx.io/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/api.nakharax.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.nakharax.io/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;

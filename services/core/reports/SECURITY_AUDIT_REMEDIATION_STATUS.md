@@ -44,7 +44,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 | **Remediated** | Current code appears to address the finding; spot-checked in repo. |
 | **Partial** | Improved materially; audit recommendation not fully met or deployment-dependent. |
 | **Open** | No evidence of fix in this pass, or still structurally true (e.g. HTTP without TLS). |
-| **Dev / out of scope** | Applies to mocks, examples, or repos not in `nakharax-monolith`; accept risk for dev only. |
+| **Dev / out of scope** | Applies to mocks, examples, or repos not in `nakharax`; accept risk for dev only. |
 
 ---
 
@@ -163,7 +163,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 
 ## §4 — TypeScript SDK & website
 
-All findings marked **Dev / other repo** — tracked in `nakharax-monolith`, not verified here.
+All findings marked **Dev / other repo** — tracked in `nakharax`, not verified here.
 
 ---
 

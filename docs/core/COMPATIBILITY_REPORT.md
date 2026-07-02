@@ -1,7 +1,7 @@
 # รายงานความเข้ากันได้ของโปรเจกต์ (Compatibility Report)
 
 **วันที่ตรวจ:** มีนาคม 2025  
-**ขอบเขต:** nakharax-monolith (Rust Core + Python DeAI + ops + configs + scripts)
+**ขอบเขต:** nakharax (Rust Core + Python DeAI + ops + configs + scripts)
 
 ---
 
@@ -18,7 +18,7 @@
 | Scripts requirements | ✅ แยกชัด | scripts/requirements.txt (เบา), core/deai/requirements.txt (AI/ML) |
 | pyo3 version | ⚠️ แยกกันโดยตั้งใจ | workspace ใช้ 0.22; bridge/rust-python ใช้ 0.24 (แก้ RUSTSEC) — ไม่ต้องเปลี่ยน |
 | metrics.toml chain_id | ℹ️ string | chain_id = "86137" (string) — ใช้ได้กับ Prometheus labels |
-| **ops/deploy validator scripts** | ✅ แก้แล้ว | ใช้ nakharax-monolith และ path core/deai แล้ว |
+| **ops/deploy validator scripts** | ✅ แก้แล้ว | ใช้ nakharax และ path core/deai แล้ว |
 
 ---
 
@@ -55,14 +55,14 @@
 
 ## 5. จุดที่แก้แล้ว (ความไม่ตรงกันของ repo)
 
-สคริปต์ใน **ops/deploy/** อัปเดตให้ใช้ repo **nakharax-monolith** และ path ตรงกับโครงสร้างแล้ว:
+สคริปต์ใน **ops/deploy/** อัปเดตให้ใช้ repo **nakharax** และ path ตรงกับโครงสร้างแล้ว:
 
 | ไฟล์ | การแก้ไข |
 |------|----------|
-| `ops/deploy/setup_validator.sh` | REPO_URL → nakharax-monolith.git, REPO_DIR, build จาก core/, DeAI ที่ core/deai, PYTHONPATH และ path ในขั้นตอนถัดไป |
-| `ops/deploy/setup_systemd.sh` | WorkingDirectory → nakharax-monolith, PYTHONPATH → .../core/deai |
-| `ops/deploy/setup_rpc_node.sh` | NAKHARAX_HOME → nakharax-monolith, clone repo นี้, build จาก core/, binary nakharax-core, ExecStart → /usr/local/bin/nakharax-core |
-| `core/tools/GENESIS_LAUNCH_README.md` | ชี้ setup_systemd.sh ไปที่ ~/nakharax-monolith/services/core/ops/deploy/scripts/setup_systemd.sh |
+| `ops/deploy/setup_validator.sh` | REPO_URL → nakharax.git, REPO_DIR, build จาก core/, DeAI ที่ core/deai, PYTHONPATH และ path ในขั้นตอนถัดไป |
+| `ops/deploy/setup_systemd.sh` | WorkingDirectory → nakharax, PYTHONPATH → .../core/deai |
+| `ops/deploy/setup_rpc_node.sh` | NAKHARAX_HOME → nakharax, clone repo นี้, build จาก core/, binary nakharax-core, ExecStart → /usr/local/bin/nakharax-core |
+| `core/tools/GENESIS_LAUNCH_README.md` | ชี้ setup_systemd.sh ไปที่ ~/nakharax/services/core/ops/deploy/scripts/setup_systemd.sh |
 
 หมายเหตุ: ชื่อ binary **nakharax-core** ใช้ใน ExecStart และการติดตั้ง — สอดคล้องกับ crate name ใน core/
 
@@ -73,7 +73,7 @@
 1. **ใช้ได้ตามเดิม:** รันจาก repo root เช่น  
    `python3 scripts/update-node.py`,  
    `python3 core/deai/worker_node.py --config configs/monolith_scout_single.toml`
-2. **ถ้าใช้ ops/deploy บน VPS:** แก้ setup_validator.sh, setup_systemd.sh, setup_rpc_node.sh ให้ใช้ repo **nakharax-monolith** และ path **core/deai**, **scripts/** ตามโครงสร้างนี้
+2. **ถ้าใช้ ops/deploy บน VPS:** แก้ setup_validator.sh, setup_systemd.sh, setup_rpc_node.sh ให้ใช้ repo **nakharax** และ path **core/deai**, **scripts/** ตามโครงสร้างนี้
 3. **อัปเดตรายงาน:** รันตรวจอีกครั้งหลังแก้ path ใน ops/deploy แล้ว
 
 ---

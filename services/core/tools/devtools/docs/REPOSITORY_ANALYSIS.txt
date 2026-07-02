@@ -15,7 +15,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-core.git
+   Remote: https://github.com/nakharax-io/nakharax.git
    Last Commit: a6c4d4ed - Upgrade to v1.8.0: ARCHITECTURE v1.5 compliance
 
 📄 Package.json:

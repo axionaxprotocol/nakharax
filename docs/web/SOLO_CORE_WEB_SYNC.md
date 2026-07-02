@@ -1,6 +1,6 @@
 # Solo maintainer: web ↔ core (dual repo)
 
-Lightweight discipline when you are the only person touching **nakharax-monolith** and **nakharax-monolith**.
+Lightweight discipline when you are the only person touching **nakharax** and **nakharax**.
 
 ## Rules of thumb
 
@@ -28,6 +28,6 @@ If you start missing sync steps or forget which core revision matches production
 
 ## Links
 
-- Core repo: https://github.com/nakharax-io/nakharax-monolith  
+- Core repo: https://github.com/nakharax-io/nakharax  
 - Parameter map: [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md)  
 - Dev setup: [DEVELOPMENT.md](DEVELOPMENT.md)

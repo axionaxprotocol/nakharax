@@ -228,7 +228,7 @@ npm run validator:start
 ansible-playbook ansible/playbooks/setup-loadbalancer.yml
 
 # Test RPC endpoints
-curl http://rpc.nakharaxx.io/health
+curl http://rpc.nakharax.io/health
 ```
 
 ---
@@ -372,8 +372,8 @@ kubectl autoscale deployment nakharax-node \
 
 # Setup Let's Encrypt
 certbot certonly --standalone \
-  -d rpc.nakharaxx.io \
-  -d ws.nakharaxx.io
+  -d rpc.nakharax.io \
+  -d ws.nakharax.io
 
 # Configure nginx with SSL
 ansible-playbook ansible/playbooks/setup-ssl.yml
@@ -404,7 +404,7 @@ aws s3 sync /data/nakharax s3://nakharax-backups/
 ```bash
 # Clone and build nakharax-core
 cd ..
-git clone https://github.com/nakharax-io/nakharax-core.git
+git clone https://github.com/nakharax-io/nakharax.git
 cd nakharax-core
 cargo build --release
 
@@ -422,7 +422,7 @@ cp target/release/nakharax-node ../nakharax-deploy/binaries/
 # SDK connects to deployed nodes:
 
 # In nakharax-sdk-ts:
-const client = new NakharaxClient('https://rpc.nakharaxx.io')
+const client = new NakharaxClient('https://rpc.nakharax.io')
 ```
 
 ### With nakharax-web
@@ -531,8 +531,8 @@ ulimit -n 65535
 listen_addr = "0.0.0.0:30333"
 external_addr = "YOUR_PUBLIC_IP:30333"
 bootnodes = [
-  "/dns4/boot1.nakharaxx.io/tcp/30333/p2p/...",
-  "/dns4/boot2.nakharaxx.io/tcp/30333/p2p/..."
+  "/dns4/boot1.nakharax.io/tcp/30333/p2p/...",
+  "/dns4/boot2.nakharax.io/tcp/30333/p2p/..."
 ]
 
 [rpc]
@@ -588,7 +588,7 @@ services:
 
 - **Issues:** Report issues on [GitHub Issues](https://github.com/nakharax-io/nakharax-deploy/issues)
 - **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
-- **Core Node:** See [nakharax-core](https://github.com/nakharax-io/nakharax-core)
+- **Core Node:** See [nakharax-core](https://github.com/nakharax-io/nakharax)
 
 ---
 

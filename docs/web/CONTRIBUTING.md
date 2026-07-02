@@ -42,13 +42,13 @@ By participating in this project, you agree to abide by our Code of Conduct:
 2. Clone your fork locally:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/nakharax-monolith.git
-   cd nakharax-monolith
+   git clone https://github.com/YOUR_USERNAME/nakharax.git
+   cd nakharax
    ```
 
 3. Add upstream remote:
    ```bash
-   git remote add upstream https://github.com/nakharax-io/nakharax-monolith.git
+   git remote add upstream https://github.com/nakharax-io/nakharax.git
    ```
 
 ### Install Dependencies

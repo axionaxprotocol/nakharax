@@ -8,7 +8,7 @@
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+#   wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 #   chmod +x setup-gcp-worker.sh
 #   sudo ./setup-gcp-worker.sh
 #
@@ -141,24 +141,24 @@ log_success "ML libraries installed"
 
 # Step 10: Clone nakharax repository
 log_info "Step 10: Cloning nakharax repository..."
-if [ ! -d "$USER_HOME/nakharax-monolith" ]; then
-    sudo -u $ACTUAL_USER git clone https://github.com/nakharax-io/nakharax-monolith.git "$USER_HOME/nakharax-monolith"
+if [ ! -d "$USER_HOME/nakharax" ]; then
+    sudo -u $ACTUAL_USER git clone https://github.com/nakharax-io/nakharax.git "$USER_HOME/nakharax"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."
-    cd "$USER_HOME/nakharax-monolith"
+    cd "$USER_HOME/nakharax"
     sudo -u $ACTUAL_USER git pull
 fi
 
 # Step 11: Build Rust core
 log_info "Step 11: Building nakharax core..."
-cd "$USER_HOME/nakharax-monolith/services/core/core"
+cd "$USER_HOME/nakharax/services/core/core"
 sudo -u $ACTUAL_USER sh -c 'source $HOME/.cargo/env && cargo build --release'
 log_success "Core built successfully"
 
 # Step 12: Install DeAI dependencies
 log_info "Step 12: Installing DeAI dependencies..."
-cd "$USER_HOME/nakharax-monolith/services/core/core/deai"
+cd "$USER_HOME/nakharax/services/core/core/deai"
 sudo -u $ACTUAL_USER sh -c "source $USER_HOME/nakharax-env/bin/activate && \
     pip install -r requirements.txt"
 log_success "DeAI dependencies installed"
@@ -207,7 +207,7 @@ echo "  4. Test PyTorch CUDA:"
 echo "     ${YELLOW}python -c 'import torch; print(f\"CUDA: {torch.cuda.is_available()}\")'${NC}"
 echo ""
 echo "  5. Run training example:"
-echo "     ${YELLOW}cd ~/nakharax-monolith/services/core/core/examples${NC}"
+echo "     ${YELLOW}cd ~/nakharax/services/core/core/examples${NC}"
 echo "     ${YELLOW}python deai_simple_training.py${NC}"
 echo ""
 log_warning "⚠️  IMPORTANT: System reboot required for GPU drivers!"

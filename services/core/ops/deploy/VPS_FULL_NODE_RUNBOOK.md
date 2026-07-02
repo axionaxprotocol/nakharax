@@ -9,7 +9,7 @@
 จาก repo หลัง clone:
 
 ```bash
-cd nakharax-monolith/services/core/ops/deploy/scripts
+cd nakharax/services/core/ops/deploy/scripts
 chmod +x nakharax-node-bootstrap.sh
 
 ./nakharax-node-bootstrap.sh build
@@ -43,8 +43,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # 2. Clone และ build
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith/services/core/core
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax/services/core/core
 cargo build --release -p node
 
 # 3. สร้างโฟลเดอร์ state
@@ -61,7 +61,7 @@ mkdir -p /var/lib/nakharax-node
 ใช้ `--identity-key` เพื่อให้ PeerId คงที่หลัง restart (เหมาะ validator):
 
 ```bash
-cd /path/to/nakharax-monolith/services/core/core
+cd /path/to/nakharax/services/core/core
 
 ./target/release/nakharax-node \
   --role full \
@@ -106,10 +106,10 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/nakharax-monolith/services/core/core
+WorkingDirectory=/path/to/nakharax/services/core/core
 # ตัวที่ 2 ใส่ env ด้านล่าง (แก้ VPS1_IP และ PEER_ID)
 # Environment="NAKHARAX_BOOTSTRAP_NODES=/ip4/VPS1_IP/tcp/30303/p2p/PEER_ID"
-ExecStart=/path/to/nakharax-monolith/services/core/core/target/release/nakharax-node \
+ExecStart=/path/to/nakharax/services/core/core/target/release/nakharax-node \
   --role full --chain-id 86137 \
   --rpc 0.0.0.0:8545 \
   --state-path /var/lib/nakharax-node \
@@ -138,8 +138,8 @@ sudo systemctl status nakharax-node
 
 ```bash
 # โคลนเพื่อเอา config / script
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith/services/core/ops/deploy
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax/services/core/ops/deploy
 
 # รันแค่ RPC node (จาก docker-compose.vps.yml)
 docker compose -f docker-compose.vps.yml up -d rpc-node

@@ -28,10 +28,10 @@ ssh root@217.216.109.5 'bash /tmp/update-validator-vps.sh'
 ssh root@46.250.244.4 'bash /tmp/update-validator-vps.sh'
 ```
 
-Or if the VPS already has a cloned repo (e.g. `/opt/nakharax-monolith` or `/opt/nakharax-deploy`):
+Or if the VPS already has a cloned repo (e.g. `/opt/nakharax` or `/opt/nakharax-deploy`):
 
 ```bash
-cd /opt/nakharax-monolith/services/core/ops/deploy   # or the path containing scripts/
+cd /opt/nakharax/services/core/ops/deploy   # or the path containing scripts/
 sudo bash scripts/update-validator-vps.sh
 ```
 
@@ -95,10 +95,10 @@ On each VPS (or from another machine):
 # RPC
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharaxx.io
+  https://rpc.nakharax.io
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakharaxx.io
+  https://rpc-au.nakharax.io
 ```
 
 If running Docker Compose on the VPS:
@@ -122,7 +122,7 @@ bash scripts/check-vps-status.sh
 ```
 
 - **Explorer:** `docker logs nakharax-explorer-backend`; เปิด `nginx/conf.d/explorer.conf` (ย้ายจาก `.disabled`)
-- **API:** `api.nakharaxx.io` → same `explorer-backend:3001`
+- **API:** `api.nakharax.io` → same `explorer-backend:3001`
 - **Faucet:** `FAUCET_PRIVATE_KEY` ใน `.env`; `RPC_URL` ชี้ `http://rpc-node:8545` ใน compose แล้ว
 
 EU (217.216.109.5) ไม่ต้องรัน explorer/faucet แยก — ใช้โดเมนที่ชี้ AU

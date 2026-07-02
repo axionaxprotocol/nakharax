@@ -32,7 +32,7 @@ This document defines the scope and deliverables for **external security audits*
 
 ## 3. Out of Scope (for initial audit)
 
-- Web frontend (nakharax-monolith) — separate audit
+- Web frontend (nakharax) — separate audit
 - Third-party dependencies (libp2p, RocksDB, etc.) — rely on upstream security
 - Operational security (key storage on production servers) — infra review
 

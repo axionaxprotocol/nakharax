@@ -20,13 +20,13 @@ Wants=network-online.target
 Type=simple
 User=nakharax
 Group=nakharax
-WorkingDirectory=/home/nakharax/nakharax-monolith
+WorkingDirectory=/home/nakharax/nakharax
 
 # Environment
 Environment="NAKHARAX_HOME=/home/nakharax/.nakharax"
 Environment="RUST_LOG=info"
 Environment="RUST_BACKTRACE=1"
-Environment="PYTHONPATH=/home/nakharax/nakharax-monolith/services/core/core/deai"
+Environment="PYTHONPATH=/home/nakharax/nakharax/services/core/core/deai"
 
 # Start command
 ExecStart=/usr/local/bin/nakharax-core start \

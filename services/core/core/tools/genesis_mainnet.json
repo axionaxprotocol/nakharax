@@ -96,20 +96,20 @@
       "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
       "name": "Validator-EU-01",
       "region": "EU",
-      "ip": "rpc.nakharaxx.io",
+      "ip": "rpc.nakharax.io",
       "stake": "16666666668000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@rpc.nakharaxx.io:30303",
+      "enode": "enode://GENERATED@rpc.nakharax.io:30303",
       "active": true
     },
     {
       "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
       "name": "Validator-AU-01",
       "region": "AU",
-      "ip": "rpc-au.nakharaxx.io",
+      "ip": "rpc-au.nakharax.io",
       "stake": "16666666666000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@rpc-au.nakharaxx.io:30303",
+      "enode": "enode://GENERATED@rpc-au.nakharax.io:30303",
       "active": true
     },
     {

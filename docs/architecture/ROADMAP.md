@@ -360,9 +360,9 @@ This roadmap is living document. We follow agile principles:
 
 ## 📢 Stay Updated
 
-- **GitHub Projects**: https://github.com/nakharax-io/nakharax-core/projects
+- **GitHub Projects**: https://github.com/nakharax-io/nakharax/projects
 - **Discord**: https://discord.gg/nakharax
-- **Blog**: https://blog.nakharaxx.io
+- **Blog**: https://blog.nakharax.io
 - **Twitter**: @nakharax-io
 
 ---

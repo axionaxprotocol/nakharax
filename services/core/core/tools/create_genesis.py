@@ -99,13 +99,13 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
                 "address": _evm_addr("nakharax_genesis_validator_eu_217_76_61_116"),
                 "label": "Validator-EU-01",
                 "region": "EU",
-                "ip": "rpc.nakharaxx.io",
+                "ip": "rpc.nakharax.io",
             },
             {
                 "address": _evm_addr("nakharax_genesis_validator_au_46_250_244_4"),
                 "label": "Validator-AU-01",
                 "region": "AU",
-                "ip": "rpc-au.nakharaxx.io",
+                "ip": "rpc-au.nakharax.io",
             },
             {
                 "address": _evm_addr("nakharax_genesis_validator_us_mainnet"),

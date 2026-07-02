@@ -27,7 +27,7 @@ Three main options: **CI → VPS** (auto on push), **GitHub Pages** (static), an
 3. After push to `main` workflow runs and deploys
 4. URL at **Environments → github-pages** or `https://<org>.github.io/<repo>/`
 
-**Custom domain (e.g. nakharaxx.io):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
+**Custom domain (e.g. nakharax.io):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
 
 ---
 
@@ -42,8 +42,8 @@ No file upload from your machine — on VPS just clone repo and build there:
 1. SSH into VPS, clone repo, install dependencies, and build:
 
    ```bash
-   export APP_DIR=/opt/nakharax-monolith
-   git clone https://github.com/nakharax-io/nakharax-monolith.git $APP_DIR
+   export APP_DIR=/opt/nakharax
+   git clone https://github.com/nakharax-io/nakharax.git $APP_DIR
    cd $APP_DIR
    pnpm install --frozen-lockfile
    pnpm --filter @nakharax/blockchain-utils build
@@ -55,7 +55,7 @@ No file upload from your machine — on VPS just clone repo and build there:
 
 3. Nginx must proxy to `http://127.0.0.1:3000` (see [apps/web/nginx/conf.d/nakharax-standalone.conf.example](../apps/web/nginx/conf.d/nakharax-standalone.conf.example))
 
-Default script values: app folder `/opt/nakharax-monolith`, port 3000
+Default script values: app folder `/opt/nakharax`, port 3000
 
 #### VPS standalone: branch, lockfile, and Windows
 

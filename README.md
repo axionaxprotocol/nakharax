@@ -1,6 +1,6 @@
 <div align="center">
 
-# nakharaxx.io
+# nakharax.io
 
 ### Cheap, accessible compute for everyone — a paid, verifiable grid for parallel science & AI
 
@@ -20,10 +20,10 @@
 
 ## What's inside
 
-This repository is the **monolithic working tree** for **nakharaxx.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
+This repository is the **monolithic working tree** for **nakharax.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
 
 ```
-nakharax-monolith/
+nakharax/
 ├── apps/
 │   ├── web/              # Public dApp + marketplace (Next.js · TypeScript)
 │   └── os-dashboard/     # Self-hosted node OS UI (Next.js · Tailwind)
@@ -40,19 +40,19 @@ nakharax-monolith/
 
 ## Naming & rebrand
 
-The project was renamed **Axionax → nakharaxx.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
+The project was renamed **Axionax → nakharax.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
 
 | Layer | Result |
 |---|---|
-| Brand / docs / UI | ✅ nakharaxx.io |
+| Brand / docs / UI | ✅ nakharax.io |
 | Code identifiers | ✅ crates, binary `nakharax-node`, packages (`@nakharax/sdk`), import paths |
 | Env vars | ✅ `NAKHARAX_*` (was `AXIONAX_*`) |
-| Domain refs | ✅ `nakharaxx.io` in configs/SDK (was `axionax.org`) |
+| Domain refs | ✅ `nakharax.io` in configs/SDK (was `axionax.org`) |
 | Native token | ✅ `NAK` (was `AXX`) — contract, genesis, tokenomics |
 
 **Remaining (external / coordinated — not a repo edit):**
 - Rename the GitHub repo/org so `github.com/...` URLs resolve.
-- Stand up `nakharaxx.io` DNS + SSL, then redeploy nodes from this renamed tree.
+- Stand up `nakharax.io` DNS + SSL, then redeploy nodes from this renamed tree.
 - A handful of filenames still contain `axionax` (deploy scripts, a stale build artifact) — tracked in [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md).
 
 The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
@@ -76,8 +76,8 @@ NPU acceleration (Hailo-8) is optional but recommended for AI-task workers.
 
 ```bash
 # 1. Clone with submodules / from monolith
-git clone https://github.com/nakharaxprotocol/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 
 # 2. Bring up the full dev stack (node + validator + faucet + explorer + grafana)
 cd services/core
@@ -122,10 +122,10 @@ python3 scripts/join-nakharax.py
 
 | Validator | IP | Role | RPC (direct) |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharaxx.io` |
+| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharax.io` |
 | #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
 
-**Public HTTPS (AU):** `https://rpc.nakharaxx.io` · `explorer` · `api` · `faucet`  
+**Public HTTPS (AU):** `https://rpc.nakharax.io` · `explorer` · `api` · `faucet`  
 **Nakharax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 P2P bootnodes are advertised via `NAKHARAX_BOOTSTRAP_NODES` — see `services/core/configs/`.

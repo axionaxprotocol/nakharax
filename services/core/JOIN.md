@@ -9,8 +9,8 @@ To run a **permissionless full node** (sync + optional local RPC) from anywhere 
 ## DeAI / Worker (Python)
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 python3 scripts/update-node.py
 python3 scripts/join-nakharax.py
 ```

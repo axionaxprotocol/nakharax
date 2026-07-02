@@ -104,15 +104,15 @@ mod rpc_attacks {
     #[test]
     fn test_rpc_cors_blocks_unauthorized_origin() {
         let cors = CorsConfig::production(vec![
-            "https://app.nakharaxx.io".to_string(),
-            "https://wallet.nakharaxx.io".to_string(),
+            "https://app.nakharax.io".to_string(),
+            "https://wallet.nakharax.io".to_string(),
         ]);
 
         assert!(!cors.is_origin_allowed("https://evil.com"));
-        assert!(!cors.is_origin_allowed("https://phishing.nakharaxx.io.evil.com"));
+        assert!(!cors.is_origin_allowed("https://phishing.nakharax.io.evil.com"));
         assert!(!cors.is_origin_allowed("http://localhost:3000"));
-        assert!(cors.is_origin_allowed("https://app.nakharaxx.io"));
-        assert!(cors.is_origin_allowed("https://wallet.nakharaxx.io"));
+        assert!(cors.is_origin_allowed("https://app.nakharax.io"));
+        assert!(cors.is_origin_allowed("https://wallet.nakharax.io"));
 
         // Dev mode allows all — verify the distinction
         let dev = CorsConfig::dev();

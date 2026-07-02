@@ -101,10 +101,10 @@ bash launch_genesis.sh
 **Option C: Public Download**
 ```bash
 # Upload to web server
-scp genesis.json user@testnet.nakharaxx.io:/var/www/html/
+scp genesis.json user@testnet.nakharax.io:/var/www/html/
 
 # Validators download
-wget https://testnet.nakharaxx.io/genesis.json -O ~/.nakharax/config/genesis.json
+wget https://testnet.nakharax.io/genesis.json -O ~/.nakharax/config/genesis.json
 ```
 
 ### Step 5: Validators Verify Hash
@@ -130,7 +130,7 @@ nakharax-core init \
   --genesis ~/.nakharax/config/genesis.json
 
 # Setup systemd service
-sudo bash ~/nakharax-monolith/services/core/ops/deploy/scripts/setup_systemd.sh
+sudo bash ~/nakharax/services/core/ops/deploy/scripts/setup_systemd.sh
 
 # DO NOT start yet - wait for coordinated launch
 ```
@@ -245,7 +245,7 @@ Genesis launch is successful when:
 ```bash
 # Delete and re-download genesis
 rm ~/.nakharax/config/genesis.json
-wget https://testnet.nakharaxx.io/genesis.json -O ~/.nakharax/config/genesis.json
+wget https://testnet.nakharax.io/genesis.json -O ~/.nakharax/config/genesis.json
 sha256sum ~/.nakharax/config/genesis.json
 ```
 
@@ -293,8 +293,8 @@ ssh root@MINORITY_VALIDATOR "sudo systemctl start nakharax-validator"
 
 - **Discord**: #genesis-launch channel
 - **Telegram**: Validators Group (private)
-- **Email**: validators@nakharaxx.io
-- **Docs**: https://docs.nakharaxx.io/genesis-ceremony
+- **Email**: validators@nakharax.io
+- **Docs**: https://docs.nakharax.io/genesis-ceremony
 
 ---
 
@@ -334,9 +334,9 @@ After successful genesis launch:
 **Total Supply**: 1,000,250,000 NAK  
 
 **Bootstrap Node**: TBD  
-**RPC Endpoint**: https://testnet-rpc.nakharaxx.io  
-**Explorer**: https://testnet-explorer.nakharaxx.io  
-**Faucet**: https://testnet-faucet.nakharaxx.io  
+**RPC Endpoint**: https://testnet-rpc.nakharax.io  
+**Explorer**: https://testnet-explorer.nakharax.io  
+**Faucet**: https://testnet-faucet.nakharax.io  
 
 ---
 

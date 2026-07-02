@@ -21,7 +21,7 @@ Use **`nakharax-node-bootstrap.sh`** to build `nakharax-node`, lay out data (`ge
 From repo after clone:
 
 ```bash
-cd nakharax-monolith/services/core/ops/deploy/scripts
+cd nakharax/services/core/ops/deploy/scripts
 chmod +x nakharax-node-bootstrap.sh
 
 ./nakharax-node-bootstrap.sh build
@@ -57,7 +57,7 @@ sudo systemctl start nakharax-node
 
 | Variable | When |
 |----------|------|
-| `NAKHARAX_REPO_ROOT` | Repo root if not `…/nakharax-monolith` relative to `ops/deploy/scripts` |
+| `NAKHARAX_REPO_ROOT` | Repo root if not `…/nakharax` relative to `ops/deploy/scripts` |
 | `NAKHARAX_BOOTSTRAP_NODES` | Comma-separated libp2p multiaddrs; required to join existing validators |
 | `NAKHARAX_VALIDATOR_ADDRESS` | `0x…` for `--role validator` |
 | `NAKHARAX_NODE_BIN` | Override path to `nakharax-node` (written into `node.env` at `setup`) |

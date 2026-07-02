@@ -53,7 +53,7 @@
 
 ### Added
 - **Testnet Configuration**: Chain ID 86137, Symbol NAKt
-- **Validator Infrastructure**: EU `217.216.109.5` (validator + Nakharax OS / `app.nakharaxx.io`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
+- **Validator Infrastructure**: EU `217.216.109.5` (validator + Nakharax OS / `app.nakharax.io`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
 - **Faucet Service**: Port 3002 for testnet token distribution
 - **P2P Network**: Bootstrap nodes operational on port 30303
 
@@ -89,7 +89,7 @@
 
 ### Structure
 ```
-nakharax-monolith/
+nakharax/
 ├── apps/
 │   ├── web/              # Next.js dApp + marketplace
 │   └── os-dashboard/     # Node OS UI

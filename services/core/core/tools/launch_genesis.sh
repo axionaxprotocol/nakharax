@@ -353,7 +353,7 @@ main() {
     echo "  4. Activate faucet"
     echo "  5. Announce launch to community"
     echo ""
-    log_info "For support: validators@nakharaxx.io"
+    log_info "For support: validators@nakharax.io"
 }
 
 # Run main

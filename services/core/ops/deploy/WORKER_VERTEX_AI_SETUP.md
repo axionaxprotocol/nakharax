@@ -148,15 +148,15 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 ```
 
 ### Step 9: Build nakharax Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/nakharax-monolith/services/core/core
+cd ~/nakharax/services/core/core
 cargo build --release
 ```
 
@@ -164,7 +164,7 @@ cargo build --release
 
 ```bash
 # DeAI dependencies
-cd ~/nakharax-monolith/services/core/core/deai
+cd ~/nakharax/services/core/core/deai
 pip install -r requirements.txt
 
 # Additional ML libraries (if not already installed)
@@ -178,7 +178,7 @@ pip install transformers datasets scikit-learn scipy
 ### Step 11: Run Training Example
 
 ```bash
-cd ~/nakharax-monolith/services/core/core/examples
+cd ~/nakharax/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -261,7 +261,7 @@ Downloading...
 # Cell 1: Import and Setup
 import torch
 import sys
-sys.path.append('/home/jupyter/nakharax-monolith/services/core/core/examples')
+sys.path.append('/home/jupyter/nakharax/services/core/core/examples')
 
 from deai_simple_training import SimpleCNN, train_epoch, test
 from torchvision import datasets, transforms
@@ -407,7 +407,7 @@ cpu_cores = 4
 ram = 15
 
 [network]
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

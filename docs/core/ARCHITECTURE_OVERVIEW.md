@@ -2,7 +2,7 @@
 
 Single entry point for **how the protocol is structured** in this repository: layers from users down to hardware, where code lives, and which docs to read next.
 
-**Audience:** engineers onboarding to `nakharax-monolith`, reviewers, and operators who need a map before diving into RPC specs or runbooks.
+**Audience:** engineers onboarding to `nakharax`, reviewers, and operators who need a map before diving into RPC specs or runbooks.
 
 ---
 

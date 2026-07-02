@@ -75,11 +75,11 @@ gcloud compute ssh nakharax-worker-1 --zone=us-central1-a
 
 ```bash
 # Download script
-wget https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 
 # Or if the repo is not yet public
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith/services/core/ops/deploy/scripts
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax/services/core/ops/deploy/scripts
 chmod +x setup-gcp-worker.sh
 ```
 
@@ -149,7 +149,7 @@ python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); 
 ### Step 10: Run Training Example
 
 ```bash
-cd ~/nakharax-monolith/services/core/core/examples
+cd ~/nakharax/services/core/core/examples
 python deai_simple_training.py
 ```
 
@@ -210,7 +210,7 @@ ram = 15  # GB
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.nakharaxx.io"
+rpc_url = "https://rpc.nakharax.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -230,7 +230,7 @@ logs_dir = "/home/YOUR_USERNAME/logs"
 
 ```bash
 # Create a wallet for the worker
-cd ~/nakharax-monolith/services/core/core
+cd ~/nakharax/services/core/core
 cargo run --bin keygen -- generate --output ~/nakharax-worker/keys/worker-key.json
 
 # Or if you already have a wallet, copy the private key into the config
@@ -356,9 +356,9 @@ pip install --force-reinstall torch torchvision torchaudio --index-url https://d
 
 ## 📞 Need Help?
 
-- **Documentation**: `~/nakharax-monolith/services/core/ops/deploy/gcp-worker-setup.md`
-- **Training Example**: `~/nakharax-monolith/services/core/core/examples/deai_simple_training.py`
-- **Setup Script**: `~/nakharax-monolith/services/core/ops/deploy/scripts/setup-gcp-worker.sh`
+- **Documentation**: `~/nakharax/services/core/ops/deploy/gcp-worker-setup.md`
+- **Training Example**: `~/nakharax/services/core/core/examples/deai_simple_training.py`
+- **Setup Script**: `~/nakharax/services/core/ops/deploy/scripts/setup-gcp-worker.sh`
 
 ---
 

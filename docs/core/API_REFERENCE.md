@@ -502,4 +502,4 @@ provider.on('block', (blockNumber) => {
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Quick Start Guide](../QUICK_START.md)
 - [Examples](../examples/)
-- [GitHub Repository](https://github.com/nakharax-io/nakharax-core)
+- [GitHub Repository](https://github.com/nakharax-io/nakharax)

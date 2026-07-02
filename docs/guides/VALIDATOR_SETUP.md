@@ -75,8 +75,8 @@ sudo ufw enable
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 ```
 
 ### 2. Configure Validator
@@ -130,7 +130,7 @@ curl -X POST http://localhost:8545 \
 ### 1. Download Binary
 
 ```bash
-wget https://github.com/nakharax-io/nakharax-core/releases/download/v1.9.0/nakharax-node-linux-amd64
+wget https://github.com/nakharax-io/nakharax/releases/download/v1.9.0/nakharax-node-linux-amd64
 chmod +x nakharax-node-linux-amd64
 sudo mv nakharax-node-linux-amd64 /usr/local/bin/nakharax-node
 ```
@@ -318,7 +318,7 @@ sudo systemctl stop nakharax-validator
 sudo cp -r /var/lib/nakharax /var/lib/nakharax.backup
 
 # Download new binary
-wget https://github.com/nakharax-io/nakharax-core/releases/download/vX.Y.Z/nakharax-node-linux-amd64
+wget https://github.com/nakharax-io/nakharax/releases/download/vX.Y.Z/nakharax-node-linux-amd64
 chmod +x nakharax-node-linux-amd64
 sudo mv nakharax-node-linux-amd64 /usr/local/bin/nakharax-node
 

@@ -76,8 +76,8 @@ This guide covers setting up a worker node on the Nakharax Compute Marketplace. 
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith/services/core
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax/services/core
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -95,7 +95,7 @@ Create `worker-config.yaml`:
 ```yaml
 worker:
   private_key: "YOUR_PRIVATE_KEY_HERE"
-  rpc_url: "http://testnet.nakharaxx.io:8545"  # or local RPC
+  rpc_url: "http://testnet.nakharax.io:8545"  # or local RPC
 
   # Hardware specs
   device: "cuda"  # or "cpu", "hailo0", "hailo1"
@@ -176,7 +176,7 @@ Create `monolith-worker-config.yaml`:
 ```yaml
 worker:
   private_key: "YOUR_PRIVATE_KEY_HERE"
-  rpc_url: "http://testnet.nakharaxx.io:8545"
+  rpc_url: "http://testnet.nakharax.io:8545"
   
   device: "hailo1"  # hailo0 for Sentinel, hailo1 for Worker
   gpu: null
@@ -222,7 +222,7 @@ docker:
   image: nakharax/worker:latest
   env:
     - WORKER_PRIVATE_KEY=YOUR_PRIVATE_KEY
-    - RPC_URL=http://testnet.nakharaxx.io:8545
+    - RPC_URL=http://testnet.nakharax.io:8545
     - DEVICE=cuda
     - COMPUTE_TYPE=SILICON
     - HARDWARE_TIER=2

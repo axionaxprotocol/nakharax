@@ -27,8 +27,8 @@ Optional:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-monolith.git
-cd nakharax-monolith
+git clone https://github.com/nakharax-io/nakharax.git
+cd nakharax
 ```
 
 ### 2️⃣ Install Dependencies
@@ -54,7 +54,7 @@ nano .env
 ```bash
 CHAIN_ID=86137
 NETWORK_NAME=nakharax-testnet-1
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharaxx.io
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharax.io
 ```
 
 ### 4️⃣ Start Development Servers
@@ -156,7 +156,7 @@ pnpm docker:logs      # View Docker logs
 ## 📁 Project Structure
 
 ```
-nakharax-monolith/
+nakharax/
 ├── 📱 apps/
 │   ├── web/              # Next.js website
 │   ├── marketplace/      # React marketplace
@@ -237,15 +237,15 @@ All tests should pass ✅
 
 ```
 Network Name: Nakharax Testnet
-RPC URL: https://testnet-rpc.nakharaxx.io
+RPC URL: https://testnet-rpc.nakharax.io
 Chain ID: 86137
 Currency Symbol: NAK
-Block Explorer: https://explorer.nakharaxx.io
+Block Explorer: https://explorer.nakharax.io
 ```
 
 ### Get Test Tokens
 
-Visit the faucet: https://faucet.nakharaxx.io
+Visit the faucet: https://faucet.nakharax.io
 
 Enter your wallet address and claim 10 NAK (once per 24 hours).
 
@@ -329,7 +329,7 @@ Need help? We're here:
 - **Discord**: https://discord.gg/nakharax (#dev-help)
 - **GitHub Discussions**: Ask questions
 - **GitHub Issues**: Report bugs
-- **Documentation**: https://docs.nakharaxx.io
+- **Documentation**: https://docs.nakharax.io
 
 ---
 

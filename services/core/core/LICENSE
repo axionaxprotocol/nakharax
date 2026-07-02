@@ -26,7 +26,7 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    and all related trademarks are the exclusive property of Nakharax Foundation.
    
    Use of these marks requires explicit written permission from:
-   legal@nakharaxx.io
+   legal@nakharax.io
    
    This restriction does NOT apply to:
    - Factual references in documentation
@@ -45,7 +45,7 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    - Operating networks that could confuse users with the official Nakharax Network
    - Creating token systems branded as "NAK" or "Nakharax Token"
    
-   Authorization requests: mainnet-auth@nakharaxx.io
+   Authorization requests: mainnet-auth@nakharax.io
 
 3. CHAIN IDENTITY REQUIREMENT
    Any modified version or fork MUST:
@@ -71,19 +71,19 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    - DMCA takedown requests
    - Community warnings and blacklisting
    
-   Report violations: security@nakharaxx.io
+   Report violations: security@nakharax.io
 
 6. OFFICIAL NETWORK REGISTRY
    Verify authentic Nakharax networks at:
-   https://nakharaxx.io/networks
+   https://nakharax.io/networks
    
    Any network not listed there is NOT officially endorsed.
 
 ===================================================================
 
 For questions about these terms:
-- Legal inquiries: legal@nakharaxx.io
-- Technical questions: dev@nakharaxx.io
-- Security reports: security@nakharaxx.io
+- Legal inquiries: legal@nakharax.io
+- Technical questions: dev@nakharax.io
+- Security reports: security@nakharax.io
 
 Last updated: November 1, 2025

@@ -9,11 +9,11 @@
 #   4. Restart all services
 #
 # Usage (on VPS):
-#   cd ~/nakharax-monolith && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh
+#   cd ~/nakharax && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh
 #
 # Usage (from local machine via SSH):
-#   ssh root@217.216.109.5 "cd ~/nakharax-monolith && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh"
-#   ssh root@46.250.244.4   "cd ~/nakharax-monolith && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh"
+#   ssh root@217.216.109.5 "cd ~/nakharax && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh"
+#   ssh root@46.250.244.4   "cd ~/nakharax && ./ops/deploy/environments/testnet/public/scripts/redeploy_testnet.sh"
 # ============================================================================
 set -euo pipefail
 
@@ -38,9 +38,9 @@ echo ""
 # ── Step 0: Locate project ────────────────────────────────────────────────
 if [[ ! -f "$COMPOSE_FILE" ]]; then
   # Try common VPS layout
-  if [[ -f "$HOME/nakharax-monolith/services/core/ops/deploy/environments/testnet/public/docker-compose.yaml" ]]; then
-    ROOT_DIR="$HOME/nakharax-monolith/services/core/ops/deploy/environments/testnet/public"
-    CORE_DIR="$HOME/nakharax-monolith/services/core/core"
+  if [[ -f "$HOME/nakharax/services/core/ops/deploy/environments/testnet/public/docker-compose.yaml" ]]; then
+    ROOT_DIR="$HOME/nakharax/services/core/ops/deploy/environments/testnet/public"
+    CORE_DIR="$HOME/nakharax/services/core/core"
     COMPOSE_FILE="${ROOT_DIR}/docker-compose.yaml"
   else
     fail "Cannot find docker-compose.yaml. Run from project root or set paths."
@@ -92,7 +92,7 @@ DOCKERFILE=""
 for candidate in \
   "${ROOT_DIR}/../../../Dockerfile" \
   "${CORE_DIR}/../ops/deploy/Dockerfile" \
-  "$HOME/nakharax-monolith/services/core/ops/deploy/Dockerfile"; do
+  "$HOME/nakharax/services/core/ops/deploy/Dockerfile"; do
   if [[ -f "$candidate" ]]; then
     DOCKERFILE="$(realpath "$candidate")"
     break
