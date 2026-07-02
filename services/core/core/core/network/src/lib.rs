@@ -1,4 +1,4 @@
-//! Network Layer for nakhara Core
+//! Network Layer for nakharax Core
 //!
 //! Implements P2P networking using libp2p for:
 //! - Block propagation

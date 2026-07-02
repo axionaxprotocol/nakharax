@@ -1,4 +1,4 @@
-# nakhara p## 🆕 Latest Update (November 12, 2025)
+# nakharax p## 🆕 Latest Update (November 12, 2025)
 
 🎉 **Monitoring Infrastructure Deployed & All Services Healthy!**
 
@@ -8,9 +8,9 @@ Production VPS now running with complete monitoring stack:
 - ✅ **9/9 Services Healthy** - All containers operational
 - ✅ **Prometheus Metrics** - Collecting data from 8 services (Port 9090)
 - ✅ **Grafana Dashboards** - Real-time monitoring (Port 3030)
-- ✅ **Health Checks Fixed** - Accurate service**Part of the nakhara protocol Ecosystem**
+- ✅ **Health Checks Fixed** - Accurate service**Part of the nakharax protocol Ecosystem**
 
-Built with 💜 by the nakhara team
+Built with 💜 by the nakharax team
 
 **Last Updated**: November 12, 2025 - Monitoring stack deployed, all services healthy ✅us reporting
 - ✅ **SSL/TLS Configured** - Secure HTTPS on port 443
@@ -27,12 +27,12 @@ Built with 💜 by the nakhara team
 - Uptime: 6+ days
 - All 9 Docker containers runningt Infrastructure 🚀
 
-Production-ready deployment infrastructure for **nakhara protocol** services.
+Production-ready deployment infrastructure for **nakharax protocol** services.
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Protocol](https://img.shields.io/badge/Protocol-nakhara-purple)](https://nakhara.io)
+[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharaxx.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)](https://www.docker.com/)
-[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/nakhara-io/nakhara-core)
+[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/nakharax-io/nakharax-core)
 
 ---
 
@@ -60,21 +60,21 @@ We're completing final preparations before public testnet:
 
 ## Overview
 
-This repository contains everything needed to deploy the complete **nakhara
+This repository contains everything needed to deploy the complete **nakharax
 Protocol** infrastructure stack on a VPS or cloud environment.
 
-### Part of nakhara Ecosystem
+### Part of nakharax Ecosystem
 
-Deploys the full nakhara protocol stack:
+Deploys the full nakharax protocol stack:
 
-- **Protocol Node**: [`nakhara-core`](https://github.com/nakhara-io/nakhara-core) - nakhara RPC node
+- **Protocol Node**: [`nakharax-core`](https://github.com/nakharax-io/nakharax-core) - nakharax RPC node
 - **Block Explorer**: Blockchain data visualization
 - **Testnet Faucet**: NAK token distribution
-- **Web Interface**: [`nakhara-web`](https://github.com/nakhara-io/nakhara-web) - Static frontend
+- **Web Interface**: [`nakharax-web`](https://github.com/nakharax-io/nakharax-web) - Static frontend
 - **Monitoring**: Prometheus + Grafana dashboards
-- **Issue Tracker**: [`issue-manager`](https://github.com/nakhara-io/issue-manager) - Track deployment tasks
+- **Issue Tracker**: [`issue-manager`](https://github.com/nakharax-io/issue-manager) - Track deployment tasks
 
-**GitHub Organization**: https://github.com/nakhara-io
+**GitHub Organization**: https://github.com/nakharax-io
 
 **Pre-Testnet Status:** Infrastructure ready, final testing in progress
 
@@ -82,15 +82,15 @@ Deploys the full nakhara protocol stack:
 
 ## What Gets Deployed
 
-### nakhara protocol Services
+### nakharax protocol Services
 
-- **RPC Node (Port 8545/8546)** - Full nakhara protocol node
+- **RPC Node (Port 8545/8546)** - Full nakharax protocol node
   - HTTP JSON-RPC endpoint
   - WebSocket support
   - CORS enabled
   - Health monitoring
 - **Block Explorer (Port 3001)** - Blockchain visualization
-  - Real-time nakhara block data
+  - Real-time nakharax block data
   - Transaction/block search
   - Account history
   - Network statistics
@@ -103,7 +103,7 @@ Deploys the full nakhara protocol stack:
   - Prometheus metrics (Port 9090)
   - Health checks for all 9 services
   - Real-time resource monitoring
-  - nakhara node health alerts
+  - nakharax node health alerts
 
 ### Infrastructure Components
 
@@ -121,8 +121,8 @@ Deploys the full nakhara protocol stack:
 ```bash
 ssh root@YOUR_VPS_IP
 cd /opt
-git clone https://github.com/nakhara-io/nakhara-deploy.git
-cd nakhara-deploy
+git clone https://github.com/nakharax-io/nakharax-deploy.git
+cd nakharax-deploy
 ```
 
 ### 2. Configure Environment
@@ -140,7 +140,7 @@ REDIS_PASSWORD=your_redis_password
 FAUCET_PRIVATE_KEY=0x...
 GRAFANA_PASSWORD=your_grafana_password
 VPS_IP=YOUR_VPS_IP
-DOMAIN=nakhara.io
+DOMAIN=nakharaxx.io
 ```
 
 ### 3. Run Setup Script
@@ -162,8 +162,8 @@ The script automatically:
 ```
 
          Nginx Reverse Proxy (SSL)
-    rpc.nakhara.io | explorer.nakhara.io
-         faucet.nakhara.io
+    rpc.nakharaxx.io | explorer.nakharaxx.io
+         faucet.nakharaxx.io
 
 
 
@@ -188,7 +188,7 @@ The script automatically:
 - HTTP JSON-RPC endpoint
 - WebSocket support
 - CORS enabled for public access
-- Health check: `https://rpc.nakhara.io/health`
+- Health check: `https://rpc.nakharaxx.io/health`
 
 ### Block Explorer (Port 3001)
 
@@ -213,7 +213,7 @@ The script automatically:
   - Resource usage graphs
 - **Prometheus** (Port 9090) - Metrics collection
   - 8 service scrape jobs (15s intervals)
-  - nakhara-rpc, Explorer, Faucet metrics
+  - nakharax-rpc, Explorer, Faucet metrics
   - Infrastructure monitoring (Postgres, Redis, Nginx)
 - Node health alerts
 - Resource usage tracking
@@ -224,7 +224,7 @@ The script automatically:
 ### Check VPS Status
 
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 ./scripts/check-vps-status.sh           # Quick summary
 ./scripts/check-vps-status.sh --detailed # Full details
 ```
@@ -238,7 +238,7 @@ cd /opt/nakhara-deploy
 ### View logs
 
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml logs -f [service-name]
 ```
 
@@ -264,7 +264,7 @@ docker-compose -f docker-compose.vps.yml up -d
 ### Backup database
 
 ```bash
-docker exec nakhara-postgres pg_dump -U explorer explorer > backup.sql
+docker exec nakharax-postgres pg_dump -U explorer explorer > backup.sql
 ```
 
 ## DNS Configuration
@@ -314,7 +314,7 @@ curl http://YOUR_VPS_IP:9090/-/healthy
 curl http://YOUR_VPS_IP:3030/api/health
 
 # Check all services
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 ./scripts/check-vps-status.sh
 ```
 
@@ -403,17 +403,17 @@ Use our [Issue Manager](../issue-manager) to track:
 - **[WORKER_LOCAL_WINDOWS_AMD.md](WORKER_LOCAL_WINDOWS_AMD.md)** - Local Windows AMD GPU setup
 - **[WORKER_SETUP_QUICK_GUIDE.md](WORKER_SETUP_QUICK_GUIDE.md)** - General worker setup guide
 
-## nakhara protocol Ecosystem
+## nakharax protocol Ecosystem
 
 | Component         | Description               | Location                                         | Status     |
 | ----------------- | ------------------------- | ------------------------------------------------ | ---------- |
-| **Deploy** (this) | Infrastructure deployment | `nakhara-deploy/`                                | ?? Testing |
-| **Core**          | nakhara protocol node     | [`../nakhara-core`](../nakhara-core)             | ✅ Ready   |
-| **Web**           | Frontend interface        | [`../nakhara-web`](../nakhara-web)               | ? Ready   |
-| **SDK**           | Developer SDK             | [`../nakhara-sdk-ts`](../nakhara-sdk-ts)         | ? Ready   |
-| **Docs**          | Documentation             | [`../nakhara-docs`](../nakhara-docs)             | ?? Active  |
-| **DevTools**      | Development tools         | [`../nakhara-devtools`](../nakhara-devtools)     | ? Ready   |
-| **Marketplace**   | Compute marketplace       | [`../nakhara-marketplace`](../nakhara-marketplace) | ?? Beta  |
+| **Deploy** (this) | Infrastructure deployment | `nakharax-deploy/`                                | ?? Testing |
+| **Core**          | nakharax protocol node     | [`../nakharax-core`](../nakharax-core)             | ✅ Ready   |
+| **Web**           | Frontend interface        | [`../nakharax-web`](../nakharax-web)               | ? Ready   |
+| **SDK**           | Developer SDK             | [`../nakharax-sdk-ts`](../nakharax-sdk-ts)         | ? Ready   |
+| **Docs**          | Documentation             | [`../nakharax-docs`](../nakharax-docs)             | ?? Active  |
+| **DevTools**      | Development tools         | [`../nakharax-devtools`](../nakharax-devtools)     | ? Ready   |
+| **Marketplace**   | Compute marketplace       | [`../nakharax-marketplace`](../nakharax-marketplace) | ?? Beta  |
 | **Issue Manager** | Task tracking             | [`../issue-manager`](../issue-manager)           | ?? New!    |
 
 ---
@@ -422,23 +422,23 @@ Use our [Issue Manager](../issue-manager) to track:
 
 ### Core Components
 
-- **[Protocol Core](../nakhara-core)** - nakhara blockchain implementation
-- **[Web Interface](../nakhara-web)** - Frontend (deployed separately)
-- **[SDK](../nakhara-sdk-ts)** - Used by Explorer/Faucet APIs
-- **[Documentation](../nakhara-docs)** - Full protocol documentation
+- **[Protocol Core](../nakharax-core)** - nakharax blockchain implementation
+- **[Web Interface](../nakharax-web)** - Frontend (deployed separately)
+- **[SDK](../nakharax-sdk-ts)** - Used by Explorer/Faucet APIs
+- **[Documentation](../nakharax-docs)** - Full protocol documentation
 
 ### External Resources
 
-- **GitHub Organization**: https://github.com/nakhara-io
-- **Protocol Website**: https://nakhara.io
-- **Documentation**: https://docs.nakhara.io
+- **GitHub Organization**: https://github.com/nakharax-io
+- **Protocol Website**: https://nakharaxx.io
+- **Documentation**: https://docs.nakharaxx.io
 
 ---
 
 ## Contributing
 
 1. Fork the repository:
-   [nakhara-io/nakhara-deploy](https://github.com/nakhara-io/nakhara-deploy)
+   [nakharax-io/nakharax-deploy](https://github.com/nakharax-io/nakharax-deploy)
 2. Create feature branch
 3. Test changes with Docker Compose locally
 4. Submit pull request
@@ -449,26 +449,26 @@ Use our [Issue Manager](../issue-manager) to track:
 
 MIT License - see [LICENSE](LICENSE) for details.
 
-**Note**: The nakhara protocol Core uses AGPLv3. See
-[`../nakhara-core/LICENSE`](../nakhara-core/LICENSE).
+**Note**: The nakharax protocol Core uses AGPLv3. See
+[`../nakharax-core/LICENSE`](../nakharax-core/LICENSE).
 
 ---
 
 ## Support
 
-- **Issues**: https://github.com/nakhara-io/nakhara-deploy/issues
-- **Docs**: https://docs.nakhara.io or [`nakhara-docs`](https://github.com/nakhara-io/nakhara-docs)
-- **GitHub Organization**: https://github.com/nakhara-io
+- **Issues**: https://github.com/nakharax-io/nakharax-deploy/issues
+- **Docs**: https://docs.nakharaxx.io or [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs)
+- **GitHub Organization**: https://github.com/nakharax-io
 
 ### Community (Coming Q1 2026)
 
-- **Discord**: https://discord.gg/nakhara
-- **Twitter**: https://twitter.com/nakhara-io
+- **Discord**: https://discord.gg/nakharax
+- **Twitter**: https://twitter.com/nakharax-io
 
 ---
 
-**Part of the nakhara protocol Ecosystem**
+**Part of the nakharax protocol Ecosystem**
 
-Built with ?? by the nakhara team
+Built with ?? by the nakharax team
 
 **Last Updated**: November 7, 2025

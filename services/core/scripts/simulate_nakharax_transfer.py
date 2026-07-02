@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Simulate native coin transfers on Nakhara JSON-RPC for network testing.
+Simulate native coin transfers on Nakharax JSON-RPC for network testing.
 
-Nakhara ``eth_sendRawTransaction`` expects a **hex-encoded JSON** transaction
+Nakharax ``eth_sendRawTransaction`` expects a **hex-encoded JSON** transaction
 (Ed25519-signed), not Ethereum RLP. This matches ``core/core/rpc`` and
 ``core/tools/faucet``.
 
@@ -13,16 +13,16 @@ Prerequisites::
 Examples::
 
     # Generate a key, show address (fund it via faucet / genesis first), then transfer
-    python scripts/simulate_nakhara_transfer.py --rpc http://127.0.0.1:8545 \\
+    python scripts/simulate_nakharax_transfer.py --rpc http://127.0.0.1:8545 \\
         --generate-key --to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 1000000000000000
 
     # Use a 32-byte Ed25519 seed (64 hex chars, no 0x)
-    python scripts/simulate_nakhara_transfer.py --rpc http://127.0.0.1:8545 \\
+    python scripts/simulate_nakharax_transfer.py --rpc http://127.0.0.1:8545 \\
         --from-seed aabbccdd... \\
         --to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 --value 1000000000000000
 
     # Several sequential transfers (nonce auto-incremented)
-    python scripts/simulate_nakhara_transfer.py --rpc http://127.0.0.1:8545 \\
+    python scripts/simulate_nakharax_transfer.py --rpc http://127.0.0.1:8545 \\
         --from-seed ... --to 0x... --value 1000 --repeat 5
 """
 
@@ -136,12 +136,12 @@ def build_signed_tx_json(
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Nakhara native transfer simulator (JSON + Ed25519)")
-    ap.add_argument("--rpc", default=os.environ.get("NAKHARA_RPC_URL", "http://127.0.0.1:8545"))
+    ap = argparse.ArgumentParser(description="Nakharax native transfer simulator (JSON + Ed25519)")
+    ap.add_argument("--rpc", default=os.environ.get("NAKHARAX_RPC_URL", "http://127.0.0.1:8545"))
     ap.add_argument("--to", help="Recipient 0x address (20-byte hex)")
     ap.add_argument(
         "--from-seed",
-        help="32-byte Ed25519 seed as hex (64 hex chars). Or set NAKHARA_ED25519_SEED_HEX",
+        help="32-byte Ed25519 seed as hex (64 hex chars). Or set NAKHARAX_ED25519_SEED_HEX",
     )
     ap.add_argument("--generate-key", action="store_true", help="Generate ephemeral keypair and exit after printing address")
     ap.add_argument("--value", type=int, default=1_000_000_000_000_000, help="Amount in smallest units (default: 0.001 if 18 decimals)")
@@ -150,7 +150,7 @@ def main() -> int:
     ap.add_argument("--repeat", type=int, default=1, help="Number of sequential transfers (nonce++)")
     args = ap.parse_args()
 
-    seed_hex = args.from_seed or os.environ.get("NAKHARA_ED25519_SEED_HEX")
+    seed_hex = args.from_seed or os.environ.get("NAKHARAX_ED25519_SEED_HEX")
     if args.generate_key:
         sk = SigningKey.generate()
         pub = bytes(sk.verify_key.encode())
@@ -169,7 +169,7 @@ def main() -> int:
         return 1
 
     if not seed_hex:
-        print("ERROR: provide --from-seed or NAKHARA_ED25519_SEED_HEX, or use --generate-key first", file=sys.stderr)
+        print("ERROR: provide --from-seed or NAKHARAX_ED25519_SEED_HEX, or use --generate-key first", file=sys.stderr)
         return 1
 
     seed_hex = seed_hex.strip().lower().replace("0x", "")

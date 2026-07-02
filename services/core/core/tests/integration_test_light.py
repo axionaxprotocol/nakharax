@@ -11,9 +11,9 @@ import time
 
 import pytest
 try:
-    import nakhara_python as axx
+    import nakharax_python as axx
 except ImportError:
-    print("Error: Could not import nakhara_python. Make sure the shared library is in PYTHONPATH and named correctly.")
+    print("Error: Could not import nakharax_python. Make sure the shared library is in PYTHONPATH and named correctly.")
     sys.exit(1)
 
 class TestRustPythonBridge:
@@ -21,7 +21,7 @@ class TestRustPythonBridge:
     
     def test_crypto_hashing(self):
         """Test hash functions exposed from Rust"""
-        data = b"Hello nakhara"
+        data = b"Hello nakharax"
         
         # Test SHA3-256
         hash1 = axx.PyCrypto.sha3_256(list(data))

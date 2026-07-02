@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Terminal, Cpu, Shield, Activity, Network, ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "Nakhara Protocol | Brutal Intelligence",
+  title: "Nakharax Protocol | Brutal Intelligence",
   description: "Decentralized AI operating environment and compute network.",
 };
 
@@ -21,7 +21,7 @@ export default function WelcomePage() {
               </div>
               <div>
                 <h1 className="text-[2rem] md:text-[3rem] font-bold text-zinc-100 leading-none tracking-tighter uppercase">
-                  NAKHARA_PROTOCOL
+                  NAKHARAX_PROTOCOL
                 </h1>
                 <div className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] mt-1">
                   Decentralized_AI_Compute_Engine
@@ -30,7 +30,7 @@ export default function WelcomePage() {
             </div>
             <p className="max-w-xl text-sm text-zinc-400 leading-relaxed uppercase tracking-wider">
               A high-performance, deterministic execution layer for AI workloads. 
-              Nakhara merges decentralized consensus with bare-metal compute efficiency.
+              Nakharax merges decentralized consensus with bare-metal compute efficiency.
             </p>
           </div>
           
@@ -88,9 +88,9 @@ export default function WelcomePage() {
 
         {/* Footer */}
         <footer className="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-widest text-zinc-500">
-          <div>© {new Date().getFullYear()} NAKHARA_FOUNDATION. STRICTLY CONFIDENTIAL.</div>
+          <div>© {new Date().getFullYear()} NAKHARAX_FOUNDATION. STRICTLY CONFIDENTIAL.</div>
           <div className="flex gap-4">
-            <Link href="https://github.com/nakhara" className="hover:text-zinc-300">GITHUB</Link>
+            <Link href="https://github.com/nakharax" className="hover:text-zinc-300">GITHUB</Link>
             <Link href="/docs" className="hover:text-zinc-300">DOCS</Link>
             <Link href="/apps/propsentinel" className="hover:text-zinc-300">RISK_ENGINE</Link>
           </div>

@@ -1,6 +1,6 @@
 # Runbook — Deploy & Incident Response
 
-Operational procedures for Nakhara validators, RPC nodes, and incident response.
+Operational procedures for Nakharax validators, RPC nodes, and incident response.
 
 ---
 
@@ -17,16 +17,16 @@ Operational procedures for Nakhara validators, RPC nodes, and incident response.
    ```
 3. **Build node**:
    ```bash
-   git clone <repo> && cd nakhara-monolith/services/core/core
-   cargo build --release -p nakhara-core
+   git clone <repo> && cd nakharax-monolith/services/core/core
+   cargo build --release -p nakharax-core
    ```
 4. **Place genesis**:
    ```bash
-   mkdir -p ~/.nakhara/config
-   cp /path/to/genesis.json ~/.nakhara/config/
-   sha256sum ~/.nakhara/config/genesis.json   # verify hash with announced)
+   mkdir -p ~/.nakharax/config
+   cp /path/to/genesis.json ~/.nakharax/config/
+   sha256sum ~/.nakharax/config/genesis.json   # verify hash with announced)
    ```
-5. **Configure** `~/.nakhara/config/config.yaml` (chain_id, state_path, network, RPC).
+5. **Configure** `~/.nakharax/config/config.yaml` (chain_id, state_path, network, RPC).
 6. **Run with systemd** (see [ops/deploy/setup_systemd.sh](../ops/deploy/setup_systemd.sh) or [GENESIS_LAUNCH_README.md](../tools/GENESIS_LAUNCH_README.md)).
 7. **Open ports**: P2P 30333, RPC 8545 (if exposed).
 
@@ -51,8 +51,8 @@ Minimal node for P2P discovery only. Share enode with validators; ensure port 30
 
 ### 2.1 Chain Not Producing Blocks
 
-- **Check validators**: `systemctl status nakhara-validator` (or equivalent) on each validator.
-- **Logs**: `journalctl -u nakhara-validator -f` — look for consensus/network errors.
+- **Check validators**: `systemctl status nakharax-validator` (or equivalent) on each validator.
+- **Logs**: `journalctl -u nakharax-validator -f` — look for consensus/network errors.
 - **Peers**: Ensure validators can reach each other (firewall, enode, bootnode).
 - **Genesis**: Confirm all validators use the same genesis hash; if not, re-distribute genesis and restart.
 

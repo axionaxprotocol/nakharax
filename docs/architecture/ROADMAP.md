@@ -1,4 +1,4 @@
-# nakhara protocol — Roadmap
+# nakharax protocol — Roadmap
 
 ## Vision
 
@@ -56,7 +56,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [x] Testnet genesis configuration
 - [x] Deploy initial validator infrastructure (2 validators: AU + ES)
 - [x] RPC infrastructure setup (Real nodes on port 8545)
-- [x] Block explorer deployment (nakhara-web)
+- [x] Block explorer deployment (nakharax-web)
 - [x] Testnet faucet (port 3002)
 - [x] Monitoring and alerting systems (Grafana + Prometheus)
 - [x] All 9 services operational (100% deployment)
@@ -240,7 +240,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 **Network Expansion**
 
 - [ ] Geographic diversity initiatives
-- [ ] Hardware certification program (nakharaBox)
+- [ ] Hardware certification program (nakharaxBox)
 - [ ] Enterprise node operator partnerships
 - [ ] Data center partnerships
 - [ ] 1,000+ nodes target
@@ -263,7 +263,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 **Deliverables**:
 
-- ✅ 50+ dApps using nakhara
+- ✅ 50+ dApps using nakharax
 - ✅ 1,000+ nodes globally
 - ✅ 5,000+ active workers
 - ✅ $10M+ TVL in staking
@@ -360,10 +360,10 @@ This roadmap is living document. We follow agile principles:
 
 ## 📢 Stay Updated
 
-- **GitHub Projects**: https://github.com/nakhara-io/nakhara-core/projects
-- **Discord**: https://discord.gg/nakhara
-- **Blog**: https://blog.nakhara.io
-- **Twitter**: @nakhara-io
+- **GitHub Projects**: https://github.com/nakharax-io/nakharax-core/projects
+- **Discord**: https://discord.gg/nakharax
+- **Blog**: https://blog.nakharaxx.io
+- **Twitter**: @nakharax-io
 
 ---
 

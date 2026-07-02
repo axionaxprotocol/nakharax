@@ -14,7 +14,7 @@ importers:
 
   apps/os-dashboard:
     dependencies:
-      '@nakhara/sdk':
+      '@nakharax/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       clsx:

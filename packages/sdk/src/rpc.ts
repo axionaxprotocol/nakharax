@@ -1,4 +1,4 @@
-// Typed JSON-RPC client for Nakhara nodes.
+// Typed JSON-RPC client for Nakharax nodes.
 //
 // Designed to:
 //   * never throw on network failure (returns `Result`);
@@ -12,7 +12,7 @@ export type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer };
 
 /** Curated default testnet endpoints — keep in sync with deploy docs. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
-  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.nakhara.io" },
+  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.nakharaxx.io" },
   { id: "rpc-eu", name: "Validator EU", url: "http://217.216.109.5:8545" },
   { id: "rpc-au", name: "Validator AU", url: "http://46.250.244.4:8545" },
 ];

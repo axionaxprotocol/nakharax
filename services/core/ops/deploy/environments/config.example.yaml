@@ -1,15 +1,15 @@
-# nakhara Node Configuration
+# nakharax Node Configuration
 # v1.6 Multi-Language Architecture
 
 node:
-  name: "nakhara-testnet-node"
-  data_dir: ".nakhara"
+  name: "nakharax-testnet-node"
+  data_dir: ".nakharax"
   log_level: "info"
   mode: "full"  # validator, worker, full, light
-  chain_id: 86137  # nakhara Testnet (AXI testnet)
+  chain_id: 86137  # nakharax Testnet (AXI testnet)
   # Official chain IDs:
-  # - 86137: nakhara Testnet (active)
-  # - 86150: nakhara Mainnet (reserved, not launched)
+  # - 86137: nakharax Testnet (active)
+  # - 86150: nakharax Mainnet (reserved, not launched)
   sync_mode: "full"
 
 network:

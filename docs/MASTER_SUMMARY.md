@@ -1,4 +1,4 @@
-# Nakhara Protocol — Master Summary
+# Nakharax Protocol — Master Summary
 
 |             |                                                     |
 | ----------- | --------------------------------------------------- |
@@ -11,7 +11,7 @@
 
 ## 1. Introduction & Vision
 
-**Nakhara Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** focused on building **"Civilization OS"** — the operating system for the next civilization.
+**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** focused on building **"Civilization OS"** — the operating system for the next civilization.
 
 ### The Problem
 
@@ -35,7 +35,7 @@
 
 | Item                    | Details                                                                                |
 | ----------------------- | -------------------------------------------------------------------------------------- |
-| **Repository**          | [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith)      |
+| **Repository**          | [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith)      |
 | **Languages**           | Rust (80% — Core Logic) + Python (20% — DeAI Layer)                                    |
 | **Consensus**           | PoPC (Proof of Probabilistic Checking)                                                 |
 | **Verification**        | Statistical probabilistic checking instead of full re-execution — \(O(s)\) vs \(O(n)\) |
@@ -115,7 +115,7 @@ Dedicated AI models on Sentinel nodes for security verification:
 
 | Item           | Details                                                                                    |
 | -------------- | ------------------------------------------------------------------------------------------ |
-| **Repository** | [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith) (Monorepo) |
+| **Repository** | [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith) (Monorepo) |
 | **Stack**      | Next.js, Tailwind CSS, TypeScript, pnpm                                                    |
 
 ### Key Components
@@ -161,4 +161,4 @@ Dedicated AI models on Sentinel nodes for security verification:
 
 ---
 
-_This document is compiled from Nakhara Protocol source code and internal documentation._
+_This document is compiled from Nakharax Protocol source code and internal documentation._

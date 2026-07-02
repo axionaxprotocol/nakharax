@@ -6,7 +6,7 @@ use pyo3::types::PyModule;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
-// Import nakhara core modules
+// Import nakharax core modules
 use blockchain::{Block, Blockchain};
 use consensus::{Challenge, ConsensusEngine, Validator};
 use crypto::{VrfResult, ECVRF};
@@ -310,7 +310,7 @@ impl PyBlockchain {
 
 /// Python module definition (pyo3 0.24: use Bound<PyModule>, no Python param)
 #[pymodule]
-fn nakhara_python(m: &pyo3::Bound<'_, PyModule>) -> PyResult<()> {
+fn nakharax_python(m: &pyo3::Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<PyVRF>()?;
     m.add_class::<PyValidator>()?;
     m.add_class::<PyConsensusEngine>()?;

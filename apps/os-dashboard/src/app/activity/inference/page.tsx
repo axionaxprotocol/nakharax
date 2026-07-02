@@ -46,9 +46,9 @@ const MODELS = [
 ];
 
 const NODES = [
-  "Nakhara-Sentinel-Alpha",
-  "Nakhara-Sentinel-Beta",
-  "Nakhara-Worker-Gamma",
+  "Nakharax-Sentinel-Alpha",
+  "Nakharax-Sentinel-Beta",
+  "Nakharax-Worker-Gamma",
   "Node 1 (EU)",
   "Node 2 (ES)",
 ];

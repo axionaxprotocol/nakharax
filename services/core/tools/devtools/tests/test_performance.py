@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance and Build Tests for nakhara DevTools
+Performance and Build Tests for nakharax DevTools
 Tests performance characteristics and build processes
 """
 
@@ -77,19 +77,19 @@ class TestBuildProcesses(unittest.TestCase):
         self.assertEqual(len(syntax_errors), 0, f"Found syntax errors: {syntax_errors}")
         
     def test_core_project_buildable(self):
-        """Test that nakhara-core can be checked for build"""
-        core_path = self.workspace_root / "nakhara-core"
+        """Test that nakharax-core can be checked for build"""
+        core_path = self.workspace_root / "nakharax-core"
         if not core_path.exists():
-            self.skipTest("nakhara-core not found")
+            self.skipTest("nakharax-core not found")
             
         cargo_toml = core_path / "Cargo.toml"
         self.assertTrue(cargo_toml.exists(), "Cargo.toml should exist")
         
     def test_sdk_project_structure(self):
-        """Test that nakhara-sdk-ts has proper structure"""
-        sdk_path = self.workspace_root / "nakhara-sdk-ts"
+        """Test that nakharax-sdk-ts has proper structure"""
+        sdk_path = self.workspace_root / "nakharax-sdk-ts"
         if not sdk_path.exists():
-            self.skipTest("nakhara-sdk-ts not found")
+            self.skipTest("nakharax-sdk-ts not found")
             
         package_json = sdk_path / "package.json"
         self.assertTrue(package_json.exists(), "package.json should exist")
@@ -155,11 +155,11 @@ class TestCrossRepositoryIntegration(unittest.TestCase):
     def test_all_repos_have_readme(self):
         """Test that all repositories have README"""
         expected_repos = [
-            "nakhara-core",
-            "nakhara-web",
-            "nakhara-sdk-ts",
-            "nakhara-docs",
-            "nakhara-devtools"
+            "nakharax-core",
+            "nakharax-web",
+            "nakharax-sdk-ts",
+            "nakharax-docs",
+            "nakharax-devtools"
         ]
         
         repos_without_readme = []
@@ -179,11 +179,11 @@ class TestCrossRepositoryIntegration(unittest.TestCase):
     def test_all_repos_are_git_repositories(self):
         """Test that all repositories are git repositories"""
         expected_repos = [
-            "nakhara-core",
-            "nakhara-web",
-            "nakhara-sdk-ts",
-            "nakhara-docs",
-            "nakhara-devtools"
+            "nakharax-core",
+            "nakharax-web",
+            "nakharax-sdk-ts",
+            "nakharax-docs",
+            "nakharax-devtools"
         ]
         
         non_git_repos = []
@@ -221,7 +221,7 @@ def run_performance_tests():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("nakhara DevTools - Performance & Build Tests")
+    print("nakharax DevTools - Performance & Build Tests")
     print("=" * 70)
     print()
     

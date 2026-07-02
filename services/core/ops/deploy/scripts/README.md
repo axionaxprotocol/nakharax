@@ -1,21 +1,21 @@
-# nakhara Protocol - VPS Deployment Scripts
+# nakharax Protocol - VPS Deployment Scripts
 
-Complete set of automated deployment and management scripts for nakhara protocol infrastructure.
+Complete set of automated deployment and management scripts for nakharax protocol infrastructure.
 
 ## 📁 Scripts Overview
 
-### nakhara-node (Rust binary)
+### nakharax-node (Rust binary)
 
 | Script | Purpose |
 |--------|---------|
-| [nakhara-node-bootstrap.sh](nakhara-node-bootstrap.sh) | `build` → `setup` → `run` / `install-systemd` / `doctor` for roles `full`, `rpc`, `validator`, `bootnode` |
+| [nakharax-node-bootstrap.sh](nakharax-node-bootstrap.sh) | `build` → `setup` → `run` / `install-systemd` / `doctor` for roles `full`, `rpc`, `validator`, `bootnode` |
 | [export-bootstrap-multiaddr.sh](export-bootstrap-multiaddr.sh) | Export `/ip4/.../tcp/.../p2p/...` line from validator host for `PUBLIC_TESTNET_BOOTSTRAPS.txt` |
 | [README-NODE-RUNTIME.md](README-NODE-RUNTIME.md) | Quick start and environment variables |
 
 ### 🚀 Deployment Scripts
 
 #### 1. `deploy-all-services.sh` - Complete Service Deployment
-Automated deployment of all nakhara services with health checks and verification.
+Automated deployment of all nakharax services with health checks and verification.
 
 **Usage:**
 ```bash
@@ -121,7 +121,7 @@ Simple interface to manage specific services.
 **Available Services:**
 - `nginx` - Web server / reverse proxy
 - `certbot` - SSL certificate management
-- `rpc-node` - nakhara RPC endpoint
+- `rpc-node` - nakharax RPC endpoint
 - `explorer-backend` - Block explorer API
 - `faucet` - Testnet token distribution
 - `postgres` - Database
@@ -138,7 +138,7 @@ Simple interface to manage specific services.
 
 1. **Check system requirements:**
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 sudo ./scripts/deploy-all-services.sh --check-only
 ```
 
@@ -197,14 +197,14 @@ sudo ./scripts/deploy-all-services.sh --minimal
 
 **Update all services:**
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml pull
 ./scripts/manage-services.sh restart all
 ```
 
 **Backup database:**
 ```bash
-docker exec nakhara-postgres pg_dump -U explorer explorer > backup-$(date +%Y%m%d).sql
+docker exec nakharax-postgres pg_dump -U explorer explorer > backup-$(date +%Y%m%d).sql
 ```
 
 **Clean up Docker resources:**
@@ -243,7 +243,7 @@ nc -zv localhost 3000  # Grafana
 nc -zv localhost 3002  # Faucet
 
 # Check nginx configuration
-docker exec nakhara-nginx nginx -t
+docker exec nakharax-nginx nginx -t
 
 # Restart nginx
 ./scripts/manage-services.sh restart nginx
@@ -299,7 +299,7 @@ docker exec nakhara-nginx nginx -t
 
 ```bash
 # Check database status
-docker exec nakhara-postgres pg_isready -U explorer
+docker exec nakharax-postgres pg_isready -U explorer
 
 # View database logs
 ./scripts/manage-services.sh logs postgres
@@ -330,7 +330,7 @@ docker-compose -f docker-compose.vps.yml logs --no-log-prefix > /dev/null
 
 ### Log Locations
 
-- **Deployment logs:** `/opt/nakhara-deploy/deployment.log`
+- **Deployment logs:** `/opt/nakharax-deploy/deployment.log`
 - **Service logs:** Via Docker Compose
 - **System logs:** `/var/log/syslog`
 
@@ -338,7 +338,7 @@ docker-compose -f docker-compose.vps.yml logs --no-log-prefix > /dev/null
 
 ```bash
 # Real-time logs (all services)
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml logs -f
 
 # Specific service
@@ -377,7 +377,7 @@ GRAFANA_PASSWORD=your_grafana_password
 
 # Network
 VPS_IP=217.216.109.5
-DOMAIN=nakhara.io  # Optional
+DOMAIN=nakharaxx.io  # Optional
 ```
 
 ### Resource Requirements
@@ -410,7 +410,7 @@ DOMAIN=nakhara.io  # Optional
 
 1. **Check deployment logs:**
    ```bash
-   tail -f /opt/nakhara-deploy/deployment.log
+   tail -f /opt/nakharax-deploy/deployment.log
    ```
 
 2. **Run status check:**
@@ -449,7 +449,7 @@ DOMAIN=nakhara.io  # Optional
 These scripts are regularly updated. To get the latest version:
 
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 git pull origin main
 chmod +x scripts/*.sh
 ```
@@ -458,4 +458,4 @@ chmod +x scripts/*.sh
 
 **Last Updated:** November 12, 2025
 **Version:** 1.0.0
-**Maintainer:** nakhara Protocol Team
+**Maintainer:** nakharax Protocol Team

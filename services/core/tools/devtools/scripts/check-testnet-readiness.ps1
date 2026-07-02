@@ -1,10 +1,10 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Nakhara Testnet Readiness Checker - PowerShell Wrapper
+    Nakharax Testnet Readiness Checker - PowerShell Wrapper
 
 .DESCRIPTION
-    Comprehensive pre-launch validation for Nakhara Protocol testnet deployment.
+    Comprehensive pre-launch validation for Nakharax Protocol testnet deployment.
     Checks infrastructure, security, performance, documentation, and deployment readiness.
 
 .EXAMPLE
@@ -15,7 +15,7 @@
 
 .NOTES
     Version: 1.0.0
-    Author: Nakhara Protocol Team
+    Author: Nakharax Protocol Team
     Last Updated: November 15, 2025
 #>
 
@@ -51,7 +51,7 @@ function Write-ColorOutput {
 # Banner
 Write-Host ""
 Write-ColorOutput "======================================================================" "Cyan"
-Write-ColorOutput "  NAKHARA TESTNET READINESS CHECKER" "Cyan"
+Write-ColorOutput "  NAKHARAX TESTNET READINESS CHECKER" "Cyan"
 Write-ColorOutput "======================================================================" "Cyan"
 Write-Host ""
 

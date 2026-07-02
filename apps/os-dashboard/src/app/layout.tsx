@@ -5,23 +5,23 @@ import { Dock } from "@/components/dock";
 
 export const metadata: Metadata = {
   title: {
-    default: "Nakhara OS",
-    template: "%s · Nakhara OS",
+    default: "Nakharax OS",
+    template: "%s · Nakharax OS",
   },
   description:
-    "Self-hosted Nakhara node dashboard: peers, jobs, wallet, and chain activity.",
-  applicationName: "Nakhara OS",
+    "Self-hosted Nakharax node dashboard: peers, jobs, wallet, and chain activity.",
+  applicationName: "Nakharax OS",
   openGraph: {
-    title: "Nakhara OS",
+    title: "Nakharax OS",
     description:
-      "Obsidian command center for Nakhara validators and DeAI workloads.",
+      "Obsidian command center for Nakharax validators and DeAI workloads.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nakhara OS",
+    title: "Nakharax OS",
     description:
-      "Obsidian command center for Nakhara validators and DeAI workloads.",
+      "Obsidian command center for Nakharax validators and DeAI workloads.",
   },
 };
 

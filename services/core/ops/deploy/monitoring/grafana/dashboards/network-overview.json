@@ -57,7 +57,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "nakhara_block_number",
+                    "expr": "nakharax_block_number",
                     "legendFormat": "Block",
                     "refId": "A"
                 }
@@ -119,7 +119,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "nakhara_validators_active",
+                    "expr": "nakharax_validators_active",
                     "legendFormat": "Validators",
                     "refId": "A"
                 }
@@ -173,7 +173,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "nakhara_workers_active",
+                    "expr": "nakharax_workers_active",
                     "legendFormat": "Workers",
                     "refId": "A"
                 }
@@ -227,7 +227,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "rate(nakhara_transactions_total[5m])",
+                    "expr": "rate(nakharax_transactions_total[5m])",
                     "legendFormat": "TPS",
                     "refId": "A"
                 }
@@ -294,7 +294,7 @@
             "type": "timeseries",
             "targets": [
                 {
-                    "expr": "nakhara_block_number",
+                    "expr": "nakharax_block_number",
                     "legendFormat": "Block Height",
                     "refId": "A"
                 }
@@ -364,12 +364,12 @@
             "type": "timeseries",
             "targets": [
                 {
-                    "expr": "rate(nakhara_transactions_total[5m]) * 60",
+                    "expr": "rate(nakharax_transactions_total[5m]) * 60",
                     "legendFormat": "TX/min",
                     "refId": "A"
                 },
                 {
-                    "expr": "nakhara_pending_transactions",
+                    "expr": "nakharax_pending_transactions",
                     "legendFormat": "Pending TX",
                     "refId": "B"
                 }
@@ -436,17 +436,17 @@
             "type": "timeseries",
             "targets": [
                 {
-                    "expr": "nakhara_jobs_pending",
+                    "expr": "nakharax_jobs_pending",
                     "legendFormat": "Pending",
                     "refId": "A"
                 },
                 {
-                    "expr": "nakhara_jobs_completed",
+                    "expr": "nakharax_jobs_completed",
                     "legendFormat": "Completed",
                     "refId": "B"
                 },
                 {
-                    "expr": "nakhara_jobs_failed",
+                    "expr": "nakharax_jobs_failed",
                     "legendFormat": "Failed",
                     "refId": "C"
                 }
@@ -513,12 +513,12 @@
             "type": "timeseries",
             "targets": [
                 {
-                    "expr": "nakhara_workers_active",
+                    "expr": "nakharax_workers_active",
                     "legendFormat": "Active",
                     "refId": "A"
                 },
                 {
-                    "expr": "nakhara_workers_idle",
+                    "expr": "nakharax_workers_idle",
                     "legendFormat": "Idle",
                     "refId": "B"
                 }
@@ -529,7 +529,7 @@
     "schemaVersion": 38,
     "style": "dark",
     "tags": [
-        "nakhara",
+        "nakharax",
         "blockchain",
         "deai"
     ],
@@ -542,8 +542,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Nakhara Network Overview",
-    "uid": "nakhara-network-overview",
+    "title": "Nakharax Network Overview",
+    "uid": "nakharax-network-overview",
     "version": 1,
     "weekStart": ""
 }

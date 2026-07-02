@@ -1,6 +1,6 @@
-# nakhara Environments
+# nakharax Environments
 
-Environment-specific configurations and deployment files for nakhara Core.
+Environment-specific configurations and deployment files for nakharax Core.
 
 ## Directory structure
 
@@ -22,7 +22,7 @@ environments/
 ## Mainnet
 
 - **Chain ID:** 86150 (reserved, not launched)
-- Verify official network info at https://nakhara.io/networks
+- Verify official network info at https://nakharaxx.io/networks
 
 ## Configuration
 
@@ -48,4 +48,4 @@ For the **public testnet** stack, use `testnet/public/docker-compose.yaml` (see 
 
 ## Security
 
-See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@nakhara.io.
+See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@nakharaxx.io.

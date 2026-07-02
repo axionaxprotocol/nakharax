@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Load Testing Suite for Nakhara RPC Endpoints
+Load Testing Suite for Nakharax RPC Endpoints
 Tests throughput, latency, and reliability under various load conditions
 """
 
@@ -238,7 +238,7 @@ async def main():
     
     print(f"""
 ╔════════════════════════════════════════════════════════════════════╗
-║              NAKHARA RPC LOAD TESTING SUITE                        ║
+║              NAKHARAX RPC LOAD TESTING SUITE                        ║
 ╚════════════════════════════════════════════════════════════════════╝
 
 Target: {rpc_url}

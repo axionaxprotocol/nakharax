@@ -1,6 +1,6 @@
-# NAKHARA PROTOCOL — AI AGENT SKILLS & DOMAIN KNOWLEDGE
+# NAKHARAX PROTOCOL — AI AGENT SKILLS & DOMAIN KNOWLEDGE
 
-> This document defines the domain expertise an AI Agent must possess (or acquire from context) before contributing to the Nakhara Protocol.  
+> This document defines the domain expertise an AI Agent must possess (or acquire from context) before contributing to the Nakharax Protocol.  
 > Read `RULES.md` first, then use this file to calibrate the agent's reasoning scope.
 
 ---
@@ -9,7 +9,7 @@
 
 ### 1.1 PoPC — Proof of Probabilistic Checking (Core Consensus)
 
-Nakhara uses **PoPC** (not PoW, PoS, or BFT alone). The agent must understand:
+Nakharax uses **PoPC** (not PoW, PoS, or BFT alone). The agent must understand:
 
 - **Statistical sampling over full re-execution:** PoPC samples `s` chunks out of `n` output chunks (`O(s)` vs `O(n)`). Given fraud rate `f`, detection probability = `1 - (1-f)^s`.
 - **Challenge generation:** Deterministic via VRF seed → SHA3 hash chain → sample indices (deduplicated since v1.9.0).
@@ -39,7 +39,7 @@ Nakhara uses **PoPC** (not PoW, PoS, or BFT alone). The agent must understand:
 
 - **Transport:** TCP + Noise encryption + Yamux multiplexing
 - **Discovery:** mDNS (local) + Kademlia bootstrap (remote)
-- **Messaging:** GossipSub topics: `nakhara/blocks`, `nakhara/transactions`, `nakhara/confirmations`
+- **Messaging:** GossipSub topics: `nakharax/blocks`, `nakharax/transactions`, `nakharax/confirmations`
 - **Reputation:** Each peer has a score; failures decrease score; ban threshold enforced. See `core/core/network/src/reputation.rs`.
 - **Identity:** Ed25519 keypair persisted to file (loaded on restart). Ephemeral if no `--identity-key` provided.
 - **Message types:** `Block`, `Transaction`, `BlockConfirmation` (v1.9.0+)
@@ -127,7 +127,7 @@ Core methods: `eth_blockNumber`, `eth_getBlockByNumber`, `eth_getBlockByHash`, `
 
 Extended methods: `system_status`, `system_health`, `system_version`, `metrics_json`, `metrics_prometheus`, `events_subscribe` (WebSocket), `staking_*`, `governance_*`
 
-**Authentication:** `X-API-Key` header required when `NAKHARA_RPC_API_KEY` is set.
+**Authentication:** `X-API-Key` header required when `NAKHARAX_RPC_API_KEY` is set.
 
 ### 3.3 Config Files
 
@@ -142,7 +142,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 
 ---
 
-## 4. Web3 Frontend & DApp (`nakhara-monolith`)
+## 4. Web3 Frontend & DApp (`nakharax-monolith`)
 
 ### 4.1 Stack
 
@@ -150,7 +150,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 |---|---|
 | Main website | Next.js 14, App Router, TypeScript, Tailwind CSS |
 | Marketplace | Vite + React |
-| Shared SDK | `@nakhara/sdk` — RPC calls, wallet, ABI, types |
+| Shared SDK | `@nakharax/sdk` — RPC calls, wallet, ABI, types |
 | Shared UI | `packages/ui` — Design system components |
 | Package manager | pnpm workspaces |
 | Build system | TurboRepo |
@@ -161,7 +161,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 - **Server Components first** — fetch data on server, pass to client; add `"use client"` only for interactivity.
 - **SDK-first business logic** — never put RPC calls or contract ABI in app components.
 - **Cyberpunk/Futuristic dark theme** — Tailwind CSS, dark mode default, consistent with brand identity.
-- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakhara.io`, token symbol `NAK`, decimals `18`.
+- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakharaxx.io`, token symbol `NAK`, decimals `18`.
 
 ---
 
@@ -221,7 +221,7 @@ Pipeline: `cargo fmt --check` → `cargo clippy -- -D warnings` → `cargo test 
 
 ### Core Blockchain (Rust)
 ```
-Context: Working in `core/core/[module]/src/lib.rs` (Nakhara v1.9.0, Rust)
+Context: Working in `core/core/[module]/src/lib.rs` (Nakharax v1.9.0, Rust)
 Task: [describe feature]
 Constraints:
 - No unwrap()/expect() in production code
@@ -233,7 +233,7 @@ Constraints:
 
 ### DeAI Worker (Python)
 ```
-Context: Working in `core/deai/` (Nakhara DeAI v1.9.0, Python 3.10+)
+Context: Working in `core/deai/` (Nakharax DeAI v1.9.0, Python 3.10+)
 Task: [describe feature]
 Constraints:
 - All functions must have type hints
@@ -245,11 +245,11 @@ Constraints:
 
 ### Web Frontend (TypeScript / Next.js)
 ```
-Context: Working in `nakhara-monolith/apps/web/` (Next.js 14 App Router)
+Context: Working in `nakharax-monolith/apps/web/` (Next.js 14 App Router)
 Task: [describe UI component or page]
 Constraints:
 - TypeScript strict mode, no `any`
-- Use "@nakhara/sdk" for all blockchain calls
+- Use "@nakharax/sdk" for all blockchain calls
 - Server Component by default, "use client" only for interactivity
 - Tailwind CSS, dark mode, cyberpunk aesthetic
 - No relative cross-package imports
@@ -261,7 +261,7 @@ Context: Smart contract in `core/examples/contracts/` + SDK in `packages/sdk/`
 Task: [describe contract feature]
 Constraints:
 - EVM-compatible (Chain ID 86137/86150)
-- TypeScript wrapper in @nakhara/sdk before connecting to frontend
+- TypeScript wrapper in @nakharax/sdk before connecting to frontend
 - Mock implementation first, real contract second
 ```
 

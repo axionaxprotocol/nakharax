@@ -1,5 +1,5 @@
 [package]
-name = "nakhara-python"
+name = "nakharax-python"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -8,7 +8,7 @@ license.workspace = true
 repository.workspace = true
 
 [lib]
-name = "nakhara_python"
+name = "nakharax_python"
 crate-type = ["cdylib"]
 
 [dependencies]
@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha3 = "0.10"
 
-# nakhara core dependencies
+# nakharax core dependencies
 consensus = { path = "../../core/consensus" }
 blockchain = { path = "../../core/blockchain" }
 crypto = { path = "../../core/crypto" }

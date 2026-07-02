@@ -1,6 +1,6 @@
 # Security Audit Report
 
-**Project:** Nakhara Protocol  
+**Project:** Nakharax Protocol  
 **Audit Firm:** [Pending - To be contracted]  
 **Lead Auditor:** [To be assigned]  
 **Audit Date:** [Scheduled Q4 2025]  
@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-This document serves as a template for the comprehensive security audit to be conducted by a professional third-party security firm before Nakhara Protocol testnet launch.
+This document serves as a template for the comprehensive security audit to be conducted by a professional third-party security firm before Nakharax Protocol testnet launch.
 
 ### Audit Scope
 
@@ -246,7 +246,7 @@ Until professional audit is completed:
 
 **Project Contact:**  
 Email: [email protected]  
-GitHub: https://github.com/nakhara-io  
+GitHub: https://github.com/nakharax-io  
 Discord: [Invite link to be added]
 
 **Audit Coordinator:**  

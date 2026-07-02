@@ -1,12 +1,12 @@
-# Nakhara Core - Simple Test Script
-Write-Host "Nakhara Core - Quick Test" -ForegroundColor Cyan
+# Nakharax Core - Simple Test Script
+Write-Host "Nakharax Core - Quick Test" -ForegroundColor Cyan
 Write-Host "================================`n" -ForegroundColor Cyan
 
 # 1. Check Binary
-Write-Host "Step 1: Check Nakhara Core Binary" -ForegroundColor Green
-if (Test-Path ".\build\nakhara-core.exe") {
+Write-Host "Step 1: Check Nakharax Core Binary" -ForegroundColor Green
+if (Test-Path ".\build\nakharax-core.exe") {
     Write-Host "OK - Binary found" -ForegroundColor Green
-    .\build\nakhara-core.exe version
+    .\build\nakharax-core.exe version
 } else {
     Write-Host "ERROR - Binary not found!" -ForegroundColor Red
     exit 1
@@ -16,19 +16,19 @@ Write-Host ""
 
 # 2. Test Configuration
 Write-Host "Step 2: Test Configuration" -ForegroundColor Green
-.\build\nakhara-core.exe config init
+.\build\nakharax-core.exe config init
 Write-Host ""
 
 # 3. Test Key Generation
 Write-Host "Step 3: Test Key Management" -ForegroundColor Green
-.\build\nakhara-core.exe keys generate --type validator
+.\build\nakharax-core.exe keys generate --type validator
 Write-Host ""
 
 # 4. Test Status Commands
 Write-Host "Step 4: Test Status Commands" -ForegroundColor Green
-.\build\nakhara-core.exe validator status
+.\build\nakharax-core.exe validator status
 Write-Host ""
-.\build\nakhara-core.exe worker status
+.\build\nakharax-core.exe worker status
 Write-Host ""
 
 # 5. Check Docker
@@ -53,9 +53,9 @@ Write-Host "Testing complete!" -ForegroundColor Green
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Useful commands:" -ForegroundColor Cyan
-Write-Host "  .\build\nakhara-core.exe start --network testnet" -ForegroundColor White
-Write-Host "  .\build\nakhara-core.exe validator start" -ForegroundColor White
-Write-Host "  .\build\nakhara-core.exe --help" -ForegroundColor White
+Write-Host "  .\build\nakharax-core.exe start --network testnet" -ForegroundColor White
+Write-Host "  .\build\nakharax-core.exe validator start" -ForegroundColor White
+Write-Host "  .\build\nakharax-core.exe --help" -ForegroundColor White
 Write-Host ""
 Write-Host "Public testnet (Docker):" -ForegroundColor Cyan
 Write-Host "  See repo: ops\deploy\environments\testnet\public\" -ForegroundColor White

@@ -59,7 +59,7 @@ def main():
     html = re.sub(r"<t[dh][^>]*>", " | ", html, flags=re.IGNORECASE)
     html = re.sub(r"</t[dh]>", "", html, flags=re.IGNORECASE)
     # Point internal fragment links to external URL so fpdf2 does not require named destinations
-    html = re.sub(r' href="#([^"]*)"', r' href="https://github.com/nakhara-io/nakhara-core-universe#\1"', html, flags=re.IGNORECASE)
+    html = re.sub(r' href="#([^"]*)"', r' href="https://github.com/nakharax-io/nakharax-core-universe#\1"', html, flags=re.IGNORECASE)
     html = re.sub(r' id="[^"]*"', "", html, flags=re.IGNORECASE)
     # Wrap in a minimal body for consistent rendering
     html = f"<body style='font-family: Helvetica; font-size: 11pt;'>{html}</body>"

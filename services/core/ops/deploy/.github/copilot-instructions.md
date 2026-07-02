@@ -1,4 +1,4 @@
-# Nakhara Deploy - Copilot Instructions
+# Nakharax Deploy - Copilot Instructions
 # Target Model: Claude 4.5 Sonnet
 
 **Context:** Docker, Kubernetes, Terraform, Ansible.

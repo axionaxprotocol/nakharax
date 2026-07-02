@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Health / readiness check for Nakhara DeAI worker setup.
+Health / readiness check for Nakharax DeAI worker setup.
 Checks: RPC connectivity, config file, optional wallet.
 Usage: python scripts/health-check.py [--config path] [--skip-wallet]
 """
@@ -54,7 +54,7 @@ def main():
     print(f"OK: Config found: {config_path}")
 
     # RPC from env or config
-    rpc_url = os.environ.get("NAKHARA_RPC_URL", "").strip()
+    rpc_url = os.environ.get("NAKHARAX_RPC_URL", "").strip()
     if not rpc_url:
         try:
             import toml
@@ -68,12 +68,12 @@ def main():
         if not check_rpc(rpc_url):
             ok = False
     else:
-        print("  No RPC URL (set NAKHARA_RPC_URL or [network] bootnodes in config)")
+        print("  No RPC URL (set NAKHARAX_RPC_URL or [network] bootnodes in config)")
         ok = False
 
-    # Wallet (optional): NAKHARA_WALLET_PATH or default next to config
+    # Wallet (optional): NAKHARAX_WALLET_PATH or default next to config
     if not args.skip_wallet:
-        wallet_path = os.environ.get("NAKHARA_WALLET_PATH", "").strip()
+        wallet_path = os.environ.get("NAKHARAX_WALLET_PATH", "").strip()
         if wallet_path:
             wallet_path = Path(wallet_path)
             if not wallet_path.is_absolute():

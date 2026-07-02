@@ -10,14 +10,14 @@ services:
     build:
       context: ../../
       dockerfile: ops/deploy/Dockerfile.faucet
-    image: ghcr.io/nakhara-io/nakhara-faucet:latest
-    container_name: nakhara-testnet-faucet
+    image: ghcr.io/nakharax-io/nakharax-faucet:latest
+    container_name: nakharax-testnet-faucet
     restart: unless-stopped
     ports:
       - "3002:3002"
     environment:
       - NODE_ENV=production
-      - RPC_URL=https://rpc.nakhara.io
+      - RPC_URL=https://rpc.nakharaxx.io
       - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
       - FAUCET_AMOUNT=100
       - RATE_LIMIT_MINUTES=1440

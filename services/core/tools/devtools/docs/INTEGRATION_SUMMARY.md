@@ -1,7 +1,7 @@
-# 📊 NAKHARA REPOSITORY INTEGRATION SUMMARY
+# 📊 NAKHARAX REPOSITORY INTEGRATION SUMMARY
 
 **Generated:** 2025-11-07 23:51:56  
-**Base Path:** D:\Desktop\nakharaius01
+**Base Path:** D:\Desktop\nakharaxius01
 
 ---
 
@@ -28,13 +28,13 @@
 
 | Repository | Health Score | Status | Issues |
 |------------|--------------|--------|--------|
-| **nakhara-web** | 🟢 **85.7/100** | Healthy | None - Best performing! |
-| **nakhara-sdk-ts** | 🔴 **57.1/100** | Needs attention | Import warnings |
-| **nakhara-marketplace** | 🔴 **50.0/100** | Critical | UTF-8 BOM, missing npm packages |
-| **nakhara-core** | 🔴 **42.9/100** | Critical | Cargo.toml structure, missing files |
-| **nakhara-docs** | 🔴 **42.9/100** | Acceptable | Documentation only |
-| **nakhara-devtools** | 🔴 **42.9/100** | Acceptable | Tools repo |
-| **nakhara-deploy** | 🔴 **21.4/100** | Critical | UTF-8 BOM, missing files |
+| **nakharax-web** | 🟢 **85.7/100** | Healthy | None - Best performing! |
+| **nakharax-sdk-ts** | 🔴 **57.1/100** | Needs attention | Import warnings |
+| **nakharax-marketplace** | 🔴 **50.0/100** | Critical | UTF-8 BOM, missing npm packages |
+| **nakharax-core** | 🔴 **42.9/100** | Critical | Cargo.toml structure, missing files |
+| **nakharax-docs** | 🔴 **42.9/100** | Acceptable | Documentation only |
+| **nakharax-devtools** | 🔴 **42.9/100** | Acceptable | Tools repo |
+| **nakharax-deploy** | 🔴 **21.4/100** | Critical | UTF-8 BOM, missing files |
 
 ---
 
@@ -42,18 +42,18 @@
 
 ### 🔴 Critical Issues (3)
 
-#### 1. **nakhara-core** - Cargo.toml Structure
+#### 1. **nakharax-core** - Cargo.toml Structure
 - **Issue:** Missing [package] section in Cargo.toml
 - **Impact:** Cannot build as a standard Rust package
 - **Root Cause:** Configured as a workspace root
 - **Solution:** This is likely intentional - verify workspace configuration
 
-#### 2. **nakhara-marketplace** - UTF-8 BOM
+#### 2. **nakharax-marketplace** - UTF-8 BOM
 - **Issue:** Invalid JSON due to UTF-8 Byte Order Mark (BOM)
 - **Impact:** npm cannot parse package.json
 - **Solution:** Remove BOM from package.json file
 
-#### 3. **nakhara-deploy** - UTF-8 BOM
+#### 3. **nakharax-deploy** - UTF-8 BOM
 - **Issue:** Invalid JSON due to UTF-8 BOM
 - **Impact:** Configuration files cannot be parsed
 - **Solution:** Remove BOM from package.json file
@@ -61,18 +61,18 @@
 ### ⚠️ Warnings (6)
 
 #### 1. **Missing node_modules**
-- **Affected Repos:** nakhara-core, nakhara-sdk-ts, nakhara-marketplace
+- **Affected Repos:** nakharax-core, nakharax-sdk-ts, nakharax-marketplace
 - **Issue:** Dependencies defined but not installed
 - **Solution:** Run `npm install` in each repo
 
 #### 2. **Import Path Issues**
-- **Affected:** nakhara-sdk-ts (3 instances)
+- **Affected:** nakharax-sdk-ts (3 instances)
 - **Issue:** Potential relative import path problems
 - **Solution:** Verify import paths after restructuring
 
 #### 3. **Missing Files**
-- **nakhara-core:** Missing src/lib.rs, src/main.rs
-- **nakhara-deploy:** Missing docker-compose.yaml
+- **nakharax-core:** Missing src/lib.rs, src/main.rs
+- **nakharax-deploy:** Missing docker-compose.yaml
 - **Impact:** Expected structure mismatch
 - **Solution:** Verify if these files are actually needed
 
@@ -84,24 +84,24 @@
 
 ```mermaid
 graph LR
-    web[nakhara-web] -->|depends on| sdk[nakhara-sdk-ts]
-    marketplace[nakhara-marketplace] -->|depends on| sdk
-    docs[nakhara-docs] -->|references| core[nakhara-core]
+    web[nakharax-web] -->|depends on| sdk[nakharax-sdk-ts]
+    marketplace[nakharax-marketplace] -->|depends on| sdk
+    docs[nakharax-docs] -->|references| core[nakharax-core]
     docs -->|references| sdk
     docs -->|references| web
-    deploy[nakhara-deploy] -->|deploys| core
-    devtools[nakhara-devtools] -->|builds| core
+    deploy[nakharax-deploy] -->|deploys| core
+    devtools[nakharax-devtools] -->|builds| core
 ```
 
 ### Dependency Status
 
 | From Repo | To Repo | Link Status | Type |
 |-----------|---------|-------------|------|
-| nakhara-web | nakhara-sdk-ts | ✅ Valid | npm dependency |
-| nakhara-marketplace | nakhara-sdk-ts | ❌ **Broken** | npm dependency (@nakhara/sdk not published) |
-| nakhara-docs | nakhara-core | ✅ Valid | Documentation reference |
-| nakhara-deploy | nakhara-core | ✅ Valid | Deployment target |
-| nakhara-devtools | nakhara-core | ✅ Valid | Build tools |
+| nakharax-web | nakharax-sdk-ts | ✅ Valid | npm dependency |
+| nakharax-marketplace | nakharax-sdk-ts | ❌ **Broken** | npm dependency (@nakharax/sdk not published) |
+| nakharax-docs | nakharax-core | ✅ Valid | Documentation reference |
+| nakharax-deploy | nakharax-core | ✅ Valid | Deployment target |
+| nakharax-devtools | nakharax-core | ✅ Valid | Build tools |
 
 ---
 
@@ -110,12 +110,12 @@ graph LR
 ### 🔴 High Priority (Immediate Action Required)
 
 #### 1. Fix UTF-8 BOM Issues
-**Problem:** package.json files in nakhara-marketplace and nakhara-deploy have BOM
+**Problem:** package.json files in nakharax-marketplace and nakharax-deploy have BOM
 
 **Solution:**
 ```powershell
-# Run this in PowerShell from nakharaius01 directory
-$files = @('nakhara-marketplace\package.json', 'nakhara-deploy\package.json')
+# Run this in PowerShell from nakharaxius01 directory
+$files = @('nakharax-marketplace\package.json', 'nakharax-deploy\package.json')
 foreach ($file in $files) {
     $content = Get-Content $file -Raw
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
@@ -124,39 +124,39 @@ foreach ($file in $files) {
 ```
 
 #### 2. Fix npm Dependency Issue
-**Problem:** @nakhara/sdk is not published to npm registry
+**Problem:** @nakharax/sdk is not published to npm registry
 
 **Solutions (Choose one):**
 
 **Option A: Use local linking (Development)**
 ```bash
-# In nakhara-sdk-ts
+# In nakharax-sdk-ts
 npm link
 
-# In nakhara-marketplace
-npm link @nakhara/sdk
+# In nakharax-marketplace
+npm link @nakharax/sdk
 
-# In nakhara-web
-npm link @nakhara/sdk
+# In nakharax-web
+npm link @nakharax/sdk
 ```
 
 **Option B: Use workspace/monorepo (Recommended)**
 ```json
-// Create package.json in root (nakharaius01)
+// Create package.json in root (nakharaxius01)
 {
-  "name": "nakhara-monorepo",
+  "name": "nakharax-monorepo",
   "private": true,
   "workspaces": [
-    "nakhara-sdk-ts",
-    "nakhara-web",
-    "nakhara-marketplace"
+    "nakharax-sdk-ts",
+    "nakharax-web",
+    "nakharax-marketplace"
   ]
 }
 ```
 
 **Option C: Publish to private npm registry**
 - Set up Verdaccio or GitHub Packages
-- Publish @nakhara/sdk privately
+- Publish @nakharax/sdk privately
 - Update .npmrc in dependent repos
 
 ### 🟡 Medium Priority
@@ -164,19 +164,19 @@ npm link @nakhara/sdk
 #### 3. Install Dependencies
 ```bash
 # Run in each repository
-cd nakhara-sdk-ts && npm install
-cd ../nakhara-web && npm install
-cd ../nakhara-marketplace && npm install  # After fixing dependency
+cd nakharax-sdk-ts && npm install
+cd ../nakharax-web && npm install
+cd ../nakharax-marketplace && npm install  # After fixing dependency
 ```
 
 #### 4. Review Import Paths
-- Check nakhara-sdk-ts test files
+- Check nakharax-sdk-ts test files
 - Update relative import paths if needed
 - Consider using TypeScript path aliases
 
 #### 5. Verify Cargo.toml
 ```bash
-cd nakhara-core
+cd nakharax-core
 cat Cargo.toml  # Check for [workspace] section
 ```
 If it's a workspace, this is correct. If not, add [package] section.
@@ -188,8 +188,8 @@ If it's a workspace, this is correct. If not, add [package] section.
 - Keep repositories clean for better collaboration
 
 #### 7. Add Missing Files
-- Decide if src/lib.rs and src/main.rs are needed in nakhara-core
-- Add docker-compose.yaml to nakhara-deploy if required
+- Decide if src/lib.rs and src/main.rs are needed in nakharax-core
+- Add docker-compose.yaml to nakharax-deploy if required
 
 ---
 
@@ -199,20 +199,20 @@ If it's a workspace, this is correct. If not, add [package] section.
 
 ```bash
 # 1. Fix UTF-8 BOM (Windows PowerShell)
-cd D:\Desktop\nakharaius01
+cd D:\Desktop\nakharaxius01
 powershell -ExecutionPolicy Bypass -File auto_fix.ps1
 
 # 2. Set up npm workspace (Recommended approach)
 # Create package.json in root
 cat > package.json << EOF
 {
-  "name": "nakhara-monorepo",
+  "name": "nakharax-monorepo",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "nakhara-sdk-ts",
-    "nakhara-web",
-    "nakhara-marketplace"
+    "nakharax-sdk-ts",
+    "nakharax-web",
+    "nakharax-marketplace"
   ],
   "scripts": {
     "install-all": "npm install",
@@ -255,7 +255,7 @@ After applying fixes, verify:
 
 - [ ] All package.json files are valid JSON
 - [ ] npm install works in all Node.js repos
-- [ ] @nakhara/sdk dependency resolves
+- [ ] @nakharax/sdk dependency resolves
 - [ ] Import statements work correctly
 - [ ] Git repositories are clean
 - [ ] Build commands execute successfully
@@ -306,5 +306,5 @@ The following tools were generated to help maintain repository health:
 
 ---
 
-**Generated by:** nakhara Repository Integration Tester v1.0  
+**Generated by:** nakharax Repository Integration Tester v1.0  
 **Last Updated:** 2025-11-07 23:51:56

@@ -16,7 +16,7 @@ The Node module integrates three core components into a complete blockchain node
 
 ```
 ┌─────────────────────────────────────────────────┐
-│            nakharaNode                           │
+│            nakharaxNode                           │
 │                                                  │
 │  ┌──────────────┐  ┌──────────────┐  ┌────────┐│
 │  │ NetworkManager│  │   StateDB    │  │  RPC   ││
@@ -34,12 +34,12 @@ The Node module integrates three core components into a complete blockchain node
 
 ## Features
 
-### nakharaNode
+### nakharaxNode
 
-The `nakharaNode` struct provides a high-level API for running a complete node:
+The `nakharaxNode` struct provides a high-level API for running a complete node:
 
 ```rust
-pub struct nakharaNode {
+pub struct nakharaxNode {
     config: NodeConfig,
     network: Arc<RwLock<NetworkManager>>,
     state: Arc<StateDB>,
@@ -82,16 +82,16 @@ pub struct NodeStats {
 ### Basic Node Setup
 
 ```rust
-use node::{nakharaNode, NodeConfig};
+use node::{nakharaxNode, NodeConfig};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Create node with dev configuration
     let mut config = NodeConfig::dev();
-    config.state_path = "/tmp/nakhara-node".to_string();
+    config.state_path = "/tmp/nakharax-node".to_string();
     config.rpc_addr = "127.0.0.1:8545".parse()?;
 
-    let mut node = nakharaNode::new(config).await?;
+    let mut node = nakharaxNode::new(config).await?;
 
     // Start all components
     node.start().await?;
@@ -525,4 +525,4 @@ The Node module successfully integrates:
 
 **Contributors**: GitHub Copilot + User  
 **License**: MIT  
-**Repository**: https://github.com/nakhara-io/nakhara-core
+**Repository**: https://github.com/nakharax-io/nakharax-core

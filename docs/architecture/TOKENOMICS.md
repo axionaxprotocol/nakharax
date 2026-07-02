@@ -1,4 +1,4 @@
-# nakhara Tokenomics
+# nakharax Tokenomics
 
 > ⚠️ **IMPORTANT NOTICE**
 >
@@ -13,12 +13,12 @@
 
 ## Overview
 
-The NAK token is the native utility token of the nakhara protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
+The NAK token is the native utility token of the nakharax protocol, designed to align incentives across all network participants while maintaining long-term sustainability and decentralization.
 
 ## Mainnet Token Supply (Production Plan)
 
 - **Token Symbol**: NAK (Mainnet Token)
-- **Token Name**: Nakhara Token
+- **Token Name**: Nakharax Token
 - **Total Supply**: 1,000,000,000,000 NAK (1 Trillion)
 - **Supply Model**: Fixed cap (no inflation beyond initial distribution)
 - **Precision**: 18 decimals
@@ -123,7 +123,7 @@ Worker Reward_i = Job_Value × (1 - Protocol_Fee) × Quality_Score_i
 
 ```mermaid
 flowchart LR
-    Client[Client] -->|Pay NAK| Protocol[nakhara protocol]
+    Client[Client] -->|Pay NAK| Protocol[nakharax protocol]
     Protocol -->|PPC Pricing| ASR[ASR Router]
     ASR -->|Assign Job| Worker[Worker]
     Worker -->|Stake| Protocol

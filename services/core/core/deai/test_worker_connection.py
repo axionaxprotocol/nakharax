@@ -2,11 +2,11 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from rpc_client import NakharaRpcClient
+from rpc_client import NakharaxRpcClient
 
 def test_connection():
     print("Testing RPC Connection...")
-    client = NakharaRpcClient()
+    client = NakharaxRpcClient()
     
     try:
         block = client.get_block_number()

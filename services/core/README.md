@@ -1,12 +1,12 @@
 <div align="center">
 
-# Nakhara Core Universe
+# Nakharax Core Universe
 
 ### Blockchain Core Only — High-Performance Protocol · DeAI · DePIN
 
-> **Scope:** This repository is the **blockchain core** of Nakhara Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith)).
+> **Scope:** This repository is the **blockchain core** of Nakharax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith)).
 
-[![CI](https://github.com/nakhara-io/nakhara-monolith/services/core/actions/workflows/ci.yml/badge.svg)](https://github.com/nakhara-io/nakhara-monolith/services/core/actions)
+[![CI](https://github.com/nakharax-io/nakharax-monolith/services/core/actions/workflows/ci.yml/badge.svg)](https://github.com/nakharax-io/nakharax-monolith/services/core/actions)
 [![License](https://img.shields.io/badge/License-AGPLv3%2FMIT-orange?style=flat-square)](#license)
 [![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
@@ -14,7 +14,7 @@
 
 **PoPC Consensus** · **45,000+ TPS** · **<0.5s Finality** · **DeAI at the Edge**
 
-[Website](https://nakhara.io) · [Documentation](https://nakhara-io.github.io/nakhara-docs/) · [Web Universe](https://github.com/nakhara-io/nakhara-monolith)
+[Website](https://nakharaxx.io) · [Documentation](https://nakharax-io.github.io/nakharax-docs/) · [Web Universe](https://github.com/nakharax-io/nakharax-monolith)
 
 </div>
 
@@ -36,7 +36,7 @@
 
 ## About
 
-**Nakhara Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** building a "Civilization OS" — turning Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes on a high-performance blockchain.
+**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** building a "Civilization OS" — turning Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes on a high-performance blockchain.
 
 | Feature | Description |
 |---------|-------------|
@@ -51,15 +51,15 @@
 
 ## Quick Start — Join the Network
 
-> **End users** → [nakhara.io](https://nakhara.io)
+> **End users** → [nakharaxx.io](https://nakharaxx.io)
 >
 > **Node Operators** — follow the steps below to run your own node.
 
 ### 1. Clone & Update
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith
 python3 scripts/update-node.py
 ```
 
@@ -72,7 +72,7 @@ The script will:
 ### 2. Choose Node Type & Run
 
 ```bash
-python3 scripts/join-nakhara.py
+python3 scripts/join-nakharax.py
 ```
 
 | Option | Type | Config |
@@ -99,7 +99,7 @@ python3 hydra_manager.py
 Run on any machine that runs a node:
 
 ```bash
-cd ~/nakhara-monolith
+cd ~/nakharax-monolith
 git pull
 python3 scripts/update-node.py
 ```
@@ -116,8 +116,8 @@ python3 scripts/update-node.py --full-deps
 
 | Node | IP | Role | RPC |
 |------|-----|------|-----|
-| EU | 217.216.109.5 | Validator + RPC + **Nakhara OS** | `https://app.nakhara.io` |
-| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakhara.io` |
+| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharaxx.io` |
+| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharaxx.io` |
 
 EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) · AU: [ops/deploy/VPS_AU_ALL_IN_ONE.md](ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -130,10 +130,10 @@ EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakhara.io
+  https://rpc-au.nakharaxx.io
 ```
 
-**Run your own full node (anywhere on the Internet)** — no allowlist: build `nakhara-node`, use the same genesis as testnet, set `NAKHARA_BOOTSTRAP_NODES`, open P2P port **30303**. Step-by-step: [docs/RUN_PUBLIC_FULL_NODE.md](docs/RUN_PUBLIC_FULL_NODE.md) · bootstrap list template: [docs/PUBLIC_TESTNET_BOOTSTRAPS.txt](docs/PUBLIC_TESTNET_BOOTSTRAPS.txt)
+**Run your own full node (anywhere on the Internet)** — no allowlist: build `nakharax-node`, use the same genesis as testnet, set `NAKHARAX_BOOTSTRAP_NODES`, open P2P port **30303**. Step-by-step: [docs/RUN_PUBLIC_FULL_NODE.md](docs/RUN_PUBLIC_FULL_NODE.md) · bootstrap list template: [docs/PUBLIC_TESTNET_BOOTSTRAPS.txt](docs/PUBLIC_TESTNET_BOOTSTRAPS.txt)
 
 ---
 
@@ -157,10 +157,10 @@ cp core/deai/.env.example core/deai/.env
 
 | Variable | Description |
 |----------|-------------|
-| `NAKHARA_RPC_URL` | RPC URL (overrides bootnodes) |
-| `NAKHARA_BOOTNODES` | Comma-separated RPC URLs |
-| `NAKHARA_CHAIN_ID` | Chain ID |
-| `NAKHARA_WALLET_PATH` | Path to wallet file |
+| `NAKHARAX_RPC_URL` | RPC URL (overrides bootnodes) |
+| `NAKHARAX_BOOTNODES` | Comma-separated RPC URLs |
+| `NAKHARAX_CHAIN_ID` | Chain ID |
+| `NAKHARAX_WALLET_PATH` | Path to wallet file |
 | `WORKER_KEY_PASSWORD` | Wallet password (avoids prompt) |
 | `WORKER_PRIVATE_KEY` | Private key (instead of file) |
 
@@ -189,8 +189,8 @@ cp core/deai/.env.example core/deai/.env
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith
 python3 scripts/update-node.py --full-deps
 
 # Single Core (one Hailo)
@@ -203,10 +203,10 @@ python3 hydra_manager.py
 ### Run as systemd Service
 
 ```bash
-sudo cp scripts/nakhara-hydra.service.example /etc/systemd/system/nakhara-hydra.service
+sudo cp scripts/nakharax-hydra.service.example /etc/systemd/system/nakharax-hydra.service
 # Edit paths and user as needed
 sudo systemctl daemon-reload
-sudo systemctl enable --now nakhara-hydra
+sudo systemctl enable --now nakharax-hydra
 ```
 
 ### Known Limitations
@@ -222,7 +222,7 @@ sudo systemctl enable --now nakhara-hydra
 ## Repository Overview
 
 ```
-nakhara-monolith/services/core/
+nakharax-monolith/services/core/
 ├── core/                       # Blockchain Protocol Core
 │   ├── blockchain/             # Block and chain management
 │   ├── consensus/              # PoPC consensus mechanism
@@ -278,7 +278,7 @@ cargo bench
 ### Run Local Node
 
 ```bash
-cd core && cargo run --bin nakhara-node
+cd core && cargo run --bin nakharax-node
 ```
 
 ### Deploy with Docker
@@ -304,7 +304,7 @@ python3 -m pytest . -v --tb=short --ignore=tests
 
 | Script | Description |
 |--------|-------------|
-| `scripts/join-nakhara.py` | System check + node type selection + run |
+| `scripts/join-nakharax.py` | System check + node type selection + run |
 | `scripts/update-node.py` | Update node (git pull + deps + check) |
 | `scripts/update-node.py --full-deps` | Update + AI/ML deps (torch, numpy) |
 | `scripts/health-check.py` | Check RPC + config + wallet |
@@ -320,7 +320,7 @@ python3 -m pytest . -v --tb=short --ignore=tests
 |-------|----------|
 | `pip` missing / PEP 668 | `update-node.py` creates `.venv` automatically |
 | Config file not found | Run from repo root or use `--config` with full path |
-| No bootnodes | Set `[network] bootnodes` in TOML or `NAKHARA_RPC_URL` in `.env` |
+| No bootnodes | Set `[network] bootnodes` in TOML or `NAKHARAX_RPC_URL` in `.env` |
 | Connection refused | Check RPC URL + firewall; verify chain is running |
 | Wallet password | First run prompts; use strong password and store safely |
 | `python` not found | Use `python3` (Ubuntu 24.04+) |
@@ -342,10 +342,10 @@ python3 -m pytest . -v --tb=short --ignore=tests
 
 | Document | Description |
 |----------|-------------|
-| [**Nakhara Bible**](docs/NAKHARA_BIBLE.md) | Canonical doc index — Vision, Protocol, Run, Deploy, Launch |
+| [**Nakharax Bible**](docs/NAKHARAX_BIBLE.md) | Canonical doc index — Vision, Protocol, Run, Deploy, Launch |
 | [**Documentation Principles**](docs/DOCUMENTATION_PRINCIPLES.md) | Doc principles — canonical, formal, English only |
 | [**Genesis Public Testnet Plan**](docs/GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis testnet plan and VPS allocation (3 nodes) |
-| [**Add Network & Token (MetaMask)**](docs/ADD_NETWORK_AND_TOKEN.md) | Add Nakhara Testnet and NAK in MetaMask; Faucet |
+| [**Add Network & Token (MetaMask)**](docs/ADD_NETWORK_AND_TOKEN.md) | Add Nakharax Testnet and NAK in MetaMask; Faucet |
 | [**Connectivity Overview**](docs/CONNECTIVITY_OVERVIEW.md) | Local node, Validator, Frontend connectivity |
 | [**GitHub Readiness**](docs/GITHUB_READINESS.md) | Repository readiness for launch |
 | [**Master Summary**](../docs/MASTER_SUMMARY.md) | Vision, architecture, hardware, tokenomics, roadmap |
@@ -384,21 +384,21 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related Projects (separate repositories)
 
-- [**nakhara Web Universe**](https://github.com/nakhara-io/nakhara-monolith) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
+- [**nakharax Web Universe**](https://github.com/nakharax-io/nakharax-monolith) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
 
 ---
 
 ## Support
 
-[Website](https://nakhara.io) · [Docs](https://nakhara-io.github.io/nakhara-docs/) · [Issues](https://github.com/nakhara-io/nakhara-monolith/services/core/issues)
+[Website](https://nakharaxx.io) · [Docs](https://nakharax-io.github.io/nakharax-docs/) · [Issues](https://github.com/nakharax-io/nakharax-monolith/services/core/issues)
 
 ---
 
 <div align="center">
 
-**Built by the Nakhara Protocol Team**
+**Built by the Nakharax Protocol Team**
 
-*Part of the* [*Nakhara Universe*](https://github.com/nakhara-io)
+*Part of the* [*Nakharax Universe*](https://github.com/nakharax-io)
 
 </div>
 

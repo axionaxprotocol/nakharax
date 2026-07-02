@@ -7,7 +7,7 @@ echo "🔄 Updating RPC Node to use local image..."
 
 # Stop current RPC node
 echo "⏹️  Stopping current RPC node..."
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml stop rpc-node
 
 # Remove old container
@@ -24,8 +24,8 @@ sleep 10
 
 # Check status
 echo "✅ Checking RPC node status..."
-docker ps | grep nakhara-rpc
-docker logs nakhara-rpc --tail=20
+docker ps | grep nakharax-rpc
+docker logs nakharax-rpc --tail=20
 
 echo ""
 echo "✅ RPC Node update complete!"

@@ -998,13 +998,13 @@ class RepositoryQualityAnalyzer:
 def analyze_all_repositories(base_path: Path) -> Dict[str, QualityScore]:
     """Analyze all repositories"""
     repos = [
-        'nakhara-core',
-        'nakhara-sdk-ts',
-        'nakhara-web',
-        'nakhara-marketplace',
-        'nakhara-docs',
-        'nakhara-deploy',
-        'nakhara-devtools'
+        'nakharax-core',
+        'nakharax-sdk-ts',
+        'nakharax-web',
+        'nakharax-marketplace',
+        'nakharax-docs',
+        'nakharax-deploy',
+        'nakharax-devtools'
     ]
     
     results = {}
@@ -1078,7 +1078,7 @@ def save_json_report(results: Dict[str, QualityScore], output_path: Path):
 
 def main():
     print(f"\n{BOLD}{CYAN}{'='*70}{RESET}")
-    print(f"{BOLD}{CYAN}🔍 NAKHARA REPOSITORY QUALITY ANALYZER{RESET}")
+    print(f"{BOLD}{CYAN}🔍 NAKHARAX REPOSITORY QUALITY ANALYZER{RESET}")
     print(f"{BOLD}{CYAN}{'='*70}{RESET}")
     
     # Get base path

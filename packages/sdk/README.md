@@ -1,6 +1,6 @@
-# `@nakhara/sdk`
+# `@nakharax/sdk`
 
-Typed JSON-RPC client + shared chain primitives for Nakhara Protocol.
+Typed JSON-RPC client + shared chain primitives for Nakharax Protocol.
 
 Used by:
 - `apps/os-dashboard` (Node OS UI)
@@ -13,7 +13,7 @@ Already wired via pnpm workspaces — just add to a package's `package.json`:
 
 ```json
 "dependencies": {
-  "@nakhara/sdk": "workspace:*"
+  "@nakharax/sdk": "workspace:*"
 }
 ```
 
@@ -22,7 +22,7 @@ then `pnpm install`.
 ## Usage
 
 ```ts
-import { getNodeStatus, DEFAULT_NODES, rpcCall } from "@nakhara/sdk";
+import { getNodeStatus, DEFAULT_NODES, rpcCall } from "@nakharax/sdk";
 
 const statuses = await Promise.all(DEFAULT_NODES.map(getNodeStatus));
 

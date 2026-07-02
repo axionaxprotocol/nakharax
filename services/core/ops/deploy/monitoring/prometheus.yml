@@ -1,9 +1,9 @@
-# Prometheus Configuration for nakhara
+# Prometheus Configuration for nakharax
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: 'nakhara-testnet'
+    cluster: 'nakharax-testnet'
     environment: 'production'
 
 # Alertmanager configuration (optional)
@@ -25,8 +25,8 @@ scrape_configs:
         labels:
           service: 'prometheus'
 
-  # nakhara RPC Node
-  - job_name: 'nakhara-rpc'
+  # nakharax RPC Node
+  - job_name: 'nakharax-rpc'
     static_configs:
       - targets: ['rpc-node:8545']
         labels:

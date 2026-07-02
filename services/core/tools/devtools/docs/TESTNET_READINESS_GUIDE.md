@@ -1,10 +1,10 @@
-# Nakhara Testnet Readiness Checker
+# Nakharax Testnet Readiness Checker
 
-**Comprehensive pre-launch validation for Nakhara Protocol testnet deployment**
+**Comprehensive pre-launch validation for Nakharax Protocol testnet deployment**
 
 ## 📋 Overview
 
-The Testnet Readiness Checker is an automated validation tool that performs comprehensive checks across 7 critical categories to ensure the Nakhara Protocol is ready for testnet launch. It validates infrastructure, security, performance, documentation, deployment configurations, and monitoring setup.
+The Testnet Readiness Checker is an automated validation tool that performs comprehensive checks across 7 critical categories to ensure the Nakharax Protocol is ready for testnet launch. It validates infrastructure, security, performance, documentation, deployment configurations, and monitoring setup.
 
 ## 🎯 Purpose
 
@@ -33,7 +33,7 @@ chmod +x check-testnet-readiness.sh
 
 ### Python (Direct)
 ```bash
-python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
+python nakharax-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ## 📊 What It Checks
@@ -231,21 +231,21 @@ Category Scores:
 ### Pre-Commit Checks
 Run quick validation before committing:
 ```bash
-python nakhara-devtools/scripts/testing/testnet_readiness_checker.py --quick
+python nakharax-devtools/scripts/testing/testnet_readiness_checker.py --quick
 ```
 
 ### CI/CD Pipeline
 Integrate into GitHub Actions:
 ```yaml
 - name: Testnet Readiness Check
-  run: python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
+  run: python nakharax-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ### Weekly Reviews
 Schedule weekly readiness checks:
 ```bash
 # Cron job (Linux)
-0 9 * * 1 cd /path/to/nakharaius02 && ./check-testnet-readiness.sh
+0 9 * * 1 cd /path/to/nakharaxius02 && ./check-testnet-readiness.sh
 ```
 
 ## 📅 Testnet Launch Checklist
@@ -292,12 +292,12 @@ If critical issues are discovered post-launch:
 ## 📞 Support
 
 ### Documentation
-- Full docs: `nakhara-docs/TESTING_GUIDE.md`
-- Developer guide: `nakhara-docs/DEVELOPER_GUIDE.md`
-- Deployment: `nakhara-docs/VPS_VALIDATOR_SETUP.md`
+- Full docs: `nakharax-docs/TESTING_GUIDE.md`
+- Developer guide: `nakharax-docs/DEVELOPER_GUIDE.md`
+- Deployment: `nakharax-docs/VPS_VALIDATOR_SETUP.md`
 
 ### Contact
-- GitHub: https://github.com/nakhara-io
+- GitHub: https://github.com/nakharax-io
 - Discord: (coming soon)
 - Email: (coming soon)
 
@@ -312,7 +312,7 @@ python --version
 pip install -r requirements.txt
 
 # Verify script location
-ls nakhara-devtools/scripts/testing/testnet_readiness_checker.py
+ls nakharax-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ### False Positives

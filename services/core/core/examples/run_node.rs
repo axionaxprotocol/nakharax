@@ -1,12 +1,12 @@
-// Example: Run a local Nakhara node
-use nakhara_node::{Node, NodeConfig};
-use nakhara_rpc::RpcServer;
+// Example: Run a local Nakharax node
+use nakharax_node::{Node, NodeConfig};
+use nakharax_rpc::RpcServer;
 use std::sync::Arc;
 use tokio;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Starting Nakhara Node...\n");
+    println!("Starting Nakharax Node...\n");
 
     // Load configuration
     let config = NodeConfig {

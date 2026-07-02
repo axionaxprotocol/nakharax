@@ -1,12 +1,12 @@
-# Fix "Nakhara protocol" to "nakhara protocol" across all files
+# Fix "Nakharax protocol" to "nakharax protocol" across all files
 # Run this script from the workspace root
 
-Write-Host "🔍 Searching for 'Nakhara protocol' or 'Nakhara Protocol'..." -ForegroundColor Cyan
+Write-Host "🔍 Searching for 'Nakharax protocol' or 'Nakharax Protocol'..." -ForegroundColor Cyan
 
 $replacements = @(
-    @{ Old = "Nakhara Protocol"; New = "nakhara protocol" },
-    @{ Old = "Nakhara protocol"; New = "nakhara protocol" },
-    @{ Old = "Nakhara Protocol"; New = "nakhara protocol" }
+    @{ Old = "Nakharax Protocol"; New = "nakharax protocol" },
+    @{ Old = "Nakharax protocol"; New = "nakharax protocol" },
+    @{ Old = "Nakharax Protocol"; New = "nakharax protocol" }
 )
 
 $extensions = @("*.md", "*.ts", "*.tsx", "*.html", "*.json", "*.toml", "*.rs", "*.go", "*.py", "*.sh", "*.yml", "*.yaml")

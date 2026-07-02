@@ -1,9 +1,9 @@
-# Nakhara RPC API Reference
-# API Guide for Nakhara Protocol
+# Nakharax RPC API Reference
+# API Guide for Nakharax Protocol
 
 ## Overview
 
-Nakhara Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the blockchain
+Nakharax Protocol uses **JSON-RPC 2.0** as the primary API for connecting to the blockchain
 
 **URL:** `http://your-node:8545`
 

@@ -8,30 +8,30 @@ VPS3_IP="46.250.244.4"
 BOOTSTRAP_MULTIADDR="/ip4/${VPS3_IP}/tcp/30303/p2p/${VPS3_PEER_ID}"
 
 echo "[1/6] Making binary executable..."
-chmod +x /usr/local/bin/nakhara-node
+chmod +x /usr/local/bin/nakharax-node
 
 echo "[2/6] Generating libp2p identity key (32 random bytes)..."
-if [[ ! -f /var/lib/nakhara-node/identity.key ]]; then
-  openssl rand -out /var/lib/nakhara-node/identity.key 32
-  chmod 600 /var/lib/nakhara-node/identity.key
+if [[ ! -f /var/lib/nakharax-node/identity.key ]]; then
+  openssl rand -out /var/lib/nakharax-node/identity.key 32
+  chmod 600 /var/lib/nakharax-node/identity.key
 fi
 
-echo "[3/6] Writing /var/lib/nakhara-node/node.env..."
-cat > /var/lib/nakhara-node/node.env <<EOF
-# Nakhara full node config (bootstrap → VPS3)
-NAKHARA_ROLE=full
-NAKHARA_STATE_PATH=/var/lib/nakhara-node
-NAKHARA_GENESIS=/var/lib/nakhara-node/genesis.json
-NAKHARA_RPC=0.0.0.0:8545
-NAKHARA_P2P=0.0.0.0:30303
-NAKHARA_BOOTSTRAP_NODES=${BOOTSTRAP_MULTIADDR}
-NAKHARA_VALIDATOR_ADDRESS=
-NAKHARA_IDENTITY_KEY=/var/lib/nakhara-node/identity.key
-NAKHARA_NODE_BIN=/usr/local/bin/nakhara-node
+echo "[3/6] Writing /var/lib/nakharax-node/node.env..."
+cat > /var/lib/nakharax-node/node.env <<EOF
+# Nakharax full node config (bootstrap → VPS3)
+NAKHARAX_ROLE=full
+NAKHARAX_STATE_PATH=/var/lib/nakharax-node
+NAKHARAX_GENESIS=/var/lib/nakharax-node/genesis.json
+NAKHARAX_RPC=0.0.0.0:8545
+NAKHARAX_P2P=0.0.0.0:30303
+NAKHARAX_BOOTSTRAP_NODES=${BOOTSTRAP_MULTIADDR}
+NAKHARAX_VALIDATOR_ADDRESS=
+NAKHARAX_IDENTITY_KEY=/var/lib/nakharax-node/identity.key
+NAKHARAX_NODE_BIN=/usr/local/bin/nakharax-node
 EOF
 
-echo "[4/6] Writing /var/lib/nakhara-node/run.sh..."
-cat > /var/lib/nakhara-node/run.sh <<'EOF'
+echo "[4/6] Writing /var/lib/nakharax-node/run.sh..."
+cat > /var/lib/nakharax-node/run.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -39,37 +39,37 @@ set -a
 # shellcheck disable=SC1090
 source "$HERE/node.env"
 set +a
-if [[ -z "${NAKHARA_BOOTSTRAP_NODES:-}" ]]; then
-  echo "warning: NAKHARA_BOOTSTRAP_NODES is empty — public testnet peers may not connect" >&2
+if [[ -z "${NAKHARAX_BOOTSTRAP_NODES:-}" ]]; then
+  echo "warning: NAKHARAX_BOOTSTRAP_NODES is empty — public testnet peers may not connect" >&2
 fi
-export NAKHARA_BOOTSTRAP_NODES
+export NAKHARAX_BOOTSTRAP_NODES
 ARGS=(
-  --role "$NAKHARA_ROLE"
-  --chain "$NAKHARA_GENESIS"
-  --rpc "$NAKHARA_RPC"
-  --state-path "$NAKHARA_STATE_PATH"
-  --identity-key "$NAKHARA_IDENTITY_KEY"
+  --role "$NAKHARAX_ROLE"
+  --chain "$NAKHARAX_GENESIS"
+  --rpc "$NAKHARAX_RPC"
+  --state-path "$NAKHARAX_STATE_PATH"
+  --identity-key "$NAKHARAX_IDENTITY_KEY"
 )
-if [[ -n "${NAKHARA_P2P:-}" ]]; then
-  ARGS+=(--p2p "$NAKHARA_P2P")
+if [[ -n "${NAKHARAX_P2P:-}" ]]; then
+  ARGS+=(--p2p "$NAKHARAX_P2P")
 fi
-if [[ -n "${NAKHARA_VALIDATOR_ADDRESS:-}" ]]; then
-  ARGS+=(--validator-address "$NAKHARA_VALIDATOR_ADDRESS")
+if [[ -n "${NAKHARAX_VALIDATOR_ADDRESS:-}" ]]; then
+  ARGS+=(--validator-address "$NAKHARAX_VALIDATOR_ADDRESS")
 fi
-exec "$NAKHARA_NODE_BIN" "${ARGS[@]}"
+exec "$NAKHARAX_NODE_BIN" "${ARGS[@]}"
 EOF
-chmod +x /var/lib/nakhara-node/run.sh
+chmod +x /var/lib/nakharax-node/run.sh
 
-echo "[5/6] Writing /etc/systemd/system/nakhara-node.service..."
-cat > /etc/systemd/system/nakhara-node.service <<'EOF'
+echo "[5/6] Writing /etc/systemd/system/nakharax-node.service..."
+cat > /etc/systemd/system/nakharax-node.service <<'EOF'
 [Unit]
-Description=Nakhara nakhara-node (/var/lib/nakhara-node)
+Description=Nakharax nakharax-node (/var/lib/nakharax-node)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/var/lib/nakhara-node/run.sh
+ExecStart=/var/lib/nakharax-node/run.sh
 Restart=always
 RestartSec=10
 LimitNOFILE=65536
@@ -82,10 +82,10 @@ EOF
 
 echo "[6/6] Reloading systemd + enabling/starting service..."
 systemctl daemon-reload
-systemctl enable nakhara-node
-systemctl restart nakhara-node
+systemctl enable nakharax-node
+systemctl restart nakharax-node
 sleep 5
-systemctl status nakhara-node --no-pager | head -20
+systemctl status nakharax-node --no-pager | head -20
 echo
 echo "=== Recent logs ==="
-journalctl -u nakhara-node --no-pager -n 30
+journalctl -u nakharax-node --no-pager -n 30

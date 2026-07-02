@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # VPS Deployment Setup Script
-# This script sets up the nakhara protocol infrastructure on a VPS
+# This script sets up the nakharax protocol infrastructure on a VPS
 
 set -e
 
-echo "=== nakhara VPS Deployment Setup ==="
+echo "=== nakharax VPS Deployment Setup ==="
 
 # Colors
 RED='\033[0;31m'
@@ -47,7 +47,7 @@ else
 fi
 
 # Create deployment directory
-DEPLOY_DIR="/opt/nakhara"
+DEPLOY_DIR="/opt/nakharax"
 echo -e "${YELLOW}Creating deployment directory: ${DEPLOY_DIR}${NC}"
 mkdir -p ${DEPLOY_DIR}
 cd ${DEPLOY_DIR}
@@ -97,9 +97,9 @@ sleep 30
 echo -e "${YELLOW}Checking service health...${NC}"
 # Health checks use container_name from docker-compose.vps.yml
 health_checks=(
-    "nakhara-rpc:8545/health:RPC Node"
-    "nakhara-explorer-backend:3001/api/health:Explorer Backend"
-    "nakhara-faucet:3002/health:Faucet"
+    "nakharax-rpc:8545/health:RPC Node"
+    "nakharax-explorer-backend:3001/api/health:Explorer Backend"
+    "nakharax-faucet:3002/health:Faucet"
 )
 for entry in "${health_checks[@]}"; do
     IFS=':' read -r container port_path label <<< "$entry"

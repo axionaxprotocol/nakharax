@@ -1,16 +1,16 @@
 {
-  "name": "@nakhara/sdk",
+  "name": "@nakharax/sdk",
   "version": "1.8.0",
-  "description": "Official TypeScript SDK for nakhara protocol",
+  "description": "Official TypeScript SDK for nakharax protocol",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://nakhara.io",
+  "homepage": "https://nakharaxx.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nakhara-io/nakhara-sdk-ts.git"
+    "url": "https://github.com/nakharax-io/nakharax-sdk-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/nakhara-io/nakhara-sdk-ts/issues"
+    "url": "https://github.com/nakharax-io/nakharax-sdk-ts/issues"
   },
   "scripts": {
     "build": "tsc",
@@ -19,13 +19,13 @@
     "format": "prettier --write src/**/*.ts"
   },
   "keywords": [
-    "nakhara",
+    "nakharax",
     "blockchain",
     "deai",
     "sdk",
     "typescript"
   ],
-  "author": "nakhara protocol Team <team@nakhara.io>",
+  "author": "nakharax protocol Team <team@nakharaxx.io>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.0.0",

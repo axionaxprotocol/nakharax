@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Repository Connection Checker
-Analyzes dependencies and connections between nakhara repositories
+Analyzes dependencies and connections between nakharax repositories
 """
 
 import os
@@ -14,13 +14,13 @@ class RepoConnectionChecker:
     def __init__(self, base_path: str):
         self.base_path = Path(base_path)
         self.repos = [
-            'nakhara-core',
-            'nakhara-web',
-            'nakhara-sdk-ts',
-            'nakhara-marketplace',
-            'nakhara-docs',
-            'nakhara-deploy',
-            'nakhara-devtools'
+            'nakharax-core',
+            'nakharax-web',
+            'nakharax-sdk-ts',
+            'nakharax-marketplace',
+            'nakharax-docs',
+            'nakharax-deploy',
+            'nakharax-devtools'
         ]
         self.connections = {}
         self.package_dependencies = {}
@@ -85,13 +85,13 @@ class RepoConnectionChecker:
             if 'devDependencies' in data:
                 deps['devDependencies'] = data['devDependencies']
             
-            # Check for nakhara-related dependencies
-            nakhara_deps = []
+            # Check for nakharax-related dependencies
+            nakharax_deps = []
             for dep_type in ['dependencies', 'devDependencies']:
                 if dep_type in deps:
                     for dep_name in deps[dep_type].keys():
-                        if 'nakhara' in dep_name.lower():
-                            nakhara_deps.append({
+                        if 'nakharax' in dep_name.lower():
+                            nakharax_deps.append({
                                 'name': dep_name,
                                 'version': deps[dep_type][dep_name],
                                 'type': dep_type
@@ -99,7 +99,7 @@ class RepoConnectionChecker:
             
             return {
                 'has_package_json': True,
-                'nakhara_dependencies': nakhara_deps,
+                'nakharax_dependencies': nakharax_deps,
                 'total_dependencies': len(deps.get('dependencies', {})),
                 'total_dev_dependencies': len(deps.get('devDependencies', {}))
             }
@@ -118,8 +118,8 @@ class RepoConnectionChecker:
             with open(cargo_toml, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            # Simple parsing for nakhara-related dependencies
-            nakhara_deps = []
+            # Simple parsing for nakharax-related dependencies
+            nakharax_deps = []
             in_dependencies = False
             for line in content.split('\n'):
                 if line.strip().startswith('[dependencies'):
@@ -128,20 +128,20 @@ class RepoConnectionChecker:
                 if line.strip().startswith('['):
                     in_dependencies = False
                 
-                if in_dependencies and 'nakhara' in line.lower():
-                    nakhara_deps.append(line.strip())
+                if in_dependencies and 'nakharax' in line.lower():
+                    nakharax_deps.append(line.strip())
             
             return {
                 'has_cargo_toml': True,
-                'nakhara_dependencies': nakhara_deps
+                'nakharax_dependencies': nakharax_deps
             }
         except Exception as e:
             return {'has_cargo_toml': True, 'error': str(e)}
     
     def scan_imports(self, repo_name: str) -> Set[str]:
-        """Scan for nakhara-related imports in source files"""
+        """Scan for nakharax-related imports in source files"""
         repo_path = self.base_path / repo_name
-        nakhara_imports = set()
+        nakharax_imports = set()
         
         # File extensions to scan
         extensions = ['.ts', '.tsx', '.js', '.jsx', '.rs', '.py', '.go']
@@ -157,16 +157,16 @@ class RepoConnectionChecker:
                         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                             content = f.read()
                             
-                        # Look for import/require statements with nakhara
+                        # Look for import/require statements with nakharax
                         for line in content.split('\n'):
-                            if 'nakhara' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'use']):
-                                nakhara_imports.add(line.strip()[:100])  # Truncate long lines
+                            if 'nakharax' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'use']):
+                                nakharax_imports.add(line.strip()[:100])  # Truncate long lines
                     except:
                         continue
             except:
                 continue
         
-        return nakhara_imports
+        return nakharax_imports
     
     def analyze_readme(self, repo_name: str) -> Dict:
         """Analyze README.md for documentation and references"""
@@ -221,16 +221,16 @@ class RepoConnectionChecker:
         
         for repo_name, data in results.items():
             # From package.json dependencies
-            if 'package_info' in data and 'nakhara_dependencies' in data['package_info']:
-                for dep in data['package_info']['nakhara_dependencies']:
+            if 'package_info' in data and 'nakharax_dependencies' in data['package_info']:
+                for dep in data['package_info']['nakharax_dependencies']:
                     dep_name = dep['name']
                     for other_repo in self.repos:
                         if other_repo in dep_name:
                             connections.append((repo_name, other_repo, f"npm:{dep['type']}"))
             
             # From Cargo.toml dependencies
-            if 'cargo_info' in data and 'nakhara_dependencies' in data['cargo_info']:
-                for dep in data['cargo_info']['nakhara_dependencies']:
+            if 'cargo_info' in data and 'nakharax_dependencies' in data['cargo_info']:
+                for dep in data['cargo_info']['nakharax_dependencies']:
                     for other_repo in self.repos:
                         if other_repo in dep:
                             connections.append((repo_name, other_repo, "cargo:dependency"))
@@ -265,10 +265,10 @@ class RepoConnectionChecker:
         mermaid.append("    classDef toolStyle fill:#ffe66d,stroke:#cca300,stroke-width:2px")
         mermaid.append("    classDef sdkStyle fill:#a8e6cf,stroke:#64b58b,stroke-width:2px")
         mermaid.append("")
-        mermaid.append("    class nakhara_core coreStyle")
-        mermaid.append("    class nakhara_web,nakhara_marketplace webStyle")
-        mermaid.append("    class nakhara_devtools,nakhara_deploy toolStyle")
-        mermaid.append("    class nakhara_sdk_ts,nakhara_docs sdkStyle")
+        mermaid.append("    class nakharax_core coreStyle")
+        mermaid.append("    class nakharax_web,nakharax_marketplace webStyle")
+        mermaid.append("    class nakharax_devtools,nakharax_deploy toolStyle")
+        mermaid.append("    class nakharax_sdk_ts,nakharax_docs sdkStyle")
         mermaid.append("```")
         
         return "\n".join(mermaid)
@@ -277,7 +277,7 @@ class RepoConnectionChecker:
         """Generate comprehensive text report"""
         report = []
         report.append("=" * 80)
-        report.append("NAKHARA REPOSITORY CONNECTION ANALYSIS REPORT")
+        report.append("NAKHARAX REPOSITORY CONNECTION ANALYSIS REPORT")
         report.append("=" * 80)
         report.append("")
         
@@ -315,18 +315,18 @@ class RepoConnectionChecker:
                 report.append(f"\n📄 Package.json:")
                 report.append(f"   Dependencies: {pkg_info.get('total_dependencies', 0)}")
                 report.append(f"   Dev Dependencies: {pkg_info.get('total_dev_dependencies', 0)}")
-                if pkg_info.get('nakhara_dependencies'):
-                    report.append(f"   Nakhara Dependencies:")
-                    for dep in pkg_info['nakhara_dependencies']:
+                if pkg_info.get('nakharax_dependencies'):
+                    report.append(f"   Nakharax Dependencies:")
+                    for dep in pkg_info['nakharax_dependencies']:
                         report.append(f"     - {dep['name']} ({dep['version']}) [{dep['type']}]")
             
             # Cargo info
             cargo_info = data.get('cargo_info', {})
             if cargo_info.get('has_cargo_toml'):
                 report.append(f"\n📦 Cargo.toml:")
-                if cargo_info.get('nakhara_dependencies'):
-                    report.append(f"   Nakhara Dependencies:")
-                    for dep in cargo_info['nakhara_dependencies']:
+                if cargo_info.get('nakharax_dependencies'):
+                    report.append(f"   Nakharax Dependencies:")
+                    for dep in cargo_info['nakharax_dependencies']:
                         report.append(f"     - {dep}")
             
             # README info
@@ -369,7 +369,7 @@ def main():
     # Get the base path (current directory)
     base_path = os.getcwd()
     
-    print("🚀 nakhara Repository Connection Checker")
+    print("🚀 nakharax Repository Connection Checker")
     print("=" * 80)
     print(f"📁 Base Path: {base_path}\n")
     
@@ -394,14 +394,14 @@ def main():
     # Save Mermaid diagram
     mermaid_file = Path(base_path) / "REPOSITORY_FLOW.md"
     with open(mermaid_file, 'w', encoding='utf-8') as f:
-        f.write("# nakhara Repository Connection Flow\n\n")
+        f.write("# nakharax Repository Connection Flow\n\n")
         f.write("## Connection Diagram\n\n")
         f.write(mermaid_diagram)
         f.write("\n\n## Legend\n\n")
-        f.write("- 🔴 **Core**: nakhara-core (main protocol implementation)\n")
-        f.write("- 🔵 **Web**: nakhara-web, nakhara-marketplace (web interfaces)\n")
-        f.write("- 🟡 **Tools**: nakhara-devtools, nakhara-deploy (development & deployment)\n")
-        f.write("- 🟢 **SDK/Docs**: nakhara-sdk-ts, nakhara-docs (libraries & documentation)\n")
+        f.write("- 🔴 **Core**: nakharax-core (main protocol implementation)\n")
+        f.write("- 🔵 **Web**: nakharax-web, nakharax-marketplace (web interfaces)\n")
+        f.write("- 🟡 **Tools**: nakharax-devtools, nakharax-deploy (development & deployment)\n")
+        f.write("- 🟢 **SDK/Docs**: nakharax-sdk-ts, nakharax-docs (libraries & documentation)\n")
     
     print(f"✅ Mermaid diagram saved to: {mermaid_file}")
     

@@ -44,7 +44,7 @@ RPC_CONFIG="${CONFIG_DIR}/rpc-config.toml"
 COMPOSE_FILE="${DEPLOY_DIR}/docker-compose.vps.yml"
 
 echo "=============================================="
-echo "  Nakhara Validator VPS — Update Script"
+echo "  Nakharax Validator VPS — Update Script"
 echo "=============================================="
 echo "  DEPLOY_DIR = $DEPLOY_DIR"
 echo ""

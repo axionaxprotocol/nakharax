@@ -1,5 +1,5 @@
-import { DEFAULT_NODES, getBlockByNumber, getNodeStatus } from "@nakhara/sdk";
-import type { NodeEndpoint } from "@nakhara/sdk";
+import { DEFAULT_NODES, getBlockByNumber, getNodeStatus } from "@nakharax/sdk";
+import type { NodeEndpoint } from "@nakharax/sdk";
 
 export interface ChainActivityRow {
   id: string;
@@ -42,7 +42,7 @@ export async function fetchChainActivity(options?: {
       rows: [],
       rpcLabel: null,
       rpcUrl: null,
-      error: "No validator RPC reachable. Check network or defaults in @nakhara/sdk.",
+      error: "No validator RPC reachable. Check network or defaults in @nakharax/sdk.",
     };
   }
 

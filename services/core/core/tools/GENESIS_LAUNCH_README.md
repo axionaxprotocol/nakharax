@@ -1,5 +1,5 @@
 # Genesis Launch Toolkit
-**nakhara Testnet Genesis Ceremony Tools**
+**nakharax Testnet Genesis Ceremony Tools**
 
 ## 📁 Files in This Directory
 
@@ -89,7 +89,7 @@ python3 verify_genesis.py genesis.json 0xf058de4562...
 **Option A: Manual Distribution**
 ```bash
 # Copy to validators
-scp genesis.json root@VALIDATOR_IP:~/.nakhara/config/
+scp genesis.json root@VALIDATOR_IP:~/.nakharax/config/
 ```
 
 **Option B: Automated (if validators-active.json has IPs)**
@@ -101,10 +101,10 @@ bash launch_genesis.sh
 **Option C: Public Download**
 ```bash
 # Upload to web server
-scp genesis.json user@testnet.nakhara.io:/var/www/html/
+scp genesis.json user@testnet.nakharaxx.io:/var/www/html/
 
 # Validators download
-wget https://testnet.nakhara.io/genesis.json -O ~/.nakhara/config/genesis.json
+wget https://testnet.nakharaxx.io/genesis.json -O ~/.nakharax/config/genesis.json
 ```
 
 ### Step 5: Validators Verify Hash
@@ -113,7 +113,7 @@ All validators must verify genesis hash matches:
 
 ```bash
 # On validator VPS
-sha256sum ~/.nakhara/config/genesis.json
+sha256sum ~/.nakharax/config/genesis.json
 
 # Compare with announced hash
 # If hash matches, proceed to initialization
@@ -125,12 +125,12 @@ Each validator initializes their node:
 
 ```bash
 # On validator VPS
-nakhara-core init \
-  --config ~/.nakhara/config/config.yaml \
-  --genesis ~/.nakhara/config/genesis.json
+nakharax-core init \
+  --config ~/.nakharax/config/config.yaml \
+  --genesis ~/.nakharax/config/genesis.json
 
 # Setup systemd service
-sudo bash ~/nakhara-monolith/services/core/ops/deploy/scripts/setup_systemd.sh
+sudo bash ~/nakharax-monolith/services/core/ops/deploy/scripts/setup_systemd.sh
 
 # DO NOT start yet - wait for coordinated launch
 ```
@@ -154,7 +154,7 @@ bash launch_genesis.sh
 **Option B: Manual Launch**
 ```bash
 # T-5 min: Coordinator starts first
-sudo systemctl start nakhara-validator
+sudo systemctl start nakharax-validator
 
 # Get enode
 curl -X POST http://127.0.0.1:8545 \
@@ -165,7 +165,7 @@ curl -X POST http://127.0.0.1:8545 \
 # Share enode with validators
 
 # T-0: All validators start simultaneously
-ssh root@VALIDATOR_IP "sudo systemctl start nakhara-validator"
+ssh root@VALIDATOR_IP "sudo systemctl start nakharax-validator"
 ```
 
 ---
@@ -215,7 +215,7 @@ Expected: All validator addresses should appear
 
 ```bash
 # On any validator
-journalctl -u nakhara-validator -f
+journalctl -u nakharax-validator -f
 
 # Look for:
 # ✅ "Imported new chain segment" (blocks syncing)
@@ -244,9 +244,9 @@ Genesis launch is successful when:
 ### Genesis hash doesn't match
 ```bash
 # Delete and re-download genesis
-rm ~/.nakhara/config/genesis.json
-wget https://testnet.nakhara.io/genesis.json -O ~/.nakhara/config/genesis.json
-sha256sum ~/.nakhara/config/genesis.json
+rm ~/.nakharax/config/genesis.json
+wget https://testnet.nakharaxx.io/genesis.json -O ~/.nakharax/config/genesis.json
+sha256sum ~/.nakharax/config/genesis.json
 ```
 
 ### Validator can't connect to peers
@@ -264,10 +264,10 @@ curl -X POST http://127.0.0.1:8545 \
 ### No blocks being produced
 ```bash
 # Check validator status
-systemctl status nakhara-validator
+systemctl status nakharax-validator
 
 # Check logs for errors
-journalctl -u nakhara-validator -n 100 --no-pager
+journalctl -u nakharax-validator -n 100 --no-pager
 
 # Verify genesis time hasn't passed if configured
 python3 -c "from datetime import datetime; print(datetime.fromtimestamp(GENESIS_TIMESTAMP))"
@@ -277,14 +277,14 @@ python3 -c "from datetime import datetime; print(datetime.fromtimestamp(GENESIS_
 ```bash
 # Identify canonical chain (longest/most validators)
 # Stop minority validators
-ssh root@MINORITY_VALIDATOR "sudo systemctl stop nakhara-validator"
+ssh root@MINORITY_VALIDATOR "sudo systemctl stop nakharax-validator"
 
 # Delete blockchain data
-ssh root@MINORITY_VALIDATOR "rm -rf ~/.nakhara/data/blockchain"
+ssh root@MINORITY_VALIDATOR "rm -rf ~/.nakharax/data/blockchain"
 
 # Reinitialize and restart
-ssh root@MINORITY_VALIDATOR "nakhara-core init --genesis ~/.nakhara/config/genesis.json"
-ssh root@MINORITY_VALIDATOR "sudo systemctl start nakhara-validator"
+ssh root@MINORITY_VALIDATOR "nakharax-core init --genesis ~/.nakharax/config/genesis.json"
+ssh root@MINORITY_VALIDATOR "sudo systemctl start nakharax-validator"
 ```
 
 ---
@@ -293,8 +293,8 @@ ssh root@MINORITY_VALIDATOR "sudo systemctl start nakhara-validator"
 
 - **Discord**: #genesis-launch channel
 - **Telegram**: Validators Group (private)
-- **Email**: validators@nakhara.io
-- **Docs**: https://docs.nakhara.io/genesis-ceremony
+- **Email**: validators@nakharaxx.io
+- **Docs**: https://docs.nakharaxx.io/genesis-ceremony
 
 ---
 
@@ -326,7 +326,7 @@ After successful genesis launch:
 
 ## 🎉 Genesis Info (Fill after launch)
 
-**Network**: nakhara Testnet  
+**Network**: nakharax Testnet  
 **Chain ID**: 86137  
 **Genesis Time**: TBD  
 **Genesis Hash**: TBD  
@@ -334,9 +334,9 @@ After successful genesis launch:
 **Total Supply**: 1,000,250,000 NAK  
 
 **Bootstrap Node**: TBD  
-**RPC Endpoint**: https://testnet-rpc.nakhara.io  
-**Explorer**: https://testnet-explorer.nakhara.io  
-**Faucet**: https://testnet-faucet.nakhara.io  
+**RPC Endpoint**: https://testnet-rpc.nakharaxx.io  
+**Explorer**: https://testnet-explorer.nakharaxx.io  
+**Faucet**: https://testnet-faucet.nakharaxx.io  
 
 ---
 

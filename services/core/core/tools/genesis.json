@@ -1,7 +1,7 @@
 {
   "config": {
     "chainId": 86137,
-    "chainName": "Nakhara Testnet",
+    "chainName": "Nakharax Testnet",
     "homesteadBlock": 0,
     "eip150Block": 0,
     "eip155Block": 0,
@@ -12,7 +12,7 @@
     "istanbulBlock": 0,
     "berlinBlock": 0,
     "londonBlock": 0,
-    "nakhara": {
+    "nakharax": {
       "consensus": "popc",
       "blockTime": 2,
       "epochLength": 100,
@@ -28,17 +28,17 @@
   "nonce": "0x0",
   "timestamp": "0x69cc6000",
   "extraData": "0x6178696f6e6178697573202d2047656e6573697320426c6f636b202330202d204178696f6e617820436f726520556e697665727365",
-  "extraDataDecoded": "nakharaius - Genesis Block #0 - Nakhara Core Universe",
+  "extraDataDecoded": "nakharaxius - Genesis Block #0 - Nakharax Core Universe",
   "gasLimit": "0x1c9c380",
   "difficulty": "0x1",
   "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "coinbase": "0x0000000000000000000000000000000000000000",
   "creator": {
-    "alias": "nakharaius",
-    "note": "Genesis created by nakharaius \u2014 founder of Nakhara Protocol"
+    "alias": "nakharaxius",
+    "note": "Genesis created by nakharaxius \u2014 founder of Nakharax Protocol"
   },
   "tokenomics": {
-    "name": "Nakhara",
+    "name": "Nakharax",
     "symbol": "NAK",
     "decimals": 18,
     "totalSupply": "1000000000000",
@@ -47,7 +47,7 @@
       "creator": {
         "percent": 10,
         "amount": "100000000000",
-        "label": "Creator (nakharaius)"
+        "label": "Creator (nakharaxius)"
       },
       "ecosystem_rewards": {
         "percent": 30,
@@ -96,20 +96,20 @@
       "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
       "name": "Validator-EU-01",
       "region": "EU",
-      "ip": "rpc.nakhara.io",
+      "ip": "rpc.nakharaxx.io",
       "stake": "16666666668000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@rpc.nakhara.io:30303",
+      "enode": "enode://GENERATED@rpc.nakharaxx.io:30303",
       "active": true
     },
     {
       "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
       "name": "Validator-AU-01",
       "region": "AU",
-      "ip": "rpc-au.nakhara.io",
+      "ip": "rpc-au.nakharaxx.io",
       "stake": "16666666666000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@rpc-au.nakhara.io:30303",
+      "enode": "enode://GENERATED@rpc-au.nakharaxx.io:30303",
       "active": true
     },
     {
@@ -125,7 +125,7 @@
   ],
   "alloc": {
     "0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f": {
-      "label": "Creator (nakharaius)",
+      "label": "Creator (nakharaxius)",
       "percent": "10%",
       "balance": "100000000000000000000000000000"
     },

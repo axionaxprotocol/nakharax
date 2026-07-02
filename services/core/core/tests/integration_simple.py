@@ -10,10 +10,10 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'deai', 'lib'))
 
 try:
-    import nakhara_python as axx
+    import nakharax_python as axx
     RUST_AVAILABLE = True
 except ImportError as e:
-    print(f"⚠️  Warning: Could not import nakhara_python: {e}")
+    print(f"⚠️  Warning: Could not import nakharax_python: {e}")
     RUST_AVAILABLE = False
 
 
@@ -143,7 +143,7 @@ def test_performance_basic():
 
 def main():
     print("=" * 60)
-    print("🧪 nakhara Integration Tests (Simplified)")
+    print("🧪 nakharax Integration Tests (Simplified)")
     print("=" * 60)
     
     tests = [

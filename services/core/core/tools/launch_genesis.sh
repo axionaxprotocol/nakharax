@@ -89,7 +89,7 @@ distribute_genesis() {
         
         # Try to upload via SCP
         if scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
-            "$GENESIS_FILE" "root@$ip:~/.nakhara/config/genesis.json" 2>/dev/null; then
+            "$GENESIS_FILE" "root@$ip:~/.nakharax/config/genesis.json" 2>/dev/null; then
             log_success "Uploaded to $ip"
         else
             log_warning "Failed to upload to $ip (manual distribution required)"
@@ -116,13 +116,13 @@ check_validator_readiness() {
         fi
         
         # Check genesis file present
-        if ! ssh "root@$ip" "test -f ~/.nakhara/config/genesis.json" 2>/dev/null; then
+        if ! ssh "root@$ip" "test -f ~/.nakharax/config/genesis.json" 2>/dev/null; then
             log_error "$ip: genesis.json not found"
             continue
         fi
         
         # Verify genesis hash
-        REMOTE_HASH=$(ssh "root@$ip" "sha256sum ~/.nakhara/config/genesis.json | awk '{print \$1}'" 2>/dev/null)
+        REMOTE_HASH=$(ssh "root@$ip" "sha256sum ~/.nakharax/config/genesis.json | awk '{print \$1}'" 2>/dev/null)
         if [ "$REMOTE_HASH" != "$GENESIS_HASH" ]; then
             log_error "$ip: genesis hash mismatch!"
             log_error "  Expected: $GENESIS_HASH"
@@ -131,8 +131,8 @@ check_validator_readiness() {
         fi
         
         # Check node initialized
-        if ! ssh "root@$ip" "test -d ~/.nakhara/data" 2>/dev/null; then
-            log_warning "$ip: node not initialized (run: nakhara-core init)"
+        if ! ssh "root@$ip" "test -d ~/.nakharax/data" 2>/dev/null; then
+            log_warning "$ip: node not initialized (run: nakharax-core init)"
             continue
         fi
         
@@ -163,7 +163,7 @@ start_coordinator_node() {
     log_info "Starting coordinator node (bootstrap)..."
     
     # Start local validator
-    sudo systemctl start nakhara-validator
+    sudo systemctl start nakharax-validator
     
     # Wait for node to be ready
     sleep 10
@@ -177,7 +177,7 @@ start_coordinator_node() {
     
     if [ -z "$ENODE" ] || [ "$ENODE" == "null" ]; then
         log_error "Failed to get enode URL"
-        log_info "Check node logs: journalctl -u nakhara-validator -f"
+        log_info "Check node logs: journalctl -u nakharax-validator -f"
         return 1
     fi
     
@@ -207,7 +207,7 @@ launch_validators() {
         ssh "root@$ip" "echo '$BOOTSTRAP_NODE' > /tmp/bootstrap-node.txt" 2>/dev/null || true
         
         # Start validator service
-        if ssh "root@$ip" "sudo systemctl start nakhara-validator" 2>/dev/null; then
+        if ssh "root@$ip" "sudo systemctl start nakharax-validator" 2>/dev/null; then
             log_success "Started validator: $ip"
         else
             log_error "Failed to start validator: $ip"
@@ -263,7 +263,7 @@ monitor_network() {
 # Main launch sequence
 main() {
     echo "============================================================"
-    echo "  nakhara Genesis Launch Coordinator"
+    echo "  nakharax Genesis Launch Coordinator"
     echo "============================================================"
     echo ""
     
@@ -342,7 +342,7 @@ main() {
     echo "  LAUNCH COMPLETE"
     echo "============================================================"
     echo ""
-    log_success "nakhara Testnet genesis launch completed!"
+    log_success "nakharax Testnet genesis launch completed!"
     log_info "Genesis Hash: 0x$GENESIS_HASH"
     log_info "Bootstrap Node: $BOOTSTRAP_NODE"
     echo ""
@@ -353,7 +353,7 @@ main() {
     echo "  4. Activate faucet"
     echo "  5. Announce launch to community"
     echo ""
-    log_info "For support: validators@nakhara.io"
+    log_info "For support: validators@nakharaxx.io"
 }
 
 # Run main

@@ -53,9 +53,9 @@ python scripts/generate-faucet-key.py --env         # เขียน .env.fauce
 **ตัวอย่าง (validator คง identity):**
 
 ```bash
-./target/release/nakhara-node --role full --chain-id 86137 \
-  --rpc 0.0.0.0:8545 --state-path /var/lib/nakhara-node \
-  --identity-key /var/lib/nakhara-node/identity.key
+./target/release/nakharax-node --role full --chain-id 86137 \
+  --rpc 0.0.0.0:8545 --state-path /var/lib/nakharax-node \
+  --identity-key /var/lib/nakharax-node/identity.key
 ```
 
 ครั้งแรกที่รันจะสร้างไฟล์ `identity.key`; ครั้งถัดไปจะโหลดคีย์เดิม → PeerId เหมือนเดิม
@@ -64,11 +64,11 @@ python scripts/generate-faucet-key.py --env         # เขียน .env.fauce
 
 ## 4. สิ่งที่ไม่มีใน repo นี้ (และไม่จำเป็นสำหรับ core)
 
-- **คำสั่งแบบ “nakhara-core keys generate”:** ในเอกสารบางจุดอ้างอิงคำสั่งนี้ แต่ใน repo นี้ไม่มี binary ชื่อ `nakhara-core` ที่มี subcommand `keys generate`. การสร้างคีย์ทำผ่าน:
+- **คำสั่งแบบ “nakharax-core keys generate”:** ในเอกสารบางจุดอ้างอิงคำสั่งนี้ แต่ใน repo นี้ไม่มี binary ชื่อ `nakharax-core` ที่มี subcommand `keys generate`. การสร้างคีย์ทำผ่าน:
   - Worker: `WalletManager` (สร้างจาก Python)
   - Faucet: `generate-faucet-key.py`
   - Node: ส่ง `--identity-key` แล้วให้ node สร้างไฟล์ครั้งแรก
-- **Wallet UI / dApp:** อยู่ repo อื่น (เช่น nakhara-monolith)
+- **Wallet UI / dApp:** อยู่ repo อื่น (เช่น nakharax-monolith)
 
 ---
 

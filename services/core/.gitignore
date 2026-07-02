@@ -37,7 +37,7 @@ Thumbs.db
 logs/
 
 # Built node package (optional; run scripts/make-node-package.py to create)
-nakhara-node-package.zip
+nakharax-node-package.zip
 
 # Local node state and test artifacts
 .local-node-state/

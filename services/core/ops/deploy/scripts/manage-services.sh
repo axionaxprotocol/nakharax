@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# nakhara Protocol - Quick Service Manager
+# nakharax Protocol - Quick Service Manager
 # =============================================================================
 # Simple interface to manage individual services
 # Usage: ./manage-services.sh [start|stop|restart|logs|status] [service-name|all]

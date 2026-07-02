@@ -11,7 +11,7 @@ fn benchmark_keygen(c: &mut Criterion) {
 
 fn benchmark_sign(c: &mut Criterion) {
     let signing_key = signature::generate_keypair();
-    let message = b"Hello, Nakhara!";
+    let message = b"Hello, Nakharax!";
 
     c.bench_function("ed25519_sign", |b| {
         b.iter(|| {
@@ -23,7 +23,7 @@ fn benchmark_sign(c: &mut Criterion) {
 fn benchmark_verify(c: &mut Criterion) {
     let signing_key = signature::generate_keypair();
     let verifying_key = signing_key.verifying_key();
-    let message = b"Hello, Nakhara!";
+    let message = b"Hello, Nakharax!";
     let sig = signature::sign(&signing_key, message);
 
     c.bench_function("ed25519_verify", |b| {

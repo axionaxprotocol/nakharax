@@ -1,8 +1,8 @@
-# Nakhara Core API Reference
+# Nakharax Core API Reference
 
 ## Overview
 
-Nakhara Core provides a modular blockchain infrastructure with Proof of Probabilistic Checking (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
+Nakharax Core provides a modular blockchain infrastructure with Proof of Probabilistic Checking (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
 
 ---
 
@@ -29,7 +29,7 @@ pub struct ConsensusConfig {
 **Example:**
 
 ```rust
-use nakhara_consensus::ConsensusConfig;
+use nakharax_consensus::ConsensusConfig;
 
 let config = ConsensusConfig {
     sample_size: 1000,
@@ -64,7 +64,7 @@ impl Blockchain {
 **Example:**
 
 ```rust
-use nakhara_blockchain::Blockchain;
+use nakharax_blockchain::Blockchain;
 
 let mut chain = Blockchain::new();
 let block = Block::new(/* ... */);
@@ -89,9 +89,9 @@ pub fn sign_message(
 **Example:**
 
 ```rust
-use nakhara_crypto::sign_message;
+use nakharax_crypto::sign_message;
 
-let signature = sign_message(&private_key, b"Hello Nakhara")?;
+let signature = sign_message(&private_key, b"Hello Nakharax")?;
 ```
 
 #### `verify_signature`
@@ -130,7 +130,7 @@ impl P2PNetwork {
 **Example:**
 
 ```rust
-use nakhara_network::{P2PNetwork, NetworkConfig};
+use nakharax_network::{P2PNetwork, NetworkConfig};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -270,14 +270,14 @@ def select_workers(
 
 ## TypeScript SDK API
 
-### NakharaProvider
+### NakharaxProvider
 
-Main provider for interacting with Nakhara blockchain.
+Main provider for interacting with Nakharax blockchain.
 
 ```typescript
-import { NakharaProvider } from '@nakhara/sdk';
+import { NakharaxProvider } from '@nakharax/sdk';
 
-const provider = new NakharaProvider('http://localhost:8545');
+const provider = new NakharaxProvider('http://localhost:8545');
 ```
 
 #### Methods
@@ -346,7 +346,7 @@ await tx.wait();
 Wallet management.
 
 ```typescript
-import { Wallet } from '@nakhara/sdk';
+import { Wallet } from '@nakharax/sdk';
 
 const wallet = new Wallet(privateKey, provider);
 ```
@@ -425,7 +425,7 @@ asr:
 
 network:
   chain_id: 86137
-  network_name: "Nakhara Testnet"
+  network_name: "Nakharax Testnet"
   block_time_seconds: 5
   max_peers: 50
 ```
@@ -433,7 +433,7 @@ network:
 **Load config:**
 
 ```rust
-use nakhara_config::ProtocolConfig;
+use nakharax_config::ProtocolConfig;
 
 let config = ProtocolConfig::from_yaml("config.yaml")?;
 ```
@@ -445,7 +445,7 @@ let config = ProtocolConfig::from_yaml("config.yaml")?;
 ### Common Error Types
 
 ```rust
-pub enum NakharaError {
+pub enum NakharaxError {
     BlockchainError(String),
     ConsensusError(String),
     NetworkError(String),
@@ -457,12 +457,12 @@ pub enum NakharaError {
 **Example:**
 
 ```rust
-use nakhara_core::NakharaError;
+use nakharax_core::NakharaxError;
 
-fn process_block(block: Block) -> Result<(), NakharaError> {
+fn process_block(block: Block) -> Result<(), NakharaxError> {
     // Validate block
     if !block.is_valid() {
-        return Err(NakharaError::BlockchainError(
+        return Err(NakharaxError::BlockchainError(
             "Invalid block".to_string()
         ));
     }
@@ -502,4 +502,4 @@ provider.on('block', (blockNumber) => {
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Quick Start Guide](../QUICK_START.md)
 - [Examples](../examples/)
-- [GitHub Repository](https://github.com/nakhara-io/nakhara-core)
+- [GitHub Repository](https://github.com/nakharax-io/nakharax-core)

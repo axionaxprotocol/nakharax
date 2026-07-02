@@ -14,19 +14,19 @@ cooperation with the community in the case of network server software.
 [Full AGPLv3 text: https://www.gnu.org/licenses/agpl-3.0.txt]
 
 ===================================================================
-ADDITIONAL TERMS FOR NAKHARA NETWORK (per AGPLv3 Section 7)
+ADDITIONAL TERMS FOR NAKHARAX NETWORK (per AGPLv3 Section 7)
 ===================================================================
 
-Copyright (c) 2025 Nakhara Protocol
+Copyright (c) 2025 Nakharax Protocol
 
 These additional terms supplement the GNU Affero General Public License v3.0:
 
 1. TRADEMARK RESTRICTION
-   The names "Nakhara", "Nakhara Protocol", "NAK Token", the Nakhara logo,
-   and all related trademarks are the exclusive property of Nakhara Foundation.
+   The names "Nakharax", "Nakharax Protocol", "NAK Token", the Nakharax logo,
+   and all related trademarks are the exclusive property of Nakharax Foundation.
    
    Use of these marks requires explicit written permission from:
-   legal@nakhara.io
+   legal@nakharaxx.io
    
    This restriction does NOT apply to:
    - Factual references in documentation
@@ -38,21 +38,21 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    ✅ Development networks (chain ID 1337, 31337, etc.)
    ✅ Private testing networks
    ✅ Academic research networks
-   ✅ Contributing to the official Nakhara project
+   ✅ Contributing to the official Nakharax project
    
    ❌ PROHIBITED without explicit authorization:
-   - Launching public mainnets with economic tokens claiming to be "Nakhara"
-   - Operating networks that could confuse users with the official Nakhara Network
-   - Creating token systems branded as "NAK" or "Nakhara Token"
+   - Launching public mainnets with economic tokens claiming to be "Nakharax"
+   - Operating networks that could confuse users with the official Nakharax Network
+   - Creating token systems branded as "NAK" or "Nakharax Token"
    
-   Authorization requests: mainnet-auth@nakhara.io
+   Authorization requests: mainnet-auth@nakharaxx.io
 
 3. CHAIN IDENTITY REQUIREMENT
    Any modified version or fork MUST:
-   - Use a different chain ID than official Nakhara networks
+   - Use a different chain ID than official Nakharax networks
    - Use a different genesis hash
    - Clearly identify itself as a derivative work
-   - NOT misrepresent itself as the official Nakhara Network
+   - NOT misrepresent itself as the official Nakharax Network
    
    Official chain IDs:
    - Testnet: 86137 (NAK testnet)
@@ -62,7 +62,7 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    Forks and derivatives must implement clear differentiation:
    - Different network name in all user-facing interfaces
    - Different token symbol if implementing a token
-   - Warning to users that it is NOT the official Nakhara Network
+   - Warning to users that it is NOT the official Nakharax Network
    
 5. ENFORCEMENT
    Violation of these additional terms may result in:
@@ -71,19 +71,19 @@ These additional terms supplement the GNU Affero General Public License v3.0:
    - DMCA takedown requests
    - Community warnings and blacklisting
    
-   Report violations: security@nakhara.io
+   Report violations: security@nakharaxx.io
 
 6. OFFICIAL NETWORK REGISTRY
-   Verify authentic Nakhara networks at:
-   https://nakhara.io/networks
+   Verify authentic Nakharax networks at:
+   https://nakharaxx.io/networks
    
    Any network not listed there is NOT officially endorsed.
 
 ===================================================================
 
 For questions about these terms:
-- Legal inquiries: legal@nakhara.io
-- Technical questions: dev@nakhara.io
-- Security reports: security@nakhara.io
+- Legal inquiries: legal@nakharaxx.io
+- Technical questions: dev@nakharaxx.io
+- Security reports: security@nakharaxx.io
 
 Last updated: November 1, 2025

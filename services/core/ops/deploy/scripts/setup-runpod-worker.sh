@@ -1,14 +1,14 @@
 #!/bin/bash
 
 ###############################################################################
-# nakhara DeAI Worker Node - RunPod Quick Setup Script
+# nakharax DeAI Worker Node - RunPod Quick Setup Script
 ###############################################################################
 # 
 # For setting up a Worker Node on RunPod.io
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU (A40, A100, RTX 4090, etc.)
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+#   wget https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 #   chmod +x setup-runpod-worker.sh
 #   ./setup-runpod-worker.sh
 #
@@ -43,7 +43,7 @@ log_error() {
 # Header
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║       nakhara DeAI Worker Node Setup (RunPod)            ║"
+echo "║       nakharax DeAI Worker Node Setup (RunPod)            ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 
@@ -133,20 +133,20 @@ if ! grep -q "cargo/env" "$USER_HOME/.bashrc"; then
 fi
 source $HOME/.cargo/env
 
-# Step 8: Clone nakhara repository
-log_info "Step 8: Cloning nakhara repository..."
-if [ ! -d "$USER_HOME/nakhara-monolith" ]; then
-    git clone https://github.com/nakhara-io/nakhara-monolith.git "$USER_HOME/nakhara-monolith"
+# Step 8: Clone nakharax repository
+log_info "Step 8: Cloning nakharax repository..."
+if [ ! -d "$USER_HOME/nakharax-monolith" ]; then
+    git clone https://github.com/nakharax-io/nakharax-monolith.git "$USER_HOME/nakharax-monolith"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."
-    cd "$USER_HOME/nakhara-monolith"
+    cd "$USER_HOME/nakharax-monolith"
     git pull
 fi
 
 # Step 9: Build Rust core
-log_info "Step 9: Building nakhara core (this may take 5-10 minutes)..."
-cd "$USER_HOME/nakhara-monolith/services/core/core"
+log_info "Step 9: Building nakharax core (this may take 5-10 minutes)..."
+cd "$USER_HOME/nakharax-monolith/services/core/core"
 source $HOME/.cargo/env
 cargo build --release
 log_success "Core built successfully"
@@ -154,7 +154,7 @@ log_success "Core built successfully"
 # Step 10: Install DeAI dependencies
 log_info "Step 10: Installing DeAI dependencies..."
 pip install --upgrade pip
-cd "$USER_HOME/nakhara-monolith/services/core/core/deai"
+cd "$USER_HOME/nakharax-monolith/services/core/core/deai"
 pip install -r requirements.txt
 log_success "DeAI dependencies installed"
 
@@ -165,13 +165,13 @@ log_success "ML libraries installed"
 
 # Step 12: Create worker directories in persistent storage
 log_info "Step 12: Creating worker directories..."
-mkdir -p /workspace/nakhara-worker/{config,keys,data,models,logs}
+mkdir -p /workspace/nakharax-worker/{config,keys,data,models,logs}
 mkdir -p /workspace/cache
 log_success "Worker directories created in /workspace"
 
 # Step 13: Create worker config template
 log_info "Step 13: Creating worker config template..."
-cat > /workspace/nakhara-worker/config/worker.toml << 'EOF'
+cat > /workspace/nakharax-worker/config/worker.toml << 'EOF'
 [worker]
 # ⚠️ Edit your address here!
 address = "0xYOUR_WALLET_ADDRESS_HERE"
@@ -189,8 +189,8 @@ cpu_threads = 32
 ram = 64
 
 [network]
-# nakhara Testnet RPC
-rpc_url = "https://rpc.nakhara.io"
+# nakharax Testnet RPC
+rpc_url = "https://rpc.nakharaxx.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -200,9 +200,9 @@ target_uptime = 0.99
 max_batch_size = 512
 
 [storage]
-data_dir = "/workspace/nakhara-worker/data"
-models_dir = "/workspace/nakhara-worker/models"
-logs_dir = "/workspace/nakhara-worker/logs"
+data_dir = "/workspace/nakharax-worker/data"
+models_dir = "/workspace/nakharax-worker/models"
+logs_dir = "/workspace/nakharax-worker/logs"
 cache_dir = "/workspace/cache"
 
 [optimization]
@@ -216,19 +216,19 @@ GPU_NAME=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n 1)
 GPU_MEMORY_MB=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -n 1)
 GPU_MEMORY_GB=$(( (GPU_MEMORY_MB + 512) / 1024 ))
 
-sed -i "s/gpu_model = \"AUTO_DETECT\"/gpu_model = \"$GPU_NAME\"/" /workspace/nakhara-worker/config/worker.toml
-sed -i "s/vram = 0/vram = $GPU_MEMORY_GB/" /workspace/nakhara-worker/config/worker.toml
+sed -i "s/gpu_model = \"AUTO_DETECT\"/gpu_model = \"$GPU_NAME\"/" /workspace/nakharax-worker/config/worker.toml
+sed -i "s/vram = 0/vram = $GPU_MEMORY_GB/" /workspace/nakharax-worker/config/worker.toml
 
-log_success "Worker config created at /workspace/nakhara-worker/config/worker.toml"
+log_success "Worker config created at /workspace/nakharax-worker/config/worker.toml"
 log_warning "⚠️  Don't forget to update your wallet address in the config!"
 
 # Step 14: Create worker activation script
 log_info "Step 14: Creating worker activation script..."
 cat > "$USER_HOME/activate-worker.sh" << 'EOF'
 #!/bin/bash
-# nakhara Worker Environment Activation
+# nakharax Worker Environment Activation
 source $HOME/.cargo/env
-echo "✅ nakhara Worker environment activated"
+echo "✅ nakharax Worker environment activated"
 echo "🦀 Rust: $(rustc --version)"
 echo "🐍 Python: $(python --version)"
 echo "🔥 PyTorch: $(python -c 'import torch; print(torch.__version__)')"
@@ -243,17 +243,17 @@ log_success "Activation helper created: $USER_HOME/activate-worker.sh"
 log_info "Step 15: Creating worker start script..."
 cat > "$USER_HOME/start-worker.sh" << 'EOF'
 #!/bin/bash
-echo "🚀 Starting nakhara Worker Node..."
-cd ~/nakhara-monolith/services/core/core
+echo "🚀 Starting nakharax Worker Node..."
+cd ~/nakharax-monolith/services/core/core
 source $HOME/.cargo/env
 
 # Check if config exists and has wallet address
-if ! grep -q "0xYOUR_WALLET_ADDRESS_HERE" /workspace/nakhara-worker/config/worker.toml; then
-    cargo run --release --bin nakhara-worker -- \
-        --config /workspace/nakhara-worker/config/worker.toml \
+if ! grep -q "0xYOUR_WALLET_ADDRESS_HERE" /workspace/nakharax-worker/config/worker.toml; then
+    cargo run --release --bin nakharax-worker -- \
+        --config /workspace/nakharax-worker/config/worker.toml \
         --log-level info
 else
-    echo "❌ Please update your wallet address in /workspace/nakhara-worker/config/worker.toml"
+    echo "❌ Please update your wallet address in /workspace/nakharax-worker/config/worker.toml"
     exit 1
 fi
 EOF
@@ -278,12 +278,12 @@ df -h /workspace
 
 echo ""
 echo "==== Worker Process ===="
-ps aux | grep nakhara-worker | grep -v grep || echo "Worker not running"
+ps aux | grep nakharax-worker | grep -v grep || echo "Worker not running"
 
 echo ""
 echo "==== Recent Logs ===="
-if [ -f /workspace/nakhara-worker/logs/worker.log ]; then
-    tail -n 20 /workspace/nakhara-worker/logs/worker.log
+if [ -f /workspace/nakharax-worker/logs/worker.log ]; then
+    tail -n 20 /workspace/nakharax-worker/logs/worker.log
 else
     echo "No logs found yet"
 fi
@@ -294,7 +294,7 @@ log_success "Monitoring script created: $USER_HOME/monitor-worker.sh"
 
 # Step 17: Run quick test
 log_info "Step 17: Running GPU test..."
-cd "$USER_HOME/nakhara-monolith/services/core/core/examples"
+cd "$USER_HOME/nakharax-monolith/services/core/core/examples"
 python3 << 'EOF'
 import torch
 import time
@@ -337,18 +337,18 @@ echo ""
 log_info "Next steps:"
 echo ""
 echo "  1. Configure your wallet address:"
-echo "     ${YELLOW}nano /workspace/nakhara-worker/config/worker.toml${NC}"
+echo "     ${YELLOW}nano /workspace/nakharax-worker/config/worker.toml${NC}"
 echo "     (Edit address = \"0xYOUR_WALLET_ADDRESS_HERE\")"
 echo ""
 echo "  2. Activate worker environment:"
 echo "     ${YELLOW}source ~/activate-worker.sh${NC}"
 echo ""
 echo "  3. Test training example:"
-echo "     ${YELLOW}cd ~/nakhara-monolith/services/core/core/examples${NC}"
+echo "     ${YELLOW}cd ~/nakharax-monolith/services/core/core/examples${NC}"
 echo "     ${YELLOW}python deai_simple_training.py${NC}"
 echo ""
 echo "  4. Start worker (in tmux):"
-echo "     ${YELLOW}tmux new -s nakhara-worker${NC}"
+echo "     ${YELLOW}tmux new -s nakharax-worker${NC}"
 echo "     ${YELLOW}~/start-worker.sh${NC}"
 echo "     (Press Ctrl+B then D to detach)"
 echo ""

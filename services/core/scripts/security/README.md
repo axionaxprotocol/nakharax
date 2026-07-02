@@ -4,7 +4,7 @@ Run these before engaging an external audit and in CI.
 
 ## Important: run from repo root
 
-All scripts expect to be run from the **repository root** (e.g. `D:\...\nakhara-monolith`), not from `core/`.
+All scripts expect to be run from the **repository root** (e.g. `D:\...\nakharax-monolith`), not from `core/`.
 
 ## Quick run
 

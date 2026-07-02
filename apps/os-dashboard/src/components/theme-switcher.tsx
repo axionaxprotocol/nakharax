@@ -27,10 +27,10 @@ type CustomColors = {
   blob4: string;
 };
 
-const KEY_THEME = "nakhara-theme";
-const KEY_MODE = "nakhara-mode";
-const KEY_ANIM = "nakhara-anim";
-const KEY_CUSTOM = "nakhara-custom";
+const KEY_THEME = "nakharax-theme";
+const KEY_MODE = "nakharax-mode";
+const KEY_ANIM = "nakharax-anim";
+const KEY_CUSTOM = "nakharax-custom";
 
 const DEFAULT_CUSTOM: CustomColors = {
   base: "#050810",

@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - nakhara-deploy
+# 🚀 Quick Start Guide - nakharax-deploy
 
 ## Overview
 
-**nakhara-deploy** is a deployment and infrastructure repository for deploying nakhara protocol nodes, monitoring, and infrastructure management
+**nakharax-deploy** is a deployment and infrastructure repository for deploying nakharax protocol nodes, monitoring, and infrastructure management
 
-**Repository:** https://github.com/nakhara-io/nakhara-deploy
+**Repository:** https://github.com/nakharax-io/nakharax-deploy
 
 ---
 
@@ -36,8 +36,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-deploy.git
-cd nakhara-deploy
+git clone https://github.com/nakharax-io/nakharax-deploy.git
+cd nakharax-deploy
 ```
 
 ### 2. Install Dependencies
@@ -86,7 +86,7 @@ nano .env
 npm run deploy:local
 
 # This will:
-# 1. Build nakhara-core
+# 1. Build nakharax-core
 # 2. Start local node
 # 3. Setup monitoring
 # 4. Create test accounts
@@ -99,10 +99,10 @@ curl http://localhost:8545
 
 ```bash
 # Build Docker image
-docker build -t nakhara-node .
+docker build -t nakharax-node .
 
 # Run single node
-docker run -p 8545:8545 -p 30333:30333 nakhara-node
+docker run -p 8545:8545 -p 30333:30333 nakharax-node
 
 # Run with Docker Compose (full stack)
 docker-compose up -d
@@ -111,7 +111,7 @@ docker-compose up -d
 docker-compose ps
 
 # View logs
-docker-compose logs -f nakhara-node
+docker-compose logs -f nakharax-node
 ```
 
 ### Cloud Deployment
@@ -134,7 +134,7 @@ npm run deploy:monitoring
 ## 🏗️ Project Structure
 
 ```
-nakhara-deploy/
+nakharax-deploy/
 ├── ansible/                    # Ansible playbooks
 │   ├── playbooks/              # Deployment playbooks
 │   │   ├── deploy-node.yml     # Deploy node
@@ -195,11 +195,11 @@ ansible-playbook ansible/playbooks/deploy-node.yml \
 
 # Using Docker
 docker run -d \
-  --name nakhara-node \
+  --name nakharax-node \
   -p 8545:8545 \
   -p 30333:30333 \
   -v $(pwd)/data:/data \
-  nakhara-node:latest
+  nakharax-node:latest
 ```
 
 ### Deploy Validator
@@ -228,7 +228,7 @@ npm run validator:start
 ansible-playbook ansible/playbooks/setup-loadbalancer.yml
 
 # Test RPC endpoints
-curl http://rpc.nakhara.io/health
+curl http://rpc.nakharaxx.io/health
 ```
 
 ---
@@ -256,16 +256,16 @@ npm run deploy:monitoring
 
 ```bash
 # Docker logs
-docker-compose logs -f nakhara-node
+docker-compose logs -f nakharax-node
 
 # Kubernetes logs
-kubectl logs -f nakhara-node-0
+kubectl logs -f nakharax-node-0
 
 # System logs
-journalctl -u nakhara-node -f
+journalctl -u nakharax-node -f
 
 # Application logs
-tail -f /var/log/nakhara/node.log
+tail -f /var/log/nakharax/node.log
 ```
 
 ### Metrics Endpoints
@@ -307,7 +307,7 @@ terraform destroy
 
 ```hcl
 # terraform/aws/main.tf
-module "nakhara_node" {
+module "nakharax_node" {
   source = "../modules/node"
   
   instance_type = "t3.large"
@@ -332,31 +332,31 @@ module "monitoring" {
 
 ```bash
 # Create namespace
-kubectl create namespace nakhara
+kubectl create namespace nakharax
 
 # Deploy using manifests
 kubectl apply -f kubernetes/deployments/
 
 # Deploy using Helm
-helm install nakhara kubernetes/helm/nakhara \
-  --namespace nakhara \
+helm install nakharax kubernetes/helm/nakharax \
+  --namespace nakharax \
   --set network=testnet
 
 # Check deployment
-kubectl get pods -n nakhara
+kubectl get pods -n nakharax
 
 # Get service URL
-kubectl get svc -n nakhara
+kubectl get svc -n nakharax
 ```
 
 ### Scale Deployment
 
 ```bash
 # Scale nodes
-kubectl scale deployment nakhara-node --replicas=5
+kubectl scale deployment nakharax-node --replicas=5
 
 # Autoscaling
-kubectl autoscale deployment nakhara-node \
+kubectl autoscale deployment nakharax-node \
   --min=3 --max=10 --cpu-percent=70
 ```
 
@@ -372,8 +372,8 @@ kubectl autoscale deployment nakhara-node \
 
 # Setup Let's Encrypt
 certbot certonly --standalone \
-  -d rpc.nakhara.io \
-  -d ws.nakhara.io
+  -d rpc.nakharaxx.io \
+  -d ws.nakharaxx.io
 
 # Configure nginx with SSL
 ansible-playbook ansible/playbooks/setup-ssl.yml
@@ -386,54 +386,54 @@ ansible-playbook ansible/playbooks/setup-ssl.yml
 ./scripts/backup.sh
 
 # Backup to S3
-aws s3 sync /data/nakhara s3://nakhara-backups/
+aws s3 sync /data/nakharax s3://nakharax-backups/
 
 # Restore from backup
 ./scripts/restore.sh --backup-id 2024-01-01
 
 # Automated backups (cron)
-0 2 * * * /opt/nakhara-deploy/scripts/backup.sh
+0 2 * * * /opt/nakharax-deploy/scripts/backup.sh
 ```
 
 ---
 
 ## 🔌 Integration with Other Repos
 
-### With nakhara-core
+### With nakharax-core
 
 ```bash
-# Clone and build nakhara-core
+# Clone and build nakharax-core
 cd ..
-git clone https://github.com/nakhara-io/nakhara-core.git
-cd nakhara-core
+git clone https://github.com/nakharax-io/nakharax-core.git
+cd nakharax-core
 cargo build --release
 
 # Copy binary to deploy
-cp target/release/nakhara-node ../nakhara-deploy/binaries/
+cp target/release/nakharax-node ../nakharax-deploy/binaries/
 
 # Deploy with custom binary
-./scripts/deploy.sh --binary binaries/nakhara-node
+./scripts/deploy.sh --binary binaries/nakharax-node
 ```
 
-### With nakhara-sdk-ts
+### With nakharax-sdk-ts
 
 ```bash
 # Deploy includes RPC endpoints for SDK
 # SDK connects to deployed nodes:
 
-# In nakhara-sdk-ts:
-const client = new NakharaClient('https://rpc.nakhara.io')
+# In nakharax-sdk-ts:
+const client = new NakharaxClient('https://rpc.nakharaxx.io')
 ```
 
-### With nakhara-web
+### With nakharax-web
 
 ```bash
 # Deploy web dashboard
-cd ../nakhara-web
+cd ../nakharax-web
 npm run build
 
 # Copy to deployment
-cp -r out ../nakhara-deploy/static/dashboard
+cp -r out ../nakharax-deploy/static/dashboard
 
 # Serve with nginx
 ansible-playbook ansible/playbooks/deploy-dashboard.yml
@@ -475,7 +475,7 @@ discovery_interval = 10
 
 ```bash
 # Check logs
-journalctl -u nakhara-node -n 100
+journalctl -u nakharax-node -n 100
 
 # Verify configuration
 ./scripts/validate-config.sh
@@ -484,7 +484,7 @@ journalctl -u nakhara-node -n 100
 telnet localhost 30333
 
 # Reset node data
-rm -rf /data/nakhara/db
+rm -rf /data/nakharax/db
 ./scripts/deploy.sh --clean
 ```
 
@@ -531,8 +531,8 @@ ulimit -n 65535
 listen_addr = "0.0.0.0:30333"
 external_addr = "YOUR_PUBLIC_IP:30333"
 bootnodes = [
-  "/dns4/boot1.nakhara.io/tcp/30333/p2p/...",
-  "/dns4/boot2.nakhara.io/tcp/30333/p2p/..."
+  "/dns4/boot1.nakharaxx.io/tcp/30333/p2p/...",
+  "/dns4/boot2.nakharaxx.io/tcp/30333/p2p/..."
 ]
 
 [rpc]
@@ -552,8 +552,8 @@ key_path = "/keys/validator.key"
 version: '3.8'
 
 services:
-  nakhara-node:
-    image: nakhara/node:latest
+  nakharax-node:
+    image: nakharax/node:latest
     ports:
       - "8545:8545"
       - "30333:30333"
@@ -586,9 +586,9 @@ services:
 
 ## 🤝 Getting Help
 
-- **Issues:** Report issues on [GitHub Issues](https://github.com/nakhara-io/nakhara-deploy/issues)
-- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
-- **Core Node:** See [nakhara-core](https://github.com/nakhara-io/nakhara-core)
+- **Issues:** Report issues on [GitHub Issues](https://github.com/nakharax-io/nakharax-deploy/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
+- **Core Node:** See [nakharax-core](https://github.com/nakharax-io/nakharax-core)
 
 ---
 
@@ -599,5 +599,5 @@ MIT - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the nakhara protocol Team</sub>
+  <sub>Built with ❤️ by the nakharax protocol Team</sub>
 </p>

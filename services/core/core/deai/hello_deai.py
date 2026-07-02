@@ -12,7 +12,7 @@ Architecture (mock mode - marketplace address = 0x0):
 
 Usage:
   python hello_deai.py
-    [--rpc-url https://rpc.nakhara.io]
+    [--rpc-url https://rpc.nakharaxx.io]
     [--output-dir services/core/reports/deai-demo-{stamp}]
     [--retries 2] [--jobs 5] [--timeout 60]
 """
@@ -37,7 +37,7 @@ DEAI_DIR = os.path.dirname(os.path.abspath(__file__))
 if DEAI_DIR not in sys.path:
     sys.path.insert(0, DEAI_DIR)
 
-from rpc_client import NakharaRpcClient
+from rpc_client import NakharaxRpcClient
 from sandbox import create_sandbox, ResourceLimits, ExecutionStatus
 from contract_manager import ContractManager
 from wallet_manager import WalletManager
@@ -305,7 +305,7 @@ def write_evidence(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Hello DeAI - End-to-End Demo")
-    parser.add_argument("--rpc-url", default="https://rpc.nakhara.io", help="Validator RPC URL")
+    parser.add_argument("--rpc-url", default="https://rpc.nakharaxx.io", help="Validator RPC URL")
     parser.add_argument("--retries", type=int, default=2, help="Max retries per job")
     parser.add_argument("--jobs", type=int, default=5, help="Number of sample jobs")
     parser.add_argument("--timeout", type=int, default=60, help="Job timeout in seconds")
@@ -321,7 +321,7 @@ def main() -> int:
 
     # ---- connect to chain
     logger("init", f"RPC -> {args.rpc_url}")
-    client = NakharaRpcClient(args.rpc_url)
+    client = NakharaxRpcClient(args.rpc_url)
 
     block_num = client.get_block_number()
     if block_num == 0:

@@ -1,4 +1,4 @@
-# Nakhara Protocol Glossary
+# Nakharax Protocol Glossary
 
 > **Technical Terms & Definitions** — Reference for developers and users
 
@@ -15,7 +15,7 @@ Top-K weighted VRF-based router for assigning compute jobs to workers. Uses K=64
 
 ### NAK
 **Type**: Token  
-Native utility token of Nakhara protocol. Mainnet: 1 trillion supply. Testnet (NAKt): 1 billion supply.
+Native utility token of Nakharax protocol. Mainnet: 1 trillion supply. Testnet (NAKt): 1 billion supply.
 
 ### NAKt
 **Type**: Token  
@@ -131,7 +131,7 @@ Decentralized compute marketplace where users submit jobs and workers bid/accept
 
 ### Monolith
 **Type**: Architecture  
-Unified repository containing both Web and Core domains in `nakhara-monolith/`.
+Unified repository containing both Web and Core domains in `nakharax-monolith/`.
 
 ### Monolith Scout
 **Type**: Node Configuration  
@@ -143,7 +143,7 @@ Raspberry Pi 5 + Hailo-8 NPU edge device for AI tasks.
 
 ### Node
 **Type**: Network Participant  
-Software running Nakhara protocol. Types: Validator, RPC, Full, Light, Worker.
+Software running Nakharax protocol. Types: Validator, RPC, Full, Light, Worker.
 
 ---
 
@@ -247,7 +247,7 @@ Ability to upgrade without stopping the network.
 
 | Acronym | Full Name | Category |
 |---------|-----------|----------|
-| NAK | Nakhara Token | Token |
+| NAK | Nakharax Token | Token |
 | ASR | Auto Selection Router | Component |
 | DA | Data Availability | Layer |
 | DAO | Decentralized Autonomous Organization | Governance |

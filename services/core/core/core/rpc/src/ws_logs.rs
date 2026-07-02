@@ -1,4 +1,4 @@
-//! Live log streaming over WebSocket for the Nakhara OS dashboard.
+//! Live log streaming over WebSocket for the Nakharax OS dashboard.
 //!
 //! Architecture
 //! ============
@@ -24,7 +24,7 @@
 //! channel via the [`MakeBroadcastWriter`] adapter. WebSocket clients
 //! `subscribe()` to receive lines.
 //!
-//! Wiring (typical `nakhara-node` startup)
+//! Wiring (typical `nakharax-node` startup)
 //! --------------------------------------
 //! ```ignore
 //! use rpc::ws_logs::{LogChannel, MakeBroadcastWriter, ws_router};

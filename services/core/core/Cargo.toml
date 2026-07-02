@@ -1,9 +1,9 @@
 [package]
-name = "nakhara-core"
+name = "nakharax-core"
 version = "1.8.0"
 edition = "2021"
-authors = ["nakhara protocol Team <team@nakhara.io>"]
-description = "Nakhara Protocol Core - High-Performance Blockchain"
+authors = ["nakharax protocol Team <team@nakharaxx.io>"]
+description = "Nakharax Protocol Core - High-Performance Blockchain"
 license = "AGPL-3.0"
 autoexamples = false
 autotests = false
@@ -85,13 +85,13 @@ harness = false
 
 [workspace.package]
 version = "1.8.0"
-authors = ["nakhara protocol Team <team@nakhara.io>"]
+authors = ["nakharax protocol Team <team@nakharaxx.io>"]
 edition = "2021"
 rust-version = "1.83"
 license = "MIT"
-repository = "https://github.com/nakhara-io/nakhara-core"
-homepage = "https://nakhara.io"
-documentation = "https://docs.nakhara.io"
+repository = "https://github.com/nakharax-io/nakharax-core"
+homepage = "https://nakharaxx.io"
+documentation = "https://docs.nakharaxx.io"
 
 [workspace.dependencies]
 # Async Runtime

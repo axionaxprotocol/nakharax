@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# nakhara v1.6 - Unified Test Runner
+# nakharax v1.6 - Unified Test Runner
 # This script builds the Rust core, the Python bridge, and runs integration tests.
 #
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-echo "🚀 Starting nakhara v1.6 Unified Test Suite..."
+echo "🚀 Starting nakharax v1.6 Unified Test Suite..."
 echo "=============================================="
 
 # --- Step 1: Build Rust Core ---

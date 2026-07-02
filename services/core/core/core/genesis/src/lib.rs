@@ -1,9 +1,9 @@
 //! Genesis Block Generator
 //!
-//! Creates Block #0 for the Nakhara network.
+//! Creates Block #0 for the Nakharax network.
 //!
 //! Total Supply : 1,000,000,000,000 NAK  (1 trillion, 18 decimals)
-//! Creator alias: nakharaius
+//! Creator alias: nakharaxius
 
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -15,7 +15,7 @@ use std::collections::HashMap;
 // ---------------------------------------------------------------------------
 
 pub const CHAIN_ID: u64 = 86137;
-pub const CHAIN_NAME: &str = "Nakhara Mainnet";
+pub const CHAIN_NAME: &str = "Nakharax Mainnet";
 pub const SYMBOL: &str = "NAK";
 pub const DECIMALS: u32 = 18;
 
@@ -86,9 +86,9 @@ impl Default for GenesisConfig {
             validators: vec![],
             balances: HashMap::new(),
             config: ProtocolConfig::default(),
-            extra_data: "nakharaius - Genesis Block #0 - Nakhara Core Universe".to_string(),
+            extra_data: "nakharaxius - Genesis Block #0 - Nakharax Core Universe".to_string(),
             total_supply: TOTAL_SUPPLY,
-            creator_alias: "nakharaius".to_string(),
+            creator_alias: "nakharaxius".to_string(),
         }
     }
 }
@@ -309,7 +309,7 @@ impl GenesisGenerator {
     /// Build the canonical mainnet / testnet genesis with full token allocation.
     ///
     /// Total supply: 1 trillion NAK (1,000,000,000,000)
-    /// Creator alias: nakharaius (10 %)
+    /// Creator alias: nakharaxius (10 %)
     pub fn mainnet() -> GenesisBlock {
         let validator_half = Self::alloc(ALLOC_VALIDATORS_BPS) / 2;
 
@@ -317,22 +317,22 @@ impl GenesisGenerator {
             chain_id: CHAIN_ID,
             chain_name: CHAIN_NAME.to_string(),
             timestamp: GENESIS_TIMESTAMP,
-            extra_data: "nakharaius - Genesis Block #0 - Nakhara Core Universe".to_string(),
+            extra_data: "nakharaxius - Genesis Block #0 - Nakharax Core Universe".to_string(),
             total_supply: TOTAL_SUPPLY,
-            creator_alias: "nakharaius".to_string(),
+            creator_alias: "nakharaxius".to_string(),
             config: ProtocolConfig::default(),
             validators: vec![
                 GenesisValidator {
                     address: ADDR_VALIDATOR_EU.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc.nakhara.io:30303".to_string(),
+                    node_url: "http://rpc.nakharaxx.io:30303".to_string(),
                 },
                 GenesisValidator {
                     address: ADDR_VALIDATOR_AU.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc-au.nakhara.io:30303".to_string(),
+                    node_url: "http://rpc-au.nakharaxx.io:30303".to_string(),
                 },
             ],
             balances: HashMap::new(),
@@ -383,7 +383,7 @@ impl GenesisGenerator {
     pub fn localnet() -> GenesisBlock {
         let mut config = GenesisConfig {
             chain_id: 31337,
-            chain_name: "Nakhara Localnet".to_string(),
+            chain_name: "Nakharax Localnet".to_string(),
             validators: vec![GenesisValidator {
                 address: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266".to_string(),
                 stake: 10_000 * ONE_AXX,
@@ -442,7 +442,7 @@ mod tests {
         assert_eq!(genesis.chain_id, CHAIN_ID);
         assert_eq!(genesis.config.validators.len(), 2);
         assert_eq!(genesis.config.balances.len(), 10);
-        assert_eq!(genesis.config.creator_alias, "nakharaius");
+        assert_eq!(genesis.config.creator_alias, "nakharaxius");
         assert_eq!(genesis.config.total_supply, TOTAL_SUPPLY);
         assert_eq!(genesis.timestamp, GENESIS_TIMESTAMP);
 
@@ -473,7 +473,7 @@ mod tests {
 
         assert!(json.contains("chain_id"));
         assert!(json.contains("86137"));
-        assert!(json.contains("nakharaius"));
+        assert!(json.contains("nakharaxius"));
     }
 
     #[test]

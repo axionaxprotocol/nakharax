@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Nakhara DevTools will be documented in this file.
+All notable changes to Nakharax DevTools will be documented in this file.
 
 ## [1.9.0] - 2025-11-15
 

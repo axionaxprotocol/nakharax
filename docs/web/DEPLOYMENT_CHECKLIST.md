@@ -68,17 +68,17 @@
 
 ```bash
 # Backup database
-docker exec nakhara-postgres pg_dump -U nakhara nakhara_testnet > backup-$(date +%Y%m%d-%H%M%S).sql
+docker exec nakharax-postgres pg_dump -U nakharax nakharax_testnet > backup-$(date +%Y%m%d-%H%M%S).sql
 
 # Backup configuration
 tar -czf config-backup-$(date +%Y%m%d-%H%M%S).tar.gz \
-  /etc/nginx/sites-available/nakhara \
-  /etc/systemd/system/nakhara*.service \
+  /etc/nginx/sites-available/nakharax \
+  /etc/systemd/system/nakharax*.service \
   docker-compose.yml \
   .env
 
 # Create application snapshot
-docker commit nakhara-web nakhara-web-snapshot-$(date +%Y%m%d-%H%M%S)
+docker commit nakharax-web nakharax-web-snapshot-$(date +%Y%m%d-%H%M%S)
 ```
 
 #### Stop Services (if required)
@@ -91,7 +91,7 @@ docker-compose ps
 docker-compose stop
 
 # OR for specific services
-docker-compose stop nakhara-web
+docker-compose stop nakharax-web
 docker-compose stop explorer-api
 docker-compose stop faucet-api
 ```
@@ -101,7 +101,7 @@ docker-compose stop faucet-api
 #### Pull Latest Code
 
 ```bash
-cd /var/www/nakhara-monolith
+cd /var/www/nakharax-monolith
 git fetch origin
 git checkout main
 git pull origin main
@@ -142,13 +142,13 @@ node -e "require('dotenv').config(); console.log('✅ Environment loaded')"
 
 ```bash
 # Check pending migrations
-docker exec -it nakhara-postgres psql -U nakhara -d nakhara_testnet -c "\dt"
+docker exec -it nakharax-postgres psql -U nakharax -d nakharax_testnet -c "\dt"
 
 # Run migrations (if using Prisma)
-pnpm --filter @nakhara/web prisma migrate deploy
+pnpm --filter @nakharax/web prisma migrate deploy
 
 # Verify migration
-docker exec -it nakhara-postgres psql -U nakhara -d nakhara_testnet -c "SELECT version FROM _prisma_migrations ORDER BY started_at DESC LIMIT 5;"
+docker exec -it nakharax-postgres psql -U nakharax -d nakharax_testnet -c "SELECT version FROM _prisma_migrations ORDER BY started_at DESC LIMIT 5;"
 ```
 
 ### Step 3: Start Services
@@ -169,7 +169,7 @@ docker-compose up -d rpc-server explorer-api faucet-api
 sleep 10
 
 # 3. Frontend services
-docker-compose up -d nakhara-web marketplace
+docker-compose up -d nakharax-web marketplace
 
 # 4. Monitoring (if separate)
 docker-compose up -d prometheus grafana
@@ -203,54 +203,54 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Homepage loads
-curl -I https://nakhara.io | grep "200 OK"
+curl -I https://nakharaxx.io | grep "200 OK"
 
 # Assets loading
-curl -I https://nakhara.io/_next/static/chunks/main.js | grep "200 OK"
+curl -I https://nakharaxx.io/_next/static/chunks/main.js | grep "200 OK"
 
 # API endpoints
-curl https://nakhara.io/api/health
-curl https://nakhara.io/api/stats
+curl https://nakharaxx.io/api/health
+curl https://nakharaxx.io/api/stats
 ```
 
 #### Test Explorer API
 
 ```bash
 # Health check
-curl https://explorer-api.nakhara.io/api/health
+curl https://explorer-api.nakharaxx.io/api/health
 
 # Recent blocks
-curl https://explorer-api.nakhara.io/api/blocks?limit=10
+curl https://explorer-api.nakharaxx.io/api/blocks?limit=10
 
 # Recent transactions
-curl https://explorer-api.nakhara.io/api/transactions?limit=10
+curl https://explorer-api.nakharaxx.io/api/transactions?limit=10
 ```
 
 #### Test Faucet API
 
 ```bash
 # Health check
-curl https://faucet-api.nakhara.io/api/health
+curl https://faucet-api.nakharaxx.io/api/health
 
 # Faucet info
-curl https://faucet-api.nakhara.io/api/info
+curl https://faucet-api.nakharaxx.io/api/info
 ```
 
 #### Test RPC Server
 
 ```bash
 # Block number
-curl -X POST https://testnet-rpc.nakhara.io \
+curl -X POST https://testnet-rpc.nakharaxx.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 
 # Chain ID
-curl -X POST https://testnet-rpc.nakhara.io \
+curl -X POST https://testnet-rpc.nakharaxx.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
 
 # Network version
-curl -X POST https://testnet-rpc.nakhara.io \
+curl -X POST https://testnet-rpc.nakharaxx.io \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"net_version","params":[],"id":1}'
 ```
@@ -261,10 +261,10 @@ curl -X POST https://testnet-rpc.nakhara.io \
 
 ```bash
 # E2E tests
-pnpm --filter @nakhara/web test:e2e
+pnpm --filter @nakharax/web test:e2e
 
 # Integration tests
-pnpm --filter @nakhara/web test:integration
+pnpm --filter @nakharax/web test:integration
 
 # API tests
 pnpm test:api
@@ -288,10 +288,10 @@ pnpm test:api
 
 ```bash
 # Measure page load time
-curl -o /dev/null -s -w "time_total: %{time_total}s\n" https://nakhara.io
+curl -o /dev/null -s -w "time_total: %{time_total}s\n" https://nakharaxx.io
 
 # Check Core Web Vitals
-npx lighthouse https://nakhara.io \
+npx lighthouse https://nakharaxx.io \
   --only-categories=performance \
   --chrome-flags="--headless"
 ```
@@ -318,7 +318,7 @@ top -bn1 | head -20
 
 ```bash
 # Access Grafana
-open https://grafana.nakhara.io
+open https://grafana.nakharaxx.io
 
 # Verify dashboards showing new version
 # Check for any new metrics
@@ -362,7 +362,7 @@ curl -X POST https://discord.com/api/webhooks/YOUR_WEBHOOK \
   -d '{
     "content": "🚀 **Deployment Complete**",
     "embeds": [{
-      "title": "nakhara v1.8.0-testnet Deployed",
+      "title": "nakharax v1.8.0-testnet Deployed",
       "description": "All services operational",
       "color": 65280,
       "fields": [
@@ -378,7 +378,7 @@ curl -X POST https://discord.com/api/webhooks/YOUR_WEBHOOK \
 #### Update Status Page
 
 ```bash
-# Update status.nakhara.io if you have one
+# Update status.nakharaxx.io if you have one
 # Or update #announcements Discord channel
 ```
 
@@ -400,17 +400,17 @@ curl -X POST https://discord.com/api/webhooks/YOUR_WEBHOOK \
 
 ```bash
 # List available images
-docker images | grep nakhara-web
+docker images | grep nakharax-web
 
 # Stop current
-docker-compose stop nakhara-web
+docker-compose stop nakharax-web
 
 # Start previous version
 docker run -d \
-  --name nakhara-web-rollback \
+  --name nakharax-web-rollback \
   -p 3000:3000 \
   --env-file .env \
-  nakhara-web:1.7.0-testnet
+  nakharax-web:1.7.0-testnet
 
 # Verify rollback
 curl http://localhost:3000/api/health
@@ -440,7 +440,7 @@ docker-compose up -d --build
 docker-compose stop
 
 # Restore database
-docker exec -i nakhara-postgres psql -U nakhara nakhara_testnet < backup-YYYYMMDD-HHMMSS.sql
+docker exec -i nakharax-postgres psql -U nakharax nakharax_testnet < backup-YYYYMMDD-HHMMSS.sql
 
 # Restart services
 docker-compose up -d
@@ -450,10 +450,10 @@ docker-compose up -d
 
 ```bash
 # Check migration status
-pnpm --filter @nakhara/web prisma migrate status
+pnpm --filter @nakharax/web prisma migrate status
 
 # Rollback last migration
-pnpm --filter @nakhara/web prisma migrate resolve --rolled-back MIGRATION_NAME
+pnpm --filter @nakharax/web prisma migrate resolve --rolled-back MIGRATION_NAME
 
 # OR restore from backup (safer)
 ```
@@ -474,7 +474,7 @@ docker-compose stop
 
 # 2. Restore database
 echo "Restoring database..."
-docker exec -i nakhara-postgres psql -U nakhara nakhara_testnet < backup-latest.sql
+docker exec -i nakharax-postgres psql -U nakharax nakharax_testnet < backup-latest.sql
 
 # 3. Checkout previous version
 echo "Reverting code..."
@@ -504,7 +504,7 @@ echo "✅ Rollback complete"
 
 ```bash
 # Check version
-curl https://nakhara.io/api/version
+curl https://nakharaxx.io/api/version
 
 # Check all services
 ./scripts/health-check.sh
@@ -534,22 +534,22 @@ docker-compose logs -f --tail=100
 NODE_ENV=production
 NEXT_PUBLIC_APP_VERSION=1.8.0-testnet
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_NETWORK_NAME=nakhara-testnet-1
+NEXT_PUBLIC_NETWORK_NAME=nakharax-testnet-1
 
 # API Endpoints
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakhara.io
-NEXT_PUBLIC_WS_URL=wss://testnet-ws.nakhara.io
-NEXT_PUBLIC_EXPLORER_API_URL=https://explorer-api.nakhara.io
-NEXT_PUBLIC_FAUCET_API_URL=https://faucet-api.nakhara.io
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharaxx.io
+NEXT_PUBLIC_WS_URL=wss://testnet-ws.nakharaxx.io
+NEXT_PUBLIC_EXPLORER_API_URL=https://explorer-api.nakharaxx.io
+NEXT_PUBLIC_FAUCET_API_URL=https://faucet-api.nakharaxx.io
 
 # Database
-DATABASE_URL=postgresql://nakhara:STRONG_PASSWORD@postgres:5432/nakhara_testnet
+DATABASE_URL=postgresql://nakharax:STRONG_PASSWORD@postgres:5432/nakharax_testnet
 REDIS_URL=redis://redis:6379
 
 # Security
 JWT_SECRET=RANDOM_256_BIT_SECRET
 SESSION_SECRET=RANDOM_256_BIT_SECRET
-CORS_ORIGIN=https://nakhara.io,https://www.nakhara.io
+CORS_ORIGIN=https://nakharaxx.io,https://www.nakharaxx.io
 
 # Monitoring
 SENTRY_DSN=https://xxx@sentry.io/xxx
@@ -569,7 +569,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 # Email (if applicable)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=noreply@nakhara.io
+SMTP_USER=noreply@nakharaxx.io
 SMTP_PASS=APP_SPECIFIC_PASSWORD
 ```
 
@@ -582,22 +582,22 @@ SMTP_PASS=APP_SPECIFIC_PASSWORD
 NODE_ENV=staging
 NEXT_PUBLIC_APP_VERSION=1.8.0-testnet
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_NETWORK_NAME=nakhara-staging
+NEXT_PUBLIC_NETWORK_NAME=nakharax-staging
 
 # API Endpoints
-NEXT_PUBLIC_RPC_URL=https://staging-rpc.nakhara.io
-NEXT_PUBLIC_WS_URL=wss://staging-ws.nakhara.io
-NEXT_PUBLIC_EXPLORER_API_URL=https://staging-explorer-api.nakhara.io
-NEXT_PUBLIC_FAUCET_API_URL=https://staging-faucet-api.nakhara.io
+NEXT_PUBLIC_RPC_URL=https://staging-rpc.nakharaxx.io
+NEXT_PUBLIC_WS_URL=wss://staging-ws.nakharaxx.io
+NEXT_PUBLIC_EXPLORER_API_URL=https://staging-explorer-api.nakharaxx.io
+NEXT_PUBLIC_FAUCET_API_URL=https://staging-faucet-api.nakharaxx.io
 
 # Database
-DATABASE_URL=postgresql://nakhara:PASSWORD@staging-postgres:5432/nakhara_staging
+DATABASE_URL=postgresql://nakharax:PASSWORD@staging-postgres:5432/nakharax_staging
 REDIS_URL=redis://staging-redis:6379
 
 # Security (different secrets than production!)
 JWT_SECRET=DIFFERENT_SECRET_FOR_STAGING
 SESSION_SECRET=DIFFERENT_SECRET_FOR_STAGING
-CORS_ORIGIN=https://staging.nakhara.io
+CORS_ORIGIN=https://staging.nakharaxx.io
 
 # Monitoring
 SENTRY_DSN=https://yyy@sentry.io/yyy
@@ -625,9 +625,9 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'nakhara-web'
+  - job_name: 'nakharax-web'
     static_configs:
-      - targets: ['nakhara-web:9090']
+      - targets: ['nakharax-web:9090']
 
   - job_name: 'explorer-api'
     static_configs:
@@ -660,7 +660,7 @@ scrape_configs:
 
 ```yaml
 groups:
-  - name: nakhara_alerts
+  - name: nakharax_alerts
     interval: 30s
     rules:
       # Service down
@@ -781,14 +781,14 @@ check_rpc() {
 }
 
 # Run checks
-check_endpoint "Web Application" "https://nakhara.io" "200"
-check_endpoint "Explorer API" "https://explorer-api.nakhara.io/api/health" "200"
-check_endpoint "Faucet API" "https://faucet-api.nakhara.io/api/health" "200"
-check_rpc "RPC Server" "https://testnet-rpc.nakhara.io"
+check_endpoint "Web Application" "https://nakharaxx.io" "200"
+check_endpoint "Explorer API" "https://explorer-api.nakharaxx.io/api/health" "200"
+check_endpoint "Faucet API" "https://faucet-api.nakharaxx.io/api/health" "200"
+check_rpc "RPC Server" "https://testnet-rpc.nakharaxx.io"
 
 # Database check
 echo -n "Checking PostgreSQL... "
-if docker exec nakhara-postgres pg_isready -U nakhara > /dev/null 2>&1; then
+if docker exec nakharax-postgres pg_isready -U nakharax > /dev/null 2>&1; then
     echo -e "${GREEN}✓ OK${NC}"
 else
     echo -e "${RED}✗ FAILED${NC}"
@@ -797,7 +797,7 @@ fi
 
 # Redis check
 echo -n "Checking Redis... "
-if docker exec nakhara-redis redis-cli ping > /dev/null 2>&1; then
+if docker exec nakharax-redis redis-cli ping > /dev/null 2>&1; then
     echo -e "${GREEN}✓ OK${NC}"
 else
     echo -e "${RED}✗ FAILED${NC}"
@@ -905,8 +905,8 @@ Deployment completed successfully. Performance improvements observed due to opti
 
 ## Links
 
-- Release notes: https://github.com/nakhara-io/nakhara-monolith/releases/tag/v1.8.0
-- PR: https://github.com/nakhara-io/nakhara-monolith/pull/123
+- Release notes: https://github.com/nakharax-io/nakharax-monolith/releases/tag/v1.8.0
+- PR: https://github.com/nakharax-io/nakharax-monolith/pull/123
 ```
 
 ---
@@ -924,9 +924,9 @@ Backup: @cto
 
 ### Contact Methods
 
-- **Urgent**: Signal group "nakhara-oncall"
+- **Urgent**: Signal group "nakharax-oncall"
 - **Non-urgent**: Discord #deployments
-- **Escalation**: Email cto@nakhara.io
+- **Escalation**: Email cto@nakharaxx.io
 
 ---
 

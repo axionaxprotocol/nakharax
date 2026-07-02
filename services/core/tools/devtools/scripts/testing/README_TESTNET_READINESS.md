@@ -1,6 +1,6 @@
 # Testnet Readiness Checker
 
-Comprehensive automated validation tool for Nakhara Protocol testnet deployment readiness.
+Comprehensive automated validation tool for Nakharax Protocol testnet deployment readiness.
 
 ## Overview
 
@@ -20,7 +20,7 @@ The Testnet Readiness Checker performs **28 validation checks** across **7 criti
 
 ### Direct Python
 ```bash
-python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
+python nakharax-devtools/scripts/testing/testnet_readiness_checker.py
 ```
 
 ## What It Checks
@@ -177,18 +177,18 @@ EOF
 ### Issue: Build Failures
 ```bash
 # Rust
-cd nakhara-core
+cd nakharax-core
 cargo clean && cargo build --release
 
 # TypeScript
-cd nakhara-sdk-ts
+cd nakharax-sdk-ts
 rm -rf node_modules && npm install && npm run build
 ```
 
 ### Issue: Low Code Quality Score
 ```bash
 # Run quality analyzer
-python nakhara-devtools/scripts/analysis/repo_quality_analyzer.py
+python nakharax-devtools/scripts/analysis/repo_quality_analyzer.py
 
 # Address top issues first
 # - Add missing documentation
@@ -264,7 +264,7 @@ Edit the script to adjust:
 
 - 📖 **Full Guide:** [TESTNET_READINESS_GUIDE.md](../../TESTNET_READINESS_GUIDE.md)
 - 📋 **Quick Reference:** [TESTNET_READINESS_QUICK_REF.md](../../TESTNET_READINESS_QUICK_REF.md)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/nakhara-io/nakhara-devtools/issues)
+- 🐛 **Issues:** [GitHub Issues](https://github.com/nakharax-io/nakharax-devtools/issues)
 
 ## Version History
 

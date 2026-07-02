@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - nakhara-devtools
+# 🚀 Quick Start Guide - nakharax-devtools
 
 ## Overview
 
-**nakhara-devtools** is a collection of development tools and testing utilities for the nakhara protocol, including scripts for testing, refactoring, fixing, and analysis
+**nakharax-devtools** is a collection of development tools and testing utilities for the nakharax protocol, including scripts for testing, refactoring, fixing, and analysis
 
-**Repository:** https://github.com/nakhara-io/nakhara-devtools
+**Repository:** https://github.com/nakharax-io/nakharax-devtools
 
 ---
 
@@ -29,8 +29,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-devtools.git
-cd nakhara-devtools
+git clone https://github.com/nakharax-io/nakharax-devtools.git
+cd nakharax-devtools
 ```
 
 ### 2. Setup Python Environment
@@ -63,7 +63,7 @@ python scripts/testing/check_repo_health.py
 ## 🏗️ Repository Structure
 
 ```
-nakhara-devtools/
+nakharax-devtools/
 ├── scripts/                    # All development scripts
 │   ├── testing/                # Testing scripts
 │   │   ├── test_repo_integration.py    # 49 integration tests
@@ -81,7 +81,7 @@ nakhara-devtools/
 │   │   ├── fix_warnings.py             # Warning fixes
 │   │   ├── fix_npm_workspaces.py       # NPM workspace setup
 │   │   ├── fix_protocol_names.py       # Name corrections
-│   │   ├── fix_nakhara_name.py         # Brand corrections
+│   │   ├── fix_nakharax_name.py         # Brand corrections
 │   │   └── fix_domain.py               # Domain changes
 │   │
 │   ├── analysis/               # Analysis scripts
@@ -129,9 +129,9 @@ python scripts/testing/test_repo_integration.py
 python scripts/testing/check_repo_health.py
 
 # Output shows scores:
-# - nakhara-web: 85.7/100 🟢
-# - nakhara-core: 78.6/100 🟡
-# - nakhara-marketplace: 71.4/100 🟡
+# - nakharax-web: 85.7/100 🟢
+# - nakharax-core: 78.6/100 🟡
+# - nakharax-marketplace: 71.4/100 🟡
 # - etc.
 ```
 
@@ -166,7 +166,7 @@ python scripts/refactoring/analyze_code_quality.py
 python scripts/refactoring/refactor_and_clean.py
 
 # Clean specific repo
-python scripts/refactoring/refactor_and_clean.py --repo nakhara-web
+python scripts/refactoring/refactor_and_clean.py --repo nakharax-web
 
 # Skip formatting (only lint)
 python scripts/refactoring/refactor_and_clean.py --skip-formatting
@@ -290,7 +290,7 @@ python scripts/testing/test_repo_links.py --errors-only
 python scripts/refactoring/refactor_and_clean.py
 
 # Specific repo
-python scripts/refactoring/refactor_and_clean.py --repo nakhara-core
+python scripts/refactoring/refactor_and_clean.py --repo nakharax-core
 
 # Skip formatting
 python scripts/refactoring/refactor_and_clean.py --skip-formatting
@@ -327,7 +327,7 @@ python scripts/refactoring/refactor_and_clean.py --dry-run
 python scripts/refactoring/analyze_code_quality.py
 
 # Specific repo
-python scripts/refactoring/analyze_code_quality.py --repo nakhara-web
+python scripts/refactoring/analyze_code_quality.py --repo nakharax-web
 
 # Generate report
 python scripts/refactoring/analyze_code_quality.py --output quality_report.txt
@@ -354,7 +354,7 @@ python scripts/refactoring/master_refactor.py
 python scripts/refactoring/master_refactor.py --skip-tests
 
 # Specific repos only
-python scripts/refactoring/master_refactor.py --repos nakhara-core,nakhara-web
+python scripts/refactoring/master_refactor.py --repos nakharax-core,nakharax-web
 ```
 
 ---
@@ -441,35 +441,35 @@ python scripts/fixing/fix_npm_workspaces.py
 
 ## 🔌 Integration with Other Repos
 
-### Testing nakhara-core
+### Testing nakharax-core
 
 ```bash
-cd ../nakhara-core
+cd ../nakharax-core
 
 # Run devtools tests on core
-python ../nakhara-devtools/scripts/testing/test_repo_integration.py
+python ../nakharax-devtools/scripts/testing/test_repo_integration.py
 
 # Analyze core code quality
-python ../nakhara-devtools/scripts/refactoring/analyze_code_quality.py --repo nakhara-core
+python ../nakharax-devtools/scripts/refactoring/analyze_code_quality.py --repo nakharax-core
 ```
 
-### Refactoring nakhara-web
+### Refactoring nakharax-web
 
 ```bash
-cd ../nakhara-web
+cd ../nakharax-web
 
 # Clean and refactor
-python ../nakhara-devtools/scripts/refactoring/refactor_and_clean.py --repo nakhara-web
+python ../nakharax-devtools/scripts/refactoring/refactor_and_clean.py --repo nakharax-web
 
 # Check results
-python ../nakhara-devtools/scripts/testing/check_repo_health.py
+python ../nakharax-devtools/scripts/testing/check_repo_health.py
 ```
 
 ### Full Workspace Testing
 
 ```bash
 # From workspace root
-cd nakhara-devtools
+cd nakharax-devtools
 
 # Test all repos
 python scripts/testing/test_repo_integration.py
@@ -573,8 +573,8 @@ python scripts/refactoring/analyze_code_quality.py --verbose
 ### Script Not Found
 
 ```bash
-# Make sure you're in nakhara-devtools directory
-cd nakhara-devtools
+# Make sure you're in nakharax-devtools directory
+cd nakharax-devtools
 
 # Check file exists
 ls scripts/testing/test_repo_integration.py
@@ -616,7 +616,7 @@ chmod +x scripts/*.sh
 
 ```bash
 # Set workspace root (if needed)
-export NAKHARA_WORKSPACE=D:\Desktop\nakharaius01
+export NAKHARAX_WORKSPACE=D:\Desktop\nakharaxius01
 
 # Set Python path
 export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -632,14 +632,14 @@ export DEBUG=1
 - **Main README:** [README.md](README.md)
 - **Refactoring Guide:** [docs/REFACTORING_GUIDE.md](docs/REFACTORING_GUIDE.md)
 - **Integration Summary:** [docs/INTEGRATION_SUMMARY.md](docs/INTEGRATION_SUMMARY.md)
-- **nakhara Docs:** [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
+- **nakharax Docs:** [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakhara-io/nakhara-devtools/issues)
-- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakharax-io/nakharax-devtools/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
 - **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
@@ -651,5 +651,5 @@ MIT - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the nakhara protocol Team</sub>
+  <sub>Built with ❤️ by the nakharax protocol Team</sub>
 </p>

@@ -40,7 +40,7 @@
       },
       "targets": [
         {
-          "expr": "avg(rate(nakhara_blocks_produced_total[5m]))",
+          "expr": "avg(rate(nakharax_blocks_produced_total[5m]))",
           "legendFormat": "Blocks/min",
           "refId": "A"
         }
@@ -62,7 +62,7 @@
       "id": 2,
       "targets": [
         {
-          "expr": "avg(nakhara_peers_connected)",
+          "expr": "avg(nakharax_peers_connected)",
           "legendFormat": "Peers",
           "refId": "A"
         }
@@ -84,7 +84,7 @@
       "id": 3,
       "targets": [
         {
-          "expr": "avg(rate(nakhara_tx_submitted_total[5m]))",
+          "expr": "avg(rate(nakharax_tx_submitted_total[5m]))",
           "legendFormat": "Transactions/min",
           "refId": "A"
         }
@@ -96,7 +96,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["nakhara", "testnet"],
+  "tags": ["nakharax", "testnet"],
   "templating": {
     "list": []
   },
@@ -105,7 +105,7 @@
     "to": "now"
   },
   "timezone": "",
-  "title": "nakhara Testnet Overview",
+  "title": "nakharax Testnet Overview",
   "uid": "testnet-overview",
   "version": 1
 }

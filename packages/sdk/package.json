@@ -1,8 +1,8 @@
 {
-  "name": "@nakhara/sdk",
+  "name": "@nakharax/sdk",
   "version": "0.1.0",
   "private": true,
-  "description": "Typed JSON-RPC client + shared chain primitives for Nakhara Protocol.",
+  "description": "Typed JSON-RPC client + shared chain primitives for Nakharax Protocol.",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

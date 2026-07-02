@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# check-node-sync.sh — Compare local Nakhara node block height against a peer.
+# check-node-sync.sh — Compare local Nakharax node block height against a peer.
 #
 # Usage:
 #   ./scripts/check-node-sync.sh [LOCAL_RPC] [PEER_RPC] [LAG_THRESHOLD]

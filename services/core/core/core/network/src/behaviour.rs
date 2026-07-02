@@ -12,9 +12,9 @@ use std::time::Duration;
 
 use crate::config::NetworkConfig;
 
-/// nakhara network behaviour combining multiple libp2p protocols
+/// nakharax network behaviour combining multiple libp2p protocols
 #[derive(NetworkBehaviour)]
-pub struct NakharaBehaviour {
+pub struct NakharaxBehaviour {
     /// Gossipsub for message propagation
     pub gossipsub: gossipsub::Behaviour,
     /// mDNS for local peer discovery
@@ -29,7 +29,7 @@ pub struct NakharaBehaviour {
     pub autonat: libp2p::autonat::Behaviour,
 }
 
-impl NakharaBehaviour {
+impl NakharaxBehaviour {
     /// Create new network behaviour.
     /// Accepts the node's actual keypair so Gossipsub messages and Identify
     /// announcements are bound to the real node identity (not a throwaway key).
@@ -77,10 +77,10 @@ impl NakharaBehaviour {
         // Configure Identify
         let identify = identify::Behaviour::new(
             identify::Config::new(
-                format!("/nakhara/{}", config.protocol_version),
+                format!("/nakharax/{}", config.protocol_version),
                 keypair.public(),
             )
-            .with_agent_version(format!("nakhara-core/{}", config.protocol_version)),
+            .with_agent_version(format!("nakharax-core/{}", config.protocol_version)),
         );
 
         // Configure Ping
@@ -162,7 +162,7 @@ mod tests {
         let keypair = Keypair::generate_ed25519();
         let config = NetworkConfig::dev();
 
-        let behaviour = NakharaBehaviour::new(&keypair, &config);
+        let behaviour = NakharaxBehaviour::new(&keypair, &config);
         assert!(behaviour.is_ok());
     }
 }

@@ -65,9 +65,9 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: nakhara-binaries
+          name: nakharax-binaries
           path: |
-            target/release/nakharad
+            target/release/nakharaxd
             target/release/*.so
           retention-days: 7
 

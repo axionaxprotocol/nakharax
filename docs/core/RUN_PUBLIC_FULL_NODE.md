@@ -1,6 +1,6 @@
-# Run a public full node (Nakhara testnet)
+# Run a public full node (Nakharax testnet)
 
-Anyone with a Linux or macOS host (or WSL on Windows), a public IP, and open firewall ports can run **`nakhara-node`** in **`full`** mode and join the **public Nakhara testnet** (chain ID **86137**). No allowlist or special account is required.
+Anyone with a Linux or macOS host (or WSL on Windows), a public IP, and open firewall ports can run **`nakharax-node`** in **`full`** mode and join the **public Nakharax testnet** (chain ID **86137**). No allowlist or special account is required.
 
 ---
 
@@ -29,7 +29,7 @@ core/tools/genesis.json
 
 ```bash
 curl -fsSL -o genesis.json \
-  https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/core/tools/genesis.json
+  https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/core/tools/genesis.json
 ```
 
 Verify the file is JSON and contains `"chainId": 86137` (or `86137` under `config` per your file layout).
@@ -47,7 +47,7 @@ Testnet nodes use **libp2p** multiaddrs, for example:
 Set **one or more** (comma-separated, no spaces) in the environment variable:
 
 ```bash
-export NAKHARA_BOOTSTRAP_NODES="/ip4/.../tcp/30303/p2p/12D3KooW...,/ip4/.../tcp/30303/p2p/12D3KooW..."
+export NAKHARAX_BOOTSTRAP_NODES="/ip4/.../tcp/30303/p2p/12D3KooW...,/ip4/.../tcp/30303/p2p/12D3KooW..."
 ```
 
 **Where to get current values**
@@ -55,7 +55,7 @@ export NAKHARA_BOOTSTRAP_NODES="/ip4/.../tcp/30303/p2p/12D3KooW...,/ip4/.../tcp/
 1. **Repository list (preferred when maintained)** — file [PUBLIC_TESTNET_BOOTSTRAPS.txt](PUBLIC_TESTNET_BOOTSTRAPS.txt): non-comment lines are multiaddrs. Load them:
 
    ```bash
-   export NAKHARA_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
+   export NAKHARAX_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"
    ```
 
 2. **Maintainer export (preferred)** — run `ops/deploy/scripts/export-bootstrap-multiaddr.sh` on each validator host, then publish results into `docs/PUBLIC_TESTNET_BOOTSTRAPS.txt`.
@@ -64,7 +64,7 @@ export NAKHARA_BOOTSTRAP_NODES="/ip4/.../tcp/30303/p2p/12D3KooW...,/ip4/.../tcp/
 
 4. **Validator IPs (reference only)** — public validator endpoints are listed in [README.md](../README.md) (*Current Network (Testnet)*) and [NETWORK_NODES.md](../core/docs/NETWORK_NODES.md). You still need the **PeerId** (`12D3KooW…`) to build the full multiaddr.
 
-Without a valid `NAKHARA_BOOTSTRAP_NODES`, your node may start but **not** find the public chain.
+Without a valid `NAKHARAX_BOOTSTRAP_NODES`, your node may start but **not** find the public chain.
 
 ---
 
@@ -84,15 +84,15 @@ Without a valid `NAKHARA_BOOTSTRAP_NODES`, your node may start but **not** find 
 ## 5. Build the binary
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith/services/core/core
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith/services/core/core
 cargo build --release -p node
 ```
 
 Binary path:
 
 ```text
-target/release/nakhara-node
+target/release/nakharax-node
 ```
 
 ---
@@ -102,24 +102,24 @@ target/release/nakhara-node
 From the repository, use the bootstrap script (build → data directory → `run.sh` → optional systemd):
 
 ```bash
-cd nakhara-monolith/services/core/ops/deploy/scripts
-chmod +x nakhara-node-bootstrap.sh
+cd nakharax-monolith/services/core/ops/deploy/scripts
+chmod +x nakharax-node-bootstrap.sh
 
-./nakhara-node-bootstrap.sh build
+./nakharax-node-bootstrap.sh build
 
-export NAKHARA_BOOTSTRAP_NODES="<comma-separated-multiaddrs-from-section-3>"
+export NAKHARAX_BOOTSTRAP_NODES="<comma-separated-multiaddrs-from-section-3>"
 
-sudo ./nakhara-node-bootstrap.sh setup --role full --data-dir /var/lib/nakhara-node
+sudo ./nakharax-node-bootstrap.sh setup --role full --data-dir /var/lib/nakharax-node
 
-sudo ./nakhara-node-bootstrap.sh run --data-dir /var/lib/nakhara-node
+sudo ./nakharax-node-bootstrap.sh run --data-dir /var/lib/nakharax-node
 ```
 
 For a **system service**:
 
 ```bash
-sudo ./nakhara-node-bootstrap.sh install-systemd --data-dir /var/lib/nakhara-node
-sudo systemctl start nakhara-node
-sudo systemctl status nakhara-node
+sudo ./nakharax-node-bootstrap.sh install-systemd --data-dir /var/lib/nakharax-node
+sudo systemctl start nakharax-node
+sudo systemctl status nakharax-node
 ```
 
 Reference: [README-NODE-RUNTIME.md](../ops/deploy/scripts/README-NODE-RUNTIME.md), [VPS_FULL_NODE_RUNBOOK.md](../ops/deploy/VPS_FULL_NODE_RUNBOOK.md).
@@ -141,7 +141,7 @@ Expect `"result":"0x15079"`. Compare block height with the public endpoint (read
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakhara.io
+  https://rpc.nakharaxx.io
 ```
 
 Heights should move toward the same network over time once peers connect.
@@ -149,7 +149,7 @@ Heights should move toward the same network over time once peers connect.
 Script:
 
 ```bash
-./nakhara-node-bootstrap.sh doctor --rpc http://127.0.0.1:8545
+./nakharax-node-bootstrap.sh doctor --rpc http://127.0.0.1:8545
 ```
 
 ---
@@ -158,7 +158,7 @@ Script:
 
 | Endpoint | Role |
 |----------|------|
-| `https://rpc.nakhara.io` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
+| `https://rpc.nakharaxx.io` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
 | Your node’s `:8545` | Your own RPC after sync — under **your** security and rate limits |
 
 Running a full node does **not** replace the public RPC URL in MetaMask unless you choose to point MetaMask at **your** server.
@@ -167,7 +167,7 @@ Running a full node does **not** replace the public RPC URL in MetaMask unless y
 
 ## 9. Docker (optional)
 
-If you use a published container image instead of building from source, follow the same **genesis** and **`NAKHARA_BOOTSTRAP_NODES`** rules as in [environments/testnet/public/docker-compose.yaml](../ops/deploy/environments/testnet/public/docker-compose.yaml) (`--chain` volume, env for bootstraps). Image tags and registry are defined in that stack.
+If you use a published container image instead of building from source, follow the same **genesis** and **`NAKHARAX_BOOTSTRAP_NODES`** rules as in [environments/testnet/public/docker-compose.yaml](../ops/deploy/environments/testnet/public/docker-compose.yaml) (`--chain` volume, env for bootstraps). Image tags and registry are defined in that stack.
 
 ---
 
@@ -184,4 +184,4 @@ cd ops/deploy/scripts
 
 ---
 
-*Canonical public full-node guide for nakhara-monolith.*
+*Canonical public full-node guide for nakharax-monolith.*

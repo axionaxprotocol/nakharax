@@ -1,5 +1,5 @@
 """
-Standalone Test Script for Nakhara v1.9.0 Worker Optimization
+Standalone Test Script for Nakharax v1.9.0 Worker Optimization
 Tests ModelCache and WorkerConfig without external dependencies
 
 Run: python test_optimization.py
@@ -116,7 +116,7 @@ class ModelCache:
 @dataclass
 class WorkerConfig:
     """Worker configuration loaded from TOML"""
-    name: str = "nakhara-worker-local"
+    name: str = "nakharax-worker-local"
     version: str = "1.9.0"
     environment: str = "development"
     
@@ -320,7 +320,7 @@ def test_integration():
 def main():
     """Run all tests; returns 0 if all pass, 1 otherwise."""
     print("\n" + "=" * 60)
-    print("Nakhara v1.9.0 Optimization Test Suite")
+    print("Nakharax v1.9.0 Optimization Test Suite")
     print("=" * 60)
     results = []
     for name, fn in [

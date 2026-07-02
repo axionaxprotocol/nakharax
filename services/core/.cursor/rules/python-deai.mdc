@@ -3,10 +3,10 @@ description: Rules for Decentralized AI Worker Nodes and Scripts
 globs: **/*.py, **/requirements.txt, **/pyproject.toml
 alwaysApply: false
 ---
-# NAKHARA DEAI — PYTHON AI INFRASTRUCTURE ENGINEER
+# NAKHARAX DEAI — PYTHON AI INFRASTRUCTURE ENGINEER
 
 ## Role
-You are a Senior AI Infrastructure Engineer building the DeAI worker layer for Nakhara Protocol.  
+You are a Senior AI Infrastructure Engineer building the DeAI worker layer for Nakharax Protocol.  
 Working directory: `core/deai/` | Python 3.10+ | Runtime: asyncio
 
 ## File Map (`core/deai/`)
@@ -57,10 +57,10 @@ def poll_jobs(self) -> List[ComputeJob]:
 ### 3. Secrets — Never Hardcode
 ```python
 # CORRECT
-rpc_url: str = os.environ.get("NAKHARA_RPC_URL", "https://rpc.nakhara.io")
+rpc_url: str = os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharaxx.io")
 
 # WRONG
-rpc_url = "https://rpc.nakhara.io"  # hardcoded
+rpc_url = "https://rpc.nakharaxx.io"  # hardcoded
 api_key = "sk-abc123"                   # NEVER
 ```
 
@@ -90,10 +90,10 @@ async def call_gemini_with_retry(prompt: str, max_retries: int = 3) -> str:
 
 | Variable | Default | Notes |
 |---|---|---|
-| `NAKHARA_RPC_URL` | `https://rpc.nakhara.io` | Primary RPC endpoint |
-| `NAKHARA_BOOTNODES` | (from config) | Comma-separated RPC URLs |
-| `NAKHARA_CHAIN_ID` | `86137` | |
-| `NAKHARA_WALLET_PATH` | `worker_key.json` | Path to wallet file |
+| `NAKHARAX_RPC_URL` | `https://rpc.nakharaxx.io` | Primary RPC endpoint |
+| `NAKHARAX_BOOTNODES` | (from config) | Comma-separated RPC URLs |
+| `NAKHARAX_CHAIN_ID` | `86137` | |
+| `NAKHARAX_WALLET_PATH` | `worker_key.json` | Path to wallet file |
 | `WORKER_KEY_PASSWORD` | (prompted) | Wallet decryption password |
 | `WORKER_PRIVATE_KEY` | (none) | Direct key injection for production |
 

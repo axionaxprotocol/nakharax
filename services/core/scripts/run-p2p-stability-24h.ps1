@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
   Full DoD P2P stability window from the monorepo root (Windows PowerShell).
-  Optional: $env:NAKHARA_P2P_WEBHOOK = '<discord-url>' before running.
+  Optional: $env:NAKHARAX_P2P_WEBHOOK = '<discord-url>' before running.
 #>
 $ErrorActionPreference = "Stop"
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
@@ -14,7 +14,7 @@ $pyArgs = @(
   "--interval-seconds", "30",
   "--output-root", "services/core/reports"
 )
-if ($env:NAKHARA_P2P_WEBHOOK) {
-  $pyArgs += @("--webhook", $env:NAKHARA_P2P_WEBHOOK)
+if ($env:NAKHARAX_P2P_WEBHOOK) {
+  $pyArgs += @("--webhook", $env:NAKHARAX_P2P_WEBHOOK)
 }
 python @pyArgs

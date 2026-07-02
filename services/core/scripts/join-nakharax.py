@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Nakhara Node — Check suitability, select node type, and run immediately
+Nakharax Node — Check suitability, select node type, and run immediately
 
 Anyone who wants to join as a node: download the project package and run this script
 to check machine suitability and easily select a node type (Worker PC, Scout, HYDRA)
 
 Usage:
-  python scripts/join-nakhara.py              # interactive mode
-  python scripts/join-nakhara.py --check-only # suitability check only
-  python scripts/join-nakhara.py --type worker  # select type and run (worker | scout | hydra)
+  python scripts/join-nakharax.py              # interactive mode
+  python scripts/join-nakharax.py --check-only # suitability check only
+  python scripts/join-nakharax.py --type worker  # select type and run (worker | scout | hydra)
 """
 
 import os
@@ -61,7 +61,7 @@ def check_deps():
 def check_network():
     """Check RPC from main config or env"""
     os.chdir(ROOT)
-    rpc_url = os.environ.get("NAKHARA_RPC_URL", "").strip()
+    rpc_url = os.environ.get("NAKHARAX_RPC_URL", "").strip()
     if not rpc_url:
         try:
             cfg = ROOT / "core" / "deai" / "worker_config.toml"
@@ -74,7 +74,7 @@ def check_network():
         except Exception:
             pass
     if not rpc_url:
-        print("  \u26a0\ufe0f RPC URL not found (set NAKHARA_RPC_URL or [network] bootnodes in config)")
+        print("  \u26a0\ufe0f RPC URL not found (set NAKHARAX_RPC_URL or [network] bootnodes in config)")
         return False
     try:
         import requests
@@ -126,7 +126,7 @@ def run_node(command: str) -> None:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="Nakhara Node \u2014 Check suitability and select node type")
+    ap = argparse.ArgumentParser(description="Nakharax Node \u2014 Check suitability and select node type")
     ap.add_argument("--check-only", action="store_true", help="Suitability check only, no type selection")
     ap.add_argument("--type", choices=["worker", "scout", "hydra"], help="Select node type directly (no prompt)")
     ap.add_argument("--no-start", action="store_true", help="Don't start node after verify \u2014 just show the command")
@@ -135,7 +135,7 @@ def main():
     os.chdir(ROOT)
 
     print("=" * 60)
-    print("  Nakhara Node \u2014 Check suitability and select node type")
+    print("  Nakharax Node \u2014 Check suitability and select node type")
     print("=" * 60)
 
     # 1) Check suitability

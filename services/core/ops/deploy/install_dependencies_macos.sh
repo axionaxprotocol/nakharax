@@ -1,10 +1,10 @@
 #!/bin/bash
-# Nakhara SDK TypeScript - macOS Installation Script
+# Nakharax SDK TypeScript - macOS Installation Script
 
 set -e
 
 echo "================================================"
-echo "Nakhara SDK TypeScript - macOS Installer"
+echo "Nakharax SDK TypeScript - macOS Installer"
 echo "================================================"
 
 GREEN='\033[0;32m'

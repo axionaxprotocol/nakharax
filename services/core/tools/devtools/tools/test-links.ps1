@@ -1,5 +1,5 @@
 # =====================================================
-# Nakhara Link Validation Script
+# Nakharax Link Validation Script
 # Tests all inter-repository links and documentation
 # =====================================================
 
@@ -16,7 +16,7 @@ $FixedLinks = 0
 $Warnings = 0
 
 Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "  Nakhara Link Validation Script v1.0" -ForegroundColor Cyan
+Write-Host "  Nakharax Link Validation Script v1.0" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 $startTime = Get-Date
@@ -28,15 +28,15 @@ $startTime = Get-Date
 Write-Host "`n[1] Testing Repository Structure..." -ForegroundColor Yellow
 
 $repos = @(
-    "nakhara-core",
-    "nakhara-deploy", 
-    "nakhara-devtools",
-    "nakhara-docs",
-    "nakhara-marketplace",
-    "nakhara-sdk-ts",
-    "nakhara-web",
-    "nakhara-phase1",
-    "nakhara-io",
+    "nakharax-core",
+    "nakharax-deploy", 
+    "nakharax-devtools",
+    "nakharax-docs",
+    "nakharax-marketplace",
+    "nakharax-sdk-ts",
+    "nakharax-web",
+    "nakharax-phase1",
+    "nakharax-io",
     "issue-manager"
 )
 
@@ -77,7 +77,7 @@ foreach ($repo in $repos) {
 Write-Host "`n[2] Testing Cross-Repository Links..." -ForegroundColor Yellow
 
 $repoFolders = Get-ChildItem $PSScriptRoot -Directory | Where-Object { 
-    $_.Name -match '^nakhara-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'nakhara-io'
+    $_.Name -match '^nakharax-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'nakharax-io'
 }
 
 foreach ($repo in $repoFolders) {
@@ -138,7 +138,7 @@ foreach ($repo in $repoFolders) {
 Write-Host "`n[3] Testing Documentation Consistency..." -ForegroundColor Yellow
 
 $repos = Get-ChildItem $PSScriptRoot -Directory | Where-Object { 
-    $_.Name -match '^nakhara-'
+    $_.Name -match '^nakharax-'
 }
 
 foreach ($repo in $repos) {
@@ -148,12 +148,12 @@ foreach ($repo in $repos) {
         $content = Get-Content $readmePath -Raw
         
         # Check for inconsistent branding
-        $nakharaCount = ([regex]::Matches($content, '\bNakhara\b')).Count
-        $nakharaCapCount = ([regex]::Matches($content, '\bNakhara\b')).Count
+        $nakharaxCount = ([regex]::Matches($content, '\bNakharax\b')).Count
+        $nakharaxCapCount = ([regex]::Matches($content, '\bNakharax\b')).Count
         
-        if ($nakharaCount -gt 0 -or $nakharaCapCount -gt 0) {
+        if ($nakharaxCount -gt 0 -or $nakharaxCapCount -gt 0) {
             Write-Host "  [WARN] Inconsistent branding in $($repo.Name)" -ForegroundColor Yellow
-            Write-Host "         Nakhara: $nakharaCount, Nakhara: $nakharaCapCount" -ForegroundColor Gray
+            Write-Host "         Nakharax: $nakharaxCount, Nakharax: $nakharaxCapCount" -ForegroundColor Gray
             $Warnings++
         } else {
             Write-Host "  [OK] $($repo.Name) branding consistent" -ForegroundColor Green
@@ -167,7 +167,7 @@ foreach ($repo in $repos) {
 
 Write-Host "`n[4] Testing Website Links..." -ForegroundColor Yellow
 
-$webPath = Join-Path $PSScriptRoot "nakhara-web"
+$webPath = Join-Path $PSScriptRoot "nakharax-web"
 
 if (Test-Path $webPath) {
     Write-Host "  [OK] Website repository found" -ForegroundColor Green
@@ -178,16 +178,16 @@ if (Test-Path $webPath) {
         $content = Get-Content $indexPath -Raw
         
         # Count GitHub links
-        $githubLinks = ([regex]::Matches($content, 'github\.com/nakhara-io')).Count
+        $githubLinks = ([regex]::Matches($content, 'github\.com/nakharax-io')).Count
         Write-Host "       Found $githubLinks GitHub repository links" -ForegroundColor Gray
         
         # Check for branding
-        $nakharaCount = ([regex]::Matches($content, '\bNakhara\b')).Count
-        if ($nakharaCount -gt 0) {
-            Write-Host "       [WARN] Found $nakharaCount instances of 'Nakhara' (should be 'nakhara')" -ForegroundColor Yellow
+        $nakharaxCount = ([regex]::Matches($content, '\bNakharax\b')).Count
+        if ($nakharaxCount -gt 0) {
+            Write-Host "       [WARN] Found $nakharaxCount instances of 'Nakharax' (should be 'nakharax')" -ForegroundColor Yellow
             $Warnings++
         } else {
-            Write-Host "       Branding consistent (nakhara)" -ForegroundColor Gray
+            Write-Host "       Branding consistent (nakharax)" -ForegroundColor Gray
         }
     }
 } else {
@@ -297,7 +297,7 @@ Write-Host "`nExecution Time:      $([math]::Round($duration, 2)) seconds" -Fore
 
 # Save results to file
 $results = @"
-Nakhara Link Validation Results
+Nakharax Link Validation Results
 Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 Duration: $([math]::Round($duration, 2)) seconds
 

@@ -1,8 +1,8 @@
-# Architecture Overview — Nakhara Core Universe
+# Architecture Overview — Nakharax Core Universe
 
 Single entry point for **how the protocol is structured** in this repository: layers from users down to hardware, where code lives, and which docs to read next.
 
-**Audience:** engineers onboarding to `nakhara-monolith`, reviewers, and operators who need a map before diving into RPC specs or runbooks.
+**Audience:** engineers onboarding to `nakharax-monolith`, reviewers, and operators who need a map before diving into RPC specs or runbooks.
 
 ---
 
@@ -33,7 +33,7 @@ Single entry point for **how the protocol is structured** in this repository: la
 | List of Rust workspace crates | Full API signatures → [API_REFERENCE.md](./API_REFERENCE.md) |
 | **Production readiness checklist** | [§12](#12-production-code--deployment-readiness) + linked runbooks / audit docs |
 
-Canonical doc index for the whole repo: [NAKHARA_BIBLE.md](../../docs/NAKHARA_BIBLE.md).
+Canonical doc index for the whole repo: [NAKHARAX_BIBLE.md](../../docs/NAKHARAX_BIBLE.md).
 
 ---
 
@@ -56,7 +56,7 @@ Traffic flows **down** from clients; trust and execution anchor in **Rust core**
 ### 2.2 Ecosystem diagram
 
 ```
-                         NAKHARA ECOSYSTEM (clients & services)
+                         NAKHARAX ECOSYSTEM (clients & services)
 ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐
 │ Web / dApps│ │ Marketplace│ │ Explorer   │ │ Faucet     │
 └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘
@@ -133,13 +133,13 @@ Top-level map of **this monorepo** (paths relative to repo root).
 | `core/photonic/` | Photonic / MK-II research notes (not a Cargo workspace member) |
 | `ops/deploy/` | Dockerfiles, compose, nginx, monitoring, **public testnet:** `environments/testnet/public/` |
 | `scripts/` | Readiness scripts, `load_test/`, optimize suite, security helpers |
-| `docs/` | Launch, MetaMask, readiness, [NAKHARA_BIBLE.md](../../docs/NAKHARA_BIBLE.md) |
+| `docs/` | Launch, MetaMask, readiness, [NAKHARAX_BIBLE.md](../../docs/NAKHARAX_BIBLE.md) |
 | `reports/` | Generated readiness / benchmark outputs (when committed or local) |
 | `configs/` | Monolith / HYDRA sentinel & worker TOML examples |
 | `tools/` | Root-level devtools (Python, analysis) |
 | `hydra_manager.py` | HYDRA dual-core controller (MK-I tooling) |
 
-**Build tip:** Node binary is built from workspace package `node` → `nakhara-node`. Image build: `ops/deploy/Dockerfile` with context `core/`.
+**Build tip:** Node binary is built from workspace package `node` → `nakharax-node`. Image build: `ops/deploy/Dockerfile` with context `core/`.
 
 ---
 
@@ -156,7 +156,7 @@ Defined in `core/Cargo.toml`: **18 protocol crates** in `core/core/`, plus **`br
 | `crypto` | Primitives; **ECVRF** (schnorrkel) on production VRF paths |
 | `network` | libp2p, gossip, capabilities (ASR / Monolith hints) |
 | `state` | Persistent state (redb-backed storage) |
-| `node` | Binary `nakhara-node` — wires network, state, RPC, roles |
+| `node` | Binary `nakharax-node` — wires network, state, RPC, roles |
 | `rpc` | JSON-RPC server, health, metrics hooks |
 | `config` | Configuration loading |
 
@@ -212,7 +212,7 @@ Sizing (CPU/RAM/disk): [NODE_SPECS.md](./NODE_SPECS.md).
 
 ## 6. Consensus architecture (PoPC)
 
-Nakhara uses **Proof-of-Probabilistic-Checking (PoPC)** as its primary consensus mechanism, purpose-built for verifying DeAI compute jobs without re-executing the full workload.
+Nakharax uses **Proof-of-Probabilistic-Checking (PoPC)** as its primary consensus mechanism, purpose-built for verifying DeAI compute jobs without re-executing the full workload.
 
 ### 6.1 PoPC vs traditional consensus
 
@@ -435,7 +435,7 @@ This section maps **how “production-ready” is defined in this repo** and whe
 
 | Area | What to run / expect |
 |------|----------------------|
-| **Rust release binary** | From `core/`: `cargo build --release -p node` → `nakhara-node` (used in Docker and VPS scripts). |
+| **Rust release binary** | From `core/`: `cargo build --release -p node` → `nakharax-node` (used in Docker and VPS scripts). |
 | **CI** | Root [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml): fmt, clippy, tests, audit (paths under `core/`). |
 | **Python (DeAI)** | From `core/deai/`: `pytest`; use env-based secrets, not committed keys ([`core/deai/README.md`](../deai/README.md) patterns). |
 | **Docker image** | [`ops/deploy/Dockerfile`](../../ops/deploy/Dockerfile), build context **`core/`** — matches public testnet redeploy flow. |
@@ -530,7 +530,7 @@ Operational hardening (firewall, TLS, rate limits, backups) is **environment-spe
 
 | Doc | Topic |
 |-----|--------|
-| [NAKHARA_BIBLE.md](../../docs/NAKHARA_BIBLE.md) | All books / entry points |
+| [NAKHARAX_BIBLE.md](../../docs/NAKHARAX_BIBLE.md) | All books / entry points |
 
 ---
 

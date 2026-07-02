@@ -1,9 +1,9 @@
-# Nakhara DevTools - Scripts Organization
+# Nakharax DevTools - Scripts Organization
 
 ## 📁 Directory Structure
 
 ```
-nakhara-devtools/
+nakharax-devtools/
 ├── scripts/
 │   ├── testing/
 │   │   ├── testnet_readiness_checker.py  # Main readiness validation
@@ -146,7 +146,7 @@ python scripts/fixing/fix_protocol_names.py
 
 **Actions:**
 - Scans for inconsistent protocol names
-- Applies standardized naming (Nakhara)
+- Applies standardized naming (Nakharax)
 - Updates imports and references
 
 ### Create Genesis Block
@@ -170,14 +170,14 @@ For detailed guides, see:
 
 ## 🔗 Related Repositories
 
-- **nakhara-core**: Core protocol implementation
-- **nakhara-deploy**: Deployment scripts and configs
-- **nakhara-sdk-ts**: TypeScript SDK
-- **nakhara-docs**: Documentation and guides
+- **nakharax-core**: Core protocol implementation
+- **nakharax-deploy**: Deployment scripts and configs
+- **nakharax-sdk-ts**: TypeScript SDK
+- **nakharax-docs**: Documentation and guides
 
 ## 🆘 Support
 
 For issues or questions:
 1. Check [TESTNET_READINESS_GUIDE.md](docs/TESTNET_READINESS_GUIDE.md)
 2. Review [REPOSITORY_FLOW.md](docs/REPOSITORY_FLOW.md)
-3. Open issue in nakhara-devtools repository
+3. Open issue in nakharax-devtools repository

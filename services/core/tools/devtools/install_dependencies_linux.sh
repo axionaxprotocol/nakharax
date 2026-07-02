@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# nakhara Dependency Installer for Linux
+# nakharax Dependency Installer for Linux
 # Supports: Ubuntu/Debian, CentOS/RHEL, Arch, Alpine
 #
 
@@ -31,7 +31,7 @@ detect_os() {
 }
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   nakhara Dependency Installer${NC}"
+echo -e "${BLUE}   nakharax Dependency Installer${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
@@ -347,8 +347,8 @@ echo -e "${YELLOW}Next Steps:${NC}"
 echo ""
 echo "1. Logout and login again (for docker group)"
 echo "2. Verify Rust: ${BLUE}rustc --version${NC}"
-echo "3. Clone repository: ${BLUE}git clone https://github.com/nakhara-io/nakhara-core.git${NC}"
-echo "4. Build project: ${BLUE}cd nakhara-core && cargo build --release${NC}"
+echo "3. Clone repository: ${BLUE}git clone https://github.com/nakharax-io/nakharax-core.git${NC}"
+echo "4. Build project: ${BLUE}cd nakharax-core && cargo build --release${NC}"
 echo ""
 echo -e "${YELLOW}Deploy Services:${NC}"
 echo "  • RPC Node: ${BLUE}bash scripts/setup_rpc_node.sh${NC}"

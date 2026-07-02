@@ -1,8 +1,8 @@
 /**
- * Nakhara SDK - Staking Types
+ * Nakharax SDK - Staking Types
  * 
  * Copy this file to: packages/sdk/src/types/staking.ts
- * For use in @nakhara/sdk
+ * For use in @nakharax/sdk
  */
 
 // =============================================================================

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fix Critical Issues in nakhara Repositories
+Fix Critical Issues in nakharax Repositories
 """
 
 import os
@@ -23,19 +23,19 @@ def remove_bom_from_file(file_path):
         return False, f"Error: {str(e)}"
 
 def fix_package_json_dependency(file_path, use_workspace=True):
-    """Fix @nakhara/sdk dependency to use local workspace"""
+    """Fix @nakharax/sdk dependency to use local workspace"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        # Check if @nakhara/sdk exists in dependencies
-        if 'dependencies' in data and '@nakhara/sdk' in data['dependencies']:
+        # Check if @nakharax/sdk exists in dependencies
+        if 'dependencies' in data and '@nakharax/sdk' in data['dependencies']:
             if use_workspace:
                 # Use workspace protocol
-                data['dependencies']['@nakhara/sdk'] = 'workspace:*'
+                data['dependencies']['@nakharax/sdk'] = 'workspace:*'
             else:
                 # Use file path
-                data['dependencies']['@nakhara/sdk'] = 'file:../nakhara-sdk-ts'
+                data['dependencies']['@nakharax/sdk'] = 'file:../nakharax-sdk-ts'
         
         # Write back
         with open(file_path, 'w', encoding='utf-8', newline='\n') as f:
@@ -49,22 +49,22 @@ def fix_package_json_dependency(file_path, use_workspace=True):
 def create_workspace_package_json(base_path):
     """Create root package.json for workspace"""
     package_json = {
-        "name": "nakhara-monorepo",
+        "name": "nakharax-monorepo",
         "version": "1.0.0",
         "private": True,
         "workspaces": [
-            "nakhara-sdk-ts",
-            "nakhara-web",
-            "nakhara-marketplace"
+            "nakharax-sdk-ts",
+            "nakharax-web",
+            "nakharax-marketplace"
         ],
         "scripts": {
             "install-all": "npm install",
             "build-all": "npm run build --workspaces",
-            "build:sdk": "npm run build -w nakhara-sdk-ts",
-            "build:web": "npm run build -w nakhara-web",
-            "build:marketplace": "npm run build -w nakhara-marketplace",
-            "dev:web": "npm run dev -w nakhara-web",
-            "dev:marketplace": "npm run dev -w nakhara-marketplace"
+            "build:sdk": "npm run build -w nakharax-sdk-ts",
+            "build:web": "npm run build -w nakharax-web",
+            "build:marketplace": "npm run build -w nakharax-marketplace",
+            "dev:web": "npm run dev -w nakharax-web",
+            "dev:marketplace": "npm run dev -w nakharax-marketplace"
         },
         "devDependencies": {
             "typescript": "^5.4.0"
@@ -84,7 +84,7 @@ def create_workspace_package_json(base_path):
 def main():
     base_path = Path(os.getcwd())
     
-    print("🔧 Fixing Critical Issues in nakhara Repositories")
+    print("🔧 Fixing Critical Issues in nakharax Repositories")
     print("=" * 80)
     print()
     
@@ -96,8 +96,8 @@ def main():
     print("-" * 80)
     
     files_to_fix = [
-        base_path / 'nakhara-marketplace' / 'package.json',
-        base_path / 'nakhara-deploy' / 'package.json'
+        base_path / 'nakharax-marketplace' / 'package.json',
+        base_path / 'nakharax-deploy' / 'package.json'
     ]
     
     for file_path in files_to_fix:
@@ -133,13 +133,13 @@ def main():
     
     print()
     
-    # Issue 3: Fix @nakhara/sdk dependencies
-    print("📝 Issue 3: Fixing @nakhara/sdk dependencies")
+    # Issue 3: Fix @nakharax/sdk dependencies
+    print("📝 Issue 3: Fixing @nakharax/sdk dependencies")
     print("-" * 80)
     
     repos_with_sdk = [
-        base_path / 'nakhara-web' / 'package.json',
-        base_path / 'nakhara-marketplace' / 'package.json'
+        base_path / 'nakharax-web' / 'package.json',
+        base_path / 'nakharax-marketplace' / 'package.json'
     ]
     
     for file_path in repos_with_sdk:
@@ -157,24 +157,24 @@ def main():
     print()
     
     # Issue 4: Check Cargo.toml (informational only)
-    print("📝 Issue 4: Checking Cargo.toml in nakhara-core")
+    print("📝 Issue 4: Checking Cargo.toml in nakharax-core")
     print("-" * 80)
     
-    cargo_toml = base_path / 'nakhara-core' / 'Cargo.toml'
+    cargo_toml = base_path / 'nakharax-core' / 'Cargo.toml'
     if cargo_toml.exists():
         with open(cargo_toml, 'r', encoding='utf-8') as f:
             content = f.read()
         
         if '[workspace]' in content:
-            print("✅ nakhara-core/Cargo.toml is correctly configured as workspace")
+            print("✅ nakharax-core/Cargo.toml is correctly configured as workspace")
             print("   This is the expected configuration for multi-crate projects")
         elif '[package]' in content:
-            print("✅ nakhara-core/Cargo.toml has [package] section")
+            print("✅ nakharax-core/Cargo.toml has [package] section")
         else:
-            print("⚠️  nakhara-core/Cargo.toml structure unclear")
+            print("⚠️  nakharax-core/Cargo.toml structure unclear")
             print("   Please verify manually")
     else:
-        print("⏭️  nakhara-core/Cargo.toml not found")
+        print("⏭️  nakharax-core/Cargo.toml not found")
     
     print()
     print("=" * 80)

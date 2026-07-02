@@ -1,5 +1,5 @@
 """
-nakhara DeAI - Simple CPU Training Test
+nakharax DeAI - Simple CPU Training Test
 Windows Local Worker Node
 """
 
@@ -14,7 +14,7 @@ from datetime import datetime
 # Use CPU
 device = torch.device("cpu")
 print("="*60)
-print("🚀 nakhara DeAI - CPU Training Test")
+print("🚀 nakharax DeAI - CPU Training Test")
 print("="*60)
 print(f"🔧 Using device: {device}")
 print(f"📊 PyTorch version: {torch.__version__}")
@@ -119,5 +119,5 @@ print("✅ Training Complete!")
 print("="*60)
 print(f"💻 Local Windows Worker Node is ready!")
 print(f"🎯 Final test accuracy: {test_acc:.2f}%")
-print(f"\n💡 Next: Connect to nakhara network")
+print(f"\n💡 Next: Connect to nakharax network")
 print("="*60)

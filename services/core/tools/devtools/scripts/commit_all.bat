@@ -6,7 +6,7 @@ echo Committing refactor changes in all repositories
 echo ============================================================
 echo.
 
-set REPOS=nakhara-marketplace nakhara-docs nakhara-deploy nakhara-devtools
+set REPOS=nakharax-marketplace nakharax-docs nakharax-deploy nakharax-devtools
 
 for %%r in (%REPOS%) do (
     echo.

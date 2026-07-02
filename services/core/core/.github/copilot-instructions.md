@@ -1,5 +1,5 @@
-# Nakhara Core - Copilot Instructions
-# Project: Nakhara L1 Blockchain (Multi-Language Architecture)
+# Nakharax Core - Copilot Instructions
+# Project: Nakharax L1 Blockchain (Multi-Language Architecture)
 
 ## 🤖 MODEL SELECTION STRATEGY
 - **For Rust (`.rs`):** SWITCH TO **Claude 4.5 Sonnet**. It understands ownership/borrowing better.

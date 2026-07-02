@@ -1,6 +1,6 @@
 # Quick Start Guide 🚀
 
-Get up and running with Nakhara Web Universe in 5 minutes!
+Get up and running with Nakharax Web Universe in 5 minutes!
 
 ---
 
@@ -27,8 +27,8 @@ Optional:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith
 ```
 
 ### 2️⃣ Install Dependencies
@@ -53,8 +53,8 @@ nano .env
 
 ```bash
 CHAIN_ID=86137
-NETWORK_NAME=nakhara-testnet-1
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakhara.io
+NETWORK_NAME=nakharax-testnet-1
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharaxx.io
 ```
 
 ### 4️⃣ Start Development Servers
@@ -78,13 +78,13 @@ This will start:
 
 ```bash
 # Web application only
-pnpm --filter @nakhara/web dev
+pnpm --filter @nakharax/web dev
 
 # Marketplace only
-pnpm --filter @nakhara/marketplace dev
+pnpm --filter @nakharax/marketplace dev
 
 # SDK development
-pnpm --filter @nakhara/sdk dev
+pnpm --filter @nakharax/sdk dev
 ```
 
 ### Option B: Run All Apps (Recommended)
@@ -156,7 +156,7 @@ pnpm docker:logs      # View Docker logs
 ## 📁 Project Structure
 
 ```
-nakhara-monolith/
+nakharax-monolith/
 ├── 📱 apps/
 │   ├── web/              # Next.js website
 │   ├── marketplace/      # React marketplace
@@ -200,7 +200,7 @@ After starting the development servers:
 
 ### 1. Check Web App
 
-Open http://localhost:3000 in your browser. You should see the Nakhara homepage.
+Open http://localhost:3000 in your browser. You should see the Nakharax homepage.
 
 ### 2. Test RPC Connection
 
@@ -236,16 +236,16 @@ All tests should pass ✅
 4. Enter details:
 
 ```
-Network Name: Nakhara Testnet
-RPC URL: https://testnet-rpc.nakhara.io
+Network Name: Nakharax Testnet
+RPC URL: https://testnet-rpc.nakharaxx.io
 Chain ID: 86137
 Currency Symbol: NAK
-Block Explorer: https://explorer.nakhara.io
+Block Explorer: https://explorer.nakharaxx.io
 ```
 
 ### Get Test Tokens
 
-Visit the faucet: https://faucet.nakhara.io
+Visit the faucet: https://faucet.nakharaxx.io
 
 Enter your wallet address and claim 10 NAK (once per 24 hours).
 
@@ -326,10 +326,10 @@ Now that you're set up:
 
 Need help? We're here:
 
-- **Discord**: https://discord.gg/nakhara (#dev-help)
+- **Discord**: https://discord.gg/nakharax (#dev-help)
 - **GitHub Discussions**: Ask questions
 - **GitHub Issues**: Report bugs
-- **Documentation**: https://docs.nakhara.io
+- **Documentation**: https://docs.nakharaxx.io
 
 ---
 

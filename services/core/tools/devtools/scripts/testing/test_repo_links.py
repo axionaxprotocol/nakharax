@@ -25,38 +25,38 @@ class RepoLinkTester:
     def __init__(self, workspace_root: str):
         self.workspace_root = Path(workspace_root)
         self.repos = {
-            'nakhara-core': {
-                'path': self.workspace_root / 'nakhara-core',
+            'nakharax-core': {
+                'path': self.workspace_root / 'nakharax-core',
                 'type': 'rust',
                 'dependencies': []
             },
-            'nakhara-sdk-ts': {
-                'path': self.workspace_root / 'nakhara-sdk-ts',
+            'nakharax-sdk-ts': {
+                'path': self.workspace_root / 'nakharax-sdk-ts',
                 'type': 'typescript',
                 'dependencies': []
             },
-            'nakhara-web': {
-                'path': self.workspace_root / 'nakhara-web',
+            'nakharax-web': {
+                'path': self.workspace_root / 'nakharax-web',
                 'type': 'typescript',
-                'dependencies': ['@nakhara/sdk']
+                'dependencies': ['@nakharax/sdk']
             },
-            'nakhara-marketplace': {
-                'path': self.workspace_root / 'nakhara-marketplace',
+            'nakharax-marketplace': {
+                'path': self.workspace_root / 'nakharax-marketplace',
                 'type': 'typescript',
-                'dependencies': ['@nakhara/sdk']
+                'dependencies': ['@nakharax/sdk']
             },
-            'nakhara-docs': {
-                'path': self.workspace_root / 'nakhara-docs',
+            'nakharax-docs': {
+                'path': self.workspace_root / 'nakharax-docs',
                 'type': 'documentation',
                 'dependencies': []
             },
-            'nakhara-deploy': {
-                'path': self.workspace_root / 'nakhara-deploy',
+            'nakharax-deploy': {
+                'path': self.workspace_root / 'nakharax-deploy',
                 'type': 'deployment',
-                'dependencies': ['@nakhara/sdk']
+                'dependencies': ['@nakharax/sdk']
             },
-            'nakhara-devtools': {
-                'path': self.workspace_root / 'nakhara-devtools',
+            'nakharax-devtools': {
+                'path': self.workspace_root / 'nakharax-devtools',
                 'type': 'tools',
                 'dependencies': []
             }
@@ -72,7 +72,7 @@ class RepoLinkTester:
     def print_header(self):
         """Print report header"""
         print(f"\n{BOLD}{'='*80}{RESET}")
-        print(f"{BOLD}{BLUE}NAKHARA REPOSITORY DIRECT LINK TEST{RESET}")
+        print(f"{BOLD}{BLUE}NAKHARAX REPOSITORY DIRECT LINK TEST{RESET}")
         print(f"{BOLD}{'='*80}{RESET}")
         print(f"Test time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Workspace: {self.workspace_root}")
@@ -99,14 +99,14 @@ class RepoLinkTester:
             dev_dependencies = package_data.get('devDependencies', {})
             all_deps = {**dependencies, **dev_dependencies}
             
-            # Check @nakhara/sdk dependencies
-            nakhara_deps = {k: v for k, v in all_deps.items() if '@nakhara' in k}
+            # Check @nakharax/sdk dependencies
+            nakharax_deps = {k: v for k, v in all_deps.items() if '@nakharax' in k}
             
-            if not nakhara_deps:
+            if not nakharax_deps:
                 return {
                     'test': test_name,
                     'status': 'skip',
-                    'message': 'No @nakhara dependencies',
+                    'message': 'No @nakharax dependencies',
                     'details': {}
                 }
             
@@ -115,7 +115,7 @@ class RepoLinkTester:
             has_npm_link = False
             has_file_link = False
             
-            for dep_name, dep_version in nakhara_deps.items():
+            for dep_name, dep_version in nakharax_deps.items():
                 link_type = 'unknown'
                 is_valid = False
                 target_repo = None
@@ -156,7 +156,7 @@ class RepoLinkTester:
                     # Version number (from npm registry)
                     link_type = 'npm'
                     has_npm_link = True
-                    is_valid = False  # @nakhara/sdk not yet published on npm
+                    is_valid = False  # @nakharax/sdk not yet published on npm
                 
                 link_results.append({
                     'dependency': dep_name,
@@ -375,22 +375,22 @@ class RepoLinkTester:
                     }
                 }
             
-            # Check if @nakhara/sdk is in node_modules
-            nakhara_sdk = node_modules / '@nakhara' / 'sdk'
+            # Check if @nakharax/sdk is in node_modules
+            nakharax_sdk = node_modules / '@nakharax' / 'sdk'
             
-            if nakhara_sdk.exists():
+            if nakharax_sdk.exists():
                 # Check if it's a symlink or actual directory
-                is_symlink = nakhara_sdk.is_symlink()
+                is_symlink = nakharax_sdk.is_symlink()
                 
                 if is_symlink:
-                    real_path = nakhara_sdk.resolve()
+                    real_path = nakharax_sdk.resolve()
                     # Check if symlink points to the actual repo
-                    is_valid = (real_path.parent.parent == self.workspace_root / 'nakhara-sdk-ts')
+                    is_valid = (real_path.parent.parent == self.workspace_root / 'nakharax-sdk-ts')
                     
                     return {
                         'test': test_name,
                         'status': 'pass' if is_valid else 'warn',
-                        'message': f'{"✓" if is_valid else "⚠"} @nakhara/sdk is a symlink to {real_path.parent.parent.name}',
+                        'message': f'{"✓" if is_valid else "⚠"} @nakharax/sdk is a symlink to {real_path.parent.parent.name}',
                         'details': {
                             'is_symlink': True,
                             'target': str(real_path),
@@ -402,15 +402,15 @@ class RepoLinkTester:
                     return {
                         'test': test_name,
                         'status': 'warn',
-                        'message': '⚠ @nakhara/sdk is a copied directory (not a link)',
+                        'message': '⚠ @nakharax/sdk is a copied directory (not a link)',
                         'details': {'is_symlink': False}
                     }
             else:
-                # No @nakhara/sdk
+                # No @nakharax/sdk
                 return {
                     'test': test_name,
                     'status': 'skip',
-                    'message': 'No @nakhara/sdk dependency',
+                    'message': 'No @nakharax/sdk dependency',
                     'details': {}
                 }
         
@@ -523,7 +523,7 @@ class RepoLinkTester:
                         print(f"  {YELLOW}→ Should change from 'workspace:*' to 'file:../repo-name'{RESET}")
                     
                     if not details.get('has_file_link') and details.get('total_deps', 0) > 0:
-                        print(f"  {YELLOW}→ Should use 'file:../nakhara-sdk-ts' for direct linking{RESET}")
+                        print(f"  {YELLOW}→ Should use 'file:../nakharax-sdk-ts' for direct linking{RESET}")
                     
                     if 'invalid_members' in details and details['invalid_members']:
                         print(f"  {YELLOW}→ Remove non-existent members from Cargo.toml{RESET}")
@@ -534,7 +534,7 @@ class RepoLinkTester:
         
         with open(report_file, 'w', encoding='utf-8') as f:
             f.write("="*80 + "\n")
-            f.write("NAKHARA REPOSITORY DIRECT LINK TEST REPORT\n")
+            f.write("NAKHARAX REPOSITORY DIRECT LINK TEST REPORT\n")
             f.write("="*80 + "\n")
             f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
             

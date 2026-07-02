@@ -1,4 +1,4 @@
-//! Native Staking Module for Nakhara Protocol
+//! Native Staking Module for Nakharax Protocol
 //!
 //! Provides self-reliant staking functionality:
 //! - Validator staking and unstaking

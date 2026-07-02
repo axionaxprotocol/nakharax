@@ -1,15 +1,15 @@
 #!/bin/bash
 #
-# nakhara RPC Node Setup Script
+# nakharax RPC Node Setup Script
 # Sets up a dedicated RPC/WebSocket node for public testnet access
 #
 # Usage: bash setup_rpc_node.sh [OPTIONS]
 # Options:
 #   --rpc-port PORT        RPC HTTP port (default: 8545)
 #   --ws-port PORT         WebSocket port (default: 8546)
-#   --data-dir PATH        Data directory (default: /var/lib/nakhara)
+#   --data-dir PATH        Data directory (default: /var/lib/nakharax)
 #   --chain-id ID          Chain ID (default: 86137)
-#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakhara.io)
+#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakharaxx.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 
 set -e
@@ -24,7 +24,7 @@ NC='\033[0m' # No Color
 # Default configuration
 RPC_PORT=8545
 WS_PORT=8546
-DATA_DIR="/var/lib/nakhara"
+DATA_DIR="/var/lib/nakharax"
 CHAIN_ID=86137
 DOMAIN=""
 SSL_EMAIL=""
@@ -66,7 +66,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   nakhara RPC Node Setup${NC}"
+echo -e "${BLUE}   nakharax RPC Node Setup${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo -e "${GREEN}Configuration:${NC}"
@@ -112,12 +112,12 @@ else
   echo -e "${BLUE}[3/8]${NC} Rust already installed ($(rustc --version))"
 fi
 
-# Create nakhara user if doesn't exist
-if ! id -u nakhara &> /dev/null; then
-  echo -e "${BLUE}[4/8]${NC} Creating nakhara user..."
-  useradd -r -m -s /bin/bash nakhara
+# Create nakharax user if doesn't exist
+if ! id -u nakharax &> /dev/null; then
+  echo -e "${BLUE}[4/8]${NC} Creating nakharax user..."
+  useradd -r -m -s /bin/bash nakharax
 else
-  echo -e "${BLUE}[4/8]${NC} User nakhara already exists"
+  echo -e "${BLUE}[4/8]${NC} User nakharax already exists"
 fi
 
 # Create data directory
@@ -125,35 +125,35 @@ echo -e "${BLUE}[5/8]${NC} Setting up data directory..."
 mkdir -p "$DATA_DIR"
 mkdir -p "$DATA_DIR/state"
 mkdir -p "$DATA_DIR/logs"
-chown -R nakhara:nakhara "$DATA_DIR"
+chown -R nakharax:nakharax "$DATA_DIR"
 chmod 755 "$DATA_DIR"
 
-# Clone and build nakhara (if not already built)
-NAKHARA_HOME="/home/nakhara/nakhara-monolith"
-if [ ! -d "$NAKHARA_HOME" ]; then
-  echo -e "${BLUE}[6/8]${NC} Cloning nakhara repository..."
-  sudo -u nakhara git clone https://github.com/nakhara-io/nakhara-monolith.git "$NAKHARA_HOME"
+# Clone and build nakharax (if not already built)
+NAKHARAX_HOME="/home/nakharax/nakharax-monolith"
+if [ ! -d "$NAKHARAX_HOME" ]; then
+  echo -e "${BLUE}[6/8]${NC} Cloning nakharax repository..."
+  sudo -u nakharax git clone https://github.com/nakharax-io/nakharax-monolith.git "$NAKHARAX_HOME"
 else
-  echo -e "${BLUE}[6/8]${NC} Updating nakhara repository..."
-  cd "$NAKHARA_HOME"
-  sudo -u nakhara git pull
+  echo -e "${BLUE}[6/8]${NC} Updating nakharax repository..."
+  cd "$NAKHARAX_HOME"
+  sudo -u nakharax git pull
 fi
 
-cd "$NAKHARA_HOME/core"
+cd "$NAKHARAX_HOME/core"
 
 # Build in release mode
-echo -e "${BLUE}[7/8]${NC} Building nakhara (this may take 10-15 minutes)..."
-sudo -u nakhara cargo build --release
+echo -e "${BLUE}[7/8]${NC} Building nakharax (this may take 10-15 minutes)..."
+sudo -u nakharax cargo build --release
 
 # Copy binary to /usr/local/bin
-cp target/release/nakhara-core /usr/local/bin/
-chmod +x /usr/local/bin/nakhara-core
+cp target/release/nakharax-core /usr/local/bin/
+chmod +x /usr/local/bin/nakharax-core
 
 # Create configuration file
 echo -e "${BLUE}[8/8]${NC} Creating configuration..."
 
 cat > "$DATA_DIR/config.toml" <<EOF
-# nakhara RPC Node Configuration
+# nakharax RPC Node Configuration
 # Generated: $(date)
 
 [network]
@@ -181,7 +181,7 @@ cache_size = 1024  # MB
 
 [logging]
 level = "info"
-log_file = "$DATA_DIR/logs/nakhara.log"
+log_file = "$DATA_DIR/logs/nakharax.log"
 max_size = 100  # MB
 max_backups = 10
 
@@ -190,25 +190,25 @@ enabled = true
 listen_addr = "127.0.0.1:9090"
 EOF
 
-chown nakhara:nakhara "$DATA_DIR/config.toml"
+chown nakharax:nakharax "$DATA_DIR/config.toml"
 
 # Create systemd service
-cat > /etc/systemd/system/nakhara-rpc.service <<EOF
+cat > /etc/systemd/system/nakharax-rpc.service <<EOF
 [Unit]
-Description=nakhara RPC Node
+Description=nakharax RPC Node
 After=network.target
 
 [Service]
 Type=simple
-User=nakhara
-Group=nakhara
+User=nakharax
+Group=nakharax
 WorkingDirectory=$DATA_DIR
-ExecStart=/usr/local/bin/nakhara-core --config $DATA_DIR/config.toml
+ExecStart=/usr/local/bin/nakharax-core --config $DATA_DIR/config.toml
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=nakhara-rpc
+SyslogIdentifier=nakharax-rpc
 
 # Security
 NoNewPrivileges=true
@@ -230,7 +230,7 @@ ufw --force enable
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
-ufw allow 30303/tcp comment 'nakhara P2P'
+ufw allow 30303/tcp comment 'nakharax P2P'
 ufw allow 80/tcp comment 'HTTP'
 ufw allow 443/tcp comment 'HTTPS'
 
@@ -239,15 +239,15 @@ if [ -n "$DOMAIN" ]; then
   echo -e "${GREEN}Configuring nginx for $DOMAIN...${NC}"
   
   # Create nginx config
-  cat > /etc/nginx/sites-available/nakhara-rpc <<EOF
-# nakhara RPC Reverse Proxy
+  cat > /etc/nginx/sites-available/nakharax-rpc <<EOF
+# nakharax RPC Reverse Proxy
 # HTTP RPC endpoint
-upstream nakhara_rpc {
+upstream nakharax_rpc {
     server 127.0.0.1:$RPC_PORT;
 }
 
 # WebSocket endpoint
-upstream nakhara_ws {
+upstream nakharax_ws {
     server 127.0.0.1:$WS_PORT;
 }
 
@@ -264,7 +264,7 @@ server {
 
     # RPC endpoint
     location / {
-        proxy_pass http://nakhara_rpc;
+        proxy_pass http://nakharax_rpc;
         proxy_http_version 1.1;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
@@ -296,7 +296,7 @@ server {
     server_name ws.$DOMAIN;
 
     location / {
-        proxy_pass http://nakhara_ws;
+        proxy_pass http://nakharax_ws;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "Upgrade";
@@ -308,7 +308,7 @@ server {
 EOF
 
   # Enable site
-  ln -sf /etc/nginx/sites-available/nakhara-rpc /etc/nginx/sites-enabled/
+  ln -sf /etc/nginx/sites-available/nakharax-rpc /etc/nginx/sites-enabled/
   rm -f /etc/nginx/sites-enabled/default
   
   # Test nginx config
@@ -326,7 +326,7 @@ fi
 
 # Reload systemd and enable service
 systemctl daemon-reload
-systemctl enable nakhara-rpc
+systemctl enable nakharax-rpc
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
@@ -336,13 +336,13 @@ echo ""
 echo -e "${YELLOW}Next Steps:${NC}"
 echo ""
 echo "1. Start the RPC node:"
-echo "   ${BLUE}sudo systemctl start nakhara-rpc${NC}"
+echo "   ${BLUE}sudo systemctl start nakharax-rpc${NC}"
 echo ""
 echo "2. Check status:"
-echo "   ${BLUE}sudo systemctl status nakhara-rpc${NC}"
+echo "   ${BLUE}sudo systemctl status nakharax-rpc${NC}"
 echo ""
 echo "3. View logs:"
-echo "   ${BLUE}sudo journalctl -u nakhara-rpc -f${NC}"
+echo "   ${BLUE}sudo journalctl -u nakharax-rpc -f${NC}"
 echo ""
 echo "4. Test RPC endpoint:"
 echo "   ${BLUE}curl -X POST http://localhost:$RPC_PORT \\${NC}"

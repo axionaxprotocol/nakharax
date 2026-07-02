@@ -40,8 +40,8 @@
 
 **Files:**
 
-- `/nakhara-monolith/services/core/ops/deploy/environments/testnet/Nakhara_v1.6_Testnet_in_a_Box/ui/index.html`
-- `/nakhara-monolith/services/core/ops/deploy/environments/testnet/Nakhara_v1.5_Testnet_in_a_Box/ui/index.html`
+- `/nakharax-monolith/services/core/ops/deploy/environments/testnet/Nakharax_v1.6_Testnet_in_a_Box/ui/index.html`
+- `/nakharax-monolith/services/core/ops/deploy/environments/testnet/Nakharax_v1.5_Testnet_in_a_Box/ui/index.html`
 
 **Changes:**
 
@@ -238,7 +238,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 
 ### Web App
 
-- [ ] เข้า https://nakhara.io
+- [ ] เข้า https://nakharaxx.io
 - [ ] คลิก "Connect Wallet"
 - [ ] เชื่อมต่อกับ MetaMask
 - [ ] คลิก wallet dropdown (แสดง address และ balance)
@@ -257,8 +257,8 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 ## Files Changed
 
 ```
-✅ /nakhara-monolith/services/core/ops/deploy/environments/testnet/Nakhara_v1.6_Testnet_in_a_Box/ui/index.html
-✅ /nakhara-monolith/services/core/ops/deploy/environments/testnet/Nakhara_v1.5_Testnet_in_a_Box/ui/index.html
+✅ /nakharax-monolith/services/core/ops/deploy/environments/testnet/Nakharax_v1.6_Testnet_in_a_Box/ui/index.html
+✅ /nakharax-monolith/services/core/ops/deploy/environments/testnet/Nakharax_v1.5_Testnet_in_a_Box/ui/index.html
 ✅ /apps/web/src/lib/web3.ts
 ✅ /apps/web/src/components/wallet/ConnectButton.tsx
 ✅ /apps/docs/ADD_TOKEN_TO_METAMASK.md (NEW)

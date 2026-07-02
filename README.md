@@ -1,6 +1,6 @@
 <div align="center">
 
-# nakhara.io
+# nakharaxx.io
 
 ### Cheap, accessible compute for everyone — a paid, verifiable grid for parallel science & AI
 
@@ -20,10 +20,10 @@
 
 ## What's inside
 
-This repository is the **monolithic working tree** for **nakhara.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
+This repository is the **monolithic working tree** for **nakharaxx.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
 
 ```
-nakhara-monolith/
+nakharax-monolith/
 ├── apps/
 │   ├── web/              # Public dApp + marketplace (Next.js · TypeScript)
 │   └── os-dashboard/     # Self-hosted node OS UI (Next.js · Tailwind)
@@ -40,19 +40,19 @@ nakhara-monolith/
 
 ## Naming & rebrand
 
-The project was renamed **Axionax → nakhara.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
+The project was renamed **Axionax → nakharaxx.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
 
 | Layer | Result |
 |---|---|
-| Brand / docs / UI | ✅ nakhara.io |
-| Code identifiers | ✅ crates, binary `nakhara-node`, packages (`@nakhara/sdk`), import paths |
-| Env vars | ✅ `NAKHARA_*` (was `AXIONAX_*`) |
-| Domain refs | ✅ `nakhara.io` in configs/SDK (was `axionax.org`) |
+| Brand / docs / UI | ✅ nakharaxx.io |
+| Code identifiers | ✅ crates, binary `nakharax-node`, packages (`@nakharax/sdk`), import paths |
+| Env vars | ✅ `NAKHARAX_*` (was `AXIONAX_*`) |
+| Domain refs | ✅ `nakharaxx.io` in configs/SDK (was `axionax.org`) |
 | Native token | ✅ `NAK` (was `AXX`) — contract, genesis, tokenomics |
 
 **Remaining (external / coordinated — not a repo edit):**
 - Rename the GitHub repo/org so `github.com/...` URLs resolve.
-- Stand up `nakhara.io` DNS + SSL, then redeploy nodes from this renamed tree.
+- Stand up `nakharaxx.io` DNS + SSL, then redeploy nodes from this renamed tree.
 - A handful of filenames still contain `axionax` (deploy scripts, a stale build artifact) — tracked in [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md).
 
 The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
@@ -76,8 +76,8 @@ NPU acceleration (Hailo-8) is optional but recommended for AI-task workers.
 
 ```bash
 # 1. Clone with submodules / from monolith
-git clone https://github.com/nakharaprotocol/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharaxprotocol/nakharax-monolith.git
+cd nakharax-monolith
 
 # 2. Bring up the full dev stack (node + validator + faucet + explorer + grafana)
 cd services/core
@@ -108,7 +108,7 @@ cd services/core
 python3 scripts/update-node.py
 
 # 2. Pick a role
-python3 scripts/join-nakhara.py
+python3 scripts/join-nakharax.py
 #   1) Worker (PC/Server)
 #   2) Monolith Scout (single Hailo)
 #   3) HYDRA (Sentinel + Worker)
@@ -122,13 +122,13 @@ python3 scripts/join-nakhara.py
 
 | Validator | IP | Role | RPC (direct) |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakhara OS** | `http://217.216.109.5:8545` · `https://app.nakhara.io` |
+| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharaxx.io` |
 | #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
 
-**Public HTTPS (AU):** `https://rpc.nakhara.io` · `explorer` · `api` · `faucet`  
-**Nakhara OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
+**Public HTTPS (AU):** `https://rpc.nakharaxx.io` · `explorer` · `api` · `faucet`  
+**Nakharax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
-P2P bootnodes are advertised via `NAKHARA_BOOTSTRAP_NODES` — see `services/core/configs/`.
+P2P bootnodes are advertised via `NAKHARAX_BOOTSTRAP_NODES` — see `services/core/configs/`.
 
 Current validated status (2026-05-01):
 - AU (`46.250.244.4`) and EU (`217.216.109.5`) nodes are connected and report `peers: 1`.
@@ -174,14 +174,14 @@ If your node sees zero peers across the public internet:
 
 Full diagnostics live in [`docs/compossor-and-cascade-playbook.md`](./docs/compossor-and-cascade-playbook.md) under *§1 Debugging — P2P & Network*.
 
-### Runbook: `identity.key` + `NAKHARA_BOOTSTRAP_NODES`
+### Runbook: `identity.key` + `NAKHARAX_BOOTSTRAP_NODES`
 
 Use this when nodes show `peers: 0`, or logs include `Local peer ID` connection errors.
 
-1. **Ensure each node has a unique identity key.** If two machines accidentally share `/var/lib/nakhara-node/identity.key`, they will fail to peer.
+1. **Ensure each node has a unique identity key.** If two machines accidentally share `/var/lib/nakharax-node/identity.key`, they will fail to peer.
 2. **Set at least one valid bootstrap multiaddr** with peer id:
    ```bash
-   export NAKHARA_BOOTSTRAP_NODES="/ip4/<BOOTSTRAP_IP>/tcp/30303/p2p/<BOOTSTRAP_PEER_ID>"
+   export NAKHARAX_BOOTSTRAP_NODES="/ip4/<BOOTSTRAP_IP>/tcp/30303/p2p/<BOOTSTRAP_PEER_ID>"
    ```
 3. **Open network path end-to-end** on the bootstrap node (`30303/tcp`, and optionally `30303/udp` for QUIC).
 4. **Restart node and verify peer count**:
@@ -195,10 +195,10 @@ Use this when nodes show `peers: 0`, or logs include `Local peer ID` connection 
 If identity collision is suspected, rotate one node key:
 
 ```bash
-systemctl stop nakhara-node
-cp /var/lib/nakhara-node/identity.key /var/lib/nakhara-node/identity.key.bak.$(date +%s)
-rm -f /var/lib/nakhara-node/identity.key
-systemctl start nakhara-node
+systemctl stop nakharax-node
+cp /var/lib/nakharax-node/identity.key /var/lib/nakharax-node/identity.key.bak.$(date +%s)
+rm -f /var/lib/nakharax-node/identity.key
+systemctl start nakharax-node
 ```
 
 ---
@@ -208,23 +208,23 @@ systemctl start nakhara-node
 ```bash
 # Web universe (apps/)
 pnpm install                                  # at repo root, hydrates all workspaces
-pnpm --filter nakhara-os-dashboard dev        # dashboard on :3030
+pnpm --filter nakharax-os-dashboard dev        # dashboard on :3030
 
 # Core universe (services/core)
 cd services/core/core
 cargo test --workspace                        # 201/201 expected
 cargo clippy --workspace -- -D warnings
-cargo build --release -p node                 # produces nakhara-node
+cargo build --release -p node                 # produces nakharax-node
 ```
 
 Useful commands:
 
 | Command | Purpose |
 |---|---|
-| `pnpm --filter nakhara-os-dashboard icons:resize` | Rebuild optimized logo + favicon set via sharp |
+| `pnpm --filter nakharax-os-dashboard icons:resize` | Rebuild optimized logo + favicon set via sharp |
 | `./scripts/check-node-sync.sh` | Compare local vs. peer block height |
 | `python3 services/core/scripts/health-check.py` | Worker config + RPC reachability check |
-| `docker compose -f services/core/docker-compose.dev.yml logs -f nakhara-node` | Tail node logs |
+| `docker compose -f services/core/docker-compose.dev.yml logs -f nakharax-node` | Tail node logs |
 
 ---
 

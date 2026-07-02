@@ -1,10 +1,10 @@
-# Prometheus Configuration for Nakhara Protocol Monitoring
+# Prometheus Configuration for Nakharax Protocol Monitoring
 
 global:
   scrape_interval: 15s       # Scrape targets every 15 seconds
   evaluation_interval: 15s   # Evaluate rules every 15 seconds
   external_labels:
-    cluster: 'nakhara-testnet'
+    cluster: 'nakharax-testnet'
     environment: 'testnet'
 
 # Alertmanager configuration
@@ -20,8 +20,8 @@ rule_files:
 
 # Scrape configurations
 scrape_configs:
-  # Nakhara Core Node Metrics
-  - job_name: 'nakhara-core'
+  # Nakharax Core Node Metrics
+  - job_name: 'nakharax-core'
     static_configs:
       - targets: ['localhost:9090']
         labels:
@@ -31,11 +31,11 @@ scrape_configs:
     metric_relabel_configs:
       # Keep only relevant metrics
       - source_labels: [__name__]
-        regex: 'nakhara_.*|consensus_.*|blockchain_.*'
+        regex: 'nakharax_.*|consensus_.*|blockchain_.*'
         action: keep
 
   # RPC Endpoint Metrics
-  - job_name: 'nakhara-rpc'
+  - job_name: 'nakharax-rpc'
     static_configs:
       - targets: ['localhost:8545']
         labels:
@@ -49,7 +49,7 @@ scrape_configs:
         action: keep
 
   # P2P Network Metrics
-  - job_name: 'nakhara-p2p'
+  - job_name: 'nakharax-p2p'
     static_configs:
       - targets: ['localhost:30303']
         labels:
@@ -104,5 +104,5 @@ storage:
 # remote_write:
 #   - url: "https://prometheus-remote-write.example.com/api/v1/write"
 #     basic_auth:
-#       username: nakhara
+#       username: nakharax
 #       password: <password>

@@ -1,6 +1,6 @@
 # Mainnet Genesis Launch Checklist — Q2 2026
 
-Pre-launch checklist for Nakhara Mainnet Genesis Block #0.
+Pre-launch checklist for Nakharax Mainnet Genesis Block #0.
 
 ---
 
@@ -8,7 +8,7 @@ Pre-launch checklist for Nakhara Mainnet Genesis Block #0.
 
 | Item | Status |
 |------|--------|
-| Creator alias | nakharaius |
+| Creator alias | nakharaxius |
 | Total supply | 1,000,000,000,000 NAK (1 trillion) |
 | Creator allocation | 10% |
 | Genesis timestamp | 2026-04-01 00:00:00 UTC |
@@ -38,7 +38,7 @@ For testnet, the default deterministic key is used (no extra step).
 ### 2.2 Regenerate Genesis
 
 ```bash
-cd nakhara-monolith
+cd nakharax-monolith
 python core/tools/create_genesis.py --verify
 ```
 
@@ -54,7 +54,7 @@ python core/tools/verify_genesis.py core/tools/genesis.json
 
 - Share `genesis.json` with all validators
 - Announce genesis hash (SHA-256 of file)
-- Validators place at: `~/.nakhara/config/genesis.json` (or per deploy path)
+- Validators place at: `~/.nakharax/config/genesis.json` (or per deploy path)
 
 ### 2.5 Creator / Team Keys
 
@@ -62,7 +62,7 @@ The following addresses receive allocations. Ensure private keys are secured:
 
 | Allocation | Address | Key Management |
 |------------|---------|----------------|
-| Creator | `0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f` | nakharaius holds key |
+| Creator | `0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f` | nakharaxius holds key |
 | Foundation | `0xa77f117ff23b672cf484b1d05cc48b5e7c03909d` | Multisig recommended |
 | Team | `0x6af7d73fdcc0bf711ccada1422774ab1fdff9ae4` | Secure storage |
 | Community | `0x776b0130e806cb70003744a4691238052c0b972a` | DAO / multisig |
@@ -90,7 +90,7 @@ Each receives 25,000,000,000 NAK (2.5% of supply) as bootstrap stake.
 0x9dd7e28ccd04cfb6547adc7be2a8cf2beb434a1c
 ```
 
-Deterministic key seed: `nakhara_faucet_mainnet_q2_2026`
+Deterministic key seed: `nakharax_faucet_mainnet_q2_2026`
 
 For testnet, set in `.env`:
 ```

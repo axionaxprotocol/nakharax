@@ -1,4 +1,4 @@
-# Nakhara Protocol - Refactoring Tools Summary
+# Nakharax Protocol - Refactoring Tools Summary
 
 ## 📦 All Created Scripts
 
@@ -61,13 +61,13 @@ python master_refactor.py
 ## 📊 Current Results
 
 ### Repository Health Scores
-- 🟢 nakhara-web: 85.7/100
-- 🟡 nakhara-core: 78.6/100
-- 🟡 nakhara-marketplace: 71.4/100
-- 🔴 nakhara-sdk-ts: 57.1/100
-- 🔴 nakhara-deploy: 50.0/100
-- 🔴 nakhara-docs: 42.9/100
-- 🔴 nakhara-devtools: 42.9/100
+- 🟢 nakharax-web: 85.7/100
+- 🟡 nakharax-core: 78.6/100
+- 🟡 nakharax-marketplace: 71.4/100
+- 🔴 nakharax-sdk-ts: 57.1/100
+- 🔴 nakharax-deploy: 50.0/100
+- 🔴 nakharax-docs: 42.9/100
+- 🔴 nakharax-devtools: 42.9/100
 
 ### Integration Test Results
 - ✅ Passed: 27 (55.1%)
@@ -78,15 +78,15 @@ python master_refactor.py
 - Total Files: 44
 - Total Lines: 7,131
 - Total Issues Found: 40
-  - 🔴 nakhara-web: 22 issues
-  - 🔴 nakhara-core: 16 issues
-  - 🟢 nakhara-sdk-ts: 1 issue
-  - 🟢 nakhara-marketplace: 1 issue
+  - 🔴 nakharax-web: 22 issues
+  - 🔴 nakharax-core: 16 issues
+  - 🟢 nakharax-sdk-ts: 1 issue
+  - 🟢 nakharax-marketplace: 1 issue
 
 ### Repository Links
-- ✅ nakhara-marketplace: using correct file: link
-- ✅ nakhara-deploy: using correct file: link
-- ✅ nakhara-core: workspace members complete
+- ✅ nakharax-marketplace: using correct file: link
+- ✅ nakharax-deploy: using correct file: link
+- ✅ nakharax-core: workspace members complete
 
 ## 🎯 Priority Actions
 
@@ -97,7 +97,7 @@ python master_refactor.py
 4. ⚠️ Commit package-lock.json
 
 ### Medium Priority (should do soon)
-1. Fix magic numbers in nakhara-web (550 occurrences)
+1. Fix magic numbers in nakharax-web (550 occurrences)
 2. Split long functions (>50 lines)
 3. Fix .unwrap() in Rust (28 occurrences)
 4. Add documentation for public items
@@ -128,7 +128,7 @@ python refactor_and_clean.py --skip-formatting
 
 ### Analyze a single repo
 ```bash
-python refactor_and_clean.py --repo nakhara-core
+python refactor_and_clean.py --repo nakharax-core
 ```
 
 ## 📝 Generated Reports

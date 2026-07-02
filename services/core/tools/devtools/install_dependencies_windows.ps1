@@ -1,4 +1,4 @@
-# Nakhara Dependency Installer for Windows
+# Nakharax Dependency Installer for Windows
 # Requires: PowerShell 5.1+ (Run as Administrator)
 
 #Requires -RunAsAdministrator
@@ -6,7 +6,7 @@
 $ErrorActionPreference = "Stop"
 
 Write-Host "========================================" -ForegroundColor Blue
-Write-Host "   Nakhara Dependency Installer" -ForegroundColor Blue
+Write-Host "   Nakharax Dependency Installer" -ForegroundColor Blue
 Write-Host "========================================" -ForegroundColor Blue
 Write-Host ""
 
@@ -266,11 +266,11 @@ Write-Host "python --version" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "4. Clone repository:" -ForegroundColor White
 Write-Host "   " -NoNewline
-Write-Host "git clone https://github.com/nakhara-io/nakhara-core.git" -ForegroundColor Cyan
+Write-Host "git clone https://github.com/nakharax-io/nakharax-core.git" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "5. Build project:" -ForegroundColor White
 Write-Host "   " -NoNewline
-Write-Host "cd nakhara-core" -ForegroundColor Cyan
+Write-Host "cd nakharax-core" -ForegroundColor Cyan
 Write-Host "   " -NoNewline
 Write-Host "cargo build --release" -ForegroundColor Cyan
 Write-Host ""

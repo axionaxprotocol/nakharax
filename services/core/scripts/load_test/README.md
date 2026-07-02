@@ -9,7 +9,7 @@ Scripts to validate protocol targets:
 
 - Python 3.10+
 - `web3` (e.g. `pip install web3`)
-- Running Nakhara RPC (e.g. `https://rpc.nakhara.io` or local node)
+- Running Nakharax RPC (e.g. `https://rpc.nakharaxx.io` or local node)
 
 ## 1. Block timing & finality (no funded account)
 
@@ -26,7 +26,7 @@ Output: blocks per second, average block time (s), approximate finality.
 Sends many transactions and measures throughput. Needs a wallet with NAK for gas.
 
 ```bash
-export NAKHARA_PRIVATE_KEY=0x...   # optional, or use --key file
+export NAKHARAX_PRIVATE_KEY=0x...   # optional, or use --key file
 python tps_finality_test.py --rpc http://localhost:8545 --mode tps --duration 30 --tx-rate 1000
 ```
 

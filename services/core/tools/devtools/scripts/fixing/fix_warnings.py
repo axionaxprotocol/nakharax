@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fix Warning Issues in nakhara Repositories
+Fix Warning Issues in nakharax Repositories
 """
 
 import os
@@ -51,17 +51,17 @@ def create_missing_files(repo_path, files_to_create):
     return created
 
 def fix_core_missing_files(base_path):
-    """Fix missing files in nakhara-core"""
-    core_path = base_path / 'nakhara-core'
+    """Fix missing files in nakharax-core"""
+    core_path = base_path / 'nakharax-core'
     
-    # Note: nakhara-core is a workspace, so src/lib.rs and src/main.rs
+    # Note: nakharax-core is a workspace, so src/lib.rs and src/main.rs
     # are not actually needed at the root level
     # We'll create placeholder files just to satisfy the test
     
     files = [
         {
             'path': 'src/lib.rs',
-            'content': '''// nakhara protocol Core Library
+            'content': '''// nakharax protocol Core Library
 // This is a workspace root - actual implementations are in workspace members
 
 #![cfg_attr(not(test), no_std)]
@@ -75,11 +75,11 @@ pub use crypto;
         },
         {
             'path': 'src/main.rs',
-            'content': '''// nakhara protocol Node Entry Point
+            'content': '''// nakharax protocol Node Entry Point
 // This is a placeholder - actual node implementation is in core/node
 
 fn main() {
-    println!("nakhara protocol Node");
+    println!("nakharax protocol Node");
     println!("Please use the specific workspace member crates:");
     println!("  - core/node for the main node binary");
     println!("  - core/consensus for consensus implementation");
@@ -93,8 +93,8 @@ fn main() {
     return created
 
 def fix_deploy_missing_files(base_path):
-    """Fix missing files in nakhara-deploy"""
-    deploy_path = base_path / 'nakhara-deploy'
+    """Fix missing files in nakharax-deploy"""
+    deploy_path = base_path / 'nakharax-deploy'
     
     # Check if docker-compose.yml exists (might be .yml instead of .yaml)
     yaml_path = deploy_path / 'docker-compose.yaml'
@@ -117,12 +117,12 @@ def fix_deploy_missing_files(base_path):
                 'content': '''version: '3.8'
 
 services:
-  # nakhara protocol Node
+  # nakharax protocol Node
   node:
     build:
-      context: ../nakhara-core
+      context: ../nakharax-core
       dockerfile: Dockerfile
-    container_name: nakhara-node
+    container_name: nakharax-node
     ports:
       - "26656:26656"  # P2P
       - "26657:26657"  # RPC
@@ -136,9 +136,9 @@ services:
   # Explorer (optional)
   explorer:
     build:
-      context: ../nakhara-web
+      context: ../nakharax-web
       dockerfile: Dockerfile
-    container_name: nakhara-explorer
+    container_name: nakharax-explorer
     ports:
       - "3000:3000"
     environment:
@@ -161,9 +161,9 @@ volumes:
 def install_missing_node_modules(base_path):
     """Install node_modules in repos that need it"""
     repos_to_install = [
-        'nakhara-sdk-ts',
-        'nakhara-marketplace',
-        'nakhara-deploy'
+        'nakharax-sdk-ts',
+        'nakharax-marketplace',
+        'nakharax-deploy'
     ]
     
     results = []
@@ -189,7 +189,7 @@ def install_missing_node_modules(base_path):
 
 def fix_sdk_import_issues(base_path):
     """Document SDK import issues for manual review"""
-    sdk_path = base_path / 'nakhara-sdk-ts'
+    sdk_path = base_path / 'nakharax-sdk-ts'
     
     notes = []
     notes.append("SDK Import Issues (for review):")
@@ -205,14 +205,14 @@ def fix_sdk_import_issues(base_path):
 def main():
     base_path = Path(os.getcwd())
     
-    print("🔧 Fixing Warning Issues in nakhara Repositories")
+    print("🔧 Fixing Warning Issues in nakharax Repositories")
     print("=" * 80)
     print()
     
     warnings_fixed = 0
     
-    # Issue 1: Missing files in nakhara-core
-    print("📝 Issue 1: Creating missing files in nakhara-core")
+    # Issue 1: Missing files in nakharax-core
+    print("📝 Issue 1: Creating missing files in nakharax-core")
     print("-" * 80)
     created = fix_core_missing_files(base_path)
     if created:
@@ -223,8 +223,8 @@ def main():
         print("⏭️  Files already exist")
     print()
     
-    # Issue 2: Missing docker-compose.yaml in nakhara-deploy
-    print("📝 Issue 2: Checking docker-compose.yaml in nakhara-deploy")
+    # Issue 2: Missing docker-compose.yaml in nakharax-deploy
+    print("📝 Issue 2: Checking docker-compose.yaml in nakharax-deploy")
     print("-" * 80)
     created = fix_deploy_missing_files(base_path)
     if created:
@@ -262,10 +262,10 @@ def main():
     print("Git uncommitted changes detected in:")
     
     repos_with_changes = [
-        ('nakhara-core', 'fix: add placeholder src files for workspace root'),
-        ('nakhara-web', 'fix: update package.json for workspace'),
-        ('nakhara-marketplace', 'fix: update package.json for workspace'),
-        ('nakhara-deploy', 'fix: add docker-compose.yaml and update package.json')
+        ('nakharax-core', 'fix: add placeholder src files for workspace root'),
+        ('nakharax-web', 'fix: update package.json for workspace'),
+        ('nakharax-marketplace', 'fix: update package.json for workspace'),
+        ('nakharax-deploy', 'fix: add docker-compose.yaml and update package.json')
     ]
     
     print("\n⚠️  Note: These changes should be committed manually after review.")

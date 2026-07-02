@@ -1,9 +1,9 @@
-// Example: Create and send a transaction using Nakhara SDK
-use nakhara_blockchain::{Blockchain, Transaction};
-use nakhara_crypto::{generate_keypair, sign_message};
+// Example: Create and send a transaction using Nakharax SDK
+use nakharax_blockchain::{Blockchain, Transaction};
+use nakharax_crypto::{generate_keypair, sign_message};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Nakhara Transaction Example\n");
+    println!("Nakharax Transaction Example\n");
 
     // Initialize blockchain
     let mut blockchain = Blockchain::new();

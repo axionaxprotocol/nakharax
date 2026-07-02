@@ -1,4 +1,4 @@
-# nakhara Core - Production Testnet Ready 🚀
+# nakharax Core - Production Testnet Ready 🚀
 
 ## Development Summary
 
@@ -224,32 +224,32 @@ cargo build --release
 #### 2. **Configuration Environment Variables**
 ```bash
 # RPC Settings
-export nakhara_RPC_ADDR="0.0.0.0:8545"
-export nakhara_RPC_CORS_ORIGINS="https://app.nakhara.io"
+export nakharax_RPC_ADDR="0.0.0.0:8545"
+export nakharax_RPC_CORS_ORIGINS="https://app.nakharaxx.io"
 
 # Network Settings
-export nakhara_CHAIN_ID=86137
-export nakhara_NETWORK_PORT=30303
+export nakharax_CHAIN_ID=86137
+export nakharax_NETWORK_PORT=30303
 
 # Database Path
-export nakhara_STATE_PATH="/var/lib/nakhara/testnet"
+export nakharax_STATE_PATH="/var/lib/nakharax/testnet"
 
 # Security Settings
-export nakhara_RATE_LIMIT=100        # requests per minute
-export nakhara_MAX_BATCH_SIZE=50
+export nakharax_RATE_LIMIT=100        # requests per minute
+export nakharax_MAX_BATCH_SIZE=50
 ```
 
 #### 3. **Systemd Service** (Linux)
 ```ini
 [Unit]
-Description=nakhara Blockchain Node
+Description=nakharax Blockchain Node
 After=network.target
 
 [Service]
 Type=simple
-User=nakhara
-WorkingDirectory=/opt/nakhara
-ExecStart=/opt/nakhara/target/release/node --config /etc/nakhara/testnet.toml
+User=nakharax
+WorkingDirectory=/opt/nakharax
+ExecStart=/opt/nakharax/target/release/node --config /etc/nakharax/testnet.toml
 Restart=always
 RestartSec=10
 
@@ -258,7 +258,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
-ReadWritePaths=/var/lib/nakhara
+ReadWritePaths=/var/lib/nakharax
 
 [Install]
 WantedBy=multi-user.target
@@ -471,6 +471,6 @@ curl -X POST http://localhost:8545 \
 
 **Status**: 🟢 Ready for Testnet Deployment (after fixing build issues and security scan)
 
-**Developers**: GitHub Copilot + nakhara Protocol Team  
+**Developers**: GitHub Copilot + nakharax Protocol Team  
 **Date**: November 5, 2025  
 **Version**: v0.1.0-testnet

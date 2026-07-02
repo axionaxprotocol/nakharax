@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nakhara Health Check Monitor
+Nakharax Health Check Monitor
 Automated monitoring with alerts for production environments
 """
 
@@ -160,7 +160,7 @@ class HealthMonitor:
             logger.info("Monitoring stopped by user")
 
 def main():
-    parser = argparse.ArgumentParser(description="Nakhara Health Monitor")
+    parser = argparse.ArgumentParser(description="Nakharax Health Monitor")
     parser.add_argument("--rpc", default="http://127.0.0.1:8545", help="RPC URL")
     parser.add_argument("--interval", type=int, default=30, help="Check interval in seconds")
     parser.add_argument("--once", action="store_true", help="Run once and exit")

@@ -1,8 +1,8 @@
-# Quick Start - การทดสอบ nakhara Core
+# Quick Start - การทดสอบ nakharax Core
 
 ## สถานการณ์ปัจจุบัน ✅
 
-- ✅ nakhara Core binary พร้อมใช้งาน (build/nakhara-core.exe)
+- ✅ nakharax Core binary พร้อมใช้งาน (build/nakharax-core.exe)
 - ✅ ทุก CLI commands ทำงานได้ปกติ
 - ⚠️ Docker Engine ยังไม่ได้เปิด (จำเป็นสำหรับ Full Testnet)
 
@@ -26,15 +26,15 @@ powershell -ExecutionPolicy Bypass -File quick-test.ps1
 **ขั้นตอนที่ 2: เริ่มต้น Testnet**
 
 ```powershell
-cd nakhara_v1.5_Testnet_in_a_Box
+cd nakharax_v1.5_Testnet_in_a_Box
 powershell -ExecutionPolicy Bypass -File start-testnet.ps1
 ```
 
-**ขั้นตอนที่ 3: เริ่มต้น nakhara Node**
+**ขั้นตอนที่ 3: เริ่มต้น nakharax Node**
 
 ```powershell
 cd ..
-.\build\nakhara-core.exe start --network testnet
+.\build\nakharax-core.exe start --network testnet
 ```
 
 ## Testnet Endpoints
@@ -49,23 +49,23 @@ cd ..
 
 ```powershell
 # แสดง version
-.\build\nakhara-core.exe version
+.\build\nakharax-core.exe version
 
 # สร้าง keypair
-.\build\nakhara-core.exe keys generate --type validator
+.\build\nakharax-core.exe keys generate --type validator
 
 # เริ่ม validator
-.\build\nakhara-core.exe validator start
+.\build\nakharax-core.exe validator start
 
 # ดู status
-.\build\nakhara-core.exe validator status
-.\build\nakhara-core.exe worker status
+.\build\nakharax-core.exe validator status
+.\build\nakharax-core.exe worker status
 
 # Configuration
-.\build\nakhara-core.exe config show
+.\build\nakharax-core.exe config show
 
 # Help
-.\build\nakhara-core.exe --help
+.\build\nakharax-core.exe --help
 ```
 
 ## เอกสารเพิ่มเติม
@@ -110,7 +110,7 @@ docker compose up -d
 
 1. ✅ ทดสอบ CLI ด้วย `quick-test.ps1` (เสร็จแล้ว)
 2. ⏳ เปิด Docker Desktop
-3. ⏳ รัน `start-testnet.ps1` ใน nakhara_v1.5_Testnet_in_a_Box/
+3. ⏳ รัน `start-testnet.ps1` ใน nakharax_v1.5_Testnet_in_a_Box/
 4. ⏳ ทดสอบการเชื่อมต่อกับ Testnet
 5. ⏳ ส่ง transaction ทดสอบ
 6. ⏳ ทดสอบ PoPC validation

@@ -379,12 +379,12 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "up{job=\"nakhara-rpc\"}",
+                    "expr": "up{job=\"nakharax-rpc\"}",
                     "legendFormat": "RPC Node",
                     "refId": "A"
                 },
                 {
-                    "expr": "up{job=\"nakhara-api\"}",
+                    "expr": "up{job=\"nakharax-api\"}",
                     "legendFormat": "API Server",
                     "refId": "B"
                 },
@@ -569,7 +569,7 @@
             "type": "stat",
             "targets": [
                 {
-                    "expr": "nakhara_peers_connected",
+                    "expr": "nakharax_peers_connected",
                     "legendFormat": "Peers",
                     "refId": "A"
                 }
@@ -580,7 +580,7 @@
     "schemaVersion": 38,
     "style": "dark",
     "tags": [
-        "nakhara",
+        "nakharax",
         "infrastructure",
         "health"
     ],
@@ -594,7 +594,7 @@
     "timepicker": {},
     "timezone": "",
     "title": "Node Health Dashboard",
-    "uid": "nakhara-node-health",
+    "uid": "nakharax-node-health",
     "version": 1,
     "weekStart": ""
 }

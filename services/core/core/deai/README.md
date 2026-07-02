@@ -1,6 +1,6 @@
-# nakhara DeAI - AI/ML Layer for Security and Auto Selection
+# nakharax DeAI - AI/ML Layer for Security and Auto Selection
 
-**Python-based AI/ML components for the nakhara protocol**
+**Python-based AI/ML components for the nakharax protocol**
 
 ## Modules
 

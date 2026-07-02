@@ -1,15 +1,15 @@
-//! Nakhara CLI - Command Line Interface
+//! Nakharax CLI - Command Line Interface
 //!
-//! Usage: nakhara <command> [options]
+//! Usage: nakharax <command> [options]
 
-use nakhara_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
+use nakharax_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
 use clap::{Parser, Subcommand};
 use colored::*;
 use serde_json::Value;
 
 #[derive(Parser)]
-#[command(name = "nakhara")]
-#[command(about = "Nakhara Protocol CLI", long_about = None)]
+#[command(name = "nakharax")]
+#[command(about = "Nakharax Protocol CLI", long_about = None)]
 #[command(version)]
 struct Cli {
     /// RPC endpoint URL
@@ -108,7 +108,7 @@ async fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
 
     match cli.command {
         Commands::Status => {
-            println!("{}", "Nakhara Node Status".cyan().bold());
+            println!("{}", "Nakharax Node Status".cyan().bold());
             println!("{}", "=".repeat(40));
 
             let height = rpc_call(&client, &cli.rpc, "eth_blockNumber", vec![]).await?;

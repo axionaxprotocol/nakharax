@@ -1,0 +1,23 @@
+# Example systemd unit for Monolith MK-I HYDRA (Sentinel + Worker).
+# Copy to /etc/systemd/system/nakharax-hydra.service and edit paths/user.
+#
+#   sudo cp scripts/nakharax-hydra.service.example /etc/systemd/system/nakharax-hydra.service
+#   sudo nano /etc/systemd/system/nakharax-hydra.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now nakharax-hydra
+
+[Unit]
+Description=Nakharax Monolith MK-I HYDRA (Sentinel + Worker)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nakharax
+WorkingDirectory=/opt/nakharax-core-universe
+Environment=PATH=/opt/nakharax-core-universe/core/deai/.venv/bin:/usr/local/bin:/usr/bin
+ExecStart=/opt/nakharax-core-universe/core/deai/.venv/bin/python /opt/nakharax-core-universe/hydra_manager.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

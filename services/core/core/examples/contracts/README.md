@@ -1,6 +1,6 @@
-# Nakhara Example Smart Contracts
+# Nakharax Example Smart Contracts
 
-Example Solidity contracts for testing and learning on Nakhara Testnet.
+Example Solidity contracts for testing and learning on Nakharax Testnet.
 
 ## 📋 Contracts
 
@@ -135,24 +135,24 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 
 ---
 
-## 🚀 Deployment on Nakhara Testnet
+## 🚀 Deployment on Nakharax Testnet
 
 ### Prerequisites
-1. MetaMask with Nakhara Testnet configured
+1. MetaMask with Nakharax Testnet configured
 2. Testnet NAK tokens from faucet
 3. Remix IDE or Hardhat/Foundry
 
 ### Using Remix IDE
 
-1. **Add Nakhara Testnet to MetaMask:**
-   - Network Name: Nakhara Testnet
-   - RPC URL: https://rpc.nakhara.io
+1. **Add Nakharax Testnet to MetaMask:**
+   - Network Name: Nakharax Testnet
+   - RPC URL: https://rpc.nakharaxx.io
    - Chain ID: 86137
    - Currency Symbol: NAK
-   - Block Explorer: http://rpc.nakhara.io:3000/explorer
+   - Block Explorer: http://rpc.nakharaxx.io:3000/explorer
 
 2. **Get Testnet Tokens:**
-   - Visit: http://rpc.nakhara.io:3000/faucet
+   - Visit: http://rpc.nakharaxx.io:3000/faucet
    - Request 1 NAK (60 minute cooldown)
 
 3. **Deploy with Remix:**
@@ -160,7 +160,7 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
    - Create new file and paste contract code
    - Compile with Solidity 0.8.20+
    - Select "Injected Provider - MetaMask"
-   - Ensure MetaMask is on Nakhara Testnet
+   - Ensure MetaMask is on Nakharax Testnet
    - Fill constructor parameters
    - Click "Deploy"
 
@@ -170,8 +170,8 @@ staking.setRewardRate(2e15); // 0.002 tokens per second
 // hardhat.config.js
 module.exports = {
   networks: {
-    nakhara: {
-      url: "https://rpc.nakhara.io",
+    nakharax: {
+      url: "https://rpc.nakharaxx.io",
       chainId: 86137,
       accounts: [process.env.PRIVATE_KEY]
     }
@@ -182,7 +182,7 @@ module.exports = {
 
 ```bash
 # Deploy
-npx hardhat run scripts/deploy.js --network nakhara
+npx hardhat run scripts/deploy.js --network nakharax
 ```
 
 ### Using Foundry
@@ -190,19 +190,19 @@ npx hardhat run scripts/deploy.js --network nakhara
 ```bash
 # Deploy SimpleToken
 forge create SimpleToken \
-  --rpc-url https://rpc.nakhara.io \
+  --rpc-url https://rpc.nakharaxx.io \
   --constructor-args "Test Token" "TEST" 1000000 \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleNFT
 forge create SimpleNFT \
-  --rpc-url https://rpc.nakhara.io \
+  --rpc-url https://rpc.nakharaxx.io \
   --constructor-args "My NFT" "MNFT" \
   --private-key $PRIVATE_KEY
 
 # Deploy SimpleStaking
 forge create SimpleStaking \
-  --rpc-url https://rpc.nakhara.io \
+  --rpc-url https://rpc.nakharaxx.io \
   --constructor-args 0x0000000000000000000000000000000000000000 \
   --private-key $PRIVATE_KEY
 ```
@@ -258,12 +258,12 @@ await staking.claimRewards();
 
 ## 📚 Resources
 
-- **Testnet Website**: http://rpc.nakhara.io:3000
-- **Faucet**: http://rpc.nakhara.io:3000/faucet
-- **Explorer**: http://rpc.nakhara.io:3000/explorer
-- **RPC Endpoint**: https://rpc.nakhara.io
+- **Testnet Website**: http://rpc.nakharaxx.io:3000
+- **Faucet**: http://rpc.nakharaxx.io:3000/faucet
+- **Explorer**: http://rpc.nakharaxx.io:3000/explorer
+- **RPC Endpoint**: https://rpc.nakharaxx.io
 - **Chain ID**: 86137
-- **Documentation**: https://github.com/nakhara-io/nakhara-docs
+- **Documentation**: https://github.com/nakharax-io/nakharax-docs
 
 ---
 
@@ -293,4 +293,4 @@ MIT License - Free to use and modify
 
 ---
 
-Made with 💜 by the Nakhara Team
+Made with 💜 by the Nakharax Team

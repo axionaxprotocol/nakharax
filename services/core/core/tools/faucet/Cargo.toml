@@ -1,14 +1,14 @@
 [package]
-name = "nakhara-faucet"
+name = "nakharax-faucet"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "nakhara_faucet"
+name = "nakharax_faucet"
 path = "src/lib.rs"
 
 [[bin]]
-name = "nakhara-faucet"
+name = "nakharax-faucet"
 path = "src/main.rs"
 
 [dependencies]

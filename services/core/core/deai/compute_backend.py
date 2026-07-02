@@ -1,7 +1,7 @@
 """
-[EVOLUTION] Hardware Abstraction Layer (HAL) for Nakhara DeAI.
+[EVOLUTION] Hardware Abstraction Layer (HAL) for Nakharax DeAI.
 
-Makes Nakhara agnostic to underlying hardware: GPU (SILICON) or Photonic Chip (PHOTONIC).
+Makes Nakharax agnostic to underlying hardware: GPU (SILICON) or Photonic Chip (PHOTONIC).
 This is where we "plug in light" when Monolith Mark-II hardware is available.
 """
 

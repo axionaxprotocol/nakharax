@@ -491,7 +491,7 @@ mod tests {
             ..Default::default()
         });
 
-        let data = b"Hello, Nakhara DA Layer! This is test data.";
+        let data = b"Hello, Nakharax DA Layer! This is test data.";
         let entry = da.store("test-1".to_string(), data).await.unwrap();
 
         assert_eq!(entry.original_size, data.len());

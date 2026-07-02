@@ -1,4 +1,4 @@
-//! On-chain Governance Module for Nakhara Protocol
+//! On-chain Governance Module for Nakharax Protocol
 //!
 //! Provides decentralized governance without external voting services:
 //! - Proposal creation and management

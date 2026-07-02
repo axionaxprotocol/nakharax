@@ -1,11 +1,11 @@
 #!/bin/bash
-# Nakhara Core - Linux Dependency Installation Script
+# Nakharax Core - Linux Dependency Installation Script
 # Installs Rust, Node.js, Python, and other required dependencies
 
 set -e
 
 echo "================================================"
-echo "Nakhara Core - Linux Dependency Installer"
+echo "Nakharax Core - Linux Dependency Installer"
 echo "================================================"
 
 # Colors

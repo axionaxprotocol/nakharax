@@ -1,5 +1,5 @@
 """
-Nakhara DeAI - Secure Wallet Manager
+Nakharax DeAI - Secure Wallet Manager
 Manages Worker Wallet with encrypted keystore support
 """
 
@@ -164,13 +164,13 @@ class WalletManager:
 if __name__ == "__main__":
     # Test
     print("=" * 60)
-    print("Nakhara Secure Wallet Manager Test")
+    print("Nakharax Secure Wallet Manager Test")
     print("=" * 60)
 
     wm = WalletManager()
     print(f"\nAddress: {wm.get_address()}")
 
-    sig = wm.sign_message("Hello Nakhara")
+    sig = wm.sign_message("Hello Nakharax")
     print(f"Signature: {sig[:20]}...")
 
     print("\nWallet manager test complete!")

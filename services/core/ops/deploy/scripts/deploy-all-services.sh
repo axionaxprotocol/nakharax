@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # =============================================================================
-# nakhara Protocol - Complete Service Deployment Script
+# nakharax Protocol - Complete Service Deployment Script
 # =============================================================================
-# This script deploys all nakhara services in the correct order
+# This script deploys all nakharax services in the correct order
 # Usage: ./deploy-all-services.sh [--check-only | --minimal | --full]
 # =============================================================================
 
@@ -234,12 +234,12 @@ deploy_phase_1_infrastructure() {
     
     # PostgreSQL
     deploy_service "postgres" \
-        "docker exec nakhara-postgres pg_isready -U explorer" \
+        "docker exec nakharax-postgres pg_isready -U explorer" \
         60
     
     # Redis
     deploy_service "redis" \
-        "docker exec nakhara-redis redis-cli -a \"${REDIS_PASSWORD}\" ping | grep -q PONG" \
+        "docker exec nakharax-redis redis-cli -a \"${REDIS_PASSWORD}\" ping | grep -q PONG" \
         30
     
     print_success "Phase 1 completed: Infrastructure services are running"
@@ -250,7 +250,7 @@ deploy_phase_2_core() {
     
     # RPC Node (this is the most important service)
     deploy_service "rpc-node" \
-        "docker exec nakhara-rpc curl -f http://localhost:8545/health" \
+        "docker exec nakharax-rpc curl -f http://localhost:8545/health" \
         120
     
     print_success "Phase 2 completed: RPC node is running"
@@ -261,12 +261,12 @@ deploy_phase_3_applications() {
     
     # Block Explorer Backend (optional — may not have image yet)
     deploy_service "explorer-backend" \
-        "docker exec nakhara-explorer-backend curl -f http://localhost:3001/api/health" \
+        "docker exec nakharax-explorer-backend curl -f http://localhost:3001/api/health" \
         90 || print_warning "Explorer backend failed — continuing without it"
     
     # Faucet
     deploy_service "faucet" \
-        "docker exec nakhara-faucet curl -f http://localhost:3002/health" \
+        "docker exec nakharax-faucet curl -f http://localhost:3002/health" \
         60
     
     print_success "Phase 3 completed: Application services deployed"
@@ -293,7 +293,7 @@ deploy_phase_5_proxy() {
     
     # Nginx
     deploy_service "nginx" \
-        "docker exec nakhara-nginx nginx -t" \
+        "docker exec nakharax-nginx nginx -t" \
         30
     
     # Certbot (runs periodically, just ensure container exists)
@@ -316,7 +316,7 @@ deploy_minimal() {
     # Only faucet from phase 3
     print_header "PHASE 3: Essential Applications"
     deploy_service "faucet" \
-        "docker exec nakhara-faucet curl -f http://localhost:3002/health" \
+        "docker exec nakharax-faucet curl -f http://localhost:3002/health" \
         60
     
     deploy_phase_5_proxy
@@ -368,7 +368,7 @@ verify_deployment() {
     
     for service in "${services[@]}"; do
         IFS=':' read -r container port description <<< "$service"
-        if docker ps | grep -q "nakhara-${container}"; then
+        if docker ps | grep -q "nakharax-${container}"; then
             if nc -z localhost "$port" 2>/dev/null; then
                 print_success "${description} (port ${port})"
             else
@@ -424,7 +424,7 @@ print_access_info() {
 # =============================================================================
 
 main() {
-    print_header "nakhara Protocol - Service Deployment"
+    print_header "nakharax Protocol - Service Deployment"
     
     log "Deployment started with mode: $MODE"
     

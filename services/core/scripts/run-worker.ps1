@@ -1,4 +1,4 @@
-# Run Nakhara DeAI Worker from repo root.
+# Run Nakharax DeAI Worker from repo root.
 # Usage: .\scripts\run-worker.ps1 [-Config path]
 # Example: .\scripts\run-worker.ps1 -Config configs\monolith_worker.toml
 

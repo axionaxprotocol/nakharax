@@ -1,6 +1,6 @@
-//! nakhara Cryptography
+//! nakharax Cryptography
 //!
-//! Cryptographic primitives for nakhara blockchain:
+//! Cryptographic primitives for nakharax blockchain:
 //! - **ECVRF**: Production-grade VRF using schnorrkel (recommended)
 //! - **VRF**: Legacy VRF implementation (deprecated)
 //! - **Hash**: SHA3-256, Keccak256, Blake2s-256, Blake2b-512

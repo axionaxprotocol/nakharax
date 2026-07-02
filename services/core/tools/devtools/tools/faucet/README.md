@@ -1,4 +1,4 @@
-# nakhara Testnet Faucet
+# nakharax Testnet Faucet
 
 Web application for distributing testnet NAK tokens to developers and testers.
 
@@ -36,9 +36,9 @@ Web application for distributing testnet NAK tokens to developers and testers.
 
 # Deploy faucet
 sudo bash scripts/setup_faucet.sh \
-  --domain testnet-faucet.nakhara.io \
-  --ssl-email admin@nakhara.io \
-  --rpc-url https://testnet-rpc.nakhara.io \
+  --domain testnet-faucet.nakharaxx.io \
+  --ssl-email admin@nakharaxx.io \
+  --rpc-url https://testnet-rpc.nakharaxx.io \
   --chain-id 86137 \
   --private-key "YOUR_PRIVATE_KEY_HERE"
 ```
@@ -65,14 +65,14 @@ cargo build --release
 ```bash
 # EXAMPLE - Replace with your actual values (NEVER commit real keys)
 export FAUCET_PRIVATE_KEY="0x0000000000000000000000000000000000000000000000000000000000000000"
-export RPC_URL="https://testnet-rpc.nakhara.io"
+export RPC_URL="https://testnet-rpc.nakharaxx.io"
 export CHAIN_ID="86137"
 ```
 
 #### 3. Run Backend
 
 ```bash
-./target/release/nakhara-faucet
+./target/release/nakharax-faucet
 ```
 
 Backend runs on port 3000 by default.
@@ -96,7 +96,7 @@ Health check endpoint.
 ```json
 {
   "status": "ok",
-  "service": "nakhara-faucet",
+  "service": "nakharax-faucet",
   "version": "1.0.0"
 }
 ```
@@ -111,7 +111,7 @@ Get faucet configuration.
   "chain_id": 86137,
   "amount": "100 NAK",
   "cooldown_hours": 24,
-  "network": "nakhara Testnet"
+  "network": "nakharax Testnet"
 }
 ```
 
@@ -176,8 +176,8 @@ const MAX_REQUESTS_PER_IP: usize = 3;
 Edit `public/index.html`:
 
 ```javascript
-const FAUCET_API = 'https://testnet-faucet.nakhara.io';
-const EXPLORER_URL = 'https://testnet-explorer.nakhara.io';
+const FAUCET_API = 'https://testnet-faucet.nakharaxx.io';
+const EXPLORER_URL = 'https://testnet-explorer.nakharaxx.io';
 ```
 
 ## Security
@@ -211,13 +211,13 @@ Multiple layers of protection:
 
 ```bash
 # Service status
-sudo systemctl status nakhara-faucet
+sudo systemctl status nakharax-faucet
 
 # Logs
-sudo journalctl -u nakhara-faucet -f
+sudo journalctl -u nakharax-faucet -f
 
 # API health
-curl https://testnet-faucet.nakhara.io/health
+curl https://testnet-faucet.nakharaxx.io/health
 ```
 
 ### Monitor Balance
@@ -225,7 +225,7 @@ curl https://testnet-faucet.nakhara.io/health
 ```bash
 # Get faucet wallet address from private key
 # Check balance via RPC
-curl -X POST https://testnet-rpc.nakhara.io \
+curl -X POST https://testnet-rpc.nakharaxx.io \
   -H 'Content-Type: application/json' \
   -d '{
     "jsonrpc":"2.0",
@@ -250,13 +250,13 @@ When balance is low, send tokens to faucet address:
 
 ```bash
 # Check logs
-sudo journalctl -u nakhara-faucet -n 50
+sudo journalctl -u nakharax-faucet -n 50
 
 # Verify environment variables
-cat /var/lib/nakhara-faucet/.env
+cat /var/lib/nakharax-faucet/.env
 
 # Test binary manually
-sudo -u faucet /usr/local/bin/nakhara-faucet
+sudo -u faucet /usr/local/bin/nakharax-faucet
 ```
 
 ### Frontend Not Loading
@@ -283,10 +283,10 @@ sudo systemctl restart nginx
 
 ```bash
 # View rate limit settings
-grep -A 5 "limit_req_zone" /etc/nginx/sites-available/nakhara-faucet
+grep -A 5 "limit_req_zone" /etc/nginx/sites-available/nakharax-faucet
 
 # Adjust if needed
-sudo nano /etc/nginx/sites-available/nakhara-faucet
+sudo nano /etc/nginx/sites-available/nakharax-faucet
 sudo systemctl reload nginx
 ```
 
@@ -334,9 +334,9 @@ Common enhancements:
 
 ## Support
 
-- **Documentation**: https://docs.nakhara.io
-- **Issues**: https://github.com/nakhara-io/nakhara-core/issues
-- **Discord**: https://discord.gg/nakhara
+- **Documentation**: https://docs.nakharaxx.io
+- **Issues**: https://github.com/nakharax-io/nakharax-core/issues
+- **Discord**: https://discord.gg/nakharax
 
 ## License
 

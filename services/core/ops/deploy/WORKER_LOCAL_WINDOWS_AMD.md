@@ -1,4 +1,4 @@
-# nakhara Worker Node - Local Windows Setup Guide
+# nakharax Worker Node - Local Windows Setup Guide
 
 **Platform**: Windows with AMD GPU  
 **GPU**: AMD Radeon RX 560 (4GB VRAM)  
@@ -55,7 +55,7 @@ Software:
 
 ```powershell
 # Create virtual environment
-cd d:\nakhara-monolith
+cd d:\nakharax-monolith
 python -m venv worker-env
 
 # Activate
@@ -162,7 +162,7 @@ Create file `deai_training_amd.py`:
 
 ```python
 """
-nakhara DeAI Training - AMD GPU Version
+nakharax DeAI Training - AMD GPU Version
 """
 
 import torch_directml
@@ -287,7 +287,7 @@ cpu_threads = 12
 ram = 16  # Adjust to your actual RAM
 
 [network]
-rpc_url = "https://rpc.nakhara.io"
+rpc_url = "https://rpc.nakharaxx.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -296,9 +296,9 @@ da_reliability = 0.95
 target_uptime = 0.95
 
 [storage]
-data_dir = "D:\\nakhara-worker\\data"
-models_dir = "D:\\nakhara-worker\\models"
-logs_dir = "D:\\nakhara-worker\\logs"
+data_dir = "D:\\nakharax-worker\\data"
+models_dir = "D:\\nakharax-worker\\models"
+logs_dir = "D:\\nakharax-worker\\logs"
 ```
 
 ---
@@ -348,7 +348,7 @@ Get-Process python | Format-Table Name, CPU, WorkingSet -AutoSize
 2. **Test DirectML** (5 min)
 3. **Run Training Example** (15 min)
 4. **Configure Worker** (5 min)
-5. **Connect to nakhara Network** (Later)
+5. **Connect to nakharax Network** (Later)
 
 ---
 

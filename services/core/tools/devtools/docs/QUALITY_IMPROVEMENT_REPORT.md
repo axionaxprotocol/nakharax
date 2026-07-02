@@ -59,13 +59,13 @@
 
 ##  Repository Rankings (After Improvements)
 
-1. **nakhara-core**: 64.0/100 (D)  Best
-2. **nakhara-web**: 53.2/100 (F)
-3. **nakhara-sdk-ts**: 45.5/100 (F)
-4. **nakhara-deploy**: 40.8/100 (F)
-5. **nakhara-marketplace**: 37.2/100 (F)
-6. **nakhara-devtools**: 28.2/100 (F)
-7. **nakhara-docs**: 19.5/100 (F)
+1. **nakharax-core**: 64.0/100 (D)  Best
+2. **nakharax-web**: 53.2/100 (F)
+3. **nakharax-sdk-ts**: 45.5/100 (F)
+4. **nakharax-deploy**: 40.8/100 (F)
+5. **nakharax-marketplace**: 37.2/100 (F)
+6. **nakharax-devtools**: 28.2/100 (F)
+7. **nakharax-docs**: 19.5/100 (F)
 
 ##  GitHub Issues Updated
 
@@ -89,7 +89,7 @@
 
 1. **Organization** improved by 31% (biggest gain)
 2. **Compatibility** doubled (+104%)
-3. **nakhara-core** graduated from F to D grade
+3. **nakharax-core** graduated from F to D grade
 4. All repos now have proper licensing
 5. Cross-platform installation support
 6. Performance benchmarking infrastructure ready

@@ -1,10 +1,10 @@
-# Nakhara OS Dashboard — EU VPS (217.216.109.5)
-# Install: /etc/nginx/sites-available/app.nakhara.io
-# DNS: app.nakhara.io → 217.216.109.5
+# Nakharax OS Dashboard — EU VPS (217.216.109.5)
+# Install: /etc/nginx/sites-available/app.nakharaxx.io
+# DNS: app.nakharaxx.io → 217.216.109.5
 
 server {
     listen 80;
-    server_name app.nakhara.io os.nakhara.io;
+    server_name app.nakharaxx.io os.nakharaxx.io;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -17,10 +17,10 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name app.nakhara.io os.nakhara.io;
+    server_name app.nakharaxx.io os.nakharaxx.io;
 
-    ssl_certificate /etc/letsencrypt/live/app.nakhara.io/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/app.nakhara.io/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/app.nakharaxx.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/app.nakharaxx.io/privkey.pem;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;

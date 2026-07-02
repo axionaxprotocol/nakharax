@@ -1,4 +1,4 @@
-# System Architecture Report: nakhara-monolith
+# System Architecture Report: nakharax-monolith
 
 **Date:** December 13, 2025 (reference update Feb 2026)  
 **Protocol:** v2.1 — Series Seed Preparation ([Master Summary](../MASTER_SUMMARY.md))  
@@ -11,7 +11,7 @@
 
 ## 1. High-Level Architecture
 
-`nakhara-monolith` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
+`nakharax-monolith` is a **pnpm workspaces** monorepo designed to separate Core Logic (SDK) from User Interfaces (Web & Marketplace)
 
 ```mermaid
 graph TD
@@ -28,8 +28,8 @@ graph TD
     end
 
     subgraph "packages/sdk"
-        SDK[Nakhara SDK]
-        Client[NakharaClient]
+        SDK[Nakharax SDK]
+        Client[NakharaxClient]
         Types[Shared Types]
     end
 
@@ -63,10 +63,10 @@ graph TD
 
 | Workspace                       | Type | Framework / Library         | Key Dependencies                                   | State Management             |
 | :------------------------------ | :--- | :-------------------------- | :------------------------------------------------- | :--------------------------- |
-| **`apps/web`**                  | App  | **Next.js 14** (App Router) | `ethers`, `react-query`, `zustand`, `@nakhara/sdk` | `zustand` + React Context    |
-| **`apps/marketplace`**          | App  | **Vite** + React            | `@nakhara/sdk`, `ethers`, `viem`                   | React `useState` / `useMemo` |
+| **`apps/web`**                  | App  | **Next.js 14** (App Router) | `ethers`, `react-query`, `zustand`, `@nakharax/sdk` | `zustand` + React Context    |
+| **`apps/marketplace`**          | App  | **Vite** + React            | `@nakharax/sdk`, `ethers`, `viem`                   | React `useState` / `useMemo` |
 | **`apps/api`**                  | App  | **Hono** + Drizzle ORM      | `postgres`, `viem`, `zod`                          | N/A (Stateless)              |
-| **`packages/sdk`**              | Lib  | **TypeScript**              | `ethers`, `@nakhara/blockchain-utils`              | N/A (Stateless)              |
+| **`packages/sdk`**              | Lib  | **TypeScript**              | `ethers`, `@nakharax/blockchain-utils`              | N/A (Stateless)              |
 | **`packages/blockchain-utils`** | Lib  | **TypeScript**              | `viem`                                             | N/A (Stateless)              |
 | **`packages/ui`**               | Lib  | **React**                   | `react`, `react-dom`                               | N/A                          |
 
@@ -83,7 +83,7 @@ Marketplace relies on SDK for business logic.
 
 1. **Input**: User selects Worker and deposits via `EscrowPanel`
 2. **Process**:
-   - `EscrowPanel` creates `NakharaClient` instance
+   - `EscrowPanel` creates `NakharaxClient` instance
    - Calls `client.depositEscrow(jobId, amount)`
    - **SDK Logic**: Currently returns **Mock Transaction** immediately
 3. **Output**: UI updates status to "Deposited" from SDK response
@@ -97,7 +97,7 @@ Website manages blockchain connection directly, not via SDK.
 2. **Process**:
    - `Web3Context` calls `connectWallet()` from `lib/web3.ts`
    - Uses `window.ethereum` for account access
-   - Hardcoded RPCs: `https://nakhara.io/rpc/`, `http://217.216.109.5:8545`
+   - Hardcoded RPCs: `https://nakharaxx.io/rpc/`, `http://217.216.109.5:8545`
 3. **Output**: App state (`account`, `balance`) updated via `zustand` or Context
 
 ---
@@ -121,8 +121,8 @@ Website manages blockchain connection directly, not via SDK.
 ## 5. Recommendations
 
 1. **Centralize Web3 Logic**:
-   - Move `connectWallet`, `getBalance`, and chain config from `apps/web/lib/web3.ts` into `@nakhara/sdk`
-   - Have `apps/web` use `@nakhara/sdk` instead of managing `ethers` directly
+   - Move `connectWallet`, `getBalance`, and chain config from `apps/web/lib/web3.ts` into `@nakharax/sdk`
+   - Have `apps/web` use `@nakharax/sdk` instead of managing `ethers` directly
 
 2. **Environment Variables**:
    - Move RPC URLs (e.g. `http://46.250.244.4:8545`) to `.env` or central config in SDK

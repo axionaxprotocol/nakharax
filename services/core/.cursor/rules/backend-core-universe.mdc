@@ -4,15 +4,15 @@ globs: core/**/*, ops/**/*, tools/**/*, scripts/**/*, configs/**/*, *.toml, hydr
 alwaysApply: false
 ---
 
-# NAKHARA BACKEND — Core Universe
+# NAKHARAX BACKEND — Core Universe
 
-This repo is `nakhara-monolith`: Rust blockchain core + Python DeAI + ops + tools.  
+This repo is `nakharax-monolith`: Rust blockchain core + Python DeAI + ops + tools.  
 **Version:** Core v1.9.0 | Tests: 201/201 | Chain ID: 86137 (testnet)
 
 ## Repository Layout
 
 ```
-nakhara-monolith/services/core/
+nakharax-monolith/services/core/
 ├── core/                  ← Rust Cargo workspace (core/Cargo.toml)
 │   ├── core/<crate>/      ← 18 Rust crates (consensus, blockchain, node, rpc, ...)
 │   ├── bridge/rust-python/← PyO3 FFI
@@ -87,8 +87,8 @@ python hydra_manager.py                                             # HYDRA dual
 
 | Node | IP | Role | Public URLs |
 |---|---|---|---|
-| EU | `217.216.109.5` | Validator + RPC + **Nakhara OS** | `https://app.nakhara.io`, `http://217.216.109.5:8545` |
-| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakhara.io`, explorer, api, faucet |
+| EU | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `https://app.nakharaxx.io`, `http://217.216.109.5:8545` |
+| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakharaxx.io`, explorer, api, faucet |
 
 EU OS: `docs/web/VPS_EU_OS_DASHBOARD.md` · AU chain: `ops/deploy/VPS_AU_ALL_IN_ONE.md`
 
@@ -96,5 +96,5 @@ EU OS: `docs/web/VPS_EU_OS_DASHBOARD.md` · AU chain: `ops/deploy/VPS_AU_ALL_IN_
 
 - `.env`, `worker_key.json`, private keys → always in `.gitignore`, never committed
 - `WORKER_PRIVATE_KEY` env injection is the production pattern (not file-based)
-- RPC authentication via `X-API-Key` header when `NAKHARA_RPC_API_KEY` is set
-- CORS restricted via `NAKHARA_RPC_CORS_ORIGINS` env
+- RPC authentication via `X-API-Key` header when `NAKHARAX_RPC_API_KEY` is set
+- CORS restricted via `NAKHARAX_RPC_CORS_ORIGINS` env

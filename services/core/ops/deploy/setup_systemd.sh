@@ -1,36 +1,36 @@
 #!/bin/bash
-# Systemd Service Setup for nakhara Validator
+# Systemd Service Setup for nakharax Validator
 # Run as root: sudo bash setup_systemd.sh
 
 set -e
 
-NAKHARA_USER="nakhara"
-SERVICE_FILE="/etc/systemd/system/nakhara-validator.service"
+NAKHARAX_USER="nakharax"
+SERVICE_FILE="/etc/systemd/system/nakharax-validator.service"
 
-echo "Setting up nakhara Validator systemd service..."
+echo "Setting up nakharax Validator systemd service..."
 
 # Create service file
 cat > $SERVICE_FILE << 'EOF'
 [Unit]
-Description=nakhara Validator Node
+Description=nakharax Validator Node
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=nakhara
-Group=nakhara
-WorkingDirectory=/home/nakhara/nakhara-monolith
+User=nakharax
+Group=nakharax
+WorkingDirectory=/home/nakharax/nakharax-monolith
 
 # Environment
-Environment="NAKHARA_HOME=/home/nakhara/.nakhara"
+Environment="NAKHARAX_HOME=/home/nakharax/.nakharax"
 Environment="RUST_LOG=info"
 Environment="RUST_BACKTRACE=1"
-Environment="PYTHONPATH=/home/nakhara/nakhara-monolith/services/core/core/deai"
+Environment="PYTHONPATH=/home/nakharax/nakharax-monolith/services/core/core/deai"
 
 # Start command
-ExecStart=/usr/local/bin/nakhara-core start \
-    --config /home/nakhara/.nakhara/config/config.yaml \
+ExecStart=/usr/local/bin/nakharax-core start \
+    --config /home/nakharax/.nakharax/config/config.yaml \
     --validator
 
 # Restart policy
@@ -45,9 +45,9 @@ ProtectSystem=full
 ProtectHome=read-only
 
 # Logging
-StandardOutput=append:/home/nakhara/.nakhara/logs/validator.log
-StandardError=append:/home/nakhara/.nakhara/logs/validator.error.log
-SyslogIdentifier=nakhara-validator
+StandardOutput=append:/home/nakharax/.nakharax/logs/validator.log
+StandardError=append:/home/nakharax/.nakharax/logs/validator.error.log
+SyslogIdentifier=nakharax-validator
 
 [Install]
 WantedBy=multi-user.target
@@ -60,14 +60,14 @@ systemctl daemon-reload
 echo "Systemd reloaded"
 
 # Enable service
-systemctl enable nakhara-validator
+systemctl enable nakharax-validator
 echo "Service enabled (will start on boot)"
 
 echo ""
 echo "Setup complete! To control the validator:"
-echo "  Start:   sudo systemctl start nakhara-validator"
-echo "  Stop:    sudo systemctl stop nakhara-validator"
-echo "  Restart: sudo systemctl restart nakhara-validator"
-echo "  Status:  sudo systemctl status nakhara-validator"
-echo "  Logs:    journalctl -u nakhara-validator -f"
+echo "  Start:   sudo systemctl start nakharax-validator"
+echo "  Stop:    sudo systemctl stop nakharax-validator"
+echo "  Restart: sudo systemctl restart nakharax-validator"
+echo "  Status:  sudo systemctl status nakharax-validator"
+echo "  Logs:    journalctl -u nakharax-validator -f"
 echo ""

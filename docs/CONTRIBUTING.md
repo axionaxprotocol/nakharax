@@ -1,4 +1,4 @@
-# Contributing to Nakhara Documentation
+# Contributing to Nakharax Documentation
 
 > **Guidelines for writing and maintaining documentation**
 
@@ -11,7 +11,7 @@
 ### Prerequisites
 
 - Familiarity with Markdown syntax
-- Understanding of Nakhara domain separation (Web ↔ Core)
+- Understanding of Nakharax domain separation (Web ↔ Core)
 - Git workflow knowledge
 
 ### File Locations
@@ -133,10 +133,10 @@
 
 ```markdown
 <!-- GitHub -->
-[Repository](https://github.com/nakhara-io/nakhara-monolith)
+[Repository](https://github.com/nakharax-io/nakharax-monolith)
 
 <!-- Website -->
-[Protocol](https://nakhara.io)
+[Protocol](https://nakharaxx.io)
 ```
 
 ### Link Validation
@@ -292,8 +292,8 @@ _Last updated: YYYY-MM-DD_
 
 ## Questions?
 
-- Open an issue: [GitHub Issues](https://github.com/nakhara-io/nakhara-monolith/issues)
-- Discord: [#documentation](https://discord.gg/nakhara)
+- Open an issue: [GitHub Issues](https://github.com/nakharax-io/nakharax-monolith/issues)
+- Discord: [#documentation](https://discord.gg/nakharax)
 
 ---
 

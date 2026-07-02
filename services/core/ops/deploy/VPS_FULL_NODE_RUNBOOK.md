@@ -9,14 +9,14 @@
 จาก repo หลัง clone:
 
 ```bash
-cd nakhara-monolith/services/core/ops/deploy/scripts
-chmod +x nakhara-node-bootstrap.sh
+cd nakharax-monolith/services/core/ops/deploy/scripts
+chmod +x nakharax-node-bootstrap.sh
 
-./nakhara-node-bootstrap.sh build
-sudo NAKHARA_BOOTSTRAP_NODES='/ip4/<IP>/tcp/30303/p2p/<PEER_ID>' \
-  ./nakhara-node-bootstrap.sh setup --role full --data-dir /var/lib/nakhara-node
-sudo ./nakhara-node-bootstrap.sh run --data-dir /var/lib/nakhara-node
-# หรือ: sudo ./nakhara-node-bootstrap.sh install-systemd --data-dir /var/lib/nakhara-node && sudo systemctl start nakhara-node
+./nakharax-node-bootstrap.sh build
+sudo NAKHARAX_BOOTSTRAP_NODES='/ip4/<IP>/tcp/30303/p2p/<PEER_ID>' \
+  ./nakharax-node-bootstrap.sh setup --role full --data-dir /var/lib/nakharax-node
+sudo ./nakharax-node-bootstrap.sh run --data-dir /var/lib/nakharax-node
+# หรือ: sudo ./nakharax-node-bootstrap.sh install-systemd --data-dir /var/lib/nakharax-node && sudo systemctl start nakharax-node
 ```
 
 รายละเอียดคำสั่งทุก role (`full`, `rpc`, `validator`, `bootnode`): [scripts/README-NODE-RUNTIME.md](scripts/README-NODE-RUNTIME.md)  
@@ -43,32 +43,32 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # 2. Clone และ build
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith/services/core/core
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith/services/core/core
 cargo build --release -p node
 
 # 3. สร้างโฟลเดอร์ state
-mkdir -p /var/lib/nakhara-node
-# หรือใช้ path ใน home: mkdir -p ~/nakhara-state
+mkdir -p /var/lib/nakharax-node
+# หรือใช้ path ใน home: mkdir -p ~/nakharax-state
 ```
 
 ### รัน Node
 
-**Public testnet:** คัดลอก `core/tools/genesis.json` ไปที่เครื่อง แล้วเพิ่ม `--chain /path/to/genesis.json` และตั้ง `NAKHARA_BOOTSTRAP_NODES` ชี้ validator ที่รันอยู่ (หรือใช้สคริปต์ [README-NODE-RUNTIME.md](scripts/README-NODE-RUNTIME.md) ด้านบน)
+**Public testnet:** คัดลอก `core/tools/genesis.json` ไปที่เครื่อง แล้วเพิ่ม `--chain /path/to/genesis.json` และตั้ง `NAKHARAX_BOOTSTRAP_NODES` ชี้ validator ที่รันอยู่ (หรือใช้สคริปต์ [README-NODE-RUNTIME.md](scripts/README-NODE-RUNTIME.md) ด้านบน)
 
 **VPS ตัวที่ 1 (รันก่อน — ใช้เป็น bootstrap ของตัวที่ 2):**
 
 ใช้ `--identity-key` เพื่อให้ PeerId คงที่หลัง restart (เหมาะ validator):
 
 ```bash
-cd /path/to/nakhara-monolith/services/core/core
+cd /path/to/nakharax-monolith/services/core/core
 
-./target/release/nakhara-node \
+./target/release/nakharax-node \
   --role full \
   --chain-id 86137 \
   --rpc 0.0.0.0:8545 \
-  --state-path /var/lib/nakhara-node \
-  --identity-key /var/lib/nakhara-node/identity.key
+  --state-path /var/lib/nakharax-node \
+  --identity-key /var/lib/nakharax-node/identity.key
 ```
 
 ใน log จะมีบรรทัดประมาณนี้ → **คัดลอก Peer ID ไว้:**
@@ -82,38 +82,38 @@ Local peer ID: 12D3KooWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 แทนที่ `VPS1_IP` และ `PEER_ID_FROM_VPS1` ด้วยค่าจริงจากตัวที่ 1
 
 ```bash
-export NAKHARA_BOOTSTRAP_NODES="/ip4/VPS1_IP/tcp/30303/p2p/PEER_ID_FROM_VPS1"
+export NAKHARAX_BOOTSTRAP_NODES="/ip4/VPS1_IP/tcp/30303/p2p/PEER_ID_FROM_VPS1"
 
-./target/release/nakhara-node \
+./target/release/nakharax-node \
   --role full \
   --chain-id 86137 \
   --rpc 0.0.0.0:8545 \
-  --state-path /var/lib/nakhara-node
+  --state-path /var/lib/nakharax-node
 ```
 
-ถ้ามีมากกว่า 2 node ให้ใส่หลาย multiaddr คั่นด้วย comma ใน `NAKHARA_BOOTSTRAP_NODES`
+ถ้ามีมากกว่า 2 node ให้ใส่หลาย multiaddr คั่นด้วย comma ใน `NAKHARAX_BOOTSTRAP_NODES`
 
 ### รันเป็น systemd (ทั้ง 2 ตัว)
 
-สร้างไฟล์ `/etc/systemd/system/nakhara-node.service`:
+สร้างไฟล์ `/etc/systemd/system/nakharax-node.service`:
 
 ```ini
 [Unit]
-Description=Nakhara Full Node
+Description=Nakharax Full Node
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/path/to/nakhara-monolith/services/core/core
+WorkingDirectory=/path/to/nakharax-monolith/services/core/core
 # ตัวที่ 2 ใส่ env ด้านล่าง (แก้ VPS1_IP และ PEER_ID)
-# Environment="NAKHARA_BOOTSTRAP_NODES=/ip4/VPS1_IP/tcp/30303/p2p/PEER_ID"
-ExecStart=/path/to/nakhara-monolith/services/core/core/target/release/nakhara-node \
+# Environment="NAKHARAX_BOOTSTRAP_NODES=/ip4/VPS1_IP/tcp/30303/p2p/PEER_ID"
+ExecStart=/path/to/nakharax-monolith/services/core/core/target/release/nakharax-node \
   --role full --chain-id 86137 \
   --rpc 0.0.0.0:8545 \
-  --state-path /var/lib/nakhara-node \
-  --identity-key /var/lib/nakhara-node/identity.key
+  --state-path /var/lib/nakharax-node \
+  --identity-key /var/lib/nakharax-node/identity.key
 Restart=always
 RestartSec=10
 
@@ -125,21 +125,21 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable nakhara-node
-sudo systemctl start nakhara-node
-sudo systemctl status nakhara-node
+sudo systemctl enable nakharax-node
+sudo systemctl start nakharax-node
+sudo systemctl status nakharax-node
 ```
 
 ---
 
 ## วิธีที่ 2: Docker
 
-ถ้ามี image `ghcr.io/nakhara-io/nakhara-core:latest`:
+ถ้ามี image `ghcr.io/nakharax-io/nakharax-core:latest`:
 
 ```bash
 # โคลนเพื่อเอา config / script
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith/services/core/ops/deploy
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith/services/core/ops/deploy
 
 # รันแค่ RPC node (จาก docker-compose.vps.yml)
 docker compose -f docker-compose.vps.yml up -d rpc-node
@@ -181,7 +181,7 @@ curl -s -X POST -H "Content-Type: application/json" \
 | ขั้นตอน | VPS 1 | VPS 2 |
 |--------|--------|--------|
 | Build | clone + cargo build -p node | เหมือนกัน |
-| รัน | รัน node ปกติ | ตั้ง `NAKHARA_BOOTSTRAP_NODES` ชี้ไป VPS1 (ด้วย Peer ID ของ VPS1) |
+| รัน | รัน node ปกติ | ตั้ง `NAKHARAX_BOOTSTRAP_NODES` ชี้ไป VPS1 (ด้วย Peer ID ของ VPS1) |
 | Port | 8545, 30303 | 8545, 30303 |
 
 Peer ID ของแต่ละ node ดูจาก log บรรทัด `Local peer ID:` ตอน start

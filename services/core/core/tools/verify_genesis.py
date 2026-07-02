@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nakhara Genesis Verification Tool
+Nakharax Genesis Verification Tool
 
 Validates genesis.json integrity and prints a human-readable summary.
 
@@ -18,7 +18,7 @@ from pathlib import Path
 
 EXPECTED_CHAIN_ID = 86137
 EXPECTED_CONSENSUS = "popc"
-EXPECTED_CREATOR = "nakharaius"
+EXPECTED_CREATOR = "nakharaxius"
 EXPECTED_TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion NAK
 EXPECTED_TOTAL_SUPPLY_WEI = EXPECTED_TOTAL_SUPPLY * (10 ** 18)
 EXPECTED_DECIMALS = 18
@@ -36,7 +36,7 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
 
     file_hash = sha256_file(path)
     print("=" * 64)
-    print("  Nakhara Genesis Verification")
+    print("  Nakharax Genesis Verification")
     print("=" * 64)
     print(f"  File    : {path}")
     print(f"  SHA-256 : 0x{file_hash}")
@@ -57,7 +57,7 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
         return False
 
     config = genesis.get("config", {})
-    nakhara = config.get("nakhara", {})
+    nakharax = config.get("nakharax", {})
     alloc = genesis.get("alloc", {})
     validators = genesis.get("validators", [])
     creator = genesis.get("creator", {})
@@ -66,8 +66,8 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
     print()
     print(f"  Chain ID    : {config.get('chainId')}")
     print(f"  Chain Name  : {config.get('chainName', 'N/A')}")
-    print(f"  Consensus   : {nakhara.get('consensus')}")
-    print(f"  Symbol      : {nakhara.get('symbol', 'N/A')}")
+    print(f"  Consensus   : {nakharax.get('consensus')}")
+    print(f"  Symbol      : {nakharax.get('symbol', 'N/A')}")
     print(f"  Creator     : {creator.get('alias', 'N/A')}")
 
     ts_hex = genesis.get("timestamp", "0x0")
@@ -104,8 +104,8 @@ def verify(filepath: str, expected_hash: str = None) -> bool:
     if config.get("chainId") != EXPECTED_CHAIN_ID:
         issues.append(f"Chain ID is {config.get('chainId')}, expected {EXPECTED_CHAIN_ID}")
 
-    if nakhara.get("consensus") != EXPECTED_CONSENSUS:
-        issues.append(f"Consensus is '{nakhara.get('consensus')}', expected '{EXPECTED_CONSENSUS}'")
+    if nakharax.get("consensus") != EXPECTED_CONSENSUS:
+        issues.append(f"Consensus is '{nakharax.get('consensus')}', expected '{EXPECTED_CONSENSUS}'")
 
     if creator.get("alias") != EXPECTED_CREATOR:
         issues.append(f"Creator is '{creator.get('alias')}', expected '{EXPECTED_CREATOR}'")

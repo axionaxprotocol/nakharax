@@ -1,4 +1,4 @@
-# Project Monolith & Nakhara Core Universe — Executive Summary
+# Project Monolith & Nakharax Core Universe — Executive Summary
 
 **Blueprint for the Operating System of the Next Civilization**
 
@@ -43,7 +43,7 @@ We didn't just build a box — we built "organs" to seamlessly connect humans to
 
 ---
 
-## 3. THE SOUL: Nakhara Core Universe
+## 3. THE SOUL: Nakharax Core Universe
 
 - **Evolution:** From an ordinary blockchain to a **"Trusted World Computer"** — trust resides in mathematics (Math-based Trust) rather than individuals  
 - **Mechanisms:** Reputation, AI Fraud Detection, **Proof-of-Light Consensus** — guaranteeing 100% correct results
@@ -65,7 +65,7 @@ We are at the **"crossroads of eras"** — the plan unfolds in three phases:
 
 | Phase | Focus |
 |-------|--------|
-| **Present (Silicon Phase)** | Fine-tune Nakhara v1.9 to full performance on current hardware (Max Config) — build user base (Network Effect) |
+| **Present (Silicon Phase)** | Fine-tune Nakharax v1.9 to full performance on current hardware (Max Config) — build user base (Network Effect) |
 | **Preparation (Transition Phase)** | Write the **Hardware Abstraction Layer (HAL)** in advance — when photonic chips arrive, swap the "brain" instantly with zero downtime |
 | **Future (Photonic Phase)** | Launch Monolith Mark-II and peripheral devices — fully transition the world into the Post-Silicon era |
 
@@ -86,4 +86,4 @@ We are at the **"crossroads of eras"** — the plan unfolds in three phases:
 
 *Blueprint complete — ready for real-world implementation.*
 
-**Document version:** 2026-02 · Nakhara Core Universe
+**Document version:** 2026-02 · Nakharax Core Universe

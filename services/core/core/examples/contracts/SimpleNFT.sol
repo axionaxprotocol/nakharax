@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title SimpleNFT
- * @dev Basic ERC-721 NFT Implementation for Nakhara Testnet
+ * @dev Basic ERC-721 NFT Implementation for Nakharax Testnet
  * @notice Example NFT contract with metadata support
  */
 contract SimpleNFT {

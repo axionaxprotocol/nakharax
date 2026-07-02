@@ -1,4 +1,4 @@
-//! Persistent Storage Module for Nakhara Blockchain
+//! Persistent Storage Module for Nakharax Blockchain
 //!
 //! Uses `redb` (pure-Rust embedded database) for block storage.
 //! Blocks are serialized with `postcard` for efficient storage.

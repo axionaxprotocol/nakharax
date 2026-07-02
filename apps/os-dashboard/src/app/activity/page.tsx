@@ -57,7 +57,7 @@ export default async function ActivityPage() {
         <Card className="border border-accent-warn/20 bg-accent-warn/5">
           <p className="text-body font-mono text-accent-warn">ERR: {error}</p>
           <p className="text-caption font-mono text-zinc-500 mt-os-3 uppercase tracking-wider">
-            Hint: ensure nodes in <code className="text-zinc-400 bg-bg-elev px-1">@nakhara/sdk</code>{" "}
+            Hint: ensure nodes in <code className="text-zinc-400 bg-bg-elev px-1">@nakharax/sdk</code>{" "}
             <code className="text-zinc-400 bg-bg-elev px-1">DEFAULT_NODES</code> match your testnet.
           </p>
         </Card>

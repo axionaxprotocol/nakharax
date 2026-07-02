@@ -1,4 +1,4 @@
-# 🚀 nakhara Worker Node - RunPod A40 GPU Setup
+# 🚀 nakharax Worker Node - RunPod A40 GPU Setup
 
 **Platform**: RunPod.io Cloud GPU  
 **GPU**: NVIDIA A40 (48GB VRAM)  
@@ -168,14 +168,14 @@ EOF
 
 ---
 
-## 📦 Part 4: Install nakhara Worker (10-15 minutes)
+## 📦 Part 4: Install nakharax Worker (10-15 minutes)
 
 ### Method 1: Use Setup Script (recommended)
 
 ```bash
 # Download setup script
 cd ~
-wget https://raw.githubusercontent.com/nakhara-io/nakhara-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/nakharax-io/nakharax-monolith/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 
 # Make executable
 chmod +x setup-runpod-worker.sh
@@ -186,7 +186,7 @@ chmod +x setup-runpod-worker.sh
 
 **Script will install:**
 - ✅ Rust toolchain
-- ✅ nakhara core repository
+- ✅ nakharax core repository
 - ✅ DeAI dependencies
 - ✅ Worker directories
 - ✅ Configuration files
@@ -207,20 +207,20 @@ rustc --version
 cargo --version
 ```
 
-#### Step 7: Clone nakhara Repository
+#### Step 7: Clone nakharax Repository
 
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith
 ```
 
-#### Step 8: Build nakhara Core
+#### Step 8: Build nakharax Core
 
 ```bash
 # Build core (takes 5-10 minutes)
-cd ~/nakhara-monolith/services/core/core
+cd ~/nakharax-monolith/services/core/core
 cargo build --release
 ```
 
@@ -231,7 +231,7 @@ cargo build --release
 pip install --upgrade pip
 
 # Install DeAI requirements
-cd ~/nakhara-monolith/services/core/core/deai
+cd ~/nakharax-monolith/services/core/core/deai
 pip install -r requirements.txt
 
 # Install additional ML libraries
@@ -246,14 +246,14 @@ pip install transformers datasets accelerate
 
 ```bash
 # Run simple training example
-cd ~/nakhara-monolith/services/core/core/examples
+cd ~/nakharax-monolith/services/core/core/examples
 python deai_simple_training.py
 ```
 
 **Expected output:**
 
 ```
-🚀 nakhara DeAI - Simple Training Example
+🚀 nakharax DeAI - Simple Training Example
 ============================================================
 
 📋 Job Configuration:
@@ -313,10 +313,10 @@ python deai_simple_training.py
 
 ```bash
 # Create worker config directory
-mkdir -p ~/nakhara-worker/config
+mkdir -p ~/nakharax-worker/config
 
 # Create worker.toml
-nano ~/nakhara-worker/config/worker.toml
+nano ~/nakharax-worker/config/worker.toml
 ```
 
 **Content of `worker.toml`:**
@@ -338,8 +338,8 @@ cpu_threads = 32
 ram = 64
 
 [network]
-# nakhara Testnet RPC
-rpc_url = "https://rpc.nakhara.io"
+# nakharax Testnet RPC
+rpc_url = "https://rpc.nakharaxx.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -350,9 +350,9 @@ target_uptime = 0.99
 max_batch_size = 512
 
 [storage]
-data_dir = "/workspace/nakhara-worker/data"
-models_dir = "/workspace/nakhara-worker/models"
-logs_dir = "/workspace/nakhara-worker/logs"
+data_dir = "/workspace/nakharax-worker/data"
+models_dir = "/workspace/nakharax-worker/models"
+logs_dir = "/workspace/nakharax-worker/logs"
 cache_dir = "/workspace/cache"
 
 [optimization]
@@ -366,18 +366,18 @@ dataloader_workers = 8
 
 ```bash
 # Create directories
-mkdir -p /workspace/nakhara-worker/{data,models,logs}
+mkdir -p /workspace/nakharax-worker/{data,models,logs}
 mkdir -p /workspace/cache
 
 # Verify
-ls -la /workspace/nakhara-worker/
+ls -la /workspace/nakharax-worker/
 ```
 
 ### Step 13: Create Worker Wallet (if you don't have one)
 
 ```bash
-# Generate wallet (using nakhara tools)
-cd ~/nakhara-monolith/services/core/tools
+# Generate wallet (using nakharax tools)
+cd ~/nakharax-monolith/services/core/tools
 python generate_worker_wallet.py
 
 # Or use an existing wallet
@@ -391,20 +391,20 @@ python generate_worker_wallet.py
 ### Step 14: Run Worker
 
 ```bash
-cd ~/nakhara-monolith/services/core/core
+cd ~/nakharax-monolith/services/core/core
 
 # Activate environment
 source ~/.cargo/env
 
 # Run worker (foreground)
-cargo run --release --bin nakhara-worker -- \
-  --config ~/nakhara-worker/config/worker.toml \
+cargo run --release --bin nakharax-worker -- \
+  --config ~/nakharax-worker/config/worker.toml \
   --log-level info
 
 # Or run in background with tmux
-tmux new -s nakhara-worker
-cargo run --release --bin nakhara-worker -- \
-  --config ~/nakhara-worker/config/worker.toml \
+tmux new -s nakharax-worker
+cargo run --release --bin nakharax-worker -- \
+  --config ~/nakharax-worker/config/worker.toml \
   --log-level info
 # Press Ctrl+B then D to detach
 ```
@@ -412,7 +412,7 @@ cargo run --release --bin nakhara-worker -- \
 **Expected output:**
 
 ```
-🚀 nakhara Worker Node v0.1.0
+🚀 nakharax Worker Node v0.1.0
 ============================================================
 📋 Worker Configuration:
   Address: 0xYour...Address
@@ -420,8 +420,8 @@ cargo run --release --bin nakhara-worker -- \
   GPU: NVIDIA A40 (48GB)
   Network: Testnet
 
-🔧 Connecting to RPC: https://rpc.nakhara.io
-✅ Connected to nakhara Testnet
+🔧 Connecting to RPC: https://rpc.nakharaxx.io
+✅ Connected to nakharax Testnet
 ✅ Worker registered successfully
 
 🎯 Worker Status: READY
@@ -440,13 +440,13 @@ cargo run --release --bin nakhara-worker -- \
 tmux ls
 
 # Attach to session
-tmux attach -t nakhara-worker
+tmux attach -t nakharax-worker
 
 # Detach from session
 # Press Ctrl+B then D
 
 # Kill session
-tmux kill-session -t nakhara-worker
+tmux kill-session -t nakharax-worker
 ```
 
 ---
@@ -500,7 +500,7 @@ A40 (48GB): ~$0.44/hour
 watch -n 1 nvidia-smi
 
 # Worker logs
-tail -f ~/nakhara-worker/logs/worker.log
+tail -f ~/nakharax-worker/logs/worker.log
 
 # System resources
 htop
@@ -521,7 +521,7 @@ uptime
 
 echo ""
 echo "==== Worker Process ===="
-ps aux | grep nakhara-worker | grep -v grep
+ps aux | grep nakharax-worker | grep -v grep
 EOF
 
 chmod +x ~/monitor-worker.sh
@@ -544,7 +544,7 @@ cd /workspace
 
 # Store important data here:
 /workspace/
-├── nakhara-worker/        # Worker data
+├── nakharax-worker/        # Worker data
 ├── models/                # Trained models
 ├── datasets/              # Training datasets
 └── cache/                 # Cache files
@@ -595,13 +595,13 @@ gradient_checkpointing = true
 
 ```bash
 # Check connection
-curl https://rpc.nakhara.io
+curl https://rpc.nakharaxx.io
 
 # Check logs
-tail -f ~/nakhara-worker/logs/worker.log
+tail -f ~/nakharax-worker/logs/worker.log
 
 # Restart worker
-tmux kill-session -t nakhara-worker
+tmux kill-session -t nakharax-worker
 # Then start again
 ```
 
@@ -624,7 +624,7 @@ tmux kill-session -t nakhara-worker
 - [ ] Verify GPU (nvidia-smi)
 - [ ] Verify PyTorch CUDA
 - [ ] Install Rust
-- [ ] Clone nakhara repo
+- [ ] Clone nakharax repo
 - [ ] Build core successfully
 - [ ] Run training example successfully
 
@@ -673,7 +673,7 @@ tmux kill-session -t nakhara-worker
 - [GPU Pricing](https://www.runpod.io/pricing)
 - [SSH Guide](https://docs.runpod.io/docs/ssh)
 
-**nakhara Docs:**
+**nakharax Docs:**
 - Worker Setup: `WORKER_SETUP_QUICK_GUIDE.md`
 - GCP Setup: `gcp-worker-setup.md`
 - Vertex AI Setup: `WORKER_VERTEX_AI_SETUP.md`

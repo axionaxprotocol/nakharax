@@ -1,5 +1,5 @@
 """
-nakhara DeAI - Auto Selection Router (ASR)
+nakharax DeAI - Auto Selection Router (ASR)
 
 ML-based worker selection system for optimal job assignment
 """
@@ -42,7 +42,7 @@ class AutoSelectionRouter:
     """
     Auto Selection Router for worker assignment
 
-    Implements the ASR algorithm from nakhara whitepaper:
+    Implements the ASR algorithm from nakharax whitepaper:
     - Suitability scoring based on hardware match
     - Performance history analysis
     - Fairness via quota management

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Nakhara Genesis Block #0 Generator
+Nakharax Genesis Block #0 Generator
 
 Total Supply : 1,000,000,000,000 NAK  (1 trillion, 18 decimals)
-Creator alias: nakharaius
+Creator alias: nakharaxius
 
 Usage:
     python3 create_genesis.py                 # generate genesis.json
@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 CHAIN_ID_TESTNET = 86137
 CHAIN_ID_MAINNET = 86150
 CHAIN_ID = CHAIN_ID_TESTNET
-CHAIN_NAME = "Nakhara Testnet"
+CHAIN_NAME = "Nakharax Testnet"
 SYMBOL = "NAK"
 DECIMALS = 18
 ONE_AXX = 10 ** DECIMALS
@@ -30,8 +30,8 @@ TOTAL_SUPPLY_WEI = TOTAL_SUPPLY * ONE_AXX
 # Q2 2026 Mainnet Genesis — 2026-04-01 00:00:00 UTC
 GENESIS_TIMESTAMP = 1_775_001_600
 
-CREATOR_ALIAS = "nakharaius"
-EXTRA_DATA_TEXT = f"{CREATOR_ALIAS} - Genesis Block #0 - Nakhara Core Universe"
+CREATOR_ALIAS = "nakharaxius"
+EXTRA_DATA_TEXT = f"{CREATOR_ALIAS} - Genesis Block #0 - Nakharax Core Universe"
 
 # Deterministic EVM addresses (sha256 seed, 40 hex chars). Reproducible, EVM-compatible.
 def _evm_addr(seed: str) -> str:
@@ -48,7 +48,7 @@ def _faucet_address() -> str:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         from cryptography.hazmat.primitives import serialization
         from eth_hash.auto import keccak
-        pk = hashlib.sha256(b"nakhara_faucet_mainnet_q2_2026").digest()
+        pk = hashlib.sha256(b"nakharax_faucet_mainnet_q2_2026").digest()
         sk = Ed25519PrivateKey.from_private_bytes(pk)
         pub_bytes = sk.public_key().public_bytes(
             encoding=serialization.Encoding.Raw,
@@ -56,38 +56,38 @@ def _faucet_address() -> str:
         )
         return "0x" + keccak(pub_bytes)[12:].hex()
     except ImportError:
-        return _evm_addr("nakhara_genesis_faucet")
+        return _evm_addr("nakharax_genesis_faucet")
 
 
 def _get_allocations(faucet_address: str | None = None) -> dict:
     """Build allocations dict with faucet address resolved."""
     allocations = {
     "creator": {
-        "address": _evm_addr("nakharaius_genesis_creator"),
+        "address": _evm_addr("nakharaxius_genesis_creator"),
         "label": f"Creator ({CREATOR_ALIAS})",
         "percent": 10,
     },
     "ecosystem_rewards": {
-        "address": _evm_addr("nakhara_genesis_ecosystem"),
+        "address": _evm_addr("nakharax_genesis_ecosystem"),
         "label": "Ecosystem & Rewards Pool",
         "percent": 30,
         "note": "Validator rewards, worker incentives, staking emissions",
     },
     "foundation": {
-        "address": _evm_addr("nakhara_genesis_foundation"),
+        "address": _evm_addr("nakharax_genesis_foundation"),
         "label": "Foundation / Treasury",
         "percent": 20,
         "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear unlock"},
     },
     "community": {
-        "address": _evm_addr("nakhara_genesis_community"),
+        "address": _evm_addr("nakharax_genesis_community"),
         "label": "Community",
         "percent": 15,
         "note": "Airdrops, incentives, DAO governance",
         "vesting": {"enabled": True, "schedule": "2 years linear unlock"},
     },
     "team": {
-        "address": _evm_addr("nakhara_genesis_team"),
+        "address": _evm_addr("nakharax_genesis_team"),
         "label": "Team & Advisors",
         "percent": 10,
         "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear vest"},
@@ -96,19 +96,19 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
         "percent": 5,
         "split": [
             {
-                "address": _evm_addr("nakhara_genesis_validator_eu_217_76_61_116"),
+                "address": _evm_addr("nakharax_genesis_validator_eu_217_76_61_116"),
                 "label": "Validator-EU-01",
                 "region": "EU",
-                "ip": "rpc.nakhara.io",
+                "ip": "rpc.nakharaxx.io",
             },
             {
-                "address": _evm_addr("nakhara_genesis_validator_au_46_250_244_4"),
+                "address": _evm_addr("nakharax_genesis_validator_au_46_250_244_4"),
                 "label": "Validator-AU-01",
                 "region": "AU",
-                "ip": "rpc-au.nakhara.io",
+                "ip": "rpc-au.nakharaxx.io",
             },
             {
-                "address": _evm_addr("nakhara_genesis_validator_us_mainnet"),
+                "address": _evm_addr("nakharax_genesis_validator_us_mainnet"),
                 "label": "Validator-US-01",
                 "region": "US",
                 "ip": "0.0.0.0",
@@ -116,7 +116,7 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
         ],
     },
     "public_sale": {
-        "address": _evm_addr("nakhara_genesis_public_sale"),
+        "address": _evm_addr("nakharax_genesis_public_sale"),
         "label": "Public Sale",
         "percent": 5,
     },
@@ -126,7 +126,7 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
         "percent": 3,
     },
     "reserve": {
-        "address": _evm_addr("nakhara_genesis_reserve"),
+        "address": _evm_addr("nakharax_genesis_reserve"),
         "label": "Strategic Reserve",
         "percent": 2,
         "note": "Emergency liquidity, strategic partnerships",
@@ -210,7 +210,7 @@ def build_tokenomics(allocations: dict):
         else:
             items[key] = {"percent": spec["percent"], "amount": str(TOTAL_SUPPLY * spec["percent"] // 100), "label": spec["label"]}
     return {
-        "name": "Nakhara",
+        "name": "Nakharax",
         "symbol": SYMBOL,
         "decimals": DECIMALS,
         "totalSupply": str(TOTAL_SUPPLY),
@@ -235,7 +235,7 @@ def build_genesis(faucet_address: str | None = None) -> dict:
             "istanbulBlock": 0,
             "berlinBlock": 0,
             "londonBlock": 0,
-            "nakhara": {
+            "nakharax": {
                 "consensus": "popc",
                 "blockTime": 2,
                 "epochLength": 100,
@@ -258,7 +258,7 @@ def build_genesis(faucet_address: str | None = None) -> dict:
         "coinbase": "0x" + "0" * 40,
         "creator": {
             "alias": CREATOR_ALIAS,
-            "note": f"Genesis created by {CREATOR_ALIAS} — founder of Nakhara Protocol",
+            "note": f"Genesis created by {CREATOR_ALIAS} — founder of Nakharax Protocol",
         },
         "tokenomics": build_tokenomics(allocations),
         "validators": build_validators(allocations),
@@ -271,7 +271,7 @@ def print_summary(genesis: dict, allocations: dict):
     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
 
     print("=" * 64)
-    print("  NAKHARA — Genesis Block #0 (Q2 2026 Mainnet)")
+    print("  NAKHARAX — Genesis Block #0 (Q2 2026 Mainnet)")
     print("=" * 64)
     print(f"  Creator     : {CREATOR_ALIAS}")
     print(f"  Chain ID    : {CHAIN_ID}")
@@ -302,7 +302,7 @@ def print_summary(genesis: dict, allocations: dict):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Nakhara Genesis Block #0 Generator (Q2 2026 Mainnet)")
+    parser = argparse.ArgumentParser(description="Nakharax Genesis Block #0 Generator (Q2 2026 Mainnet)")
     parser.add_argument("--out", default=None, help="Output path (default: genesis.json next to this script)")
     parser.add_argument("--verify", action="store_true", help="Run verification after generation")
     parser.add_argument("--faucet-address", default=None, help="Faucet EVM address (default: deterministic from seed)")
@@ -313,11 +313,11 @@ def main():
     if args.chain_id is not None:
         CHAIN_ID = args.chain_id
     if CHAIN_ID == CHAIN_ID_MAINNET:
-        CHAIN_NAME = "Nakhara Mainnet"
+        CHAIN_NAME = "Nakharax Mainnet"
     elif CHAIN_ID == CHAIN_ID_TESTNET:
-        CHAIN_NAME = "Nakhara Testnet"
+        CHAIN_NAME = "Nakharax Testnet"
     else:
-        CHAIN_NAME = f"Nakhara Dev ({CHAIN_ID})"
+        CHAIN_NAME = f"Nakharax Dev ({CHAIN_ID})"
 
     allocations = _get_allocations(args.faucet_address)
     genesis = build_genesis(args.faucet_address)

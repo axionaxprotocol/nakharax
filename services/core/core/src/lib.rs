@@ -1,4 +1,4 @@
-// nakhara protocol Core Library
+// nakharax protocol Core Library
 // This is a workspace root - actual implementations are in workspace members
 
 pub use blockchain;

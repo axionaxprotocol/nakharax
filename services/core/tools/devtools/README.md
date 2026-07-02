@@ -1,11 +1,11 @@
-# nakhara DevTools
+# nakharax DevTools
 
-Development tools and scripts for nakhara Protocol.
+Development tools and scripts for nakharax Protocol.
 
 ## 📁 Directory Structure
 
 ```
-nakhara-devtools/
+nakharax-devtools/
 ├── scripts/
 │   ├── testing/          # Testing scripts
 │   ├── refactoring/      # Code refactoring tools
@@ -43,7 +43,7 @@ nakhara-devtools/
 ## 📖 About
 
 Developer tools and automation scripts for building, testing, and maintaining
-the **nakhara protocol** ecosystem.
+the **nakharax protocol** ecosystem.
 
 🔥 **Current Phase:**
 - Running comprehensive test suites
@@ -53,19 +53,19 @@ the **nakhara protocol** ecosystem.
 
 📦 **Tools Ready:** All testing utilities validated and production-ready
 
-### Part of nakhara Ecosystem
+### Part of nakharax Ecosystem
 
-These tools support the entire nakhara protocol development workflow:
+These tools support the entire nakharax protocol development workflow:
 
-- **Protocol Core**: [`nakhara-core`](https://github.com/nakhara-io/nakhara-core) - Main development target
-- **Web Interface**: [`nakhara-web`](https://github.com/nakhara-io/nakhara-web) - Frontend development & testing
-- **SDK**: [`nakhara-sdk-ts`](https://github.com/nakhara-io/nakhara-sdk-ts) - SDK testing & validation
-- **Marketplace**: [`nakhara-marketplace`](https://github.com/nakhara-io/nakhara-marketplace) - dApp testing
-- **Documentation**: [`nakhara-docs`](https://github.com/nakhara-io/nakhara-docs) - Doc link validation
-- **Deployment**: [`nakhara-deploy`](https://github.com/nakhara-io/nakhara-deploy) - Infrastructure testing
-- **Issue Manager**: [`issue-manager`](https://github.com/nakhara-io/issue-manager) - Task automation
+- **Protocol Core**: [`nakharax-core`](https://github.com/nakharax-io/nakharax-core) - Main development target
+- **Web Interface**: [`nakharax-web`](https://github.com/nakharax-io/nakharax-web) - Frontend development & testing
+- **SDK**: [`nakharax-sdk-ts`](https://github.com/nakharax-io/nakharax-sdk-ts) - SDK testing & validation
+- **Marketplace**: [`nakharax-marketplace`](https://github.com/nakharax-io/nakharax-marketplace) - dApp testing
+- **Documentation**: [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs) - Doc link validation
+- **Deployment**: [`nakharax-deploy`](https://github.com/nakharax-io/nakharax-deploy) - Infrastructure testing
+- **Issue Manager**: [`issue-manager`](https://github.com/nakharax-io/issue-manager) - Task automation
 
-**GitHub Organization**: https://github.com/nakhara-io
+**GitHub Organization**: https://github.com/nakharax-io
 
 **Pre-Testnet Status:** All testing tools operational, active test execution phase
 
@@ -94,7 +94,7 @@ Automated installers for all major platforms:
 
 Located in `tools/`:
 
-- **`benchmark.py`** - Performance benchmarks for nakhara protocol
+- **`benchmark.py`** - Performance benchmarks for nakharax protocol
   - VRF operations (22,817 ops/sec target)
   - Block validation (3,500 blocks/sec target)
   - Transaction verification (45,000 tx/sec target)
@@ -106,7 +106,7 @@ Located in `tools/`:
 
 ### Development Utilities
 
-- **`create_genesis.py`** - Genesis block generator for nakhara protocol
+- **`create_genesis.py`** - Genesis block generator for nakharax protocol
 - **`migrate_go_to_rust.py`** - Migration utilities (legacy)
 - **`check-links.sh`** - Documentation link validator
 
@@ -116,13 +116,13 @@ Located in `tools/`:
 
 ### From workspace root:
 ```bash
-python nakhara-devtools/scripts/testing/test_repo_integration.py
-python nakhara-devtools/scripts/refactoring/master_refactor.py
+python nakharax-devtools/scripts/testing/test_repo_integration.py
+python nakharax-devtools/scripts/refactoring/master_refactor.py
 ```
 
 ### From devtools directory:
 ```bash
-cd nakhara-devtools
+cd nakharax-devtools
 python scripts/testing/test_repo_integration.py
 ```
 
@@ -135,6 +135,6 @@ See `docs/` directory for detailed guides:
 
 ## 🔗 Links
 
-- Main Protocol: [../nakhara-core](../nakhara-core)
-- SDK: [../nakhara-sdk-ts](../nakhara-sdk-ts)
-- Web: [../nakhara-web](../nakhara-web)
+- Main Protocol: [../nakharax-core](../nakharax-core)
+- SDK: [../nakharax-sdk-ts](../nakharax-sdk-ts)
+- Web: [../nakharax-web](../nakharax-web)

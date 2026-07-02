@@ -1,8 +1,8 @@
 /**
- * Nakhara SDK - Governance Client
+ * Nakharax SDK - Governance Client
  * 
  * Copy this file to: packages/sdk/src/clients/governance.ts
- * For use in @nakhara/sdk
+ * For use in @nakharax/sdk
  */
 
 import {
@@ -183,7 +183,7 @@ export class GovernanceClient {
 /**
  * Example hook for React
  *
- * import { useGovernance } from '@nakhara/sdk';
+ * import { useGovernance } from '@nakharax/sdk';
  *
  * function GovernancePage() {
  *   const { proposals, stats, loading, vote, createProposal } = useGovernance();

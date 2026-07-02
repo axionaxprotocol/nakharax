@@ -1,16 +1,16 @@
 #!/bin/bash
 #
-# nakhara Block Explorer Setup Script
-# Deploys Blockscout explorer for nakhara testnet
+# nakharax Block Explorer Setup Script
+# Deploys Blockscout explorer for nakharax testnet
 #
 # Usage: bash setup_explorer.sh [OPTIONS]
 # Options:
-#   --domain DOMAIN        Domain for explorer (e.g., testnet-explorer.nakhara.io)
+#   --domain DOMAIN        Domain for explorer (e.g., testnet-explorer.nakharaxx.io)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 #   --rpc-url URL         RPC endpoint URL (default: http://localhost:8545)
 #   --ws-url URL          WebSocket URL (default: ws://localhost:8546)
 #   --chain-id ID         Chain ID (default: 86137)
-#   --data-dir PATH       Data directory (default: /var/lib/nakhara-explorer)
+#   --data-dir PATH       Data directory (default: /var/lib/nakharax-explorer)
 
 set -e
 
@@ -27,7 +27,7 @@ SSL_EMAIL=""
 RPC_URL="http://localhost:8545"
 WS_URL="ws://localhost:8546"
 CHAIN_ID=86137
-DATA_DIR="/var/lib/nakhara-explorer"
+DATA_DIR="/var/lib/nakharax-explorer"
 DB_PASSWORD=""
 
 # Parse arguments
@@ -78,7 +78,7 @@ fi
 DB_PASSWORD=$(openssl rand -base64 32)
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}   nakhara Block Explorer Setup${NC}"
+echo -e "${BLUE}   nakharax Block Explorer Setup${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 echo -e "${GREEN}Configuration:${NC}"
@@ -140,7 +140,7 @@ version: '3.8'
 services:
   redis:
     image: redis:7-alpine
-    container_name: nakhara-redis
+    container_name: nakharax-redis
     restart: always
     volumes:
       - $DATA_DIR/redis-data:/data
@@ -150,7 +150,7 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: nakhara-postgres
+    container_name: nakharax-postgres
     restart: always
     environment:
       POSTGRES_DB: blockscout
@@ -168,7 +168,7 @@ services:
 
   blockscout:
     image: blockscout/blockscout:latest
-    container_name: nakhara-blockscout
+    container_name: nakharax-blockscout
     restart: always
     depends_on:
       - db
@@ -183,10 +183,10 @@ services:
       # Chain configuration
       CHAIN_ID: '$CHAIN_ID'
       COIN: 'NAK'
-      SUBNETWORK: 'nakhara Testnet'
-      NETWORK: 'nakhara'
-      LOGO: '/images/nakhara_logo.svg'
-      LOGO_FOOTER: '/images/nakhara_logo.svg'
+      SUBNETWORK: 'nakharax Testnet'
+      NETWORK: 'nakharax'
+      LOGO: '/images/nakharax_logo.svg'
+      LOGO_FOOTER: '/images/nakharax_logo.svg'
       
       # Database
       DATABASE_URL: postgresql://blockscout:$DB_PASSWORD@db:5432/blockscout?ssl=false
@@ -211,12 +211,12 @@ services:
       # UI
       SHOW_TESTNET_LABEL: 'true'
       TESTNET_LABEL: 'TESTNET'
-      SUPPORTED_CHAINS: '[{"title":"nakhara Testnet","url":"https://$DOMAIN"}]'
+      SUPPORTED_CHAINS: '[{"title":"nakharax Testnet","url":"https://$DOMAIN"}]'
       
       # Social links
-      FOOTER_GITHUB_LINK: 'https://github.com/nakhara-io'
-      FOOTER_TWITTER_LINK: 'https://twitter.com/nakhara'
-      FOOTER_TELEGRAM_LINK: 'https://t.me/nakhara'
+      FOOTER_GITHUB_LINK: 'https://github.com/nakharax-io'
+      FOOTER_TWITTER_LINK: 'https://twitter.com/nakharax'
+      FOOTER_TELEGRAM_LINK: 'https://t.me/nakharax'
       
       # Other
       PORT: '4000'
@@ -244,7 +244,7 @@ EOF
 
 # Configure nginx
 echo -e "${BLUE}[6/9]${NC} Configuring nginx..."
-cat > /etc/nginx/sites-available/nakhara-explorer <<EOF
+cat > /etc/nginx/sites-available/nakharax-explorer <<EOF
 upstream blockscout {
     server 127.0.0.1:4000;
 }
@@ -305,7 +305,7 @@ server {
 EOF
 
 # Enable site
-ln -sf /etc/nginx/sites-available/nakhara-explorer /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/nakharax-explorer /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
 # Test nginx
@@ -347,7 +347,7 @@ certbot --nginx -d "$DOMAIN" --email "$SSL_EMAIL" --agree-tos --non-interactive 
 
 # Save configuration
 cat > "$DATA_DIR/config.txt" <<EOF
-nakhara Block Explorer Configuration
+nakharax Block Explorer Configuration
 =====================================
 Domain: https://$DOMAIN
 Chain ID: $CHAIN_ID

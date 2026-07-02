@@ -4,7 +4,7 @@
 
 ```bash
 # Run full check
-python nakhara-devtools/scripts/testing/testnet_readiness_checker.py
+python nakharax-devtools/scripts/testing/testnet_readiness_checker.py
 
 # Windows shortcut
 .\check-testnet-readiness.ps1
@@ -95,12 +95,12 @@ git commit -m "fix: secure API keys in .env"
 ### Issue: Build Failures
 ```bash
 # Rust
-cd nakhara-core
+cd nakharax-core
 cargo clean
 cargo build --release
 
 # TypeScript
-cd nakhara-sdk-ts
+cd nakharax-sdk-ts
 rm -rf node_modules
 npm install
 npm run build
@@ -111,8 +111,8 @@ npm run build
 # Create required docs
 touch CONTRIBUTING.md ARCHITECTURE.md docs/API_REFERENCE.md
 
-# Copy templates from nakhara-docs
-cp nakhara-docs/CONTRIBUTING.md ./
+# Copy templates from nakharax-docs
+cp nakharax-docs/CONTRIBUTING.md ./
 ```
 
 ## 📈 Progress Tracking

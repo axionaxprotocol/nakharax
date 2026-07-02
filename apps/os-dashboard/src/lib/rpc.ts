@@ -1,4 +1,4 @@
-// Re-export the canonical RPC client from @nakhara/sdk so all dashboard
+// Re-export the canonical RPC client from @nakharax/sdk so all dashboard
 // pages share types with the rest of the workspace.
 //
 // History: this file used to contain a self-contained client; it now lives
@@ -17,7 +17,7 @@ export {
   sendRawTransaction,
   isReachable,
   getKadRoutingTable,
-} from "@nakhara/sdk";
+} from "@nakharax/sdk";
 
 export type {
   NodeEndpoint,
@@ -28,4 +28,4 @@ export type {
   RawBlock,
   RpcCallOptions,
   KadPeer,
-} from "@nakhara/sdk";
+} from "@nakharax/sdk";

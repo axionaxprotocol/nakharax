@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Nakhara DevTools - Main Entry Point
+Nakharax DevTools - Main Entry Point
 '''
 
 import sys
@@ -14,7 +14,7 @@ sys.path.insert(0, str(scripts_path / 'fixing'))
 sys.path.insert(0, str(scripts_path / 'analysis'))
 
 def main():
-    print("Nakhara DevTools")
+    print("Nakharax DevTools")
     print("================")
     print()
     print("Available commands:")
@@ -23,7 +23,7 @@ def main():
     print("  fix      - Quick fixes")
     print("  analyze  - Analyze code quality")
     print()
-    print("Usage: python -m nakhara-devtools <command>")
+    print("Usage: python -m nakharax-devtools <command>")
 
 if __name__ == '__main__':
     main()

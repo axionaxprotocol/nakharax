@@ -1,5 +1,5 @@
 """
-deploy_marketplace.py — Deploy MockNAKToken + JobMarketplace to Nakhara testnet.
+deploy_marketplace.py — Deploy MockNAKToken + JobMarketplace to Nakharax testnet.
 
 Usage:
     python ops/scripts/deploy_marketplace.py [--rpc RPC_URL] [--chain-id CHAIN_ID]
@@ -8,8 +8,8 @@ Required env vars:
     WORKER_PRIVATE_KEY   — deployer private key (hex, 0x-prefixed)
 
 Optional env vars / flags:
-    NAKHARA_RPC_URL      — default: http://127.0.0.1:8545
-    NAKHARA_CHAIN_ID     — default: 86137
+    NAKHARAX_RPC_URL      — default: http://127.0.0.1:8545
+    NAKHARAX_CHAIN_ID     — default: 86137
 
 After deployment the script prints the addresses and writes them to
 ops/deploy/marketplace_addresses.json so the worker can pick them up.
@@ -99,8 +99,8 @@ def _deploy(w3, abi: list, bytecode: str, deployer, constructor_args: list, chai
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Deploy MockNAKToken + JobMarketplace")
-    parser.add_argument("--rpc",      default=os.environ.get("NAKHARA_RPC_URL", "http://127.0.0.1:8545"))
-    parser.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARA_CHAIN_ID", "86137")))
+    parser.add_argument("--rpc",      default=os.environ.get("NAKHARAX_RPC_URL", "http://127.0.0.1:8545"))
+    parser.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARAX_CHAIN_ID", "86137")))
     parser.add_argument(
         "--initial-supply", type=int, default=1_000_000,
         help="MockNAKToken initial supply (whole tokens, not wei). Default: 1 000 000 tAXX",
@@ -194,7 +194,7 @@ def main() -> None:
     log.info("Next steps:")
     log.info("  1. Add to worker_config.toml under [network]:")
     log.info("       contract_address = \"%s\"", market_address)
-    log.info("  2. Or export: NAKHARA_MARKETPLACE_ADDRESS=%s", market_address)
+    log.info("  2. Or export: NAKHARAX_MARKETPLACE_ADDRESS=%s", market_address)
     log.info("  3. Transfer tAXX to worker wallet and approve the marketplace contract.")
 
 

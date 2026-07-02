@@ -1,8 +1,8 @@
-# Deploy Nakhara OS Dashboard on EU (217.216.109.5)
+# Deploy Nakharax OS Dashboard on EU (217.216.109.5)
 
 **Host:** `217.216.109.5` (EU)  
 **App:** `apps/os-dashboard` (Next.js 14, Obsidian OS UI)  
-**Suggested domain:** `https://app.nakhara.io` (หรือ `https://os.nakhara.io`)
+**Suggested domain:** `https://app.nakharaxx.io` (หรือ `https://os.nakharaxx.io`)
 
 Chain services (RPC, explorer, faucet) อยู่บน **46.250.244.4 (AU)** — OS dashboard บน EU เรียก RPC ผ่าน HTTPS สาธารณะ
 
@@ -12,7 +12,7 @@ Chain services (RPC, explorer, faucet) อยู่บน **46.250.244.4 (AU)** 
 
 | VPS | IP | บทบาท |
 |-----|-----|--------|
-| **EU** | 217.216.109.5 | Validator #1 + RPC + **Nakhara OS** (port 3030) |
+| **EU** | 217.216.109.5 | Validator #1 + RPC + **Nakharax OS** (port 3030) |
 | **AU** | 46.250.244.4 | Validator #2 + rpc / explorer / api / faucet |
 
 ---
@@ -32,7 +32,7 @@ Chain services (RPC, explorer, faucet) อยู่บน **46.250.244.4 (AU)** 
 ## 2. Environment
 
 ```bash
-cd /opt/nakhara-monolith/apps/os-dashboard
+cd /opt/nakharax-monolith/apps/os-dashboard
 cp .env.example .env.production
 nano .env.production
 ```
@@ -42,7 +42,7 @@ nano .env.production
 ```env
 NODE_ENV=production
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_RPC_URL=https://rpc.nakhara.io
+NEXT_PUBLIC_RPC_URL=https://rpc.nakharaxx.io
 NEXT_PUBLIC_RPC_EU=http://217.216.109.5:8545
 NEXT_PUBLIC_RPC_AU=http://46.250.244.4:8545
 PORT=3030
@@ -52,18 +52,18 @@ PORT=3030
 
 ## 3. Build & run (standalone)
 
-จาก **repo root** (`/opt/nakhara-monolith`):
+จาก **repo root** (`/opt/nakharax-monolith`):
 
 ```bash
 pnpm install
-pnpm --filter nakhara-os-dashboard build
+pnpm --filter nakharax-os-dashboard build
 
 # Standalone output
 cd apps/os-dashboard
 cp -r .next/static .next/standalone/apps/os-dashboard/.next/static
 cp -r public .next/standalone/apps/os-dashboard/public
 
-PORT=3030 pm2 start .next/standalone/apps/os-dashboard/server.js --name nakhara-os
+PORT=3030 pm2 start .next/standalone/apps/os-dashboard/server.js --name nakharax-os
 pm2 save
 ```
 
@@ -77,14 +77,14 @@ bash apps/os-dashboard/scripts/vps-deploy.sh
 
 ## 4. Nginx (ตัวอย่าง)
 
-คัดลอก [`apps/os-dashboard/nginx/app.nakhara.io.conf.example`](../../apps/os-dashboard/nginx/app.nakhara.io.conf.example) ไป `/etc/nginx/sites-enabled/` แล้ว:
+คัดลอก [`apps/os-dashboard/nginx/app.nakharaxx.io.conf.example`](../../apps/os-dashboard/nginx/app.nakharaxx.io.conf.example) ไป `/etc/nginx/sites-enabled/` แล้ว:
 
 ```bash
-certbot certonly --nginx -d app.nakhara.io
+certbot certonly --nginx -d app.nakharaxx.io
 nginx -t && systemctl reload nginx
 ```
 
-DNS: **A record** `app.nakhara.io` → `217.216.109.5`
+DNS: **A record** `app.nakharaxx.io` → `217.216.109.5`
 
 ---
 
@@ -104,7 +104,7 @@ DNS: **A record** `app.nakhara.io` → `217.216.109.5`
 curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3030/
 # คาดหวัง 200
 
-curl -sI https://app.nakhara.io | head -1
+curl -sI https://app.nakharaxx.io | head -1
 ```
 
 ---

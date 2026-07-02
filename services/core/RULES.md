@@ -1,27 +1,27 @@
-# NAKHARA PROTOCOL — GLOBAL DEVELOPMENT RULES
+# NAKHARAX PROTOCOL — GLOBAL DEVELOPMENT RULES
 
-> **Master Rules Document** — AI Agents and all contributors must read this before working on any part of the Nakhara Protocol.  
+> **Master Rules Document** — AI Agents and all contributors must read this before working on any part of the Nakharax Protocol.  
 > For tech-specific deep-dives, refer to `.cursor/rules/` after reading this file.
 
 ---
 
 ## 1. Project Architecture & Monorepo Overview
 
-Nakhara Protocol is split into two main repositories:
+Nakharax Protocol is split into two main repositories:
 
 | Repository | Stack | Purpose |
 |---|---|---|
-| `nakhara-monolith` (this repo) | Rust + Python | Blockchain Core, PoPC Consensus, DeAI Engine, Node, RPC, Ops |
-| `nakhara-monolith` | TypeScript / Next.js | DApp Portal, Marketplace, SDK, Mobile API |
+| `nakharax-monolith` (this repo) | Rust + Python | Blockchain Core, PoPC Consensus, DeAI Engine, Node, RPC, Ops |
+| `nakharax-monolith` | TypeScript / Next.js | DApp Portal, Marketplace, SDK, Mobile API |
 
 ### Core Universe Structure
 
 ```
-nakhara-monolith/services/core/
+nakharax-monolith/services/core/
 ├── core/                  ← Rust Cargo workspace (core/Cargo.toml is the root)
 │   ├── core/consensus/    ← PoPC consensus engine + Merkle proofs
 │   ├── core/blockchain/   ← Block/tx management, mempool, sled storage
-│   ├── core/node/         ← Full node orchestration (NakharaNode)
+│   ├── core/node/         ← Full node orchestration (NakharaxNode)
 │   ├── core/network/      ← libp2p P2P + reputation system
 │   ├── core/rpc/          ← JSON-RPC 2.0 (eth_* EVM-compatible)
 │   ├── core/state/        ← RocksDB state DB
@@ -105,12 +105,12 @@ cargo audit                               # run before release (audit.toml confi
 | **Docker sandbox** | All untrusted compute jobs run in `DockerSandbox` — never execute arbitrary code on the host |
 | **Tests** | `pytest` from `core/deai/`; run with `python -m pytest . -v --tb=short` |
 
-### 3.3 TypeScript (`nakhara-monolith/`)
+### 3.3 TypeScript (`nakharax-monolith/`)
 
 | Rule | Detail |
 |---|---|
 | **No `any`** | TypeScript strict mode — never use `any` or `@ts-ignore` |
-| **No relative cross-package imports** | Always use workspace aliases: `import { ... } from "@nakhara/sdk"` |
+| **No relative cross-package imports** | Always use workspace aliases: `import { ... } from "@nakharax/sdk"` |
 | **Server Components by default** | In Next.js App Router: default to RSC, add `"use client"` only when using React hooks |
 | **Business logic in SDK** | All blockchain logic, ABI parsing, RPC calls go into `packages/sdk`, not in app components |
 | **No secrets in frontend** | Use `NEXT_PUBLIC_*` env vars for client-side only; never expose private keys |
@@ -151,16 +151,16 @@ docs(deai): update worker_config.toml field descriptions
 
 | Variable | Used In | Notes |
 |---|---|---|
-| `NAKHARA_RPC_URL` | Python worker, scripts | Override bootnode RPC |
-| `NAKHARA_BOOTNODES` | Worker config | Comma-separated RPC URLs |
-| `NAKHARA_CHAIN_ID` | All | `86137` testnet, `86150` mainnet |
-| `NAKHARA_WALLET_PATH` | Worker | Path to `worker_key.json` |
+| `NAKHARAX_RPC_URL` | Python worker, scripts | Override bootnode RPC |
+| `NAKHARAX_BOOTNODES` | Worker config | Comma-separated RPC URLs |
+| `NAKHARAX_CHAIN_ID` | All | `86137` testnet, `86150` mainnet |
+| `NAKHARAX_WALLET_PATH` | Worker | Path to `worker_key.json` |
 | `WORKER_KEY_PASSWORD` | Worker | Wallet decryption password |
 | `WORKER_PRIVATE_KEY` | Worker | Direct key injection (production) |
-| `NAKHARA_VALIDATOR_ADDRESS` | Node | Validator address for block proposals |
-| `NAKHARA_BOOTSTRAP_NODES` | Node (Rust) | Comma-separated libp2p multiaddrs |
-| `NAKHARA_RPC_CORS_ORIGINS` | RPC server | Comma-separated allowed origins |
-| `NAKHARA_RPC_API_KEY` | RPC server | X-API-Key authentication |
+| `NAKHARAX_VALIDATOR_ADDRESS` | Node | Validator address for block proposals |
+| `NAKHARAX_BOOTSTRAP_NODES` | Node (Rust) | Comma-separated libp2p multiaddrs |
+| `NAKHARAX_RPC_CORS_ORIGINS` | RPC server | Comma-separated allowed origins |
+| `NAKHARAX_RPC_API_KEY` | RPC server | X-API-Key authentication |
 
 ---
 
@@ -203,7 +203,7 @@ docs(deai): update worker_config.toml field descriptions
 | ~~`state_root` — SHA3 heuristic~~ | ✅ **Done** — real Blake2s-256 Merkle root (`state/src/merkle.rs`) | — |
 | ~~`gas_used = 0` in locally produced blocks~~ | ✅ **Done** — sum of `tx.gas_limit` per block | — |
 | ~~Worker registration / result submission~~ | ✅ **Done** — `ContractManager` live mode + `JobMarketplaceStandalone.sol` + deploy script | — |
-| ~~`NetworkManager::shutdown()` — commented out~~ | ✅ **Done** — `shutdown()` implemented and wired into `NakharaNode::shutdown()` | — |
+| ~~`NetworkManager::shutdown()` — commented out~~ | ✅ **Done** — `shutdown()` implemented and wired into `NakharaxNode::shutdown()` | — |
 | Smart contract deployment on testnet | Pending — run `ops/scripts/deploy_marketplace.py` after testnet is live | � Medium |
 | Blockscout `SECRET_KEY_BASE` | Replace placeholder in `ops/deploy/.../explorer.env` before deploying | 🟡 Medium |
 | Validator selection — fallback to `peer_id` hash | Should be VRF-based in production (currently round-robin over sorted validators) | � Medium |

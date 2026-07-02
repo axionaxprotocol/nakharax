@@ -1,4 +1,4 @@
-//! nakhara Consensus Engine (PoPC)
+//! nakharax Consensus Engine (PoPC)
 //!
 //! Implements Proof-of-Probabilistic-Checking consensus mechanism.
 //! [SIMULATION] Proof-of-Light (Monolith Mark-II) available in `proof_of_light`.

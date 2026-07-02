@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Rebrand helper: preview / apply Nakhara -> nakhara.io identifier renames.
+    Rebrand helper: preview / apply Nakharax -> nakharaxx.io identifier renames.
 
 .DESCRIPTION
     DRY-RUN BY DEFAULT. Prints every file + match count for the chosen scope and changes nothing.
@@ -13,7 +13,7 @@
       D     On-chain token NAK -> NAK (surgical; review every hit before -Execute).
 
     Order matters: the domain (.org -> .io) and the GitHub org are replaced BEFORE the generic
-    'nakhara' -> 'nakhara', so we never produce 'nakhara.org'.
+    'nakharax' -> 'nakharax', so we never produce 'nakharax.org'.
 
 .EXAMPLE
     pwsh scripts/rebrand-rename.ps1 -Category Full            # preview everything (no token)
@@ -37,19 +37,19 @@ $ErrorActionPreference = 'Stop'
 
 # Ordered replacements. MOST-SPECIFIC FIRST.
 $domainFirst = @(
-    @{ From = 'nakhara.io';     To = 'nakhara.io' },
-    @{ From = 'nakhara-io'; To = 'nakhara-io' }   # GitHub org (rename the repo to match)
+    @{ From = 'nakharaxx.io';     To = 'nakharaxx.io' },
+    @{ From = 'nakharax-io'; To = 'nakharax-io' }   # GitHub org (rename the repo to match)
 )
 $generic = @(
-    @{ From = 'NAKHARA'; To = 'NAKHARA' },   # env-var prefix, RUST_LOG, etc.
-    @{ From = 'Nakhara'; To = 'Nakhara' },   # prose / TitleCase
-    @{ From = 'nakhara'; To = 'nakhara' }     # crates, binary, packages, paths, imports
+    @{ From = 'NAKHARAX'; To = 'NAKHARAX' },   # env-var prefix, RUST_LOG, etc.
+    @{ From = 'Nakharax'; To = 'Nakharax' },   # prose / TitleCase
+    @{ From = 'nakharax'; To = 'nakharax' }     # crates, binary, packages, paths, imports
 )
 $presets = @{
     Full = $domainFirst + $generic
-    A    = @( @{ From = '"nakhara-core"'; To = '"nakhara-core"' }, @{ From = 'nakhara-core/'; To = 'nakhara-core/' } )
-    B    = @( @{ From = '@nakhara/sdk'; To = '@nakhara/sdk' }, @{ From = 'nakhara-os-dashboard'; To = 'nakhara-os-dashboard' } )
-    C    = @( @{ From = 'NAKHARA_'; To = 'NAKHARA_' }, @{ From = 'nakhara-node'; To = 'nakhara-node' }, @{ From = 'nakhara.io'; To = 'nakhara.io' } )
+    A    = @( @{ From = '"nakharax-core"'; To = '"nakharax-core"' }, @{ From = 'nakharax-core/'; To = 'nakharax-core/' } )
+    B    = @( @{ From = '@nakharax/sdk'; To = '@nakharax/sdk' }, @{ From = 'nakharax-os-dashboard'; To = 'nakharax-os-dashboard' } )
+    C    = @( @{ From = 'NAKHARAX_'; To = 'NAKHARAX_' }, @{ From = 'nakharax-node'; To = 'nakharax-node' }, @{ From = 'nakharaxx.io'; To = 'nakharaxx.io' } )
     D    = @( @{ From = 'NAKt'; To = 'NAKt' }, @{ From = 'MockNAKToken'; To = 'MockNAKToken' }, @{ From = "'NAK'"; To = "'NAK'" }, @{ From = '"NAK"'; To = '"NAK"' }, @{ From = '`NAK`'; To = '`NAK`' } )
 }
 

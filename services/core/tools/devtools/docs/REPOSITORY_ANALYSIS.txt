@@ -1,5 +1,5 @@
 ================================================================================
-NAKHARA REPOSITORY CONNECTION ANALYSIS REPORT
+NAKHARAX REPOSITORY CONNECTION ANALYSIS REPORT
 ================================================================================
 
 📊 REPOSITORY SUMMARY
@@ -11,11 +11,11 @@ Total Connections Found: 35
 📦 DETAILED REPOSITORY ANALYSIS
 --------------------------------------------------------------------------------
 
-### NAKHARA-CORE
+### NAKHARAX-CORE
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-core.git
+   Remote: https://github.com/nakharax-io/nakharax-core.git
    Last Commit: a6c4d4ed - Upgrade to v1.8.0: ARCHITECTURE v1.5 compliance
 
 📄 Package.json:
@@ -27,27 +27,27 @@ Total Connections Found: 35
 📖 README.md:
    Size: 24284 bytes
    References to other repos:
-     - nakhara-web: 4 mention(s)
-     - nakhara-sdk-ts: 9 mention(s)
-     - nakhara-marketplace: 4 mention(s)
-     - nakhara-docs: 6 mention(s)
-     - nakhara-deploy: 4 mention(s)
-     - nakhara-devtools: 4 mention(s)
+     - nakharax-web: 4 mention(s)
+     - nakharax-sdk-ts: 9 mention(s)
+     - nakharax-marketplace: 4 mention(s)
+     - nakharax-docs: 6 mention(s)
+     - nakharax-deploy: 4 mention(s)
+     - nakharax-devtools: 4 mention(s)
 
 🔗 Import Statements (7 found):
-     Implements the ASR algorithm from nakhara whitepaper:
-     print("Successfully imported 'nakhara_bridge' module.")
-     import nakhara_bridge
-     print(f"⚠️  Warning: Could not import nakhara_python: {e}")
-     print("\n!!! FAILED to import 'nakhara_bridge'.")
+     Implements the ASR algorithm from nakharax whitepaper:
+     print("Successfully imported 'nakharax_bridge' module.")
+     import nakharax_bridge
+     print(f"⚠️  Warning: Could not import nakharax_python: {e}")
+     print("\n!!! FAILED to import 'nakharax_bridge'.")
      ... and 2 more
 
 
-### NAKHARA-WEB
+### NAKHARAX-WEB
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-web.git
+   Remote: https://github.com/nakharax-io/nakharax-web.git
    Last Commit: 1eee1ff - Add real-time stats from Explorer API - Update Statistics component to fetch live data every 5s - Add /api/stats endpoint to Explorer API - Display real block height, service count, and uptime
 
 📄 Package.json:
@@ -57,27 +57,27 @@ Total Connections Found: 35
 📖 README.md:
    Size: 15886 bytes
    References to other repos:
-     - nakhara-core: 7 mention(s)
-     - nakhara-sdk-ts: 7 mention(s)
-     - nakhara-marketplace: 4 mention(s)
-     - nakhara-docs: 7 mention(s)
-     - nakhara-deploy: 8 mention(s)
-     - nakhara-devtools: 4 mention(s)
+     - nakharax-core: 7 mention(s)
+     - nakharax-sdk-ts: 7 mention(s)
+     - nakharax-marketplace: 4 mention(s)
+     - nakharax-docs: 7 mention(s)
+     - nakharax-deploy: 8 mention(s)
+     - nakharax-devtools: 4 mention(s)
 
 🔗 Import Statements (24 found):
      (self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[120],{2233:function(e,s,t){Promise.resolve(
-     import { connectWallet, getCurrentAccount, getBalance, getCurrentChainId, NAKHARA_TESTNET } from '@/
-     <pre>{`import { nakharaClient } from '@nakhara/sdk';
+     import { connectWallet, getCurrentAccount, getBalance, getCurrentChainId, NAKHARAX_TESTNET } from '@/
+     <pre>{`import { nakharaxClient } from '@nakharax/sdk';
      globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/faucet/page"]=
      globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/docs/page"]={"
      ... and 19 more
 
 
-### NAKHARA-SDK-TS
+### NAKHARAX-SDK-TS
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-sdk-ts.git
+   Remote: https://github.com/nakharax-io/nakharax-sdk-ts.git
    Last Commit: 13b0512 - docs: add QUICK_START guide for developers [Local dev]
 
 📄 Package.json:
@@ -87,145 +87,145 @@ Total Connections Found: 35
 📖 README.md:
    Size: 9750 bytes
    References to other repos:
-     - nakhara-core: 4 mention(s)
-     - nakhara-web: 1 mention(s)
-     - nakhara-marketplace: 1 mention(s)
+     - nakharax-core: 4 mention(s)
+     - nakharax-web: 1 mention(s)
+     - nakharax-marketplace: 1 mention(s)
 
 🔗 Import Statements (4 found):
-     import { nakharaClient } from '../src';
-     import { nakharaClient } from '../../src/client';
-     from: 'nakhara1test...',
-     import { nakharaClient, Wallet, Contract } from '../../src';
+     import { nakharaxClient } from '../src';
+     import { nakharaxClient } from '../../src/client';
+     from: 'nakharax1test...',
+     import { nakharaxClient, Wallet, Contract } from '../../src';
 
 
-### NAKHARA-MARKETPLACE
+### NAKHARAX-MARKETPLACE
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-marketplace.git
+   Remote: https://github.com/nakharax-io/nakharax-marketplace.git
    Last Commit: 8d2acf4 - docs: add QUICK_START guide for developers [Local dev]
 
 📄 Package.json:
    Dependencies: 5
    Dev Dependencies: 13
-   Nakhara Dependencies:
-     - @nakhara/sdk (file:../nakhara-sdk-ts) [dependencies]
+   Nakharax Dependencies:
+     - @nakharax/sdk (file:../nakharax-sdk-ts) [dependencies]
 
 📖 README.md:
    Size: 9271 bytes
    References to other repos:
-     - nakhara-core: 4 mention(s)
-     - nakhara-docs: 2 mention(s)
+     - nakharax-core: 4 mention(s)
+     - nakharax-docs: 2 mention(s)
 
 
-### NAKHARA-DOCS
+### NAKHARAX-DOCS
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-docs.git
+   Remote: https://github.com/nakharax-io/nakharax-docs.git
    Last Commit: 1613248 - Update documentation to v1.8.0
 
 📖 README.md:
    Size: 9635 bytes
    References to other repos:
-     - nakhara-core: 11 mention(s)
-     - nakhara-web: 5 mention(s)
-     - nakhara-sdk-ts: 4 mention(s)
-     - nakhara-marketplace: 4 mention(s)
-     - nakhara-deploy: 5 mention(s)
-     - nakhara-devtools: 4 mention(s)
+     - nakharax-core: 11 mention(s)
+     - nakharax-web: 5 mention(s)
+     - nakharax-sdk-ts: 4 mention(s)
+     - nakharax-marketplace: 4 mention(s)
+     - nakharax-deploy: 5 mention(s)
+     - nakharax-devtools: 4 mention(s)
 
 
-### NAKHARA-DEPLOY
+### NAKHARAX-DEPLOY
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-deploy.git
-   Last Commit: feca95a - Deploy working Mock RPC and Grafana - Add complete Node.js Mock RPC with 15+ Ethereum methods - Deploy Grafana v12.2.1 on port 3030 - Create nakhara-overview dashboard - Chain ID 86137, block auto-increment, WebSocket support
+   Remote: https://github.com/nakharax-io/nakharax-deploy.git
+   Last Commit: feca95a - Deploy working Mock RPC and Grafana - Add complete Node.js Mock RPC with 15+ Ethereum methods - Deploy Grafana v12.2.1 on port 3030 - Create nakharax-overview dashboard - Chain ID 86137, block auto-increment, WebSocket support
 
 📄 Package.json:
    Dependencies: 5
    Dev Dependencies: 9
-   Nakhara Dependencies:
-     - @nakhara/sdk (file:../nakhara-sdk-ts) [dependencies]
+   Nakharax Dependencies:
+     - @nakharax/sdk (file:../nakharax-sdk-ts) [dependencies]
 
 📖 README.md:
    Size: 12199 bytes
    References to other repos:
-     - nakhara-core: 8 mention(s)
-     - nakhara-web: 5 mention(s)
-     - nakhara-sdk-ts: 3 mention(s)
-     - nakhara-marketplace: 2 mention(s)
-     - nakhara-docs: 5 mention(s)
-     - nakhara-devtools: 2 mention(s)
+     - nakharax-core: 8 mention(s)
+     - nakharax-web: 5 mention(s)
+     - nakharax-sdk-ts: 3 mention(s)
+     - nakharax-marketplace: 2 mention(s)
+     - nakharax-docs: 5 mention(s)
+     - nakharax-devtools: 2 mention(s)
 
 🔗 Import Statements (1 found):
-     wget https://raw.githubusercontent.com/nakhara-io/nakhara-deploy/main/genesis.json
+     wget https://raw.githubusercontent.com/nakharax-io/nakharax-deploy/main/genesis.json
 
 
-### NAKHARA-DEVTOOLS
+### NAKHARAX-DEVTOOLS
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakhara-io/nakhara-devtools.git
+   Remote: https://github.com/nakharax-io/nakharax-devtools.git
    Last Commit: 514dc1d - docs: add QUICK_START guide for developers [Local dev]
 
 📖 README.md:
    Size: 4306 bytes
    References to other repos:
-     - nakhara-core: 4 mention(s)
-     - nakhara-web: 4 mention(s)
-     - nakhara-sdk-ts: 4 mention(s)
-     - nakhara-marketplace: 2 mention(s)
-     - nakhara-docs: 2 mention(s)
-     - nakhara-deploy: 2 mention(s)
+     - nakharax-core: 4 mention(s)
+     - nakharax-web: 4 mention(s)
+     - nakharax-sdk-ts: 4 mention(s)
+     - nakharax-marketplace: 2 mention(s)
+     - nakharax-docs: 2 mention(s)
+     - nakharax-deploy: 2 mention(s)
 
 🔗 Import Statements (11 found):
-     if 'nakhara' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'u
-     # Should use lowercase 'nakhara', not 'Nakhara' or 'Nakhara'
-     # Look for nakhara imports that might be broken
-     nakhara_imports = set()
-     return nakhara_imports
+     if 'nakharax' in line.lower() and any(keyword in line for keyword in ['import', 'require', 'from', 'u
+     # Should use lowercase 'nakharax', not 'Nakharax' or 'Nakharax'
+     # Look for nakharax imports that might be broken
+     nakharax_imports = set()
+     return nakharax_imports
      ... and 6 more
 
 
 🔗 CONNECTION GRAPH
 --------------------------------------------------------------------------------
-nakhara-core --> nakhara-web (docs:reference(4))
-nakhara-core --> nakhara-sdk-ts (docs:reference(9))
-nakhara-core --> nakhara-marketplace (docs:reference(4))
-nakhara-core --> nakhara-docs (docs:reference(6))
-nakhara-core --> nakhara-deploy (docs:reference(4))
-nakhara-core --> nakhara-devtools (docs:reference(4))
-nakhara-web --> nakhara-core (docs:reference(7))
-nakhara-web --> nakhara-sdk-ts (docs:reference(7))
-nakhara-web --> nakhara-marketplace (docs:reference(4))
-nakhara-web --> nakhara-docs (docs:reference(7))
-nakhara-web --> nakhara-deploy (docs:reference(8))
-nakhara-web --> nakhara-devtools (docs:reference(4))
-nakhara-sdk-ts --> nakhara-core (docs:reference(4))
-nakhara-sdk-ts --> nakhara-web (docs:reference(1))
-nakhara-sdk-ts --> nakhara-marketplace (docs:reference(1))
-nakhara-marketplace --> nakhara-core (docs:reference(4))
-nakhara-marketplace --> nakhara-docs (docs:reference(2))
-nakhara-docs --> nakhara-core (docs:reference(11))
-nakhara-docs --> nakhara-web (docs:reference(5))
-nakhara-docs --> nakhara-sdk-ts (docs:reference(4))
-nakhara-docs --> nakhara-marketplace (docs:reference(4))
-nakhara-docs --> nakhara-deploy (docs:reference(5))
-nakhara-docs --> nakhara-devtools (docs:reference(4))
-nakhara-deploy --> nakhara-core (docs:reference(8))
-nakhara-deploy --> nakhara-web (docs:reference(5))
-nakhara-deploy --> nakhara-sdk-ts (docs:reference(3))
-nakhara-deploy --> nakhara-marketplace (docs:reference(2))
-nakhara-deploy --> nakhara-docs (docs:reference(5))
-nakhara-deploy --> nakhara-devtools (docs:reference(2))
-nakhara-devtools --> nakhara-core (docs:reference(4))
-nakhara-devtools --> nakhara-web (docs:reference(4))
-nakhara-devtools --> nakhara-sdk-ts (docs:reference(4))
-nakhara-devtools --> nakhara-marketplace (docs:reference(2))
-nakhara-devtools --> nakhara-docs (docs:reference(2))
-nakhara-devtools --> nakhara-deploy (docs:reference(2))
+nakharax-core --> nakharax-web (docs:reference(4))
+nakharax-core --> nakharax-sdk-ts (docs:reference(9))
+nakharax-core --> nakharax-marketplace (docs:reference(4))
+nakharax-core --> nakharax-docs (docs:reference(6))
+nakharax-core --> nakharax-deploy (docs:reference(4))
+nakharax-core --> nakharax-devtools (docs:reference(4))
+nakharax-web --> nakharax-core (docs:reference(7))
+nakharax-web --> nakharax-sdk-ts (docs:reference(7))
+nakharax-web --> nakharax-marketplace (docs:reference(4))
+nakharax-web --> nakharax-docs (docs:reference(7))
+nakharax-web --> nakharax-deploy (docs:reference(8))
+nakharax-web --> nakharax-devtools (docs:reference(4))
+nakharax-sdk-ts --> nakharax-core (docs:reference(4))
+nakharax-sdk-ts --> nakharax-web (docs:reference(1))
+nakharax-sdk-ts --> nakharax-marketplace (docs:reference(1))
+nakharax-marketplace --> nakharax-core (docs:reference(4))
+nakharax-marketplace --> nakharax-docs (docs:reference(2))
+nakharax-docs --> nakharax-core (docs:reference(11))
+nakharax-docs --> nakharax-web (docs:reference(5))
+nakharax-docs --> nakharax-sdk-ts (docs:reference(4))
+nakharax-docs --> nakharax-marketplace (docs:reference(4))
+nakharax-docs --> nakharax-deploy (docs:reference(5))
+nakharax-docs --> nakharax-devtools (docs:reference(4))
+nakharax-deploy --> nakharax-core (docs:reference(8))
+nakharax-deploy --> nakharax-web (docs:reference(5))
+nakharax-deploy --> nakharax-sdk-ts (docs:reference(3))
+nakharax-deploy --> nakharax-marketplace (docs:reference(2))
+nakharax-deploy --> nakharax-docs (docs:reference(5))
+nakharax-deploy --> nakharax-devtools (docs:reference(2))
+nakharax-devtools --> nakharax-core (docs:reference(4))
+nakharax-devtools --> nakharax-web (docs:reference(4))
+nakharax-devtools --> nakharax-sdk-ts (docs:reference(4))
+nakharax-devtools --> nakharax-marketplace (docs:reference(2))
+nakharax-devtools --> nakharax-docs (docs:reference(2))
+nakharax-devtools --> nakharax-deploy (docs:reference(2))
 
 ================================================================================
 END OF REPORT

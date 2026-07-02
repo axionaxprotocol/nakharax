@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Nakhara Dev Mock Server
-Simulates nakhara-node JSON-RPC + health endpoints using Python stdlib only.
+Nakharax Dev Mock Server
+Simulates nakharax-node JSON-RPC + health endpoints using Python stdlib only.
 Run: python ops/scripts/dev_server.py [--port 8545] [--host 127.0.0.1]
 """
 
@@ -150,7 +150,7 @@ def net_peerCount(_params):
 
 
 def web3_clientVersion(_params):
-    return "nakhara-dev-mock/1.8.0/python3"
+    return "nakharax-dev-mock/1.8.0/python3"
 
 
 def eth_accounts(_params):
@@ -267,7 +267,7 @@ class Handler(BaseHTTPRequestHandler):
 # ---------- Entry point ----------
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Nakhara Dev Mock Server")
+    parser = argparse.ArgumentParser(description="Nakharax Dev Mock Server")
     parser.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
     parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8545)))
     args = parser.parse_args()
@@ -281,7 +281,7 @@ if __name__ == "__main__":
     t.start()
 
     server = HTTPServer((args.host, args.port), Handler)
-    print(f"Nakhara Dev Mock Server running on http://{args.host}:{args.port}")
+    print(f"Nakharax Dev Mock Server running on http://{args.host}:{args.port}")
     print(f"  chain_id : {_state['chain_id']}")
     print(f"  block    : every {_BLOCK_TIME}s")
     print(f"  health   : http://{args.host}:{args.port}/health")

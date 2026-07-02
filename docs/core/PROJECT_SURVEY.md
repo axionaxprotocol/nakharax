@@ -1,4 +1,4 @@
-# Nakhara Core Universe — รายงานสำรวจโปรเจกต์ (Project Survey)
+# Nakharax Core Universe — รายงานสำรวจโปรเจกต์ (Project Survey)
 
 **วันที่สำรวจ:** มีนาคม 2026 — อัปเดตล่าสุด 29 มีนาคม 2026
 
@@ -10,7 +10,7 @@
 |-----------|--------|
 | **core/** | Rust workspace (v1.8.0) + Python DeAI (worker v1.9.0) |
 | **configs/** | TOML สำหรับ Monolith/Scout (worker, sentinel, scout_single) |
-| **scripts/** | join-nakhara, update-node, health-check, security, load_test |
+| **scripts/** | join-nakharax, update-node, health-check, security, load_test |
 | **ops/deploy/** | Docker, environments (testnet public/v1.6), monitoring, faucet, mock-rpc |
 | **tools/** | devtools (tests, analysis, fixing), มี tools/faucet ซ้ำกับ core/tools/faucet |
 | **docs/** | SECURITY_AUDIT_SCOPE, ARCHITECTURE, AUDIT_REMEDIATION, ฯลฯ |
@@ -21,11 +21,11 @@
 
 - **Workspace root:** `core/Cargo.toml` (members: consensus, blockchain, state, network, crypto, rpc, **node**, config, staking, governance, ppc, da, asr, vrf, cli, metrics, genesis, events, bridge/rust-python, tools/faucet).
 - **Binary ที่รันได้:**
-  - **node** → `nakhara-node` (จาก `core/core/node/src/main.rs`, `[[bin]]`)
-  - **cli** → `nakhara` (จาก core/core/cli)
-  - **tools/faucet** → `nakhara-faucet`
+  - **node** → `nakharax-node` (จาก `core/core/node/src/main.rs`, `[[bin]]`)
+  - **cli** → `nakharax` (จาก core/core/cli)
+  - **tools/faucet** → `nakharax-faucet`
 - **Node flags ที่รองรับ:** `--role`, `--chain`, `--chain_id`, `--rpc`, `--p2p`, `--telemetry`, `--unsafe-rpc`, `--state_path`, `--demo_mode`
-- **Dockerfile:** build ด้วย `cargo build --release -p node` → copy `target/release/nakhara-node`
+- **Dockerfile:** build ด้วย `cargo build --release -p node` → copy `target/release/nakharax-node`
 
 ---
 
@@ -47,7 +47,7 @@
 ## 4. Python DeAI (core/deai)
 
 - **worker_node.py** v1.9.0 — RPC client, wallet, ContractManager (MOCK/LIVE), sandbox, model cache
-- **contract_manager.py** — รองรับ LIVE ผ่าน `NAKHARA_MARKETPLACE_ADDRESS` / config `contract_address` และ `NAKHARA_ABI_PATH`
+- **contract_manager.py** — รองรับ LIVE ผ่าน `NAKHARAX_MARKETPLACE_ADDRESS` / config `contract_address` และ `NAKHARAX_ABI_PATH`
 - เอกสาร: **CONTRACT_INTEGRATION.md**, **README.md**
 - Config: **worker_config.toml**, configs/monolith_*.toml
 
@@ -82,7 +82,7 @@
 
 | # | รายการ | สถานะ |
 |---|--------|-------|
-| 1 | Node binary `nakhara-node` + Dockerfile build | ✅ |
+| 1 | Node binary `nakharax-node` + Dockerfile build | ✅ |
 | 2 | Node CLI flags ตรงกับ compose (--role, --chain, --rpc, --p2p, --telemetry, --unsafe-rpc) | ✅ |
 | 3 | libp2p 0.55 (แก้ ring 0.16 CVE) | ✅ |
 | 4 | pyo3 0.24 (แก้ buffer overflow CVE) | ✅ |

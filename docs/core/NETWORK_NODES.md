@@ -1,4 +1,4 @@
-# All Node Types on the Nakhara Network
+# All Node Types on the Nakharax Network
 
 Summary of **every node and service type** expected on the network (from config, deploy, and protocol in this repo).
 
@@ -16,7 +16,7 @@ Summary of **every node and service type** expected on the network (from config,
 
 ## 1. Blockchain Nodes (Chain / P2P Layer)
 
-Nodes running `nakhara-node` (or equivalent), mode set via config or `--role`.
+Nodes running `nakharax-node` (or equivalent), mode set via config or `--role`.
 
 ### 1.1 Validator
 
@@ -32,8 +32,8 @@ Nodes running `nakhara-node` (or equivalent), mode set via config or `--role`.
 
 | IP | Region | Role | RPC (direct) | Public HTTPS |
 |----|--------|------|--------------|--------------|
-| 217.216.109.5 | EU | Validator #1 + RPC + **Nakhara OS** | http://217.216.109.5:8545 | `https://app.nakhara.io` |
-| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.nakhara.io` |
+| 217.216.109.5 | EU | Validator #1 + RPC + **Nakharax OS** | http://217.216.109.5:8545 | `https://app.nakharaxx.io` |
+| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.nakharaxx.io` |
 
 - EU OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) · AU stack: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -83,28 +83,28 @@ Not P2P nodes; services that connect to the chain via RPC.
 | Item | Details |
 |------|---------|
 | **Role** | Public RPC (testnet/mainnet) |
-| **Deploy** | Docker: `rpc-node` / `nakhara-rpc` |
+| **Deploy** | Docker: `rpc-node` / `nakharax-rpc` |
 | **Ports** | 8545, 8546 |
-| **Domain** | rpc.nakhara.io, testnet RPC per env |
+| **Domain** | rpc.nakharaxx.io, testnet RPC per env |
 
 ### 2.2 Block Explorer
 
 | Item | Details |
 |------|---------|
 | **Role** | UI + API for blocks, transactions, addresses |
-| **Stack** | Blockscout or nakhara-explorer, PostgreSQL |
+| **Stack** | Blockscout or nakharax-explorer, PostgreSQL |
 | **Deploy** | `explorer`, `explorer-backend`, `setup_explorer.sh` |
 | **Ports** | 4000 (Blockscout) or 3001 (API) |
-| **Domain** | explorer.nakhara.io, testnet-explorer.nakhara.io |
+| **Domain** | explorer.nakharaxx.io, testnet-explorer.nakharaxx.io |
 
 ### 2.3 Faucet
 
 | Item | Details |
 |------|---------|
 | **Role** | Distribute testnet tokens (NAK) with rate limit |
-| **Deploy** | `nakhara-faucet` (Rust) or Node image, `setup_faucet.sh` |
+| **Deploy** | `nakharax-faucet` (Rust) or Node image, `setup_faucet.sh` |
 | **Ports** | 8080 or 3002 |
-| **Domain** | faucet.nakhara.io, testnet-faucet.nakhara.io |
+| **Domain** | faucet.nakharaxx.io, testnet-faucet.nakharaxx.io |
 
 ### 2.4 Monitoring (Prometheus / Grafana)
 
@@ -164,6 +164,6 @@ Source: `core/core/network/src/protocol.rs` → `NodeCapabilities`, `PeerInfo.ca
 
 ---
 
-*This document is the single source of truth for node types on the Nakhara network in this repo.*
+*This document is the single source of truth for node types on the Nakharax network in this repo.*
 
 → **Hardware specs (CPU, RAM, storage):** [NODE_SPECS.md](./NODE_SPECS.md)

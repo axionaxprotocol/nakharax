@@ -2,18 +2,18 @@ import { defineChain } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
 // Define Custom Live Node
-export const nakharaLocal = defineChain({
-  id: 86137, // Adjusted to match the live node's likely chain id (assuming testnet) or fallback to 1337 if needed. We'll use 86137 based on previous knowledge of Nakhara Testnet
-  name: "Nakhara Network",
-  network: "nakhara-net",
+export const nakharaxLocal = defineChain({
+  id: 86137, // Adjusted to match the live node's likely chain id (assuming testnet) or fallback to 1337 if needed. We'll use 86137 based on previous knowledge of Nakharax Testnet
+  name: "Nakharax Network",
+  network: "nakharax-net",
   nativeCurrency: {
     decimals: 18,
-    name: "Nakhara",
+    name: "Nakharax",
     symbol: "AXIO",
   },
   rpcUrls: {
-    default: { http: ["https://rpc.nakhara.io"] },
-    public: { http: ["https://rpc.nakhara.io"] },
+    default: { http: ["https://rpc.nakharaxx.io"] },
+    public: { http: ["https://rpc.nakharaxx.io"] },
   },
 });
 

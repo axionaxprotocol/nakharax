@@ -1,10 +1,10 @@
-# 🚀 Quick Start Guide - nakhara-core
+# 🚀 Quick Start Guide - nakharax-core
 
 ## Overview
 
-**nakhara-core** is a blockchain protocol core written in Rust with a DeAI (Decentralized AI) system written in Python
+**nakharax-core** is a blockchain protocol core written in Rust with a DeAI (Decentralized AI) system written in Python
 
-**Repository:** https://github.com/nakhara-io/nakhara-core
+**Repository:** https://github.com/nakharax-io/nakharax-core
 
 ---
 
@@ -28,8 +28,8 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-core.git
-cd nakhara-core
+git clone https://github.com/nakharax-io/nakharax-core.git
+cd nakharax-core
 ```
 
 ### 2. Rust Setup
@@ -162,7 +162,7 @@ python -m pytest tests/integration/
 ## 🏗️ Project Structure
 
 ```
-nakhara-core/
+nakharax-core/
 ├── src/                        # Rust source code
 │   ├── consensus/              # Consensus mechanism (PoPC)
 │   ├── network/                # P2P networking
@@ -267,7 +267,7 @@ export RUST_LOG=debug
 cargo run
 
 # Specific module logs
-export RUST_LOG=nakhara_core::consensus=trace
+export RUST_LOG=nakharax_core::consensus=trace
 cargo run
 
 # Log to file
@@ -281,9 +281,9 @@ cargo run 2> debug.log
 # VS Code: Install "CodeLLDB" extension
 
 # Run with debugger
-rust-lldb target/debug/nakhara-core
+rust-lldb target/debug/nakharax-core
 # or
-rust-gdb target/debug/nakhara-core
+rust-gdb target/debug/nakharax-core
 ```
 
 ### Performance Profiling
@@ -339,35 +339,35 @@ curl -X POST http://localhost:8545 \
 
 ## 🔄 Integration with Other Repos
 
-### With nakhara-sdk-ts
+### With nakharax-sdk-ts
 
 ```bash
 # The SDK connects to your local node
 # Make sure core node is running on http://localhost:8545
 
-# In nakhara-sdk-ts:
-# import { NakharaClient } from '@nakhara/sdk'
-# const client = new NakharaClient('http://localhost:8545')
+# In nakharax-sdk-ts:
+# import { NakharaxClient } from '@nakharax/sdk'
+# const client = new NakharaxClient('http://localhost:8545')
 ```
 
-### With nakhara-deploy
+### With nakharax-deploy
 
 ```bash
 # Deploy scripts use the built binaries
-cd ../nakhara-deploy
+cd ../nakharax-deploy
 npm run deploy:local
 
-# This will start your nakhara-core node
+# This will start your nakharax-core node
 ```
 
-### With nakhara-devtools
+### With nakharax-devtools
 
 ```bash
 # Run integration tests
-cd ../nakhara-devtools
+cd ../nakharax-devtools
 python scripts/testing/test_repo_integration.py
 
-# This tests nakhara-core along with other repos
+# This tests nakharax-core along with other repos
 ```
 
 ---
@@ -456,19 +456,19 @@ pip install -r requirements.txt
 
 ## 📚 Additional Resources
 
-- **Main Documentation:** https://nakhara-io.github.io/nakhara-docs/
-- **API Reference:** https://docs.nakhara.io/api
+- **Main Documentation:** https://nakharax-io.github.io/nakharax-docs/
+- **API Reference:** https://docs.nakharaxx.io/api
 - **Architecture Guide:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Issue Tracker:** https://github.com/nakhara-io/nakhara-core/issues
+- **Issue Tracker:** https://github.com/nakharax-io/nakharax-core/issues
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakhara-io/nakhara-core/issues)
-- **Documentation:** Check [nakhara-docs](https://github.com/nakhara-io/nakhara-docs)
-- **Development Tools:** Use [nakhara-devtools](https://github.com/nakhara-io/nakhara-devtools)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakharax-io/nakharax-core/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
+- **Development Tools:** Use [nakharax-devtools](https://github.com/nakharax-io/nakharax-devtools)
 
 ---
 
@@ -479,5 +479,5 @@ AGPLv3 - See [LICENSE](LICENSE) file for details
 ---
 
 <p align="center">
-  <sub>Built with ❤️ by the nakhara protocol Team</sub>
+  <sub>Built with ❤️ by the nakharax protocol Team</sub>
 </p>

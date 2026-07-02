@@ -1,8 +1,8 @@
-# nakhara DAO Governance
+# nakharax DAO Governance
 
 ## Overview
 
-nakhara is governed by a decentralized autonomous organization (DAO) where NAK token holders collectively make decisions about the protocol's future.
+nakharax is governed by a decentralized autonomous organization (DAO) where NAK token holders collectively make decisions about the protocol's future.
 
 ---
 
@@ -68,7 +68,7 @@ Time Multiplier:
 
 ### 1. Ideation Phase (Forum Discussion)
 
-**Where**: https://forum.nakhara.io
+**Where**: https://forum.nakharaxx.io
 
 **Requirements**:
 
@@ -82,7 +82,7 @@ Time Multiplier:
 
 ### 2. Temperature Check (Off-chain Vote)
 
-**Where**: Snapshot (https://snapshot.org/#/nakhara.eth)
+**Where**: Snapshot (https://snapshot.org/#/nakharax.eth)
 
 **Requirements**:
 
@@ -106,7 +106,7 @@ Time Multiplier:
 **Submission**: Via governance dashboard or CLI
 
 ```bash
-nakhara-cli governance propose \
+nakharax-cli governance propose \
   --title "Adjust ASR parameter K to 128" \
   --description "..." \
   --type parameter-adjustment \
@@ -122,7 +122,7 @@ nakhara-cli governance propose \
 - Vote can be changed during period
 
 ```bash
-nakhara-core governance vote \
+nakharax-core governance vote \
   --proposal-id 42 \
   --choice for
 ```
@@ -226,7 +226,7 @@ nakhara-core governance vote \
 
 **Recipient**: [Name/Team]
 **Amount**: 10,000,000 NAK ($100,000 at current price)
-**Purpose**: Build AI training marketplace on nakhara
+**Purpose**: Build AI training marketplace on nakharax
 **Milestones**:
 
 1. MVP (25%): 2,500,000 NAK
@@ -337,11 +337,11 @@ nakhara-core governance vote \
 
 ### Notifications
 
-- **Forum**: https://forum.nakhara.io
-- **Discord #governance**: https://discord.gg/nakhara
-- **Twitter**: @nakhara-io
-- **Governance Dashboard**: https://gov.nakhara.io
-- **Snapshot**: https://snapshot.org/#/nakhara.eth
+- **Forum**: https://forum.nakharaxx.io
+- **Discord #governance**: https://discord.gg/nakharax
+- **Twitter**: @nakharax-io
+- **Governance Dashboard**: https://gov.nakharaxx.io
+- **Snapshot**: https://snapshot.org/#/nakharax.eth
 
 ### Participation
 
@@ -370,17 +370,17 @@ nakhara-core governance vote \
 
 ### Documentation
 
-- [Governance Portal](https://gov.nakhara.io)
-- [How to Vote Guide](https://docs.nakhara.io/governance/voting)
-- [Parameter Descriptions](https://docs.nakhara.io/governance/parameters)
-- [Proposal Templates](https://github.com/nakhara-io/governance-proposals)
+- [Governance Portal](https://gov.nakharaxx.io)
+- [How to Vote Guide](https://docs.nakharaxx.io/governance/voting)
+- [Parameter Descriptions](https://docs.nakharaxx.io/governance/parameters)
+- [Proposal Templates](https://github.com/nakharax-io/governance-proposals)
 
 ### Tools
 
-- [Governance Dashboard](https://gov.nakhara.io)
-- [Snapshot Voting](https://snapshot.org/#/nakhara.eth)
-- [Forum](https://forum.nakhara.io)
-- [Delegation Platform](https://delegate.nakhara.io)
+- [Governance Dashboard](https://gov.nakharaxx.io)
+- [Snapshot Voting](https://snapshot.org/#/nakharax.eth)
+- [Forum](https://forum.nakharaxx.io)
+- [Delegation Platform](https://delegate.nakharaxx.io)
 
 ---
 

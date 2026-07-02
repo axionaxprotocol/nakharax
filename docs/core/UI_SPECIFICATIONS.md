@@ -3,7 +3,7 @@
 
 ## Overview
 
-This document specifies the UI components to build in `nakhara-monolith` for Staking and Governance
+This document specifies the UI components to build in `nakharax-monolith` for Staking and Governance
 
 ---
 
@@ -331,7 +331,7 @@ await rpc.call('gov_executeProposal', [proposalId]);
 
 ---
 
-## SDK Types (for @nakhara/sdk)
+## SDK Types (for @nakharax/sdk)
 
 ```typescript
 // packages/sdk/src/types/staking.ts

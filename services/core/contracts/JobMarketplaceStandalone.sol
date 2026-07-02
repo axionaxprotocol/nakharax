@@ -2,11 +2,11 @@
 pragma solidity ^0.8.20;
 
 /**
- * @title JobMarketplace (Standalone — Nakhara Testnet)
+ * @title JobMarketplace (Standalone — Nakharax Testnet)
  * @dev Standalone version with no external imports.
  *      Matches the ABI in core/deai/job_marketplace.json exactly.
  *      Uses an inline IERC20 interface and a mutex-based reentrancy guard.
- * @author Nakhara Protocol
+ * @author Nakharax Protocol
  */
 
 // ---------------------------------------------------------------------------

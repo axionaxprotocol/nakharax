@@ -1,4 +1,4 @@
-//! nakhara Blockchain Core
+//! nakharax Blockchain Core
 //!
 //! Block production, chain management, and transaction processing
 //!
@@ -173,7 +173,7 @@ pub struct PersistentBlockchain {
 impl PersistentBlockchain {
     /// Opens a persistent blockchain at the configured path
     pub fn open(config: BlockchainConfig) -> Result<Self> {
-        let path = config.db_path.as_deref().unwrap_or("./nakhara_data");
+        let path = config.db_path.as_deref().unwrap_or("./nakharax_data");
 
         let store = SledBlockStore::open(path)?;
         Ok(Self { store, config })
@@ -307,7 +307,7 @@ impl Blockchain {
         Ok(())
     }
 
-    /// Creates genesis block from canonical mainnet config (1T NAK, nakharaius, validators).
+    /// Creates genesis block from canonical mainnet config (1T NAK, nakharaxius, validators).
     /// Uses the genesis crate so block hash, state_root, and timestamp match genesis.json.
     pub fn create_genesis() -> Result<Block> {
         let g = GenesisGenerator::mainnet();
@@ -322,7 +322,7 @@ impl Blockchain {
                 .validators
                 .first()
                 .map(|v| v.address.clone())
-                .unwrap_or_else(|| "nakharaius".to_string()),
+                .unwrap_or_else(|| "nakharaxius".to_string()),
             transactions: vec![],
             state_root: parse_hex_hash(&g.state_root)
                 .map_err(BlockchainError::TransactionValidation)?,

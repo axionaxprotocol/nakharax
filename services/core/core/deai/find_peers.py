@@ -3,11 +3,11 @@ import os
 import json
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from rpc_client import NakharaRpcClient
+from rpc_client import NakharaxRpcClient
 
 def find_peers():
-    print("🔍 Scanning Network for Peers (via rpc.nakhara.io)...")
-    client = NakharaRpcClient()
+    print("🔍 Scanning Network for Peers (via rpc.nakharaxx.io)...")
+    client = NakharaxRpcClient()
     
     # 1. Check Node Version
     version = client._call("web3_clientVersion", [])

@@ -1,6 +1,6 @@
 # Tutorials
 
-> Step-by-step guides to help you get started with nakhara
+> Step-by-step guides to help you get started with nakharax
 
 ## 📚 Table of Contents
 
@@ -29,17 +29,17 @@
 ### Setup
 
 ```bash
-# Install nakhara SDK
-npm install @nakhara/sdk
+# Install nakharax SDK
+npm install @nakharax/sdk
 
 # Or use TypeScript
-npm install @nakhara/sdk @types/node
+npm install @nakharax/sdk @types/node
 ```
 
 ### Create a Wallet
 
 ```typescript
-import { Wallet } from '@nakhara/sdk';
+import { Wallet } from '@nakharax/sdk';
 
 // Generate new wallet
 const wallet = Wallet.generate();
@@ -54,7 +54,7 @@ console.log('Private Key:', wallet.privateKey);
 
 ```bash
 # Visit testnet faucet
-https://faucet.nakhara.network
+https://faucet.nakharax.network
 
 # Enter your address
 # Receive 10 NAK for testing
@@ -63,10 +63,10 @@ https://faucet.nakhara.network
 ### Send Transaction
 
 ```typescript
-import { NakharaClient, Wallet } from '@nakhara/sdk';
+import { NakharaxClient, Wallet } from '@nakharax/sdk';
 
-const client = new NakharaClient({
-  rpcUrl: 'https://testnet-rpc.nakhara.network',
+const client = new NakharaxClient({
+  rpcUrl: 'https://testnet-rpc.nakharax.network',
   chainId: 86137,
 });
 
@@ -105,7 +105,7 @@ Confirmed in block: 12345
 
 ```rust
 // contracts/counter.rs
-use nakhara_sdk::prelude::*;
+use nakharax_sdk::prelude::*;
 
 #[contract]
 pub struct Counter {
@@ -143,7 +143,7 @@ cargo build --target wasm32-unknown-unknown --release
 ### Deploy
 
 ```typescript
-import { ContractFactory } from '@nakhara/sdk';
+import { ContractFactory } from '@nakharax/sdk';
 import fs from 'fs';
 
 const wasm = fs.readFileSync('counter.wasm');
@@ -234,7 +234,7 @@ for (const event of events) {
 ### ERC20-like Token
 
 ```rust
-use nakhara_sdk::prelude::*;
+use nakharax_sdk::prelude::*;
 
 #[contract]
 pub struct Token {
@@ -405,14 +405,14 @@ Coming soon! Learn:
 
 - [Developer Guide](./DEVELOPER_GUIDE.md)
 - [API Reference](./API_REFERENCE.md)
-- [Example Projects](https://github.com/nakhara-io/examples)
-- [Community Forum](https://forum.nakhara.network)
+- [Example Projects](https://github.com/nakharax-io/examples)
+- [Community Forum](https://forum.nakharax.network)
 
 ## 💬 Get Help
 
-- [Discord](https://discord.gg/nakhara)
-- [GitHub Discussions](https://github.com/nakhara-io/nakhara-core/discussions)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/nakhara)
+- [Discord](https://discord.gg/nakharax)
+- [GitHub Discussions](https://github.com/nakharax-io/nakharax-core/discussions)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/nakharax)
 
 ---
 

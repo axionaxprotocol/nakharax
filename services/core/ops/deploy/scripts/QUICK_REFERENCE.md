@@ -1,4 +1,4 @@
-# nakhara Protocol - VPS Quick Reference Card
+# nakharax Protocol - VPS Quick Reference Card
 
 ## 🚀 Essential Commands
 
@@ -29,7 +29,7 @@ sudo ./scripts/deploy-all-services.sh --full
 ### View Logs
 ```bash
 # All services
-cd /opt/nakhara-deploy && docker-compose -f docker-compose.vps.yml logs -f
+cd /opt/nakharax-deploy && docker-compose -f docker-compose.vps.yml logs -f
 
 # Specific service
 ./scripts/manage-services.sh logs faucet
@@ -66,12 +66,12 @@ docker-compose -f docker-compose.vps.yml logs --tail=100 rpc-node
 - **Grafana:** `http://217.216.109.5:3000`
 
 ### With Domain (if DNS configured)
-- **RPC:** `https://rpc.nakhara.io`
-- **Explorer:** `https://explorer.nakhara.io`
-- **Faucet:** `https://faucet.nakhara.io`
+- **RPC:** `https://rpc.nakharaxx.io`
+- **Explorer:** `https://explorer.nakharaxx.io`
+- **Faucet:** `https://faucet.nakharaxx.io`
 
 ### Direct Access (No SSL)
-- **RPC HTTP:** `https://rpc.nakhara.io`
+- **RPC HTTP:** `https://rpc.nakharaxx.io`
 - **RPC WS:** `ws://217.216.109.5:8546`
 - **Explorer API:** `http://217.216.109.5:3001`
 - **Faucet API:** `http://217.216.109.5:3002`
@@ -111,7 +111,7 @@ docker stats
 ### Database Issues
 ```bash
 # Check database
-docker exec nakhara-postgres pg_isready -U explorer
+docker exec nakharax-postgres pg_isready -U explorer
 
 # View logs
 ./scripts/manage-services.sh logs postgres
@@ -126,7 +126,7 @@ docker exec nakhara-postgres pg_isready -U explorer
 nc -zv localhost 8545
 
 # Check nginx config
-docker exec nakhara-nginx nginx -t
+docker exec nakharax-nginx nginx -t
 
 # Restart nginx
 ./scripts/manage-services.sh restart nginx
@@ -154,14 +154,14 @@ docker exec nakhara-nginx nginx -t
 
 ### Update Services
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml pull
 ./scripts/manage-services.sh restart all
 ```
 
 ### Backup Database
 ```bash
-docker exec nakhara-postgres pg_dump -U explorer explorer > backup.sql
+docker exec nakharax-postgres pg_dump -U explorer explorer > backup.sql
 ```
 
 ### Clean Docker
@@ -209,7 +209,7 @@ free -h && df -h
 
 ### Everything is down
 ```bash
-cd /opt/nakhara-deploy
+cd /opt/nakharax-deploy
 docker-compose -f docker-compose.vps.yml down
 docker-compose -f docker-compose.vps.yml up -d
 ./scripts/check-vps-status.sh
@@ -234,10 +234,10 @@ sudo reboot
 
 ## 📍 File Locations
 
-- **Scripts:** `/opt/nakhara-deploy/scripts/`
-- **Config:** `/opt/nakhara-deploy/.env`
-- **Logs:** `/opt/nakhara-deploy/deployment.log`
-- **Compose:** `/opt/nakhara-deploy/docker-compose.vps.yml`
+- **Scripts:** `/opt/nakharax-deploy/scripts/`
+- **Config:** `/opt/nakharax-deploy/.env`
+- **Logs:** `/opt/nakharax-deploy/deployment.log`
+- **Compose:** `/opt/nakharax-deploy/docker-compose.vps.yml`
 
 ---
 

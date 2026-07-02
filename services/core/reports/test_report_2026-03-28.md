@@ -1,4 +1,4 @@
-# Nakhara Core — Rust Test Report
+# Nakharax Core — Rust Test Report
 
 **Date:** 2026-03-28  
 **Time:** 13:01 (UTC+7)  

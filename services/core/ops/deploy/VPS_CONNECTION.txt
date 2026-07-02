@@ -1,8 +1,8 @@
-# nakhara VPS Quick Commands
+# nakharax VPS Quick Commands
 # Updated: 2026-05-24 — AU all-in-one services
 
-# ── EU: Validator #1 + Nakhara OS (apps/os-dashboard :3030) ──
-#     DNS: app.nakhara.io → 217.216.109.5
+# ── EU: Validator #1 + Nakharax OS (apps/os-dashboard :3030) ──
+#     DNS: app.nakharaxx.io → 217.216.109.5
 ssh root@217.216.109.5
 # Deploy OS: bash apps/os-dashboard/scripts/vps-deploy.sh
 # Docs: docs/web/VPS_EU_OS_DASHBOARD.md
@@ -12,10 +12,10 @@ ssh root@217.216.109.5
 ssh root@46.250.244.4
 
 # Upload deploy bundle to AU
-scp -r services/core/ops/deploy root@46.250.244.4:/opt/nakhara/
+scp -r services/core/ops/deploy root@46.250.244.4:/opt/nakharax/
 
 # On AU (46.250.244.4)
-cd /opt/nakhara
+cd /opt/nakharax
 cp .env.example .env && nano .env
 # VPS_IP=46.250.244.4
 mv nginx/conf.d/explorer.conf.disabled nginx/conf.d/explorer.conf

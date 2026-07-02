@@ -1,7 +1,7 @@
 //! Security & Adversarial Integration Tests
 //!
 //! Comprehensive tests simulating cyber attacks, malicious actors, and edge-case
-//! abuse across the Nakhara blockchain core.  Every test uses the **existing**
+//! abuse across the Nakharax blockchain core.  Every test uses the **existing**
 //! public API — no production code is modified.
 
 // ── 1.  RPC Layer Attacks ───────────────────────────────────────────────────
@@ -104,15 +104,15 @@ mod rpc_attacks {
     #[test]
     fn test_rpc_cors_blocks_unauthorized_origin() {
         let cors = CorsConfig::production(vec![
-            "https://app.nakhara.io".to_string(),
-            "https://wallet.nakhara.io".to_string(),
+            "https://app.nakharaxx.io".to_string(),
+            "https://wallet.nakharaxx.io".to_string(),
         ]);
 
         assert!(!cors.is_origin_allowed("https://evil.com"));
-        assert!(!cors.is_origin_allowed("https://phishing.nakhara.io.evil.com"));
+        assert!(!cors.is_origin_allowed("https://phishing.nakharaxx.io.evil.com"));
         assert!(!cors.is_origin_allowed("http://localhost:3000"));
-        assert!(cors.is_origin_allowed("https://app.nakhara.io"));
-        assert!(cors.is_origin_allowed("https://wallet.nakhara.io"));
+        assert!(cors.is_origin_allowed("https://app.nakharaxx.io"));
+        assert!(cors.is_origin_allowed("https://wallet.nakharaxx.io"));
 
         // Dev mode allows all — verify the distinction
         let dev = CorsConfig::dev();

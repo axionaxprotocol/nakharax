@@ -1,10 +1,10 @@
 #!/bin/bash
-# Nakhara SDK TypeScript - Linux Installation Script
+# Nakharax SDK TypeScript - Linux Installation Script
 
 set -e
 
 echo "================================================"
-echo "Nakhara SDK TypeScript - Linux Installer"
+echo "Nakharax SDK TypeScript - Linux Installer"
 echo "================================================"
 
 GREEN='\033[0;32m'

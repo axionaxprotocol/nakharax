@@ -1,5 +1,5 @@
 #!/bin/bash
-# Automated Fix Script for nakhara Repositories
+# Automated Fix Script for nakharax Repositories
 # Generated: 2025-11-10 21:41:54
 
 set -e  # Exit on error
@@ -11,7 +11,7 @@ echo ''
 echo '📝 Fixing: Build System'
 
 # Install dependencies for Node.js projects
-for repo in nakhara-web nakhara-sdk-ts nakhara-marketplace; do
+for repo in nakharax-web nakharax-sdk-ts nakharax-marketplace; do
   if [ -d "$repo" ] && [ -f "$repo/package.json" ]; then
     echo "  Installing dependencies for $repo..."
     cd $repo
@@ -28,7 +28,7 @@ echo '📝 Fixing: Import Statements'
 echo '📝 Fixing: Git Status'
 
 # Check git status
-for repo in nakhara-*; do
+for repo in nakharax-*; do
   if [ -d "$repo/.git" ]; then
     echo "  Checking $repo..."
     cd $repo

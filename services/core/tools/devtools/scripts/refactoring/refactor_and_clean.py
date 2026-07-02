@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nakhara Protocol Code Refactoring and Cleaning Tool
+Nakharax Protocol Code Refactoring and Cleaning Tool
 Tool for refactoring and cleaning code across the entire protocol
 """
 
@@ -27,20 +27,20 @@ class CodeRefactorCleaner:
     def __init__(self, workspace_root: str):
         self.workspace_root = Path(workspace_root)
         self.repos = {
-            'nakhara-core': {'type': 'rust', 'path': self.workspace_root / 'nakhara-core'},
-            'nakhara-sdk-ts': {'type': 'typescript', 'path': self.workspace_root / 'nakhara-sdk-ts'},
-            'nakhara-web': {'type': 'typescript', 'path': self.workspace_root / 'nakhara-web'},
-            'nakhara-marketplace': {'type': 'typescript', 'path': self.workspace_root / 'nakhara-marketplace'},
-            'nakhara-docs': {'type': 'documentation', 'path': self.workspace_root / 'nakhara-docs'},
-            'nakhara-deploy': {'type': 'deployment', 'path': self.workspace_root / 'nakhara-deploy'},
-            'nakhara-devtools': {'type': 'tools', 'path': self.workspace_root / 'nakhara-devtools'}
+            'nakharax-core': {'type': 'rust', 'path': self.workspace_root / 'nakharax-core'},
+            'nakharax-sdk-ts': {'type': 'typescript', 'path': self.workspace_root / 'nakharax-sdk-ts'},
+            'nakharax-web': {'type': 'typescript', 'path': self.workspace_root / 'nakharax-web'},
+            'nakharax-marketplace': {'type': 'typescript', 'path': self.workspace_root / 'nakharax-marketplace'},
+            'nakharax-docs': {'type': 'documentation', 'path': self.workspace_root / 'nakharax-docs'},
+            'nakharax-deploy': {'type': 'deployment', 'path': self.workspace_root / 'nakharax-deploy'},
+            'nakharax-devtools': {'type': 'tools', 'path': self.workspace_root / 'nakharax-devtools'}
         }
         self.changes = []
         self.errors = []
 
     def print_header(self):
         print(f"\n{BOLD}{'='*80}{RESET}")
-        print(f"{BOLD}{MAGENTA}🔧 NAKHARA PROTOCOL CODE REFACTOR & CLEAN{RESET}")
+        print(f"{BOLD}{MAGENTA}🔧 NAKHARAX PROTOCOL CODE REFACTOR & CLEAN{RESET}")
         print(f"{BOLD}{'='*80}{RESET}")
         print(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Workspace: {self.workspace_root}")
@@ -616,7 +616,7 @@ class CodeRefactorCleaner:
 def main():
     import argparse
     
-    parser = argparse.ArgumentParser(description='Nakhara Protocol Code Refactoring & Cleaning Tool')
+    parser = argparse.ArgumentParser(description='Nakharax Protocol Code Refactoring & Cleaning Tool')
     parser.add_argument('--skip-formatting', action='store_true', help='Skip code formatting')
     parser.add_argument('--skip-linting', action='store_true', help='Skip linting and fixing')
     parser.add_argument('--repo', type=str, help='Specify repo to refactor (if not specified, refactor all)')
@@ -625,7 +625,7 @@ def main():
     
     workspace = os.getcwd()
     
-    print(f"{BOLD}{MAGENTA}🔧 Nakhara Protocol Refactor & Clean Tool{RESET}")
+    print(f"{BOLD}{MAGENTA}🔧 Nakharax Protocol Refactor & Clean Tool{RESET}")
     print(f"Workspace: {workspace}\n")
     
     cleaner = CodeRefactorCleaner(workspace)

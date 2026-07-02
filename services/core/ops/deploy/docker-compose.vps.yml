@@ -1,7 +1,7 @@
 # =============================================================================
-# Nakhara VPS 2 (46.250.244.4) — Supporting Services Stack
+# Nakharax VPS 2 (46.250.244.4) — Supporting Services Stack
 # =============================================================================
-# The Validator/RPC Node runs via systemd (nakhara-node.service) on the host.
+# The Validator/RPC Node runs via systemd (nakharax-node.service) on the host.
 # This compose file runs ONLY the supporting services:
 #   nginx (SSL reverse proxy), faucet, redis, postgres, monitoring
 #
@@ -11,9 +11,9 @@
 services:
   # Testnet Faucet (behind nginx — not exposed directly)
   faucet:
-    image: ghcr.io/nakhara-io/nakhara-faucet:latest
+    image: ghcr.io/nakharax-io/nakharax-faucet:latest
     pull_policy: never
-    container_name: nakhara-faucet
+    container_name: nakharax-faucet
     restart: unless-stopped
     mem_limit: 512m
     cpus: 0.5
@@ -38,7 +38,7 @@ services:
     depends_on:
       - redis
     networks:
-      - nakhara-net
+      - nakharax-net
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
       interval: 30s
@@ -48,7 +48,7 @@ services:
   # PostgreSQL Database (internal only — for future explorer use)
   postgres:
     image: postgres:16-alpine
-    container_name: nakhara-postgres
+    container_name: nakharax-postgres
     restart: unless-stopped
     mem_limit: 1g
     cpus: 1.0
@@ -64,7 +64,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - nakhara-net
+      - nakharax-net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U explorer"]
       interval: 10s
@@ -74,7 +74,7 @@ services:
   # Redis Cache (internal only — for faucet rate limiting)
   redis:
     image: redis:7-alpine
-    container_name: nakhara-redis
+    container_name: nakharax-redis
     restart: unless-stopped
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:?Set in .env}"]
     ports:
@@ -88,7 +88,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - nakhara-net
+      - nakharax-net
     healthcheck:
       test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 10s
@@ -98,7 +98,7 @@ services:
   # Nginx Reverse Proxy (SSL termination for rpc/faucet)
   nginx:
     image: nginx:alpine
-    container_name: nakhara-nginx
+    container_name: nakharax-nginx
     restart: unless-stopped
     mem_limit: 256m
     cpus: 0.5
@@ -121,7 +121,7 @@ services:
       faucet:
         condition: service_started
     networks:
-      - nakhara-net
+      - nakharax-net
     healthcheck:
       test: ["CMD", "nginx", "-t"]
       interval: 30s
@@ -131,7 +131,7 @@ services:
   # Certbot for SSL
   certbot:
     image: certbot/certbot
-    container_name: nakhara-certbot
+    container_name: nakharax-certbot
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -140,7 +140,7 @@ services:
   # Prometheus Monitoring (internal only — access via Grafana)
   prometheus:
     image: prom/prometheus:latest
-    container_name: nakhara-prometheus
+    container_name: nakharax-prometheus
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -151,12 +151,12 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
     networks:
-      - nakhara-net
+      - nakharax-net
 
   # Grafana Dashboard (localhost only — SSH tunnel for admin access)
   grafana:
     image: grafana/grafana:latest
-    container_name: nakhara-grafana
+    container_name: nakharax-grafana
     restart: unless-stopped
     ports:
       - "127.0.0.1:3030:3000"
@@ -170,7 +170,7 @@ services:
     depends_on:
       - prometheus
     networks:
-      - nakhara-net
+      - nakharax-net
 
 volumes:
   postgres-data:
@@ -179,5 +179,5 @@ volumes:
   grafana-data:
 
 networks:
-  nakhara-net:
+  nakharax-net:
     driver: bridge

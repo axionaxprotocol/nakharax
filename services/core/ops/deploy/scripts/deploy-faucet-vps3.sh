@@ -14,7 +14,7 @@ echo "=============================================="
 echo "  Deploy Testnet Faucet on VPS3"
 echo "=============================================="
 echo "  Compose: $COMPOSE_FILE"
-echo "  RPC:     https://rpc.nakhara.io"
+echo "  RPC:     https://rpc.nakharaxx.io"
 echo "  Chain:   86137"
 echo "=============================================="
 
@@ -34,7 +34,7 @@ if [ -z "$FAUCET_PRIVATE_KEY" ]; then
   echo "  FAUCET_PRIVATE_KEY=<hex key for genesis faucet address>"
   echo ""
   echo "If you used create_genesis.py default, the key is deterministic:"
-  echo "  python3 -c \"import hashlib; print(hashlib.sha256(b'nakhara_faucet_mainnet_q2_2026').hexdigest())\""
+  echo "  python3 -c \"import hashlib; print(hashlib.sha256(b'nakharax_faucet_mainnet_q2_2026').hexdigest())\""
   echo ""
   exit 1
 fi
@@ -52,6 +52,6 @@ sleep 5
 if curl -sf http://127.0.0.1:3002/health > /dev/null; then
   echo "Faucet is up. Check: curl http://127.0.0.1:3002/health"
 else
-  echo "Faucet may still be starting. Check: docker logs nakhara-testnet-faucet --tail 20"
+  echo "Faucet may still be starting. Check: docker logs nakharax-testnet-faucet --tail 20"
 fi
 echo "=============================================="

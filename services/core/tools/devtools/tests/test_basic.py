@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic Unit Tests for nakhara DevTools
+Basic Unit Tests for nakharax DevTools
 Tests core functionality, file operations, and utility functions
 """
 
@@ -58,11 +58,11 @@ class TestRepositoryStructure(unittest.TestCase):
     def test_sibling_repositories(self):
         """Test that sibling repositories exist"""
         expected_repos = [
-            "nakhara-core",
-            "nakhara-web",
-            "nakhara-sdk-ts",
-            "nakhara-docs",
-            "nakhara-deploy"
+            "nakharax-core",
+            "nakharax-web",
+            "nakharax-sdk-ts",
+            "nakharax-docs",
+            "nakharax-deploy"
         ]
         
         for repo in expected_repos:
@@ -121,8 +121,8 @@ class TestDocumentation(unittest.TestCase):
         readme = self.root_dir / "README.md"
         if readme.exists():
             content = readme.read_text(encoding='utf-8')
-            # Should use lowercase 'nakhara', not 'Nakhara' or 'Nakhara'
-            self.assertIn("nakhara", content.lower())
+            # Should use lowercase 'nakharax', not 'Nakharax' or 'Nakharax'
+            self.assertIn("nakharax", content.lower())
             
     def test_no_broken_branding(self):
         """Test that there are no incorrect branding variations"""
@@ -132,11 +132,11 @@ class TestDocumentation(unittest.TestCase):
             # Check for common mistakes (case-sensitive check on title lines)
             lines = content.split('\n')
             for i, line in enumerate(lines):
-                # Allow Nakhara in URLs and specific contexts
+                # Allow Nakharax in URLs and specific contexts
                 if line.startswith('#') and 'github.com' not in line:
-                    # Title lines should not have Nakhara
-                    if 'Nakhara' in line and 'nakhara' not in line.lower():
-                        self.fail(f"Line {i+1}: Found 'Nakhara' in title: {line}")
+                    # Title lines should not have Nakharax
+                    if 'Nakharax' in line and 'nakharax' not in line.lower():
+                        self.fail(f"Line {i+1}: Found 'Nakharax' in title: {line}")
 
 
 def run_tests():
@@ -160,7 +160,7 @@ def run_tests():
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("nakhara DevTools - Basic Unit Tests")
+    print("nakharax DevTools - Basic Unit Tests")
     print("=" * 70)
     print()
     

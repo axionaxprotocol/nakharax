@@ -1,6 +1,6 @@
-# nakhara Crypto Module - Usage Guide
+# nakharax Crypto Module - Usage Guide
 
-Complete guide for using cryptographic functions in nakhara Core.
+Complete guide for using cryptographic functions in nakharax Core.
 
 ## 📚 Table of Contents
 

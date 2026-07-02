@@ -27,13 +27,13 @@ Instead, please use one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 
-1. Go to the [Security tab](https://github.com/nakhara-io/nakhara-monolith/security)
+1. Go to the [Security tab](https://github.com/nakharax-io/nakharax-monolith/security)
 2. Click "Report a vulnerability"
 3. Fill out the form with details
 
 #### 2. Email
 
-Send details to: **security@nakhara.io**
+Send details to: **security@nakharaxx.io**
 
 Encrypt sensitive information using our PGP key (available upon request).
 
@@ -41,7 +41,7 @@ Encrypt sensitive information using our PGP key (available upon request).
 
 Direct message to: `@security-team` in our Discord server
 
-- Join: https://discord.gg/nakhara
+- Join: https://discord.gg/nakharax
 - Request private channel for disclosure
 
 ---
@@ -285,9 +285,9 @@ In case of a security incident:
 
 ### Emergency Contacts
 
-- **Security Team**: security@nakhara.io
+- **Security Team**: security@nakharaxx.io
 - **Discord**: @security-team (for urgent issues)
-- **Status Page**: https://status.nakhara.io
+- **Status Page**: https://status.nakharaxx.io
 
 ---
 
@@ -297,8 +297,8 @@ Subscribe to security notifications:
 
 - **GitHub Watch**: Enable "Security alerts"
 - **Discord**: #security-announcements channel
-- **Twitter**: [@nakhara](https://twitter.com/nakhara)
-- **Email**: Subscribe at https://nakhara.io/subscribe
+- **Twitter**: [@nakharax](https://twitter.com/nakharax)
+- **Email**: Subscribe at https://nakharaxx.io/subscribe
 
 ---
 
@@ -340,7 +340,7 @@ Before submitting code:
 
 ## Compliance
 
-Nakhara complies with:
+Nakharax complies with:
 
 - ✅ GDPR (General Data Protection Regulation)
 - ✅ SOC 2 Type II (in progress)
@@ -352,8 +352,8 @@ Nakhara complies with:
 
 For security-related questions:
 
-- **Email**: security@nakhara.io
-- **Discord**: https://discord.gg/nakhara (#security)
+- **Email**: security@nakharaxx.io
+- **Discord**: https://discord.gg/nakharax (#security)
 - **GitHub**: Open a Security Advisory
 
 ---

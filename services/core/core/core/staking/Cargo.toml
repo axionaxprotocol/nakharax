@@ -3,7 +3,7 @@ name = "staking"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
-description = "Native Staking Module for Nakhara Protocol"
+description = "Native Staking Module for Nakharax Protocol"
 
 [dependencies]
 tokio = { workspace = true }

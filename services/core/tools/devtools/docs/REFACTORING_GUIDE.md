@@ -1,6 +1,6 @@
-# Nakhara Protocol - Refactoring & Code Quality Tools
+# Nakharax Protocol - Refactoring & Code Quality Tools
 
-Tools for refactoring and improving code quality across the entire Nakhara Protocol
+Tools for refactoring and improving code quality across the entire Nakharax Protocol
 
 ## 📚 Available Scripts
 
@@ -81,7 +81,7 @@ python refactor_and_clean.py --skip-formatting
 python refactor_and_clean.py --skip-linting
 
 # Refactor specific repo
-python refactor_and_clean.py --repo nakhara-core
+python refactor_and_clean.py --repo nakharax-core
 ```
 
 **Actions:**
@@ -290,4 +290,4 @@ MIT License - see LICENSE file
 
 ## 🎉 Happy Refactoring!
 
-Made with ❤️ for Nakhara Protocol
+Made with ❤️ for Nakharax Protocol

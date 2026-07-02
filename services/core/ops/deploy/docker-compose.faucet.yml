@@ -11,8 +11,8 @@ services:
     build:
       context: ../../
       dockerfile: ops/deploy/Dockerfile.faucet
-    image: nakhara-faucet:local
-    container_name: nakhara-testnet-faucet
+    image: nakharax-faucet:local
+    container_name: nakharax-testnet-faucet
     restart: unless-stopped
     network_mode: host
     environment:

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@nakhara/sdk"],
+  transpilePackages: ["@nakharax/sdk"],
   output: "standalone",
 };
 module.exports = nextConfig;

@@ -1,5 +1,5 @@
 """
-nakhara DevTools Test Suite
+nakharax DevTools Test Suite
 Unit and integration tests for development tools
 """
 

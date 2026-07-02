@@ -6,16 +6,16 @@ Write-Host "Fixing protocol names..." -ForegroundColor Cyan
 $extensions = "*.md","*.ts","*.tsx","*.html","*.json","*.toml","*.rs","*.go","*.py","*.sh","*.yml"
 $count = 0
 
-Get-ChildItem -Path D:\Desktop\nakharaius01 -Recurse -Include $extensions -File | Where-Object {
+Get-ChildItem -Path D:\Desktop\nakharaxius01 -Recurse -Include $extensions -File | Where-Object {
     $_.FullName -notmatch "node_modules|\.git|dist|build|target|out|\.next"
 } | ForEach-Object {
     $content = Get-Content $_.FullName -Raw
     
     if ($null -eq $content) { return }
     
-    $newContent = $content -replace "Nakhara Protocol", "nakhara protocol"
-    $newContent = $newContent -replace "Nakhara protocol", "nakhara protocol"
-    $newContent = $newContent -replace "Nakhara Protocol", "nakhara protocol"
+    $newContent = $content -replace "Nakharax Protocol", "nakharax protocol"
+    $newContent = $newContent -replace "Nakharax protocol", "nakharax protocol"
+    $newContent = $newContent -replace "Nakharax Protocol", "nakharax protocol"
     
     if ($content -ne $newContent) {
         Set-Content -Path $_.FullName -Value $newContent -NoNewline

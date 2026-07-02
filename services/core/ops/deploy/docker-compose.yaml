@@ -1,12 +1,12 @@
 # Run from repo root: docker compose -f ops/deploy/docker-compose.yaml up
 # Or from ops/deploy: docker compose -f docker-compose.yaml --project-directory ../.. up
 services:
-  # nakhara protocol Node (context = repo core/ directory)
+  # nakharax protocol Node (context = repo core/ directory)
   node:
     build:
       context: ../../core
       dockerfile: Dockerfile
-    container_name: nakhara-node
+    container_name: nakharax-node
     ports:
       - "8545:8545"   # JSON-RPC
       - "8546:8546"   # WebSocket
@@ -17,13 +17,13 @@ services:
       - RUST_LOG=info,p2p=info,p2p::health=info,p2p::conn=info,p2p::identify=info
       - CHAIN_ID=86137
       # P2P Configuration
-      - NAKHARA_PUBLIC_IP=${NAKHARA_PUBLIC_IP}
-      - NAKHARA_BOOTSTRAP_NODES=${NAKHARA_BOOTSTRAP_NODES}
+      - NAKHARAX_PUBLIC_IP=${NAKHARAX_PUBLIC_IP}
+      - NAKHARAX_BOOTSTRAP_NODES=${NAKHARAX_BOOTSTRAP_NODES}
     restart: unless-stopped
-  # Explorer: use image from GHCR or build from nakhara-monolith repo
+  # Explorer: use image from GHCR or build from nakharax-monolith repo
   # explorer:
-  #   image: ghcr.io/nakhara-io/nakhara-explorer:latest
-  #   container_name: nakhara-explorer
+  #   image: ghcr.io/nakharax-io/nakharax-explorer:latest
+  #   container_name: nakharax-explorer
   #   ports: ["3000:3000"]
   #   environment:
   #     - NEXT_PUBLIC_RPC_URL=http://node:8545

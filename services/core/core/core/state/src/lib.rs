@@ -1,4 +1,4 @@
-//! nakhara State Module
+//! nakharax State Module
 //!
 //! Persistent storage layer using redb (pure Rust) for:
 //! - Blocks and transactions

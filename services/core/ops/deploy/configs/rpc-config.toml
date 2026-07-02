@@ -1,7 +1,7 @@
-# nakhara RPC Node Configuration
+# nakharax RPC Node Configuration
 
 [network]
-network_id = "nakhara-testnet-1"
+network_id = "nakharax-testnet-1"
 chain_id = 86137
 listen_address = "0.0.0.0:30303"
 max_peers = 50
@@ -11,7 +11,7 @@ enable_mdns = true
 enabled = true
 host = "0.0.0.0"
 port = 8545
-cors_origins = ["https://nakhara.io", "https://www.nakhara.io", "https://explorer.nakhara.io", "https://faucet.nakhara.io", "https://api.nakhara.io"]
+cors_origins = ["https://nakharaxx.io", "https://www.nakharaxx.io", "https://explorer.nakharaxx.io", "https://faucet.nakharaxx.io", "https://api.nakharaxx.io"]
 allowed_methods = [
     "eth_blockNumber",
     "eth_getBalance",
@@ -38,7 +38,7 @@ block_time = 3  # seconds
 epoch_length = 100
 
 [storage]
-data_dir = "/data/nakhara"
+data_dir = "/data/nakharax"
 state_db_cache_size = 1024  # MB
 block_db_cache_size = 512   # MB
 

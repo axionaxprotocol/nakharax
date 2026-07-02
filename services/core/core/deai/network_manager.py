@@ -10,15 +10,15 @@ try:
 except ImportError:
     pass
 
-from rpc_client import NakharaRpcClient
+from rpc_client import NakharaxRpcClient
 
 
 def _get_bootnodes_from_env() -> Optional[List[str]]:
-    """Override bootnodes from env: NAKHARA_RPC_URL (single) or NAKHARA_BOOTNODES (comma-separated)."""
-    single = os.environ.get("NAKHARA_RPC_URL", "").strip()
+    """Override bootnodes from env: NAKHARAX_RPC_URL (single) or NAKHARAX_BOOTNODES (comma-separated)."""
+    single = os.environ.get("NAKHARAX_RPC_URL", "").strip()
     if single:
         return [single]
-    nodes = os.environ.get("NAKHARA_BOOTNODES", "").strip()
+    nodes = os.environ.get("NAKHARAX_BOOTNODES", "").strip()
     if nodes:
         return [u.strip() for u in nodes.split(",") if u.strip()]
     return None
@@ -28,7 +28,7 @@ class NetworkManager:
     """
     Manages network connections, node discovery, and health checks.
     Selects the best node based on Block Height (Longest Chain Rule).
-    Supports env overrides: NAKHARA_RPC_URL or NAKHARA_BOOTNODES.
+    Supports env overrides: NAKHARAX_RPC_URL or NAKHARAX_BOOTNODES.
     Dynamically discovers new peers via P2P (P2P Discovery).
     """
     def __init__(self, config_path: str = "worker_config.toml"):
@@ -44,7 +44,7 @@ class NetworkManager:
         if not self.bootnodes:
             raise ValueError(
                 "No bootnodes. Set [network] bootnodes in config, or "
-                "NAKHARA_RPC_URL / NAKHARA_BOOTNODES in .env"
+                "NAKHARAX_RPC_URL / NAKHARAX_BOOTNODES in .env"
             )
 
         print(f"NetworkManager initialized with {len(self.bootnodes)} bootnode(s).")
@@ -136,7 +136,7 @@ class NetworkManager:
         for url in all_candidates:
             try:
                 # Create a temporary client to check this node
-                client = NakharaRpcClient(rpc_url=url)
+                client = NakharaxRpcClient(rpc_url=url)
                 block_height = client.get_block_number()
                 
                 if block_height is not None and block_height > 0:
@@ -152,7 +152,7 @@ class NetworkManager:
         if best_node:
             print(f"🏆 Selected Best Node: {best_node} (Height: {max_height})")
             self.active_node_url = best_node
-            self.active_client = NakharaRpcClient(rpc_url=best_node)
+            self.active_client = NakharaxRpcClient(rpc_url=best_node)
             
             # After finding a good node, try to discover more peers from it
             self.discover_peers()
@@ -162,13 +162,13 @@ class NetworkManager:
             print("🔥 CRITICAL: No healthy nodes found!")
             return None
 
-    def get_client(self) -> NakharaRpcClient:
+    def get_client(self) -> NakharaxRpcClient:
         """
         Returns the active RPC client. If none exists, attempts to find one.
         """
         if not self.active_client:
             if not self.find_best_node():
-                raise ConnectionError("Could not connect to any Nakhara node.")
+                raise ConnectionError("Could not connect to any Nakharax node.")
         return self.active_client
 
     def check_health(self):

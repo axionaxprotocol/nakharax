@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Nakhara Chaos Engineering Test
+# Nakharax Chaos Engineering Test
 # ============================================================================
 # Simulates validator failure scenarios on the public testnet and verifies
 # that the network remains operational (blocks continue to be produced).
@@ -18,8 +18,8 @@
 set -euo pipefail
 
 # ── Defaults ────────────────────────────────────────────────────────────────
-CONTAINER_NAME="${CONTAINER_NAME:-nakhara-validator}"  # docker container grep pattern
-MONITOR_RPC="${MONITOR_RPC:-https://rpc.nakhara.io}" # RPC on the OTHER validator to monitor
+CONTAINER_NAME="${CONTAINER_NAME:-nakharax-validator}"  # docker container grep pattern
+MONITOR_RPC="${MONITOR_RPC:-https://rpc.nakharaxx.io}" # RPC on the OTHER validator to monitor
 LOCAL_RPC="http://127.0.0.1:8545"
 KILL_DURATION=30        # seconds the validator stays down
 RECOVERY_WAIT=45        # seconds to wait for recovery after restart
@@ -93,7 +93,7 @@ fi
 # ============================================================================
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║           🔥 NAKHARA CHAOS ENGINEERING TEST 🔥              ║"
+echo "║           🔥 NAKHARAX CHAOS ENGINEERING TEST 🔥              ║"
 echo "╠══════════════════════════════════════════════════════════════╣"
 echo "║  Test: Kill validator → verify network survives → restart    ║"
 echo "║  Monitor RPC: ${MONITOR_RPC}                                 ║"

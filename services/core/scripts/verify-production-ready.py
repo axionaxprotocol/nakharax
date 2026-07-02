@@ -37,7 +37,7 @@ def main():
     # 2. Optional .env in core/deai
     env_path = REPO_ROOT / "core" / "deai" / ".env"
     if not env_path.exists():
-        print("\nNote: core/deai/.env not found. Optional; use it for NAKHARA_* or WORKER_KEY_PASSWORD overrides (copy from .env.example).")
+        print("\nNote: core/deai/.env not found. Optional; use it for NAKHARAX_* or WORKER_KEY_PASSWORD overrides (copy from .env.example).")
     else:
         print("\nOK: core/deai/.env present")
 

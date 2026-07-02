@@ -1,4 +1,4 @@
-//! Nakhara CLI — library of testable helpers
+//! Nakharax CLI — library of testable helpers
 
 use serde_json::Value;
 

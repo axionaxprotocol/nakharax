@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "🔍 Nakhara Validator Sync Diagnostic Tool"
+echo "🔍 Nakharax Validator Sync Diagnostic Tool"
 echo "========================================="
 
 # 1. Check Time Sync
@@ -51,7 +51,7 @@ if [[ -n "$BLOCK_RESP" && "$BLOCK_RESP" == *"result"* ]]; then
     if [[ -n "$BLOCK_HEX" ]]; then
         BLOCK_COUNT=$((16#${BLOCK_HEX#0x}))
         echo "✅ Local Validator Block Height: $BLOCK_COUNT"
-        echo "ℹ️ Compare this height with the Nakhara Public Explorer or your other validator node."
+        echo "ℹ️ Compare this height with the Nakharax Public Explorer or your other validator node."
     else
         echo "⚠️ Could not parse block height: $BLOCK_RESP"
     fi

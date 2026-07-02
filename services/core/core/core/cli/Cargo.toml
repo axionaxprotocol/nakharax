@@ -1,16 +1,16 @@
 [package]
-name = "nakhara-cli"
+name = "nakharax-cli"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
-description = "Nakhara Protocol CLI - Command line interface"
+description = "Nakharax Protocol CLI - Command line interface"
 
 [lib]
-name = "nakhara_cli"
+name = "nakharax_cli"
 path = "src/lib.rs"
 
 [[bin]]
-name = "nakhara"
+name = "nakharax"
 path = "src/main.rs"
 
 [dependencies]

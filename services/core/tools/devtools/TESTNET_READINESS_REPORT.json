@@ -11,12 +11,12 @@
       "message": "All 6 repos present",
       "details": {
         "repos": [
-          "nakhara-core",
-          "nakhara-sdk-ts",
-          "nakhara-web",
-          "nakhara-docs",
-          "nakhara-deploy",
-          "nakhara-devtools"
+          "nakharax-core",
+          "nakharax-sdk-ts",
+          "nakharax-web",
+          "nakharax-docs",
+          "nakharax-deploy",
+          "nakharax-devtools"
         ]
       },
       "critical": false
@@ -67,7 +67,7 @@
       "score": 0,
       "message": "Quality score: 0.0/100 (Below threshold)",
       "details": {
-        "nakhara-core": {
+        "nakharax-core": {
           "ease_of_use": 71.0,
           "performance": 67.0,
           "organization": 69.0,
@@ -75,7 +75,7 @@
           "total": 64.0,
           "grade": "D"
         },
-        "nakhara-sdk-ts": {
+        "nakharax-sdk-ts": {
           "ease_of_use": 48.0,
           "performance": 35.0,
           "organization": 61.0,
@@ -83,7 +83,7 @@
           "total": 45.5,
           "grade": "F"
         },
-        "nakhara-web": {
+        "nakharax-web": {
           "ease_of_use": 50.0,
           "performance": 47.0,
           "organization": 73.0,
@@ -91,7 +91,7 @@
           "total": 53.25,
           "grade": "F"
         },
-        "nakhara-marketplace": {
+        "nakharax-marketplace": {
           "ease_of_use": 38.0,
           "performance": 20.0,
           "organization": 53.0,
@@ -99,7 +99,7 @@
           "total": 37.25,
           "grade": "F"
         },
-        "nakhara-docs": {
+        "nakharax-docs": {
           "ease_of_use": 44.0,
           "performance": 0.0,
           "organization": 34.0,
@@ -107,7 +107,7 @@
           "total": 19.5,
           "grade": "F"
         },
-        "nakhara-deploy": {
+        "nakharax-deploy": {
           "ease_of_use": 55.0,
           "performance": 38.0,
           "organization": 37.0,
@@ -115,7 +115,7 @@
           "total": 40.75,
           "grade": "F"
         },
-        "nakhara-devtools": {
+        "nakharax-devtools": {
           "ease_of_use": 44.0,
           "performance": 15.0,
           "organization": 39.0,
@@ -143,8 +143,8 @@
       "message": "0/3 builds successful",
       "details": {
         "rust": false,
-        "nakhara-sdk-ts": false,
-        "nakhara-web": false
+        "nakharax-sdk-ts": false,
+        "nakharax-web": false
       },
       "critical": false
     },
@@ -156,11 +156,11 @@
       "message": "5 lint configs found",
       "details": {
         "configs": [
-          "nakhara-core/clippy.toml",
-          "nakhara-sdk-ts/.eslintrc.json",
-          "nakhara-sdk-ts/.prettierrc",
-          "nakhara-web/.eslintrc.json",
-          "nakhara-web/.prettierrc"
+          "nakharax-core/clippy.toml",
+          "nakharax-sdk-ts/.eslintrc.json",
+          "nakharax-sdk-ts/.prettierrc",
+          "nakharax-web/.eslintrc.json",
+          "nakharax-web/.prettierrc"
         ]
       },
       "critical": false
@@ -191,7 +191,7 @@
       "message": "Found 1 audit report(s)",
       "details": {
         "audits": [
-          "nakhara-core\\SECURITY_AUDIT.md"
+          "nakharax-core\\SECURITY_AUDIT.md"
         ]
       },
       "critical": true
@@ -204,10 +204,10 @@
       "message": "4 access configs",
       "details": {
         "configs": [
-          "nakhara-core/.gitignore",
-          "nakhara-sdk-ts/.gitignore",
-          "nakhara-web/.gitignore",
-          "nakhara-deploy/.gitignore"
+          "nakharax-core/.gitignore",
+          "nakharax-sdk-ts/.gitignore",
+          "nakharax-web/.gitignore",
+          "nakharax-deploy/.gitignore"
         ]
       },
       "critical": false
@@ -220,8 +220,8 @@
       "message": "2 benchmark files found",
       "details": {
         "bench_files": [
-          "nakhara-core\\benches\\blockchain_bench.rs",
-          "nakhara-core\\benches\\crypto_bench.rs"
+          "nakharax-core\\benches\\blockchain_bench.rs",
+          "nakharax-core\\benches\\crypto_bench.rs"
         ]
       },
       "critical": false
@@ -235,7 +235,7 @@
       "details": {
         "optimizations": [
           "rust_release_profile",
-          "nakhara-sdk-ts_tsconfig"
+          "nakharax-sdk-ts_tsconfig"
         ]
       },
       "critical": false
@@ -248,7 +248,7 @@
       "message": "1 load test files",
       "details": {
         "files": [
-          "nakhara-core\\tests\\load_test.py"
+          "nakharax-core\\tests\\load_test.py"
         ]
       },
       "critical": false
@@ -277,8 +277,8 @@
       "message": "2 API docs found",
       "details": {
         "docs": [
-          "nakhara-core\\docs\\API_REFERENCE.md",
-          "nakhara-docs\\API_REFERENCE.md"
+          "nakharax-core\\docs\\API_REFERENCE.md",
+          "nakharax-docs\\API_REFERENCE.md"
         ]
       },
       "critical": false
@@ -291,7 +291,7 @@
       "message": "1 deployment docs",
       "details": {
         "docs": [
-          "nakhara-docs\\VPS_VALIDATOR_SETUP.md"
+          "nakharax-docs\\VPS_VALIDATOR_SETUP.md"
         ]
       },
       "critical": false
@@ -305,11 +305,11 @@
       "details": {
         "examples": [
           {
-            "repo": "nakhara-core",
+            "repo": "nakharax-core",
             "count": 3
           },
           {
-            "repo": "nakhara-sdk-ts",
+            "repo": "nakharax-sdk-ts",
             "count": 3
           }
         ]
@@ -324,9 +324,9 @@
       "message": "3 Docker files",
       "details": {
         "files": [
-          "nakhara-web/Dockerfile",
-          "nakhara-web/docker-compose.yml",
-          "nakhara-deploy/Dockerfile"
+          "nakharax-web/Dockerfile",
+          "nakharax-web/docker-compose.yml",
+          "nakharax-deploy/Dockerfile"
         ]
       },
       "critical": false
@@ -339,9 +339,9 @@
       "message": "3 env configs",
       "details": {
         "configs": [
-          "nakhara-core/.env.example",
-          "nakhara-web/.env.example",
-          "nakhara-deploy/.env.example"
+          "nakharax-core/.env.example",
+          "nakharax-web/.env.example",
+          "nakharax-deploy/.env.example"
         ]
       },
       "critical": false
@@ -370,7 +370,7 @@
       "message": "1 logging configs",
       "details": {
         "configs": [
-          "nakhara-core/Cargo.toml (logging)"
+          "nakharax-core/Cargo.toml (logging)"
         ]
       },
       "critical": false
@@ -383,8 +383,8 @@
       "message": "2 metrics configs",
       "details": {
         "files": [
-          "nakhara-core/prometheus.yml",
-          "nakhara-core/metrics.toml"
+          "nakharax-core/prometheus.yml",
+          "nakharax-core/metrics.toml"
         ]
       },
       "critical": false
@@ -397,7 +397,7 @@
       "message": "1 health endpoints",
       "details": {
         "endpoints": [
-          "nakhara-core\\src\\health.rs"
+          "nakharax-core\\src\\health.rs"
         ]
       },
       "critical": false

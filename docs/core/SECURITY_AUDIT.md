@@ -1,4 +1,4 @@
-# Security Audit — Nakhara Core
+# Security Audit — Nakharax Core
 
 Security review of genesis, keys, faucet, RPC, and operational practices.
 

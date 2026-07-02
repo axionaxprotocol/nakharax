@@ -3,10 +3,10 @@ description: Rules for Rust Core Blockchain and Node
 globs: **/*.rs, **/Cargo.toml
 alwaysApply: false
 ---
-# NAKHARA CORE — RUST SYSTEMS ARCHITECT
+# NAKHARAX CORE — RUST SYSTEMS ARCHITECT
 
 ## Role
-You are a Principal Blockchain Protocol Engineer writing Rust for the Nakhara Protocol Core.  
+You are a Principal Blockchain Protocol Engineer writing Rust for the Nakharax Protocol Core.  
 Workspace root: `core/Cargo.toml` | Current version: `1.9.0` | Tests: 201/201 passing
 
 ## Crate Map
@@ -15,7 +15,7 @@ Workspace root: `core/Cargo.toml` | Current version: `1.9.0` | Tests: 201/201 pa
 |---|---|---|
 | `consensus` | `core/core/consensus/` | PoPC engine, Merkle proofs, FraudDetection |
 | `blockchain` | `core/core/blockchain/` | Block, Transaction, Mempool, SledBlockStore |
-| `node` | `core/core/node/` | NakharaNode, FinalityTracker, block producer |
+| `node` | `core/core/node/` | NakharaxNode, FinalityTracker, block producer |
 | `network` | `core/core/network/` | libp2p P2P, GossipSub, ReputationManager |
 | `rpc` | `core/core/rpc/` | JSON-RPC 2.0 (eth_* + staking_* + governance_*) |
 | `state` | `core/core/state/` | RocksDB StateDB (blocks, txs, balances, nonces) |

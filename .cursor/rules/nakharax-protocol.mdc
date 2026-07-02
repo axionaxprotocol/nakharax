@@ -1,13 +1,13 @@
 ---
-description: Nakhara monorepo engineering standards
+description: Nakharax monorepo engineering standards
 alwaysApply: true
 ---
 
-# Nakhara Protocol Rule
+# Nakharax Protocol Rule
 
 ## Architecture
 - Check `packages/sdk` first for reusable business logic before implementing in apps.
-- Use workspace aliases only (for example `@nakhara/sdk`), never cross-package relative imports.
+- Use workspace aliases only (for example `@nakharax/sdk`), never cross-package relative imports.
 - Use `pnpm` for workspace dependency and script operations.
 
 ## Frontend

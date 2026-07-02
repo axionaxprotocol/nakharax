@@ -7,14 +7,14 @@ import json
 from pathlib import Path
 
 def fix_dependency_to_file_protocol(file_path, sdk_path):
-    """Change @nakhara/sdk to use file: protocol"""
+    """Change @nakharax/sdk to use file: protocol"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        if 'dependencies' in data and '@nakhara/sdk' in data['dependencies']:
-            data['dependencies']['@nakhara/sdk'] = sdk_path
-            print(f"✅ Updated {file_path.name}: @nakhara/sdk -> {sdk_path}")
+        if 'dependencies' in data and '@nakharax/sdk' in data['dependencies']:
+            data['dependencies']['@nakharax/sdk'] = sdk_path
+            print(f"✅ Updated {file_path.name}: @nakharax/sdk -> {sdk_path}")
         
         with open(file_path, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -30,22 +30,22 @@ def update_root_package_json():
     root_package = Path('package.json')
     
     package_json = {
-        "name": "nakhara-monorepo",
+        "name": "nakharax-monorepo",
         "version": "1.0.0",
         "private": True,
         "workspaces": [
-            "nakhara-sdk-ts",
-            "nakhara-web",
-            "nakhara-marketplace"
+            "nakharax-sdk-ts",
+            "nakharax-web",
+            "nakharax-marketplace"
         ],
         "scripts": {
             "install-all": "npm install",
-            "build:sdk": "cd nakhara-sdk-ts && npm run build",
-            "build:web": "cd nakhara-web && npm run build",
-            "build:marketplace": "cd nakhara-marketplace && npm run build",
+            "build:sdk": "cd nakharax-sdk-ts && npm run build",
+            "build:web": "cd nakharax-web && npm run build",
+            "build:marketplace": "cd nakharax-marketplace && npm run build",
             "build-all": "npm run build:sdk && npm run build:web && npm run build:marketplace",
-            "dev:web": "cd nakhara-web && npm run dev",
-            "dev:marketplace": "cd nakhara-marketplace && npm run dev"
+            "dev:web": "cd nakharax-web && npm run dev",
+            "dev:marketplace": "cd nakharax-marketplace && npm run dev"
         },
         "devDependencies": {
             "typescript": "^5.4.0"
@@ -63,15 +63,15 @@ def main():
     print("=" * 80)
     print()
     
-    # Fix nakhara-web
-    web_package = Path('nakhara-web/package.json')
+    # Fix nakharax-web
+    web_package = Path('nakharax-web/package.json')
     if web_package.exists():
-        fix_dependency_to_file_protocol(web_package, 'file:../nakhara-sdk-ts')
+        fix_dependency_to_file_protocol(web_package, 'file:../nakharax-sdk-ts')
     
-    # Fix nakhara-marketplace
-    marketplace_package = Path('nakhara-marketplace/package.json')
+    # Fix nakharax-marketplace
+    marketplace_package = Path('nakharax-marketplace/package.json')
     if marketplace_package.exists():
-        fix_dependency_to_file_protocol(marketplace_package, 'file:../nakhara-sdk-ts')
+        fix_dependency_to_file_protocol(marketplace_package, 'file:../nakharax-sdk-ts')
     
     # Update root package.json
     update_root_package_json()

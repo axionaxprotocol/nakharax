@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TPS & Finality load test for Nakhara Protocol.
+TPS & Finality load test for Nakharax Protocol.
 
 Validates:
   - TPS target: 45,000+ (run with sufficient tx rate and duration)
@@ -31,7 +31,7 @@ def get_block_number(w3: Web3) -> int:
 
 def _ensure_rpc_reachable(w3: Web3, rpc_url: str) -> None:
     """
-    Nakhara nodes may not implement web3_clientVersion; Web3.is_connected() then
+    Nakharax nodes may not implement web3_clientVersion; Web3.is_connected() then
     returns False even when eth_blockNumber works (same as curl). Use a real RPC call.
     """
     try:
@@ -97,7 +97,7 @@ def run_tps_mode(
     _ensure_rpc_reachable(w3, rpc_url)
 
     if not private_key:
-        raise ValueError("TPS mode requires NAKHARA_PRIVATE_KEY or --private-key")
+        raise ValueError("TPS mode requires NAKHARAX_PRIVATE_KEY or --private-key")
 
     account = w3.eth.account.from_key(private_key)
     chain_id = w3.eth.chain_id
@@ -147,12 +147,12 @@ def run_tps_mode(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Nakhara TPS & Finality load test")
-    ap.add_argument("--rpc", default=os.environ.get("NAKHARA_RPC_URL", "http://127.0.0.1:8545"), help="RPC URL")
+    ap = argparse.ArgumentParser(description="Nakharax TPS & Finality load test")
+    ap.add_argument("--rpc", default=os.environ.get("NAKHARAX_RPC_URL", "http://127.0.0.1:8545"), help="RPC URL")
     ap.add_argument("--mode", choices=["block-time", "tps"], default="block-time", help="block-time or tps")
     ap.add_argument("--duration", type=int, default=60, help="Test duration in seconds")
     ap.add_argument("--tx-rate", type=int, default=100, help="Tx per second in tps mode")
-    ap.add_argument("--private-key", default=os.environ.get("NAKHARA_PRIVATE_KEY"), help="Hex key for tps mode")
+    ap.add_argument("--private-key", default=os.environ.get("NAKHARAX_PRIVATE_KEY"), help="Hex key for tps mode")
     ap.add_argument(
         "--json-out",
         type=Path,

@@ -1,11 +1,11 @@
 #!/bin/bash
-# Nakhara Core - macOS Dependency Installation Script
+# Nakharax Core - macOS Dependency Installation Script
 # Installs Rust, Node.js, Python, and other required dependencies
 
 set -e
 
 echo "================================================"
-echo "Nakhara Core - macOS Dependency Installer"
+echo "Nakharax Core - macOS Dependency Installer"
 echo "================================================"
 
 # Colors

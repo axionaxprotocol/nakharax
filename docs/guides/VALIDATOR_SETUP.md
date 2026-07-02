@@ -1,6 +1,6 @@
 # Validator Setup Guide
 
-> **Complete guide to setting up an Nakhara validator node**
+> **Complete guide to setting up an Nakharax validator node**
 
 **Last Updated**: May 3, 2026  
 **Protocol Version**: v1.9.0-testnet
@@ -9,9 +9,9 @@
 
 ## Overview
 
-This guide covers setting up a validator node on the Nakhara network. Validators participate in consensus, produce blocks, and secure the network through PoPC (Proof of Correct Computation) and PoS (Proof of Stake).
+This guide covers setting up a validator node on the Nakharax network. Validators participate in consensus, produce blocks, and secure the network through PoPC (Proof of Correct Computation) and PoS (Proof of Stake).
 
-**Primary Reference**: See [`../architecture/NAKHARA_PROTOCOL.md`](../architecture/NAKHARA_PROTOCOL.md) for complete protocol architecture, including:
+**Primary Reference**: See [`../architecture/NAKHARAX_PROTOCOL.md`](../architecture/NAKHARAX_PROTOCOL.md) for complete protocol architecture, including:
 - Core workflow: Post → Assign → Execute → Commit → DA Pre-commit → Wait k → Challenge → Prove → Verify → Seal → Fraud Window → Finalize
 - PoPC (Proof of Probabilistic Checking) with s=1000 samples
 - Delayed VRF for challenge generation (k≥2 blocks)
@@ -75,8 +75,8 @@ sudo ufw enable
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakhara-io/nakhara-monolith.git
-cd nakhara-monolith
+git clone https://github.com/nakharax-io/nakharax-monolith.git
+cd nakharax-monolith
 ```
 
 ### 2. Configure Validator
@@ -130,35 +130,35 @@ curl -X POST http://localhost:8545 \
 ### 1. Download Binary
 
 ```bash
-wget https://github.com/nakhara-io/nakhara-core/releases/download/v1.9.0/nakhara-node-linux-amd64
-chmod +x nakhara-node-linux-amd64
-sudo mv nakhara-node-linux-amd64 /usr/local/bin/nakhara-node
+wget https://github.com/nakharax-io/nakharax-core/releases/download/v1.9.0/nakharax-node-linux-amd64
+chmod +x nakharax-node-linux-amd64
+sudo mv nakharax-node-linux-amd64 /usr/local/bin/nakharax-node
 ```
 
 ### 2. Create Service User
 
 ```bash
-sudo useradd -r -s /bin/false nakhara
-sudo mkdir -p /var/lib/nakhara
-sudo chown nakhara:nakhara /var/lib/nakhara
+sudo useradd -r -s /bin/false nakharax
+sudo mkdir -p /var/lib/nakharax
+sudo chown nakharax:nakharax /var/lib/nakharax
 ```
 
 ### 3. Create Systemd Service
 
-Create `/etc/systemd/system/nakhara-validator.service`:
+Create `/etc/systemd/system/nakharax-validator.service`:
 
 ```ini
 [Unit]
-Description=Nakhara Validator Node
+Description=Nakharax Validator Node
 After=network.target
 
 [Service]
 Type=simple
-User=nakhara
-ExecStart=/usr/local/bin/nakhara-node \
+User=nakharax
+ExecStart=/usr/local/bin/nakharax-node \
   --role validator \
-  --config /etc/nakhara/validator-config.yaml \
-  --data-dir /var/lib/nakhara
+  --config /etc/nakharax/validator-config.yaml \
+  --data-dir /var/lib/nakharax
 Restart=always
 RestartSec=10
 
@@ -170,8 +170,8 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable nakhara-validator
-sudo systemctl start nakhara-validator
+sudo systemctl enable nakharax-validator
+sudo systemctl start nakharax-validator
 ```
 
 ---
@@ -220,14 +220,14 @@ Validator exposes metrics on port 9615:
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'nakhara-validator'
+  - job_name: 'nakharax-validator'
     static_configs:
       - targets: ['localhost:9615']
 ```
 
 ### Grafana Dashboard
 
-Import the Nakhara validator dashboard from the repository.
+Import the Nakharax validator dashboard from the repository.
 
 ### Health Checks
 
@@ -280,7 +280,7 @@ curl -X POST http://localhost:8545 \
   -d '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}'
 
 # Check logs
-journalctl -u nakhara-validator -f
+journalctl -u nakharax-validator -f
 ```
 
 ### Validator Not Producing Blocks
@@ -312,18 +312,18 @@ db:
 
 ```bash
 # Stop service
-sudo systemctl stop nakhara-validator
+sudo systemctl stop nakharax-validator
 
 # Backup data
-sudo cp -r /var/lib/nakhara /var/lib/nakhara.backup
+sudo cp -r /var/lib/nakharax /var/lib/nakharax.backup
 
 # Download new binary
-wget https://github.com/nakhara-io/nakhara-core/releases/download/vX.Y.Z/nakhara-node-linux-amd64
-chmod +x nakhara-node-linux-amd64
-sudo mv nakhara-node-linux-amd64 /usr/local/bin/nakhara-node
+wget https://github.com/nakharax-io/nakharax-core/releases/download/vX.Y.Z/nakharax-node-linux-amd64
+chmod +x nakharax-node-linux-amd64
+sudo mv nakharax-node-linux-amd64 /usr/local/bin/nakharax-node
 
 # Start service
-sudo systemctl start nakhara-validator
+sudo systemctl start nakharax-validator
 ```
 
 ---
@@ -331,7 +331,7 @@ sudo systemctl start nakhara-validator
 ## See Also
 
 **Primary Protocol Reference:**
-- [NAKHARA_PROTOCOL.md](../architecture/NAKHARA_PROTOCOL.md) — Complete protocol architecture, PoPC, VRF, DA, security
+- [NAKHARAX_PROTOCOL.md](../architecture/NAKHARAX_PROTOCOL.md) — Complete protocol architecture, PoPC, VRF, DA, security
 
 **Additional Resources:**
 - [Node Hardware Specs](../core/NODE_SPECS.md)

@@ -1,6 +1,6 @@
 # Monorepo Structure Audit
 
-> **Scope:** `nakhara-monolith` working tree, captured 2026-05-01.
+> **Scope:** `nakharax-monolith` working tree, captured 2026-05-01.
 > **Goal:** identify drift, recommend a folder hierarchy that scales for an L1 protocol with both blockchain core and Web Universe.
 
 ---
@@ -8,7 +8,7 @@
 ## 1. Current shape
 
 ```
-nakhara-monolith/
+nakharax-monolith/
 ├── apps/
 │   ├── os-dashboard/      # Next.js OS-style dashboard (this repo's "OS")
 │   └── web/               # Public dApp + marketplace (335 items, deeply nested)
@@ -93,13 +93,13 @@ The middle `core/` (Cargo workspace root) can then be flattened further in a fol
 
 **Observed:** `packages/sdk` now exists and is being used as the shared TypeScript boundary.
 
-**Recommendation:** keep consolidating shared RPC/business logic into `@nakhara/sdk`; add new packages only when justified (not by default). Next candidates when needed:
+**Recommendation:** keep consolidating shared RPC/business logic into `@nakharax/sdk`; add new packages only when justified (not by default). Next candidates when needed:
 
 ```
 packages/
-├── sdk/                  # @nakhara/sdk — typed JSON-RPC client (shared by apps/web + apps/os-dashboard)
-├── types/                # @nakhara/types — chain primitives (Block, Tx, AiTask) generated from Rust
-└── ui/                   # @nakhara/ui — shared Tailwind + Radix component primitives
+├── sdk/                  # @nakharax/sdk — typed JSON-RPC client (shared by apps/web + apps/os-dashboard)
+├── types/                # @nakharax/types — chain primitives (Block, Tx, AiTask) generated from Rust
+└── ui/                   # @nakharax/ui — shared Tailwind + Radix component primitives
 ```
 
 Keep avoiding speculative scaffolding; each new package should have a concrete consumer and CI check.
@@ -108,7 +108,7 @@ Keep avoiding speculative scaffolding; each new package should have a concrete c
 
 **Observed:**
 - `scripts/` (root) — new, cross-cutting (`check-node-sync.sh`)
-- `services/core/scripts/` — node-operator scripts (`join-nakhara.py`, `health-check.py`)
+- `services/core/scripts/` — node-operator scripts (`join-nakharax.py`, `health-check.py`)
 - `docs/` (root) — new (`compossor-and-cascade-playbook.md`)
 - `docs/core/` — Core Universe docs (centralized)
 
@@ -153,7 +153,7 @@ Pairs naturally with the `services/core/.windsurfrules` golden rules ("no unwrap
 ## 4. Proposed target hierarchy
 
 ```
-nakhara-monolith/
+nakharax-monolith/
 ├── .github/                   # CI for the whole monolith (workspace tests + lints)
 ├── .windsurf/workflows/       # slash-commands (already in place)
 ├── .windsurfrules             # Web ↔ Core boundaries (already in place)

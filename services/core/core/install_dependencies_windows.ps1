@@ -1,10 +1,10 @@
-# Nakhara Core - Windows Dependency Installation Script
+# Nakharax Core - Windows Dependency Installation Script
 # Installs Rust, Node.js, Python, and other required dependencies
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "Nakhara Core - Windows Dependency Installer" -ForegroundColor Cyan
+Write-Host "Nakharax Core - Windows Dependency Installer" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 
 # Check if running as Administrator

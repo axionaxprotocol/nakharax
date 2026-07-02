@@ -1,6 +1,6 @@
-# Dependencies Installation Guide - Nakhara Core
+# Dependencies Installation Guide - Nakharax Core
 
-Complete guide for installing all required dependencies for Nakhara Protocol development.
+Complete guide for installing all required dependencies for Nakharax Protocol development.
 
 ## 📋 Dependency Checklist
 
@@ -198,8 +198,8 @@ sudo systemctl start postgresql
 sudo systemctl enable postgresql
 
 # Create user and database
-sudo -u postgres createuser nakhara
-sudo -u postgres createdb nakhara_testnet
+sudo -u postgres createuser nakharax
+sudo -u postgres createdb nakharax_testnet
 
 # Verify installation
 psql --version
@@ -330,8 +330,8 @@ brew install postgresql@14
 brew services start postgresql@14
 
 # Create database
-createuser nakhara
-createdb nakhara_testnet
+createuser nakharax
+createdb nakharax_testnet
 
 # Verify installation
 psql --version
@@ -382,14 +382,14 @@ For a containerized development environment without installing dependencies:
 
 ```bash
 # Clone repository
-git clone https://github.com/nakhara-io/nakhara-core.git
-cd nakhara-core
+git clone https://github.com/nakharax-io/nakharax-core.git
+cd nakharax-core
 
 # Build Docker image
-docker build -t nakhara-core .
+docker build -t nakharax-core .
 
 # Run container
-docker run -it --rm -p 8545:8545 -p 30303:30303 nakhara-core
+docker run -it --rm -p 8545:8545 -p 30303:30303 nakharax-core
 
 # Or use Docker Compose
 docker-compose up -d
@@ -398,7 +398,7 @@ docker-compose up -d
 ### Docker Compose Services
 ```yaml
 # Included services:
-- nakhara-core    # Blockchain node
+- nakharax-core    # Blockchain node
 - postgres        # Database
 - redis           # Cache
 - prometheus      # Metrics
@@ -473,8 +473,8 @@ pip install jupyter>=1.0.0                # Notebooks
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/nakhara-io/nakhara-core.git
-cd nakhara-core
+git clone https://github.com/nakharax-io/nakharax-core.git
+cd nakharax-core
 
 # 2. Build Rust components
 cargo build --release
@@ -491,8 +491,8 @@ cp .env.example .env
 # Edit .env with your settings
 
 # 5. Initialize database
-psql -U postgres -c "CREATE DATABASE nakhara_testnet;"
-psql -U postgres -d nakhara_testnet -f scripts/init_db.sql
+psql -U postgres -c "CREATE DATABASE nakharax_testnet;"
+psql -U postgres -d nakharax_testnet -f scripts/init_db.sql
 
 # 6. Run tests
 cargo test
@@ -600,6 +600,6 @@ wsl sudo service redis-server start
 ## 💬 Support
 
 Need help? 
-- Check [GitHub Issues](https://github.com/nakhara-io/nakhara-core/issues)
-- Join our [Discord](https://discord.gg/nakhara)
-- Read [Documentation](https://docs.nakhara.io)
+- Check [GitHub Issues](https://github.com/nakharax-io/nakharax-core/issues)
+- Join our [Discord](https://discord.gg/nakharax)
+- Read [Documentation](https://docs.nakharaxx.io)

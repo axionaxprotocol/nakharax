@@ -1,6 +1,6 @@
 # Website Hosting Guide
 
-Guide for setting up nakhara web hosting from scratch — two options:
+Guide for setting up nakharax web hosting from scratch — two options:
 
 | Option                           | Best for                 | Summary                                                           |
 | -------------------------------- | ------------------------ | ----------------------------------------------------------------- |
@@ -36,15 +36,15 @@ Verify: `node -v` (v20.x), `pnpm -v`, `git --version`
 
 ```bash
 # Clone (or use single script below)
-export APP_DIR=/opt/nakhara-monolith
-git clone --depth 1 -b main https://github.com/nakhara-io/nakhara-monolith.git $APP_DIR
+export APP_DIR=/opt/nakharax-monolith
+git clone --depth 1 -b main https://github.com/nakharax-io/nakharax-monolith.git $APP_DIR
 cd $APP_DIR
 
-# Install + Build (build packages first — web uses @nakhara/sdk, @nakhara/blockchain-utils)
+# Install + Build (build packages first — web uses @nakharax/sdk, @nakharax/blockchain-utils)
 pnpm install --frozen-lockfile
-pnpm --filter @nakhara/blockchain-utils build
-pnpm --filter @nakhara/sdk build
-pnpm --filter @nakhara/web build
+pnpm --filter @nakharax/blockchain-utils build
+pnpm --filter @nakharax/sdk build
+pnpm --filter @nakharax/web build
 
 # Prepare standalone
 # ⚠️ Important: outputFileTracingRoot points to monorepo root
@@ -71,8 +71,8 @@ npm install -g pm2
 
 # Run app
 # ⚠️ Important: must use path apps/web/server.js (outputFileTracingRoot = monorepo root)
-cd /opt/nakhara-monolith/apps/web/.next/standalone
-PORT=3000 pm2 start apps/web/server.js --name nakhara-web
+cd /opt/nakharax-monolith/apps/web/.next/standalone
+PORT=3000 pm2 start apps/web/server.js --name nakharax-web
 
 # Save + auto-start after reboot
 pm2 save
@@ -91,7 +91,7 @@ Web is a Node app (Next.js) — **must proxy to 127.0.0.1:3000** not `root` to s
 1. Create config (edit `server_name` and SSL path as needed):
 
 ```bash
-sudo nano /etc/nginx/sites-available/nakhara-web
+sudo nano /etc/nginx/sites-available/nakharax-web
 ```
 
 2. Paste content below (HTTP first — add SSL later):
@@ -104,7 +104,7 @@ upstream web_frontend {
 
 server {
     listen 80;
-    server_name nakhara.io www.nakhara.io;   # Change to your domain or IP
+    server_name nakharaxx.io www.nakharaxx.io;   # Change to your domain or IP
 
     location /api/ {
         proxy_pass http://web_frontend;
@@ -131,7 +131,7 @@ server {
 3. Enable and reload Nginx:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/nakhara-web /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/nakharax-web /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
@@ -142,7 +142,7 @@ sudo systemctl reload nginx
 
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d nakhara.io -d www.nakhara.io
+sudo certbot --nginx -d nakharaxx.io -d www.nakharaxx.io
 ```
 
 Certbot will auto-update Nginx for HTTPS.
@@ -157,7 +157,7 @@ From **Windows** (repo root):
 .\deploy-vps.ps1
 ```
 
-- Build app as standalone → tar → upload to VPS → extract to `/var/www/nakhara`
+- Build app as standalone → tar → upload to VPS → extract to `/var/www/nakharax`
 - Server must **run Node** (e.g. PM2) and **Nginx must proxy to 3000**
 
 More details (defaults, restart, troubleshooting): [DEPLOY.md](DEPLOY.md)
@@ -169,7 +169,7 @@ More details (defaults, restart, troubleshooting): [DEPLOY.md](DEPLOY.md)
 - [ ] `ss -tlnp | grep 3000` — process running on port 3000
 - [ ] `curl -s http://127.0.0.1:3000 | head -5` — returns HTML
 - [ ] Open site via domain or IP (and HTTPS if SSL configured)
-- [ ] `pm2 restart nakhara-web` — restart works and site recovers
+- [ ] `pm2 restart nakharax-web` — restart works and site recovers
 
 ---
 
@@ -182,7 +182,7 @@ Run manual checks below to verify the deployment.
 ```bash
 # PM2 status
 pm2 list
-pm2 logs nakhara-web --lines 20
+pm2 logs nakharax-web --lines 20
 
 # Port 3000
 ss -tlnp | grep 3000
@@ -205,12 +205,12 @@ free -m
 
 | Symptom                        | Check                              | Fix                                                                                                        |
 | ------------------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| PM2 stopped / crash loop       | `pm2 logs nakhara-web --err`       | Fix error → `pm2 restart nakhara-web`                                                                      |
+| PM2 stopped / crash loop       | `pm2 logs nakharax-web --err`       | Fix error → `pm2 restart nakharax-web`                                                                      |
 | `Cannot find module server.js` | Wrong path (outputFileTracingRoot) | Must run `apps/web/server.js` not `server.js` — see Step 3                                                 |
-| Site not loading               | Process on port 3000?              | `cd .../standalone && PORT=3000 pm2 start apps/web/server.js --name nakhara-web`                           |
+| Site not loading               | Process on port 3000?              | `cd .../standalone && PORT=3000 pm2 start apps/web/server.js --name nakharax-web`                           |
 | Works via IP but not domain    | Nginx pointing to 127.0.0.1:3000?  | Verify `proxy_pass http://web_frontend;` and upstream                                                      |
 | CSS/JS missing (blank page)    | Static not copied                  | `mkdir -p .../standalone/apps/web/.next && cp -r .../apps/web/.next/static .../standalone/apps/web/.next/` |
-| Old content after deploy       | Old process still running          | `pm2 restart nakhara-web` or kill and start fresh                                                          |
+| Old content after deploy       | Old process still running          | `pm2 restart nakharax-web` or kill and start fresh                                                          |
 
 ---
 

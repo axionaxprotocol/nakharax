@@ -16,15 +16,15 @@ mkdir -p "$TARGET_DIR"
 
 # Find the built library
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    LIB_NAME="libnakhara_python.so"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.so"
+    LIB_NAME="libnakharax_python.so"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakharax_python.so"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    LIB_NAME="libnakhara_python.dylib"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.so"
+    LIB_NAME="libnakharax_python.dylib"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakharax_python.so"
 else
-    LIB_NAME="nakhara_python.dll"
-    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakhara_python.pyd"
+    LIB_NAME="nakharax_python.dll"
+    cp "../../target/release/$LIB_NAME" "$TARGET_DIR/nakharax_python.pyd"
 fi
 
 echo "✅ Built and copied to $TARGET_DIR"
-echo "✅ Python can now: import nakhara_python"
+echo "✅ Python can now: import nakharax_python"

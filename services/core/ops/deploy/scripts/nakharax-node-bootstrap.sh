@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# nakhara-node-bootstrap.sh — build, configure, run, and systemd-install nakhara-node (all roles).
+# nakharax-node-bootstrap.sh — build, configure, run, and systemd-install nakharax-node (all roles).
 #
 # Usage:
-#   ./nakhara-node-bootstrap.sh build
-#   sudo ./nakhara-node-bootstrap.sh setup --role full --data-dir /var/lib/nakhara-node
-#   sudo ./nakhara-node-bootstrap.sh run --data-dir /var/lib/nakhara-node
-#   sudo ./nakhara-node-bootstrap.sh install-systemd --data-dir /var/lib/nakhara-node
-#   ./nakhara-node-bootstrap.sh doctor --rpc http://127.0.0.1:8545
+#   ./nakharax-node-bootstrap.sh build
+#   sudo ./nakharax-node-bootstrap.sh setup --role full --data-dir /var/lib/nakharax-node
+#   sudo ./nakharax-node-bootstrap.sh run --data-dir /var/lib/nakharax-node
+#   sudo ./nakharax-node-bootstrap.sh install-systemd --data-dir /var/lib/nakharax-node
+#   ./nakharax-node-bootstrap.sh doctor --rpc http://127.0.0.1:8545
 #
 # Environment (optional):
-#   NAKHARA_REPO_ROOT     — repo root if not auto-detected
-#   NAKHARA_BOOTSTRAP_NODES — comma-separated multiaddrs (required for joining public testnet)
-#   NAKHARA_VALIDATOR_ADDRESS — 0x… (required for --role validator)
+#   NAKHARAX_REPO_ROOT     — repo root if not auto-detected
+#   NAKHARAX_BOOTSTRAP_NODES — comma-separated multiaddrs (required for joining public testnet)
+#   NAKHARAX_VALIDATOR_ADDRESS — 0x… (required for --role validator)
 #
 set -euo pipefail
 
@@ -24,26 +24,26 @@ usage() {
   cat <<'EOF'
 
 Commands:
-  build              — cargo build --release -p node (binary: core/target/release/nakhara-node)
+  build              — cargo build --release -p node (binary: core/target/release/nakharax-node)
   setup              — create data dir, copy genesis, write node.env + run.sh
-  run                — exec nakhara-node using files from --data-dir
-  install-systemd    — install and enable nakhara-node.service (uses run.sh in data dir)
+  run                — exec nakharax-node using files from --data-dir
+  install-systemd    — install and enable nakharax-node.service (uses run.sh in data dir)
   doctor             — curl eth_chainId + eth_blockNumber against --rpc
 
 setup options:
   --role full|rpc|validator|bootnode   (required)
-  --data-dir PATH                      (default: /var/lib/nakhara-node as root, else ~/.local/share/nakhara-node)
+  --data-dir PATH                      (default: /var/lib/nakharax-node as root, else ~/.local/share/nakharax-node)
   --genesis PATH                       (default: core/tools/genesis.json in repo)
   --rpc HOST:PORT                      (default: 0.0.0.0:8545; bootnode default 127.0.0.1:8545)
   --p2p HOST:PORT                      (optional; e.g. 0.0.0.0:30303)
-  --bootstrap MULTIADDR               (optional; else set NAKHARA_BOOTSTRAP_NODES in node.env later)
-  --validator-address 0x…            (for validator; or set NAKHARA_VALIDATOR_ADDRESS)
+  --bootstrap MULTIADDR               (optional; else set NAKHARAX_BOOTSTRAP_NODES in node.env later)
+  --validator-address 0x…            (for validator; or set NAKHARAX_VALIDATOR_ADDRESS)
 
 Examples:
-  ./nakhara-node-bootstrap.sh build
-  sudo NAKHARA_BOOTSTRAP_NODES='/ip4/217.216.109.5/tcp/30303/p2p/12D3KooW...' \\
-    ./nakhara-node-bootstrap.sh setup --role full --data-dir /var/lib/nakhara-node
-  sudo ./nakhara-node-bootstrap.sh run --data-dir /var/lib/nakhara-node
+  ./nakharax-node-bootstrap.sh build
+  sudo NAKHARAX_BOOTSTRAP_NODES='/ip4/217.216.109.5/tcp/30303/p2p/12D3KooW...' \\
+    ./nakharax-node-bootstrap.sh setup --role full --data-dir /var/lib/nakharax-node
+  sudo ./nakharax-node-bootstrap.sh run --data-dir /var/lib/nakharax-node
 EOF
 }
 
@@ -77,25 +77,25 @@ parse_setup_run_flags() {
 }
 
 cmd_build() {
-  nakhara_resolve_paths
-  echo "[build] repo=$NAKHARA_REPO_ROOT"
-  (cd "$NAKHARA_CORE_DIR" && cargo build --release -p node)
-  nakhara_require_binary
-  echo "[build] ok: $NAKHARA_NODE_BIN"
+  nakharax_resolve_paths
+  echo "[build] repo=$NAKHARAX_REPO_ROOT"
+  (cd "$NAKHARAX_CORE_DIR" && cargo build --release -p node)
+  nakharax_require_binary
+  echo "[build] ok: $NAKHARAX_NODE_BIN"
 }
 
 default_data_dir() {
   if [[ "$(id -u)" -eq 0 ]]; then
-    echo "/var/lib/nakhara-node"
+    echo "/var/lib/nakharax-node"
   else
-    echo "${HOME}/.local/share/nakhara-node"
+    echo "${HOME}/.local/share/nakharax-node"
   fi
 }
 
 cmd_setup() {
   parse_setup_run_flags "$@"
-  nakhara_resolve_paths
-  nakhara_require_genesis_src
+  nakharax_resolve_paths
+  nakharax_require_genesis_src
 
   if [[ -z "$ROLE" ]]; then
     echo "error: setup requires --role full|rpc|validator|bootnode" >&2
@@ -109,7 +109,7 @@ cmd_setup() {
   if [[ -z "${DATA_DIR:-}" ]]; then
     DATA_DIR="$(default_data_dir)"
   fi
-  GENESIS_SRC="${GENESIS_SRC:-$NAKHARA_DEFAULT_GENESIS}"
+  GENESIS_SRC="${GENESIS_SRC:-$NAKHARAX_DEFAULT_GENESIS}"
   if [[ ! -f "$GENESIS_SRC" ]]; then
     echo "error: genesis not found: $GENESIS_SRC" >&2
     exit 1
@@ -123,29 +123,29 @@ cmd_setup() {
   mkdir -p "$DATA_DIR"
   install -m 0644 "$GENESIS_SRC" "$DATA_DIR/genesis.json"
 
-  BOOT="${BOOTSTRAP_ARG:-${NAKHARA_BOOTSTRAP_NODES:-}}"
-  VAL="${VALIDATOR_ADDR:-${NAKHARA_VALIDATOR_ADDRESS:-}}"
+  BOOT="${BOOTSTRAP_ARG:-${NAKHARAX_BOOTSTRAP_NODES:-}}"
+  VAL="${VALIDATOR_ADDR:-${NAKHARAX_VALIDATOR_ADDRESS:-}}"
 
   if [[ "$ROLE" == "validator" && -z "$VAL" ]]; then
-    echo "error: validator requires --validator-address or NAKHARA_VALIDATOR_ADDRESS" >&2
+    echo "error: validator requires --validator-address or NAKHARAX_VALIDATOR_ADDRESS" >&2
     exit 1
   fi
 
   cat >"$DATA_DIR/node.env" <<EOF
-# Generated by nakhara-node-bootstrap.sh setup — edit NAKHARA_BOOTSTRAP_NODES before run if empty.
-NAKHARA_ROLE=$ROLE
-NAKHARA_STATE_PATH=$DATA_DIR
-NAKHARA_GENESIS=$DATA_DIR/genesis.json
-NAKHARA_RPC=$RPC_ADDR
-NAKHARA_P2P=${P2P_ADDR:-}
-NAKHARA_BOOTSTRAP_NODES=${BOOT}
-NAKHARA_VALIDATOR_ADDRESS=${VAL}
-NAKHARA_IDENTITY_KEY=$DATA_DIR/identity.key
-NAKHARA_NODE_BIN=$NAKHARA_NODE_BIN
+# Generated by nakharax-node-bootstrap.sh setup — edit NAKHARAX_BOOTSTRAP_NODES before run if empty.
+NAKHARAX_ROLE=$ROLE
+NAKHARAX_STATE_PATH=$DATA_DIR
+NAKHARAX_GENESIS=$DATA_DIR/genesis.json
+NAKHARAX_RPC=$RPC_ADDR
+NAKHARAX_P2P=${P2P_ADDR:-}
+NAKHARAX_BOOTSTRAP_NODES=${BOOT}
+NAKHARAX_VALIDATOR_ADDRESS=${VAL}
+NAKHARAX_IDENTITY_KEY=$DATA_DIR/identity.key
+NAKHARAX_NODE_BIN=$NAKHARAX_NODE_BIN
 EOF
   chmod 0600 "$DATA_DIR/node.env" 2>/dev/null || chmod 0644 "$DATA_DIR/node.env"
 
-  if ! nakhara_require_binary 2>/dev/null; then
+  if ! nakharax_require_binary 2>/dev/null; then
     echo "warning: binary missing — run: $0 build" >&2
   fi
 
@@ -158,24 +158,24 @@ set -a
 # shellcheck disable=SC1090
 source "$HERE/node.env"
 set +a
-if [[ -z "${NAKHARA_BOOTSTRAP_NODES:-}" ]]; then
-  echo "warning: NAKHARA_BOOTSTRAP_NODES is empty — public testnet peers may not connect" >&2
+if [[ -z "${NAKHARAX_BOOTSTRAP_NODES:-}" ]]; then
+  echo "warning: NAKHARAX_BOOTSTRAP_NODES is empty — public testnet peers may not connect" >&2
 fi
-export NAKHARA_BOOTSTRAP_NODES
+export NAKHARAX_BOOTSTRAP_NODES
 ARGS=(
-  --role "$NAKHARA_ROLE"
-  --chain "$NAKHARA_GENESIS"
-  --rpc "$NAKHARA_RPC"
-  --state-path "$NAKHARA_STATE_PATH"
-  --identity-key "$NAKHARA_IDENTITY_KEY"
+  --role "$NAKHARAX_ROLE"
+  --chain "$NAKHARAX_GENESIS"
+  --rpc "$NAKHARAX_RPC"
+  --state-path "$NAKHARAX_STATE_PATH"
+  --identity-key "$NAKHARAX_IDENTITY_KEY"
 )
-if [[ -n "${NAKHARA_P2P:-}" ]]; then
-  ARGS+=(--p2p "$NAKHARA_P2P")
+if [[ -n "${NAKHARAX_P2P:-}" ]]; then
+  ARGS+=(--p2p "$NAKHARAX_P2P")
 fi
-if [[ -n "${NAKHARA_VALIDATOR_ADDRESS:-}" ]]; then
-  ARGS+=(--validator-address "$NAKHARA_VALIDATOR_ADDRESS")
+if [[ -n "${NAKHARAX_VALIDATOR_ADDRESS:-}" ]]; then
+  ARGS+=(--validator-address "$NAKHARAX_VALIDATOR_ADDRESS")
 fi
-exec "$NAKHARA_NODE_BIN" "${ARGS[@]}"
+exec "$NAKHARAX_NODE_BIN" "${ARGS[@]}"
 EOS
 
   chmod 0755 "$DATA_DIR/run.sh"
@@ -183,7 +183,7 @@ EOS
   echo "[setup] data-dir=$DATA_DIR"
   echo "[setup] role=$ROLE genesis=$DATA_DIR/genesis.json rpc=$RPC_ADDR"
   if [[ -z "$BOOT" ]]; then
-    echo "[setup] Edit $DATA_DIR/node.env and set NAKHARA_BOOTSTRAP_NODES= (comma-separated multiaddrs)"
+    echo "[setup] Edit $DATA_DIR/node.env and set NAKHARAX_BOOTSTRAP_NODES= (comma-separated multiaddrs)"
   fi
   echo "[setup] Run: sudo $0 run --data-dir $DATA_DIR"
   echo "        or: sudo $0 install-systemd --data-dir $DATA_DIR"
@@ -228,10 +228,10 @@ cmd_install_systemd() {
     echo "error: install-systemd must run as root" >&2
     exit 1
   fi
-  local unit="/etc/systemd/system/nakhara-node.service"
+  local unit="/etc/systemd/system/nakharax-node.service"
   cat >"$unit" <<EOF
 [Unit]
-Description=Nakhara nakhara-node ($DATA_DIR)
+Description=Nakharax nakharax-node ($DATA_DIR)
 After=network-online.target
 Wants=network-online.target
 
@@ -247,9 +247,9 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 EOF
   systemctl daemon-reload
-  systemctl enable nakhara-node.service
+  systemctl enable nakharax-node.service
   echo "[install-systemd] wrote $unit"
-  echo "[install-systemd] systemctl start nakhara-node"
+  echo "[install-systemd] systemctl start nakharax-node"
 }
 
 cmd_doctor() {

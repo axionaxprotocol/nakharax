@@ -4,9 +4,9 @@
     "address": "0x0000000000000000000000000000000000000001",
     "stake": "50000000000000000000000",
     "commission": 0.10,
-    "enode": "enode://WILL_BE_GENERATED@rpc.nakhara.io:30303",
+    "enode": "enode://WILL_BE_GENERATED@rpc.nakharaxx.io:30303",
     "location": "Singapore",
-    "operator": "nakhara Core Team"
+    "operator": "nakharax Core Team"
   },
   {
     "name": "Validator-EU-01",

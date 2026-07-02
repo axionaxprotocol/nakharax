@@ -266,16 +266,16 @@ class CodeQualityAnalyzer:
 def main():
     workspace = os.getcwd()
     
-    print(f"{BOLD}{MAGENTA}🔍 Nakhara Code Quality Analyzer{RESET}")
+    print(f"{BOLD}{MAGENTA}🔍 Nakharax Code Quality Analyzer{RESET}")
     print(f"Workspace: {workspace}\n")
     
     analyzer = CodeQualityAnalyzer(workspace)
     
     repos = {
-        'nakhara-core': {'type': 'rust', 'path': Path(workspace) / 'nakhara-core'},
-        'nakhara-sdk-ts': {'type': 'typescript', 'path': Path(workspace) / 'nakhara-sdk-ts'},
-        'nakhara-web': {'type': 'typescript', 'path': Path(workspace) / 'nakhara-web'},
-        'nakhara-marketplace': {'type': 'typescript', 'path': Path(workspace) / 'nakhara-marketplace'}
+        'nakharax-core': {'type': 'rust', 'path': Path(workspace) / 'nakharax-core'},
+        'nakharax-sdk-ts': {'type': 'typescript', 'path': Path(workspace) / 'nakharax-sdk-ts'},
+        'nakharax-web': {'type': 'typescript', 'path': Path(workspace) / 'nakharax-web'},
+        'nakharax-marketplace': {'type': 'typescript', 'path': Path(workspace) / 'nakharax-marketplace'}
     }
     
     for repo_name, repo_info in repos.items():

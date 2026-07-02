@@ -1,4 +1,4 @@
-# 🎉 nakhara Worker Node - Windows Setup Complete!
+# 🎉 nakharax Worker Node - Windows Setup Complete!
 
 **Date**: 2025-11-25  
 **Platform**: Windows 11 Pro (Local Machine)  
@@ -35,7 +35,7 @@ Environment:
 ### 1. Activate Environment
 
 ```powershell
-cd D:\nakhara-monolith
+cd D:\nakharax-monolith
 .\worker-env\Scripts\Activate.ps1
 ```
 
@@ -70,7 +70,7 @@ vram = 4
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.nakhara.io"
+rpc_url = "https://rpc.nakharaxx.io"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -81,17 +81,17 @@ target_uptime = 0.95
 batch_size = 32
 
 [storage]
-data_dir = "D:\\nakhara-worker\\data"
-models_dir = "D:\\nakhara-worker\\models"
-logs_dir = "D:\\nakhara-worker\\logs"
+data_dir = "D:\\nakharax-worker\\data"
+models_dir = "D:\\nakharax-worker\\models"
+logs_dir = "D:\\nakharax-worker\\logs"
 ```
 
 ### 4. Create Directories
 
 ```powershell
-mkdir D:\nakhara-worker\data
-mkdir D:\nakhara-worker\models
-mkdir D:\nakhara-worker\logs
+mkdir D:\nakharax-worker\data
+mkdir D:\nakharax-worker\models
+mkdir D:\nakharax-worker\logs
 ```
 
 ---
@@ -142,13 +142,13 @@ deactivate
 
 ---
 
-## 🌐 Connect to nakhara Network
+## 🌐 Connect to nakharax Network
 
 ### Test RPC Connection
 
 ```powershell
 # Test connection to your RPC node
-curl https://rpc.nakhara.io -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
+curl https://rpc.nakharaxx.io -Method POST -Body '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' -ContentType "application/json"
 ```
 
 ### Register Worker (Future)
@@ -193,7 +193,7 @@ Get-Process python | Format-Table Name,CPU,WorkingSet -AutoSize
 ## 📁 Project Structure
 
 ```
-D:\nakhara-monolith\
+D:\nakharax-monolith\
 ├── worker-env\              # Virtual environment ✅
 ├── core\
 │   ├── deai\               # DeAI components
@@ -206,7 +206,7 @@ D:\nakhara-monolith\
     ├── WORKER_LOCAL_WINDOWS_AMD.md  # Full guide
     └── ...
 
-D:\nakhara-worker\          # Worker data (create this)
+D:\nakharax-worker\          # Worker data (create this)
 ├── data\
 ├── models\
 └── logs\
@@ -277,7 +277,7 @@ pip install --force-reinstall torch
 
 ## 🎊 Congratulations!
 
-**Your Windows machine is now an nakhara Worker Node!**
+**Your Windows machine is now an nakharax Worker Node!**
 
 This machine is ready for:
 - ✅ Development & Testing

@@ -1,8 +1,8 @@
 /**
- * Nakhara SDK - Governance Types
+ * Nakharax SDK - Governance Types
  * 
  * Copy this file to: packages/sdk/src/types/governance.ts
- * For use in @nakhara/sdk
+ * For use in @nakharax/sdk
  */
 
 // =============================================================================

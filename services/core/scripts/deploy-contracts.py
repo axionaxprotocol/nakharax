@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-Deploy JobMarketplace contract to the Nakhara chain.
+Deploy JobMarketplace contract to the Nakharax chain.
 
 Prerequisites:
   - pip install web3 py-solc-x
   - A funded deployer account (private key)
-  - RPC access to the Nakhara chain
+  - RPC access to the Nakharax chain
 
 Usage:
   python3 scripts/deploy-contracts.py                          # interactive
-  python3 scripts/deploy-contracts.py --rpc https://rpc.nakhara.io --key 0x...
-  python3 scripts/deploy-contracts.py --rpc https://rpc.nakhara.io --key 0x... --axx-token 0x...
+  python3 scripts/deploy-contracts.py --rpc https://rpc.nakharaxx.io --key 0x...
+  python3 scripts/deploy-contracts.py --rpc https://rpc.nakharaxx.io --key 0x... --axx-token 0x...
 
 Environment variables (alternative to CLI args):
-  NAKHARA_RPC_URL          RPC endpoint
+  NAKHARAX_RPC_URL          RPC endpoint
   DEPLOYER_PRIVATE_KEY     Deployer account private key
   AXX_TOKEN_ADDRESS        NAK ERC20 token address (if already deployed)
 """
@@ -95,11 +95,11 @@ def deploy(w3, account, abi, bytecode, constructor_args, chain_id):
 def main():
     from web3 import Web3
 
-    ap = argparse.ArgumentParser(description="Deploy JobMarketplace to Nakhara chain")
-    ap.add_argument("--rpc", default=os.environ.get("NAKHARA_RPC_URL", "https://rpc.nakhara.io"))
+    ap = argparse.ArgumentParser(description="Deploy JobMarketplace to Nakharax chain")
+    ap.add_argument("--rpc", default=os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharaxx.io"))
     ap.add_argument("--key", default=os.environ.get("DEPLOYER_PRIVATE_KEY", ""))
     ap.add_argument("--axx-token", default=os.environ.get("AXX_TOKEN_ADDRESS", ""))
-    ap.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARA_CHAIN_ID", "86137")))
+    ap.add_argument("--chain-id", type=int, default=int(os.environ.get("NAKHARAX_CHAIN_ID", "86137")))
     ap.add_argument("--min-stake", type=int, default=100 * 10**18, help="Min stake in wei (default 100 NAK)")
     ap.add_argument("--fee-rate", type=int, default=250, help="Platform fee in basis points (250 = 2.5%%)")
     ap.add_argument("--dispute-period", type=int, default=3600, help="Dispute period in seconds (default 1h)")
@@ -112,7 +112,7 @@ def main():
         sys.exit(1)
 
     print("=" * 60)
-    print("  Nakhara — Contract Deployment")
+    print("  Nakharax — Contract Deployment")
     print("=" * 60)
     print(f"  RPC:      {args.rpc}")
     print(f"  Chain ID: {args.chain_id}")
@@ -185,7 +185,7 @@ def main():
     print()
     print("  Next steps:")
     print(f"  1. Set in config TOML:  [network] contract_address = \"{address}\"")
-    print(f"  2. Or set env:          export NAKHARA_MARKETPLACE_ADDRESS={address}")
+    print(f"  2. Or set env:          export NAKHARAX_MARKETPLACE_ADDRESS={address}")
     print(f"  3. Workers will auto-detect the contract on next start")
     print()
 

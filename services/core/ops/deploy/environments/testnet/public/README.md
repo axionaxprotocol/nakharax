@@ -1,6 +1,6 @@
-# nakhara Public Testnet Environment
+# nakharax Public Testnet Environment
 
-This directory contains infrastructure definitions for the nakhara public testnet rollout.
+This directory contains infrastructure definitions for the nakharax public testnet rollout.
 
 ## Components
 

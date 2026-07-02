@@ -1,10 +1,10 @@
-# nakhara Core - Testnet Testing Guide
+# nakharax Core - Testnet Testing Guide
 
 วันที่: 22 ตุลาคม 2025
 
 ## 🎯 วิธีการทดสอบ Testnet
 
-มี 2 วิธีในการทดสอบ nakhara Core:
+มี 2 วิธีในการทดสอบ nakharax Core:
 
 ---
 
@@ -36,7 +36,7 @@ CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 
 ```powershell
 # 1. ไปยังโฟลเดอร์ Testnet
-cd nakhara_v1.5_Testnet_in_a_Box
+cd nakharax_v1.5_Testnet_in_a_Box
 
 # 2. เริ่ม services ทั้งหมด
 docker compose up -d
@@ -83,21 +83,21 @@ http://localhost:4001
 http://localhost:8080
 ```
 
-### รัน nakhara Node
+### รัน nakharax Node
 
 ```powershell
 # กลับไปโฟลเดอร์หลัก
 cd ..
 
 # เริ่ม node (เชื่อมต่อกับ Anvil)
-.\build\nakhara-core.exe start --network testnet
+.\build\nakharax-core.exe start --network testnet
 ```
 
 คุณจะเห็น:
 
 ```
-🚀 Starting nakhara Core v1.5.0-testnet
-📂 Data directory: .nakhara
+🚀 Starting nakharax Core v1.5.0-testnet
+📂 Data directory: .nakharax
 🌐 Network: testnet
 🔌 RPC address: 127.0.0.1:8545
 
@@ -118,10 +118,10 @@ Press Ctrl+C to stop...
 
 ```powershell
 # สร้าง config
-.\build\nakhara-core.exe config init
+.\build\nakharax-core.exe config init
 
 # แสดง config ปัจจุบัน
-.\build\nakhara-core.exe config show
+.\build\nakharax-core.exe config show
 ```
 
 **ผลลัพธ์:**
@@ -130,7 +130,7 @@ Press Ctrl+C to stop...
 📋 Current Configuration:
   Chain ID: 31337
   Network: testnet
-  Data Dir: .nakhara
+  Data Dir: .nakharax
   PoPC Sample Size: 1000
   ASR Top K: 64
 ```
@@ -139,23 +139,23 @@ Press Ctrl+C to stop...
 
 ```powershell
 # สร้าง validator key
-.\build\nakhara-core.exe keys generate --type validator
+.\build\nakharax-core.exe keys generate --type validator
 
 # สร้าง worker key
-.\build\nakhara-core.exe keys generate --type worker
+.\build\nakharax-core.exe keys generate --type worker
 
 # แสดงรายการ keys
-.\build\nakhara-core.exe keys list
+.\build\nakharax-core.exe keys list
 ```
 
 ### 3. ทดสอบ Validator Commands
 
 ```powershell
 # ดูสถานะ validator (mock data)
-.\build\nakhara-core.exe validator status
+.\build\nakharax-core.exe validator status
 
 # จำลอง validator start
-.\build\nakhara-core.exe validator start
+.\build\nakharax-core.exe validator start
 ```
 
 **ผลลัพธ์:**
@@ -187,10 +187,10 @@ $specs = @"
 $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 # Register worker
-.\build\nakhara-core.exe worker register --specs worker-specs.json
+.\build\nakharax-core.exe worker register --specs worker-specs.json
 
 # Check worker status
-.\build\nakhara-core.exe worker status
+.\build\nakharax-core.exe worker status
 ```
 
 **ผลลัพธ์:**
@@ -207,13 +207,13 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # Check balance
-.\build\nakhara-core.exe stake balance
+.\build\nakharax-core.exe stake balance
 
 # Deposit stake (mock)
-.\build\nakhara-core.exe stake deposit 10000 --address 0x1234...
+.\build\nakharax-core.exe stake deposit 10000 --address 0x1234...
 
 # Withdraw stake
-.\build\nakhara-core.exe stake withdraw 5000
+.\build\nakharax-core.exe stake withdraw 5000
 ```
 
 ---
@@ -224,7 +224,7 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # แสดงข้อมูล PoPC configuration
-.\build\nakhara-core.exe config show
+.\build\nakharax-core.exe config show
 ```
 
 ดู:
@@ -236,7 +236,7 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
 ```powershell
 # Worker registration แสดงการทำงานของ ASR
-.\build\nakhara-core.exe worker register --specs worker-specs.json
+.\build\nakharax-core.exe worker register --specs worker-specs.json
 ```
 
 ASR จะ:
@@ -249,7 +249,7 @@ ASR จะ:
 
 ```powershell
 # แสดง pricing information
-.\build\nakhara-core.exe config show
+.\build\nakharax-core.exe config show
 ```
 
 ดู PPC parameters:
@@ -428,9 +428,9 @@ docker compose logs blockscout
 
 ## 🆘 ต้องการความช่วยเหลือ?
 
-- **Documentation:** https://docs.nakhara.io
-- **GitHub:** https://github.com/nakhara-io/nakhara-core
-- **Discord:** https://discord.gg/nakhara
+- **Documentation:** https://docs.nakharaxx.io
+- **GitHub:** https://github.com/nakharax-io/nakharax-core
+- **Discord:** https://discord.gg/nakharax
 
 ---
 

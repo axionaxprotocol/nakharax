@@ -37,7 +37,7 @@ export default function SettingsPage() {
         <div className="text-title font-mono font-semibold text-zinc-100 mb-os-4 uppercase tracking-widest">Network_Params</div>
         <dl className="grid grid-cols-2 gap-os-4">
           <NetworkField label="Chain ID" value="86137" />
-          <NetworkField label="Network" value="nakhara-testnet" />
+          <NetworkField label="Network" value="nakharax-testnet" />
           <NetworkField label="Block time" value="3 s" />
           <NetworkField label="VRF delay" value="k = 2" />
         </dl>

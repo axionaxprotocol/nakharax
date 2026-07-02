@@ -1,13 +1,13 @@
-# nakhara Core v1.8.0 - Quick Start Guide
+# nakharax Core v1.8.0 - Quick Start Guide
 
 **Last Updated**: December 5, 2025 | **Protocol Version**: v1.8.0-testnet
 
-Welcome to nakhara! This guide will help you get started with running a node, validator, or worker on the nakhara testnet.
+Welcome to nakharax! This guide will help you get started with running a node, validator, or worker on the nakharax testnet.
 
 ## 🎯 What You'll Learn
 
 - Start a local testnet environment
-- Run an nakhara node
+- Run an nakharax node
 - Become a validator
 - Register as a compute worker
 - Submit and monitor jobs
@@ -26,10 +26,10 @@ Ensure you have:
 
 ```bash
 # Clone repository
-git clone https://github.com/nakhara-io/nakhara-core.git
-cd nakhara-core
+git clone https://github.com/nakharax-io/nakharax-core.git
+cd nakharax-core
 
-# Build nakhara Core
+# Build nakharax Core
 make build
 ```
 
@@ -37,7 +37,7 @@ make build
 
 ```bash
 # Start local testnet (Anvil + Explorer + Faucet)
-cd nakhara_v1.5_Testnet_in_a_Box
+cd nakharax_v1.5_Testnet_in_a_Box
 docker compose up -d
 
 # Verify services
@@ -50,11 +50,11 @@ You should see:
 - ✅ blockscout - http://localhost:4001
 - ✅ faucet - http://localhost:8080
 
-### Step 4: Configure nakhara Node
+### Step 4: Configure nakharax Node
 
 ```bash
 cd ..
-./build/nakhara-core config init
+./build/nakharax-core config init
 ```
 
 Edit `config.yaml` to connect to local testnet (already configured by default).
@@ -62,10 +62,10 @@ Edit `config.yaml` to connect to local testnet (already configured by default).
 ### Step 5: Start Your Node
 
 ```bash
-./build/nakhara-core start --network testnet
+./build/nakharax-core start --network testnet
 ```
 
-🎉 **Success!** Your nakhara node is now running!
+🎉 **Success!** Your nakharax node is now running!
 
 ---
 
@@ -88,7 +88,7 @@ Validators secure the network by performing PoPC validation.
 1. **Generate keys:**
 
 ```bash
-./build/nakhara-core keys generate --type validator
+./build/nakharax-core keys generate --type validator
 # Your address: 0xYourValidatorAddress
 ```
 
@@ -105,19 +105,19 @@ curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
 3. **Stake NAK:**
 
 ```bash
-./build/nakhara-core stake deposit 10000 --address 0xYourValidatorAddress
+./build/nakharax-core stake deposit 10000 --address 0xYourValidatorAddress
 ```
 
 4. **Start validating:**
 
 ```bash
-./build/nakhara-core validator start
+./build/nakharax-core validator start
 ```
 
 5. **Check status:**
 
 ```bash
-./build/nakhara-core validator status
+./build/nakharax-core validator status
 ```
 
 **Expected output:**
@@ -166,7 +166,7 @@ EOF
 2. **Generate worker keys:**
 
 ```bash
-./build/nakhara-core keys generate --type worker
+./build/nakharax-core keys generate --type worker
 ```
 
 3. **Get testnet NAK from faucet** (same as validator)
@@ -174,19 +174,19 @@ EOF
 4. **Register as worker:**
 
 ```bash
-./build/nakhara-core worker register --specs worker-specs.json
+./build/nakharax-core worker register --specs worker-specs.json
 ```
 
 5. **Start worker:**
 
 ```bash
-./build/nakhara-core worker start
+./build/nakharax-core worker start
 ```
 
 6. **Monitor status:**
 
 ```bash
-./build/nakhara-core worker status
+./build/nakharax-core worker status
 ```
 
 **Expected output:**
@@ -258,10 +258,10 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Node logs
-tail -f ~/.nakhara/logs/node.log
+tail -f ~/.nakharax/logs/node.log
 
 # Docker logs
-cd nakhara_v1.5_Testnet_in_a_Box
+cd nakharax_v1.5_Testnet_in_a_Box
 docker compose logs -f hardhat
 ```
 
@@ -289,46 +289,46 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Show current config
-./build/nakhara-core config show
+./build/nakharax-core config show
 
 # Initialize default config
-./build/nakhara-core config init
+./build/nakharax-core config init
 ```
 
 ### Keys Management
 
 ```bash
 # Generate new key
-./build/nakhara-core keys generate --type validator
+./build/nakharax-core keys generate --type validator
 
 # List keys
-./build/nakhara-core keys list
+./build/nakharax-core keys list
 ```
 
 ### Staking
 
 ```bash
 # Check balance
-./build/nakhara-core stake balance
+./build/nakharax-core stake balance
 
 # Deposit stake
-./build/nakhara-core stake deposit 10000 --address 0x...
+./build/nakharax-core stake deposit 10000 --address 0x...
 
 # Withdraw stake
-./build/nakhara-core stake withdraw 5000
+./build/nakharax-core stake withdraw 5000
 ```
 
 ### Status Checks
 
 ```bash
 # Node version
-./build/nakhara-core version
+./build/nakharax-core version
 
 # Validator status
-./build/nakhara-core validator status
+./build/nakharax-core validator status
 
 # Worker status
-./build/nakhara-core worker status
+./build/nakharax-core worker status
 ```
 
 ---
@@ -343,7 +343,7 @@ curl -X POST http://localhost:8545 \
 
 ```bash
 # Check if testnet is running
-cd nakhara_v1.5_Testnet_in_a_Box
+cd nakharax_v1.5_Testnet_in_a_Box
 docker compose ps
 
 # Restart if needed
@@ -389,16 +389,16 @@ docker compose up -d
 - **API Reference:** See [API Documentation](./API_REFERENCE.md)
 - **Build from Source:** Follow [Build Guide](./BUILD.md)
 - **Production Deploy:** Check [Testnet Integration](./TESTNET_INTEGRATION.md)
-- **Join Community:** Discord at https://discord.gg/nakhara
+- **Join Community:** Discord at https://discord.gg/nakharax
 
 ---
 
 ## 🆘 Getting Help
 
-- **Documentation:** https://docs.nakhara.io
-- **GitHub Issues:** https://github.com/nakhara-io/nakhara-core/issues
-- **Discord:** https://discord.gg/nakhara
-- **Telegram:** https://t.me/nakhara
+- **Documentation:** https://docs.nakharaxx.io
+- **GitHub Issues:** https://github.com/nakharax-io/nakharax-core/issues
+- **Discord:** https://discord.gg/nakharax
+- **Telegram:** https://t.me/nakharax
 
 ---
 
@@ -408,6 +408,6 @@ This is a **testnet** environment. Do not use real assets or run this in product
 
 ---
 
-**Made with 💜 by the nakhara community**
+**Made with 💜 by the nakharax community**
 
 Happy building! 🚀

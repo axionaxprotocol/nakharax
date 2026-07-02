@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## 🤖 AI Agent Directives (CRITICAL)
-- **Boundary Restriction:** This repo (`nakhara-monolith`) is STRICTLY Backend, Blockchain Core, and Ops. **DO NOT** attempt to generate, import, or suggest Frontend (React/Next.js/UI) code here. Frontend lives in `nakhara-monolith`.
+- **Boundary Restriction:** This repo (`nakharax-monolith`) is STRICTLY Backend, Blockchain Core, and Ops. **DO NOT** attempt to generate, import, or suggest Frontend (React/Next.js/UI) code here. Frontend lives in `nakharax-monolith`.
 - **Workflow Loop:** When asked to write or refactor Rust code, always follow this loop: `Code` -> `cargo fmt` -> `cargo clippy` -> `cargo test`. Do not commit or finalize if clippy or tests fail.
 - **Language Stack:** Rust (Primary Core), Python (DeAI Worker/Sandbox), Bash/PowerShell (Ops/Deployment).
 
@@ -17,7 +17,7 @@ To help you navigate faster, here is the core layout:
 | Service | How to Run | Port | Notes |
 |---------|-----------|------|-------|
 | **Rust Core (build/test)** | `cd core && cargo build --workspace` / `cargo test --workspace` | — | Primary dev workflow; ALL tests must pass. |
-| **Mock RPC** | `cd ops/deploy/mock-rpc && node server.js` | 8545 (HTTP), 8546 (WS) | Lightweight mock JSON-RPC; no Rust compile needed. Supports 40+ ETH + Nakhara-specific methods. Simulates block production every 5s. |
+| **Mock RPC** | `cd ops/deploy/mock-rpc && node server.js` | 8545 (HTTP), 8546 (WS) | Lightweight mock JSON-RPC; no Rust compile needed. Supports 40+ ETH + Nakharax-specific methods. Simulates block production every 5s. |
 | **Python DeAI tests** | `cd core/deai && python3 -m pytest . -v --tb=short --ignore=tests` | — | 30 pass, 2 skip (bridge + Docker sandbox if not configured). |
 
 ## ⚠️ Non-obvious Caveats (Troubleshooting)

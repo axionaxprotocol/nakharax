@@ -1,4 +1,4 @@
-# Changelog — Nakhara Core Universe
+# Changelog — Nakharax Core Universe
 
 Notable changes to the monorepo (core, ops, tools, configs, docs).  
 Core protocol history: [core/CHANGELOG.md](core/CHANGELOG.md).
@@ -11,7 +11,7 @@ Core protocol history: [core/CHANGELOG.md](core/CHANGELOG.md).
 
 - **Master Summary** ([MASTER_SUMMARY.md](MASTER_SUMMARY.md)) — Project overview, vision, architecture, hardware (Monolith MK-I Vanguard/Scout), DeAI & 7 Sentinels, tokenomics, roadmap, fundraising (Series Seed).
 - **Run for real** ([RUN.md](RUN.md)) — Production run guide: config, env overrides, single worker, Project HYDRA, scripts, troubleshooting.
-- **Environment overrides** — `core/deai/.env.example`; `NAKHARA_RPC_URL` / `NAKHARA_BOOTNODES` override config bootnodes ([network_manager.py](core/deai/network_manager.py)).
+- **Environment overrides** — `core/deai/.env.example`; `NAKHARAX_RPC_URL` / `NAKHARAX_BOOTNODES` override config bootnodes ([network_manager.py](core/deai/network_manager.py)).
 - **Run scripts** — `scripts/run-worker.sh`, `scripts/run-worker.ps1` to run worker from repo root.
 - **CI** — GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)): Rust (fmt, build, clippy, test), Python (pytest).
 - **Health check** — `scripts/health-check.py`: RPC connectivity, config file, optional wallet check.

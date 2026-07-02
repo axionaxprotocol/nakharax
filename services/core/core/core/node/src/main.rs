@@ -1,4 +1,4 @@
-//! nakhara-node — Main binary for running a full blockchain node.
+//! nakharax-node — Main binary for running a full blockchain node.
 //!
 //! Supports the same flags used in docker-compose (--role, --chain, --rpc,
 //! --p2p, --telemetry, --unsafe-rpc) as well as the legacy --rpc_addr and
@@ -6,7 +6,7 @@
 
 use clap::{Parser, ValueEnum};
 use config as proto_cfg;
-use node::{NakharaNode, NodeConfig};
+use node::{NakharaxNode, NodeConfig};
 use std::net::SocketAddr;
 use std::path::PathBuf;
 use std::time::Instant;
@@ -34,8 +34,8 @@ impl std::fmt::Display for NodeRole {
 }
 
 #[derive(Parser, Debug)]
-#[command(name = "nakhara-node")]
-#[command(author, version, about = "Nakhara Protocol full node")]
+#[command(name = "nakharax-node")]
+#[command(author, version, about = "Nakharax Protocol full node")]
 struct Args {
     /// Node role (validator, rpc, bootnode, full)
     #[arg(long, value_enum, default_value_t = NodeRole::Full)]
@@ -50,7 +50,7 @@ struct Args {
     chain_id: u64,
 
     /// State database path
-    #[arg(long, default_value = "/tmp/nakhara-state")]
+    #[arg(long, default_value = "/tmp/nakharax-state")]
     state_path: PathBuf,
 
     /// RPC listen address (alias: --rpc_addr)
@@ -82,7 +82,7 @@ struct Args {
     block_time: Option<u64>,
 
     /// Staking address of this validator (0x-prefixed hex). Required for block rewards.
-    /// Can also be set via NAKHARA_VALIDATOR_ADDRESS env variable.
+    /// Can also be set via NAKHARAX_VALIDATOR_ADDRESS env variable.
     #[arg(long)]
     validator_address: Option<String>,
 
@@ -96,7 +96,7 @@ async fn main() -> anyhow::Result<()> {
     fmt().with_max_level(Level::INFO).init();
     let args = Args::parse();
 
-    info!("nakhara-node starting (role={})", args.role);
+    info!("nakharax-node starting (role={})", args.role);
 
     let chain_id = resolve_chain_id(&args);
 
@@ -157,7 +157,7 @@ async fn main() -> anyhow::Result<()> {
             if let Ok(json) = serde_json::from_str::<serde_json::Value>(&contents) {
                 if let Some(bt) = json
                     .get("config")
-                    .and_then(|c| c.get("nakhara"))
+                    .and_then(|c| c.get("nakharax"))
                     .and_then(|a| a.get("blockTime"))
                     .and_then(|v| v.as_u64())
                 {
@@ -181,7 +181,7 @@ async fn main() -> anyhow::Result<()> {
     // Validator address: CLI arg > env variable
     config.validator_address = args
         .validator_address
-        .or_else(|| std::env::var("NAKHARA_VALIDATOR_ADDRESS").ok());
+        .or_else(|| std::env::var("NAKHARAX_VALIDATOR_ADDRESS").ok());
     if let Some(ref addr) = config.validator_address {
         info!("Validator address: {}", addr);
     }
@@ -196,7 +196,7 @@ async fn main() -> anyhow::Result<()> {
     }
 
     // Override bootstrap nodes from env (for VPS: comma-separated multiaddrs)
-    if let Ok(bootstrap) = std::env::var("NAKHARA_BOOTSTRAP_NODES") {
+    if let Ok(bootstrap) = std::env::var("NAKHARAX_BOOTSTRAP_NODES") {
         let nodes: Vec<String> = bootstrap
             .split(',')
             .map(|s| s.trim().to_string())
@@ -222,13 +222,13 @@ async fn main() -> anyhow::Result<()> {
 
     metrics::init();
 
-    let mut node = NakharaNode::new(config).await?;
+    let mut node = NakharaxNode::new(config).await?;
     node.start(&args.role.to_string()).await?;
 
     let start = Instant::now();
 
     info!(
-        "nakhara-node running  role={} rpc={} chain_id={}",
+        "nakharax-node running  role={} rpc={} chain_id={}",
         args.role, args.rpc, chain_id
     );
 

@@ -33,7 +33,7 @@ vrf:
   use_delayed_vrf: true
 network:
   chain_id: 86150
-  network_name: nakhara-mainnet
+  network_name: nakharax-mainnet
   block_time_seconds: 5
   max_peers: 100
   bootstrap_nodes: []

@@ -4,7 +4,7 @@
 
 หากคุณไม่สามารถเพิ่ม NAK Token บน MetaMask ได้ อาจเกิดจากสาเหตุต่อไปนี้:
 
-### 1. ⚠️ ยังไม่ได้เชื่อมต่อกับ Nakhara Network
+### 1. ⚠️ ยังไม่ได้เชื่อมต่อกับ Nakharax Network
 
 **วิธีแก้:**
 
@@ -14,11 +14,11 @@
 4. กรอกข้อมูลดังนี้:
 
 ```
-Network Name: Nakhara Testnet
-RPC URL: https://testnet-rpc.nakhara.io
+Network Name: Nakharax Testnet
+RPC URL: https://testnet-rpc.nakharaxx.io
 Chain ID: 86137
 Currency Symbol: NAK
-Block Explorer: https://explorer.nakhara.io
+Block Explorer: https://explorer.nakharaxx.io
 ```
 
 ### 2. ⚠️ ใช้ Token Address ไม่ถูกต้อง
@@ -34,7 +34,7 @@ Testnet: (ตรวจสอบจาก config.json หรือ faucet)
 
 **วิธีแก้:**
 
-- ตรวจสอบว่าคุณเชื่อมต่อกับ Nakhara Network แล้ว
+- ตรวจสอบว่าคุณเชื่อมต่อกับ Nakharax Network แล้ว
 - Token จะแสดงเฉพาะเมื่อคุณอยู่ใน network ที่ถูกต้อง
 
 ---
@@ -44,7 +44,7 @@ Testnet: (ตรวจสอบจาก config.json หรือ faucet)
 ### ขั้นตอนที่ 1: เปิด MetaMask
 
 1. คลิกที่ไอคอน MetaMask extension
-2. ตรวจสอบว่าคุณเชื่อมต่อกับ **Nakhara Testnet** แล้ว
+2. ตรวจสอบว่าคุณเชื่อมต่อกับ **Nakharax Testnet** แล้ว
 
 ### ขั้นตอนที่ 2: เพิ่ม Token
 
@@ -73,7 +73,7 @@ Token Decimal: 18
 
 ### จาก Web Interface
 
-1. เชื่อมต่อ wallet ที่ https://nakhara.io
+1. เชื่อมต่อ wallet ที่ https://nakharaxx.io
 2. คลิกที่ปุ่ม **Connect Wallet**
 3. เมื่อเชื่อมต่อสำเร็จ คลิกที่ dropdown wallet menu
 4. คลิกปุ่ม **"Add NAK Token"**
@@ -169,13 +169,13 @@ const handleAddToken = async () => {
 
 **สาเหตุ:**
 
-- คุณไม่ได้อยู่ใน Nakhara Network
+- คุณไม่ได้อยู่ใน Nakharax Network
 - Balance เป็น 0
 
 **วิธีแก้:**
 
-1. Switch ไปยัง Nakhara Network
-2. ขอ test tokens จาก faucet: https://faucet.nakhara.io
+1. Switch ไปยัง Nakharax Network
+2. ขอ test tokens จาก faucet: https://faucet.nakharaxx.io
 3. Refresh MetaMask (Lock -> Unlock)
 
 ### ❌ "User rejected the request"
@@ -194,7 +194,7 @@ const handleAddToken = async () => {
 
 - [MetaMask Documentation](https://docs.metamask.io/)
 - [EIP-747: wallet_watchAsset](https://eips.ethereum.org/EIPS/eip-747)
-- [Nakhara Network Configuration](./CHAIN_ID_CONFIGURATION.md)
+- [Nakharax Network Configuration](./CHAIN_ID_CONFIGURATION.md)
 - [Web3 Integration Guide](./DEVELOPER_GUIDE.md)
 
 ---
@@ -203,12 +203,12 @@ const handleAddToken = async () => {
 
 หากยังมีปัญหา กรุณาติดต่อ:
 
-- **Discord**: [Nakhara Community](https://discord.gg/nakhara)
-- **GitHub Issues**: [nakhara-monolith](https://github.com/nakhara-io/nakhara-monolith/issues)
-- **Email**: support@nakhara.io
+- **Discord**: [Nakharax Community](https://discord.gg/nakharax)
+- **GitHub Issues**: [nakharax-monolith](https://github.com/nakharax-io/nakharax-monolith/issues)
+- **Email**: support@nakharaxx.io
 
 ---
 
 **อัปเดตล่าสุด:** เมษายน 2026  
-**Synced core ref:** `nakhara-monolith@28f42cf`  
+**Synced core ref:** `nakharax-monolith@28f42cf`  
 **Version:** 1.1.0 (Genesis Public Testnet)

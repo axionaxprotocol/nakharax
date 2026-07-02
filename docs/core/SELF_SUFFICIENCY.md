@@ -1,6 +1,6 @@
 # Self-Sufficiency — โปรโตคอลทำงานได้ด้วยตัวเอง
 
-**หลักการ:** โปรโตคอล Nakhara ต้องสามารถทำงานบน chain ของตัวเองได้ แม้วันหนึ่ง server แม่ของภาษาหรือ ecosystem (เช่น PyPI, npm, crates.io) หรือ service ภายนอก (API, telemetry, CDN) จะถูกโจมตีหรือใช้ไม่ได้ ก็ไม่ทำให้ **การทำงานของ chain และ node** หยุดลง
+**หลักการ:** โปรโตคอล Nakharax ต้องสามารถทำงานบน chain ของตัวเองได้ แม้วันหนึ่ง server แม่ของภาษาหรือ ecosystem (เช่น PyPI, npm, crates.io) หรือ service ภายนอก (API, telemetry, CDN) จะถูกโจมตีหรือใช้ไม่ได้ ก็ไม่ทำให้ **การทำงานของ chain และ node** หยุดลง
 
 ---
 
@@ -19,7 +19,7 @@
 ## 2. สิ่งที่อนุญาต (และควรออกแบบให้เลือกได้)
 
 - **Build time:** ดึง dependencies จาก crates.io / PyPI / npm ตอน build ได้ (หลัง build แล้ว ไม่ต้องพึ่ง registry ตอนรัน)
-- **Telemetry (optional):** ส่ง metrics ไป telemetry.nakhara.io ได้ ถ้าปิดหรือ endpoint ล่ม ต้องไม่กระทบการทำงานของ node
+- **Telemetry (optional):** ส่ง metrics ไป telemetry.nakharaxx.io ได้ ถ้าปิดหรือ endpoint ล่ม ต้องไม่กระทบการทำงานของ node
 - **DeAI:** โหลด model จากอินเทอร์เน็ต (เช่น Hugging Face) ได้ แต่ต้องมีทางเลือกใช้ model ที่โหลดไว้แล้วใน local/cache เพื่อให้ worker ทำงานได้เมื่อไม่มี WAN
 - **RPC / bootnodes:** การเชื่อมต่อเป็นไปกับ **node บน chain เดียวกัน** (หรือที่ operator ตั้งค่า) ไม่ใช่ third-party SaaS บังคับ
 

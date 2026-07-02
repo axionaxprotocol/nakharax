@@ -1,7 +1,7 @@
 {
-  "name": "nakhara-mock-rpc",
+  "name": "nakharax-mock-rpc",
   "version": "1.0.0",
-  "description": "Lightweight mock RPC server for Nakhara Protocol testing",
+  "description": "Lightweight mock RPC server for Nakharax Protocol testing",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

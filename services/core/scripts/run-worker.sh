@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run Nakhara DeAI Worker from repo root.
+# Run Nakharax DeAI Worker from repo root.
 # Usage: ./scripts/run-worker.sh [config_path]
 # Example: ./scripts/run-worker.sh configs/monolith_worker.toml
 

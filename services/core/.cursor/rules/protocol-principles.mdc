@@ -1,10 +1,10 @@
 ---
-description: หลักการโปรโตคอล Nakhara — Self-Sufficiency, Cyber Defense, Protocol Invariants
+description: หลักการโปรโตคอล Nakharax — Self-Sufficiency, Cyber Defense, Protocol Invariants
 globs: docs/**/*, README.md, RULES.md, SKILLS.md
 alwaysApply: false
 ---
 
-# Nakhara Protocol — Core Principles
+# Nakharax Protocol — Core Principles
 
 ## 1. Self-Sufficiency (ทำงานได้โดยไม่พึ่งภายนอก)
 

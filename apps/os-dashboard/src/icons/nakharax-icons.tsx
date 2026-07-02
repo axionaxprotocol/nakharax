@@ -1,15 +1,15 @@
-// Nakhara OS — minimalist 1.25px-stroke icon set.
+// Nakharax OS — minimalist 1.25px-stroke icon set.
 //
 // Designed to sit alongside `lucide-react` icons without visual conflict.
 // Every icon renders inside a 24x24 viewbox; size via the `size` prop.
 //
 // Usage:
-//   import { Icon } from "@/icons/nakhara-icons";
+//   import { Icon } from "@/icons/nakharax-icons";
 //   <Icon name="neural" size={18} className="text-accent-ai" />
 
 import type { SVGProps } from "react";
 
-export type NakharaIconName =
+export type NakharaxIconName =
   | "neural"
   | "node"
   | "peer"
@@ -18,13 +18,13 @@ export type NakharaIconName =
   | "edge";
 
 type Props = SVGProps<SVGSVGElement> & {
-  name: NakharaIconName;
+  name: NakharaxIconName;
   size?: number;
 };
 
 const STROKE = 1.25;
 
-const PATHS: Record<NakharaIconName, JSX.Element> = {
+const PATHS: Record<NakharaxIconName, JSX.Element> = {
   // Neural Network — three-layer perceptron
   neural: (
     <>
@@ -107,7 +107,7 @@ export function Icon({
   );
 }
 
-export const ICON_NAMES: NakharaIconName[] = [
+export const ICON_NAMES: NakharaxIconName[] = [
   "neural",
   "node",
   "peer",

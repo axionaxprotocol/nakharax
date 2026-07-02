@@ -1,5 +1,5 @@
 """
-nakhara DeAI - Fraud Detection System
+nakharax DeAI - Fraud Detection System
 
 ML-based fraud detection for PoPC verification
 """

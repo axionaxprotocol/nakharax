@@ -3,7 +3,7 @@
 Build a "Node Package" for download-and-run distribution.
 Includes only the files needed to run Worker / Scout / HYDRA and suitability-check scripts.
 
-Usage: python scripts/make-node-package.py [--output nakhara-node-package.zip]
+Usage: python scripts/make-node-package.py [--output nakharax-node-package.zip]
 """
 
 import argparse
@@ -21,7 +21,7 @@ INCLUDE = [
     "configs/monolith_worker.toml",
     "configs/monolith_sentinel.toml",
     "configs/monolith_scout_single.toml",
-    "scripts/join-nakhara.py",
+    "scripts/join-nakharax.py",
     "scripts/update-node.py",
     "scripts/update-node.sh",
     "scripts/health-check.py",
@@ -47,8 +47,8 @@ def collect_paths():
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Build nakhara node package zip")
-    ap.add_argument("--output", default="nakhara-node-package.zip", help="Output zip path")
+    ap = argparse.ArgumentParser(description="Build nakharax node package zip")
+    ap.add_argument("--output", default="nakharax-node-package.zip", help="Output zip path")
     args = ap.parse_args()
 
     out_path = Path(args.output)
@@ -66,7 +66,7 @@ def main():
             print(f"  + {rel}")
 
     print(f"\nCreated: {out_path}")
-    print("  Extract and run: python scripts/join-nakhara.py")
+    print("  Extract and run: python scripts/join-nakharax.py")
     return 0
 
 

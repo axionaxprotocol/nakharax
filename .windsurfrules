@@ -2,7 +2,7 @@
 description: Context separation and behavioral rules for Web (Frontend) vs Core (Backend/Blockchain) development
 ---
 
-# Nakhara Monolith Windsurf Rules
+# Nakharax Monolith Windsurf Rules
 
 This project is a monorepo that contains both Web (Frontend) and Core (Blockchain/Backend) components.
 It is critical to maintain separation of concerns and avoid mixing contexts between these two domains.

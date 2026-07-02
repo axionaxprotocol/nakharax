@@ -1,15 +1,15 @@
-# Nakhara Core Universe - Full Stack Development
+# Nakharax Core Universe - Full Stack Development
 # Runs blockchain core + web services together
 
 services:
   # ============================================
   # 🦀 Blockchain Node (Primary)
   # ============================================
-  nakhara-node:
+  nakharax-node:
     build:
       context: ./core
       dockerfile: ops/deploy/Dockerfile
-    container_name: nakhara-node
+    container_name: nakharax-node
     restart: unless-stopped
     ports:
       - "8545:8545"     # JSON-RPC HTTP
@@ -19,7 +19,7 @@ services:
     volumes:
       - node_data:/data
     environment:
-      - RUST_LOG=info,nakhara=debug
+      - RUST_LOG=info,nakharax=debug
       - CHAIN_ID=86137
       - NETWORK=testnet
       - RPC_HOST=0.0.0.0
@@ -34,16 +34,16 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 🦀 Second Validator Node
   # ============================================
-  nakhara-validator:
+  nakharax-validator:
     build:
       context: ./core
       dockerfile: ops/deploy/Dockerfile
-    container_name: nakhara-validator
+    container_name: nakharax-validator
     restart: unless-stopped
     ports:
       - "8555:8545"     # JSON-RPC HTTP (different port)
@@ -54,42 +54,42 @@ services:
       - RUST_LOG=info
       - CHAIN_ID=86137
       - NETWORK=testnet
-      - BOOTNODES=enode://node@nakhara-node:30303
+      - BOOTNODES=enode://node@nakharax-node:30303
       - VALIDATOR_MODE=true
     depends_on:
-      - nakhara-node
+      - nakharax-node
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 🗄️ PostgreSQL Database
   # ============================================
   postgres:
     image: postgres:16-alpine
-    container_name: nakhara-postgres
+    container_name: nakharax-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: nakhara
+      POSTGRES_USER: nakharax
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set in .env}
-      POSTGRES_DB: nakhara_testnet
+      POSTGRES_DB: nakharax_testnet
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nakhara -d nakhara_testnet"]
+      test: ["CMD-SHELL", "pg_isready -U nakharax -d nakharax_testnet"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 📦 Redis Cache
   # ============================================
   redis:
     image: redis:7-alpine
-    container_name: nakhara-redis
+    container_name: nakharax-redis
     restart: unless-stopped
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:?Set in .env}"]
     ports:
@@ -97,7 +97,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 🌐 Web Interface (from web-universe)
@@ -106,19 +106,19 @@ services:
     build:
       context: ./web-universe/apps/web
       dockerfile: Dockerfile
-    container_name: nakhara-web
+    container_name: nakharax-web
     restart: unless-stopped
     depends_on:
-      - nakhara-node
+      - nakharax-node
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_RPC_URL=http://nakhara-node:8545
-      - NEXT_PUBLIC_WS_URL=ws://nakhara-node:8546
+      - NEXT_PUBLIC_RPC_URL=http://nakharax-node:8545
+      - NEXT_PUBLIC_WS_URL=ws://nakharax-node:8546
       - NEXT_PUBLIC_CHAIN_ID=86137
       - NODE_ENV=development
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 🛒 Marketplace (from web-universe)
@@ -127,17 +127,17 @@ services:
     build:
       context: ./web-universe/apps/marketplace
       dockerfile: Dockerfile
-    container_name: nakhara-marketplace
+    container_name: nakharax-marketplace
     restart: unless-stopped
     depends_on:
-      - nakhara-node
+      - nakharax-node
     ports:
       - "5173:5173"
     environment:
-      - VITE_RPC_URL=http://nakhara-node:8545
+      - VITE_RPC_URL=http://nakharax-node:8545
       - VITE_CHAIN_ID=86137
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 💧 Faucet API (built from core/tools/faucet)
@@ -146,21 +146,21 @@ services:
     build:
       context: ./core
       dockerfile: ops/deploy/Dockerfile.faucet
-    container_name: nakhara-faucet
+    container_name: nakharax-faucet
     restart: unless-stopped
     depends_on:
-      nakhara-node: { condition: service_healthy }
+      nakharax-node: { condition: service_healthy }
       redis: { condition: service_started }
     ports:
       - "3002:3002"
     environment:
-      - RPC_URL=http://nakhara-node:8545
+      - RPC_URL=http://nakharax-node:8545
       - PORT=3002
       - CHAIN_ID=86137
       # Dev only: use a test key; production must set FAUCET_PRIVATE_KEY securely
       - FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY:?Set in .env}
     networks:
-      - nakhara-core
+      - nakharax-core
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:3002/health"]
       interval: 15s
@@ -173,7 +173,7 @@ services:
   # ============================================
   prometheus:
     image: prom/prometheus:v2.48.0
-    container_name: nakhara-prometheus
+    container_name: nakharax-prometheus
     restart: unless-stopped
     ports:
       - "9090:9090"
@@ -183,14 +183,14 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 📈 Grafana (Dashboards)
   # ============================================
   grafana:
     image: grafana/grafana:10.2.2
-    container_name: nakhara-grafana
+    container_name: nakharax-grafana
     restart: unless-stopped
     depends_on:
       - prometheus
@@ -203,7 +203,7 @@ services:
       - grafana_data:/var/lib/grafana
       - ./ops/deploy/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
     networks:
-      - nakhara-core
+      - nakharax-core
 
   # ============================================
   # 🔍 Block Explorer Backend (stub in dev; use real explorer in production)
@@ -212,17 +212,17 @@ services:
     build:
       context: ./tools/devtools
       dockerfile: Dockerfile.explorer
-    container_name: nakhara-explorer-api
+    container_name: nakharax-explorer-api
     restart: unless-stopped
     depends_on:
-      - nakhara-node
+      - nakharax-node
       - postgres
     ports:
       - "3001:3001"
     environment:
       - PORT=3001
     networks:
-      - nakhara-core
+      - nakharax-core
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:3001/api/health"]
       interval: 15s
@@ -239,6 +239,6 @@ volumes:
   grafana_data:
 
 networks:
-  nakhara-core:
-    name: nakhara-core-network
+  nakharax-core:
+    name: nakharax-core-network
     driver: bridge

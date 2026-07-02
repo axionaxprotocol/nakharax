@@ -1,8 +1,8 @@
 /**
- * Nakhara SDK - Staking Client
+ * Nakharax SDK - Staking Client
  * 
  * Copy this file to: packages/sdk/src/clients/staking.ts
- * For use in @nakhara/sdk
+ * For use in @nakharax/sdk
  */
 
 import {
@@ -192,7 +192,7 @@ export class StakingClient {
 /**
  * Example hook for React
  *
- * import { useStaking } from '@nakhara/sdk';
+ * import { useStaking } from '@nakharax/sdk';
  *
  * function StakingPage() {
  *   const { validators, stats, loading, stake, delegate } = useStaking();
