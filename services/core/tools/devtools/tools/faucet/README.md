@@ -335,7 +335,7 @@ Common enhancements:
 ## Support
 
 - **Documentation**: https://docs.nakharax.io
-- **Issues**: https://github.com/nakharax-io/nakharax/issues
+- **Issues**: https://github.com/axionaxprotocol/nakharax/issues
 - **Discord**: https://discord.gg/nakharax
 
 ## License

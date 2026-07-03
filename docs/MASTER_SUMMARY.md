@@ -35,7 +35,7 @@
 
 | Item                    | Details                                                                                |
 | ----------------------- | -------------------------------------------------------------------------------------- |
-| **Repository**          | [nakharax](https://github.com/nakharax-io/nakharax)      |
+| **Repository**          | [nakharax](https://github.com/axionaxprotocol/nakharax)      |
 | **Languages**           | Rust (80% — Core Logic) + Python (20% — DeAI Layer)                                    |
 | **Consensus**           | PoPC (Proof of Probabilistic Checking)                                                 |
 | **Verification**        | Statistical probabilistic checking instead of full re-execution — \(O(s)\) vs \(O(n)\) |
@@ -115,7 +115,7 @@ Dedicated AI models on Sentinel nodes for security verification:
 
 | Item           | Details                                                                                    |
 | -------------- | ------------------------------------------------------------------------------------------ |
-| **Repository** | [nakharax](https://github.com/nakharax-io/nakharax) (Monorepo) |
+| **Repository** | [nakharax](https://github.com/axionaxprotocol/nakharax) (Monorepo) |
 | **Stack**      | Next.js, Tailwind CSS, TypeScript, pnpm                                                    |
 
 ### Key Components

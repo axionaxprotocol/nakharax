@@ -133,7 +133,7 @@
 
 ```markdown
 <!-- GitHub -->
-[Repository](https://github.com/nakharax-io/nakharax)
+[Repository](https://github.com/axionaxprotocol/nakharax)
 
 <!-- Website -->
 [Protocol](https://nakharax.io)
@@ -292,7 +292,7 @@ _Last updated: YYYY-MM-DD_
 
 ## Questions?
 
-- Open an issue: [GitHub Issues](https://github.com/nakharax-io/nakharax/issues)
+- Open an issue: [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues)
 - Discord: [#documentation](https://discord.gg/nakharax)
 
 ---

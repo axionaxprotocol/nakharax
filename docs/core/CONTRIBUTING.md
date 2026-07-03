@@ -9,7 +9,7 @@ Thank you for contributing. This document explains how to set up, test, and subm
    ```bash
    git clone https://github.com/YOUR_USERNAME/nakharax.git
    cd nakharax
-   git remote add upstream https://github.com/nakharax-io/nakharax.git
+   git remote add upstream https://github.com/axionaxprotocol/nakharax.git
    ```
 3. **Create a branch** for your work:
    ```bash
@@ -68,7 +68,7 @@ See the main [README](README.md#testing--verification) for more test commands an
 
 ## Questions
 
-- **Issues:** [GitHub Issues](https://github.com/nakharax-io/nakharax/issues).
+- **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues).
 - **Website:** [nakharax.io](https://nakharax.io).
 
 Thanks for contributing.

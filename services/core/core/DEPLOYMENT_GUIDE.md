@@ -31,7 +31,7 @@ brew install llvm pkg-config openssl
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 
 # Build release version
@@ -527,7 +527,7 @@ sudo sysctl -p
 ## 📞 Support
 
 - **Documentation**: https://docs.nakharax.io
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
+- **GitHub Issues**: https://github.com/axionaxprotocol/nakharax/issues
 - **Discord**: https://discord.gg/nakharax
 - **Telegram**: https://t.me/nakharax
 

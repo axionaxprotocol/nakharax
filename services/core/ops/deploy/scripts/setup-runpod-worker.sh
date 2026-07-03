@@ -8,7 +8,7 @@
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU (A40, A100, RTX 4090, etc.)
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+#   wget https://raw.githubusercontent.com/axionaxprotocol/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 #   chmod +x setup-runpod-worker.sh
 #   ./setup-runpod-worker.sh
 #
@@ -136,7 +136,7 @@ source $HOME/.cargo/env
 # Step 8: Clone nakharax repository
 log_info "Step 8: Cloning nakharax repository..."
 if [ ! -d "$USER_HOME/nakharax" ]; then
-    git clone https://github.com/nakharax-io/nakharax.git "$USER_HOME/nakharax"
+    git clone https://github.com/axionaxprotocol/nakharax.git "$USER_HOME/nakharax"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."

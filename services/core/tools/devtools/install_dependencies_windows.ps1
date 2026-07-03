@@ -266,7 +266,7 @@ Write-Host "python --version" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "4. Clone repository:" -ForegroundColor White
 Write-Host "   " -NoNewline
-Write-Host "git clone https://github.com/nakharax-io/nakharax.git" -ForegroundColor Cyan
+Write-Host "git clone https://github.com/axionaxprotocol/nakharax.git" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "5. Build project:" -ForegroundColor White
 Write-Host "   " -NoNewline

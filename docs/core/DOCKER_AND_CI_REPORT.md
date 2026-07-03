@@ -14,7 +14,7 @@
 | `ops/deploy/Dockerfile` | ✅ ตรงโครง | context = `core/`, build `-p node` → `nakharax-node` |
 | `ops/deploy/Dockerfile.faucet` | ✅ ตรงโครง | context = `core/`, build `-p nakharax-faucet` |
 | `ops/deploy/docker-compose.yaml` | ✅ แก้แล้ว | context = `../../core`, ports 8545/8546/30303, ไม่อ้างอิง repo ภายนอก |
-| `ops/deploy/docker-compose.vps.yml` | ✅ ใช้ image | ใช้ `ghcr.io/nakharax-io/nakharax-core:latest` ไม่ build ในไฟล์ |
+| `ops/deploy/docker-compose.vps.yml` | ✅ ใช้ image | ใช้ `ghcr.io/axionaxprotocol/nakharax-core:latest` ไม่ build ในไฟล์ |
 | `ops/deploy/mock-rpc/Dockerfile` | ✅ ใช้ได้ | build จาก context ของ mock-rpc |
 | ~~Testnet_in_a_Box~~ | — | ลบออกจาก repo แล้ว — ใช้ `ops/deploy/Dockerfile` + `testnet/public/` แทน |
 | `core/.github/workflows/*` | ℹ️ ไม่รันบน GitHub | เฉพาะ `.github/workflows` ที่ **root** ถึงจะรัน — ไฟล์ใน core/ เป็น legacy |
@@ -72,7 +72,7 @@ Cache ใช้ `core/target` และ `core/Cargo.lock` — ถูกต้อ
 
 ### 2.4 ไฟล์อื่น
 
-- **ops/deploy/docker-compose.vps.yml:** ใช้ image `ghcr.io/nakharax-io/nakharax-core:latest` ไม่ build ในไฟล์ — ใช้ได้
+- **ops/deploy/docker-compose.vps.yml:** ใช้ image `ghcr.io/axionaxprotocol/nakharax-core:latest` ไม่ build ในไฟล์ — ใช้ได้
 - **ops/deploy/mock-rpc/Dockerfile:** build จาก context ของ mock-rpc — ใช้ได้
 - **Public testnet:** `ops/deploy/environments/testnet/public/docker-compose.yaml` + `ops/deploy/Dockerfile` (context `core/`)
 
@@ -99,7 +99,7 @@ docker compose -f docker-compose.yaml build node
 docker compose -f docker-compose.yaml up -d node
 
 # Build image สำหรับ push (จาก root)
-docker build -f ops/deploy/Dockerfile -t ghcr.io/nakharax-io/nakharax-core:latest ./core
+docker build -f ops/deploy/Dockerfile -t ghcr.io/axionaxprotocol/nakharax-core:latest ./core
 ```
 
 ---

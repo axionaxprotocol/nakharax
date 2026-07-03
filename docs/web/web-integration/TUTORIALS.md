@@ -405,13 +405,13 @@ Coming soon! Learn:
 
 - [Developer Guide](./DEVELOPER_GUIDE.md)
 - [API Reference](./API_REFERENCE.md)
-- [Example Projects](https://github.com/nakharax-io/examples)
+- [Example Projects](https://github.com/axionaxprotocol/examples)
 - [Community Forum](https://forum.nakharax.network)
 
 ## 💬 Get Help
 
 - [Discord](https://discord.gg/nakharax)
-- [GitHub Discussions](https://github.com/nakharax-io/nakharax/discussions)
+- [GitHub Discussions](https://github.com/axionaxprotocol/nakharax/discussions)
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/nakharax)
 
 ---

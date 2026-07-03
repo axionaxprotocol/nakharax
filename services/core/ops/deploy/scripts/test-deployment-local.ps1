@@ -272,7 +272,7 @@ Write-Host ""
 Write-Host "# OR using Git (on VPS):"
 Write-ColorOutput "ssh root@$vpsIP" "Cyan"
 Write-ColorOutput "cd /opt" "Cyan"
-Write-ColorOutput "git clone https://github.com/nakharax-io/nakharax-deploy.git" "Cyan"
+Write-ColorOutput "git clone https://github.com/axionaxprotocol/nakharax-deploy.git" "Cyan"
 Write-Host ""
 
 Write-ColorOutput "Step 2: Configure environment" "Yellow"

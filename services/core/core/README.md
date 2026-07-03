@@ -25,13 +25,13 @@ of the entire nakharax ecosystem.
 
 This is the **core component** of the nakharax Protocol. Complete ecosystem repositories:
 
-- **Core Protocol**: [nakharax-core](https://github.com/nakharax-io/nakharax) - Blockchain implementation (this repo)
-- **Web Interface**: [nakharax-web](https://github.com/nakharax-io/nakharax-web) - Official website & dashboard
-- **TypeScript SDK**: [nakharax-sdk-ts](https://github.com/nakharax-io/nakharax-sdk-ts) - Developer SDK
-- **Documentation**: [nakharax-docs](https://github.com/nakharax-io/nakharax-docs) - Protocol documentation
-- **Marketplace**: [nakharax-marketplace](https://github.com/nakharax-io/nakharax-marketplace) - Compute marketplace dApp
-- **DevTools**: [nakharax-devtools](https://github.com/nakharax-io/nakharax-devtools) - Development utilities
-- **Deployment**: [nakharax-deploy](https://github.com/nakharax-io/nakharax-deploy) - Infrastructure scripts
+- **Core Protocol**: [nakharax-core](https://github.com/axionaxprotocol/nakharax) - Blockchain implementation (this repo)
+- **Web Interface**: [nakharax-web](https://github.com/axionaxprotocol/nakharax-web) - Official website & dashboard
+- **TypeScript SDK**: [nakharax-sdk-ts](https://github.com/axionaxprotocol/nakharax-sdk-ts) - Developer SDK
+- **Documentation**: [nakharax-docs](https://github.com/axionaxprotocol/nakharax-docs) - Protocol documentation
+- **Marketplace**: [nakharax-marketplace](https://github.com/axionaxprotocol/nakharax-marketplace) - Compute marketplace dApp
+- **DevTools**: [nakharax-devtools](https://github.com/axionaxprotocol/nakharax-devtools) - Development utilities
+- **Deployment**: [nakharax-deploy](https://github.com/axionaxprotocol/nakharax-deploy) - Infrastructure scripts
 
 ---
 
@@ -89,7 +89,7 @@ We've created a comprehensive **Multi-Repo Issue Manager** to track all pre-laun
 
 **Current Focus:** Security audits, performance testing, and documentation completion before public testnet launch.
 
-**Want to contribute?** Check our [Issue Tracker](https://github.com/nakharax-io/nakharax/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
+**Want to contribute?** Check our [Issue Tracker](https://github.com/axionaxprotocol/nakharax/issues) or see [DNS Setup Guide](./docs/DNS_SETUP.md) for deployment preparation.
 
 ---
 
@@ -216,19 +216,19 @@ We provide automated dependency installers for all major platforms:
 #### 🐧 Linux (Ubuntu/Debian/CentOS/RHEL/Arch/Alpine)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/nakharax-io/nakharax-core/main/scripts/install_dependencies_linux.sh | bash
+curl -sSL https://raw.githubusercontent.com/axionaxprotocol/nakharax-core/main/scripts/install_dependencies_linux.sh | bash
 ```
 
 #### 🪟 Windows (PowerShell as Administrator)
 
 ```powershell
-irm https://raw.githubusercontent.com/nakharax-io/nakharax-core/main/scripts/install_dependencies_windows.ps1 | iex
+irm https://raw.githubusercontent.com/axionaxprotocol/nakharax-core/main/scripts/install_dependencies_windows.ps1 | iex
 ```
 
 #### 🍎 macOS (10.15+)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/nakharax-io/nakharax-core/main/scripts/install_dependencies_macos.sh | bash
+curl -sSL https://raw.githubusercontent.com/axionaxprotocol/nakharax-core/main/scripts/install_dependencies_macos.sh | bash
 ```
 
 **These scripts install:**
@@ -248,7 +248,7 @@ manual setup.
 
 ```bash
 # Clone the repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 
 # Build the Rust core and Python bridge
@@ -307,7 +307,7 @@ After installation:
 - Install PyO3: `pip install maturin`
 - Rebuild: `cd bridge/rust-python && maturin develop`
 
-**Need help?** Open an issue: https://github.com/nakharax-io/nakharax/issues
+**Need help?** Open an issue: https://github.com/axionaxprotocol/nakharax/issues
 
 ### Manual Prerequisites
 
@@ -397,7 +397,7 @@ This core implementation is part of the complete nakharax Protocol ecosystem:
 | **Deploy**           | Infrastructure & deployment  | [`../nakharax-deploy`](../nakharax-deploy)     | 🔥 Testing  |
 | **Issue Manager**    | Task automation              | [`../issue-manager`](../issue-manager)       | 🎉 New!     |
 
-**Organization**: [github.com/nakharax-io](https://github.com/nakharax-io)
+**Organization**: [github.com/axionaxprotocol](https://github.com/axionaxprotocol)
 
 ---
 
@@ -553,7 +553,7 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 - **💡 Propose Features**: Discuss new ideas in GitHub Discussions
 - **📝 Improve Docs**: Fix typos, add examples, clarify guides
 - **🧪 Write Tests**: Increase test coverage and quality
-- **🔧 Fix Issues**: Check [good first issue](https://github.com/nakharax-io/nakharax/labels/good%20first%20issue) label
+- **🔧 Fix Issues**: Check [good first issue](https://github.com/axionaxprotocol/nakharax/labels/good%20first%20issue) label
 - **🔐 Security**: Report vulnerabilities to security@nakharax.io
 
 ### 📋 Development Workflow
@@ -562,7 +562,7 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
    ```bash
    git clone https://github.com/YOUR_USERNAME/nakharax-core.git
    cd nakharax-core
-   git remote add upstream https://github.com/nakharax-io/nakharax.git
+   git remote add upstream https://github.com/axionaxprotocol/nakharax.git
    ```
 
 2. **Create Feature Branch**
@@ -657,8 +657,8 @@ This project is licensed under the **GNU Affero General Public License v3.0
 
 ### nakharax Protocol
 
-- **GitHub Organization**: https://github.com/nakharax-io
-- **Core Repository**: https://github.com/nakharax-io/nakharax
+- **GitHub Organization**: https://github.com/axionaxprotocol
+- **Core Repository**: https://github.com/axionaxprotocol/nakharax
 - **Website**: https://nakharax.io
 - **Documentation**: https://docs.nakharax.io (see [`../nakharax-docs`](../nakharax-docs))
 
@@ -670,13 +670,13 @@ This project is licensed under the **GNU Affero General Public License v3.0
 
 ### Development
 
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
+- **GitHub Issues**: https://github.com/axionaxprotocol/nakharax/issues
 - **Contributing**: See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 ### Community (Coming Q1 2026)
 
 - **Discord**: https://discord.gg/nakharax
-- **Twitter**: https://twitter.com/nakharax-io
+- **Twitter**: https://twitter.com/nakharax
 - **Telegram**: https://t.me/nakharax
 
 ---

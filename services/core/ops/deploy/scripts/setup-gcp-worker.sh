@@ -8,7 +8,7 @@
 # Supports: Ubuntu 22.04 LTS with NVIDIA GPU
 #
 # Usage:
-#   wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+#   wget https://raw.githubusercontent.com/axionaxprotocol/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 #   chmod +x setup-gcp-worker.sh
 #   sudo ./setup-gcp-worker.sh
 #
@@ -142,7 +142,7 @@ log_success "ML libraries installed"
 # Step 10: Clone nakharax repository
 log_info "Step 10: Cloning nakharax repository..."
 if [ ! -d "$USER_HOME/nakharax" ]; then
-    sudo -u $ACTUAL_USER git clone https://github.com/nakharax-io/nakharax.git "$USER_HOME/nakharax"
+    sudo -u $ACTUAL_USER git clone https://github.com/axionaxprotocol/nakharax.git "$USER_HOME/nakharax"
     log_success "Repository cloned"
 else
     log_warning "Repository already exists, pulling latest changes..."

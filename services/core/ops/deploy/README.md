@@ -32,7 +32,7 @@ Production-ready deployment infrastructure for **nakharax protocol** services.
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)](https://www.docker.com/)
-[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/nakharax-io/nakharax)
+[![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/axionaxprotocol/nakharax)
 
 ---
 
@@ -67,14 +67,14 @@ Protocol** infrastructure stack on a VPS or cloud environment.
 
 Deploys the full nakharax protocol stack:
 
-- **Protocol Node**: [`nakharax-core`](https://github.com/nakharax-io/nakharax) - nakharax RPC node
+- **Protocol Node**: [`nakharax-core`](https://github.com/axionaxprotocol/nakharax) - nakharax RPC node
 - **Block Explorer**: Blockchain data visualization
 - **Testnet Faucet**: NAK token distribution
-- **Web Interface**: [`nakharax-web`](https://github.com/nakharax-io/nakharax-web) - Static frontend
+- **Web Interface**: [`nakharax-web`](https://github.com/axionaxprotocol/nakharax-web) - Static frontend
 - **Monitoring**: Prometheus + Grafana dashboards
-- **Issue Tracker**: [`issue-manager`](https://github.com/nakharax-io/issue-manager) - Track deployment tasks
+- **Issue Tracker**: [`issue-manager`](https://github.com/axionaxprotocol/issue-manager) - Track deployment tasks
 
-**GitHub Organization**: https://github.com/nakharax-io
+**GitHub Organization**: https://github.com/axionaxprotocol
 
 **Pre-Testnet Status:** Infrastructure ready, final testing in progress
 
@@ -121,7 +121,7 @@ Deploys the full nakharax protocol stack:
 ```bash
 ssh root@YOUR_VPS_IP
 cd /opt
-git clone https://github.com/nakharax-io/nakharax-deploy.git
+git clone https://github.com/axionaxprotocol/nakharax-deploy.git
 cd nakharax-deploy
 ```
 
@@ -429,7 +429,7 @@ Use our [Issue Manager](../issue-manager) to track:
 
 ### External Resources
 
-- **GitHub Organization**: https://github.com/nakharax-io
+- **GitHub Organization**: https://github.com/axionaxprotocol
 - **Protocol Website**: https://nakharax.io
 - **Documentation**: https://docs.nakharax.io
 
@@ -438,7 +438,7 @@ Use our [Issue Manager](../issue-manager) to track:
 ## Contributing
 
 1. Fork the repository:
-   [nakharax-io/nakharax-deploy](https://github.com/nakharax-io/nakharax-deploy)
+   [axionaxprotocol/nakharax-deploy](https://github.com/axionaxprotocol/nakharax-deploy)
 2. Create feature branch
 3. Test changes with Docker Compose locally
 4. Submit pull request
@@ -456,14 +456,14 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Issues**: https://github.com/nakharax-io/nakharax-deploy/issues
-- **Docs**: https://docs.nakharax.io or [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs)
-- **GitHub Organization**: https://github.com/nakharax-io
+- **Issues**: https://github.com/axionaxprotocol/nakharax-deploy/issues
+- **Docs**: https://docs.nakharax.io or [`nakharax-docs`](https://github.com/axionaxprotocol/nakharax-docs)
+- **GitHub Organization**: https://github.com/axionaxprotocol
 
 ### Community (Coming Q1 2026)
 
 - **Discord**: https://discord.gg/nakharax
-- **Twitter**: https://twitter.com/nakharax-io
+- **Twitter**: https://twitter.com/nakharax
 
 ---
 

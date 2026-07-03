@@ -23,7 +23,7 @@ ssh root@abc123.runpod.io -p 22456 -i ~/. ssh/id_ed25519_runpod
 ### 3. Run Setup Script
 ```bash
 # Download and run setup script
-wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/axionaxprotocol/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 chmod +x setup-runpod-worker.sh
 ./setup-runpod-worker.sh
 ```

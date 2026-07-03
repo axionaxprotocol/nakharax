@@ -38,7 +38,7 @@ $ErrorActionPreference = 'Stop'
 # Ordered replacements. MOST-SPECIFIC FIRST.
 $domainFirst = @(
     @{ From = 'nakharax.io';     To = 'nakharax.io' },
-    @{ From = 'nakharax-io'; To = 'nakharax-io' }   # GitHub org (rename the repo to match)
+    @{ From = 'axionaxprotocol'; To = 'axionaxprotocol' }   # GitHub org (rename the repo to match)
 )
 $generic = @(
     @{ From = 'NAKHARAX'; To = 'NAKHARAX' },   # env-var prefix, RUST_LOG, etc.

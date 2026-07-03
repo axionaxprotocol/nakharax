@@ -2,7 +2,7 @@
 
 How to add **Nakharax Testnet** and the **NAK** token in MetaMask, Rabby, Coinbase Wallet, and similar wallets.
 
-**Web UI guide (with Add Token button):** [nakharax → Add Token to MetaMask](https://github.com/nakharax-io/nakharax/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
+**Web UI guide (with Add Token button):** [nakharax → Add Token to MetaMask](https://github.com/axionaxprotocol/nakharax/blob/main/apps/docs/ADD_TOKEN_TO_METAMASK.md)
 
 ---
 
@@ -76,7 +76,7 @@ A zero balance is resolved by **receiving from the Faucet** only. The "Add funds
 
 ### Option 1: Web Faucet (recommended)
 
-1. Open the **official Faucet** (from [nakharax](https://github.com/nakharax-io/nakharax)):
+1. Open the **official Faucet** (from [nakharax](https://github.com/axionaxprotocol/nakharax)):
    - **https://faucet.nakharax.io**
 2. **Copy your wallet address** from MetaMask (click "Account 1" or the address at the top → Copy).
 3. Paste the address into the Faucet page → click Request / Claim.

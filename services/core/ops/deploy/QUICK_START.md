@@ -4,7 +4,7 @@
 
 **nakharax-deploy** is a deployment and infrastructure repository for deploying nakharax protocol nodes, monitoring, and infrastructure management
 
-**Repository:** https://github.com/nakharax-io/nakharax-deploy
+**Repository:** https://github.com/axionaxprotocol/nakharax-deploy
 
 ---
 
@@ -36,7 +36,7 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-deploy.git
+git clone https://github.com/axionaxprotocol/nakharax-deploy.git
 cd nakharax-deploy
 ```
 
@@ -404,7 +404,7 @@ aws s3 sync /data/nakharax s3://nakharax-backups/
 ```bash
 # Clone and build nakharax-core
 cd ..
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 cargo build --release
 
@@ -586,9 +586,9 @@ services:
 
 ## 🤝 Getting Help
 
-- **Issues:** Report issues on [GitHub Issues](https://github.com/nakharax-io/nakharax-deploy/issues)
-- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
-- **Core Node:** See [nakharax-core](https://github.com/nakharax-io/nakharax)
+- **Issues:** Report issues on [GitHub Issues](https://github.com/axionaxprotocol/nakharax-deploy/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/axionaxprotocol/nakharax-docs)
+- **Core Node:** See [nakharax-core](https://github.com/axionaxprotocol/nakharax)
 
 ---
 

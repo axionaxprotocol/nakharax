@@ -214,7 +214,7 @@ services:
       SUPPORTED_CHAINS: '[{"title":"nakharax Testnet","url":"https://$DOMAIN"}]'
       
       # Social links
-      FOOTER_GITHUB_LINK: 'https://github.com/nakharax-io'
+      FOOTER_GITHUB_LINK: 'https://github.com/axionaxprotocol'
       FOOTER_TWITTER_LINK: 'https://twitter.com/nakharax'
       FOOTER_TELEGRAM_LINK: 'https://t.me/nakharax'
       

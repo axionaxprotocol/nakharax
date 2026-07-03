@@ -132,7 +132,7 @@ chmod 755 "$DATA_DIR"
 NAKHARAX_HOME="/home/nakharax/nakharax"
 if [ ! -d "$NAKHARAX_HOME" ]; then
   echo -e "${BLUE}[6/8]${NC} Cloning nakharax repository..."
-  sudo -u nakharax git clone https://github.com/nakharax-io/nakharax.git "$NAKHARAX_HOME"
+  sudo -u nakharax git clone https://github.com/axionaxprotocol/nakharax.git "$NAKHARAX_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating nakharax repository..."
   cd "$NAKHARAX_HOME"

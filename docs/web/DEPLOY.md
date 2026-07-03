@@ -43,7 +43,7 @@ No file upload from your machine — on VPS just clone repo and build there:
 
    ```bash
    export APP_DIR=/opt/nakharax
-   git clone https://github.com/nakharax-io/nakharax.git $APP_DIR
+   git clone https://github.com/axionaxprotocol/nakharax.git $APP_DIR
    cd $APP_DIR
    pnpm install --frozen-lockfile
    pnpm --filter @nakharax/blockchain-utils build

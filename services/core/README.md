@@ -4,9 +4,9 @@
 
 ### Blockchain Core Only — High-Performance Protocol · DeAI · DePIN
 
-> **Scope:** This repository is the **blockchain core** of Nakharax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakharax](https://github.com/nakharax-io/nakharax)).
+> **Scope:** This repository is the **blockchain core** of Nakharax Protocol only. Frontend, website, marketplace, and SDK live in separate repositories (e.g. [nakharax](https://github.com/axionaxprotocol/nakharax)).
 
-[![CI](https://github.com/nakharax-io/nakharax/actions/workflows/ci.yml/badge.svg)](https://github.com/nakharax-io/nakharax/actions)
+[![CI](https://github.com/axionaxprotocol/nakharax/actions/workflows/ci.yml/badge.svg)](https://github.com/axionaxprotocol/nakharax/actions)
 [![License](https://img.shields.io/badge/License-AGPLv3%2FMIT-orange?style=flat-square)](#license)
 [![Rust](https://img.shields.io/badge/Rust-1.70%2B-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
@@ -14,7 +14,7 @@
 
 **PoPC Consensus** · **45,000+ TPS** · **<0.5s Finality** · **DeAI at the Edge**
 
-[Website](https://nakharax.io) · [Documentation](https://nakharax-io.github.io/nakharax-docs/) · [Web Universe](https://github.com/nakharax-io/nakharax)
+[Website](https://nakharax.io) · [Documentation](https://axionaxprotocol.github.io/nakharax-docs/) · [Web Universe](https://github.com/axionaxprotocol/nakharax)
 
 </div>
 
@@ -58,7 +58,7 @@
 ### 1. Clone & Update
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 python3 scripts/update-node.py
 ```
@@ -189,7 +189,7 @@ cp core/deai/.env.example core/deai/.env
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 python3 scripts/update-node.py --full-deps
 
@@ -384,13 +384,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related Projects (separate repositories)
 
-- [**nakharax Web Universe**](https://github.com/nakharax-io/nakharax) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
+- [**nakharax Web Universe**](https://github.com/axionaxprotocol/nakharax) — Frontend, SDK, Docs & Marketplace (website hosting and UI are done there; this repo is core only)
 
 ---
 
 ## Support
 
-[Website](https://nakharax.io) · [Docs](https://nakharax-io.github.io/nakharax-docs/) · [Issues](https://github.com/nakharax-io/nakharax/issues)
+[Website](https://nakharax.io) · [Docs](https://axionaxprotocol.github.io/nakharax-docs/) · [Issues](https://github.com/axionaxprotocol/nakharax/issues)
 
 ---
 
@@ -398,7 +398,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 **Built by the Nakharax Protocol Team**
 
-*Part of the* [*Nakharax Universe*](https://github.com/nakharax-io)
+*Part of the* [*Nakharax Universe*](https://github.com/axionaxprotocol)
 
 </div>
 

@@ -686,4 +686,4 @@ const pricing = await web3.currentProvider.send('axn_getPricingInfo', []);
 
 - [Testnet Integration Guide](../web/web-integration/JOIN_TESTNET.md)
 - [Architecture Overview](../architecture/NAKHARAX_PROTOCOL.md)
-- [GitHub Repository](https://github.com/nakharax-io/nakharax)
+- [GitHub Repository](https://github.com/axionaxprotocol/nakharax)

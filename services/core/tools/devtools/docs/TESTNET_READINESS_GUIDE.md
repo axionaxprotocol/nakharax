@@ -297,7 +297,7 @@ If critical issues are discovered post-launch:
 - Deployment: `nakharax-docs/VPS_VALIDATOR_SETUP.md`
 
 ### Contact
-- GitHub: https://github.com/nakharax-io
+- GitHub: https://github.com/axionaxprotocol
 - Discord: (coming soon)
 - Email: (coming soon)
 

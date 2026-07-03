@@ -139,7 +139,7 @@ Write-Host ''
 
 Write-Host '10. Checking GitHub Repositories...'
 @('nakharax', 'nakharax') | ForEach-Object {
-    $status = Get-HttpStatusCode ('https://api.github.com/repos/nakharax-io/' + $_)
+    $status = Get-HttpStatusCode ('https://api.github.com/repos/axionaxprotocol/' + $_)
     if ($status -eq 200) { Check-Pass ('Repository accessible: ' + $_) } else { Check-Warn ('Repository not accessible: ' + $_) }
 }
 Write-Host ''

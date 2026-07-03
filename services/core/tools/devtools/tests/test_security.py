@@ -193,7 +193,7 @@ class TestDocumentationQuality(unittest.TestCase):
             
             # Should have GitHub links
             self.assertIn('github.com', content)
-            self.assertIn('nakharax-io', content)
+            self.assertIn('axionaxprotocol', content)
             
     def test_no_broken_markdown_links(self):
         """Test that there are no obviously broken markdown links"""

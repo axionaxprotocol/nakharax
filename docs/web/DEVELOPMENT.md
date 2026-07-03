@@ -7,7 +7,7 @@
 | Repo                                                                                  | Role                                                             |
 | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | **nakharax** (this repo)                                                  | Frontend (Next.js, Marketplace), SDK, Faucet API, docs           |
-| **[nakharax](https://github.com/nakharax-io/nakharax)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
+| **[nakharax](https://github.com/axionaxprotocol/nakharax)** | **Backend**: blockchain node, validators (EU/AU), consensus, ops |
 
 Validator node setup, persistence, Docker/volume config, and chain data live in **nakharax**. This repo only connects to validators via RPC (e.g. 217.216.109.5, 46.250.244.4).
 
@@ -27,7 +27,7 @@ Validator node setup, persistence, Docker/volume config, and chain data live in 
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 
 # Install dependencies
@@ -68,7 +68,7 @@ pnpm dev
 
 #### 🐳 Full Stack (Local Blockchain)
 
-Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [nakharax](https://github.com/nakharax-io/nakharax) to `./core-universe` and uncomment the `nakharax-node` service in `docker-compose.dev.yml`.
+Requires Node + DB + Redis + Web/Marketplace. For a local blockchain node, clone [nakharax](https://github.com/axionaxprotocol/nakharax) to `./core-universe` and uncomment the `nakharax-node` service in `docker-compose.dev.yml`.
 
 ```bash
 # Start services (web, DB, Redis, Prometheus, Grafana, Adminer)
@@ -95,7 +95,7 @@ Core (blockchain node) is in a separate repository. For local node development:
 
 ```bash
 # Clone core repo (optional, for full-stack local dev)
-git clone https://github.com/nakharax-io/nakharax.git core-universe
+git clone https://github.com/axionaxprotocol/nakharax.git core-universe
 cd nakharax/services/core/core
 
 # Build & run
@@ -194,7 +194,7 @@ Chain ID: `86137` (0x15079)
 
 ### 8. Validator node persistence (EU/AU)
 
-Validator nodes (EU/AU) run from the **backend repo [nakharax](https://github.com/nakharax-io/nakharax)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
+Validator nodes (EU/AU) run from the **backend repo [nakharax](https://github.com/axionaxprotocol/nakharax)**. All node config, data paths, Docker/volumes, and restart procedures are documented there.
 
 If you restart a validator and its **block height drops to a low number** (e.g. ~29 while the other is at 800k+), the node is starting from a fresh chain because **chain data was not persisted**.
 
@@ -208,11 +208,11 @@ If you restart a validator and its **block height drops to a low number** (e.g. 
 
 - [Web README](../apps/web/README.md)
 - [Marketplace README](../apps/marketplace/README.md)
-- [Core Universe](https://github.com/nakharax-io/nakharax) (separate repo)
+- [Core Universe](https://github.com/axionaxprotocol/nakharax) (separate repo)
 - [SDK README](../packages/sdk/README.md)
 
 ## 🔗 Links
 
 - **Website**: https://nakharax.io
 - **Explorer**: https://nakharax.io/explorer
-- **GitHub**: https://github.com/nakharax-io
+- **GitHub**: https://github.com/axionaxprotocol

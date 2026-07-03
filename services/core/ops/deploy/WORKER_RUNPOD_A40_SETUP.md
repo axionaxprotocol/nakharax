@@ -175,7 +175,7 @@ EOF
 ```bash
 # Download setup script
 cd ~
-wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
+wget https://raw.githubusercontent.com/axionaxprotocol/nakharax/services/core/main/ops/deploy/scripts/setup-runpod-worker.sh
 
 # Make executable
 chmod +x setup-runpod-worker.sh
@@ -212,7 +212,7 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 ```
 

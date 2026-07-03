@@ -9,7 +9,7 @@ x-logging: &default-logging
 services:
   # Self-sufficient/air-gapped: remove the two --telemetry lines below so the node does not depend on any external URL
   validator:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/nakharax-io}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -38,7 +38,7 @@ services:
     logging: *default-logging
 
   rpc:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/nakharax-io}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -59,7 +59,7 @@ services:
     logging: *default-logging
 
   bootnode:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/nakharax-io}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     ulimits:
       nofile: { soft: 65536, hard: 65536 }
@@ -124,7 +124,7 @@ services:
     logging: *default-logging
 
   faucet:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/nakharax-io}/faucet:${FAUCET_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/faucet:${FAUCET_TAG:-latest}
     restart: unless-stopped
     env_file:
       - faucet.env

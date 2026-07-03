@@ -219,7 +219,7 @@ echo "10. Checking GitHub Repositories..."
 
 check_repo() {
     local repo=$1
-    if curl -f -s -o /dev/null -w "%{http_code}" "https://api.github.com/repos/nakharax-io/$repo" | grep -q "200"; then
+    if curl -f -s -o /dev/null -w "%{http_code}" "https://api.github.com/repos/axionaxprotocol/$repo" | grep -q "200"; then
         check_pass "Repository accessible: $repo"
     else
         check_warn "Repository not accessible: $repo"

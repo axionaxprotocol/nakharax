@@ -27,7 +27,7 @@ Instead, please use one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 
-1. Go to the [Security tab](https://github.com/nakharax-io/nakharax/security)
+1. Go to the [Security tab](https://github.com/axionaxprotocol/nakharax/security)
 2. Click "Report a vulnerability"
 3. Fill out the form with details
 

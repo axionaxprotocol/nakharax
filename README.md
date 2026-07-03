@@ -76,7 +76,7 @@ NPU acceleration (Hailo-8) is optional but recommended for AI-task workers.
 
 ```bash
 # 1. Clone with submodules / from monolith
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 
 # 2. Bring up the full dev stack (node + validator + faucet + explorer + grafana)

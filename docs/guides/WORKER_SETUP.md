@@ -76,7 +76,7 @@ This guide covers setting up a worker node on the Nakharax Compute Marketplace. 
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax/services/core
 
 # Install Python dependencies

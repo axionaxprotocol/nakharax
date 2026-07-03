@@ -263,7 +263,7 @@ await staking.claimRewards();
 - **Explorer**: http://rpc.nakharax.io:3000/explorer
 - **RPC Endpoint**: https://rpc.nakharax.io
 - **Chain ID**: 86137
-- **Documentation**: https://github.com/nakharax-io/nakharax-docs
+- **Documentation**: https://github.com/axionaxprotocol/nakharax-docs
 
 ---
 

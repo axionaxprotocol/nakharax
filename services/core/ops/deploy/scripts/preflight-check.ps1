@@ -117,7 +117,7 @@ scp -r nakharax-deploy root@${VPS_IP}:/opt/
 
 # OR clone from GitHub (on VPS)
 cd /opt
-git clone https://github.com/nakharax-io/nakharax-deploy.git
+git clone https://github.com/axionaxprotocol/nakharax-deploy.git
 cd nakharax-deploy
 
 # Setup

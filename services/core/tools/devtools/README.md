@@ -57,15 +57,15 @@ the **nakharax protocol** ecosystem.
 
 These tools support the entire nakharax protocol development workflow:
 
-- **Protocol Core**: [`nakharax-core`](https://github.com/nakharax-io/nakharax) - Main development target
-- **Web Interface**: [`nakharax-web`](https://github.com/nakharax-io/nakharax-web) - Frontend development & testing
-- **SDK**: [`nakharax-sdk-ts`](https://github.com/nakharax-io/nakharax-sdk-ts) - SDK testing & validation
-- **Marketplace**: [`nakharax-marketplace`](https://github.com/nakharax-io/nakharax-marketplace) - dApp testing
-- **Documentation**: [`nakharax-docs`](https://github.com/nakharax-io/nakharax-docs) - Doc link validation
-- **Deployment**: [`nakharax-deploy`](https://github.com/nakharax-io/nakharax-deploy) - Infrastructure testing
-- **Issue Manager**: [`issue-manager`](https://github.com/nakharax-io/issue-manager) - Task automation
+- **Protocol Core**: [`nakharax-core`](https://github.com/axionaxprotocol/nakharax) - Main development target
+- **Web Interface**: [`nakharax-web`](https://github.com/axionaxprotocol/nakharax-web) - Frontend development & testing
+- **SDK**: [`nakharax-sdk-ts`](https://github.com/axionaxprotocol/nakharax-sdk-ts) - SDK testing & validation
+- **Marketplace**: [`nakharax-marketplace`](https://github.com/axionaxprotocol/nakharax-marketplace) - dApp testing
+- **Documentation**: [`nakharax-docs`](https://github.com/axionaxprotocol/nakharax-docs) - Doc link validation
+- **Deployment**: [`nakharax-deploy`](https://github.com/axionaxprotocol/nakharax-deploy) - Infrastructure testing
+- **Issue Manager**: [`issue-manager`](https://github.com/axionaxprotocol/issue-manager) - Task automation
 
-**GitHub Organization**: https://github.com/nakharax-io
+**GitHub Organization**: https://github.com/axionaxprotocol
 
 **Pre-Testnet Status:** All testing tools operational, active test execution phase
 

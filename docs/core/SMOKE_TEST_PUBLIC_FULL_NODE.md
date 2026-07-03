@@ -20,7 +20,7 @@ If bootstrap list is empty, stop and publish bootstrap values first.
 ## 2) Run from scratch
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 
 export NAKHARAX_BOOTSTRAP_NODES="$(grep -v '^#' docs/PUBLIC_TESTNET_BOOTSTRAPS.txt | grep '/ip4/' | paste -sd, -)"

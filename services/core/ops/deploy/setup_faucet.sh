@@ -141,7 +141,7 @@ chown -R faucet:faucet "$DATA_DIR"
 FAUCET_HOME="/home/faucet/nakharax-core"
 if [ ! -d "$FAUCET_HOME" ]; then
   echo -e "${BLUE}[6/8]${NC} Cloning nakharax repository..."
-  sudo -u faucet git clone https://github.com/nakharax-io/nakharax.git "$FAUCET_HOME"
+  sudo -u faucet git clone https://github.com/axionaxprotocol/nakharax.git "$FAUCET_HOME"
 else
   echo -e "${BLUE}[6/8]${NC} Updating repository..."
   cd "$FAUCET_HOME"

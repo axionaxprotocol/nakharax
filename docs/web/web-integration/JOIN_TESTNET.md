@@ -402,7 +402,7 @@ cast estimate \
 ### หาความช่วยเหลือ
 
 - **Discord**: https://discord.gg/nakharax (ช่อง #testnet-support)
-- **GitHub Issues**: https://github.com/nakharax-io/nakharax/issues
+- **GitHub Issues**: https://github.com/axionaxprotocol/nakharax/issues
 - **Twitter**: https://twitter.com/nakharax (@nakharax)
 - **Email**: support@nakharax.io
 
@@ -430,11 +430,11 @@ cast estimate \
 2. **สำรวจ Ecosystem**
    - Marketplace: https://marketplace.nakharax.io
    - Documentation: https://docs.nakharax.io
-   - GitHub: https://github.com/nakharax-io
+   - GitHub: https://github.com/axionaxprotocol
 
 3. **ร่วมพัฒนา**
    - อ่าน [Contributing Guide](./CONTRIBUTING.md)
-   - ดู [Good First Issues](https://github.com/nakharax-io/nakharax/labels/good%20first%20issue)
+   - ดู [Good First Issues](https://github.com/axionaxprotocol/nakharax/labels/good%20first%20issue)
    - เข้า Developer Channel บน Discord
 
 ---

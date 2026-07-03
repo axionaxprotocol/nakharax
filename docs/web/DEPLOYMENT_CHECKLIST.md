@@ -905,8 +905,8 @@ Deployment completed successfully. Performance improvements observed due to opti
 
 ## Links
 
-- Release notes: https://github.com/nakharax-io/nakharax/releases/tag/v1.8.0
-- PR: https://github.com/nakharax-io/nakharax/pull/123
+- Release notes: https://github.com/axionaxprotocol/nakharax/releases/tag/v1.8.0
+- PR: https://github.com/axionaxprotocol/nakharax/pull/123
 ```
 
 ---

@@ -89,7 +89,7 @@ authors = ["nakharax protocol Team <team@nakharax.io>"]
 edition = "2021"
 rust-version = "1.83"
 license = "MIT"
-repository = "https://github.com/nakharax-io/nakharax"
+repository = "https://github.com/axionaxprotocol/nakharax"
 homepage = "https://nakharax.io"
 documentation = "https://docs.nakharax.io"
 

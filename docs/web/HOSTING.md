@@ -37,7 +37,7 @@ Verify: `node -v` (v20.x), `pnpm -v`, `git --version`
 ```bash
 # Clone (or use single script below)
 export APP_DIR=/opt/nakharax
-git clone --depth 1 -b main https://github.com/nakharax-io/nakharax.git $APP_DIR
+git clone --depth 1 -b main https://github.com/axionaxprotocol/nakharax.git $APP_DIR
 cd $APP_DIR
 
 # Install + Build (build packages first — web uses @nakharax/sdk, @nakharax/blockchain-utils)

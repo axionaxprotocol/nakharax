@@ -204,7 +204,7 @@ const handleAddToken = async () => {
 หากยังมีปัญหา กรุณาติดต่อ:
 
 - **Discord**: [Nakharax Community](https://discord.gg/nakharax)
-- **GitHub Issues**: [nakharax](https://github.com/nakharax-io/nakharax/issues)
+- **GitHub Issues**: [nakharax](https://github.com/axionaxprotocol/nakharax/issues)
 - **Email**: support@nakharax.io
 
 ---

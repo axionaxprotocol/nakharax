@@ -382,7 +382,7 @@ For a containerized development environment without installing dependencies:
 
 ```bash
 # Clone repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 
 # Build Docker image
@@ -473,7 +473,7 @@ pip install jupyter>=1.0.0                # Notebooks
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 
 # 2. Build Rust components
@@ -600,6 +600,6 @@ wsl sudo service redis-server start
 ## 💬 Support
 
 Need help? 
-- Check [GitHub Issues](https://github.com/nakharax-io/nakharax/issues)
+- Check [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues)
 - Join our [Discord](https://discord.gg/nakharax)
 - Read [Documentation](https://docs.nakharax.io)

@@ -52,7 +52,7 @@ cd ops\deploy
 
 | Action | Command/Notes |
 |--------|---------------|
-| **Pull latest image** | If running with Docker: `docker pull ghcr.io/nakharax-io/nakharax-core:latest` then `docker compose -f docker-compose.vps.yml up -d rpc-node` (or restart rpc-node) |
+| **Pull latest image** | If running with Docker: `docker pull ghcr.io/axionaxprotocol/nakharax-core:latest` then `docker compose -f docker-compose.vps.yml up -d rpc-node` (or restart rpc-node) |
 | **Update OS** | `sudo apt update && sudo apt upgrade -y` (choose a time with low traffic) |
 
 ---

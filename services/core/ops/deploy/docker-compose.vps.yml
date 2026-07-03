@@ -11,7 +11,7 @@
 services:
   # Testnet Faucet (behind nginx — not exposed directly)
   faucet:
-    image: ghcr.io/nakharax-io/nakharax-faucet:latest
+    image: ghcr.io/axionaxprotocol/nakharax-faucet:latest
     pull_policy: never
     container_name: nakharax-faucet
     restart: unless-stopped

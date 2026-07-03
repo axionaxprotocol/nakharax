@@ -75,10 +75,10 @@ gcloud compute ssh nakharax-worker-1 --zone=us-central1-a
 
 ```bash
 # Download script
-wget https://raw.githubusercontent.com/nakharax-io/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
+wget https://raw.githubusercontent.com/axionaxprotocol/nakharax/services/core/main/ops/deploy/scripts/setup-gcp-worker.sh
 
 # Or if the repo is not yet public
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax/services/core/ops/deploy/scripts
 chmod +x setup-gcp-worker.sh
 ```

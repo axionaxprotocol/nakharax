@@ -36,7 +36,7 @@ $repos = @(
     "nakharax-sdk-ts",
     "nakharax-web",
     "nakharax-phase1",
-    "nakharax-io",
+    "axionaxprotocol",
     "issue-manager"
 )
 
@@ -77,7 +77,7 @@ foreach ($repo in $repos) {
 Write-Host "`n[2] Testing Cross-Repository Links..." -ForegroundColor Yellow
 
 $repoFolders = Get-ChildItem $PSScriptRoot -Directory | Where-Object { 
-    $_.Name -match '^nakharax-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'nakharax-io'
+    $_.Name -match '^nakharax-' -or $_.Name -eq 'issue-manager' -or $_.Name -eq 'axionaxprotocol'
 }
 
 foreach ($repo in $repoFolders) {
@@ -178,7 +178,7 @@ if (Test-Path $webPath) {
         $content = Get-Content $indexPath -Raw
         
         # Count GitHub links
-        $githubLinks = ([regex]::Matches($content, 'github\.com/nakharax-io')).Count
+        $githubLinks = ([regex]::Matches($content, 'github\.com/axionaxprotocol')).Count
         Write-Host "       Found $githubLinks GitHub repository links" -ForegroundColor Gray
         
         # Check for branding

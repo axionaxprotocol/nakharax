@@ -15,7 +15,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax.git
+   Remote: https://github.com/axionaxprotocol/nakharax.git
    Last Commit: a6c4d4ed - Upgrade to v1.8.0: ARCHITECTURE v1.5 compliance
 
 📄 Package.json:
@@ -47,7 +47,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-web.git
+   Remote: https://github.com/axionaxprotocol/nakharax-web.git
    Last Commit: 1eee1ff - Add real-time stats from Explorer API - Update Statistics component to fetch live data every 5s - Add /api/stats endpoint to Explorer API - Display real block height, service count, and uptime
 
 📄 Package.json:
@@ -77,7 +77,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-sdk-ts.git
+   Remote: https://github.com/axionaxprotocol/nakharax-sdk-ts.git
    Last Commit: 13b0512 - docs: add QUICK_START guide for developers [Local dev]
 
 📄 Package.json:
@@ -102,7 +102,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-marketplace.git
+   Remote: https://github.com/axionaxprotocol/nakharax-marketplace.git
    Last Commit: 8d2acf4 - docs: add QUICK_START guide for developers [Local dev]
 
 📄 Package.json:
@@ -122,7 +122,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-docs.git
+   Remote: https://github.com/axionaxprotocol/nakharax-docs.git
    Last Commit: 1613248 - Update documentation to v1.8.0
 
 📖 README.md:
@@ -140,7 +140,7 @@ Total Connections Found: 35
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-deploy.git
+   Remote: https://github.com/axionaxprotocol/nakharax-deploy.git
    Last Commit: feca95a - Deploy working Mock RPC and Grafana - Add complete Node.js Mock RPC with 15+ Ethereum methods - Deploy Grafana v12.2.1 on port 3030 - Create nakharax-overview dashboard - Chain ID 86137, block auto-increment, WebSocket support
 
 📄 Package.json:
@@ -160,14 +160,14 @@ Total Connections Found: 35
      - nakharax-devtools: 2 mention(s)
 
 🔗 Import Statements (1 found):
-     wget https://raw.githubusercontent.com/nakharax-io/nakharax-deploy/main/genesis.json
+     wget https://raw.githubusercontent.com/axionaxprotocol/nakharax-deploy/main/genesis.json
 
 
 ### NAKHARAX-DEVTOOLS
 ----------------------------------------
 ✅ Status: EXISTS
    Branch: main
-   Remote: https://github.com/nakharax-io/nakharax-devtools.git
+   Remote: https://github.com/axionaxprotocol/nakharax-devtools.git
    Last Commit: 514dc1d - docs: add QUICK_START guide for developers [Local dev]
 
 📖 README.md:

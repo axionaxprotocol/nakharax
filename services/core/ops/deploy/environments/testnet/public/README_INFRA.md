@@ -38,7 +38,7 @@ Example env for a second region (copy `rpc.env` to `rpc-au.env` and set `REGION=
 ```yaml
 # In docker-compose: add
   rpc-au:
-    image: ${CONTAINER_REGISTRY:-ghcr.io/nakharax-io}/core:${CORE_TAG:-latest}
+    image: ${CONTAINER_REGISTRY:-ghcr.io/axionaxprotocol}/core:${CORE_TAG:-latest}
     restart: unless-stopped
     command: [ "nakharax-node", "--role", "rpc", "--chain", "/genesis/testnet.json", "--rpc", "0.0.0.0:8545", "" ]
     env_file: [ rpc-au.env ]
@@ -58,7 +58,7 @@ If the explorer API does not respond, see [TESTNET_DEPLOYMENT_PLAN](../../../too
 
 ## Faucet
 
-- **Image:** `ghcr.io/nakharax-io/faucet:latest` (build from `core/` with `ops/deploy/Dockerfile.faucet` if needed).
+- **Image:** `ghcr.io/axionaxprotocol/faucet:latest` (build from `core/` with `ops/deploy/Dockerfile.faucet` if needed).
 - **Config:** `faucet.env` — **must set** `FAUCET_PRIVATE_KEY` (hex) for sending NAK.  
   Template: `cp faucet.env.example faucet.env` then edit (file is gitignored).
 - **Endpoints:** Health/info and request endpoints per faucet docs.

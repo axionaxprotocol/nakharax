@@ -4,7 +4,7 @@
 
 **nakharax-devtools** is a collection of development tools and testing utilities for the nakharax protocol, including scripts for testing, refactoring, fixing, and analysis
 
-**Repository:** https://github.com/nakharax-io/nakharax-devtools
+**Repository:** https://github.com/axionaxprotocol/nakharax-devtools
 
 ---
 
@@ -29,7 +29,7 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax-devtools.git
+git clone https://github.com/axionaxprotocol/nakharax-devtools.git
 cd nakharax-devtools
 ```
 
@@ -632,14 +632,14 @@ export DEBUG=1
 - **Main README:** [README.md](README.md)
 - **Refactoring Guide:** [docs/REFACTORING_GUIDE.md](docs/REFACTORING_GUIDE.md)
 - **Integration Summary:** [docs/INTEGRATION_SUMMARY.md](docs/INTEGRATION_SUMMARY.md)
-- **nakharax Docs:** [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
+- **nakharax Docs:** [nakharax-docs](https://github.com/axionaxprotocol/nakharax-docs)
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakharax-io/nakharax-devtools/issues)
-- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/axionaxprotocol/nakharax-devtools/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/axionaxprotocol/nakharax-docs)
 - **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---

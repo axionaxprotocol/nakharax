@@ -19,7 +19,7 @@ if [ -d "nakharax" ]; then
     git pull
 else
     echo "Cloning nakharax..."
-    git clone https://github.com/nakharax-io/nakharax.git
+    git clone https://github.com/axionaxprotocol/nakharax.git
     cd nakharax
 fi
 

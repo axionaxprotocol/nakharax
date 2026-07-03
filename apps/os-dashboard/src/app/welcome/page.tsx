@@ -90,7 +90,7 @@ export default function WelcomePage() {
         <footer className="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-widest text-zinc-500">
           <div>© {new Date().getFullYear()} NAKHARAX_FOUNDATION. STRICTLY CONFIDENTIAL.</div>
           <div className="flex gap-4">
-            <Link href="https://github.com/nakharax-io/nakharax" className="hover:text-zinc-300">GITHUB</Link>
+            <Link href="https://github.com/axionaxprotocol/nakharax" className="hover:text-zinc-300">GITHUB</Link>
             <Link href="/docs" className="hover:text-zinc-300">DOCS</Link>
             <Link href="/apps/propsentinel" className="hover:text-zinc-300">RISK_ENGINE</Link>
           </div>

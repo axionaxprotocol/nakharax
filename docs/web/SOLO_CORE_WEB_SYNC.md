@@ -28,6 +28,6 @@ If you start missing sync steps or forget which core revision matches production
 
 ## Links
 
-- Core repo: https://github.com/nakharax-io/nakharax  
+- Core repo: https://github.com/axionaxprotocol/nakharax  
 - Parameter map: [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md)  
 - Dev setup: [DEVELOPMENT.md](DEVELOPMENT.md)

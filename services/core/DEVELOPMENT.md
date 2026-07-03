@@ -12,7 +12,7 @@
 
 ```bash
 # Clone with submodules
-git clone --recursive https://github.com/nakharax-io/nakharax.git
+git clone --recursive https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 
 # Or if already cloned, init submodules
@@ -204,7 +204,7 @@ docker-compose -f monitoring/docker-compose.yaml up -d
 
 - **Website**: https://nakharax.io
 - **Explorer**: https://nakharax.io/explorer
-- **GitHub**: https://github.com/nakharax-io
+- **GitHub**: https://github.com/axionaxprotocol
 
 ---
 

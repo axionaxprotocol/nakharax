@@ -111,7 +111,7 @@ docker build \
   --no-cache \
   -f "$DOCKERFILE" \
   -t nakharax-node:latest \
-  -t ghcr.io/nakharax-io/core:latest \
+  -t ghcr.io/axionaxprotocol/core:latest \
   "${CORE_DIR}"
 
 

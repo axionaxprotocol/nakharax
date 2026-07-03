@@ -264,7 +264,7 @@ Edit the script to adjust:
 
 - 📖 **Full Guide:** [TESTNET_READINESS_GUIDE.md](../../TESTNET_READINESS_GUIDE.md)
 - 📋 **Quick Reference:** [TESTNET_READINESS_QUICK_REF.md](../../TESTNET_READINESS_QUICK_REF.md)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/nakharax-io/nakharax-devtools/issues)
+- 🐛 **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/nakharax-devtools/issues)
 
 ## Version History
 

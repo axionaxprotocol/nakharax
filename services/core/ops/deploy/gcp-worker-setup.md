@@ -155,7 +155,7 @@ python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}');
 ```bash
 # Clone repository
 cd ~
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 
 # Build core

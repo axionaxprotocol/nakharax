@@ -7,10 +7,10 @@
   "homepage": "https://nakharax.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nakharax-io/nakharax-sdk-ts.git"
+    "url": "https://github.com/axionaxprotocol/nakharax-sdk-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/nakharax-io/nakharax-sdk-ts/issues"
+    "url": "https://github.com/axionaxprotocol/nakharax-sdk-ts/issues"
   },
   "scripts": {
     "build": "tsc",

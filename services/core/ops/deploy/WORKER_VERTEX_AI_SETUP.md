@@ -148,7 +148,7 @@ cargo --version
 ```bash
 # Clone repo
 cd ~
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax
 ```
 

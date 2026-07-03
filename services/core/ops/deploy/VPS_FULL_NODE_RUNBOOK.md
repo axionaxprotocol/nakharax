@@ -43,7 +43,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source "$HOME/.cargo/env"
 
 # 2. Clone และ build
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax/services/core/core
 cargo build --release -p node
 
@@ -134,11 +134,11 @@ sudo systemctl status nakharax-node
 
 ## วิธีที่ 2: Docker
 
-ถ้ามี image `ghcr.io/nakharax-io/nakharax-core:latest`:
+ถ้ามี image `ghcr.io/axionaxprotocol/nakharax-core:latest`:
 
 ```bash
 # โคลนเพื่อเอา config / script
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax/services/core/ops/deploy
 
 # รันแค่ RPC node (จาก docker-compose.vps.yml)

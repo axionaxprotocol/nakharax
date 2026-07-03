@@ -324,7 +324,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 ## 📞 Support & Communication
 
 ### Development Team Channels
-- **GitHub**: https://github.com/nakharax-io/nakharax
+- **GitHub**: https://github.com/axionaxprotocol/nakharax
 - **Issues**: Track progress and bugs
 - **Discussions**: Technical Q&A
 - **Pull Requests**: Code review process

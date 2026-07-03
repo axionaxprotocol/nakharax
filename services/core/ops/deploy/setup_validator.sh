@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 # Configuration
 NAKHARAX_USER="nakharax"
 NAKHARAX_HOME="/home/$NAKHARAX_USER/.nakharax"
-REPO_URL="https://github.com/nakharax-io/nakharax.git"
+REPO_URL="https://github.com/axionaxprotocol/nakharax.git"
 REPO_DIR="nakharax"
 BRANCH="main"
 

@@ -339,7 +339,7 @@ nakharax-core governance vote \
 
 - **Forum**: https://forum.nakharax.io
 - **Discord #governance**: https://discord.gg/nakharax
-- **Twitter**: @nakharax-io
+- **Twitter**: @nakharax
 - **Governance Dashboard**: https://gov.nakharax.io
 - **Snapshot**: https://snapshot.org/#/nakharax.eth
 
@@ -373,7 +373,7 @@ nakharax-core governance vote \
 - [Governance Portal](https://gov.nakharax.io)
 - [How to Vote Guide](https://docs.nakharax.io/governance/voting)
 - [Parameter Descriptions](https://docs.nakharax.io/governance/parameters)
-- [Proposal Templates](https://github.com/nakharax-io/governance-proposals)
+- [Proposal Templates](https://github.com/axionaxprotocol/governance-proposals)
 
 ### Tools
 

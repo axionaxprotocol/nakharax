@@ -340,9 +340,9 @@ However, **critical gaps remain** that must be addressed before testnet launch:
 - Deployment: `nakharax-web/deployment/README_DEPLOYMENT.md`
 
 ### Contact Information
-- **GitHub:** https://github.com/nakharax-io
+- **GitHub:** https://github.com/axionaxprotocol
 - **Website:** http://217.216.109.5 (temporary)
-- **Documentation:** https://nakharax-io.github.io/nakharax-docs/
+- **Documentation:** https://axionaxprotocol.github.io/nakharax-docs/
 
 ---
 

@@ -69,7 +69,7 @@ class TestGitIntegration(unittest.TestCase):
                 timeout=5
             )
             self.assertEqual(result.returncode, 0)
-            self.assertIn("nakharax-io", result.stdout)
+            self.assertIn("axionaxprotocol", result.stdout)
         except (subprocess.TimeoutExpired, FileNotFoundError):
             self.skipTest("Git not available or timeout")
             

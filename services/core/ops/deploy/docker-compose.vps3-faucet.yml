@@ -10,7 +10,7 @@ services:
     build:
       context: ../../
       dockerfile: ops/deploy/Dockerfile.faucet
-    image: ghcr.io/nakharax-io/nakharax-faucet:latest
+    image: ghcr.io/axionaxprotocol/nakharax-faucet:latest
     container_name: nakharax-testnet-faucet
     restart: unless-stopped
     ports:

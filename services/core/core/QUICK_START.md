@@ -4,7 +4,7 @@
 
 **nakharax-core** is a blockchain protocol core written in Rust with a DeAI (Decentralized AI) system written in Python
 
-**Repository:** https://github.com/nakharax-io/nakharax
+**Repository:** https://github.com/axionaxprotocol/nakharax
 
 ---
 
@@ -28,7 +28,7 @@
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nakharax-io/nakharax.git
+git clone https://github.com/axionaxprotocol/nakharax.git
 cd nakharax-core
 ```
 
@@ -456,19 +456,19 @@ pip install -r requirements.txt
 
 ## 📚 Additional Resources
 
-- **Main Documentation:** https://nakharax-io.github.io/nakharax-docs/
+- **Main Documentation:** https://axionaxprotocol.github.io/nakharax-docs/
 - **API Reference:** https://docs.nakharax.io/api
 - **Architecture Guide:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Issue Tracker:** https://github.com/nakharax-io/nakharax/issues
+- **Issue Tracker:** https://github.com/axionaxprotocol/nakharax/issues
 
 ---
 
 ## 🤝 Getting Help
 
-- **Issues:** Report bugs on [GitHub Issues](https://github.com/nakharax-io/nakharax/issues)
-- **Documentation:** Check [nakharax-docs](https://github.com/nakharax-io/nakharax-docs)
-- **Development Tools:** Use [nakharax-devtools](https://github.com/nakharax-io/nakharax-devtools)
+- **Issues:** Report bugs on [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues)
+- **Documentation:** Check [nakharax-docs](https://github.com/axionaxprotocol/nakharax-docs)
+- **Development Tools:** Use [nakharax-devtools](https://github.com/axionaxprotocol/nakharax-devtools)
 
 ---
 
