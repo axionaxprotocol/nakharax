@@ -20,17 +20,17 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Accent colors */
-  --accent-ai: #5eead4;
-  --accent-chain: #6366f1;
-  --accent-warn: #f59e0b;
+  --accent-ai: #29F06A;
+  --accent-chain: #22D3EE;
+  --accent-warn: #FF7A1A;
   --accent-danger: #EF4444;
-  --accent-ok: #22C55E;
+  --accent-ok: #29F06A;
 
   /* Default wallpaper: Deep Navy/Slate */
   --wp-base-from: #020617;
   --wp-base-to: #0F172A;
-  --wp-blob-1: rgba(34, 197, 94, 0.05); /* very subtle green */
-  --wp-blob-2: rgba(99, 102, 241, 0.05); /* very subtle indigo */
+  --wp-blob-1: rgba(41, 240, 106, 0.05); /* very subtle green */
+  --wp-blob-2: rgba(255, 122, 26, 0.035); /* very subtle orange */
   --wp-blob-3: rgba(14, 165, 233, 0.05); /* very subtle sky */
   --wp-blob-4: rgba(20, 184, 166, 0.05); /* very subtle teal */
 }
@@ -146,6 +146,24 @@ a:focus-visible,
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes protocol-sweep {
+  from { transform: translateX(-35%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  to { transform: translateX(135%); opacity: 0; }
+}
+
+@keyframes consensus-orbit {
+  from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+}
+
+@keyframes consensus-bar {
+  0% { transform: translateX(-100%); opacity: 0.25; }
+  35% { opacity: 0.9; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
 .animate-float { animation: float 4s ease-in-out infinite; }
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-slide-up { animation: slide-up 0.3s var(--ease-spring) both; }
@@ -210,6 +228,28 @@ a:focus-visible,
   .glow-teal { box-shadow: 0 0 16px rgba(94, 234, 212, 0.25); }
   .glow-indigo { box-shadow: 0 0 16px rgba(99, 102, 241, 0.20); }
   .glow-rose { box-shadow: 0 0 16px rgba(239, 68, 68, 0.20); }
+
+  .protocol-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 82%);
+  }
+
+  .protocol-sweep {
+    background: linear-gradient(90deg, transparent, rgba(41, 240, 106, 0.95), rgba(255, 122, 26, 0.75), transparent);
+    animation: protocol-sweep 4.8s ease-in-out infinite;
+  }
+
+  .consensus-orbit {
+    animation: consensus-orbit 5.5s linear infinite;
+    transform-origin: 0 0;
+  }
+
+  .consensus-bar {
+    animation: consensus-bar 800ms var(--ease-spring) both;
+  }
 
   .status-dot {
     position: relative;

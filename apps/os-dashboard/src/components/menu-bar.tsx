@@ -44,9 +44,9 @@ export function MenuBar() {
           <div className="relative flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo.png"
-              alt="Nakharax"
-              className="h-4 w-4 object-contain invert brightness-125 contrast-125 drop-shadow-[0_0_8px_rgba(94,234,212,0.8)]"
+              src="/brand/nakharax-token.svg"
+              alt="Nakharax OS"
+              className="h-5 w-5 object-contain drop-shadow-[0_0_8px_rgba(41,240,106,0.32)]"
             />
             <span
               className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-accent-ok shadow-[0_0_6px_rgba(34,197,94,0.5)] animate-pulse"

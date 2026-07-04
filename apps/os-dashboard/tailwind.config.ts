@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
  * Nakharax OS — "Data-Dense Dashboard" design tokens.
  *
  * Pattern: Real-Time / Operations Landing
- * Colors: Primary #0F172A, Background #020617, Accent #22C55E
+ * Colors: Primary #0F172A, Background #020617, Accent #29F06A
  * Typography: Fira Code (Mono/Heading), Fira Sans (Body)
  */
 const config: Config = {
@@ -20,13 +20,13 @@ const config: Config = {
         },
         border: "#334155",
         accent: {
-          DEFAULT: "#22C55E",
+          DEFAULT: "#29F06A",
           dim: "#16A34A",
-          ai: "#5eead4", // teal — Neural / Worker / DeAI actions
-          chain: "#6366f1", // indigo — Blockchain / consensus
-          warn: "#f59e0b", // amber — soft warnings, "outdated", "behind"
+          ai: "#29F06A", // compute green — Worker / DeAI actions
+          chain: "#22D3EE", // cyan — Blockchain / consensus
+          warn: "#FF7A1A", // finality orange — soft warnings, "outdated", "behind"
           danger: "#EF4444", // rose/red — errors, slashing, fatal states
-          ok: "#22C55E", // emerald — explicit success/healthy
+          ok: "#29F06A", // emerald — explicit success/healthy
         },
         // Surfaces
         obsidian: {
@@ -50,8 +50,8 @@ const config: Config = {
         "glass-strong": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         "glass-xl": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
         "icon-app": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-        "neon-ai": "0 0 16px rgba(94, 234, 212, 0.25)",
-        "neon-chain": "0 0 16px rgba(99, 102, 241, 0.20)",
+        "neon-ai": "0 0 16px rgba(41, 240, 106, 0.25)",
+        "neon-chain": "0 0 16px rgba(34, 211, 238, 0.20)",
         "neon-rose": "0 0 16px rgba(239, 68, 68, 0.20)",
         "glow-sm": "0 0 8px rgba(255, 255, 255, 0.05)",
         "glow-md": "0 0 16px rgba(255, 255, 255, 0.08)",
