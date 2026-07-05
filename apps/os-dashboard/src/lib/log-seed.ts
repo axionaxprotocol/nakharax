@@ -9,7 +9,7 @@ export async function buildLogSeedLines(): Promise<string[]> {
   lines.push(`${iso}  nakharax-os  INFO  log collector · Obsidian shell`);
   lines.push(`${iso}  nakharax-os  INFO  polling ${DEFAULT_NODES.length} configured endpoints`);
 
-  const statuses = await Promise.all(DEFAULT_NODES.map(getNodeStatus));
+  const statuses = await Promise.all(DEFAULT_NODES.map((ep) => getNodeStatus(ep)));
   for (const s of statuses) {
     const st = s.online ? "OK" : "OFFLINE";
     const h = s.blockNumber != null ? String(s.blockNumber) : "—";

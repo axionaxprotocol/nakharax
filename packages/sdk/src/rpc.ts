@@ -132,22 +132,22 @@ export async function rpcCall<T = unknown>(
 
 // ---- High-level helpers (the surface the dashboard uses) ------------------
 
-export async function getBlockNumber(url: string): Promise<Result<number>> {
-  const r = await rpcCall<string>(url, "eth_blockNumber");
+export async function getBlockNumber(url: string, opts?: RpcCallOptions): Promise<Result<number>> {
+  const r = await rpcCall<string>(url, "eth_blockNumber", [], opts);
   return r.ok
     ? { ok: true, data: parseInt(r.data, 16), latencyMs: r.latencyMs }
     : r;
 }
 
-export async function getPeerCount(url: string): Promise<Result<number>> {
-  const r = await rpcCall<string>(url, "net_peerCount");
+export async function getPeerCount(url: string, opts?: RpcCallOptions): Promise<Result<number>> {
+  const r = await rpcCall<string>(url, "net_peerCount", [], opts);
   return r.ok
     ? { ok: true, data: parseInt(r.data, 16), latencyMs: r.latencyMs }
     : r;
 }
 
-export async function getChainId(url: string): Promise<Result<string>> {
-  return rpcCall<string>(url, "eth_chainId");
+export async function getChainId(url: string, opts?: RpcCallOptions): Promise<Result<string>> {
+  return rpcCall<string>(url, "eth_chainId", [], opts);
 }
 
 export async function getBalance(url: string, address: string): Promise<Result<bigint>> {
@@ -176,11 +176,11 @@ export async function getBlockByNumber(
 }
 
 /** Compose a {@link NodeStatus} for a given endpoint by hitting 3 RPC methods in parallel. */
-export async function getNodeStatus(ep: NodeEndpoint): Promise<NodeStatus> {
+export async function getNodeStatus(ep: NodeEndpoint, opts?: RpcCallOptions): Promise<NodeStatus> {
   const [bn, peers, chain] = await Promise.all([
-    getBlockNumber(ep.url),
-    getPeerCount(ep.url),
-    getChainId(ep.url),
+    getBlockNumber(ep.url, opts),
+    getPeerCount(ep.url, opts),
+    getChainId(ep.url, opts),
   ]);
   return {
     endpoint: ep,
