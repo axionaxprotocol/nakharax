@@ -19,19 +19,15 @@ alwaysApply: false
 
 ---
 
-## 2. Cyber Defense via DeAI (7 Sentinels)
+## 2. Cyber Defense via DeAI (Conceptual — Partially Implemented)
 
-โปรโตคอลป้องกันตัวเองจากภัยคุกคามผ่าน **7 Sentinel AI models** บน Sentinel nodes:
+โมดูล AI สำหรับ security บน Sentinel nodes — ส่วนใหญ่ยังอยู่ในขั้น design:
 
-| Sentinel | บทบาท | ตรวจสอบ |
-|----------|--------|----------|
-| AION-VX | Temporal integrity | Clock drift, event ordering attacks |
-| SERAPH-VX | Network defense | DDoS, eclipse attacks, abnormal traffic |
-| ORION-VX | Fraud detection | PoPC proof anomaly scoring (IsolationForest) |
-| DIAOCHAN-VX | Reputation scoring | Worker reliability over time |
-| VULCAN-VX | Hardware verification | Compute attestation, hardware fingerprint |
-| THEMIS-VX | Dispute resolution | Contested job result arbitration |
-| NOESIS-VX | GenAI core | Governance analysis, high-level reasoning |
+| Module | สถานะ | ตรวจสอบ |
+|--------|--------|----------|
+| Fraud detection (ORION) | Prototype | PoPC proof anomaly scoring (IsolationForest) |
+| Reputation scoring | Design only | Worker reliability over time |
+| Hardware verification | Design only | Compute attestation |
 
 - **Local inference** — ตัดสินใจในเครือข่าย ไม่บังคับ external API
 - **PoPC sampling** — ตรวจ fraud ด้วยสถิติ ไม่ต้อง re-execute ทั้งหมด
@@ -64,11 +60,11 @@ P2P port:              30303 (libp2p)
 
 | Tier | Role | Scale |
 |------|------|-------|
-| Tier 5 (Edge) | Monolith Scout/Vanguard; general AI inference | 10M+ nodes |
+| Tier 5 (Edge) | Monolith Scout/Vanguard; general AI inference | Edge devices |
 | Tier 4 (Metro) | Aggregate proofs from Tier 5, batching | Metro-level |
 | Tier 3 (National) | Traffic and data sovereignty | Country-level |
 | Tier 2 (Regional) | Large model training (LLM) | Super nodes |
-| Tier 1 (Global Root) | Space/Foundation nodes; global state root | Foundation |
+| Tier 1 (Global Root) | Foundation nodes; global state root | Foundation |
 
 ---
 
@@ -78,8 +74,8 @@ P2P port:              30303 (libp2p)
 |-------|----------|-------|
 | Phase 1 (Incarnation) | Q1 2026 | Public testnet, Monolith Scout/Vanguard sales |
 | Phase 2 (Genesis) | Q3 2026 | Mainnet launch, NAK listing, live Marketplace |
-| Phase 3 (Evolution) | 2027 | Photonic chip, Enterprise API |
-| Phase 4 (Ascension) | 2028+ | Space nodes, Global Neural Grid |
+| Phase 3 (Evolution) | 2027 | Enterprise API, open compute marketplace |
+| Phase 4 (Expansion) | 2028+ | Hardware acceleration R&D, multi-region federation |
 
 *Current status: Pre-Testnet Phase 2 (March 2026)*
 

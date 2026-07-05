@@ -80,21 +80,17 @@ Key components:
 | PC / Server | CUDA GPU (AMD/NVIDIA) | General worker | `worker_config.toml` |
 | Elite | Mac Mini / Studio | Silicon Archon | `worker_config.toml` |
 
-**Compute types:** `SILICON` (default), `PHOTONIC` (future Monolith Mark-II), `HYBRID`
+**Compute types:** `SILICON` (default). `PHOTONIC` and `HYBRID` exist in code as simulation/mock only.
 
-### 2.3 The 7 Sentinels (Immune Network)
+### 2.3 Security Modules (Partially Implemented)
 
-AI models running on Sentinel nodes for autonomous security:
+Planned AI-assisted security for Sentinel nodes. Most are at design stage:
 
-| Sentinel | Function |
-|---|---|
-| AION-VX | Temporal integrity — detects time manipulation |
-| SERAPH-VX | Network defense — detects DDoS / eclipse attacks |
-| ORION-VX | Fraud detection — PoPC proof anomaly scoring |
-| DIAOCHAN-VX | Reputation scoring — worker reliability model |
-| VULCAN-VX | Hardware verification — attestation of compute |
-| THEMIS-VX | Dispute resolution — arbitrates contested results |
-| NOESIS-VX | GenAI core — governance analysis and high-level reasoning |
+| Module | Status | Function |
+|---|---|---|
+| Fraud detection | Prototype (`fraud_detection.py`) | PoPC proof anomaly scoring (IsolationForest) |
+| Reputation scoring | Design only | Worker reliability model |
+| Hardware verification | Design only | Attestation of compute |
 
 ### 2.4 Economic Flow (Compute Marketplace)
 

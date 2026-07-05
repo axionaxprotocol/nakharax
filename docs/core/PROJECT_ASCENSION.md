@@ -46,16 +46,15 @@ We didn't just build a box — we built "organs" to seamlessly connect humans to
 ## 3. THE SOUL: Nakharax Core Universe
 
 - **Evolution:** From an ordinary blockchain to a **"Trusted World Computer"** — trust resides in mathematics (Math-based Trust) rather than individuals  
-- **Mechanisms:** Reputation, AI Fraud Detection, **Proof-of-Light Consensus** — guaranteeing 100% correct results
+- **Mechanisms:** Reputation, AI Fraud Detection, **PoPC Consensus** — probabilistic verification of compute results
 
-### The 4 Engines
+### Target Use Cases
 
-| Engine | Mission |
-|--------|---------|
-| **Mirror World** | Simulate cities and solve disaster scenarios |
-| **Bio-Foundry** | Synthesize medicines and treat diseases |
-| **Kronos Finance** | Light-speed, risk-free financial system |
-| **Generative Reality** | Create virtual worlds in the blink of an eye |
+| Use Case | Description |
+|----------|-------------|
+| **Scientific Simulation** | Parameter sweeps, Monte Carlo ensembles, batch runs |
+| **AI Inference** | Batch inference, on-device LLM, private compute |
+| **Data Sovereignty** | In-country processing for PDPA/GDPR compliance |
 
 ---
 
@@ -65,9 +64,9 @@ We are at the **"crossroads of eras"** — the plan unfolds in three phases:
 
 | Phase | Focus |
 |-------|--------|
-| **Present (Silicon Phase)** | Fine-tune Nakharax v1.9 to full performance on current hardware (Max Config) — build user base (Network Effect) |
-| **Preparation (Transition Phase)** | Write the **Hardware Abstraction Layer (HAL)** in advance — when photonic chips arrive, swap the "brain" instantly with zero downtime |
-| **Future (Photonic Phase)** | Launch Monolith Mark-II and peripheral devices — fully transition the world into the Post-Silicon era |
+| **Present (Silicon Phase)** | Ship own-your-node inference + data sovereignty on current hardware — build user base |
+| **Near-term (Marketplace Phase)** | Open compute marketplace with reputation-gated workers, PoPC verification |
+| **Future (Expansion Phase)** | Hardware acceleration R&D, multi-region federation, enterprise API |
 
 ---
 

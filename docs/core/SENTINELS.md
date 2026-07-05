@@ -1,6 +1,8 @@
-# The 7 Sentinels — Network Immune System
+# Security Modules — Network Immune System (Conceptual Design)
 
-The Sentinels are dedicated AI models that run on **Sentinel nodes** to secure and govern the Nakharax network. They form the network’s immune and trust layer.
+> **Status:** Mostly at design stage. Only fraud detection has a working prototype (`fraud_detection.py` using IsolationForest). The remaining modules are planned but not implemented.
+
+The Sentinels are planned AI-assisted security modules for **Sentinel nodes**. When implemented, they will form the network’s trust layer.
 
 ---
 
