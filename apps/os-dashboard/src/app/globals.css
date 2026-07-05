@@ -5,11 +5,12 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   Nakharax OS — Design Tokens (Data-Dense Dashboard)
+   Nakharax OS — Design Tokens (Light-first, data-dense dashboard)
+   Light is the default. Dark is preserved under html[data-mode="dark"].
    ========================================================================== */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
   /* Motion scale */
   --motion-instant: 100ms;
@@ -19,24 +20,76 @@
   --ease-os: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Accent colors */
+  /* Accent colors (semantic) */
+  --accent-ai: #059669;
+  --accent-chain: #0891B2;
+  --accent-warn: #EA580C;
+  --accent-danger: #DC2626;
+  --accent-ok: #059669;
+
+  /* ===== Semantic surfaces / text — LIGHT (default) ===================== */
+  --canvas: #EEF1F6;
+  --canvas-2: #F8FAFC;
+  --panel: #FFFFFF;
+  --panel-sunken: #F5F7FA;
+  --panel-hover: #F1F5F9;
+  --chrome: rgba(255, 255, 255, 0.82);
+  --chrome-border: rgba(15, 23, 42, 0.08);
+  --hair: rgba(15, 23, 42, 0.08);
+  --hair-strong: rgba(15, 23, 42, 0.13);
+  --track: rgba(15, 23, 42, 0.07);
+  --text-strong: #0F172A;
+  --text: #334155;
+  --text-muted: #64748B;
+  --text-faint: #94A3B8;
+  --grid-line: rgba(15, 23, 42, 0.045);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-panel: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 26px -12px rgba(15, 23, 42, 0.14);
+  --shadow-raise: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 34px -14px rgba(15, 23, 42, 0.20);
+  --shadow-chrome: 0 1px 0 rgba(15, 23, 42, 0.04), 0 6px 20px -8px rgba(15, 23, 42, 0.14);
+
+  /* Wallpaper (used by dark mode only) */
+  --wp-base-from: #020617;
+  --wp-base-to: #0F172A;
+  --wp-blob-1: rgba(41, 240, 106, 0.05);
+  --wp-blob-2: rgba(255, 122, 26, 0.035);
+  --wp-blob-3: rgba(14, 165, 233, 0.05);
+  --wp-blob-4: rgba(20, 184, 166, 0.05);
+}
+
+/* ===== Dark mode overrides ============================================== */
+html[data-mode="dark"] {
+  color-scheme: dark;
+
   --accent-ai: #29F06A;
   --accent-chain: #22D3EE;
   --accent-warn: #FF7A1A;
   --accent-danger: #EF4444;
   --accent-ok: #29F06A;
 
-  /* Default wallpaper: Deep Navy/Slate */
-  --wp-base-from: #020617;
-  --wp-base-to: #0F172A;
-  --wp-blob-1: rgba(41, 240, 106, 0.05); /* very subtle green */
-  --wp-blob-2: rgba(255, 122, 26, 0.035); /* very subtle orange */
-  --wp-blob-3: rgba(14, 165, 233, 0.05); /* very subtle sky */
-  --wp-blob-4: rgba(20, 184, 166, 0.05); /* very subtle teal */
+  --canvas: #020617;
+  --canvas-2: #0B1120;
+  --panel: #0B1120;
+  --panel-sunken: #070D1B;
+  --panel-hover: #0E1628;
+  --chrome: rgba(15, 23, 42, 0.82);
+  --chrome-border: rgba(255, 255, 255, 0.08);
+  --hair: rgba(255, 255, 255, 0.06);
+  --hair-strong: rgba(255, 255, 255, 0.11);
+  --track: rgba(255, 255, 255, 0.06);
+  --text-strong: #F8FAFC;
+  --text: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-faint: #64748B;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-raise: 0 8px 30px -12px rgba(0, 0, 0, 0.6);
+  --shadow-chrome: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* --------------------------------------------------------------------------
-   Wallpaper variants (Muted for data focus)
+   Wallpaper variants (dark mode only)
    -------------------------------------------------------------------------- */
 
 html[data-theme="sunset"] {
@@ -61,7 +114,7 @@ html[data-theme="ocean"] {
 
 html,
 body {
-  color: #F8FAFC;
+  color: var(--text);
   min-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -69,19 +122,20 @@ body {
 }
 
 body {
-  background-color: var(--wp-base-from);
-  background-image: linear-gradient(
-    180deg,
-    var(--wp-base-from) 0%,
-    var(--wp-base-to) 100%
-  );
+  background-color: var(--canvas);
+  background-image: linear-gradient(180deg, var(--canvas-2) 0%, var(--canvas) 55%);
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
   transition: background-color var(--motion-thoughtful) ease;
 }
 
-/* Animated wallpaper blobs layer (Muted) */
+html[data-mode="dark"] body {
+  background-color: var(--wp-base-from);
+  background-image: linear-gradient(180deg, var(--wp-base-from) 0%, var(--wp-base-to) 100%);
+}
+
+/* Ambient tint layer — very subtle in light, colourful blobs in dark */
 body::before {
   content: "";
   position: fixed;
@@ -89,13 +143,21 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background-image:
+    radial-gradient(at 6% 8%, rgba(16, 185, 129, 0.05) 0, transparent 42%),
+    radial-gradient(at 94% 14%, rgba(56, 189, 248, 0.05) 0, transparent 46%),
+    radial-gradient(at 28% 96%, rgba(139, 92, 246, 0.04) 0, transparent 50%),
+    radial-gradient(at 82% 90%, rgba(20, 184, 166, 0.04) 0, transparent 48%);
+  animation: wp-drift 40s ease-in-out infinite alternate;
+  will-change: transform, filter;
+  transition: background-image var(--motion-thoughtful) ease;
+}
+
+html[data-mode="dark"] body::before {
+  background-image:
     radial-gradient(at 8% 12%, var(--wp-blob-1) 0, transparent 45%),
     radial-gradient(at 92% 18%, var(--wp-blob-2) 0, transparent 50%),
     radial-gradient(at 30% 92%, var(--wp-blob-3) 0, transparent 55%),
     radial-gradient(at 78% 88%, var(--wp-blob-4) 0, transparent 50%);
-  animation: wp-drift 40s ease-in-out infinite alternate;
-  will-change: transform, filter;
-  transition: background-image var(--motion-thoughtful) ease;
 }
 
 html[data-anim="off"] body::before {
@@ -103,12 +165,16 @@ html[data-anim="off"] body::before {
 }
 
 ::selection {
+  background: rgba(16, 185, 129, 0.18);
+  color: #064E3B;
+}
+html[data-mode="dark"] ::selection {
   background: rgba(34, 197, 94, 0.25);
   color: #F0FDF4;
 }
 
 :focus-visible {
-  outline: 2px solid rgba(34, 197, 94, 0.7);
+  outline: 2px solid rgba(16, 185, 129, 0.7);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -181,48 +247,65 @@ a:focus-visible,
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: rgba(15, 23, 42, 0.16);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.28);
+}
+html[data-mode="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+html[data-mode="dark"] ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Glassmorphism utilities (Minimal for data density) */
+/* Glass / surface utilities (token-driven, flip with mode) */
 
 @layer utilities {
   .glass {
-    background: rgba(15, 23, 42, 0.85); /* Slate 900 */
+    background: var(--chrome);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--chrome-border);
+    box-shadow: var(--shadow-chrome);
   }
 
   .glass-strong {
-    background: rgba(2, 6, 23, 0.9); /* Slate 950 */
+    background: var(--panel);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--chrome-border);
+    box-shadow: var(--shadow-raise);
   }
 
   .glass-subtle {
-    background: rgba(30, 41, 59, 0.4); /* Slate 800 */
+    background: var(--panel-sunken);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--hair);
   }
 
+  .surface-panel {
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    box-shadow: var(--shadow-panel);
+  }
+
+  /* Token-driven box-shadow helpers (support hover: etc. via @layer) */
+  .shadow-soft { box-shadow: var(--shadow-sm); }
+  .shadow-panel { box-shadow: var(--shadow-panel); }
+  .shadow-raise { box-shadow: var(--shadow-raise); }
+
   .app-icon-shadow {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-sm);
   }
 
   .glow-teal { box-shadow: 0 0 16px rgba(94, 234, 212, 0.25); }
@@ -231,14 +314,14 @@ a:focus-visible,
 
   .protocol-grid {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 40px 40px;
     mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 82%);
   }
 
   .protocol-sweep {
-    background: linear-gradient(90deg, transparent, rgba(41, 240, 106, 0.95), rgba(255, 122, 26, 0.75), transparent);
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.85), rgba(234, 88, 12, 0.6), transparent);
     animation: protocol-sweep 4.8s ease-in-out infinite;
   }
 

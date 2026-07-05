@@ -47,13 +47,13 @@ export function Dock() {
       className="fixed bottom-4 inset-x-0 z-30 flex justify-center pointer-events-none"
       aria-label="Application dock"
     >
-      <div className="pointer-events-auto bg-bg-elev/95 backdrop-blur-md border border-border flex items-end gap-1 rounded-os-lg px-os-2 py-os-1 shadow-glass-strong">
+      <div className="pointer-events-auto glass flex items-end gap-1 rounded-os-lg px-os-2 py-os-1">
         <DockButton label="Search" tooltip="Spotlight">
           <Search size={16} />
         </DockButton>
 
         <span
-          className="mx-1 h-7 w-px bg-border self-center"
+          className="mx-1 h-7 w-px bg-[var(--hair-strong)] self-center"
           aria-hidden="true"
         />
 
@@ -78,16 +78,17 @@ function DockAppIcon({ app, active }: { app: DockApp; active: boolean }) {
     >
       <div
         className={cn(
-          "grid h-10 w-10 place-items-center rounded-os-md text-white shadow-sm border border-white/5",
-          active ? "bg-gradient-to-br " + color : "bg-bg-card hover:bg-white/5 text-zinc-400 hover:text-zinc-200",
-          "transition-all duration-fast",
+          "grid h-10 w-10 place-items-center rounded-os-md transition-all duration-fast",
+          active
+            ? "bg-gradient-to-br text-white shadow-md border border-white/10 " + color
+            : "bg-[var(--panel-sunken)] border border-[var(--hair)] text-[var(--text-muted)] hover:text-[var(--text-strong)] hover:bg-[var(--panel-hover)]",
         )}
       >
         <Icon size={18} strokeWidth={2} />
       </div>
 
       {/* Tooltip */}
-      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-bg-card border border-border px-2 py-0.5 text-[10px] font-mono text-zinc-100 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-fast">
+      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--panel)] border border-[var(--hair)] px-2 py-0.5 text-[10px] font-mono text-[var(--text-strong)] shadow-[var(--shadow-panel)] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-fast">
         {label}
       </span>
 
@@ -95,7 +96,7 @@ function DockAppIcon({ app, active }: { app: DockApp; active: boolean }) {
       <span
         className={cn(
           "mt-0.5 h-0.5 rounded-full transition-all duration-base",
-          active ? "w-3 bg-white" : "w-0 bg-transparent",
+          active ? "w-3 bg-[var(--text-strong)]" : "w-0 bg-transparent",
         )}
         aria-hidden="true"
       />
@@ -119,10 +120,10 @@ function DockButton({
       title={tooltip ?? label}
       className="group relative flex flex-col items-center focus:outline-none"
     >
-      <div className="grid h-10 w-10 place-items-center rounded-os-md bg-transparent hover:bg-white/5 text-zinc-400 transition-all duration-fast group-hover:text-zinc-200">
+      <div className="grid h-10 w-10 place-items-center rounded-os-md bg-transparent hover:bg-[var(--panel-hover)] text-[var(--text-muted)] transition-all duration-fast group-hover:text-[var(--text-strong)]">
         {children}
       </div>
-      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-bg-card border border-border px-2 py-0.5 text-[10px] font-mono text-zinc-100 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-fast">
+      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--panel)] border border-[var(--hair)] px-2 py-0.5 text-[10px] font-mono text-[var(--text-strong)] shadow-[var(--shadow-panel)] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-fast">
         {tooltip ?? label}
       </span>
       <span className="mt-0.5 h-0.5 w-0" aria-hidden="true" />

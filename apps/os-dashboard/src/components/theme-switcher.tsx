@@ -83,7 +83,7 @@ function applyAnim(a: Anim) {
 export function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("aurora");
-  const [mode, setMode] = useState<Mode>("dark");
+  const [mode, setMode] = useState<Mode>("light");
   const [anim, setAnim] = useState<Anim>("on");
   const [custom, setCustom] = useState<CustomColors>(DEFAULT_CUSTOM);
   const [showCustom, setShowCustom] = useState(false);
@@ -92,7 +92,7 @@ export function ThemeSwitcher() {
   // Hydrate from localStorage
   useEffect(() => {
     const t = localStorage.getItem(KEY_THEME) || "aurora";
-    const m = (localStorage.getItem(KEY_MODE) as Mode) || "dark";
+    const m = (localStorage.getItem(KEY_MODE) as Mode) || "light";
     const a = (localStorage.getItem(KEY_ANIM) as Anim) || "on";
     const cRaw = localStorage.getItem(KEY_CUSTOM);
     setActive(t);
@@ -156,7 +156,7 @@ export function ThemeSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 hover:text-zinc-100"
+        className="flex items-center gap-1.5 text-[var(--text-muted)] hover:text-[var(--text-strong)]"
         aria-label="Theme"
         title="Theme"
       >
@@ -168,14 +168,14 @@ export function ThemeSwitcher() {
           <div className="flex items-center gap-2 mb-3">
             <button
               onClick={toggleMode}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-white/5 hover:bg-white/10 px-2 py-1.5 text-xs"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--panel-sunken)] hover:bg-[var(--panel-hover)] text-[var(--text)] px-2 py-1.5 text-xs"
             >
               {mode === "dark" ? <Moon size={13} /> : <Sun size={13} />}
               {mode === "dark" ? "Dark" : "Light"}
             </button>
             <button
               onClick={toggleAnim}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-white/5 hover:bg-white/10 px-2 py-1.5 text-xs"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-[var(--panel-sunken)] hover:bg-[var(--panel-hover)] text-[var(--text)] px-2 py-1.5 text-xs"
             >
               {anim === "on" ? <Sparkles size={13} /> : <Pause size={13} />}
               {anim === "on" ? "Animated" : "Static"}
@@ -183,7 +183,7 @@ export function ThemeSwitcher() {
           </div>
 
           {/* Wallpaper presets */}
-          <div className="px-1 py-1 text-[10px] uppercase tracking-wider text-zinc-500">
+          <div className="px-1 py-1 text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
             Wallpaper
           </div>
           <div className="grid grid-cols-4 gap-2 mb-3">
@@ -210,7 +210,7 @@ export function ThemeSwitcher() {
           {/* Custom picker */}
           <button
             onClick={() => setShowCustom((v) => !v)}
-            className="w-full flex items-center justify-between rounded-lg bg-white/5 hover:bg-white/10 px-2 py-1.5 text-xs"
+            className="w-full flex items-center justify-between rounded-lg bg-[var(--panel-sunken)] hover:bg-[var(--panel-hover)] text-[var(--text)] px-2 py-1.5 text-xs"
           >
             <span className="inline-flex items-center gap-1.5">
               <span
@@ -221,11 +221,11 @@ export function ThemeSwitcher() {
               />
               Custom
             </span>
-            <span className="text-zinc-500">{showCustom ? "−" : "+"}</span>
+            <span className="text-[var(--text-muted)]">{showCustom ? "−" : "+"}</span>
           </button>
 
           {showCustom && (
-            <div className="mt-2 space-y-2 rounded-lg bg-white/5 p-2">
+            <div className="mt-2 space-y-2 rounded-lg bg-[var(--panel-sunken)] p-2">
               <ColorRow
                 label="Base"
                 value={custom.base}
@@ -274,10 +274,10 @@ function ColorRow({
         type="color"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-6 w-8 cursor-pointer rounded border border-white/10 bg-transparent p-0"
+        className="h-6 w-8 cursor-pointer rounded border border-[var(--hair)] bg-transparent p-0"
       />
-      <span className="flex-1 text-zinc-300">{label}</span>
-      <span className="font-mono text-[10px] text-zinc-500">{value}</span>
+      <span className="flex-1 text-[var(--text)]">{label}</span>
+      <span className="font-mono text-[10px] text-[var(--text-muted)]">{value}</span>
     </label>
   );
 }
