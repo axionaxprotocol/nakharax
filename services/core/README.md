@@ -12,7 +12,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
 [![EVM](https://img.shields.io/badge/EVM-Compatible-627EEA?style=flat-square&logo=ethereum)](https://ethereum.org)
 
-**PoPC Consensus** · **45,000+ TPS** · **<0.5s Finality** · **DeAI at the Edge**
+**PoPC Consensus** · **EVM-Compatible** · **DeAI at the Edge**
 
 [Website](https://nakharax.io) · [Documentation](https://axionaxprotocol.github.io/nakharax-docs/) · [Web Universe](https://github.com/axionaxprotocol/nakharax)
 
@@ -36,14 +36,14 @@
 
 ## About
 
-**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** building a "Civilization OS" — turning Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes on a high-performance blockchain.
+**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** turning Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes on a verifiable blockchain.
 
 | Feature | Description |
 |---------|-------------|
 | **PoPC** | Proof of Probabilistic Checking — statistical verification instead of full re-execution |
 | **DeAI** | Python-based decentralized AI workloads via PyO3 bridge |
 | **Smart Contracts** | WASM + EVM compatible |
-| **Geo-Hierarchy** | 5-tier network topology scaling toward 11M+ nodes |
+| **Geo-Hierarchy** | 5-tier network topology for geographic scaling |
 
 **This repo contains:** Node (Rust), RPC, consensus, staking, governance, DeAI worker (Python), configs, ops/deploy, and dev tools. It does **not** include the public website, dApp frontend, or marketplace UI — those are hosted and developed elsewhere.
 
@@ -246,7 +246,7 @@ nakharax/services/core/
 
 ### Key Features
 
-- **High Performance:** 45,000+ TPS, &lt;0.5s finality
+- **EVM-Compatible:** Configurable block gas limit (testnet ceiling ~286 TPS)
 - **PoPC Consensus:** Proof of Probabilistic Checking
 - **Smart Contracts:** WASM + EVM compatible
 - **DeAI Integration:** Python-based decentralized AI workloads
@@ -332,7 +332,7 @@ python3 -m pytest . -v --tb=short --ignore=tests
 | Area | Added | Location |
 |------|-------|----------|
 | **Security** | Audit scope + tooling (cargo audit, bandit) | [docs/SECURITY_AUDIT_SCOPE.md](docs/SECURITY_AUDIT_SCOPE.md), [scripts/security/](scripts/security/) |
-| **Performance** | TPS & finality load test (45k TPS, &lt;0.5s) | [scripts/load_test/](scripts/load_test/) |
+| **Performance** | TPS & finality load test | [scripts/load_test/](scripts/load_test/) |
 | **Infra** | RPC multi-region, Explorer, Faucet, Monitoring | [ops/deploy/environments/testnet/public/README_INFRA.md](ops/deploy/environments/testnet/public/README_INFRA.md) |
 | **Worker** | LIVE contract integration, mock fallback | [core/deai/CONTRACT_INTEGRATION.md](core/deai/CONTRACT_INTEGRATION.md) |
 

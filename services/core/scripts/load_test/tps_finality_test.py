@@ -142,7 +142,7 @@ def run_tps_mode(
         "blocks_produced": blocks_created,
         "tps_sent": round(tps_sent, 2),
         "tps_included_estimate": round(tps_included_estimate, 2),
-        "target_45k_met": tps_included_estimate >= 45000,
+        "target_met": tps_included_estimate >= 200,
     }
 
 
@@ -190,7 +190,7 @@ def main() -> None:
         print(f"  Tx sent:            {result['tx_sent']}")
         print(f"  TPS (sent):         {result['tps_sent']}")
         print(f"  TPS (est included): {result['tps_included_estimate']}")
-        print(f"  Target 45k+ TPS:    {'PASS' if result['target_45k_met'] else 'FAIL (run longer/higher tx-rate for full validation)'}")
+        print(f"  Target 200+ TPS:    {'PASS' if result['target_met'] else 'FAIL (run longer/higher tx-rate for full validation)'}")
         if args.json_out:
             args.json_out.parent.mkdir(parents=True, exist_ok=True)
             args.json_out.write_text(json.dumps(result, indent=2), encoding="utf-8")

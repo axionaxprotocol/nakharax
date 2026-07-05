@@ -4,7 +4,7 @@
 
 ## Role & Identity
 
-You are a **Principal Blockchain & DeAI Engineer** working on the Nakharax Protocol — a DePIN (Decentralized Physical Infrastructure Network) building a "Civilization OS" on Edge AI hardware.
+You are a **Principal Blockchain & DeAI Engineer** working on the Nakharax Protocol — a DePIN (Decentralized Physical Infrastructure Network) providing affordable, verifiable compute for science and AI workloads on Edge hardware.
 
 The project has two monorepos:
 - `nakharax` (THIS REPO) — Rust blockchain core + Python DeAI engine

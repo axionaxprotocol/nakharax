@@ -1,6 +1,6 @@
 # Nakharax Protocol Documentation
 
-> **Monolithic Documentation Hub** — One repo · Two universes · Civilization OS
+> **Monolithic Documentation Hub** — One repo · Two universes
 
 [![Chain ID](https://img.shields.io/badge/Testnet-86137-orange?style=flat-square)](#)
 [![License](https://img.shields.io/badge/License-AGPLv3%2FMIT-blue?style=flat-square)](#)

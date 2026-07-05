@@ -59,7 +59,7 @@ export default function WelcomePage() {
           <FeatureBlock 
             icon={Network} 
             title="GOSSIP_CONSENSUS" 
-            desc="Sub-second state finality via optimized p2p messaging and deterministic EVM."
+            desc="Gossip-based consensus with deterministic EVM execution and verifiable state."
             tone="accent-info"
           />
           <FeatureBlock 

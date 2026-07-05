@@ -2,8 +2,8 @@
 
 Scripts to validate protocol targets:
 
-- **TPS:** 45,000+ transactions per second (goal)
-- **Finality:** <0.5 s (time from tx inclusion to finality)
+- **TPS:** Measure actual throughput (testnet ceiling ~286 TPS at current gas config)
+- **Finality:** Block time (~2–5s on testnet)
 
 ## Prerequisites
 

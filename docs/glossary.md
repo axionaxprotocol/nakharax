@@ -85,7 +85,7 @@ Distributes free testnet tokens (NAKt). Rate limited: 1,000 NAKt per address per
 
 ### Finality
 **Type**: Network Property  
-Time until transaction is considered irreversible. Target: <0.5s finality with ≥2/3 validators.
+Time until transaction is considered irreversible. Current testnet: ~2–5s (1-block confirmation).
 
 ---
 
@@ -203,7 +203,7 @@ Public testing network (Chain ID 86137). Current validators: AU (46.250.244.4) +
 
 ### TPS (Transactions Per Second)
 **Type**: Performance Metric  
-Target: 45,000 TPS with <0.5s finality.
+Throughput governed by block gas limit. Testnet ceiling ~286 TPS (30M gas/block ÷ 21k ÷ 5s). The chain is a settlement rail, not the product.
 
 ### TVL (Total Value Locked)
 **Type**: Economic Metric  

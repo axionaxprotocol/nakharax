@@ -102,8 +102,8 @@ Pre-testnet testing and validation has been completed across all critical system
 ### Current Specifications:
 | Metric | Target | Status |
 |--------|--------|--------|
-| **Throughput** | 45,000+ TPS | 🟡 To be validated |
-| **Finality** | <0.5s | 🟡 To be validated |
+| **Throughput** | ~286 TPS ceiling (30M gas/block, 5s) | 🟡 To be validated |
+| **Finality** | ~2–5s (1-block) | 🟡 To be validated |
 | **Transaction Fee** | $0.0001 avg | 🟡 To be validated |
 | **Build Time (Web)** | <60s | ✅ 44.4s (Passed) |
 
@@ -293,7 +293,7 @@ Pre-testnet testing and validation has been completed across all critical system
 
 ### Short-term (Weeks 2-4):
 5. Complete security audit
-6. Validate performance metrics (45K TPS, <0.5s finality)
+6. Validate performance metrics (TPS throughput, block finality)
 7. Deploy testnet infrastructure (multi-region)
 8. Set up community channels
 

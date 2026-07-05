@@ -11,7 +11,7 @@
 
 ## 1. Introduction & Vision
 
-**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** focused on building **"Civilization OS"** — the operating system for the next civilization.
+**Nakharax Protocol** is a **DePIN (Decentralized Physical Infrastructure Network)** — affordable, verifiable compute for science and AI workloads. Think paid BOINC/Folding@home on a blockchain: anyone can contribute idle hardware, anyone can run embarrassingly-parallel jobs (parameter sweeps, Monte Carlo, batch inference) without renting a data center.
 
 ### The Problem
 
@@ -24,7 +24,7 @@
 ### The Solution
 
 - Build **Universal Grid** that turns Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes
-- Use **Geo-Hierarchy** architecture to scale toward **11 million nodes**
+- Use **Geo-Hierarchy** architecture for geographic scaling
 - Verify correctness with **PoPC** (Proof of Probabilistic Checking)
 
 ---
@@ -39,7 +39,7 @@
 | **Languages**           | Rust (80% — Core Logic) + Python (20% — DeAI Layer)                                    |
 | **Consensus**           | PoPC (Proof of Probabilistic Checking)                                                 |
 | **Verification**        | Statistical probabilistic checking instead of full re-execution — \(O(s)\) vs \(O(n)\) |
-| **Finality**            | Sub-second (~0.5s)                                                                     |
+| **Finality**            | ~2–5s (1-block confirmation on testnet)                                                |
 | **Validator Committee** | VRF (Verifiable Random Function) for selection                                         |
 | **Interoperability**    | Rust ↔ Python via **PyO3 Bridge** — Smart contracts call AI models directly            |
 
@@ -49,11 +49,11 @@ Network organized in 5 geographic tiers to reduce data density:
 
 | Tier       | Name              | Role                                                |
 | ---------- | ----------------- | --------------------------------------------------- |
-| **Tier 5** | Edge Workers      | 10M+ nodes (Monolith Scout/Vanguard) — AI inference |
+| **Tier 5** | Edge Workers      | Monolith Scout/Vanguard — AI inference              |
 | **Tier 4** | Metro Aggregators | Aggregate proofs from Tier 5, metro-level batching  |
 | **Tier 3** | National Gateways | Traffic and data sovereignty at country level       |
 | **Tier 2** | Regional Titans   | Super nodes for LLM training                        |
-| **Tier 1** | Global Root       | Space/Foundation nodes — global state root          |
+| **Tier 1** | Global Root       | Foundation nodes — global state root                |
 
 ---
 
@@ -90,19 +90,15 @@ External hardware support:
 
 ## 4. DeAI & Sentinels
 
-### 4.1 The 7 Sentinels (Network Immune System)
+### 4.1 Network Security (Conceptual — Not Yet Implemented)
 
-Dedicated AI models on Sentinel nodes for security verification:
+Planned AI-assisted security modules for Sentinel nodes. Currently at design stage; anomaly detection (`fraud_detection.py`) exists but the full suite is not deployed.
 
-| Sentinel        | Primary Role                                    |
-| --------------- | ----------------------------------------------- |
-| **AION-VX**     | Temporal integrity                              |
-| **SERAPH-VX**   | Network defense                                 |
-| **ORION-VX**    | Fraud detection                                 |
-| **DIAOCHAN-VX** | Reputation scoring                              |
-| **VULCAN-VX**   | Hardware verification                           |
-| **THEMIS-VX**   | Dispute resolution                              |
-| **NOESIS-VX**   | (GenAI Core) High-level analysis and governance |
+| Module Area         | Status      |
+| ------------------- | ----------- |
+| Fraud detection     | Prototype   |
+| Reputation scoring  | Design only |
+| Hardware verification | Design only |
 
 ### 4.2 Project HYDRA (Resource Manager)
 
@@ -141,8 +137,8 @@ Dedicated AI models on Sentinel nodes for security verification:
 | ----------- | --------------- | -------- | ------------------------------------------------------------------- |
 | **Phase 1** | The Incarnation | Q1 2026  | Public Testnet, Monolith Scout/Vanguard sales, Geo-Hierarchy launch |
 | **Phase 2** | Genesis         | Q3 2026  | Mainnet launch, NAK listing, live Marketplace                       |
-| **Phase 3** | Evolution       | 2027     | Photonic chip, Enterprise API                                       |
-| **Phase 4** | Ascension       | 2028+    | Space nodes, Global Neural Grid                                     |
+| **Phase 3** | Evolution       | 2027     | Enterprise API, open compute marketplace                            |
+| **Phase 4** | Expansion       | 2028+    | Hardware acceleration R&D, multi-region federation                  |
 
 ---
 
@@ -155,7 +151,7 @@ Dedicated AI models on Sentinel nodes for security verification:
 
 ### Competitive Advantage
 
-- 10–30× cheaper than competitors (Solana/Render)
+- Targets lower cost than cloud providers for embarrassingly-parallel workloads
 - **Hardware-Native Security** (Split-Brain)
 - **Privacy-focused** local inference
 
