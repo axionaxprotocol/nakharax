@@ -1,67 +1,73 @@
-import { Card } from "@/components/card";
-import { WalletActions } from "@/components/wallet-actions";
-import { KeyRound } from "lucide-react";
+import { KeyRound, ShieldCheck, Wallet } from "lucide-react";
+
+import {
+  Card,
+  IconBadge,
+  PageShell,
+  SectionHeader,
+  StatusPill,
+} from "@/components/card";
 import { OErrorBoundary } from "@/components/error-boundary";
+import { WalletActions } from "@/components/wallet-actions";
 
 export const dynamic = "force-dynamic";
 
 export default function WalletPage() {
   return (
-    <div className="space-y-os-8">
-      <header className="border-b border-border pb-os-4">
-        <h1 className="text-headline font-mono font-semibold tracking-tight text-zinc-100 uppercase">VAULT_WALLET</h1>
-        <p className="text-body font-mono text-zinc-500 mt-os-2 max-w-xl uppercase tracking-wider">
-          Receive, balance, and send flows for AXIO. Signing integrates with your browser wallet or CLI.
-        </p>
-      </header>
-
+      <PageShell
+        eyebrow="Vault"
+      title="Inspect balance and run safe demo transfers."
+      description="The wallet view reads the configured RPC balance when available. Transfer submission is intentionally demo-only until production signing and escrow contracts are wired."
+      meta={
+        <>
+          <StatusPill tone="warn">dev burner</StatusPill>
+          <StatusPill tone="warn">demo transfer</StatusPill>
+        </>
+      }
+    >
       <OErrorBoundary moduleName="WALLET_ACTIONS">
         <WalletActions />
       </OErrorBoundary>
 
-      <Card className="bg-bg-elev rounded-none">
-        <div className="flex flex-col sm:flex-row items-start gap-os-4">
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-none border border-accent-ai/20 bg-accent-ai/10 text-accent-ai">
-            <KeyRound size={20} />
-          </div>
-          <div>
-            <div className="font-mono font-semibold text-title text-zinc-100 uppercase tracking-widest">
-              KEYS_ON_DEVICE
-            </div>
-            <p className="text-[10px] font-mono text-zinc-500 mt-os-2 uppercase tracking-wider">
-              Create or import a keystore when local vault support ships. Keys never leave this device.
-            </p>
-            <div className="mt-os-4 flex flex-wrap gap-os-2">
-              <button
-                type="button"
-                disabled
-                className="rounded-none bg-bg-card border border-border px-os-4 py-1.5 text-[9px] font-mono uppercase tracking-widest text-zinc-500 cursor-not-allowed"
-              >
-                CREATE_WALLET (SOON)
-              </button>
-              <button
-                type="button"
-                disabled
-                className="rounded-none bg-bg-card border border-border px-os-4 py-1.5 text-[9px] font-mono uppercase tracking-widest text-zinc-500 cursor-not-allowed"
-              >
-                IMPORT_KEYSTORE (SOON)
-              </button>
+      <div className="grid gap-os-5 lg:grid-cols-2">
+        <Card>
+          <div className="flex items-start gap-os-4">
+            <IconBadge Icon={KeyRound} tone="ai" className="h-12 w-12" />
+            <div>
+              <SectionHeader
+                title="Keys stay on device"
+                description="Create/import keystore support is not shown until it is wired. Until then, this page only exposes the configured dev burner account and demo transfer flow."
+              />
             </div>
           </div>
-        </div>
-      </Card>
+        </Card>
 
-      <Card className="bg-bg-elev rounded-none">
-        <div className="font-mono font-semibold text-title text-zinc-100 mb-os-3 uppercase tracking-widest">
-          SECURITY_CHECKLIST
-        </div>
-        <ul className="text-[10px] font-mono text-zinc-400 space-y-os-2 uppercase tracking-wider">
-          <li className="flex items-start gap-2"><span className="text-accent-ai">»</span> Backup keystore JSON to an offline location.</li>
-          <li className="flex items-start gap-2"><span className="text-accent-ai">»</span> Never share your wallet password.</li>
-          <li className="flex items-start gap-2"><span className="text-accent-ai">»</span> Use VPN / Tor before exposing RPC publicly.</li>
-          <li className="flex items-start gap-2"><span className="text-accent-ai">»</span> Rotate keys after suspected compromise.</li>
-        </ul>
-      </Card>
-    </div>
+        <Card>
+          <div className="flex items-start gap-os-4">
+            <IconBadge Icon={ShieldCheck} tone="chain" className="h-12 w-12" />
+            <div>
+              <h2 className="text-title font-semibold text-[var(--text-strong)]">
+                Security checklist
+              </h2>
+              <ul className="mt-os-3 space-y-os-2 text-body text-[var(--text-muted)]">
+                <ChecklistItem>Back up keystore JSON offline.</ChecklistItem>
+                <ChecklistItem>Never share wallet password or burner keys.</ChecklistItem>
+                <ChecklistItem>Use VPN or private networking before exposing RPC publicly.</ChecklistItem>
+                <ChecklistItem>Rotate keys after suspected compromise.</ChecklistItem>
+              </ul>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </PageShell>
+  );
+}
+
+function ChecklistItem({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex gap-os-2">
+      <Wallet size={14} className="mt-0.5 shrink-0 text-[var(--accent-ai)]" />
+      <span>{children}</span>
+    </li>
   );
 }

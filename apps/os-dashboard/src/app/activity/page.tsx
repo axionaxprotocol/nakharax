@@ -1,14 +1,22 @@
 import Link from "next/link";
-import { Cpu, ExternalLink } from "lucide-react";
-import { Card } from "@/components/card";
+import { Cpu, ExternalLink, FileClock, ReceiptText, Route } from "lucide-react";
+
+import {
+  Card,
+  IconBadge,
+  PageShell,
+  SectionHeader,
+  StatCard,
+  StatusPill,
+} from "@/components/card";
 import { fetchChainActivity } from "@/lib/activity-feed";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-function formatTime(d: Date | null): string {
-  if (!d) return "—";
-  return d.toISOString().replace("T", " ").slice(0, 19) + "Z";
+function formatTime(date: Date | null): string {
+  if (!date) return "—";
+  return `${date.toISOString().replace("T", " ").slice(0, 19)}Z`;
 }
 
 export default async function ActivityPage() {
@@ -17,109 +25,122 @@ export default async function ActivityPage() {
     maxTxRows: 40,
   });
 
+  const blockRows = rows.filter((row) => row.kind === "block").length;
+  const txRows = rows.filter((row) => row.kind === "tx").length;
+
   return (
-    <div className="space-y-os-8">
-      <header className="flex flex-col gap-os-4 sm:flex-row sm:items-end sm:justify-between border-b border-border pb-os-4">
-        <div>
-          <h1 className="text-headline font-mono font-semibold tracking-tight text-zinc-100 uppercase">ACTIVITY_FEED</h1>
-          <p className="text-body font-mono text-zinc-500 mt-os-2 max-w-xl uppercase tracking-wider">
-            On-chain jobs and transactions observed from the configured validator RPCs.
-          </p>
-          <div className="mt-os-4 flex flex-wrap gap-os-2">
-            <Link
-              href="/activity/inference"
-              className="text-caption font-mono uppercase tracking-widest text-accent-ai hover:text-accent-ai/80 hover:bg-accent-ai/10 px-2 py-1 rounded-sm transition-colors border border-transparent hover:border-accent-ai/20"
-            >
-              [ INFERENCE_RUNS ]
-            </Link>
-            <Link
-              href="/activity/models"
-              className="text-caption font-mono uppercase tracking-widest text-accent-chain hover:text-accent-chain/80 hover:bg-accent-chain/10 px-2 py-1 rounded-sm transition-colors border border-transparent hover:border-accent-chain/20"
-            >
-              [ MODEL_REGISTRY ]
-            </Link>
-            <Link
-              href="/jobs"
-              className="text-caption font-mono uppercase tracking-widest text-zinc-300 hover:text-white hover:bg-white/5 px-2 py-1 rounded-sm transition-colors border border-transparent hover:border-white/10"
-            >
-              [ JOBS_HUB ]
-            </Link>
-          </div>
-        </div>
-        {rpcUrl && (
-          <div className="text-micro uppercase text-zinc-500 font-mono tracking-widest border border-border bg-bg-elev px-2 py-1 rounded-sm">
-            SRC: {rpcLabel}
-          </div>
-        )}
-      </header>
+    <PageShell
+      eyebrow="Audit Trail"
+      title="Chain activity, job receipts, and operator evidence."
+      description="Activity is the proof layer for the compute marketplace: block progression, transactions, and eventually verifiable workload receipts."
+      meta={
+        <>
+          <StatusPill tone={error ? "warn" : "chain"} pulse={!error}>
+            {error ? "fallback view" : "live rpc"}
+          </StatusPill>
+          {rpcUrl && <StatusPill tone="neutral">{rpcLabel}</StatusPill>}
+        </>
+      }
+      actions={
+        <>
+          <LinkButton href="/activity/inference">Inference runs</LinkButton>
+          <LinkButton href="/activity/models">Model registry</LinkButton>
+          <LinkButton href="/jobs">Jobs hub</LinkButton>
+        </>
+      }
+    >
+      <div className="grid gap-os-4 md:grid-cols-3">
+        <StatCard
+          label="Rows observed"
+          value={rows.length}
+          hint="Recent block and transaction rows"
+          icon={<FileClock size={18} />}
+          tone="chain"
+        />
+        <StatCard
+          label="Blocks"
+          value={blockRows}
+          hint="Block headers in this sample"
+          icon={<Route size={18} />}
+          tone="ai"
+        />
+        <StatCard
+          label="Transactions"
+          value={txRows}
+          hint="Potential job or settlement activity"
+          icon={<ReceiptText size={18} />}
+          tone="violet"
+        />
+      </div>
 
       {error && (
-        <Card className="border border-accent-warn/20 bg-accent-warn/5">
-          <p className="text-body font-mono text-accent-warn">ERR: {error}</p>
-          <p className="text-caption font-mono text-zinc-500 mt-os-3 uppercase tracking-wider">
-            Hint: ensure nodes in <code className="text-zinc-400 bg-bg-elev px-1">@nakharax/sdk</code>{" "}
-            <code className="text-zinc-400 bg-bg-elev px-1">DEFAULT_NODES</code> match your testnet.
+        <Card className="border-amber-500/25 bg-amber-500/10">
+          <p className="text-body font-medium text-[var(--accent-warn)]">
+            RPC warning: {error}
+          </p>
+          <p className="mt-os-2 text-caption text-[var(--text-muted)]">
+            Check that nodes in{" "}
+            <code className="rounded-os-sm border border-[var(--hair)] bg-[var(--panel-sunken)] px-1.5 py-0.5 font-mono">
+              @nakharax/sdk DEFAULT_NODES
+            </code>{" "}
+            match the active testnet.
           </p>
         </Card>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-os-4">
-        <Card className="lg:col-span-2 overflow-hidden p-0 flex flex-col bg-bg-card">
-          <div className="flex items-center justify-between border-b border-border px-os-4 py-os-3 bg-bg-elev">
-            <div className="text-micro uppercase tracking-widest text-zinc-500 font-mono">
-              CHAIN_EVENT_STREAM
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-sm bg-accent-ai/10 border border-accent-ai/20 px-2 py-0.5 text-[10px] uppercase tracking-widest font-mono text-accent-ai">
-              <Cpu size={10} />
-              LIVE_RPC
+      <div className="grid grid-cols-1 gap-os-5 lg:grid-cols-12">
+        <Card className="overflow-hidden p-0 lg:col-span-8">
+          <div className="flex items-center justify-between border-b border-[var(--hair)] bg-[var(--panel-sunken)] px-os-5 py-os-4">
+            <SectionHeader
+              title="Event stream"
+              description="Recent rows observed from configured validator RPCs."
+            />
+            <span className="hidden items-center gap-os-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--accent-ai)] sm:inline-flex">
+              <Cpu size={11} />
+              rpc data
             </span>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-body font-mono">
-              <thead className="bg-bg-elev">
-                <tr className="border-b border-border text-[10px] uppercase tracking-widest text-zinc-500">
-                  <th className="px-os-4 py-os-2 font-medium">Type</th>
-                  <th className="px-os-4 py-os-2 font-medium">Block</th>
-                  <th className="px-os-4 py-os-2 font-medium hidden sm:table-cell">
-                    Time_UTC
-                  </th>
-                  <th className="px-os-4 py-os-2 font-medium">Detail</th>
+            <table className="w-full min-w-[720px] text-left">
+              <thead>
+                <tr className="border-b border-[var(--hair)] bg-[var(--panel)] text-[10px] uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                  <th className="px-os-5 py-os-3 font-mono font-semibold">Type</th>
+                  <th className="px-os-5 py-os-3 font-mono font-semibold">Block</th>
+                  <th className="px-os-5 py-os-3 font-mono font-semibold">Time UTC</th>
+                  <th className="px-os-5 py-os-3 font-mono font-semibold">Detail</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-[var(--hair)]">
                 {rows.length === 0 && !error ? (
                   <tr>
-                    <td colSpan={4} className="px-os-4 py-os-8 text-zinc-500 text-center uppercase tracking-widest text-micro">
-                      NO_BLOCKS_RETURNED
+                    <td
+                      colSpan={4}
+                      className="px-os-5 py-os-10 text-center text-caption uppercase tracking-[0.16em] text-[var(--text-muted)]"
+                    >
+                      No blocks returned
                     </td>
                   </tr>
                 ) : (
                   rows.map((row) => (
                     <tr
                       key={row.id}
-                      className="hover:bg-bg-elev transition-colors"
+                      className="transition-colors hover:bg-[var(--panel-sunken)]"
                     >
-                      <td className="px-os-4 py-os-2">
-                        <span
-                          className={`text-[10px] uppercase tracking-widest ${
-                            row.kind === "block"
-                              ? "text-accent-chain"
-                              : "text-accent-ai"
-                          }`}
-                        >
-                          {row.kind === "block" ? "BLK" : "TX"}
-                        </span>
+                      <td className="px-os-5 py-os-3">
+                        <StatusPill tone={row.kind === "block" ? "chain" : "ai"}>
+                          {row.kind === "block" ? "block" : "tx"}
+                        </StatusPill>
                       </td>
-                      <td className="px-os-4 py-os-2 tabular-nums text-zinc-200">
+                      <td className="px-os-5 py-os-3 font-mono text-body tabular-nums text-[var(--text-strong)]">
                         {row.blockNumber.toLocaleString()}
                       </td>
-                      <td className="px-os-4 py-os-2 text-zinc-500 hidden sm:table-cell">
+                      <td className="px-os-5 py-os-3 font-mono text-caption text-[var(--text-muted)]">
                         {formatTime(row.at)}
                       </td>
-                      <td className="px-os-4 py-os-2 text-zinc-400">
+                      <td className="px-os-5 py-os-3 text-body text-[var(--text)]">
                         {row.kind === "tx" && row.txHash ? (
-                          <span className="text-xs break-all">
-                            {row.txHash.slice(0, 18)}…
+                          <span className="font-mono text-caption break-all">
+                            {row.txHash.slice(0, 24)}…
                           </span>
                         ) : (
                           row.detail
@@ -133,29 +154,45 @@ export default async function ActivityPage() {
           </div>
         </Card>
 
-        <Card className="flex flex-col gap-os-4 bg-bg-elev h-fit">
-          <div className="text-title font-mono font-semibold text-zinc-200 uppercase tracking-widest">OPERATOR_TOOLS</div>
-          <p className="text-caption font-mono text-zinc-500 uppercase tracking-wider leading-relaxed">
-            Cross-check peers and latency on the Nodes screen while tailing activity.
+        <Card className="h-fit lg:col-span-4">
+          <IconBadge Icon={ExternalLink} tone="chain" />
+          <h2 className="mt-os-4 text-title font-semibold text-[var(--text-strong)]">
+            Operator tools
+          </h2>
+          <p className="mt-os-2 text-body leading-relaxed text-[var(--text-muted)]">
+            Cross-check activity with node health and logs before trusting any
+            performance or availability claim.
           </p>
-          <div className="flex flex-col gap-os-2 mt-os-2">
-            <Link
-              href="/nodes"
-              className="inline-flex items-center justify-between rounded-os-sm bg-bg-card border border-border px-os-4 py-os-3 text-caption font-mono uppercase tracking-widest text-zinc-200 hover:border-zinc-500 transition-colors"
-            >
-              NODE_HEALTH
-              <ExternalLink size={14} className="text-zinc-500" />
-            </Link>
-            <Link
-              href="/logs"
-              className="inline-flex items-center justify-between rounded-os-sm bg-bg-card border border-border px-os-4 py-os-3 text-caption font-mono uppercase tracking-widest text-zinc-200 hover:border-zinc-500 transition-colors"
-            >
-              LOG_STREAM
-              <ExternalLink size={14} className="text-zinc-500" />
-            </Link>
+          <div className="mt-os-5 space-y-os-2">
+            <ToolLink href="/nodes" label="Node health" />
+            <ToolLink href="/logs" label="Log stream" />
+            <ToolLink href="/wallet" label="Vault and settlement" />
           </div>
         </Card>
       </div>
-    </div>
+    </PageShell>
+  );
+}
+
+function LinkButton({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-2 text-[11px] font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function ToolLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center justify-between rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-3 text-caption font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+    >
+      {label}
+      <ExternalLink size={13} className="text-[var(--text-muted)]" />
+    </Link>
   );
 }

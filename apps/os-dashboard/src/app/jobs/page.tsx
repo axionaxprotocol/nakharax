@@ -1,84 +1,137 @@
 import Link from "next/link";
-import { ArrowRight, Boxes, Brain, Cpu } from "lucide-react";
-import { Card } from "@/components/card";
+import { ArrowRight, Boxes, Brain, Cpu, FileCheck2, Gauge } from "lucide-react";
+
+import {
+  Card,
+  IconBadge,
+  PageShell,
+  SectionHeader,
+  StatCard,
+  StatusPill,
+} from "@/components/card";
 
 export const dynamic = "force-dynamic";
 
 const JOB_LINKS = [
   {
     href: "/activity/inference",
-    title: "INFERENCE_RUNS",
-    desc: "Recent model executions and latency summary from RPC-backed probes.",
+    title: "Inference runs",
+    desc: "Inspect recent model execution, latency, receipts, and RPC-backed probes.",
     Icon: Brain,
-    accent: "text-cyan-400 bg-cyan-400/10 border-cyan-400/20",
+    tone: "ai" as const,
   },
   {
     href: "/activity/models",
-    title: "MODEL_REGISTRY",
-    desc: "Registered models and compatibility tags for worker assignment.",
+    title: "Model registry",
+    desc: "Match workload type against registered model capabilities and precision.",
     Icon: Cpu,
-    accent: "text-fuchsia-400 bg-fuchsia-400/10 border-fuchsia-400/20",
+    tone: "violet" as const,
   },
   {
     href: "/apps",
-    title: "WORKER_APP",
-    desc: "Install or open the DeAI Worker app for compute jobs on your node.",
+    title: "Worker modules",
+    desc: "Open the module catalog. Unwired worker services are marked demo-only.",
     Icon: Boxes,
-    accent: "text-amber-400 bg-amber-400/10 border-amber-400/20",
+    tone: "chain" as const,
   },
-] as const;
+];
 
 export default function JobsPage() {
   return (
-    <div className="space-y-os-8">
-      <header className="border-b border-border pb-os-4">
-        <h1 className="text-headline font-mono font-semibold tracking-tight text-zinc-100 uppercase">WORKLOAD_JOBS</h1>
-        <p className="text-body font-mono text-zinc-500 mt-os-2 max-w-2xl uppercase tracking-wider">
-          Command-center entry points for DeAI workloads. On-chain job receipts merge into Activity.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 gap-os-4 md:grid-cols-2 lg:grid-cols-3">
-        {JOB_LINKS.map(({ href, title, desc, Icon, accent }) => (
-          <Link key={href} href={href} className="group block outline-none">
-            <Card className="h-full border border-border transition-colors hover:border-zinc-500 hover:bg-bg-elev">
-              <div
-                className={`inline-flex h-10 w-10 items-center justify-center rounded-os-sm border ${accent}`}
-              >
-                <Icon size={20} aria-hidden />
-              </div>
-              <h2 className="mt-os-4 text-title font-mono font-semibold text-zinc-100 group-hover:text-white transition-colors">
-                {title}
-              </h2>
-              <p className="mt-os-2 text-body text-zinc-400 leading-relaxed">{desc}</p>
-              <div className="mt-os-4 pt-os-3 border-t border-border flex items-center justify-between">
-                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">Action</span>
-                <span className="inline-flex items-center gap-1 font-mono text-[10px] font-medium text-zinc-300 group-hover:text-accent-ai transition-colors uppercase tracking-widest">
-                  OPEN
-                  <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
-                </span>
-              </div>
-            </Card>
-          </Link>
-        ))}
+    <PageShell
+      eyebrow="Compute Marketplace"
+      title="Route work to affordable owned compute."
+      description="This screen is the operator entry point for DeAI workloads: inference, model matching, job receipts, and worker activation."
+      meta={
+        <>
+          <StatusPill tone="ai" pulse>
+            worker-ready path
+          </StatusPill>
+          <StatusPill tone="warn">demo routing</StatusPill>
+        </>
+      }
+    >
+      <div className="grid gap-os-4 md:grid-cols-3">
+        <StatCard
+          label="Primary workload"
+          value="Inference"
+          hint="Text, image, audio, vector"
+          icon={<Brain size={18} />}
+          tone="ai"
+        />
+        <StatCard
+          label="Settlement mode"
+          value="Escrow"
+          hint="NAK-backed job agreement"
+          icon={<FileCheck2 size={18} />}
+          tone="warn"
+        />
+        <StatCard
+          label="Design priority"
+          value="Cost"
+          hint="Accessible compute before raw TPS claims"
+          icon={<Gauge size={18} />}
+          tone="chain"
+        />
       </div>
 
-      <Card className="border border-border bg-bg-elev">
-        <div className="flex items-center gap-2 mb-os-2">
-          <span className="h-2 w-2 bg-accent-ai rounded-sm animate-pulse-glow" />
-          <p className="text-caption font-mono font-semibold uppercase tracking-widest text-accent-ai">
-            DECENTRALIZED_DEMO
-          </p>
+      <section className="space-y-os-4">
+        <SectionHeader
+          title="Workload command center"
+          description="Open the screens that turn compute demand into verifiable execution."
+        />
+        <div className="grid grid-cols-1 gap-os-4 md:grid-cols-3">
+          {JOB_LINKS.map(({ href, title, desc, Icon, tone }) => (
+            <Link key={href} href={href} className="group block">
+              <Card interactive className="h-full">
+                <IconBadge Icon={Icon} tone={tone} />
+                <h2 className="mt-os-4 text-title font-semibold text-[var(--text-strong)]">
+                  {title}
+                </h2>
+                <p className="mt-os-2 text-body leading-relaxed text-[var(--text-muted)]">
+                  {desc}
+                </p>
+                <div className="mt-os-5 flex items-center justify-between border-t border-[var(--hair)] pt-os-3">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                    open
+                  </span>
+                  <span className="inline-flex items-center gap-os-1 text-[11px] font-semibold text-[var(--accent-ai)]">
+                    launch
+                    <ArrowRight
+                      size={13}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
+                  </span>
+                </div>
+              </Card>
+            </Link>
+          ))}
         </div>
-        <p className="text-body font-mono text-zinc-400">
-          End-to-end Python workload flow is documented under{" "}
-          <code className="rounded-sm bg-bg-card border border-border px-1.5 py-0.5 text-caption text-zinc-200">
-            services/core/core/deai/RUNBOOK.md
-          </code>{" "}
-          (<span className="text-zinc-200">deai_submit.py</span> → worker →{" "}
-          <span className="text-zinc-200">result-*.json</span>).
-        </p>
+      </section>
+
+      <Card>
+        <div className="flex flex-col gap-os-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[var(--accent-ai)]">
+              demo workload path
+            </div>
+            <p className="mt-os-2 max-w-3xl text-body leading-relaxed text-[var(--text-muted)]">
+              End-to-end Python workload flow is documented under{" "}
+              <code className="rounded-os-sm border border-[var(--hair)] bg-[var(--panel-sunken)] px-1.5 py-0.5 font-mono text-[var(--text-strong)]">
+                services/core/core/deai/RUNBOOK.md
+              </code>
+              : submit → worker → result JSON → receipt.
+            </p>
+          </div>
+          <Link
+            href="/logs"
+            className="inline-flex items-center justify-center gap-os-2 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-5 py-os-3 text-caption font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+          >
+            Check runtime logs
+            <ArrowRight size={14} />
+          </Link>
+        </div>
       </Card>
-    </div>
+    </PageShell>
   );
 }

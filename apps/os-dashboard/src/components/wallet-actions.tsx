@@ -1,18 +1,23 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { ArrowDownLeft, ArrowUpRight, Copy, Check, RefreshCw } from "lucide-react";
-import { createPublicClient, createWalletClient, http, formatEther, parseEther } from "viem";
-import { nakharaxLocal, burnerAccount } from "@/lib/web3/config";
+import { useCallback, useEffect, useState } from "react";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  Check,
+  Copy,
+  FileCheck2,
+  RefreshCw,
+} from "lucide-react";
+import {
+  createPublicClient,
+  formatEther,
+  http,
+} from "viem";
 
-// Setup clients outside component to avoid re-creation
+import { burnerAccount, nakharaxLocal } from "@/lib/web3/config";
+
 const publicClient = createPublicClient({
-  chain: nakharaxLocal,
-  transport: http(),
-});
-
-const walletClient = createWalletClient({
-  account: burnerAccount,
   chain: nakharaxLocal,
   transport: http(),
 });
@@ -21,12 +26,14 @@ export function WalletActions() {
   const [copied, setCopied] = useState(false);
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
-  const [hint, setHint] = useState<{ type: "error" | "success" | "info", msg: string } | null>(null);
-  
-  // Real Chain State
+  const [hint, setHint] = useState<{
+    type: "error" | "success" | "info";
+    msg: string;
+  } | null>(null);
   const [balance, setBalance] = useState("0");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [demoReceipt, setDemoReceipt] = useState<string | null>(null);
 
   const address = burnerAccount.address;
 
@@ -36,134 +43,154 @@ export function WalletActions() {
       const wei = await publicClient.getBalance({ address });
       setBalance(formatEther(wei));
       setHint(null);
-    } catch (err) {
-      setHint({ type: "error", msg: "RPC_CONNECTION_FAILED: Ensure local node is running on :8545" });
+    } catch {
+      setHint({
+        type: "error",
+        msg: "RPC connection failed. Check https://rpc.nakharax.io or your configured node.",
+      });
     } finally {
       setIsRefreshing(false);
     }
   }, [address]);
 
-  // Initial load
   useEffect(() => {
-    fetchBalance();
+    void fetchBalance();
   }, [fetchBalance]);
 
-  async function copyAddr() {
+  async function copyAddress() {
     try {
       await navigator.clipboard.writeText(address);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      window.setTimeout(() => setCopied(false), 2_000);
     } catch {
-      setHint({ type: "error", msg: "CLIPBOARD_UNAVAILABLE" });
+      setHint({ type: "error", msg: "Clipboard unavailable." });
     }
   }
 
-  async function handleSend(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleSend(event: React.FormEvent) {
+    event.preventDefault();
     if (!to || !amount) {
-      setHint({ type: "error", msg: "INVALID_INPUT: Address and amount are required" });
+      setHint({ type: "error", msg: "Address and amount are required." });
+      return;
+    }
+    if (!/^0x[a-fA-F0-9]{40}$/.test(to)) {
+      setHint({ type: "error", msg: "Enter a valid 0x wallet address for the demo receipt." });
+      return;
+    }
+    const amountNumber = Number(amount);
+    if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+      setHint({ type: "error", msg: "Enter a positive NAK amount for the demo receipt." });
       return;
     }
 
     try {
       setIsSending(true);
-      setHint({ type: "info", msg: "BROADCASTING_TX..." });
-      
-      const hash = await walletClient.sendTransaction({
-        to: to as `0x${string}`,
-        value: parseEther(amount),
-      });
-      
-      setHint({ type: "success", msg: `TX_MINED: ${hash.slice(0, 10)}...` });
+      setHint({ type: "info", msg: "Creating demo transfer receipt..." });
+      await new Promise((resolve) => window.setTimeout(resolve, 650));
+      const receipt = `demo-${Date.now().toString(36)}-${to.slice(-6)}`;
+      setDemoReceipt(receipt);
+      setHint({ type: "success", msg: `Demo transfer receipt created: ${receipt}` });
       setTo("");
       setAmount("");
-      
-      // Auto refresh balance after sending
-      setTimeout(fetchBalance, 1000);
-    } catch (err: any) {
-      setHint({ type: "error", msg: `TX_FAILED: ${err.shortMessage || err.message}` });
+    } catch (error) {
+      setHint({ type: "error", msg: `Demo transfer failed: ${readError(error)}` });
     } finally {
       setIsSending(false);
     }
   }
 
   return (
-    <div className="space-y-os-4">
-      <section className="bg-bg-elev border border-border rounded-none p-os-4 space-y-os-4">
-        <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">ACTIVE_ACCOUNT (DEV_BURNER)</div>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-os-4">
-          <code className="flex-1 rounded-none bg-bg-card border border-border px-os-4 py-os-3 font-mono text-[11px] text-zinc-200 break-all">
+    <div className="grid gap-os-5 lg:grid-cols-12">
+      <section className="surface-panel rounded-os-2xl p-os-5 lg:col-span-5">
+        <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+          Active account · dev burner
+        </div>
+        <div className="mt-os-3 flex flex-col gap-os-3">
+          <code className="rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-3 font-mono text-caption text-[var(--text-strong)] break-all">
             {address}
           </code>
           <button
             type="button"
-            onClick={() => void copyAddr()}
-            className="inline-flex items-center justify-center gap-os-2 rounded-none bg-bg-card border border-border px-os-4 py-os-3 text-[10px] font-mono uppercase tracking-widest text-zinc-200 hover:bg-border transition-colors"
+            onClick={() => void copyAddress()}
+            className="inline-flex items-center justify-center gap-os-2 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-2 text-[11px] font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
           >
-            {copied ? <Check size={14} className="text-accent-ok" /> : <Copy size={14} />}
-            {copied ? "COPIED" : "COPY_ADDR"}
+            {copied ? <Check size={14} className="text-[var(--accent-ok)]" /> : <Copy size={14} />}
+            {copied ? "Copied" : "Copy address"}
           </button>
         </div>
       </section>
 
-      <section className="bg-bg-elev border border-border rounded-none p-os-4 space-y-os-4">
+      <section className="surface-panel rounded-os-2xl p-os-5 lg:col-span-3">
         <div className="flex items-center justify-between">
-          <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">ONCHAIN_BALANCE</div>
-          <button 
-            onClick={fetchBalance} 
+          <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+            On-chain balance
+          </div>
+          <button
+            type="button"
+            onClick={() => void fetchBalance()}
             disabled={isRefreshing}
-            className="text-zinc-500 hover:text-zinc-300 transition-colors"
+            className="grid h-8 w-8 place-items-center rounded-full text-[var(--text-muted)] transition-colors hover:bg-[var(--panel-hover)] hover:text-[var(--text-strong)] disabled:opacity-50"
+            aria-label="Refresh balance"
           >
-            <RefreshCw size={12} className={isRefreshing ? "animate-spin" : ""} />
+            <RefreshCw size={14} className={isRefreshing ? "animate-spin" : ""} />
           </button>
         </div>
-        <div className="flex items-baseline gap-os-3">
-          <span className="text-[2rem] leading-none font-mono font-bold tracking-tight text-zinc-100 tabular-nums">
+        <div className="mt-os-5 flex items-baseline gap-os-3">
+          <span className="font-mono text-[2rem] font-semibold leading-none tabular-nums text-[var(--text-strong)]">
             {Number(balance).toFixed(4)}
           </span>
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">AXIO</span>
+          <span className="text-[11px] font-mono font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+            NAK
+          </span>
         </div>
       </section>
 
-      <section className="bg-bg-elev border border-border rounded-none p-os-4 space-y-os-4">
-        <div className="flex items-center gap-os-2 text-[12px] font-mono font-bold text-zinc-200 uppercase tracking-widest">
-          <ArrowUpRight size={14} className="text-accent-ai" />
-          SEND_FUNDS
+      <section className="surface-panel rounded-os-2xl p-os-5 lg:col-span-4">
+        <div className="flex items-center gap-os-2 text-title font-semibold text-[var(--text-strong)]">
+          <ArrowUpRight size={16} className="text-[var(--accent-ai)]" />
+          Demo transfer
         </div>
-        <form onSubmit={handleSend} className="space-y-os-4">
+        <p className="mt-os-2 text-caption text-[var(--text-muted)]">
+          This form validates input and creates a local demo receipt. It does not broadcast a transaction.
+        </p>
+        <form onSubmit={handleSend} className="mt-os-4 space-y-os-4">
           <div>
-            <label className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1" htmlFor="to">
-              TARGET_ADDRESS
+            <label className="mb-os-1 block text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--text-muted)]" htmlFor="to">
+              Target address
             </label>
             <input
               id="to"
               value={to}
-              onChange={(e) => setTo(e.target.value)}
+              onChange={(event) => setTo(event.target.value)}
               placeholder="0x..."
-              className="w-full rounded-none border border-border bg-bg-card px-os-3 py-2 font-mono text-[11px] text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-400 uppercase transition-colors"
+              className="w-full rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-3 py-os-3 font-mono text-caption text-[var(--text-strong)] placeholder:text-[var(--text-faint)] outline-none transition-colors focus:border-emerald-500/50"
               autoComplete="off"
             />
           </div>
           <div>
-            <label className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block mb-1" htmlFor="amt">
-              AMOUNT (AXIO)
+            <label className="mb-os-1 block text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--text-muted)]" htmlFor="amount">
+              Amount (NAK)
             </label>
             <input
-              id="amt"
+              id="amount"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(event) => setAmount(event.target.value)}
               placeholder="0.0"
               inputMode="decimal"
-              className="w-full rounded-none border border-border bg-bg-card px-os-3 py-2 font-mono text-[11px] text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors"
+              className="w-full rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-3 py-os-3 font-mono text-caption text-[var(--text-strong)] placeholder:text-[var(--text-faint)] outline-none transition-colors focus:border-emerald-500/50"
             />
           </div>
-          
+
           {hint && (
-            <p className={`rounded-none border px-os-3 py-2 text-[10px] font-mono uppercase tracking-widest ${
-              hint.type === "error" ? "bg-accent-danger/10 border-accent-danger/20 text-accent-danger" : 
-              hint.type === "success" ? "bg-accent-ok/10 border-accent-ok/20 text-accent-ok" :
-              "bg-accent-info/10 border-accent-info/20 text-accent-info"
-            }`}>
+            <p
+              className={`rounded-os-lg border px-os-3 py-os-2 text-caption ${
+                hint.type === "error"
+                  ? "border-rose-500/25 bg-rose-500/10 text-[var(--accent-danger)]"
+                  : hint.type === "success"
+                    ? "border-emerald-500/25 bg-emerald-500/10 text-[var(--accent-ok)]"
+                    : "border-cyan-500/25 bg-cyan-500/10 text-[var(--accent-chain)]"
+              }`}
+            >
               {hint.msg}
             </p>
           )}
@@ -171,17 +198,38 @@ export function WalletActions() {
           <button
             type="submit"
             disabled={isSending}
-            className="inline-flex items-center gap-os-2 rounded-none bg-zinc-200 text-obsidian-950 px-os-6 py-2 text-[10px] font-mono font-bold hover:bg-white uppercase tracking-widest transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center gap-os-2 rounded-full bg-[var(--text-strong)] px-os-5 py-os-3 text-[12px] font-semibold text-[var(--canvas)] transition-all hover:-translate-y-0.5 hover:shadow-raise disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSending ? (
-              <RefreshCw size={12} className="animate-spin" />
+              <RefreshCw size={14} className="animate-spin" />
             ) : (
-              <ArrowDownLeft size={12} />
+              <ArrowDownLeft size={14} />
             )}
-            {isSending ? "BROADCASTING..." : "EXECUTE_TX"}
+            {isSending ? "Creating receipt" : "Create demo receipt"}
           </button>
         </form>
+        {demoReceipt && (
+          <div className="mt-os-4 flex items-start gap-os-2 rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-3 py-os-2 text-caption text-[var(--text-muted)]">
+            <FileCheck2 size={14} className="mt-0.5 shrink-0 text-[var(--accent-ok)]" />
+            <span>
+              Last demo receipt:{" "}
+              <code className="font-mono text-[var(--text-strong)]">{demoReceipt}</code>
+            </span>
+          </div>
+        )}
       </section>
     </div>
   );
+}
+
+function readError(error: unknown) {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "shortMessage" in error &&
+    typeof (error as { shortMessage?: unknown }).shortMessage === "string"
+  ) {
+    return (error as { shortMessage: string }).shortMessage;
+  }
+  return error instanceof Error ? error.message : String(error);
 }

@@ -1,40 +1,46 @@
-import { Card } from "@/components/card";
+import Link from "next/link";
 import {
-  Cpu,
+  ArrowLeft,
+  Brain,
   CheckCircle2,
-  XCircle,
-  Loader2,
+  Cpu,
   Database,
+  Loader2,
+  XCircle,
   Zap,
   type LucideIcon,
 } from "lucide-react";
 
+import {
+  Card,
+  IconBadge,
+  PageShell,
+  SectionHeader,
+  StatCard,
+  StatusPill,
+} from "@/components/card";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 export interface ModelInfo {
   id: string;
   name: string;
   version: string;
   type: "llm" | "vision" | "audio" | "embedding" | "depth";
-  size: string; // e.g. "70B", "v3", "Medium"
+  size: string;
   precision: "FP16" | "INT8" | "INT4" | "FP32";
   status: "active" | "deprecated" | "beta";
-  deployedOn: string[]; // node names
+  deployedOn: string[];
   totalInferences: number;
   avgLatencyMs: number;
-  lastUsed: number; // timestamp
+  lastUsed: number;
 }
 
-// ---------------------------------------------------------------------------
-// Mock model registry
-// ---------------------------------------------------------------------------
-
-const MODEL_CATALOG: Omit<ModelInfo, "deployedOn" | "totalInferences" | "avgLatencyMs" | "lastUsed">[] = [
+const MODEL_CATALOG: Omit<
+  ModelInfo,
+  "deployedOn" | "totalInferences" | "avgLatencyMs" | "lastUsed"
+>[] = [
   { id: "m-llama70b", name: "DeAI-LLaMA-3-70B", version: "3.2", type: "llm", size: "70B", precision: "INT8", status: "active" },
   { id: "m-llama8b", name: "DeAI-LLaMA-3-8B", version: "3.1", type: "llm", size: "8B", precision: "INT4", status: "active" },
   { id: "m-sdxl", name: "DeAI-SDXL", version: "v3.2", type: "vision", size: "v3", precision: "FP16", status: "active" },
@@ -57,189 +63,195 @@ const NODES = [
 
 function buildModelRegistry(): ModelInfo[] {
   const now = Date.now();
-  return MODEL_CATALOG.map((m) => {
-    const deployedOn = m.status === "deprecated"
-      ? NODES.slice(0, 1)
-      : m.status === "beta"
-      ? NODES.slice(0, 2)
-      : NODES.slice(0, 3 + Math.floor(Math.random() * 2));
+  return MODEL_CATALOG.map((model) => {
+    const deployedOn =
+      model.status === "deprecated"
+        ? NODES.slice(0, 1)
+        : model.status === "beta"
+          ? NODES.slice(0, 2)
+          : NODES.slice(0, 3 + Math.floor(Math.random() * 2));
     return {
-      ...m,
+      ...model,
       deployedOn,
-      totalInferences: Math.floor(Math.random() * 50000 + 1000),
-      avgLatencyMs: Math.floor(Math.random() * 3000 + 100),
-      lastUsed: now - Math.floor(Math.random() * 86400000),
+      totalInferences: Math.floor(Math.random() * 50_000 + 1_000),
+      avgLatencyMs: Math.floor(Math.random() * 3_000 + 100),
+      lastUsed: now - Math.floor(Math.random() * 86_400_000),
     };
   }).sort((a, b) => b.totalInferences - a.totalInferences);
 }
 
-// ---------------------------------------------------------------------------
-// Badge helpers
-// ---------------------------------------------------------------------------
+export default async function ModelRegistryPage() {
+  const models = buildModelRegistry();
+  const active = models.filter((model) => model.status === "active").length;
+  const beta = models.filter((model) => model.status === "beta").length;
+  const totalInferences = models.reduce(
+    (sum, model) => sum + model.totalInferences,
+    0,
+  );
+  const deployedCount = models.reduce(
+    (sum, model) => sum + model.deployedOn.length,
+    0,
+  );
 
-function StatusBadge({ status }: { status: ModelInfo["status"] }) {
-  const map: Record<
-    ModelInfo["status"],
-    { label: string; cls: string; Icon: LucideIcon }
-  > = {
-    active: {
-      label: "Active",
-      cls: "bg-emerald-400/10 text-emerald-300 border-emerald-400/30",
-      Icon: CheckCircle2,
-    },
-    deprecated: {
-      label: "Deprecated",
-      cls: "bg-zinc-400/10 text-zinc-400 border-zinc-400/30",
-      Icon: XCircle,
-    },
-    beta: {
-      label: "Beta",
-      cls: "bg-amber-400/10 text-amber-300 border-amber-400/30",
-      Icon: Loader2,
-    },
-  };
-  const { label, cls, Icon } = map[status]!;
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}>
-      <Icon size={12} />
-      {label}
-    </span>
+    <PageShell
+      eyebrow="Model Registry"
+      title="Capabilities workers can actually run."
+      description="The registry connects user intent to available models, precision, deployment footprint, and observed latency."
+      meta={
+        <>
+          <StatusPill tone="ai">{active} active</StatusPill>
+          <StatusPill tone="warn">{beta} beta</StatusPill>
+          <StatusPill tone="warn">demo catalog</StatusPill>
+        </>
+      }
+      actions={
+        <Link
+          href="/activity"
+          className="inline-flex items-center gap-os-2 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-2 text-[11px] font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+        >
+          <ArrowLeft size={13} />
+          Activity
+        </Link>
+      }
+    >
+      <div className="grid grid-cols-2 gap-os-4 lg:grid-cols-4">
+        <StatCard
+          label="Models"
+          value={models.length}
+          hint="LLM, vision, audio, embedding"
+          icon={<Brain size={18} />}
+          tone="violet"
+        />
+        <StatCard
+          label="Active"
+          value={active}
+          hint="Ready for routing"
+          icon={<CheckCircle2 size={18} />}
+          tone="ai"
+        />
+        <StatCard
+          label="Deployments"
+          value={deployedCount}
+          hint="Model-worker placements"
+          icon={<Cpu size={18} />}
+          tone="chain"
+        />
+        <StatCard
+          label="Inferences"
+          value={`${(totalInferences / 1_000).toFixed(0)}k`}
+          hint="Demo registry volume"
+          icon={<Zap size={18} />}
+          tone="warn"
+        />
+      </div>
+
+      <section className="space-y-os-4">
+        <SectionHeader
+          title="Catalog"
+          description="Use this as the visible contract between workload requests and worker capabilities."
+        />
+        <div className="grid gap-os-3">
+          {models.map((model) => (
+            <Card key={model.id} className="p-os-4">
+              <div className="grid gap-os-4 lg:grid-cols-[minmax(260px,1.2fr)_minmax(220px,1fr)_minmax(240px,1fr)] lg:items-center">
+                <div className="flex items-center gap-os-3">
+                  <IconBadge Icon={typeIcon(model.type)} tone={typeTone(model.type)} />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-os-2">
+                      <h2 className="truncate text-title font-semibold text-[var(--text-strong)]">
+                        {model.name}
+                      </h2>
+                      <span className="text-caption text-[var(--text-muted)]">
+                        v{model.version}
+                      </span>
+                    </div>
+                    <div className="mt-1 flex flex-wrap items-center gap-os-2">
+                      <ModelStatus status={model.status} />
+                      <TypeBadge type={model.type} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-os-2">
+                  <MiniStat label="Size" value={model.size} />
+                  <MiniStat label="Precision" value={model.precision} />
+                  <MiniStat label="Latency" value={`${model.avgLatencyMs}ms`} />
+                </div>
+
+                <div>
+                  <div className="mb-os-2 flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--text-muted)]">
+                    <span>worker placements</span>
+                    <span>{model.deployedOn.length}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-os-1">
+                    {model.deployedOn.map((node) => (
+                      <span
+                        key={node}
+                        className="inline-flex items-center gap-1 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-2 py-1 text-[10px] text-[var(--text-muted)]"
+                      >
+                        <Cpu size={10} />
+                        {node}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-os-2 text-[11px] text-[var(--text-muted)]">
+                    {(model.totalInferences / 1_000).toFixed(1)}k runs · last used{" "}
+                    {new Date(model.lastUsed).toLocaleDateString()}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+    </PageShell>
+  );
+}
+
+function typeTone(type: ModelInfo["type"]) {
+  return type === "llm"
+    ? "violet"
+    : type === "vision"
+      ? "chain"
+      : type === "audio"
+        ? "warn"
+        : "ai";
+}
+
+function typeIcon(type: ModelInfo["type"]): LucideIcon {
+  return type === "llm" ? Brain : type === "vision" ? Database : Cpu;
+}
+
+function ModelStatus({ status }: { status: ModelInfo["status"] }) {
+  const tone = status === "active" ? "ai" : status === "beta" ? "warn" : "neutral";
+  const Icon = status === "active" ? CheckCircle2 : status === "beta" ? Loader2 : XCircle;
+  return (
+    <StatusPill tone={tone} pulse={status === "beta"}>
+      <Icon size={11} />
+      {status}
+    </StatusPill>
   );
 }
 
 function TypeBadge({ type }: { type: ModelInfo["type"] }) {
-  const cls =
-    type === "llm"
-      ? "bg-indigo-400/10 text-indigo-300 border-indigo-400/30"
-      : type === "vision"
-      ? "bg-violet-400/10 text-violet-300 border-violet-400/30"
-      : type === "audio"
-      ? "bg-sky-400/10 text-sky-300 border-sky-400/30"
-      : type === "embedding"
-      ? "bg-cyan-400/10 text-cyan-300 border-cyan-400/30"
-      : "bg-emerald-400/10 text-emerald-300 border-emerald-400/30";
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}>
-      <Database size={10} />
+    <span className="inline-flex items-center gap-os-1 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-2.5 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--text)]">
+      <Database size={11} />
       {type}
     </span>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Page component
-// ---------------------------------------------------------------------------
-
-export default async function ModelRegistryPage() {
-  const models = buildModelRegistry();
-
-  const active = models.filter((m) => m.status === "active").length;
-  const totalInferences = models.reduce((a, m) => a + m.totalInferences, 0);
-  const deployedCount = models.reduce((a, m) => a + m.deployedOn.length, 0);
-
+function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">DeAI Model Registry</h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Available models, deployment status, and usage statistics across nodes.
-        </p>
-      </header>
-
-      {/* Summary stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">Models</div>
-          <div className="mt-1 text-xl font-semibold">{models.length}</div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">Active</div>
-          <div className="mt-1 text-xl font-semibold text-emerald-300">{active}</div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">Deployments</div>
-          <div className="mt-1 text-xl font-semibold text-teal-300">{deployedCount}</div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">Total Inferences</div>
-          <div className="mt-1 text-xl font-semibold text-indigo-300">
-            {(totalInferences / 1_000).toFixed(0)}k
-          </div>
-        </div>
+    <div className="rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-3 py-os-2">
+      <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--text-muted)]">
+        {label}
       </div>
-
-      {/* ---- Model List ---- */}
-      <section>
-        <div className="mb-3 flex items-center gap-2">
-          <Cpu size={16} className="text-teal-400" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
-            Model Catalog
-          </h2>
-          <span className="rounded-full bg-teal-400/10 px-2 py-0.5 text-[11px] text-teal-300">
-            {models.length}
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          {models.map((model) => (
-            <div
-              key={model.id}
-              className="glass rounded-xl p-4 flex flex-col gap-3"
-            >
-              {/* Row 1: Name + Status */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-zinc-100 truncate">
-                    {model.name}
-                  </span>
-                  <span className="text-[11px] text-zinc-500">v{model.version}</span>
-                </div>
-                <StatusBadge status={model.status} />
-              </div>
-
-              {/* Row 2: Type + Size + Precision */}
-              <div className="flex items-center gap-3 text-xs text-zinc-400">
-                <TypeBadge type={model.type} />
-                <span className="flex items-center gap-1">
-                  <Zap size={12} />
-                  {model.size}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Database size={12} />
-                  {model.precision}
-                </span>
-              </div>
-
-              {/* Row 3: Stats */}
-              <div className="flex items-center gap-4 text-[11px] text-zinc-500">
-                <span>
-                  {(model.totalInferences / 1000).toFixed(1)}k inferences
-                </span>
-                <span>
-                  {model.avgLatencyMs} ms avg
-                </span>
-                <span className="ml-auto">
-                  Last used {new Date(model.lastUsed).toLocaleDateString()}
-                </span>
-              </div>
-
-              {/* Row 4: Deployed nodes */}
-              <div className="flex flex-wrap gap-1.5">
-                {model.deployedOn.map((node) => (
-                  <span
-                    key={node}
-                    className="inline-flex items-center gap-1 rounded-full bg-zinc-800/50 border border-zinc-700/50 px-2 py-0.5 text-[10px] text-zinc-400"
-                  >
-                    <Cpu size={10} />
-                    {node}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="mt-1 font-mono text-caption font-semibold text-[var(--text-strong)]">
+        {value}
+      </div>
     </div>
   );
 }

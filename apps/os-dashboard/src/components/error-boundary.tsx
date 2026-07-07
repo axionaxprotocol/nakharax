@@ -1,7 +1,7 @@
 "use client";
 
 import { Component, type ReactNode } from "react";
-import { Skull, RotateCcw } from "lucide-react";
+import { RotateCcw, Skull } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -23,37 +23,39 @@ export class OErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
-    // In production, this would send to Sentry / Datadog
-    console.error("OS Module Crashed:", error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: unknown) {
+    console.error("OS module crashed:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center p-8 bg-bg-card border border-accent-danger/50 rounded-none w-full min-h-[300px]">
-          <div className="h-12 w-12 bg-accent-danger/10 border border-accent-danger/30 flex items-center justify-center rounded-none text-accent-danger mb-4">
-            <Skull size={24} strokeWidth={2} />
+        <div className="surface-panel flex min-h-[320px] w-full flex-col items-center justify-center rounded-os-2xl border-rose-500/35 p-os-8 text-center">
+          <div className="mb-os-4 grid h-14 w-14 place-items-center rounded-os-xl border border-rose-500/25 bg-rose-500/10 text-[var(--accent-danger)]">
+            <Skull size={26} strokeWidth={1.8} />
           </div>
-          <h2 className="text-title font-mono font-bold text-zinc-100 uppercase tracking-widest mb-1">
-            MODULE_CRASHED
+          <h2 className="text-title font-semibold text-[var(--text-strong)]">
+            Module crashed
           </h2>
-          <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4 text-center max-w-md">
-            {this.props.moduleName ? `THE [${this.props.moduleName}] MODULE` : "A SYSTEM MODULE"} ENCOUNTERED A FATAL EXCEPTION AND WAS SANDBOXED TO PREVENT OS CORRUPTION.
+          <p className="mt-os-2 max-w-md text-body leading-relaxed text-[var(--text-muted)]">
+            {this.props.moduleName
+              ? `The ${this.props.moduleName} module failed and was isolated from the OS shell.`
+              : "A system module failed and was isolated from the OS shell."}
           </p>
-          
-          <div className="bg-bg-elev border border-border p-3 w-full max-w-md overflow-x-auto mb-6">
-            <code className="text-[9px] font-mono text-accent-danger whitespace-pre-wrap break-all">
-              {this.state.error?.message || "Unknown Exception"}
+
+          <div className="mt-os-5 w-full max-w-md overflow-x-auto rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] p-os-3 text-left">
+            <code className="whitespace-pre-wrap break-all font-mono text-caption text-[var(--accent-danger)]">
+              {this.state.error?.message || "Unknown exception"}
             </code>
           </div>
 
           <button
+            type="button"
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="flex items-center gap-2 bg-zinc-200 hover:bg-white text-obsidian-950 px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-widest transition-colors rounded-none"
+            className="mt-os-5 inline-flex items-center gap-os-2 rounded-full bg-[var(--text-strong)] px-os-5 py-os-3 text-[12px] font-semibold text-[var(--canvas)] transition-all hover:-translate-y-0.5 hover:shadow-raise"
           >
-            <RotateCcw size={12} />
-            RESTART_MODULE
+            <RotateCcw size={14} />
+            Restart module
           </button>
         </div>
       );

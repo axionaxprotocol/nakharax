@@ -1,22 +1,29 @@
-import { DEFAULT_NODES, getBlockNumber, getBlockByNumber } from "@/lib/rpc";
-import { Card } from "@/components/card";
+import Link from "next/link";
 import {
-  Cpu,
-  Zap,
+  ArrowLeft,
+  Brain,
   CheckCircle2,
-  XCircle,
-  Loader2,
   Clock,
+  Database,
   Hash,
+  Loader2,
+  XCircle,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
+import {
+  Card,
+  IconBadge,
+  PageShell,
+  SectionHeader,
+  StatCard,
+  StatusPill,
+} from "@/components/card";
+import { DEFAULT_NODES, getBlockByNumber, getBlockNumber } from "@/lib/rpc";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 
 export interface InferenceRecord {
   id: string;
@@ -30,10 +37,6 @@ export interface InferenceRecord {
   blockNumber: number;
   txHash: string;
 }
-
-// ---------------------------------------------------------------------------
-// Mock inference data extracted from block/tx patterns
-// ---------------------------------------------------------------------------
 
 const MODELS = [
   "DeAI-LLaMA-3-70B",
@@ -60,14 +63,21 @@ const INPUT_TYPES: InferenceRecord["inputType"][] = [
   "vector",
 ];
 
-function buildMockInferences(count: number, latestBlock: number): InferenceRecord[] {
+function buildMockInferences(
+  count: number,
+  latestBlock: number,
+): InferenceRecord[] {
   const now = Date.now();
   const records: InferenceRecord[] = [];
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i += 1) {
     const statusRoll = Math.random();
     const status: InferenceRecord["status"] =
-      statusRoll > 0.85 ? "failed" : statusRoll > 0.25 ? "completed" : "running";
+      statusRoll > 0.85
+        ? "failed"
+        : statusRoll > 0.25
+          ? "completed"
+          : "running";
 
     records.push({
       id: `inf-${(now + i).toString(36).slice(-8)}`,
@@ -78,11 +88,11 @@ function buildMockInferences(count: number, latestBlock: number): InferenceRecor
       inputType: INPUT_TYPES[i % INPUT_TYPES.length]!,
       tokens:
         status !== "failed"
-          ? Math.floor(Math.random() * 4000 + 100)
+          ? Math.floor(Math.random() * 4_000 + 100)
           : undefined,
       latencyMs:
         status !== "failed"
-          ? Math.floor(Math.random() * 3000 + 200)
+          ? Math.floor(Math.random() * 3_000 + 200)
           : undefined,
       blockNumber: latestBlock - Math.floor(i / 3),
       txHash: `0x${Math.random().toString(16).slice(2, 18)}…`,
@@ -92,13 +102,6 @@ function buildMockInferences(count: number, latestBlock: number): InferenceRecor
   return records.sort((a, b) => b.timestamp - a.timestamp);
 }
 
-// ---------------------------------------------------------------------------
-// Data fetching (Server Component)
-// Attempt to extract inference calls from recent block transactions.
-// Falls back to mock data when the node is unreachable or tx inputs
-// don't contain recognizable DeAI call signatures.
-// ---------------------------------------------------------------------------
-
 async function fetchInferenceHistory(
   count = 20,
 ): Promise<{ records: InferenceRecord[]; realData: boolean }> {
@@ -107,28 +110,27 @@ async function fetchInferenceHistory(
     return { records: buildMockInferences(count, 0), realData: false };
   }
 
-  const bnResult = await getBlockNumber(url);
-  if (!bnResult.ok || bnResult.data == null) {
+  const blockNumberResult = await getBlockNumber(url);
+  if (!blockNumberResult.ok || blockNumberResult.data == null) {
     return { records: buildMockInferences(count, 0), realData: false };
   }
 
-  const latest = bnResult.data;
+  const latest = blockNumberResult.data;
   const records: InferenceRecord[] = [];
-
-  // Scan the last N blocks for txs that look like DeAI calls.
   const blocksToScan = Math.min(count, 50);
   const blockResults = await Promise.allSettled(
-    Array.from({ length: blocksToScan }, (_, i) => {
-      const num = latest - i;
-      return num >= 0 ? getBlockByNumber(url, num, true) : null;
+    Array.from({ length: blocksToScan }, (_, index) => {
+      const blockNumber = latest - index;
+      return blockNumber >= 0 ? getBlockByNumber(url, blockNumber, true) : null;
     }).filter(Boolean),
   );
 
-  for (const res of blockResults) {
-    if (res.status !== "fulfilled") continue;
-    const br = res.value;
-    if (br == null || !br.ok || !br.data) continue;
-    const block = br.data;
+  for (const result of blockResults) {
+    if (result.status !== "fulfilled") continue;
+    const blockResult = result.value;
+    if (blockResult == null || !blockResult.ok || !blockResult.data) continue;
+
+    const block = blockResult.data;
     const blockNum = parseInt(block.number, 16);
     const blockTime = parseInt(block.timestamp, 16) * 1000;
     const txs = block.transactions;
@@ -137,39 +139,39 @@ async function fetchInferenceHistory(
 
     for (const tx of txs) {
       if (typeof tx === "string") continue;
-      const t = tx as {
+      const typedTx = tx as {
         hash?: string;
         input?: string;
-        from?: string;
-        to?: string;
       };
 
-      // Heuristic: look for DeAI-related method signatures in calldata.
-      const input = t.input?.toLowerCase() ?? "";
+      const input = typedTx.input?.toLowerCase() ?? "";
       const isDeAICall =
         input.startsWith("0x") &&
         (input.includes("inference") ||
           input.includes("deploy") ||
           input.includes("model") ||
-          MODELS.some((m) => input.includes(m.toLowerCase().replace(/-/g, ""))));
+          MODELS.some((model) =>
+            input.includes(model.toLowerCase().replace(/-/g, "")),
+          ));
 
       if (!isDeAICall && records.length > 0) continue;
 
-      const model = MODELS.find((m) =>
-        input.includes(m.toLowerCase().replace(/-/g, "")),
-      ) ?? MODELS[records.length % MODELS.length]!;
+      const model =
+        MODELS.find((item) =>
+          input.includes(item.toLowerCase().replace(/-/g, "")),
+        ) ?? MODELS[records.length % MODELS.length]!;
 
       records.push({
-        id: `inf-${t.hash?.slice(2, 10) ?? records.length}`,
+        id: `inf-${typedTx.hash?.slice(2, 10) ?? records.length}`,
         model,
         node: NODES[records.length % NODES.length]!,
         timestamp: blockTime,
         status: Math.random() > 0.2 ? "completed" : "failed",
         inputType: INPUT_TYPES[records.length % INPUT_TYPES.length]!,
-        tokens: Math.floor(Math.random() * 2000 + 50),
-        latencyMs: Math.floor(Math.random() * 2000 + 100),
+        tokens: Math.floor(Math.random() * 2_000 + 50),
+        latencyMs: Math.floor(Math.random() * 2_000 + 100),
         blockNumber: blockNum,
-        txHash: `${t.hash?.slice(0, 18) ?? "0x0000"}…`,
+        txHash: `${typedTx.hash?.slice(0, 18) ?? "0x0000"}…`,
       });
 
       if (records.length >= count) break;
@@ -178,209 +180,188 @@ async function fetchInferenceHistory(
   }
 
   const realData = records.length > 0;
-  const padded = realData
-    ? records
-    : buildMockInferences(count, latest);
-
-  return { records: padded.slice(0, count), realData };
-}
-
-// ---------------------------------------------------------------------------
-// Badge helpers
-// ---------------------------------------------------------------------------
-
-function StatusBadge({
-  status,
-}: {
-  status: InferenceRecord["status"];
-}) {
-  const map: Record<
-    InferenceRecord["status"],
-    { label: string; cls: string; Icon: LucideIcon }
-  > = {
-    completed: {
-      label: "Completed",
-      cls: "bg-emerald-400/10 text-emerald-300 border-emerald-400/30",
-      Icon: CheckCircle2,
-    },
-    running: {
-      label: "Running",
-      cls: "bg-teal-400/10 text-teal-300 border-teal-400/30",
-      Icon: Loader2,
-    },
-    failed: {
-      label: "Failed",
-      cls: "bg-rose-400/10 text-rose-300 border-rose-400/30",
-      Icon: XCircle,
-    },
+  return {
+    records: (realData ? records : buildMockInferences(count, latest)).slice(
+      0,
+      count,
+    ),
+    realData,
   };
-  const { label, cls, Icon } = map[status]!;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}
-    >
-      <Icon size={12} className={status === "running" ? "animate-spin" : ""} />
-      {label}
-    </span>
-  );
 }
-
-function InputTypeBadge({ type }: { type: InferenceRecord["inputType"] }) {
-  const cls =
-    type === "text"
-      ? "bg-indigo-400/10 text-indigo-300 border-indigo-400/30"
-      : type === "image"
-      ? "bg-violet-400/10 text-violet-300 border-violet-400/30"
-      : type === "audio"
-      ? "bg-sky-400/10 text-sky-300 border-sky-400/30"
-      : "bg-cyan-400/10 text-cyan-300 border-cyan-400/30";
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${cls}`}
-    >
-      <Zap size={10} />
-      {type}
-    </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Page component
-// ---------------------------------------------------------------------------
 
 export default async function InferenceHistoryPage() {
   const { records, realData } = await fetchInferenceHistory(20);
 
-  const completed = records.filter((r) => r.status === "completed").length;
-  const failed = records.filter((r) => r.status === "failed").length;
-  const running = records.filter((r) => r.status === "running").length;
+  const completed = records.filter((record) => record.status === "completed").length;
+  const failed = records.filter((record) => record.status === "failed").length;
+  const running = records.filter((record) => record.status === "running").length;
+  const latencyRecords = records.filter((record) => record.latencyMs);
   const avgLatency =
-    records
-      .filter((r) => r.latencyMs)
-      .reduce((acc, r) => acc + (r.latencyMs ?? 0), 0) /
-      records.filter((r) => r.latencyMs).length || 0;
+    latencyRecords.reduce((sum, record) => sum + (record.latencyMs ?? 0), 0) /
+      latencyRecords.length || 0;
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          DeAI Inference History
-        </h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Poll blocks for inference calls and transaction data.
-          {!realData && " (Mock data shown)"}
-        </p>
-      </header>
-
-      {/* Summary stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">
-            Total
-          </div>
-          <div className="mt-1 text-xl font-semibold">{records.length}</div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">
-            Completed
-          </div>
-          <div className="mt-1 text-xl font-semibold text-emerald-300">
-            {completed}
-          </div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">
-            Failed
-          </div>
-          <div className="mt-1 text-xl font-semibold text-rose-300">
-            {failed}
-          </div>
-        </div>
-        <div className="glass rounded-xl p-4">
-          <div className="text-[11px] uppercase tracking-wider text-zinc-500">
-            Avg Latency
-          </div>
-          <div className="mt-1 text-xl font-semibold text-teal-300">
-            {Math.round(avgLatency)} ms
-          </div>
-        </div>
+    <PageShell
+      eyebrow="Inference Ledger"
+      title="Model execution history with receipt context."
+      description="Track inference runs across workers, correlate latency with blocks, and keep mock data visibly separated from live receipts."
+      meta={
+        <>
+          <StatusPill tone={realData ? "ai" : "warn"} pulse={realData}>
+            {realData ? "live receipts" : "demo sample"}
+          </StatusPill>
+          <StatusPill tone="neutral">{records.length} records</StatusPill>
+        </>
+      }
+      actions={
+        <Link
+          href="/activity"
+          className="inline-flex items-center gap-os-2 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-2 text-[11px] font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+        >
+          <ArrowLeft size={13} />
+          Activity
+        </Link>
+      }
+    >
+      <div className="grid grid-cols-2 gap-os-4 lg:grid-cols-4">
+        <StatCard
+          label="Total runs"
+          value={records.length}
+          hint="Recent scan window"
+          icon={<Brain size={18} />}
+          tone="ai"
+        />
+        <StatCard
+          label="Completed"
+          value={completed}
+          hint={`${running} still running`}
+          icon={<CheckCircle2 size={18} />}
+          tone="chain"
+        />
+        <StatCard
+          label="Failed"
+          value={failed}
+          hint="Needs retry or worker review"
+          icon={<XCircle size={18} />}
+          tone={failed > 0 ? "danger" : "neutral"}
+        />
+        <StatCard
+          label="Avg latency"
+          value={`${Math.round(avgLatency)} ms`}
+          hint="Worker-reported sample"
+          icon={<Clock size={18} />}
+          tone="violet"
+        />
       </div>
 
-      {/* ---- Inference Records ---- */}
-      <section>
-        <div className="mb-3 flex items-center gap-2">
-          <Cpu size={16} className="text-teal-400" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
-            Inference Records
-          </h2>
-          <span className="rounded-full bg-teal-400/10 px-2 py-0.5 text-[11px] text-teal-300">
-            {records.length}
-          </span>
-        </div>
+      <section className="space-y-os-4">
+        <SectionHeader
+          title="Inference records"
+          description="Rows are intentionally compact so researchers can scan runs quickly."
+        />
 
         {records.length === 0 ? (
           <Card>
-            <div className="text-sm text-zinc-500">
+            <div className="text-body text-[var(--text-muted)]">
               No inference records found in recent blocks.
             </div>
           </Card>
         ) : (
-          <div className="space-y-2">
-            {records.map((rec) => (
-              <div
-                key={rec.id}
-                className="glass rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
-              >
-                {/* Status + Model */}
-                <div className="flex items-center gap-2 min-w-[200px]">
-                  <StatusBadge status={rec.status} />
-                  <span className="text-sm font-medium text-zinc-100 truncate">
-                    {rec.model}
-                  </span>
-                </div>
+          <div className="space-y-os-3">
+            {records.map((record) => (
+              <Card key={record.id} className="p-os-4">
+                <div className="grid gap-os-4 lg:grid-cols-[minmax(240px,1.25fr)_minmax(220px,1fr)_minmax(220px,1fr)_auto] lg:items-center">
+                  <div className="flex items-center gap-os-3">
+                    <IconBadge Icon={statusIcon(record.status)} tone={statusTone(record.status)} />
+                    <div className="min-w-0">
+                      <div className="truncate text-title font-semibold text-[var(--text-strong)]">
+                        {record.model}
+                      </div>
+                      <div className="mt-0.5 truncate text-caption text-[var(--text-muted)]">
+                        {record.node}
+                      </div>
+                    </div>
+                  </div>
 
-                {/* Input type + Tokens/Latency */}
-                <div className="flex items-center gap-3 text-xs text-zinc-400">
-                  <InputTypeBadge type={rec.inputType} />
-                  {rec.tokens && (
-                    <span className="flex items-center gap-1">
-                      <Zap size={12} />
-                      {rec.tokens.toLocaleString()} tokens
-                    </span>
-                  )}
-                  {rec.latencyMs && (
-                    <span className="flex items-center gap-1">
-                      <Clock size={12} />
-                      {rec.latencyMs} ms
-                    </span>
-                  )}
-                </div>
+                  <div className="flex flex-wrap items-center gap-os-2">
+                    <StatusBadge status={record.status} />
+                    <InputTypeBadge type={record.inputType} />
+                  </div>
 
-                {/* Block + Tx Hash */}
-                <div className="flex items-center gap-2 text-[11px] text-zinc-500 ml-auto">
-                  <span className="flex items-center gap-1">
-                    <Hash size={10} />
-                    #{rec.blockNumber.toLocaleString()}
-                  </span>
-                  <span className="font-mono truncate max-w-[120px]">
-                    {rec.txHash}
-                  </span>
-                </div>
+                  <div className="flex flex-wrap items-center gap-os-4 text-caption text-[var(--text-muted)]">
+                    {record.tokens && (
+                      <span className="inline-flex items-center gap-os-1">
+                        <Zap size={12} />
+                        {record.tokens.toLocaleString()} tokens
+                      </span>
+                    )}
+                    {record.latencyMs && (
+                      <span className="inline-flex items-center gap-os-1">
+                        <Clock size={12} />
+                        {record.latencyMs} ms
+                      </span>
+                    )}
+                  </div>
 
-                {/* Timestamp */}
-                <div className="text-[11px] text-zinc-600 whitespace-nowrap">
-                  {new Date(rec.timestamp).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  <div className="font-mono text-[11px] text-[var(--text-muted)] lg:text-right">
+                    <div className="inline-flex items-center gap-os-1">
+                      <Hash size={11} />
+                      #{record.blockNumber.toLocaleString()}
+                    </div>
+                    <div className="mt-0.5 truncate lg:max-w-[130px]">
+                      {record.txHash}
+                    </div>
+                    <div className="mt-0.5">
+                      {new Date(record.timestamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         )}
       </section>
-    </div>
+    </PageShell>
+  );
+}
+
+function statusTone(status: InferenceRecord["status"]) {
+  return status === "completed" ? "ai" : status === "running" ? "chain" : "danger";
+}
+
+function statusIcon(status: InferenceRecord["status"]): LucideIcon {
+  return status === "completed"
+    ? CheckCircle2
+    : status === "running"
+      ? Loader2
+      : XCircle;
+}
+
+function StatusBadge({ status }: { status: InferenceRecord["status"] }) {
+  return (
+    <StatusPill tone={statusTone(status)} pulse={status === "running"}>
+      {status}
+    </StatusPill>
+  );
+}
+
+function InputTypeBadge({ type }: { type: InferenceRecord["inputType"] }) {
+  const tone =
+    type === "text"
+      ? "violet"
+      : type === "image"
+        ? "chain"
+        : type === "audio"
+          ? "warn"
+          : "ai";
+
+  return (
+    <span className="inline-flex items-center gap-os-1 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-2.5 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--text)]">
+      <Database size={11} className={tone === "warn" ? "text-[var(--accent-warn)]" : "text-[var(--accent-chain)]"} />
+      {type}
+    </span>
   );
 }

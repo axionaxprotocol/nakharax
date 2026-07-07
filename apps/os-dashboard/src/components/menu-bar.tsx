@@ -1,15 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Activity, Bell, Search } from "lucide-react";
+import { Activity } from "lucide-react";
+
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
-/**
- * MenuBar — the persistent top chrome for Nakharax OS.
- *
- * Information architecture (left → right):
- *   brand · menus · right cluster (status, actions, clock)
- */
 export function MenuBar() {
   const [time, setTime] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -37,77 +33,66 @@ export function MenuBar() {
   }, []);
 
   return (
-    <div className="fixed top-0 inset-x-0 z-40 h-10 glass border-b">
-      <div className="flex h-full items-center px-os-4 text-[11px] text-[var(--text)]">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5 font-semibold tracking-tight">
-          <div className="relative flex items-center justify-center">
+    <div className="fixed inset-x-0 top-0 z-40 h-11 border-b border-[var(--hair)] bg-[var(--chrome)] shadow-[var(--shadow-chrome)] backdrop-blur-xl">
+      <div className="flex h-full items-center gap-os-4 px-os-4 text-[11px] text-[var(--text)] sm:px-os-6">
+        <Link href="/" className="flex items-center gap-os-2 font-semibold">
+          <span className="relative grid h-7 w-7 place-items-center rounded-os-lg border border-emerald-500/20 bg-emerald-500/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/nakharax-token.svg"
-              alt="Nakharax OS"
-              className="h-5 w-5 object-contain drop-shadow-[0_0_8px_rgba(16,185,129,0.28)]"
+              alt=""
+              className="h-4.5 w-4.5 object-contain"
             />
-            <span
-              className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)] animate-pulse"
-              aria-label="Node online"
-            />
-          </div>
-          <span className="text-[var(--text-strong)] font-mono tracking-tight uppercase">Nakharax OS</span>
-        </div>
+            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border border-[var(--panel)] bg-emerald-500" />
+          </span>
+          <span className="hidden font-mono uppercase tracking-[0.16em] text-[var(--text-strong)] sm:inline">
+            Nakharax Compute OS
+          </span>
+          <span className="font-mono uppercase tracking-[0.16em] text-[var(--text-strong)] sm:hidden">
+            NakharaX
+          </span>
+        </Link>
 
-        {/* App menus */}
-        <nav className="ml-os-6 flex items-center gap-1 text-[var(--text-muted)]" aria-label="Application menu">
-          {["File", "View", "Network", "Help"].map((item) => (
-            <button
-              key={item}
-              type="button"
-              className="px-2 py-1 rounded-os-sm hover:bg-[var(--panel-hover)] hover:text-[var(--text-strong)] transition-colors duration-fast"
+        <nav
+          className="hidden items-center gap-1 text-[var(--text-muted)] md:flex"
+          aria-label="Primary"
+        >
+          {[
+            ["Compute", "/jobs"],
+            ["Models", "/activity/models"],
+            ["Mesh", "/nodes"],
+            ["Vault", "/wallet"],
+          ].map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              className="rounded-full px-3 py-1.5 transition-colors duration-fast hover:bg-[var(--panel-hover)] hover:text-[var(--text-strong)]"
             >
-              {item}
-            </button>
+              {label}
+            </Link>
           ))}
         </nav>
 
-        {/* Right cluster */}
         <div className="ml-auto flex items-center gap-1.5">
-          {/* Single live status */}
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-os-sm border border-emerald-500/25 bg-emerald-500/10 text-emerald-600 text-[10px] font-mono uppercase tracking-wide">
-            <Activity size={10} />
-            Testnet
+          <span className="hidden items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-mono font-semibold uppercase tracking-[0.14em] text-[var(--accent-ai)] sm:inline-flex">
+            <Activity size={11} />
+            Local-first DeAI
           </span>
 
-          <span className="w-px h-4 bg-[var(--hair-strong)] mx-1" aria-hidden="true" />
-
-          <MenuIconButton label="Notifications" icon={<Bell size={13} />} />
-          <MenuIconButton label="Spotlight search" icon={<Search size={13} />} />
+          <span className="hidden h-4 w-px bg-[var(--hair-strong)] sm:block" />
 
           <ThemeSwitcher />
 
-          <span className="w-px h-4 bg-[var(--hair-strong)] mx-1" aria-hidden="true" />
+          <span className="h-4 w-px bg-[var(--hair-strong)]" />
 
-          {/* Date · time */}
-          <div className="flex items-center gap-2 px-1 text-[11px]">
-            <span className="text-[var(--text-muted)] font-mono">{date}</span>
-            <span className="font-mono tabular-nums text-[var(--text-strong)] font-medium">
+          <div className="hidden items-center gap-2 px-1 text-[11px] sm:flex">
+            <span className="font-mono text-[var(--text-muted)]">{date}</span>
+            <span className="font-mono font-medium tabular-nums text-[var(--text-strong)]">
               {time || "--:--"}
             </span>
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function MenuIconButton({ label, icon }: { label: string; icon: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      className="grid h-7 w-7 place-items-center rounded-os-sm hover:bg-[var(--panel-hover)] text-[var(--text-muted)] hover:text-[var(--text-strong)] transition-colors duration-fast"
-    >
-      {icon}
-    </button>
   );
 }

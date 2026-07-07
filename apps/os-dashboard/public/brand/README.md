@@ -15,8 +15,8 @@ Figma: https://www.figma.com/design/czL6EHuiZJhVS4SnfG5aUk
 ## Tokens
 
 - Graphite: `#111318`
-- Compute green: `#29F06A`
-- Finality orange: `#FF7A1A`
+- Mono foreground: `#F8FAFC` / `#0F172A`
+- Mono secondary: `#64748B` / `#334155`
 - Light surface: `#F7F9FB`
 
-The current mark represents a Layer 1 foundation, fast finality, and validator consensus nodes.
+The current mark is a monochrome `N + X` compute monogram: the `N` is the Nakharax node path, the diagonal route is workload routing, the base line is settlement, and the surrounding hex frame is the worker mesh.

@@ -9,7 +9,7 @@ export const nakharaxLocal = defineChain({
   nativeCurrency: {
     decimals: 18,
     name: "Nakharax",
-    symbol: "AXIO",
+    symbol: "NAK",
   },
   rpcUrls: {
     default: { http: ["https://rpc.nakharax.io"] },

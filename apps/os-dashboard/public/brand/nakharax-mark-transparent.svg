@@ -1,11 +1,11 @@
 <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-mark-transparent-title">
-  <title id="nakharax-mark-transparent-title">nakharax.io transparent mark</title>
-  <path d="M56 202H200L181 222H75L56 202Z" fill="#111318"/>
-  <path d="M83 176H173L160 191H96L83 176Z" fill="#FF7A1A"/>
-  <path d="M60 54H96L108 66V166H72L60 154V54Z" fill="#111318"/>
-  <path d="M148 54H184L196 66V154L184 166H148V54Z" fill="#111318"/>
-  <path d="M96 54H132L196 166H160L96 54Z" fill="#111318"/>
-  <path d="M96 54H125L141 82H112L96 54Z" fill="#29F06A"/>
-  <circle cx="196" cy="66" r="7" fill="#29F06A"/>
-  <circle cx="60" cy="154" r="7" fill="#29F06A"/>
+  <title id="nakharax-mark-transparent-title">Nakharax mono transparent mark</title>
+  <path d="M128 34L207 80V176L128 222L49 176V80L128 34Z" stroke="currentColor" stroke-width="3" opacity="0.22"/>
+  <path d="M70 181V75L186 181V75" stroke="currentColor" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M184 76L72 180" stroke="currentColor" stroke-width="11" stroke-linecap="round" opacity="0.88"/>
+  <path d="M78 202H178" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity="0.72"/>
+  <circle cx="70" cy="75" r="6" fill="currentColor"/>
+  <circle cx="186" cy="75" r="6" fill="currentColor"/>
+  <circle cx="70" cy="181" r="6" fill="currentColor"/>
+  <circle cx="186" cy="181" r="6" fill="currentColor"/>
 </svg>

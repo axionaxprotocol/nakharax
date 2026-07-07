@@ -9,26 +9,26 @@ export const metadata: Metadata = {
     template: "%s · Nakharax OS",
   },
   description:
-    "Self-hosted Nakharax node dashboard: peers, jobs, wallet, and chain activity.",
+    "Local-first DeAI compute OS for self-owned nodes, affordable inference, and sovereign workloads.",
   applicationName: "Nakharax OS",
   openGraph: {
     title: "Nakharax OS",
     description:
-      "Obsidian command center for Nakharax validators and DeAI workloads.",
+      "Self-owned DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Nakharax OS",
     description:
-      "Obsidian command center for Nakharax validators and DeAI workloads.",
+      "Self-owned DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#020617", // updated to match new bg-DEFAULT
+  themeColor: "#eef1f6",
 };
 
 export default function RootLayout({
@@ -45,13 +45,17 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <div
+          aria-hidden="true"
+          className="protocol-grid pointer-events-none fixed inset-x-0 top-10 z-[-1] h-[520px] opacity-70"
+        />
         <MenuBar />
         <main
           id="main-content"
-          className="min-h-screen pt-12 pb-32"
+          className="min-h-screen pb-32 pt-14"
           tabIndex={-1}
         >
-          <div className="mx-auto max-w-[1600px] px-os-4 sm:px-os-6 py-os-6">
+          <div className="mx-auto max-w-[1500px] px-os-4 py-os-5 sm:px-os-6 lg:px-os-8">
             {children}
           </div>
         </main>

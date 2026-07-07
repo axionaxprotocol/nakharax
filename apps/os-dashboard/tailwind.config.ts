@@ -24,6 +24,7 @@ const config: Config = {
           dim: "#16A34A",
           ai: "#29F06A", // compute green — Worker / DeAI actions
           chain: "#22D3EE", // cyan — Blockchain / consensus
+          info: "#38BDF8", // sky — neutral info / RPC hints
           warn: "#FF7A1A", // finality orange — soft warnings, "outdated", "behind"
           danger: "#EF4444", // rose/red — errors, slashing, fatal states
           ok: "#29F06A", // emerald — explicit success/healthy
@@ -104,6 +105,7 @@ const config: Config = {
         title: ["1rem", { lineHeight: "1.5rem", fontWeight: "500" }],
         body: ["0.875rem", { lineHeight: "1.25rem" }],
         caption: ["0.75rem", { lineHeight: "1rem" }],
+        micro: ["0.625rem", { lineHeight: "0.875rem", letterSpacing: "0.08em" }],
         overline: ["0.6875rem", { lineHeight: "1rem", letterSpacing: "0.05em", fontWeight: "500" }],
       },
       lineHeight: {
