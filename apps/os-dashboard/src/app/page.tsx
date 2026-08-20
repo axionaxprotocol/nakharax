@@ -25,7 +25,6 @@ import {
   Card,
   DataRow,
   IconBadge,
-  PageShell,
   SectionHeader,
   StatCard,
   StatusPill,
@@ -58,54 +57,84 @@ export default async function Home() {
   const isOnline = online > 0;
 
   return (
-    <PageShell
-      eyebrow="Sovereign DeAI Compute Mesh"
-      title={
-        <span>
-          Compute power people can{" "}
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            own, route, and verify.
-          </span>
-        </span>
-      }
-      description="Nakharax OS orchestrates reachable PCs, edge accelerators, and private clusters into a zero-censorship compute marketplace for verifiable AI inference, quant simulations, and decentralized model execution."
-      meta={
-        <>
-          <StatusPill tone={isOnline ? "ai" : "danger"} pulse={isOnline}>
-            {isOnline ? "mesh online" : "mesh offline"}
-          </StatusPill>
-          <StatusPill tone="chain">chain 86137</StatusPill>
-          <StatusPill tone="warn">testnet pilot</StatusPill>
-          <StatusPill tone="violet">sub-milli verify</StatusPill>
-        </>
-      }
-      actions={
-        <>
-          <ActionLink href="/jobs">Open compute jobs</ActionLink>
-          <ActionLink href="/nodes" variant="secondary">
-            Inspect node mesh
-          </ActionLink>
-        </>
-      }
-    >
-      {/* 4-Stat High-Tech Metric Cards with Micro Sparklines */}
-      <div className="grid grid-cols-2 gap-os-4 lg:grid-cols-4">
+    <div className="space-y-os-8 animate-slide-up">
+      {/* =========================================================================
+          ZONE 1: COMMAND HERO (Integrated Value Pitch + Live Ingress Terminal)
+          ========================================================================= */}
+      <section className="relative overflow-hidden rounded-os-3xl border border-white/[0.14] bg-gradient-to-br from-white/[0.08] via-white/[0.02] to-transparent backdrop-blur-3xl bg-slate-950/50 p-os-6 sm:p-os-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+        {/* Specular glass reflection */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/[0.4] to-transparent" />
+
+        {/* Dynamic atmospheric radial glows */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-[100px]" />
+          <div className="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-cyan-500/18 blur-[100px]" />
+          <div className="absolute -left-20 top-1/2 h-72 w-72 rounded-full bg-violet-500/15 blur-[90px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
+        </div>
+
+        <div className="relative grid gap-os-8 lg:grid-cols-12 lg:items-center">
+          {/* Left Column: Headline, Copy & CTAs */}
+          <div className="lg:col-span-7 space-y-os-5">
+            <div className="flex flex-wrap items-center gap-os-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-3.5 py-1 text-[10.5px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--accent-ai)] shadow-[0_0_20px_-3px_rgba(41,240,106,0.4)] backdrop-blur-xl">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-ai)]" />
+                Sovereign DeAI Compute Mesh
+              </div>
+              <StatusPill tone={isOnline ? "ai" : "danger"} pulse={isOnline}>
+                {isOnline ? "mesh online" : "mesh offline"}
+              </StatusPill>
+              <StatusPill tone="chain">chain 86137</StatusPill>
+              <StatusPill tone="warn">testnet pilot</StatusPill>
+            </div>
+
+            <h1 className="text-[2rem] font-bold leading-[1.12] tracking-[-0.035em] text-white sm:text-[2.75rem]">
+              Compute power people can{" "}
+              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                own, route, and verify.
+              </span>
+            </h1>
+
+            <p className="max-w-2xl text-[14.5px] leading-relaxed text-slate-300 sm:text-[15.5px]">
+              Nakharax turns reachable PCs, edge accelerators, and private GPU clusters into a
+              zero-censorship marketplace for verifiable AI inference, quant simulations, and local-first execution.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-os-3 pt-os-2">
+              <ActionLink href="/jobs">Open compute jobs</ActionLink>
+              <ActionLink href="/nodes" variant="secondary">
+                Inspect node mesh
+              </ActionLink>
+            </div>
+          </div>
+
+          {/* Right Column: Live Terminal Quick Connect */}
+          <div className="lg:col-span-5">
+            <QuickConnectBox />
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          ZONE 2: KEY PROTOCOL METRICS (4 Frosted Glass Metric Cards)
+          ========================================================================= */}
+      <section className="grid grid-cols-2 gap-os-4 lg:grid-cols-4">
         <StatCard
-          label="Latest block"
+          label="Consensus block"
           value={maxBlock > 0 ? maxBlock.toLocaleString() : "86,137"}
           hint="RPC-observed height"
           icon={<Layers3 size={20} />}
           tone="chain"
         />
         <StatCard
-          label="Reachable nodes"
-          value={`${online}/${totalNodes}`}
-          hint="Active gateway cluster"
+          label="Active gateways"
+          value={`${online}/${totalNodes} Online`}
+          hint="Configured RPC cluster"
           icon={<Server size={20} />}
           tone={isOnline ? "ai" : "danger"}
         />
         <StatCard
-          label="Peer mesh"
+          label="DHT peer mesh"
           value={totalPeers > 0 ? totalPeers.toString() : "14,802"}
           hint="Active peer connections"
           icon={<RadioTower size={20} />}
@@ -114,101 +143,53 @@ export default async function Home() {
         <StatCard
           label="Claim policy"
           value="Evidence"
-          hint="Zero AI slop · Repeatable benchmarks"
+          hint="Zero AI slop · Repeatable tests"
           icon={<Gauge size={20} />}
           tone="warn"
         />
-      </div>
+      </section>
 
-      {/* Dual Core Engine Grid */}
-      <div className="grid gap-os-5 lg:grid-cols-12">
-        {/* Left: Value Proposition & Mission Pillars */}
-        <Card className="lg:col-span-7">
-          <div className="flex flex-col gap-os-6">
-            <div className="flex items-start gap-os-4">
-              <IconBadge Icon={Sparkles} tone="ai" className="h-12 w-12 shrink-0" />
+      {/* =========================================================================
+          ZONE 3: 3-PILLAR SOVEREIGN COMPUTE CAPABILITIES
+          ========================================================================= */}
+      <section className="space-y-os-4">
+        <SectionHeader
+          title="Sovereign compute architecture"
+          description="Built for affordability, geographic data custody, and cryptographic receipts without cloud lock-in."
+        />
+        <div className="grid gap-os-4 md:grid-cols-3">
+          {MISSION_CARDS.map((item) => (
+            <Card key={item.title} interactive tone={item.tone} className="flex flex-col justify-between">
               <div>
-                <h2 className="text-[1.35rem] font-bold tracking-tight text-white sm:text-[1.5rem]">
-                  The product is not “another chain”; it is{" "}
-                  <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                    affordable compute access.
-                  </span>
-                </h2>
-                <p className="mt-os-2.5 max-w-3xl text-[14px] leading-relaxed text-slate-300">
-                  The blockchain layer secures discovery, escrow, settlement, and cryptographic verification.
-                  The utility users unlock is direct, lower-cost access to AI model inference and batch execution
-                  without surrendering data privacy to hyperscale cloud monopolies.
+                <IconBadge Icon={item.Icon} tone={item.tone} className="h-11 w-11" />
+                <h3 className="mt-os-4 text-[16px] font-bold text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-os-2 text-[13px] leading-relaxed text-slate-300">
+                  {item.description}
                 </p>
               </div>
-            </div>
+              <div className="mt-os-5 border-t border-white/[0.08] pt-os-3 text-[11px] font-mono font-semibold uppercase tracking-wider text-[var(--accent-ai)]">
+                Active Architecture
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
 
-            <div className="grid gap-os-3.5 md:grid-cols-3">
-              {MISSION_CARDS.map((item) => (
-                <div
-                  key={item.title}
-                  className="group relative overflow-hidden rounded-os-xl border border-white/[0.07] bg-slate-950/70 p-os-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:bg-slate-900/90"
-                >
-                  <IconBadge Icon={item.Icon} tone={item.tone} className="h-10 w-10" />
-                  <h3 className="mt-os-3.5 text-[14.5px] font-bold text-white group-hover:text-emerald-400 transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="mt-os-2 text-[12.5px] leading-relaxed text-slate-400">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Card>
-
-        {/* Right: Live Network Pulse & Interactive Terminal */}
-        <Card className="lg:col-span-5 flex flex-col justify-between">
-          <div>
-            <SectionHeader
-              title="Live network pulse"
-              description="Ground truth telemetry streamed directly from configured RPC nodes."
-            />
-            <div className="mt-os-4 space-y-os-2.5">
-              <DataRow
-                label="validator visibility"
-                value={`${online}/${totalNodes} Online`}
-                detail="Endpoints responding within 2,000ms"
-              />
-              <DataRow
-                label="block height"
-                value={maxBlock > 0 ? maxBlock.toLocaleString() : "86,137"}
-                detail="Highest confirmed consensus block"
-              />
-              <DataRow
-                label="connected peers"
-                value={totalPeers > 0 ? totalPeers : "14,802"}
-                detail="Aggregate Kademlia DHT routing table"
-              />
-              <DataRow
-                label="settlement token"
-                value="tNAK"
-                detail="Testnet gas, compute escrow & node rewards"
-              />
-            </div>
-          </div>
-
-          <div className="mt-os-5">
-            <QuickConnectBox />
-          </div>
-        </Card>
-      </div>
-
-      {/* 5-Step Compute Pipeline Flow */}
+      {/* =========================================================================
+          ZONE 4: 5-STEP CRYPTOGRAPHIC COMPUTE PIPELINE
+          ========================================================================= */}
       <section className="space-y-os-4">
         <SectionHeader
           title="Compute marketplace pipeline"
-          description="The complete cryptographic lifecycle of an AI compute job: task submission to verifiable settlement."
+          description="The complete cryptographic lifecycle of an AI compute job from submission to verifiable settlement."
           action={
             <Link
               href="/activity/inference"
               className="inline-flex items-center gap-os-2 text-[12.5px] font-bold text-[var(--accent-ai)] hover:text-emerald-300 transition-colors"
             >
-              See inference runs
+              Audit live runs
               <ArrowRight size={14} />
             </Link>
           }
@@ -223,7 +204,7 @@ export default async function Home() {
               interactive
             >
               {/* Number watermark */}
-              <div className="absolute right-3 top-3 font-mono text-[2.5rem] font-black leading-none text-white/[0.04] transition-all group-hover:text-white/[0.1] select-none">
+              <div className="absolute right-3 top-3 font-mono text-[2.5rem] font-black leading-none text-white/[0.04] transition-all group-hover:text-white/[0.12] select-none">
                 {String(index + 1).padStart(2, "0")}
               </div>
               <IconBadge Icon={step.Icon} tone={step.tone} />
@@ -238,10 +219,12 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 8-Operating Modules Matrix */}
+      {/* =========================================================================
+          ZONE 5: SYSTEM MODULES & APPS CONSOLE (2x4 Grid)
+          ========================================================================= */}
       <section className="space-y-os-4">
         <SectionHeader
-          title="Operating system modules"
+          title="Operating system consoles"
           description="Dedicated consoles for compute workloads, node ownership, telemetry auditing, and local key vault."
         />
         <div className="grid gap-os-3.5 sm:grid-cols-2 lg:grid-cols-4">
@@ -261,7 +244,7 @@ export default async function Home() {
                 </div>
                 <div className="mt-os-4 flex items-center justify-between border-t border-white/[0.06] pt-os-3">
                   <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-slate-400 group-hover:text-emerald-400 transition-colors">
-                    Launch Module
+                    Launch Console
                   </span>
                   <ArrowRight
                     size={14}
@@ -273,7 +256,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
-    </PageShell>
+    </div>
   );
 }
 
@@ -286,14 +269,14 @@ const MISSION_CARDS: {
   {
     title: "Edge Inference",
     description:
-      "Route lightweight models to reachable local NPUs and GPUs first, scaling outward only when necessary.",
+      "Route lightweight models to reachable local NPUs and GPUs first, scaling outward to cluster only when required.",
     Icon: Cpu,
     tone: "ai",
   },
   {
     title: "Batch Simulations",
     description:
-      "Queue quant backtests, simulations, and embeddings where cost-per-token dominates speed.",
+      "Queue quant backtests, simulations, and embeddings where cost-per-token dominates raw latency.",
     Icon: Brain,
     tone: "violet",
   },
