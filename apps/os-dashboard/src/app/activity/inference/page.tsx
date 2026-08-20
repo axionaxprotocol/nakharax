@@ -254,6 +254,17 @@ export default async function InferenceHistoryPage() {
         />
       </div>
 
+      {!realData && (
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xl">
+          <div className="flex items-center gap-2 text-sm font-semibold text-amber-300">
+            <span>⚠️ Simulated Telemetry Dataset (Mock Sample)</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-300">
+            The configured RPC node returned 0 on-chain inference receipts in the recent block scan window. The records below are synthetic benchmarks for interface testing.
+          </p>
+        </div>
+      )}
+
       <section className="space-y-os-4">
         <SectionHeader
           title="Inference records"

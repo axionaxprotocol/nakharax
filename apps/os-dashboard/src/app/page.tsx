@@ -95,43 +95,45 @@ export default async function Home() {
             <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
               <span className="font-semibold text-emerald-300">✓ Proof of Practical Compute (PoPC)</span>
               <span className="text-slate-500">·</span>
-              <span className="text-cyan-300">Chain 86137 Live</span>
+              <span className={isOnline ? "text-cyan-300 font-semibold" : "text-amber-400 font-semibold"}>
+                {isOnline ? "Chain 86137 Live" : "Testnet Genesis (Simulation Mode)"}
+              </span>
               <span className="text-slate-500">·</span>
-              <span className="text-slate-400">Sub-millisecond Settlement</span>
+              <span className="text-slate-400">Verifiable Execution</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS
+          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS (WITH EXPLICIT MOCK/LIVE TAGS)
           ========================================================================= */}
       <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Consensus block"
           value={maxBlock > 0 ? maxBlock.toLocaleString() : "86,137"}
-          hint="RPC-observed height"
+          hint={maxBlock > 0 ? "RPC-observed height (Live)" : "Genesis height (Mock Reference)"}
           icon={<Layers3 size={18} />}
-          tone="chain"
+          tone={maxBlock > 0 ? "chain" : "neutral"}
         />
         <StatCard
           label="Active gateways"
           value={`${online}/${totalNodes} Online`}
-          hint="Configured RPC cluster"
+          hint={isOnline ? "Active gateway cluster (Live)" : "No local node connected (Live Probe)"}
           icon={<Server size={18} />}
           tone={isOnline ? "ai" : "danger"}
         />
         <StatCard
           label="DHT peer mesh"
           value={totalPeers > 0 ? totalPeers.toString() : "14,802"}
-          hint="Active peer connections"
+          hint={totalPeers > 0 ? "Live peer connections" : "Simulated routing table (Mock)"}
           icon={<RadioTower size={18} />}
-          tone="violet"
+          tone={totalPeers > 0 ? "violet" : "neutral"}
         />
         <StatCard
           label="Claim policy"
           value="Evidence"
-          hint="Zero AI slop · Repeatable"
+          hint="Zero AI slop · Repeatable tests"
           icon={<Gauge size={18} />}
           tone="warn"
         />
@@ -144,6 +146,11 @@ export default async function Home() {
         <SectionHeader
           title="Direct JSON-RPC Ingress"
           description="Send raw cryptographic inference jobs or query node topology via standard curl or SDK."
+          action={
+            <span className="text-[11px] font-mono text-slate-400">
+              Target: <code className="text-cyan-300">https://rpc.nakharax.com</code>
+            </span>
+          }
         />
         <QuickConnectBox />
       </section>
@@ -160,7 +167,12 @@ export default async function Home() {
           {MISSION_CARDS.map((item) => (
             <Card key={item.title} interactive tone={item.tone} className="flex flex-col justify-between">
               <div>
-                <IconBadge Icon={item.Icon} tone={item.tone} className="h-10 w-10" />
+                <div className="flex items-center justify-between">
+                  <IconBadge Icon={item.Icon} tone={item.tone} className="h-10 w-10" />
+                  <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[9.5px] font-mono text-slate-400 uppercase">
+                    Protocol Spec
+                  </span>
+                </div>
                 <h3 className="mt-3.5 text-[15.5px] font-bold text-white">
                   {item.title}
                 </h3>
@@ -188,7 +200,7 @@ export default async function Home() {
               href="/activity/inference"
               className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
             >
-              Audit live runs
+              Audit simulated runs
               <ArrowRight size={13} />
             </Link>
           }
@@ -233,9 +245,16 @@ export default async function Home() {
                 <div className="flex items-start gap-3">
                   <IconBadge Icon={module.Icon} tone={module.tone} className="h-9 w-9" />
                   <div className="min-w-0">
-                    <h3 className="text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
-                      {module.label}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
+                        {module.label}
+                      </h3>
+                      {module.status && (
+                        <span className="rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-amber-300 uppercase">
+                          {module.status}
+                        </span>
+                      )}
+                    </div>
                     <p className="mt-1 text-[12px] leading-relaxed text-slate-400">
                       {module.description}
                     </p>
@@ -332,6 +351,7 @@ const MODULES: {
   description: string;
   Icon: LucideIcon;
   tone: Tone;
+  status?: string;
 }[] = [
   {
     href: "/jobs",
@@ -357,7 +377,7 @@ const MODULES: {
   {
     href: "/apps",
     label: "Microservices",
-    description: "Launch PropSentinel Risk Terminal & upcoming modules.",
+    description: "Launch PropSentinel Risk Terminal & ecosystem services.",
     Icon: Sparkles,
     tone: "warn",
   },

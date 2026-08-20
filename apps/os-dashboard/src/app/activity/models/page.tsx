@@ -140,7 +140,7 @@ export default async function ModelRegistryPage() {
         <StatCard
           label="Inferences"
           value={`${(totalInferences / 1_000).toFixed(0)}k`}
-          hint="Testnet sample volume"
+          hint="Simulated sample volume (Mock)"
           icon={<Zap size={18} />}
           tone="warn"
         />
