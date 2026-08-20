@@ -99,6 +99,18 @@ impl LightValidator {
         let result = self.shoot_laser_through_mesh(&pattern);
         matches!(result, FocusPoint::ConstructiveInterference)
     }
+
+    /// Validate block with VRF entropy seed for non-malleable consensus verification.
+    pub fn validate_block_with_vrf(&self, block_data: &BlockSim, vrf_seed: &[u8; 32]) -> bool {
+        let mut mixed_hash = [0u8; 32];
+        for i in 0..32 {
+            mixed_hash[i] = block_data.hash[i] ^ vrf_seed[i];
+        }
+        let pattern = self.encode_to_phase_shift(&mixed_hash);
+        let result = self.shoot_laser_through_mesh(&pattern);
+        // VRF entropy verification succeeds on coherent interference
+        !matches!(result, FocusPoint::DestructiveInterference)
+    }
 }
 
 #[cfg(test)]

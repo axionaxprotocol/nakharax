@@ -273,21 +273,60 @@ class DockerSandbox:
 
 class MockSandbox:
     """
-    Mock sandbox for testing when Docker is not available.
-    WARNING: This provides NO security isolation!
+    Development fallback sandbox when Docker is not available.
+    Executes scripts locally for testing.
+    WARNING: For development/testing only — NO security isolation!
     """
     
-    def execute(self, **kwargs) -> ExecutionResult:
-        logger.warning("Using MockSandbox - NO SECURITY ISOLATION!")
-        return ExecutionResult(
-            status=ExecutionStatus.SUCCESS,
-            output="[MOCK] Execution simulated",
-            execution_time_ms=100,
-            exit_code=0,
-        )
+    def execute(self, command: list = None, limits: Optional[ResourceLimits] = None, **kwargs) -> ExecutionResult:
+        import subprocess
+        logger.warning("Using MockSandbox/DevSandbox - For development only!")
+        start_time = time.time()
+        
+        if not command:
+            return ExecutionResult(
+                status=ExecutionStatus.SUCCESS,
+                output="[MOCK] Execution simulated",
+                execution_time_ms=10,
+                exit_code=0,
+            )
+            
+        try:
+            timeout = limits.timeout_seconds if limits else 30
+            proc = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+            elapsed = int((time.time() - start_time) * 1000)
+            status = ExecutionStatus.SUCCESS if proc.returncode == 0 else ExecutionStatus.ERROR
+            return ExecutionResult(
+                status=status,
+                output=proc.stdout,
+                error=proc.stderr if proc.returncode != 0 else None,
+                exit_code=proc.returncode,
+                execution_time_ms=elapsed,
+            )
+        except subprocess.TimeoutExpired:
+            return ExecutionResult(
+                status=ExecutionStatus.TIMEOUT,
+                error=f"Execution timed out after {timeout} seconds",
+                exit_code=-1,
+                execution_time_ms=int((time.time() - start_time) * 1000),
+            )
+        except Exception as e:
+            return ExecutionResult(
+                status=ExecutionStatus.ERROR,
+                error=str(e),
+                exit_code=-1,
+                execution_time_ms=int((time.time() - start_time) * 1000),
+            )
     
-    def execute_python_script(self, script: str, **kwargs) -> ExecutionResult:
-        return self.execute()
+    def execute_python_script(self, script: str, limits: Optional[ResourceLimits] = None, **kwargs) -> ExecutionResult:
+        import sys
+        command = [sys.executable, "-c", script]
+        return self.execute(command=command, limits=limits)
 
 
 def create_sandbox(use_docker: bool = True) -> DockerSandbox:

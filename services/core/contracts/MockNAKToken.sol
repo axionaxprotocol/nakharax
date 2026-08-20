@@ -8,7 +8,7 @@ pragma solidity ^0.8.20;
  */
 contract MockNAKToken {
     string public constant name     = "Nakharax Token (Testnet)";
-    string public constant symbol   = "tAXX";
+    string public constant symbol   = "tNAK";
     uint8  public constant decimals = 18;
 
     uint256 public totalSupply;

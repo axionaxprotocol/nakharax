@@ -50,23 +50,35 @@ class NakharaxRpcClient:
             print(f"Connection Error: {e}")
             return None
 
-    def get_block_number(self) -> int:
-        result = self._call("eth_blockNumber")
+    def get_chain_id(self) -> int:
+        result = self._call("eth_chainId")
         return int(result, 16) if result else 0
 
-    def get_balance(self, address: str) -> int:
-        result = self._call("eth_getBalance", [address, "latest"])
+    def get_peer_count(self) -> int:
+        result = self._call("net_peerCount")
         return int(result, 16) if result else 0
 
-    def get_logs(self, from_block: str, address: Optional[str] = None, topics: Optional[List[str]] = None) -> List[Dict]:
-        if topics is None:
-            topics = []
-        params = [{
-            "fromBlock": from_block,
-            "toBlock": "latest",
-            "topics": topics
-        }]
-        if address:
-            params[0]["address"] = address
-            
-        return self._call("eth_getLogs", params) or []
+    def get_node_telemetry(self) -> Dict[str, Any]:
+        """Fetch real-time node telemetry"""
+        result = self._call("nak_getNodeTelemetry")
+        if result:
+            return result
+        # Fallback to system_status or metrics_json
+        status = self._call("system_status") or {}
+        return {
+            "chain_id": hex(self.get_chain_id()),
+            "block_height": self.get_block_number(),
+            "peer_count": self.get_peer_count(),
+            "tps": 0.0,
+            "status": "online" if status else "offline",
+            "uptime_seconds": status.get("uptime_seconds", 0),
+        }
+
+    def get_job_status(self, job_id: str) -> Dict[str, Any]:
+        """Query DeAI job verification and settlement status"""
+        result = self._call("nak_getJobStatus", [job_id])
+        return result or {"job_id": job_id, "status": "unknown"}
+
+    def send_raw_transaction(self, signed_hex: str) -> Optional[str]:
+        """Broadcast raw signed transaction"""
+        return self._call("eth_sendRawTransaction", [signed_hex])

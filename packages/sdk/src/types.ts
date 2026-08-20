@@ -53,3 +53,35 @@ export interface KadPeer {
   addresses: string[];
 }
 
+/** Comprehensive real-time telemetry metrics emitted by the node. */
+export interface NodeTelemetry {
+  chain_id: string;
+  chain_name?: string;
+  block_height: number;
+  peer_count: number;
+  tps: number;
+  mempool_size: number;
+  validators_active: number;
+  uptime_seconds: number;
+  consensus: string;
+  version: string;
+  status: string;
+}
+
+/** DeAI Job status record for compute lifecycle tracking. */
+export interface DeAIJobStatus {
+  job_id: string;
+  status: "pending" | "assigned" | "completed" | "verified" | "disputed" | "cancelled" | string;
+  proof_type?: string;
+  confidence?: number;
+  verified_at?: number;
+}
+
+/** Compute job submission parameters. */
+export interface DeAIJobParams {
+  jobType: number; // 0=Inference, 1=Training, 2=DataProcessing, 3=Custom
+  rewardWei: string;
+  timeoutSeconds: number;
+  inputHash: string;
+}
+

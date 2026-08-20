@@ -17,6 +17,7 @@ export {
   sendRawTransaction,
   isReachable,
   getKadRoutingTable,
+  NakharaxClient,
 } from "@nakharax/sdk";
 
 export type {
@@ -28,4 +29,8 @@ export type {
   RawBlock,
   RpcCallOptions,
   KadPeer,
+  NodeTelemetry,
+  DeAIJobStatus,
+  DeAIJobParams,
 } from "@nakharax/sdk";
+

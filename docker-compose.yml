@@ -12,15 +12,15 @@ services:
     restart: unless-stopped
     ports:
       - "8545:8545"     # JSON-RPC HTTP
-      - "8546:8546"     # JSON-RPC WebSocket
-      - "30303:30303"   # P2P
+      - "8546:8546"     # JSON-RPC WebSocket / Logs
+      - "30303:30303"   # P2P Libp2p
       - "9100:9100"     # Prometheus metrics
     volumes:
       - node_data:/data
     environment:
       - RUST_LOG=info,nakharax=debug
-      - CHAIN_ID=1337
-      - NETWORK=localnet
+      - CHAIN_ID=86137
+      - NETWORK=testnet
       - RPC_HOST=0.0.0.0
       - RPC_PORT=8545
       - WS_PORT=8546
@@ -30,6 +30,43 @@ services:
     networks:
       - nakharax-net
 
+  # ============================================
+  # 🖥️ Web OS Dashboard (Next.js 14)
+  # ============================================
+  os-dashboard:
+    build:
+      context: .
+      dockerfile: apps/os-dashboard/Dockerfile
+    container_name: nakharax-os-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_CHAIN_ID=86137
+      - NEXT_PUBLIC_RPC_URL=http://nakharax-node:8545
+      - NEXT_PUBLIC_WS_URL=ws://nakharax-node:8546/logs
+    depends_on:
+      - nakharax-node
+    networks:
+      - nakharax-net
+
+  # ============================================
+  # 🐍 DeAI Compute Worker Node (Python)
+  # ============================================
+  deai-worker:
+    build:
+      context: ./services/core/core/deai
+      dockerfile: Dockerfile
+    container_name: nakharax-deai-worker
+    restart: unless-stopped
+    environment:
+      - NAKHARAX_RPC_URL=http://nakharax-node:8545
+      - NAKHARAX_CHAIN_ID=86137
+    depends_on:
+      - nakharax-node
+    networks:
+      - nakharax-net
 
 networks:
   nakharax-net:
