@@ -39,13 +39,14 @@ export interface InferenceRecord {
 }
 
 const MODELS = [
-  "DeAI-LLaMA-3-70B",
-  "DeAI-LLaMA-3-8B",
-  "DeAI-SDXL-v3",
-  "DeAI-YOLOv11-nano",
-  "DeAI-Whisper-Medium",
+  "DeAI-DeepSeek-R1-8B",
+  "DeAI-DeepSeek-V3-MoE",
+  "DeAI-LLaMA-3.3-70B",
+  "DeAI-Qwen-2.5-Coder",
+  "DeAI-Flux.1-Schnell",
+  "DeAI-Whisper-Turbo",
   "DeAI-BGE-M3",
-  "DeAI-ZoeDepth-v2",
+  "DeAI-YOLOv11-Edge",
 ];
 
 const NODES = [

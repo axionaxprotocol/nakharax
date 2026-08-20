@@ -41,16 +41,16 @@ const MODEL_CATALOG: Omit<
   ModelInfo,
   "deployedOn" | "totalInferences" | "avgLatencyMs" | "lastUsed"
 >[] = [
-  { id: "m-llama70b", name: "DeAI-LLaMA-3-70B", version: "3.2", type: "llm", size: "70B", precision: "INT8", status: "active" },
-  { id: "m-llama8b", name: "DeAI-LLaMA-3-8B", version: "3.1", type: "llm", size: "8B", precision: "INT4", status: "active" },
-  { id: "m-sdxl", name: "DeAI-SDXL", version: "v3.2", type: "vision", size: "v3", precision: "FP16", status: "active" },
-  { id: "m-yolo", name: "DeAI-YOLOv11", version: "nano", type: "vision", size: "nano", precision: "INT8", status: "active" },
-  { id: "m-whisper", name: "DeAI-Whisper", version: "Medium", type: "audio", size: "Medium", precision: "FP16", status: "active" },
-  { id: "m-bge", name: "DeAI-BGE-M3", version: "1.0", type: "embedding", size: "M3", precision: "INT8", status: "active" },
-  { id: "m-zoe", name: "DeAI-ZoeDepth", version: "v2.1", type: "depth", size: "v2", precision: "FP16", status: "active" },
-  { id: "m-llama13b", name: "DeAI-LLaMA-2-13B", version: "2.0", type: "llm", size: "13B", precision: "INT8", status: "deprecated" },
-  { id: "m-sam", name: "DeAI-SAM", version: "beta1", type: "vision", size: "base", precision: "FP16", status: "beta" },
-  { id: "m-ast", name: "DeAI-AST", version: "v1", type: "audio", size: "Large", precision: "FP32", status: "beta" },
+  { id: "m-deepseek-r1", name: "DeAI-DeepSeek-R1-8B", version: "Distill-Q4", type: "llm", size: "8B", precision: "INT4", status: "active" },
+  { id: "m-deepseek-v3", name: "DeAI-DeepSeek-V3-MoE", version: "3.0", type: "llm", size: "671B-MoE", precision: "INT4", status: "active" },
+  { id: "m-llama33-70b", name: "DeAI-LLaMA-3.3-70B", version: "3.3", type: "llm", size: "70B", precision: "INT8", status: "active" },
+  { id: "m-qwen25-coder", name: "DeAI-Qwen-2.5-Coder", version: "2.5", type: "llm", size: "14B", precision: "INT8", status: "active" },
+  { id: "m-flux-schnell", name: "DeAI-Flux.1-Schnell", version: "1.0", type: "vision", size: "12B", precision: "FP16", status: "active" },
+  { id: "m-yolo11", name: "DeAI-YOLOv11-Edge", version: "11.0", type: "vision", size: "nano", precision: "INT8", status: "active" },
+  { id: "m-whisper-turbo", name: "DeAI-Whisper-Turbo", version: "v3", type: "audio", size: "Turbo", precision: "FP16", status: "active" },
+  { id: "m-bge-m3", name: "DeAI-BGE-M3", version: "1.0", type: "embedding", size: "M3", precision: "INT8", status: "active" },
+  { id: "m-zoedepth", name: "DeAI-ZoeDepth-v2", version: "2.1", type: "depth", size: "v2", precision: "FP16", status: "active" },
+  { id: "m-sdxl", name: "DeAI-SDXL-Legacy", version: "v3.2", type: "vision", size: "v3", precision: "FP16", status: "deprecated" },
 ];
 
 const NODES = [

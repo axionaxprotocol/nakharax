@@ -69,17 +69,25 @@ class ComputeBackend:
             self._init_silicon()
 
     def _init_silicon(self) -> None:
-        """Initialize GPU or CPU (current hardware)."""
+        """Initialize GPU, NPU, or CPU across all modern platforms."""
         if TORCH_AVAILABLE and torch.cuda.is_available() and not self.config.get("force_cpu", False):
             device_id = self.config.get("cuda_device_id", 0)
+            is_rocm = getattr(torch.version, "hip", None) is not None
+            backend_label = f"AMD ROCm ({torch.version.hip})" if is_rocm else f"NVIDIA CUDA #{device_id}"
             self._device = torch.device("cuda", device_id)
-            logger.info("ComputeBackend: SILICON (NVIDIA CUDA GPU #%s)", device_id)
+            logger.info("ComputeBackend: SILICON (%s)", backend_label)
         elif TORCH_AVAILABLE and hasattr(torch.backends, "mps") and torch.backends.mps.is_available() and not self.config.get("force_cpu", False):
             self._device = torch.device("mps")
-            logger.info("ComputeBackend: SILICON (Apple Silicon Metal/MPS)")
+            logger.info("ComputeBackend: SILICON (Apple Silicon Metal/MPS - M-Series Unified)")
         else:
-            self._device = torch.device("cpu") if TORCH_AVAILABLE else "cpu"
-            logger.info("ComputeBackend: SILICON (CPU Fallback)")
+            # Check for Windows / Intel / AMD DirectML NPU
+            try:
+                import torch_directml
+                self._device = torch_directml.device()
+                logger.info("ComputeBackend: SILICON (DirectML Neural Processing Unit / NPU)")
+            except ImportError:
+                self._device = torch.device("cpu") if TORCH_AVAILABLE else "cpu"
+                logger.info("ComputeBackend: SILICON (CPU Vector Fallback - AVX-512 / AMX)")
 
     def _init_optical_link(self) -> None:
         """Future: connection to ACCEL/Taichi. Today: simulation (OpticalTensor)."""

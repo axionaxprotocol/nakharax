@@ -210,11 +210,13 @@ max_cache_size_gb = 10
                   onChange={(e) => setGpuName(e.target.value)}
                   className="mt-1 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 font-mono text-[11.5px] text-white focus:border-emerald-500/50 focus:outline-none"
                 >
-                  <option value="NVIDIA GeForce RTX 4090">NVIDIA RTX 4090 (24GB)</option>
-                  <option value="NVIDIA GeForce RTX 3090">NVIDIA RTX 3090 (24GB)</option>
-                  <option value="NVIDIA A100 Tensor Core">NVIDIA A100 (80GB)</option>
-                  <option value="Apple Silicon M3 Max">Apple Silicon M3 Max (Unified)</option>
-                  <option value="DirectML NPU Accelerator">Local Edge NPU (8GB)</option>
+                  <option value="NVIDIA GeForce RTX 5090">NVIDIA RTX 5090 (32GB Blackwell)</option>
+                  <option value="NVIDIA GeForce RTX 4090">NVIDIA RTX 4090 (24GB Ada)</option>
+                  <option value="NVIDIA A100 / H100 Tensor">NVIDIA A100/H100 (80GB SXM)</option>
+                  <option value="AMD Radeon RX 7900 XTX">AMD RX 7900 XTX (24GB ROCm)</option>
+                  <option value="Apple Silicon M4 Max">Apple Silicon M4 Max (Unified)</option>
+                  <option value="Ryzen AI / Lunar Lake NPU">AMD / Intel NPU (50+ TOPS)</option>
+                  <option value="Hailo-10H Edge NPU">Hailo-10H NPU (40 TOPS Edge)</option>
                 </select>
               </div>
 
@@ -229,7 +231,8 @@ max_cache_size_gb = 10
                 >
                   <option value="8">8 GB (Lightweight)</option>
                   <option value="16">16 GB (Standard)</option>
-                  <option value="24">24 GB (Full LLM)</option>
+                  <option value="24">24 GB (Pro GPU)</option>
+                  <option value="32">32 GB (RTX 5090)</option>
                   <option value="48">48 GB (Dual GPU)</option>
                 </select>
               </div>
@@ -241,10 +244,11 @@ max_cache_size_gb = 10
               </label>
               <div className="space-y-1.5">
                 {[
-                  { id: "DeAI-LLaMA-3-8B", type: "LLM (Text)", vram: "6.5 GB" },
-                  { id: "DeAI-SDXL-v3", type: "Vision (Image)", vram: "8.2 GB" },
-                  { id: "DeAI-Whisper-Medium", type: "Audio (Speech)", vram: "3.1 GB" },
-                  { id: "DeAI-BGE-M3", type: "Embedding", vram: "2.4 GB" },
+                  { id: "DeAI-DeepSeek-R1-8B", type: "Reasoning LLM", vram: "5.8 GB" },
+                  { id: "DeAI-LLaMA-3.3-70B", type: "Flagship LLM", vram: "22.4 GB" },
+                  { id: "DeAI-Flux.1-Schnell", type: "Vision (Image)", vram: "9.6 GB" },
+                  { id: "DeAI-Whisper-Turbo", type: "Audio (Speech)", vram: "2.1 GB" },
+                  { id: "DeAI-BGE-M3", type: "Embedding", vram: "1.8 GB" },
                 ].map((model) => {
                   const isSelected = selectedModels.includes(model.id);
                   return (
