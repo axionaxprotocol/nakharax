@@ -93,7 +93,7 @@ export default async function Home() {
 
           <div className="pt-3 flex justify-center">
             <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
-              <span className="font-semibold text-emerald-300">✓ Proof of Light Consensus</span>
+              <span className="font-semibold text-emerald-300">✓ Proof of Practical Compute (PoPC)</span>
               <span className="text-slate-500">·</span>
               <span className="text-cyan-300">Chain 86137 Live</span>
               <span className="text-slate-500">·</span>

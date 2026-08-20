@@ -104,7 +104,7 @@
   <path d="M90 160L256 64" stroke="url(#specular-line)" stroke-width="5" stroke-linecap="round" />
   <path d="M256 64L422 160" stroke="url(#specular-right)" stroke-width="5" stroke-linecap="round" />
 
-  <!-- Central Photonic Quantum Star Flare (Proof of Light) -->
+  <!-- Central Quantum Flare (Proof of Practical Compute - PoPC) -->
   <!-- Horizontal Flare Beam -->
   <ellipse cx="256" cy="256" rx="140" ry="8" fill="url(#core-flare)" opacity="0.85" />
   <!-- Vertical Flare Beam -->
