@@ -5,6 +5,7 @@ import {
   Droplets,
   Eye,
   GitMerge,
+  Network,
   Plug,
   Shield,
   Skull,
@@ -77,6 +78,15 @@ const APPS: App[] = [
     tone: "violet",
     state: "live",
     href: "/apps/agents",
+  },
+  {
+    id: "subnets",
+    name: "Knowledge Subnets Mesh",
+    desc: "Live Infinite Ecosystem. Decentralized subnets for biology, quantum physics, chip design, robotics, and law.",
+    icon: Network,
+    tone: "chain",
+    state: "live",
+    href: "/apps/subnets",
   },
   {
     id: "sentinel",
