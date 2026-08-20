@@ -43,10 +43,11 @@ const APPS: App[] = [
   {
     id: "worker",
     name: "DeAI Worker Manager",
-    desc: "Coming Soon. Native GUI for 1-click worker daemon configuration, sandbox limits, and GPU driver binding.",
+    desc: "Live worker module. Native GUI for 1-click worker daemon configuration, sandbox VRAM limits, and GPU driver binding.",
     icon: Cpu,
     tone: "ai",
-    state: "coming_soon",
+    state: "live",
+    href: "/apps/worker",
   },
   {
     id: "sentinel",

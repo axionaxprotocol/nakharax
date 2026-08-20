@@ -505,40 +505,63 @@ function handleRpcMethod(method, params, id) {
       });
     }
 
+    case 'nakharax_registerWorker':
     case 'axn_registerWorker': {
       const [specs] = params;
-      const address = specs.address || generateAddress();
+      const address = specs?.address || generateAddress();
       workers[address.toLowerCase()] = {
         address: address,
         status: 'active',
-        specs: specs,
+        specs: specs || {},
         registeredAt: Date.now(),
         jobsCompleted: 0,
         reputation: 100
       };
+      broadcastLog(`${new Date().toISOString()}  worker     INFO  registered worker ${address.slice(0, 10)}... vram=${specs?.vram || '16GB'}`);
       return jsonRpcResponse(id, { success: true, address });
     }
 
+    case 'nakharax_getJobStatus':
     case 'axn_getJobStatus': {
       const [jobId] = params;
       return jsonRpcResponse(id, jobs[jobId] || null);
     }
 
+    case 'nakharax_submitJob':
     case 'axn_submitJob': {
       const [jobSpec] = params;
       const jobId = generateHash();
       jobs[jobId] = {
         id: jobId,
-        type: jobSpec.type || 'compute',
+        type: jobSpec?.type || 'inference',
+        model: jobSpec?.model || 'DeAI-LLaMA-3-8B',
         status: 'pending',
-        reward: jobSpec.reward || '0x0',
-        submitter: jobSpec.from || generateAddress(),
+        reward: jobSpec?.reward || '0x0',
+        submitter: jobSpec?.from || generateAddress(),
         worker: null,
         createdAt: Date.now(),
         completedAt: null,
         result: null
       };
+      broadcastLog(`${new Date().toISOString()}  asr        INFO  dispatched job ${jobId.slice(0, 12)}... type=${jobSpec?.type || 'inference'} model=${jobSpec?.model || 'LLaMA-3-8B'}`);
       return jsonRpcResponse(id, { jobId, status: 'pending' });
+    }
+
+    case 'faucet_requestTokens':
+    case 'nakharax_faucet': {
+      const [recipientAddress, amountTokens] = params;
+      const addr = (recipientAddress || '').toLowerCase();
+      const amount = amountTokens ? parseFloat(amountTokens) : 100;
+      if (!addr || !addr.startsWith('0x') || addr.length < 10) {
+        return jsonRpcError(id, -32602, 'Invalid recipient address');
+      }
+      const current = accounts[addr] ? parseInt(accounts[addr].balance, 16) : 0;
+      const addedWei = BigInt(Math.floor(amount * 1e18));
+      const newBal = (BigInt(current) + addedWei).toString(16);
+      accounts[addr] = { balance: '0x' + newBal, nonce: '0x0' };
+      const txHash = generateHash();
+      broadcastLog(`${new Date().toISOString()}  faucet     INFO  dispensed ${amount} tNAK -> ${addr.slice(0, 12)}... tx=${txHash.slice(0, 16)}...`);
+      return jsonRpcResponse(id, { success: true, txHash, amount, recipient: addr });
     }
 
     // =========================================================================
@@ -573,7 +596,19 @@ const wss = new WebSocket.Server({ port: WS_PORT });
 
 const subscriptions = new Map();
 
+function broadcastLog(line) {
+  logs.push(line);
+  if (logs.length > 500) logs.shift();
+  wss.clients.forEach(ws => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: 'log', line }));
+    }
+  });
+}
+
 function broadcastNewHead(block) {
+  const ts = new Date().toISOString();
+  broadcastLog(`${ts}  consensus  INFO  mined block #${parseInt(block.number, 16)} hash=${block.hash.slice(0, 18)}... txs=${block.transactions.length}`);
   wss.clients.forEach(ws => {
     if (ws.readyState === WebSocket.OPEN) {
       const subs = subscriptions.get(ws) || [];
@@ -602,6 +637,11 @@ function broadcastNewHead(block) {
 wss.on('connection', (ws) => {
   console.log('[WebSocket] Client connected');
   subscriptions.set(ws, []);
+  
+  // Send recent log history to new client
+  logs.slice(-20).forEach(line => {
+    ws.send(JSON.stringify({ type: 'log', line }));
+  });
 
   ws.on('message', (message) => {
     try {
