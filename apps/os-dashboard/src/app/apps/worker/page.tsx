@@ -1,19 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
+  AlertTriangle,
   ArrowLeft,
+  Check,
   CheckCircle2,
+  Code2,
+  Copy,
   Cpu,
   Database,
+  Download,
   Flame,
   HardDrive,
   Play,
   Power,
   RefreshCw,
   Server,
+  ShieldAlert,
   ShieldCheck,
+  Terminal,
   Zap,
 } from "lucide-react";
 
@@ -35,9 +42,8 @@ export default function WorkerManagerPage() {
     "DeAI-SDXL-v3",
     "DeAI-Whisper-Medium",
   ]);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [statusMsg, setStatusMsg] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [isSimulatedRunning, setIsSimulatedRunning] = useState(false);
 
   const toggleModel = (model: string) => {
     setSelectedModels((prev) =>
@@ -45,61 +51,72 @@ export default function WorkerManagerPage() {
     );
   };
 
-  async function registerAndStartWorker() {
+  // Generate real monolith_worker.toml configuration string
+  const generatedToml = `[worker]
+name = "nakharax-worker-${workerAddress.slice(2, 8).toLowerCase()}"
+version = "1.0.0-hydra"
+environment = "testnet"
+payout_address = "${workerAddress}"
+
+[network]
+bootnodes = [
+    "https://rpc.nakharax.com",
+    "http://127.0.0.1:8545"
+]
+chain_id = 86137
+
+[hardware]
+accelerator = "${gpuName}"
+max_memory_gb = ${vramAllocated}
+force_cpu = false
+
+[limits]
+default_memory_mb = 4096
+max_memory_mb = ${Number(vramAllocated) * 1024}
+max_models_in_memory = ${selectedModels.length}
+
+[models]
+preload = [
+${selectedModels.map((m) => `    "${m}"`).join(",\n")}
+]
+
+[cache]
+enable_model_cache = true
+max_cache_size_gb = 10
+`;
+
+  const copyToml = async () => {
     try {
-      setIsRegistering(true);
-      setStatusMsg("Registering worker node with DeAI Compute Mesh...");
-
-      const res = await fetch("http://127.0.0.1:8545", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "nakharax_registerWorker",
-          params: [
-            {
-              address: workerAddress,
-              gpu: gpuName,
-              vram: `${vramAllocated}GB`,
-              models: selectedModels,
-            },
-          ],
-          id: Date.now(),
-        }),
-      });
-
-      const data = await res.json();
-      if (data.result && data.result.success) {
-        setIsRunning(true);
-        setStatusMsg("Worker daemon successfully bound & active! Ready for inference jobs.");
-      } else {
-        setIsRunning(true);
-        setStatusMsg("Worker daemon initialized in local sandbox mode.");
-      }
+      await navigator.clipboard.writeText(generatedToml);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
-      setIsRunning(true);
-      setStatusMsg("Worker daemon initialized locally.");
-    } finally {
-      setIsRegistering(false);
+      /* ignore */
     }
-  }
+  };
 
-  function stopWorker() {
-    setIsRunning(false);
-    setStatusMsg("Worker daemon stopped.");
-  }
+  const downloadToml = () => {
+    const blob = new Blob([generatedToml], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "monolith_worker.toml";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <PageShell
-      eyebrow="Compute Worker Engine"
-      title="DeAI Worker Sandbox & Hardware Manager"
-      description="Bind your local GPU, allocate isolated VRAM limits, select executable model weights, and register your machine to earn $tNAK compute rewards."
+      eyebrow="Worker CLI & Sandbox"
+      title="DeAI Worker Configuration Generator"
+      description="Web interfaces cannot execute native GPU workloads directly without the background daemon. Use this console to configure hardware limits, generate your worker TOML, and launch the node CLI."
       meta={
         <>
-          <StatusPill tone={isRunning ? "ai" : "neutral"} pulse={isRunning}>
-            {isRunning ? "worker online · accepting jobs" : "worker standby"}
+          <StatusPill tone="warn">
+            <AlertTriangle size={11} className="mr-1 inline text-amber-400" />
+            Daemon CLI Required for Live GPU
           </StatusPill>
-          <StatusPill tone="violet">{gpuName}</StatusPill>
+          <StatusPill tone="neutral">config builder</StatusPill>
         </>
       }
       actions={
@@ -112,26 +129,43 @@ export default function WorkerManagerPage() {
         </Link>
       }
     >
-      {/* 4 Telemetry Cards */}
+      {/* Reality Check Alert Banner */}
+      <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xl shadow-lg">
+        <div className="flex items-start gap-3">
+          <ShieldAlert size={18} className="text-amber-400 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wide">
+              Architecture Notice: Background Node Daemon is Required
+            </h4>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              To actually process live decentralized AI inference and earn $tNAK, your machine must run the 
+              native Rust/Python background daemon (<code className="text-amber-200">python3 scripts/run-worker.py</code> or Docker). 
+              A web browser cannot bind low-level Nvidia CUDA/NPU drivers on its own.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 Architecture Stat Cards */}
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
-          label="Hardware Compute"
+          label="Target Hardware"
           value={gpuName.includes("4090") ? "24 GB VRAM" : "16 GB VRAM"}
-          hint="Detected local accelerator"
+          hint="Configured hardware profile"
           icon={<Cpu size={18} />}
           tone="ai"
         />
         <StatCard
-          label="Worker State"
-          value={isRunning ? "Online" : "Standby"}
-          hint={isRunning ? "Listening for ASR dispatch" : "Ready to launch daemon"}
-          icon={<Power size={18} />}
-          tone={isRunning ? "ai" : "neutral"}
+          label="Execution Mode"
+          value="Native CLI"
+          hint="Requires monolith_worker.toml"
+          icon={<Terminal size={18} />}
+          tone="warn"
         />
         <StatCard
-          label="Sandboxed Models"
-          value={`${selectedModels.length} Loaded`}
-          hint="Active execution weights"
+          label="Targeted Models"
+          value={`${selectedModels.length} Selected`}
+          hint="Preload candidate weights"
           icon={<Database size={18} />}
           tone="violet"
         />
@@ -144,19 +178,13 @@ export default function WorkerManagerPage() {
         />
       </div>
 
-      {statusMsg && (
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs font-mono text-emerald-300 backdrop-blur-xl">
-          {statusMsg}
-        </div>
-      )}
-
       {/* Main Configuration Console */}
       <div className="grid gap-5 lg:grid-cols-12">
         {/* Hardware & Sandbox Configuration */}
-        <Card className="lg:col-span-7 space-y-4">
+        <Card className="lg:col-span-6 space-y-4">
           <SectionHeader
-            title="Hardware & Sandbox Limits"
-            description="Control how much compute capacity and memory this worker allocates to the protocol."
+            title="1. Configure Hardware Profile"
+            description="Adjust parameters for your local GPU/NPU and memory capacity."
           />
 
           <div className="space-y-3.5 pt-2">
@@ -206,71 +234,82 @@ export default function WorkerManagerPage() {
                 </select>
               </div>
             </div>
-          </div>
 
-          <div className="pt-3 border-t border-white/10">
-            {isRunning ? (
-              <button
-                type="button"
-                onClick={stopWorker}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold px-4 py-2.5 text-[12px] font-mono transition-colors shadow-lg"
-              >
-                <Power size={14} />
-                Stop Worker Daemon
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={registerAndStartWorker}
-                disabled={isRegistering}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-4 py-2.5 text-[12px] font-mono transition-all hover:shadow-[0_0_25px_rgba(41,240,106,0.3)] disabled:opacity-50"
-              >
-                {isRegistering ? <RefreshCw size={14} className="animate-spin" /> : <Play size={14} />}
-                {isRegistering ? "Registering..." : "Launch & Bind Worker Daemon"}
-              </button>
-            )}
+            <div>
+              <label className="block text-[10.5px] font-mono uppercase tracking-wider text-slate-400 mb-1.5">
+                Select Model Weights to Pre-load
+              </label>
+              <div className="space-y-1.5">
+                {[
+                  { id: "DeAI-LLaMA-3-8B", type: "LLM (Text)", vram: "6.5 GB" },
+                  { id: "DeAI-SDXL-v3", type: "Vision (Image)", vram: "8.2 GB" },
+                  { id: "DeAI-Whisper-Medium", type: "Audio (Speech)", vram: "3.1 GB" },
+                  { id: "DeAI-BGE-M3", type: "Embedding", vram: "2.4 GB" },
+                ].map((model) => {
+                  const isSelected = selectedModels.includes(model.id);
+                  return (
+                    <button
+                      key={model.id}
+                      type="button"
+                      onClick={() => toggleModel(model.id)}
+                      className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition-all ${
+                        isSelected
+                          ? "border-emerald-500/50 bg-emerald-500/10 text-white"
+                          : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06]"
+                      }`}
+                    >
+                      <span className="text-[11.5px] font-bold">{model.id} <span className="text-[10px] font-normal text-slate-400">({model.type})</span></span>
+                      {isSelected && <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </Card>
 
-        {/* Deployable Model Catalog Selection */}
-        <Card className="lg:col-span-5 space-y-3">
-          <SectionHeader
-            title="Deployable Model Weights"
-            description="Select models you want to pre-load into local GPU memory for execution."
-          />
-
-          <div className="space-y-2 pt-2">
-            {[
-              { id: "DeAI-LLaMA-3-8B", type: "LLM (Text)", vram: "6.5 GB" },
-              { id: "DeAI-SDXL-v3", type: "Vision (Image)", vram: "8.2 GB" },
-              { id: "DeAI-Whisper-Medium", type: "Audio (Speech)", vram: "3.1 GB" },
-              { id: "DeAI-BGE-M3", type: "Embedding", vram: "2.4 GB" },
-              { id: "DeAI-YOLOv11-nano", type: "Vision (Object)", vram: "1.2 GB" },
-            ].map((model) => {
-              const isSelected = selectedModels.includes(model.id);
-              return (
+        {/* Generated TOML & Terminal Launch Command */}
+        <Card className="lg:col-span-6 space-y-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <SectionHeader
+                title="2. Generated monolith_worker.toml"
+                description="Save this file to configs/monolith_worker.toml"
+              />
+              <div className="flex items-center gap-1.5">
                 <button
-                  key={model.id}
                   type="button"
-                  onClick={() => toggleModel(model.id)}
-                  className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all ${
-                    isSelected
-                      ? "border-emerald-500/50 bg-emerald-500/10 text-white"
-                      : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06]"
-                  }`}
+                  onClick={copyToml}
+                  className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-2.5 py-1 text-[10.5px] font-mono text-slate-300 transition-colors"
                 >
-                  <div className="min-w-0">
-                    <div className={`text-[12px] font-bold ${isSelected ? "text-emerald-300" : "text-white"}`}>
-                      {model.id}
-                    </div>
-                    <div className="text-[10px] text-slate-400">
-                      {model.type} · Est. {model.vram}
-                    </div>
-                  </div>
-                  {isSelected && <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />}
+                  {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                  {copied ? "Copied" : "Copy"}
                 </button>
-              );
-            })}
+                <button
+                  type="button"
+                  onClick={downloadToml}
+                  className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-2.5 py-1 text-[10.5px] font-mono text-slate-300 transition-colors"
+                >
+                  <Download size={12} className="text-cyan-400" />
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <pre className="mt-3 max-h-56 overflow-y-auto rounded-xl border border-white/10 bg-black/60 p-3 font-mono text-[11px] leading-relaxed text-slate-200">
+              {generatedToml}
+            </pre>
+          </div>
+
+          {/* Terminal Launch Step */}
+          <div className="border-t border-white/10 pt-3">
+            <label className="block text-[10.5px] font-mono uppercase tracking-wider text-slate-400 mb-1.5">
+              3. Launch Worker Daemon via Terminal
+            </label>
+            <div className="rounded-xl border border-white/10 bg-black/60 p-2.5 font-mono text-[11px] text-emerald-300 break-all select-all flex items-center justify-between">
+              <code>python3 scripts/run-worker.py --config monolith_worker.toml</code>
+              <Terminal size={14} className="text-slate-500 shrink-0 ml-2" />
+            </div>
           </div>
         </Card>
       </div>

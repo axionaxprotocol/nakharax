@@ -42,8 +42,8 @@ const APPS: App[] = [
   },
   {
     id: "worker",
-    name: "DeAI Worker Manager",
-    desc: "Live worker module. Native GUI for 1-click worker daemon configuration, sandbox VRAM limits, and GPU driver binding.",
+    name: "DeAI Worker Config & CLI",
+    desc: "CLI Configuration generator. Generates monolith_worker.toml for GPU driver binding and worker daemon launch.",
     icon: Cpu,
     tone: "ai",
     state: "live",
