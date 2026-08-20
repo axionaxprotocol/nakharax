@@ -233,19 +233,6 @@ export function StatCard({
           </div>
         )}
       </div>
-
-      {/* Decorative micro sparkline wave */}
-      <div className="mt-os-4 h-6 w-full opacity-40 group-hover:opacity-85 transition-opacity">
-        <svg viewBox="0 0 100 24" className="h-full w-full overflow-visible" preserveAspectRatio="none">
-          <path
-            d="M 0 18 Q 20 6, 40 14 T 80 8 T 100 16"
-            fill="none"
-            stroke={toneStyle.sparkline}
-            strokeWidth="2.2"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
     </div>
   );
 }
