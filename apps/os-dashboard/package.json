@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3030",
-    "build": "next build",
-    "start": "next start -p 3030",
+    "dev": "node ../../node_modules/next/dist/bin/next dev -p 3030",
+    "build": "node ../../node_modules/next/dist/bin/next build",
+    "start": "node ../../node_modules/next/dist/bin/next start -p 3030",
     "serve:lh": "next start -p 3031",
     "lighthouse:run": "lighthouse http://127.0.0.1:3031/ --only-categories=performance,accessibility,best-practices,seo --preset=desktop --quiet --chrome-flags=\"--headless=new --no-sandbox\" --output=json --output=html --output-path=./lighthouse-results/lhr",
     "lighthouse:report": "pnpm build && start-server-and-test serve:lh http-get://127.0.0.1:3031 lighthouse:run",

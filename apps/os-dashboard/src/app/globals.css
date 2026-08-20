@@ -10,7 +10,7 @@
    ========================================================================== */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
   /* Motion scale */
   --motion-instant: 100ms;
@@ -21,13 +21,52 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Accent colors (semantic) */
+  --accent-ai: #29F06A;
+  --accent-chain: #22D3EE;
+  --accent-warn: #FF7A1A;
+  --accent-danger: #EF4444;
+  --accent-ok: #29F06A;
+
+  /* ===== Semantic surfaces / text — OBSIDIAN DARK (default) ===================== */
+  --canvas: #020617;
+  --canvas-2: #0B0B0B;
+  --panel: #0F172A;
+  --panel-sunken: #060B18;
+  --panel-hover: #1E293B;
+  --chrome: rgba(15, 23, 42, 0.85);
+  --chrome-border: rgba(255, 255, 255, 0.08);
+  --hair: rgba(255, 255, 255, 0.08);
+  --hair-strong: rgba(255, 255, 255, 0.14);
+  --track: rgba(255, 255, 255, 0.06);
+  --text-strong: #F8FAFC;
+  --text: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-faint: #64748B;
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-raise: 0 8px 30px -12px rgba(0, 0, 0, 0.6);
+  --shadow-chrome: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+  /* Wallpaper (dark mode default) */
+  --wp-base-from: #020617;
+  --wp-base-to: #0F172A;
+  --wp-blob-1: rgba(41, 240, 106, 0.05);
+  --wp-blob-2: rgba(255, 122, 26, 0.035);
+  --wp-blob-3: rgba(14, 165, 233, 0.05);
+  --wp-blob-4: rgba(20, 184, 166, 0.05);
+}
+
+/* ===== Light mode overrides ============================================== */
+html[data-mode="light"] {
+  color-scheme: light;
+
   --accent-ai: #059669;
   --accent-chain: #0891B2;
   --accent-warn: #EA580C;
   --accent-danger: #DC2626;
   --accent-ok: #059669;
 
-  /* ===== Semantic surfaces / text — LIGHT (default) ===================== */
   --canvas: #EEF1F6;
   --canvas-2: #F8FAFC;
   --panel: #FFFFFF;
@@ -47,45 +86,6 @@
   --shadow-panel: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 26px -12px rgba(15, 23, 42, 0.14);
   --shadow-raise: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 34px -14px rgba(15, 23, 42, 0.20);
   --shadow-chrome: 0 1px 0 rgba(15, 23, 42, 0.04), 0 6px 20px -8px rgba(15, 23, 42, 0.14);
-
-  /* Wallpaper (used by dark mode only) */
-  --wp-base-from: #020617;
-  --wp-base-to: #0F172A;
-  --wp-blob-1: rgba(41, 240, 106, 0.05);
-  --wp-blob-2: rgba(255, 122, 26, 0.035);
-  --wp-blob-3: rgba(14, 165, 233, 0.05);
-  --wp-blob-4: rgba(20, 184, 166, 0.05);
-}
-
-/* ===== Dark mode overrides ============================================== */
-html[data-mode="dark"] {
-  color-scheme: dark;
-
-  --accent-ai: #29F06A;
-  --accent-chain: #22D3EE;
-  --accent-warn: #FF7A1A;
-  --accent-danger: #EF4444;
-  --accent-ok: #29F06A;
-
-  --canvas: #020617;
-  --canvas-2: #0B1120;
-  --panel: #0B1120;
-  --panel-sunken: #070D1B;
-  --panel-hover: #0E1628;
-  --chrome: rgba(15, 23, 42, 0.82);
-  --chrome-border: rgba(255, 255, 255, 0.08);
-  --hair: rgba(255, 255, 255, 0.06);
-  --hair-strong: rgba(255, 255, 255, 0.11);
-  --track: rgba(255, 255, 255, 0.06);
-  --text-strong: #F8FAFC;
-  --text: #E2E8F0;
-  --text-muted: #94A3B8;
-  --text-faint: #64748B;
-  --grid-line: rgba(255, 255, 255, 0.045);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-raise: 0 8px 30px -12px rgba(0, 0, 0, 0.6);
-  --shadow-chrome: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* --------------------------------------------------------------------------

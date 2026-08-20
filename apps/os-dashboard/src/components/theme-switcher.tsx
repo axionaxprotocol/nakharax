@@ -70,8 +70,13 @@ function applyCustom(c: CustomColors) {
 
 function applyMode(m: Mode) {
   const html = document.documentElement;
-  if (m === "light") html.setAttribute("data-mode", "light");
-  else html.removeAttribute("data-mode");
+  if (m === "light") {
+    html.setAttribute("data-mode", "light");
+    html.classList.remove("dark");
+  } else {
+    html.setAttribute("data-mode", "dark");
+    html.classList.add("dark");
+  }
 }
 
 function applyAnim(a: Anim) {
@@ -83,7 +88,7 @@ function applyAnim(a: Anim) {
 export function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("aurora");
-  const [mode, setMode] = useState<Mode>("light");
+  const [mode, setMode] = useState<Mode>("dark");
   const [anim, setAnim] = useState<Anim>("on");
   const [custom, setCustom] = useState<CustomColors>(DEFAULT_CUSTOM);
   const [showCustom, setShowCustom] = useState(false);
@@ -92,7 +97,7 @@ export function ThemeSwitcher() {
   // Hydrate from localStorage
   useEffect(() => {
     const t = localStorage.getItem(KEY_THEME) || "aurora";
-    const m = (localStorage.getItem(KEY_MODE) as Mode) || "light";
+    const m = (localStorage.getItem(KEY_MODE) as Mode) || "dark";
     const a = (localStorage.getItem(KEY_ANIM) as Anim) || "on";
     const cRaw = localStorage.getItem(KEY_CUSTOM);
     setActive(t);
