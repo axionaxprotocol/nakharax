@@ -1,18 +1,16 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Nakharax OS — "Data-Dense Dashboard" design tokens.
+ * Nakharax OS — Modern Cybernetic & Frosted Glass Design Tokens.
  *
- * Pattern: Real-Time / Operations Landing
- * Colors: Primary #0F172A, Background #020617, Accent #29F06A
- * Typography: Fira Code (Mono/Heading), Fira Sans (Body)
+ * Typography: Plus Jakarta Sans / Inter (Display & Body), JetBrains Mono (Data & Code)
+ * Palette: Obsidian Dark #020617 / #0B0B0B, Accent Neon #29F06A / #22D3EE
  */
 const config: Config = {
   content: ["./src/**/*.{ts,tsx,js,jsx,mdx}"],
   theme: {
     extend: {
       colors: {
-        // Base — slate/navy theme for data density
         bg: {
           DEFAULT: "#020617",
           card: "#0F172A",
@@ -22,14 +20,13 @@ const config: Config = {
         accent: {
           DEFAULT: "#29F06A",
           dim: "#16A34A",
-          ai: "#29F06A", // compute green — Worker / DeAI actions
-          chain: "#22D3EE", // cyan — Blockchain / consensus
-          info: "#38BDF8", // sky — neutral info / RPC hints
-          warn: "#FF7A1A", // finality orange — soft warnings, "outdated", "behind"
-          danger: "#EF4444", // rose/red — errors, slashing, fatal states
-          ok: "#29F06A", // emerald — explicit success/healthy
+          ai: "#29F06A",
+          chain: "#22D3EE",
+          info: "#38BDF8",
+          warn: "#FF7A1A",
+          danger: "#EF4444",
+          ok: "#29F06A",
         },
-        // Surfaces
         obsidian: {
           950: "#020617",
           900: "#0F172A",
@@ -42,47 +39,36 @@ const config: Config = {
           700: "#1E293B",
         },
       },
-      borderColor: {
-        hairline: "rgba(255, 255, 255, 0.06)",
-      },
-      boxShadow: {
-        // Solid/minimal shadows for data-dense look, less glow
-        glass: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-        "glass-strong": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-        "glass-xl": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-        "icon-app": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-        "neon-ai": "0 0 16px rgba(41, 240, 106, 0.25)",
-        "neon-chain": "0 0 16px rgba(34, 211, 238, 0.20)",
-        "neon-rose": "0 0 16px rgba(239, 68, 68, 0.20)",
-        "glow-sm": "0 0 8px rgba(255, 255, 255, 0.05)",
-        "glow-md": "0 0 16px rgba(255, 255, 255, 0.08)",
-      },
       fontFamily: {
         sans: [
-          '"Fira Sans"',
+          '"Plus Jakarta Sans"',
+          '"Inter"',
           "ui-sans-serif",
           "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "sans-serif",
+        ],
+        display: [
+          '"Plus Jakarta Sans"',
+          '"Inter"',
           "sans-serif",
         ],
         mono: [
+          '"JetBrains Mono"',
           '"Fira Code"',
           "ui-monospace",
           "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
           "monospace",
         ],
       },
-      transitionDuration: {
-        instant: "100ms",
-        fast: "150ms",
-        base: "200ms",
-        thoughtful: "300ms", // faster animations
-      },
-      transitionTimingFunction: {
-        os: "cubic-bezier(0.4, 0, 0.2, 1)", // Standard ease
-        spring: "cubic-bezier(0.16, 1, 0.3, 1)", 
+      borderColor: {
+        hairline: "rgba(255, 255, 255, 0.08)",
       },
       spacing: {
-        // Tighter spacing for data-dense design
         "os-0": "0",
         "os-px": "1px",
         "os-0.5": "2px",
@@ -100,25 +86,26 @@ const config: Config = {
         "os-panel": "16px",
       },
       fontSize: {
-        display: ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
-        headline: ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "600" }],
-        title: ["1rem", { lineHeight: "1.5rem", fontWeight: "500" }],
-        body: ["0.875rem", { lineHeight: "1.25rem" }],
-        caption: ["0.75rem", { lineHeight: "1rem" }],
+        display: ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "700" }],
+        headline: ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+        title: ["1rem", { lineHeight: "1.5rem", letterSpacing: "-0.01em", fontWeight: "600" }],
+        body: ["0.875rem", { lineHeight: "1.35rem" }],
+        caption: ["0.75rem", { lineHeight: "1.1rem" }],
         micro: ["0.625rem", { lineHeight: "0.875rem", letterSpacing: "0.08em" }],
-        overline: ["0.6875rem", { lineHeight: "1rem", letterSpacing: "0.05em", fontWeight: "500" }],
+        overline: ["0.6875rem", { lineHeight: "1rem", letterSpacing: "0.06em", fontWeight: "600" }],
       },
       lineHeight: {
-        tight: "1.2",
+        tight: "1.15",
         normal: "1.5",
         relaxed: "1.75",
       },
       borderRadius: {
-        "os-sm": "4px",
-        "os-md": "6px",
-        "os-lg": "8px",
-        "os-xl": "12px",
-        "os-2xl": "16px",
+        "os-sm": "6px",
+        "os-md": "8px",
+        "os-lg": "12px",
+        "os-xl": "16px",
+        "os-2xl": "20px",
+        "os-3xl": "24px",
       },
       keyframes: {
         "neon-pulse": {
