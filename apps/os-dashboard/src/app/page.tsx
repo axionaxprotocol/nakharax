@@ -23,7 +23,6 @@ import {
 import {
   ActionLink,
   Card,
-  DataRow,
   IconBadge,
   SectionHeader,
   StatCard,
@@ -57,68 +56,57 @@ export default async function Home() {
   const isOnline = online > 0;
 
   return (
-    <div className="space-y-5 sm:space-y-6 animate-slide-up">
+    <div className="space-y-8 sm:space-y-10 animate-slide-up">
       {/* =========================================================================
-          ZONE 1: COMMAND HERO (Integrated Value Pitch + Live Ingress Terminal)
+          SECTION 1: XPFIRM-STYLE CENTERED INSTITUTIONAL HERO
           ========================================================================= */}
-      <section className="relative overflow-hidden rounded-os-2xl border border-white/20 border-t-white/35 bg-white/[0.035] backdrop-blur-3xl p-5 sm:p-6 lg:p-7 shadow-[0_20px_50px_0_rgba(0,0,0,0.5),inset_0_1px_1.5px_0_rgba(255,255,255,0.25)]">
-        {/* Specular glass reflection */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+      <section className="relative px-2 py-8 sm:px-4 sm:py-12 text-center overflow-hidden rounded-2xl border border-white/[0.12] bg-slate-950/40 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        {/* Ambient background glow orb */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 w-[600px] sm:w-[800px] h-[320px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse duration-[4000ms]" />
 
-        {/* Dynamic atmospheric radial glows */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/20 blur-[90px]" />
-          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-cyan-500/18 blur-[90px]" />
-          <div className="absolute -left-20 top-1/2 h-64 w-64 rounded-full bg-violet-500/15 blur-[80px]" />
-          <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
-        </div>
-
-        <div className="relative grid gap-5 lg:grid-cols-12 lg:items-center">
-          {/* Left Column: Headline, Copy & CTAs */}
-          <div className="lg:col-span-7 space-y-3.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 py-0.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[var(--accent-ai)] shadow-[0_0_15px_-3px_rgba(41,240,106,0.35)] backdrop-blur-xl">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-ai)]" />
-                Sovereign DeAI Mesh
-              </div>
-              <StatusPill tone={isOnline ? "ai" : "danger"} pulse={isOnline}>
-                {isOnline ? "mesh online" : "mesh offline"}
-              </StatusPill>
-              <StatusPill tone="chain">chain 86137</StatusPill>
-              <StatusPill tone="warn">testnet pilot</StatusPill>
-            </div>
-
-            <h1 className="text-[1.85rem] font-bold leading-[1.14] tracking-[-0.035em] text-white sm:text-[2.35rem]">
-              Compute power people can{" "}
-              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                own, route, and verify.
-              </span>
-            </h1>
-
-            <p className="max-w-2xl text-[14px] leading-relaxed text-slate-300 sm:text-[14.5px]">
-              Nakharax turns reachable PCs, edge accelerators, and private GPU clusters into a
-              zero-censorship marketplace for verifiable AI inference, quant simulations, and local-first execution.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-2.5 pt-1">
-              <ActionLink href="/jobs">Open compute jobs</ActionLink>
-              <ActionLink href="/nodes" variant="secondary">
-                Inspect node mesh
-              </ActionLink>
-            </div>
+        <div className="relative z-10 mx-auto max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono font-semibold tracking-wide text-emerald-300">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+            Sovereign DeAI Compute Protocol
           </div>
 
-          {/* Right Column: Live Terminal Quick Connect */}
-          <div className="lg:col-span-5">
-            <QuickConnectBox />
+          <h1 className="text-[32px]/[1.15] sm:text-[44px]/[1.12] md:text-[52px]/[1.12] font-bold text-white tracking-normal max-w-[24rem] sm:max-w-none mx-auto">
+            Compute power people can{" "}
+            <span className="inline-block text-emerald-400">
+              own, route, and verify.
+            </span>
+          </h1>
+
+          <p className="text-slate-300 max-w-[22rem] sm:max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-medium leading-relaxed">
+            Nakharax turns reachable PCs, edge accelerators, and private GPU clusters into a
+            zero-censorship compute marketplace for verifiable AI inference, quant simulations, and local-first execution.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2 w-full max-w-xs sm:max-w-none mx-auto">
+            <ActionLink href="/jobs" variant="primary">
+              Open compute jobs
+            </ActionLink>
+            <ActionLink href="/nodes" variant="secondary">
+              Inspect node mesh
+            </ActionLink>
+          </div>
+
+          <div className="pt-3 flex justify-center">
+            <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
+              <span className="font-semibold text-emerald-300">✓ Proof of Light Consensus</span>
+              <span className="text-slate-500">·</span>
+              <span className="text-cyan-300">Chain 86137 Live</span>
+              <span className="text-slate-500">·</span>
+              <span className="text-slate-400">Sub-millisecond Settlement</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          ZONE 2: KEY PROTOCOL METRICS (4 Compact Frosted Stat Cards)
+          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS
           ========================================================================= */}
-      <section className="grid grid-cols-2 gap-3 sm:gap-3.5 lg:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Consensus block"
           value={maxBlock > 0 ? maxBlock.toLocaleString() : "86,137"}
@@ -150,27 +138,38 @@ export default async function Home() {
       </section>
 
       {/* =========================================================================
-          ZONE 3: 3-PILLAR SOVEREIGN COMPUTE CAPABILITIES
+          SECTION 3: DEVELOPER INGRESS & TERMINAL QUICK-CONNECT
           ========================================================================= */}
       <section className="space-y-3">
+        <SectionHeader
+          title="Direct JSON-RPC Ingress"
+          description="Send raw cryptographic inference jobs or query node topology via standard curl or SDK."
+        />
+        <QuickConnectBox />
+      </section>
+
+      {/* =========================================================================
+          SECTION 4: 3-PILLAR SOVEREIGN COMPUTE CAPABILITIES
+          ========================================================================= */}
+      <section className="space-y-3.5">
         <SectionHeader
           title="Sovereign compute architecture"
           description="Built for affordability, geographic data custody, and cryptographic receipts without cloud lock-in."
         />
-        <div className="grid gap-3 sm:gap-3.5 md:grid-cols-3">
+        <div className="grid gap-3.5 md:grid-cols-3">
           {MISSION_CARDS.map((item) => (
-            <Card key={item.title} interactive tone={item.tone} className="flex flex-col justify-between p-4 sm:p-5">
+            <Card key={item.title} interactive tone={item.tone} className="flex flex-col justify-between">
               <div>
                 <IconBadge Icon={item.Icon} tone={item.tone} className="h-10 w-10" />
-                <h3 className="mt-3 text-[15px] font-bold text-white">
+                <h3 className="mt-3.5 text-[15.5px] font-bold text-white">
                   {item.title}
                 </h3>
-                <p className="mt-1.5 text-[12.5px] leading-relaxed text-slate-300">
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-300">
                   {item.description}
                 </p>
               </div>
-              <div className="mt-4 border-t border-white/10 pt-2 text-[10.5px] font-mono font-semibold uppercase tracking-wider text-[var(--accent-ai)]">
-                Active Architecture
+              <div className="mt-4 border-t border-white/[0.08] pt-2.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-400">
+                Institutional Standard
               </div>
             </Card>
           ))}
@@ -178,39 +177,40 @@ export default async function Home() {
       </section>
 
       {/* =========================================================================
-          ZONE 4: 5-STEP CRYPTOGRAPHIC COMPUTE PIPELINE
+          SECTION 5: 5-STEP CRYPTOGRAPHIC PIPELINE
           ========================================================================= */}
-      <section className="space-y-3">
+      <section className="space-y-3.5">
         <SectionHeader
           title="Compute marketplace pipeline"
-          description="The cryptographic lifecycle of an AI compute job from submission to verifiable settlement."
+          description="The complete cryptographic lifecycle of an AI compute job from submission to verifiable settlement."
           action={
             <Link
               href="/activity/inference"
-              className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[var(--accent-ai)] hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
             >
               Audit live runs
               <ArrowRight size={13} />
             </Link>
           }
         />
-        <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 md:grid-cols-5">
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-5">
           {WORKLOAD_FLOW.map((step, index) => (
             <Card
               key={step.title}
-              className="group relative overflow-hidden p-3.5 sm:p-4"
+              className="group relative overflow-hidden"
+              padded
               tone={step.tone}
               interactive
             >
-              {/* Number watermark */}
-              <div className="absolute right-2.5 top-2.5 font-mono text-[2.2rem] font-black leading-none text-white/[0.04] transition-all group-hover:text-white/[0.12] select-none">
+              {/* Watermark number */}
+              <div className="absolute right-2.5 top-2.5 font-mono text-[2.2rem] font-black leading-none text-white/[0.05] transition-all group-hover:text-white/[0.12] select-none">
                 {String(index + 1).padStart(2, "0")}
               </div>
               <IconBadge Icon={step.Icon} tone={step.tone} className="h-9 w-9" />
-              <h3 className="mt-3 text-[14px] font-bold text-white group-hover:text-emerald-300 transition-colors">
+              <h3 className="mt-3 text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
                 {step.title}
               </h3>
-              <p className="mt-1 text-[12px] leading-relaxed text-slate-400">
+              <p className="mt-1.5 text-[12px] leading-relaxed text-slate-400">
                 {step.description}
               </p>
             </Card>
@@ -219,30 +219,30 @@ export default async function Home() {
       </section>
 
       {/* =========================================================================
-          ZONE 5: SYSTEM MODULES & APPS CONSOLE (2x4 Grid)
+          SECTION 6: OPERATING SYSTEM CONSOLES MATRIX (2x4 Grid)
           ========================================================================= */}
-      <section className="space-y-3">
+      <section className="space-y-3.5">
         <SectionHeader
           title="Operating system consoles"
           description="Dedicated consoles for compute workloads, node ownership, telemetry auditing, and local key vault."
         />
-        <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {MODULES.map((module) => (
             <Link key={module.label} href={module.href} className="group block">
-              <Card interactive className="h-full flex flex-col justify-between p-3.5 sm:p-4" tone={module.tone}>
+              <Card interactive className="h-full flex flex-col justify-between" tone={module.tone}>
                 <div className="flex items-start gap-3">
                   <IconBadge Icon={module.Icon} tone={module.tone} className="h-9 w-9" />
                   <div className="min-w-0">
-                    <h3 className="text-[14px] font-bold text-white group-hover:text-emerald-300 transition-colors">
+                    <h3 className="text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
                       {module.label}
                     </h3>
-                    <p className="mt-0.5 text-[12px] leading-relaxed text-slate-400">
+                    <p className="mt-1 text-[12px] leading-relaxed text-slate-400">
                       {module.description}
                     </p>
                   </div>
                 </div>
                 <div className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-2">
-                  <span className="text-[9.5px] font-mono uppercase tracking-[0.18em] text-slate-400 group-hover:text-emerald-400 transition-colors">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-slate-400 group-hover:text-emerald-400 transition-colors">
                     Launch Console
                   </span>
                   <ArrowRight
