@@ -36,20 +36,20 @@ export function MenuBar() {
     <div className="fixed inset-x-0 top-0 z-40 h-11 border-b border-white/[0.12] bg-slate-950/60 shadow-[0_4px_30px_rgba(0,0,0,0.6)] backdrop-blur-3xl">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white/[0.2] to-transparent" />
       <div className="flex h-full items-center gap-os-4 px-os-4 text-[11px] text-[var(--text)] sm:px-os-6">
-        <Link href="/" className="flex items-center gap-os-2 font-semibold">
-          <span className="relative grid h-7 w-7 place-items-center rounded-os-lg border border-emerald-500/20 bg-emerald-500/10">
+        <Link href="/" className="group flex items-center gap-2 font-semibold">
+          <span className="relative grid h-7 w-7 place-items-center rounded-lg border border-white/20 bg-white/[0.06] shadow-[0_0_15px_rgba(41,240,106,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] backdrop-blur-xl transition-all duration-300 group-hover:scale-105 group-hover:border-emerald-400/60 group-hover:shadow-[0_0_20px_rgba(41,240,106,0.5)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/nakharax-token.svg"
-              alt=""
-              className="h-4.5 w-4.5 object-contain"
+              alt="NakharaX Quantum Hex-Core"
+              className="h-5 w-5 object-contain"
             />
-            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border border-[var(--panel)] bg-emerald-500" />
+            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border border-slate-950 bg-[var(--accent-ai)] shadow-[0_0_6px_rgba(41,240,106,0.8)]" />
           </span>
-          <span className="hidden font-mono uppercase tracking-[0.16em] text-[var(--text-strong)] sm:inline">
+          <span className="hidden font-mono text-[11.5px] font-bold uppercase tracking-[0.18em] text-white group-hover:text-emerald-300 transition-colors sm:inline">
             Nakharax Compute OS
           </span>
-          <span className="font-mono uppercase tracking-[0.16em] text-[var(--text-strong)] sm:hidden">
+          <span className="font-mono text-[11.5px] font-bold uppercase tracking-[0.18em] text-white group-hover:text-emerald-300 transition-colors sm:hidden">
             NakharaX
           </span>
         </Link>

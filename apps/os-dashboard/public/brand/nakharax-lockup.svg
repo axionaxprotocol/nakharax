@@ -1,17 +1,61 @@
-<svg width="720" height="180" viewBox="0 0 720 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-lockup-title">
-  <title id="nakharax-lockup-title">Nakharax mono logo lockup</title>
-  <rect width="720" height="180" rx="32" fill="#F8FAFC"/>
-  <g transform="translate(28 22) scale(0.53)">
-    <rect width="256" height="256" rx="56" fill="#0F172A"/>
-    <path d="M128 34L207 80V176L128 222L49 176V80L128 34Z" stroke="#334155" stroke-width="3"/>
-    <path d="M70 181V75L186 181V75" stroke="#F8FAFC" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M184 76L72 180" stroke="#F8FAFC" stroke-width="11" stroke-linecap="round" opacity="0.88"/>
-    <path d="M78 202H178" stroke="#F8FAFC" stroke-width="10" stroke-linecap="round" opacity="0.72"/>
-    <circle cx="70" cy="75" r="6" fill="#F8FAFC"/>
-    <circle cx="186" cy="75" r="6" fill="#F8FAFC"/>
-    <circle cx="70" cy="181" r="6" fill="#F8FAFC"/>
-    <circle cx="186" cy="181" r="6" fill="#F8FAFC"/>
+<svg width="800" height="200" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-lockup-title">
+  <title id="nakharax-lockup-title">NakharaX Quantum Hex-Core Brand Lockup</title>
+  
+  <defs>
+    <radialGradient id="bg-lockup" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+
+    <linearGradient id="text-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="70%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#29F06A" />
+    </linearGradient>
+
+    <linearGradient id="facet-top-l" x1="256" y1="52" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#818CF8" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="facet-left-l" x1="78" y1="154" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.3" />
+    </linearGradient>
+    <linearGradient id="facet-right-l" x1="434" y1="154" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A855F7" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3" />
+    </linearGradient>
+    <radialGradient id="core-flare-l" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="35%" stop-color="#67E8F9" stop-opacity="0.9" />
+      <stop offset="70%" stop-color="#29F06A" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Container Box -->
+  <rect width="800" height="200" rx="32" fill="url(#bg-lockup)" />
+  <rect width="798" height="198" x="1" y="1" rx="31" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="2" />
+
+  <!-- Quantum Hex-Core Icon -->
+  <g transform="translate(30, 25) scale(0.293)">
+    <!-- 3D Hexagon -->
+    <path d="M256 64L422 160L256 256L90 160Z" fill="url(#facet-top-l)" />
+    <path d="M90 160L256 256L256 448L90 352Z" fill="url(#facet-left-l)" />
+    <path d="M422 160L422 352L256 448L256 256Z" fill="url(#facet-right-l)" />
+
+    <!-- Crystal Seams -->
+    <path d="M256 64L422 160V352L256 448L90 352V160L256 64Z" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="5" />
+    <path d="M256 64V256M90 160L256 256M422 160L256 256M256 256V448" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="4" />
+
+    <!-- Core Star Flare -->
+    <ellipse cx="256" cy="256" rx="140" ry="8" fill="url(#core-flare-l)" />
+    <ellipse cx="256" cy="256" rx="8" ry="140" fill="url(#core-flare-l)" />
+    <circle cx="256" cy="256" r="32" fill="#FFFFFF" />
+    <circle cx="256" cy="256" r="54" fill="#22D3EE" opacity="0.6" />
   </g>
-  <text x="188" y="82" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="750" letter-spacing="-1">nakharax</text>
-  <text x="192" y="122" fill="#64748B" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="4">OWNABLE DEAI COMPUTE</text>
+
+  <!-- Typography -->
+  <text x="210" y="96" fill="url(#text-grad)" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="54" font-weight="800" letter-spacing="-0.03em">NAKHARAX</text>
+  <text x="214" y="138" fill="#22D3EE" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="700" letter-spacing="0.28em">SOVEREIGN DEAI PROTOCOL</text>
 </svg>
