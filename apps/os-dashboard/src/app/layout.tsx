@@ -59,10 +59,10 @@ export default function RootLayout({
         <MenuBar />
         <main
           id="main-content"
-          className="min-h-screen pb-32 pt-14"
+          className="min-h-screen pb-20 pt-13"
           tabIndex={-1}
         >
-          <div className="mx-auto max-w-[1500px] px-os-4 py-os-5 sm:px-os-6 lg:px-os-8">
+          <div className="mx-auto max-w-[1450px] px-4 py-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
