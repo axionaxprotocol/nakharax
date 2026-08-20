@@ -129,4 +129,44 @@ export interface AgentToolExecutionReceipt {
   verifiedOnChain: boolean;
 }
 
+/** LoRA Domain Adapter Descriptor for Continual Learning */
+export interface LoRAAdapterDescriptor {
+  id: string;
+  name: string;
+  domain: "quant_trading" | "smart_contract_audit" | "medical_bio" | "formal_logic" | "chip_design" | "general";
+  baseModel: string;
+  rank: number; // e.g. 16, 32, 64
+  alpha: number; // e.g. 32, 64, 128
+  sizeMb: number;
+  authorAddress: string;
+  mergeCount: number;
+  verifiedProofHash: string;
+  rating: number;
+  downloadUrl: string;
+}
+
+/** Weight Merging Job Configuration (TIES / DARE) */
+export interface WeightMergeJobConfig {
+  jobId: string;
+  baseModelId: string;
+  targetModelName: string;
+  adapters: { adapterId: string; weight: number }[];
+  algorithm: "ties" | "dare" | "linear_slerp";
+  density: number; // 0.1 to 1.0 (for TIES)
+  dropRate: number; // 0.1 to 0.9 (for DARE)
+}
+
+/** Cryptographic Merged Model Receipt */
+export interface WeightMergeReceipt {
+  receiptId: string;
+  jobId: string;
+  mergedModelHash: string;
+  totalParametersMerged: number;
+  algorithmUsed: string;
+  gasCostNak: string;
+  timestamp: number;
+  verifiedOnChain: boolean;
+}
+
+
 
