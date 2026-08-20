@@ -6,6 +6,7 @@
   "scripts": {
     "build": "pnpm --filter @nakharax/sdk build && pnpm --filter nakharax-os-dashboard build",
     "typecheck": "pnpm --filter @nakharax/sdk typecheck",
+    "mock-rpc": "node services/core/ops/deploy/mock-rpc/server.js",
     "test": "pnpm -r run test"
   },
   "keywords": [],
