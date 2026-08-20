@@ -57,36 +57,6 @@
   --wp-blob-4: rgba(255, 122, 26, 0.12);
 }
 
-/* ===== Light mode overrides ============================================== */
-html[data-mode="light"] {
-  color-scheme: light;
-
-  --accent-ai: #059669;
-  --accent-chain: #0891B2;
-  --accent-warn: #EA580C;
-  --accent-danger: #DC2626;
-  --accent-ok: #059669;
-
-  --canvas: #EEF1F6;
-  --canvas-2: #F8FAFC;
-  --panel: #FFFFFF;
-  --panel-sunken: #F5F7FA;
-  --panel-hover: #F1F5F9;
-  --chrome: rgba(255, 255, 255, 0.82);
-  --chrome-border: rgba(15, 23, 42, 0.08);
-  --hair: rgba(15, 23, 42, 0.08);
-  --hair-strong: rgba(15, 23, 42, 0.13);
-  --track: rgba(15, 23, 42, 0.07);
-  --text-strong: #0F172A;
-  --text: #334155;
-  --text-muted: #64748B;
-  --text-faint: #94A3B8;
-  --grid-line: rgba(15, 23, 42, 0.045);
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-panel: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 26px -12px rgba(15, 23, 42, 0.14);
-  --shadow-raise: 0 2px 4px rgba(15, 23, 42, 0.05), 0 14px 34px -14px rgba(15, 23, 42, 0.20);
-  --shadow-chrome: 0 1px 0 rgba(15, 23, 42, 0.04), 0 6px 20px -8px rgba(15, 23, 42, 0.14);
-}
 
 /* --------------------------------------------------------------------------
    Wallpaper variants (dark mode only)
