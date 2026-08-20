@@ -13,8 +13,8 @@
     "./client": "./src/client.ts"
   },
   "scripts": {
-    "build": "tsc --noEmit",
-    "typecheck": "tsc --noEmit"
+    "build": "node ../../node_modules/typescript/bin/tsc --noEmit",
+    "typecheck": "node ../../node_modules/typescript/bin/tsc --noEmit"
   },
   "devDependencies": {
     "typescript": "^5.5.4"
