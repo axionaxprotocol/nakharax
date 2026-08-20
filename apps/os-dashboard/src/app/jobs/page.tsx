@@ -30,7 +30,7 @@ const JOB_LINKS = [
   {
     href: "/apps",
     title: "Worker modules",
-    desc: "Open the module catalog. Unwired worker services are marked demo-only.",
+    desc: "Open the module catalog. Unwired worker services are marked Coming Soon.",
     Icon: Boxes,
     tone: "chain" as const,
   },
@@ -47,7 +47,7 @@ export default function JobsPage() {
           <StatusPill tone="ai" pulse>
             worker-ready path
           </StatusPill>
-          <StatusPill tone="warn">demo routing</StatusPill>
+          <StatusPill tone="warn">testnet pilot</StatusPill>
         </>
       }
     >
@@ -113,7 +113,7 @@ export default function JobsPage() {
         <div className="flex flex-col gap-os-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[var(--accent-ai)]">
-              demo workload path
+              testnet workload path
             </div>
             <p className="mt-os-2 max-w-3xl text-body leading-relaxed text-[var(--text-muted)]">
               End-to-end Python workload flow is documented under{" "}

@@ -102,7 +102,7 @@ export default async function ModelRegistryPage() {
         <>
           <StatusPill tone="ai">{active} active</StatusPill>
           <StatusPill tone="warn">{beta} beta</StatusPill>
-          <StatusPill tone="warn">demo catalog</StatusPill>
+          <StatusPill tone="warn">testnet catalog</StatusPill>
         </>
       }
       actions={
@@ -140,7 +140,7 @@ export default async function ModelRegistryPage() {
         <StatCard
           label="Inferences"
           value={`${(totalInferences / 1_000).toFixed(0)}k`}
-          hint="Demo registry volume"
+          hint="Testnet sample volume"
           icon={<Zap size={18} />}
           tone="warn"
         />

@@ -26,7 +26,7 @@ type App = {
   desc: string;
   icon: LucideIcon;
   tone: Tone;
-  state: "live" | "demo";
+  state: "live" | "coming_soon";
   href?: string;
 };
 
@@ -34,7 +34,7 @@ const APPS: App[] = [
   {
     id: "propsentinel",
     name: "PropSentinel Risk",
-    desc: "Live route. Opens telemetry, drawdown limits, kill-switch events, and account risk monitoring.",
+    desc: "Live microservice route. Opens telemetry, drawdown limits, kill-switch events, and account risk monitoring.",
     icon: Skull,
     tone: "danger",
     state: "live",
@@ -42,66 +42,66 @@ const APPS: App[] = [
   },
   {
     id: "worker",
-    name: "DeAI Worker",
-    desc: "Demo card only. Worker install/config flow is not wired to node services yet.",
+    name: "DeAI Worker Manager",
+    desc: "Coming Soon. Native GUI for 1-click worker daemon configuration, sandbox limits, and GPU driver binding.",
     icon: Cpu,
     tone: "ai",
-    state: "demo",
+    state: "coming_soon",
   },
   {
     id: "sentinel",
     name: "Hydra Sentinel",
-    desc: "Demo card only. Abuse control and quota safety need service bindings before launch.",
+    desc: "Coming Soon. Advanced Sybil abuse control, rate limit policies, and validator slashing telemetry.",
     icon: Shield,
     tone: "violet",
-    state: "demo",
+    state: "coming_soon",
   },
   {
     id: "explorer",
     name: "Block Explorer",
-    desc: "Demo card only. Explorer route is not implemented yet.",
+    desc: "Coming Soon. Dedicated on-chain explorer for transaction traces, block inspection, and contract verification.",
     icon: Eye,
     tone: "chain",
-    state: "demo",
+    state: "coming_soon",
   },
   {
     id: "faucet",
     name: "Testnet Faucet",
-    desc: "Demo card only. Faucet backend and rate limits are not connected yet.",
+    desc: "Coming Soon. Interactive faucet UI with captcha validation and automated $tNAK token distribution.",
     icon: Droplets,
     tone: "warn",
-    state: "demo",
+    state: "coming_soon",
   },
   {
     id: "router",
-    name: "ASR Router",
-    desc: "Demo card only. Routing policy editor is not connected to worker assignment yet.",
+    name: "ASR Router & Scheduler",
+    desc: "Coming Soon. Visual policy editor for Action-State-Reward model routing and compute task dispatching.",
     icon: Workflow,
     tone: "chain",
-    state: "demo",
+    state: "coming_soon",
   },
 ];
 
 export default function AppsPage() {
   const liveCount = APPS.filter((app) => app.state === "live").length;
-  const demoCount = APPS.filter((app) => app.state === "demo").length;
+  const comingSoonCount = APPS.filter((app) => app.state === "coming_soon").length;
 
   return (
     <PageShell
-      eyebrow="Node Modules"
-      title="Only launch what is wired. Demo cards are explicitly marked."
-      description="This page now avoids fake install/config actions. Live modules have a route; unavailable modules are clearly marked as demo-only."
+      eyebrow="Node Modules & Ecosystem Apps"
+      title="Verified live routes and upcoming network modules."
+      description="Only live, wired services can be launched. Features currently in active development or testnet staging are clearly marked as Coming Soon."
       meta={
         <>
           <StatusPill tone="ai">{liveCount} live</StatusPill>
-          <StatusPill tone="warn">{demoCount} demo</StatusPill>
+          <StatusPill tone="warn">{comingSoonCount} coming soon</StatusPill>
         </>
       }
     >
       <section className="space-y-os-4">
         <SectionHeader
-          title="Available modules"
-          description="Cards without a working route are informational only and not clickable."
+          title="Available & upcoming modules"
+          description="Click to launch live microservices. Upcoming modules are listed for roadmap transparency."
         />
         <div className="grid grid-cols-1 gap-os-4 md:grid-cols-2 xl:grid-cols-3">
           {APPS.map((app) => (
@@ -125,7 +125,7 @@ function AppCard({ app }: { app: App }) {
               {app.name}
             </h2>
             <StatusPill tone={app.state === "live" ? "ai" : "warn"}>
-              {app.state}
+              {app.state === "live" ? "live" : "coming soon"}
             </StatusPill>
           </div>
           <p className="mt-os-2 text-body leading-relaxed text-[var(--text-muted)]">
@@ -141,7 +141,7 @@ function AppCard({ app }: { app: App }) {
           </span>
         ) : (
           <span className="inline-flex items-center gap-os-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-os-4 py-os-2 text-[11px] font-semibold text-[var(--accent-warn)]">
-            Demo only
+            Coming Soon
             <Boxes size={13} />
           </span>
         )}

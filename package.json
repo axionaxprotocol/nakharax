@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm --filter @nakharax/sdk build && pnpm --filter nakharax-os-dashboard build",
+    "typecheck": "pnpm --filter @nakharax/sdk typecheck",
+    "test": "pnpm -r run test"
   },
   "keywords": [],
   "author": "",

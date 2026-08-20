@@ -16,12 +16,12 @@ export default function WalletPage() {
   return (
       <PageShell
         eyebrow="Vault"
-      title="Inspect balance and run safe demo transfers."
-      description="The wallet view reads the configured RPC balance when available. Transfer submission is intentionally demo-only until production signing and escrow contracts are wired."
+      title="Inspect testnet balances and execute raw transfers."
+      description="The wallet view reads the configured RPC balance when available. Key management is strictly kept local on-device without third-party key storage."
       meta={
         <>
-          <StatusPill tone="warn">dev burner</StatusPill>
-          <StatusPill tone="warn">demo transfer</StatusPill>
+          <StatusPill tone="chain">testnet vault</StatusPill>
+          <StatusPill tone="ai">local keypair</StatusPill>
         </>
       }
     >
