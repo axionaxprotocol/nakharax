@@ -173,6 +173,17 @@ export default async function Home() {
               detail="Native unit for compute escrow and rewards"
             />
           </div>
+
+          <div className="mt-os-4 rounded-os-lg border border-[var(--hair)] bg-[var(--panel-sunken)] p-os-3 font-mono text-[11px]">
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+              <span>Quick Connect</span>
+              <span className="text-[var(--accent-ai)]">JSON-RPC 2.0</span>
+            </div>
+            <div className="mt-1.5 flex items-center gap-2 select-all text-[var(--text-strong)] overflow-x-auto">
+              <span className="text-[var(--accent-chain)]">$</span>
+              <code>curl -X POST https://rpc.nakharax.com -d &apos;&#123;&quot;method&quot;:&quot;system_status&quot;&#125;&apos;</code>
+            </div>
+          </div>
         </Card>
       </div>
 
@@ -344,7 +355,7 @@ const MODULES: {
   {
     href: "/apps",
     label: "Modules",
-    description: "Open live modules and clearly marked demo modules.",
+    description: "Open live microservices and upcoming network modules.",
     Icon: Sparkles,
     tone: "warn",
   },
