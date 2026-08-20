@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Bot,
   Boxes,
@@ -91,34 +92,38 @@ const APPS: App[] = [
   {
     id: "sentinel",
     name: "Hydra Sentinel",
-    desc: "Coming Soon. Advanced Sybil abuse control, rate limit policies, and validator slashing telemetry.",
+    desc: "Live Consensus Defense. Advanced Sybil abuse control, rate limit policies, and validator slashing telemetry.",
     icon: Shield,
     tone: "violet",
-    state: "coming_soon",
+    state: "live",
+    href: "/apps/sentinel",
   },
   {
     id: "explorer",
     name: "Block Explorer",
-    desc: "Coming Soon. Dedicated on-chain explorer for transaction traces, block inspection, and contract verification.",
+    desc: "Live On-Chain Tracer. Dedicated on-chain explorer for transaction traces, block inspection, and contract verification.",
     icon: Eye,
     tone: "chain",
-    state: "coming_soon",
+    state: "live",
+    href: "/apps/explorer",
   },
   {
     id: "faucet",
     name: "Testnet Faucet",
-    desc: "Coming Soon. Interactive faucet UI with captcha validation and automated $tNAK token distribution.",
+    desc: "Live Testnet Portal. Interactive faucet UI with instant token dispensing and automated $tNAK distribution.",
     icon: Droplets,
     tone: "warn",
-    state: "coming_soon",
+    state: "live",
+    href: "/apps/faucet",
   },
   {
     id: "router",
     name: "ASR Router & Scheduler",
-    desc: "Coming Soon. Visual policy editor for Action-State-Reward model routing and compute task dispatching.",
+    desc: "Live Compute Scheduler. Visual policy editor for Action-State-Reward model routing and compute task dispatching.",
     icon: Workflow,
     tone: "chain",
-    state: "coming_soon",
+    state: "live",
+    href: "/apps/router",
   },
 ];
 
