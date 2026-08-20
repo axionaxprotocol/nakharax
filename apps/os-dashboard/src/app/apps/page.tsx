@@ -1,9 +1,9 @@
-import Link from "next/link";
 import {
   Boxes,
   Cpu,
   Droplets,
   Eye,
+  Plug,
   Shield,
   Skull,
   Workflow,
@@ -48,6 +48,15 @@ const APPS: App[] = [
     tone: "ai",
     state: "live",
     href: "/apps/worker",
+  },
+  {
+    id: "mcp",
+    name: "Universal MCP Skills",
+    desc: "Live Agentic Registry. Connect Autonomous Agents to specialized tools, risk brains, and sandboxes via Model Context Protocol.",
+    icon: Plug,
+    tone: "violet",
+    state: "live",
+    href: "/apps/mcp",
   },
   {
     id: "sentinel",

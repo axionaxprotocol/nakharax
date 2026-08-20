@@ -85,3 +85,48 @@ export interface DeAIJobParams {
   inputHash: string;
 }
 
+/** Model Context Protocol (MCP) Skill Descriptor for Universal Agent Tooling. */
+export interface MCPSkillDescriptor {
+  id: string;
+  name: string;
+  description: string;
+  category: "analytics" | "security" | "finance" | "crawler" | "sandbox" | "scientific" | "general";
+  providerAddress: string;
+  feePerCallWei: string;
+  rating: number;
+  totalCalls: number;
+  verified: boolean;
+  endpointUrl: string;
+  transport: "sse" | "websocket" | "stdio";
+  schema: {
+    input: Record<string, unknown>;
+    output: Record<string, unknown>;
+  };
+}
+
+/** Sovereign Agent On-Chain Identity */
+export interface SovereignAgentIdentity {
+  agentId: string;
+  name: string;
+  ownerAddress: string;
+  balanceWei: string;
+  reputationScore: number;
+  activeSkills: string[];
+  totalJobsExecuted: number;
+  createdAt: number;
+}
+
+/** Agent MCP Tool Execution Receipt */
+export interface AgentToolExecutionReceipt {
+  executionId: string;
+  skillId: string;
+  callerAgentId: string;
+  providerAddress: string;
+  outputHash: string;
+  costWei: string;
+  latencyMs: number;
+  timestamp: number;
+  verifiedOnChain: boolean;
+}
+
+
