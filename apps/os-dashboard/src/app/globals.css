@@ -48,13 +48,13 @@
   --shadow-raise: 0 8px 30px -12px rgba(0, 0, 0, 0.6);
   --shadow-chrome: 0 1px 2px rgba(0, 0, 0, 0.5);
 
-  /* Wallpaper (dark mode default) */
+  /* Wallpaper (dark mode vibrant frosted glow) */
   --wp-base-from: #020617;
   --wp-base-to: #0F172A;
-  --wp-blob-1: rgba(41, 240, 106, 0.05);
-  --wp-blob-2: rgba(255, 122, 26, 0.035);
-  --wp-blob-3: rgba(14, 165, 233, 0.05);
-  --wp-blob-4: rgba(20, 184, 166, 0.05);
+  --wp-blob-1: rgba(41, 240, 106, 0.16);
+  --wp-blob-2: rgba(34, 211, 238, 0.14);
+  --wp-blob-3: rgba(168, 85, 247, 0.14);
+  --wp-blob-4: rgba(255, 122, 26, 0.12);
 }
 
 /* ===== Light mode overrides ============================================== */
@@ -272,31 +272,74 @@ html[data-mode="dark"] ::-webkit-scrollbar-thumb:hover {
 @layer utilities {
   .glass {
     background: var(--chrome);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     border: 1px solid var(--chrome-border);
     box-shadow: var(--shadow-chrome);
   }
 
+  .glass-frosted {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 16, 31, 0.55);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.24);
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.35),
+      0 20px 45px -15px rgba(0, 0, 0, 0.7);
+  }
+
+  .glass-card-frosted {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(8, 14, 28, 0.60);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 
+      inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4),
+      0 25px 50px -15px rgba(0, 0, 0, 0.75);
+  }
+
+  .glass-card-frosted:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(12, 20, 38, 0.72);
+    border-color: rgba(41, 240, 106, 0.45);
+    border-top-color: rgba(41, 240, 106, 0.75);
+    box-shadow: 
+      inset 0 1px 2px 0 rgba(255, 255, 255, 0.35),
+      0 0 40px -5px rgba(41, 240, 106, 0.3),
+      0 30px 60px -12px rgba(0, 0, 0, 0.9);
+    transform: translateY(-4px);
+  }
+
   .glass-strong {
     background: var(--panel);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--chrome-border);
     box-shadow: var(--shadow-raise);
   }
 
   .glass-subtle {
-    background: var(--panel-sunken);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--hair);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .surface-panel {
-    background: var(--panel);
-    border: 1px solid var(--hair);
-    box-shadow: var(--shadow-panel);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(9, 14, 26, 0.65);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-top: 1px solid rgba(255, 255, 255, 0.20);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
+      0 20px 40px -15px rgba(0, 0, 0, 0.7);
   }
 
   /* Token-driven box-shadow helpers (support hover: etc. via @layer) */

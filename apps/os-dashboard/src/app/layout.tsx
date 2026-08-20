@@ -45,9 +45,16 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        {/* Luminous Ambient Plasma Orbs for True Frosted Glass Refraction */}
+        <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[-2] overflow-hidden">
+          <div className="absolute -left-40 top-20 h-[520px] w-[520px] rounded-full bg-emerald-500/20 blur-[130px] animate-pulse" />
+          <div className="absolute right-[-10%] top-1/4 h-[620px] w-[620px] rounded-full bg-cyan-500/18 blur-[150px]" />
+          <div className="absolute left-1/4 bottom-10 h-[560px] w-[560px] rounded-full bg-violet-600/15 blur-[140px]" />
+          <div className="absolute right-1/3 -top-20 h-[480px] w-[480px] rounded-full bg-amber-500/12 blur-[120px]" />
+        </div>
         <div
           aria-hidden="true"
-          className="protocol-grid pointer-events-none fixed inset-x-0 top-10 z-[-1] h-[520px] opacity-70"
+          className="protocol-grid pointer-events-none fixed inset-0 z-[-1] opacity-45"
         />
         <MenuBar />
         <main

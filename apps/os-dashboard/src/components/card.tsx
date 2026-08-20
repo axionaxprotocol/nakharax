@@ -15,46 +15,46 @@ const TONE_STYLES: Record<Tone, {
   borderTop: string;
 }> = {
   ai: {
-    pill: "border-emerald-500/30 bg-emerald-500/10 text-[var(--accent-ai)] shadow-[0_0_12px_-2px_rgba(41,240,106,0.25)]",
-    badge: "border-emerald-500/30 bg-emerald-500/10 text-[var(--accent-ai)] shadow-[0_0_15px_-3px_rgba(41,240,106,0.3)]",
-    glow: "hover:shadow-[0_0_25px_-5px_rgba(41,240,106,0.2)] hover:border-emerald-500/40",
+    pill: "border-emerald-500/40 bg-emerald-500/15 text-[var(--accent-ai)] shadow-[0_0_15px_-2px_rgba(41,240,106,0.35)] backdrop-blur-xl",
+    badge: "border-emerald-500/40 bg-emerald-500/15 text-[var(--accent-ai)] shadow-[0_0_20px_-3px_rgba(41,240,106,0.4)] backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_40px_-5px_rgba(41,240,106,0.3)] hover:border-emerald-500/50 hover:bg-emerald-500/[0.04]",
     sparkline: "#29F06A",
-    borderTop: "from-emerald-500/80 via-emerald-400/40 to-transparent",
+    borderTop: "from-emerald-500/90 via-emerald-400/50 to-transparent",
   },
   chain: {
-    pill: "border-cyan-500/30 bg-cyan-500/10 text-[var(--accent-chain)] shadow-[0_0_12px_-2px_rgba(34,211,238,0.25)]",
-    badge: "border-cyan-500/30 bg-cyan-500/10 text-[var(--accent-chain)] shadow-[0_0_15px_-3px_rgba(34,211,238,0.3)]",
-    glow: "hover:shadow-[0_0_25px_-5px_rgba(34,211,238,0.2)] hover:border-cyan-500/40",
+    pill: "border-cyan-500/40 bg-cyan-500/15 text-[var(--accent-chain)] shadow-[0_0_15px_-2px_rgba(34,211,238,0.35)] backdrop-blur-xl",
+    badge: "border-cyan-500/40 bg-cyan-500/15 text-[var(--accent-chain)] shadow-[0_0_20px_-3px_rgba(34,211,238,0.4)] backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_40px_-5px_rgba(34,211,238,0.3)] hover:border-cyan-500/50 hover:bg-cyan-500/[0.04]",
     sparkline: "#22D3EE",
-    borderTop: "from-cyan-500/80 via-cyan-400/40 to-transparent",
+    borderTop: "from-cyan-500/90 via-cyan-400/50 to-transparent",
   },
   warn: {
-    pill: "border-amber-500/35 bg-amber-500/10 text-[var(--accent-warn)] shadow-[0_0_12px_-2px_rgba(255,122,26,0.2)]",
-    badge: "border-amber-500/35 bg-amber-500/10 text-[var(--accent-warn)] shadow-[0_0_15px_-3px_rgba(255,122,26,0.25)]",
-    glow: "hover:shadow-[0_0_25px_-5px_rgba(255,122,26,0.18)] hover:border-amber-500/40",
+    pill: "border-amber-500/45 bg-amber-500/15 text-[var(--accent-warn)] shadow-[0_0_15px_-2px_rgba(255,122,26,0.3)] backdrop-blur-xl",
+    badge: "border-amber-500/45 bg-amber-500/15 text-[var(--accent-warn)] shadow-[0_0_20px_-3px_rgba(255,122,26,0.35)] backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_40px_-5px_rgba(255,122,26,0.25)] hover:border-amber-500/50 hover:bg-amber-500/[0.04]",
     sparkline: "#FF7A1A",
-    borderTop: "from-amber-500/80 via-amber-400/40 to-transparent",
+    borderTop: "from-amber-500/90 via-amber-400/50 to-transparent",
   },
   danger: {
-    pill: "border-rose-500/35 bg-rose-500/10 text-[var(--accent-danger)] shadow-[0_0_12px_-2px_rgba(239,68,68,0.2)]",
-    badge: "border-rose-500/35 bg-rose-500/10 text-[var(--accent-danger)] shadow-[0_0_15px_-3px_rgba(239,68,68,0.25)]",
-    glow: "hover:shadow-[0_0_25px_-5px_rgba(239,68,68,0.2)] hover:border-rose-500/40",
+    pill: "border-rose-500/45 bg-rose-500/15 text-[var(--accent-danger)] shadow-[0_0_15px_-2px_rgba(239,68,68,0.3)] backdrop-blur-xl",
+    badge: "border-rose-500/45 bg-rose-500/15 text-[var(--accent-danger)] shadow-[0_0_20px_-3px_rgba(239,68,68,0.35)] backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_40px_-5px_rgba(239,68,68,0.3)] hover:border-rose-500/50 hover:bg-rose-500/[0.04]",
     sparkline: "#EF4444",
-    borderTop: "from-rose-500/80 via-rose-400/40 to-transparent",
+    borderTop: "from-rose-500/90 via-rose-400/50 to-transparent",
   },
   neutral: {
-    pill: "border-white/[0.08] bg-white/[0.03] text-slate-300",
-    badge: "border-white/[0.08] bg-white/[0.03] text-slate-300",
-    glow: "hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.06)] hover:border-white/20",
+    pill: "border-white/[0.12] bg-white/[0.05] text-slate-200 backdrop-blur-xl",
+    badge: "border-white/[0.12] bg-white/[0.05] text-slate-200 backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.1)] hover:border-white/30 hover:bg-white/[0.06]",
     sparkline: "#94A3B8",
-    borderTop: "from-white/40 via-white/20 to-transparent",
+    borderTop: "from-white/50 via-white/25 to-transparent",
   },
   violet: {
-    pill: "border-violet-500/30 bg-violet-500/10 text-violet-400 shadow-[0_0_12px_-2px_rgba(168,85,247,0.25)]",
-    badge: "border-violet-500/30 bg-violet-500/10 text-violet-400 shadow-[0_0_15px_-3px_rgba(168,85,247,0.3)]",
-    glow: "hover:shadow-[0_0_25px_-5px_rgba(168,85,247,0.2)] hover:border-violet-500/40",
+    pill: "border-violet-500/40 bg-violet-500/15 text-violet-300 shadow-[0_0_15px_-2px_rgba(168,85,247,0.35)] backdrop-blur-xl",
+    badge: "border-violet-500/40 bg-violet-500/15 text-violet-300 shadow-[0_0_20px_-3px_rgba(168,85,247,0.4)] backdrop-blur-xl",
+    glow: "hover:shadow-[0_0_40px_-5px_rgba(168,85,247,0.3)] hover:border-violet-500/50 hover:bg-violet-500/[0.04]",
     sparkline: "#A855F7",
-    borderTop: "from-violet-500/80 via-violet-400/40 to-transparent",
+    borderTop: "from-violet-500/90 via-violet-400/50 to-transparent",
   },
 };
 
@@ -74,16 +74,16 @@ export function Card({
   return (
     <div
       className={cn(
-        "relative rounded-os-2xl border border-white/[0.07] bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-slate-950/90 backdrop-blur-2xl shadow-panel transition-all duration-300",
+        "relative rounded-os-2xl border border-white/[0.12] bg-gradient-to-br from-white/[0.07] via-white/[0.02] to-transparent backdrop-blur-2xl bg-slate-950/45 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.7)] transition-all duration-300",
         padded && "p-os-5 sm:p-os-6",
         interactive &&
-          "cursor-pointer hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_12px_36px_-10px_rgba(0,0,0,0.8)]",
+          "cursor-pointer hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.09] hover:shadow-[0_0_35px_-5px_rgba(41,240,106,0.25)]",
         tone && TONE_STYLES[tone].glow,
         className,
       )}
     >
-      {/* Specular top highlight line */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
+      {/* Specular top-edge glass light refraction */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/[0.3] to-transparent" />
       {children}
     </div>
   );
@@ -108,20 +108,23 @@ export function PageShell({
 }) {
   return (
     <div className={cn("space-y-os-6 animate-slide-up", className)}>
-      <header className="relative overflow-hidden rounded-os-3xl border border-white/[0.09] bg-gradient-to-b from-slate-900/95 via-slate-900/80 to-slate-950/95 p-os-6 sm:p-os-8 shadow-2xl backdrop-blur-2xl">
+      <header className="relative overflow-hidden rounded-os-3xl border border-white/[0.14] bg-gradient-to-br from-white/[0.08] via-white/[0.02] to-transparent backdrop-blur-3xl bg-slate-950/50 p-os-6 sm:p-os-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+        {/* Specular glass reflection */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/[0.4] to-transparent" />
+
         {/* Dynamic atmospheric radial glows */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/15 blur-[90px]" />
-          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-cyan-500/12 blur-[90px]" />
-          <div className="absolute -left-20 top-1/2 h-64 w-64 rounded-full bg-violet-500/10 blur-[80px]" />
+          <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-[100px]" />
+          <div className="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-cyan-500/18 blur-[100px]" />
+          <div className="absolute -left-20 top-1/2 h-72 w-72 rounded-full bg-violet-500/15 blur-[90px]" />
           {/* Subtle grid texture overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:24px_24px] opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:24px_24px] opacity-70" />
         </div>
 
         <div className="relative flex flex-col gap-os-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             {eyebrow && (
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10.5px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--accent-ai)] shadow-[0_0_15px_-3px_rgba(41,240,106,0.3)] mb-os-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-3.5 py-1 text-[10.5px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--accent-ai)] shadow-[0_0_20px_-3px_rgba(41,240,106,0.4)] backdrop-blur-xl mb-os-3">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--accent-ai)]" />
                 {eyebrow}
               </div>
@@ -192,17 +195,18 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-os-2xl border border-white/[0.08] bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/95 p-os-5 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/20",
+        "group relative overflow-hidden rounded-os-2xl border border-white/[0.12] bg-gradient-to-br from-white/[0.07] via-white/[0.02] to-transparent backdrop-blur-2xl bg-slate-950/45 p-os-5 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.7)] transition-all duration-300 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.09]",
         toneStyle.glow,
       )}
     >
-      {/* Top glowing neon accent strip */}
+      {/* Top glowing neon glass accent strip */}
       <div
         className={cn(
           "absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r",
           toneStyle.borderTop,
         )}
       />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/[0.35] to-transparent" />
 
       <div className="flex items-start justify-between gap-os-4">
         <div className="min-w-0">
@@ -231,13 +235,13 @@ export function StatCard({
       </div>
 
       {/* Decorative micro sparkline wave */}
-      <div className="mt-os-4 h-6 w-full opacity-40 group-hover:opacity-80 transition-opacity">
+      <div className="mt-os-4 h-6 w-full opacity-40 group-hover:opacity-85 transition-opacity">
         <svg viewBox="0 0 100 24" className="h-full w-full overflow-visible" preserveAspectRatio="none">
           <path
             d="M 0 18 Q 20 6, 40 14 T 80 8 T 100 16"
             fill="none"
             stroke={toneStyle.sparkline}
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
           />
         </svg>
@@ -313,7 +317,7 @@ export function ActionLink({
         "group inline-flex items-center justify-center gap-2 rounded-full px-os-6 py-os-3 text-[13px] font-bold tracking-wide transition-all duration-300",
         variant === "primary"
           ? "bg-gradient-to-r from-[var(--accent-ai)] via-emerald-400 to-teal-300 text-slate-950 shadow-[0_0_25px_rgba(41,240,106,0.4)] hover:shadow-[0_0_35px_rgba(41,240,106,0.65)] hover:scale-[1.03]"
-          : "border border-white/15 bg-white/[0.05] text-white backdrop-blur-md hover:border-white/30 hover:bg-white/10 hover:scale-[1.02]",
+          : "border border-white/20 bg-white/[0.07] text-white backdrop-blur-xl hover:border-white/40 hover:bg-white/[0.14] hover:scale-[1.02]",
       )}
     >
       <span>{children}</span>
@@ -332,7 +336,7 @@ export function DataRow({
   detail?: ReactNode;
 }) {
   return (
-    <div className="group flex items-center justify-between gap-os-4 rounded-os-xl border border-white/[0.06] bg-slate-950/60 px-os-4 py-os-3 transition-all duration-200 hover:border-white/15 hover:bg-slate-900/80">
+    <div className="group flex items-center justify-between gap-os-4 rounded-os-xl border border-white/[0.09] bg-white/[0.03] backdrop-blur-xl px-os-4 py-os-3 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.07]">
       <div className="min-w-0">
         <div className="text-[11px] font-mono uppercase tracking-[0.14em] text-slate-400 group-hover:text-slate-300 transition-colors">
           {label}

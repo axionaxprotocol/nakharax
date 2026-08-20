@@ -33,7 +33,8 @@ export function MenuBar() {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-40 h-11 border-b border-[var(--hair)] bg-[var(--chrome)] shadow-[var(--shadow-chrome)] backdrop-blur-xl">
+    <div className="fixed inset-x-0 top-0 z-40 h-11 border-b border-white/[0.12] bg-slate-950/60 shadow-[0_4px_30px_rgba(0,0,0,0.6)] backdrop-blur-3xl">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white/[0.2] to-transparent" />
       <div className="flex h-full items-center gap-os-4 px-os-4 text-[11px] text-[var(--text)] sm:px-os-6">
         <Link href="/" className="flex items-center gap-os-2 font-semibold">
           <span className="relative grid h-7 w-7 place-items-center rounded-os-lg border border-emerald-500/20 bg-emerald-500/10">
