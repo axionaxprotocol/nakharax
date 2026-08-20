@@ -70,14 +70,16 @@ class ComputeBackend:
 
     def _init_silicon(self) -> None:
         """Initialize GPU or CPU (current hardware)."""
-        self.type = self.TYPE_SILICON
         if TORCH_AVAILABLE and torch.cuda.is_available() and not self.config.get("force_cpu", False):
             device_id = self.config.get("cuda_device_id", 0)
             self._device = torch.device("cuda", device_id)
-            logger.info("ComputeBackend: SILICON (CUDA)")
+            logger.info("ComputeBackend: SILICON (NVIDIA CUDA GPU #%s)", device_id)
+        elif TORCH_AVAILABLE and hasattr(torch.backends, "mps") and torch.backends.mps.is_available() and not self.config.get("force_cpu", False):
+            self._device = torch.device("mps")
+            logger.info("ComputeBackend: SILICON (Apple Silicon Metal/MPS)")
         else:
             self._device = torch.device("cpu") if TORCH_AVAILABLE else "cpu"
-            logger.info("ComputeBackend: SILICON (CPU)")
+            logger.info("ComputeBackend: SILICON (CPU Fallback)")
 
     def _init_optical_link(self) -> None:
         """Future: connection to ACCEL/Taichi. Today: simulation (OpticalTensor)."""
