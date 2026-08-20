@@ -339,7 +339,7 @@ ram = 64
 
 [network]
 # nakharax Testnet RPC
-rpc_url = "https://rpc.nakharax.io"
+rpc_url = "https://rpc.nakharax.com"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -420,7 +420,7 @@ cargo run --release --bin nakharax-worker -- \
   GPU: NVIDIA A40 (48GB)
   Network: Testnet
 
-🔧 Connecting to RPC: https://rpc.nakharax.io
+🔧 Connecting to RPC: https://rpc.nakharax.com
 ✅ Connected to nakharax Testnet
 ✅ Worker registered successfully
 
@@ -595,7 +595,7 @@ gradient_checkpointing = true
 
 ```bash
 # Check connection
-curl https://rpc.nakharax.io
+curl https://rpc.nakharax.com
 
 # Check logs
 tail -f ~/nakharax-worker/logs/worker.log

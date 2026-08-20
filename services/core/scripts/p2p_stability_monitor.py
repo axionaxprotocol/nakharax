@@ -213,8 +213,8 @@ def write_incident_template(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Collect 24h P2P stability evidence.")
-    parser.add_argument("--rpc-a", default="https://rpc.nakharax.io", help="Validator A RPC URL")
-    parser.add_argument("--rpc-b", default="https://rpc-au.nakharax.io", help="Validator B RPC URL")
+    parser.add_argument("--rpc-a", default="https://rpc.nakharax.com", help="Validator A RPC URL")
+    parser.add_argument("--rpc-b", default="https://rpc-au.nakharax.com", help="Validator B RPC URL")
     parser.add_argument("--host-a", default="217.216.109.5", help="Validator A host for ping/traceroute")
     parser.add_argument("--host-b", default="46.250.244.4", help="Validator B host for ping/traceroute")
     parser.add_argument("--name-a", default="validator-a", help="Display name for validator A")

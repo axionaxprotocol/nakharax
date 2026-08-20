@@ -12,7 +12,7 @@ export type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer };
 
 /** Curated default testnet endpoints — keep in sync with deploy docs. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
-  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.nakharax.io" },
+  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.nakharax.com" },
   { id: "rpc-eu", name: "Validator EU", url: "http://217.216.109.5:8545" },
   { id: "rpc-au", name: "Validator AU", url: "http://46.250.244.4:8545" },
 ];

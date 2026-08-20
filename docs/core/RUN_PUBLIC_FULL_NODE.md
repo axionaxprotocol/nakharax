@@ -141,7 +141,7 @@ Expect `"result":"0x15079"`. Compare block height with the public endpoint (read
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharax.io
+  https://rpc.nakharax.com
 ```
 
 Heights should move toward the same network over time once peers connect.
@@ -158,7 +158,7 @@ Script:
 
 | Endpoint | Role |
 |----------|------|
-| `https://rpc.nakharax.io` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
+| `https://rpc.nakharax.com` | Hosted public RPC for wallets and apps — **no** P2P bootstrap from your browser |
 | Your node’s `:8545` | Your own RPC after sync — under **your** security and rate limits |
 
 Running a full node does **not** replace the public RPC URL in MetaMask unless you choose to point MetaMask at **your** server.

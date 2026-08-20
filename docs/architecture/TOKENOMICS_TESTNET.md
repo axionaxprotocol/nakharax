@@ -39,7 +39,7 @@ The Nakharax Testnet uses a simplified token model designed for testing and deve
 
 ### Faucet Details
 
-- **URL**: `https://faucet.nakharax.io` (planned) / Direct RPC request
+- **URL**: `https://faucet.nakharax.com` (planned) / Direct RPC request
 - **Daily Limit**: 1,000 NAKt per address
 - **Rate Limiting**: 1 request per hour per IP
 - **Minimum Balance**: 0.01 NAKt (for gas)

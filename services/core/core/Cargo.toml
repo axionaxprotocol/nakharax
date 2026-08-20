@@ -2,7 +2,7 @@
 name = "nakharax-core"
 version = "1.8.0"
 edition = "2021"
-authors = ["nakharax protocol Team <team@nakharax.io>"]
+authors = ["nakharax protocol Team <team@nakharax.com>"]
 description = "Nakharax Protocol Core - High-Performance Blockchain"
 license = "AGPL-3.0"
 autoexamples = false
@@ -85,13 +85,13 @@ harness = false
 
 [workspace.package]
 version = "1.8.0"
-authors = ["nakharax protocol Team <team@nakharax.io>"]
+authors = ["nakharax protocol Team <team@nakharax.com>"]
 edition = "2021"
 rust-version = "1.83"
 license = "MIT"
 repository = "https://github.com/axionaxprotocol/nakharax"
-homepage = "https://nakharax.io"
-documentation = "https://docs.nakharax.io"
+homepage = "https://nakharax.com"
+documentation = "https://docs.nakharax.com"
 
 [workspace.dependencies]
 # Async Runtime

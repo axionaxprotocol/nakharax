@@ -336,7 +336,7 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - **Medium/Blog**: Technical articles, tutorials
 
 ### Documentation Sites
-- **Main Docs**: https://docs.nakharax.io
+- **Main Docs**: https://docs.nakharax.com
 - **API Reference**: In progress
 - **Tutorials**: To be created
 - **Network Status**: Grafana dashboards

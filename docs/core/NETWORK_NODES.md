@@ -32,8 +32,8 @@ Nodes running `nakharax-node` (or equivalent), mode set via config or `--role`.
 
 | IP | Region | Role | RPC (direct) | Public HTTPS |
 |----|--------|------|--------------|--------------|
-| 217.216.109.5 | EU | Validator #1 + RPC + **Nakharax OS** | http://217.216.109.5:8545 | `https://app.nakharax.io` |
-| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.nakharax.io` |
+| 217.216.109.5 | EU | Validator #1 + RPC + **Nakharax OS** | http://217.216.109.5:8545 | `https://app.nakharax.com` |
+| 46.250.244.4 | AU | Validator #2 + **chain infra** | http://46.250.244.4:8545 | rpc / explorer / api / faucet `.nakharax.com` |
 
 - EU OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) · AU stack: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -85,7 +85,7 @@ Not P2P nodes; services that connect to the chain via RPC.
 | **Role** | Public RPC (testnet/mainnet) |
 | **Deploy** | Docker: `rpc-node` / `nakharax-rpc` |
 | **Ports** | 8545, 8546 |
-| **Domain** | rpc.nakharax.io, testnet RPC per env |
+| **Domain** | rpc.nakharax.com, testnet RPC per env |
 
 ### 2.2 Block Explorer
 
@@ -95,7 +95,7 @@ Not P2P nodes; services that connect to the chain via RPC.
 | **Stack** | Blockscout or nakharax-explorer, PostgreSQL |
 | **Deploy** | `explorer`, `explorer-backend`, `setup_explorer.sh` |
 | **Ports** | 4000 (Blockscout) or 3001 (API) |
-| **Domain** | explorer.nakharax.io, testnet-explorer.nakharax.io |
+| **Domain** | explorer.nakharax.com, testnet-explorer.nakharax.com |
 
 ### 2.3 Faucet
 
@@ -104,7 +104,7 @@ Not P2P nodes; services that connect to the chain via RPC.
 | **Role** | Distribute testnet tokens (NAK) with rate limit |
 | **Deploy** | `nakharax-faucet` (Rust) or Node image, `setup_faucet.sh` |
 | **Ports** | 8080 or 3002 |
-| **Domain** | faucet.nakharax.io, testnet-faucet.nakharax.io |
+| **Domain** | faucet.nakharax.com, testnet-faucet.nakharax.com |
 
 ### 2.4 Monitoring (Prometheus / Grafana)
 

@@ -1,4 +1,4 @@
-# Rebrand migration runbook — Axionax → nakharax.io
+# Rebrand migration runbook — Axionax → nakharax.com
 
 > Companion to [README → Naming & rebrand](../README.md#naming--rebrand). This is the **executable
 > plan** for renaming code identifiers, env vars, the binary, the domain, and the token. It exists
@@ -6,15 +6,16 @@
 >
 > Generated 2026-06-16 from a precise inventory (`axionax` = 784+ refs across 186 files).
 
-## ✅ Status (2026-06-16): in-repo rename COMPLETE
+## ✅ Status (2026-08-10): .io → .com migration COMPLETE
 
 All categories below (A–D) have been executed in the repository and verified green
-(`cargo test --workspace`, `pytest` deai 30/2, frontend typecheck). The tables below are kept as
-the historical plan. **What remains is external/coordinated, not a repo edit:**
+(`cargo test --workspace`, `pytest` deai 30/2, frontend typecheck). **2026-08-10:** Domain migration from `.io` → `.com` completed in-repo.
+
+**What remains is external/coordinated, not a repo edit:**
 
 - Rename the **GitHub repo/org** so `github.com/...` URLs resolve.
-- Stand up **`nakharax.io` DNS + SSL**, then **redeploy** nodes from this renamed tree (the live
-  VPS still serve `axionax.org` and read the old env-var names until redeployed).
+- Stand up **`nakharax.com` DNS + SSL**, then **redeploy** nodes from this renamed tree (the live
+  VPS still serve `nakharax.com` until redeployed).
 - Regenerate build artifacts that can't be text-renamed: `README.pdf`, the bridge
   `nakharax_python.so` (rebuild PyO3), and the two `package-lock.json` (`npm install`).
 
@@ -52,7 +53,7 @@ the historical plan. **What remains is external/coordinated, not a repo edit:**
 |---|---|---|
 | Node binary | `axionax-node` → `nakharax-node` | `docker-compose.yml` (container_name + build target), systemd units, deploy scripts, `/var/lib/axionax-node`, docs |
 | **Env vars (13)** | `AXIONAX_*` → `NAKHARAX_*` | Set in VPS `.env` / worker configs. Renaming code-only breaks running nodes. |
-| Live RPC/domain | `*.axionax.org` → `*.nakharax.io` | DNS/SSL on live VPS; SDK `DEFAULT_NODES`, nginx, configs |
+| Live RPC/domain | `*.axionax.org` → `*.nakharax.com` | DNS/SSL on live VPS; SDK `DEFAULT_NODES`, nginx, configs |
 | PyO3 bridge | `axionax-python` / `import axionax_python` | Built `.so` name; Python import in `bridge/` + tests |
 | Log target / paths / containers | `axionax=debug`, `/var/lib/axionax-node`, container names | systemd, docker, runbooks on VPS |
 
@@ -86,8 +87,8 @@ genesis allocations — flip during a **testnet reset** or a token-migration con
 3. Cat B: frontend rename → `pnpm build` green → redeploy dashboard.
 4. Cat C: env-var dual-read shim → deploy → switch VPS `.env` → drop fallback.
 5. Cat C: binary + paths + container names → coordinated node redeploy.
-6. Cat C: domain — stand up `nakharax.io` DNS/SSL alongside `axionax.org`, switch `DEFAULT_NODES` +
-   nginx, keep a redirect.
+6. Cat C: domain — stand up `nakharax.com` DNS/SSL alongside `nakharax.com`, switch `DEFAULT_NODES` +
+   nginx, keep a redirect. **2026-08-10:** In-repo .io → .com complete, awaiting DNS/SSL deployment.
 7. Cat D: token `AXX → NAK` at the next testnet reset.
 
 Use `scripts/rebrand-rename.ps1` (dry-run by default) to preview/apply each category. **Never run

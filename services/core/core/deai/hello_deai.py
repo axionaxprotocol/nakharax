@@ -12,7 +12,7 @@ Architecture (mock mode - marketplace address = 0x0):
 
 Usage:
   python hello_deai.py
-    [--rpc-url https://rpc.nakharax.io]
+    [--rpc-url https://rpc.nakharax.com]
     [--output-dir services/core/reports/deai-demo-{stamp}]
     [--retries 2] [--jobs 5] [--timeout 60]
 """
@@ -305,7 +305,7 @@ def write_evidence(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Hello DeAI - End-to-End Demo")
-    parser.add_argument("--rpc-url", default="https://rpc.nakharax.io", help="Validator RPC URL")
+    parser.add_argument("--rpc-url", default="https://rpc.nakharax.com", help="Validator RPC URL")
     parser.add_argument("--retries", type=int, default=2, help="Max retries per job")
     parser.add_argument("--jobs", type=int, default=5, help="Number of sample jobs")
     parser.add_argument("--timeout", type=int, default=60, help="Job timeout in seconds")

@@ -10,12 +10,12 @@ Last Updated: May 3, 2026
 |----------|-----|------|
 | **EU Validator** | `http://217.216.109.5:8545` | Validator #1 |
 | **AU Validator** | `http://46.250.244.4:8545` | Validator #2 + services |
-| **Public RPC** | `https://rpc.nakharax.io` | AU (`46.250.244.4`) |
-| **Public RPC (AU)** | `https://rpc-au.nakharax.io` | AU |
-| **Explorer** | `https://explorer.nakharax.io` | AU |
-| **API** | `https://api.nakharax.io` | AU |
-| **Faucet** | `https://faucet.nakharax.io` | AU |
-| **Nakharax OS** | `https://app.nakharax.io` | EU (`217.216.109.5`) |
+| **Public RPC** | `https://rpc.nakharax.com` | AU (`46.250.244.4`) |
+| **Public RPC (AU)** | `https://rpc-au.nakharax.com` | AU |
+| **Explorer** | `https://explorer.nakharax.com` | AU |
+| **API** | `https://api.nakharax.com` | AU |
+| **Faucet** | `https://faucet.nakharax.com` | AU |
+| **Nakharax OS** | `https://app.nakharax.com` | EU (`217.216.109.5`) |
 
 Deploy: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) · OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md)
 

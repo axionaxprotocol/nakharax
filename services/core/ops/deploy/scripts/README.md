@@ -377,7 +377,7 @@ GRAFANA_PASSWORD=your_grafana_password
 
 # Network
 VPS_IP=217.216.109.5
-DOMAIN=nakharax.io  # Optional
+DOMAIN=nakharax.com  # Optional
 ```
 
 ### Resource Requirements

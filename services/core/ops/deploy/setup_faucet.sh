@@ -5,7 +5,7 @@
 #
 # Usage: bash setup_faucet.sh [OPTIONS]
 # Options:
-#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.nakharax.io)
+#   --domain DOMAIN        Domain for faucet (e.g., testnet-faucet.nakharax.com)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 #   --rpc-url URL         RPC endpoint URL (default: http://localhost:8545)
 #   --chain-id ID         Chain ID (default: 86137)

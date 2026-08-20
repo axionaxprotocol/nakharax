@@ -457,7 +457,7 @@ pip install -r requirements.txt
 ## 📚 Additional Resources
 
 - **Main Documentation:** https://axionaxprotocol.github.io/nakharax-docs/
-- **API Reference:** https://docs.nakharax.io/api
+- **API Reference:** https://docs.nakharax.com/api
 - **Architecture Guide:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
 - **Issue Tracker:** https://github.com/axionaxprotocol/nakharax/issues

@@ -34,7 +34,7 @@ python services/core/core/deai/deai_submit.py \
 ```bash
 # Copy job files to cloud worker
 scp services/core/reports/deai-queue/job-*.json \
-  root@rpc.nakharax.io:/root/nakharax/services/core/reports/deai-queue/
+  root@rpc.nakharax.com:/root/nakharax/services/core/reports/deai-queue/
 ```
 
 ### Step 3: On cloud VPS (worker monitor)
@@ -50,7 +50,7 @@ python services/core/core/deai/deai_monitor.py \
 ### Step 4: Transfer results back
 ```bash
 # Copy result files back to local
-scp root@rpc.nakharax.io:/root/nakharax/services/core/reports/deai-queue/result-*.json \
+scp root@rpc.nakharax.com:/root/nakharax/services/core/reports/deai-queue/result-*.json \
   services/core/reports/deai-queue/
 ```
 

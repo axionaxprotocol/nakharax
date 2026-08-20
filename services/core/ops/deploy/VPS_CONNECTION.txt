@@ -2,7 +2,7 @@
 # Updated: 2026-05-24 — AU all-in-one services
 
 # ── EU: Validator #1 + Nakharax OS (apps/os-dashboard :3030) ──
-#     DNS: app.nakharax.io → 217.216.109.5
+#     DNS: app.nakharax.com → 217.216.109.5
 ssh root@217.216.109.5
 # Deploy OS: bash apps/os-dashboard/scripts/vps-deploy.sh
 # Docs: docs/web/VPS_EU_OS_DASHBOARD.md

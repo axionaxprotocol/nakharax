@@ -228,7 +228,7 @@ npm run validator:start
 ansible-playbook ansible/playbooks/setup-loadbalancer.yml
 
 # Test RPC endpoints
-curl http://rpc.nakharax.io/health
+curl http://rpc.nakharax.com/health
 ```
 
 ---
@@ -372,8 +372,8 @@ kubectl autoscale deployment nakharax-node \
 
 # Setup Let's Encrypt
 certbot certonly --standalone \
-  -d rpc.nakharax.io \
-  -d ws.nakharax.io
+  -d rpc.nakharax.com \
+  -d ws.nakharax.com
 
 # Configure nginx with SSL
 ansible-playbook ansible/playbooks/setup-ssl.yml
@@ -422,7 +422,7 @@ cp target/release/nakharax-node ../nakharax-deploy/binaries/
 # SDK connects to deployed nodes:
 
 # In nakharax-sdk-ts:
-const client = new NakharaxClient('https://rpc.nakharax.io')
+const client = new NakharaxClient('https://rpc.nakharax.com')
 ```
 
 ### With nakharax-web
@@ -531,8 +531,8 @@ ulimit -n 65535
 listen_addr = "0.0.0.0:30333"
 external_addr = "YOUR_PUBLIC_IP:30333"
 bootnodes = [
-  "/dns4/boot1.nakharax.io/tcp/30333/p2p/...",
-  "/dns4/boot2.nakharax.io/tcp/30333/p2p/..."
+  "/dns4/boot1.nakharax.com/tcp/30333/p2p/...",
+  "/dns4/boot2.nakharax.com/tcp/30333/p2p/..."
 ]
 
 [rpc]

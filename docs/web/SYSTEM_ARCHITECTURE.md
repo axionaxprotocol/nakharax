@@ -97,7 +97,7 @@ Website manages blockchain connection directly, not via SDK.
 2. **Process**:
    - `Web3Context` calls `connectWallet()` from `lib/web3.ts`
    - Uses `window.ethereum` for account access
-   - Hardcoded RPCs: `https://nakharax.io/rpc/`, `http://217.216.109.5:8545`
+   - Hardcoded RPCs: `https://nakharax.com/rpc/`, `http://217.216.109.5:8545`
 3. **Output**: App state (`account`, `balance`) updated via `zustand` or Context
 
 ---

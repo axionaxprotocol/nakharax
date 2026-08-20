@@ -1109,7 +1109,7 @@ async fn test_connect_to_testnet() -> Result<()> {
     let config = NodeConfig {
         chain_id: 86137,
         bootstrap_nodes: vec![
-            "/ip4/testnet1.nakharax.io/tcp/30303/p2p/...".to_string(),
+            "/ip4/testnet1.nakharax.com/tcp/30303/p2p/...".to_string(),
         ],
         ..Default::default()
     };
@@ -1396,7 +1396,7 @@ rm -f /var/lib/nakharax/testnet/LOCK
 sudo netstat -tulpn | grep 30303
 
 # Test connectivity
-telnet bootstrap1.nakharax.io 30303
+telnet bootstrap1.nakharax.com 30303
 
 # Check firewall
 sudo ufw status
@@ -1466,10 +1466,10 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)/core/deai/lib
 grep "bootstrap_nodes" config/testnet.toml
 
 # Test DNS resolution
-nslookup bootstrap1.nakharax.io
+nslookup bootstrap1.nakharax.com
 
 # Check if bootstrap nodes are reachable
-ping bootstrap1.nakharax.io
+ping bootstrap1.nakharax.com
 
 # Try manual peer connection
 curl -X POST http://localhost:8545 \
@@ -1496,7 +1496,7 @@ let gossipsub_config = gossipsub::ConfigBuilder::default()
 **Issue: Slow block propagation**
 ```bash
 # Check network latency
-ping -c 10 peer1.nakharax.io
+ping -c 10 peer1.nakharax.com
 
 # Monitor gossipsub stats
 RUST_LOG=libp2p_gossipsub=debug cargo run

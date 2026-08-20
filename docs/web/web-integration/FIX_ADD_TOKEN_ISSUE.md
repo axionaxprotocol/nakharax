@@ -238,7 +238,7 @@ const handleAddToken = async (tokenAddress: string): Promise<void> => {
 
 ### Web App
 
-- [ ] เข้า https://nakharax.io
+- [ ] เข้า https://nakharax.com
 - [ ] คลิก "Connect Wallet"
 - [ ] เชื่อมต่อกับ MetaMask
 - [ ] คลิก wallet dropdown (แสดง address และ balance)

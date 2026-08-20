@@ -104,7 +104,7 @@ upstream web_frontend {
 
 server {
     listen 80;
-    server_name nakharax.io www.nakharax.io;   # Change to your domain or IP
+    server_name nakharax.com www.nakharax.com;   # Change to your domain or IP
 
     location /api/ {
         proxy_pass http://web_frontend;
@@ -142,7 +142,7 @@ sudo systemctl reload nginx
 
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d nakharax.io -d www.nakharax.io
+sudo certbot --nginx -d nakharax.com -d www.nakharax.com
 ```
 
 Certbot will auto-update Nginx for HTTPS.

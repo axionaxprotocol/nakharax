@@ -1,4 +1,4 @@
-# nakharax.io — North Star
+# nakharax.com — North Star
 
 > The one-page compass. Every decision checks against this. If a feature does not serve
 > the sentence below, **cut it.**
@@ -20,7 +20,7 @@ does **not** need to be a fast L1.
 
 Proof the model works at scale: Folding@home reached **~2.4 exaFLOPS** on volunteer PCs (more than
 the top supercomputers combined). BOINC / SETI@home / Einstein@home ran this way for 20+ years.
-What nakharax.io adds: **payment** (incentive, not charity), **verification** (trust a stranger's
+What nakharax.com adds: **payment** (incentive, not charity), **verification** (trust a stranger's
 result), and a **marketplace**.
 
 ---

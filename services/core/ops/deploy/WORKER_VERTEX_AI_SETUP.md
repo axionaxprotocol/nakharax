@@ -407,7 +407,7 @@ cpu_cores = 4
 ram = 15
 
 [network]
-rpc_url = "https://rpc.nakharax.io"
+rpc_url = "https://rpc.nakharax.com"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

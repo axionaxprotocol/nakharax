@@ -134,7 +134,7 @@ find /opt /root -name "rpc-config.toml" -o -name "config.toml" 2>/dev/null | hea
 - [ ] ตรวจ P2P peer count = 1 ระหว่างสอง validator
 - [ ] เปิด stack บน AU (`46.250.244.4`): [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) — `docker-compose.vps.yml`, DNS rpc / explorer / api / faucet → AU
 - [ ] ตั้ง `FAUCET_PRIVATE_KEY` ใน `.env` บน AU
-- [ ] Frontend ตั้ง `NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.io` และทดสอบ Add Network (86137) + รับ NAK จาก Faucet
+- [ ] Frontend ตั้ง `NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com` และทดสอบ Add Network (86137) + รับ NAK จาก Faucet
 - [ ] รัน verify-launch-ready (หลัง RPC/DNS พร้อม): จาก repo root  
   `bash ops/deploy/scripts/verify-launch-ready.sh`
 

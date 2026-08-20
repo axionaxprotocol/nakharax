@@ -54,7 +54,7 @@ nano .env
 ```bash
 CHAIN_ID=86137
 NETWORK_NAME=nakharax-testnet-1
-NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharax.io
+NEXT_PUBLIC_RPC_URL=https://testnet-rpc.nakharax.com
 ```
 
 ### 4️⃣ Start Development Servers
@@ -237,15 +237,15 @@ All tests should pass ✅
 
 ```
 Network Name: Nakharax Testnet
-RPC URL: https://testnet-rpc.nakharax.io
+RPC URL: https://testnet-rpc.nakharax.com
 Chain ID: 86137
 Currency Symbol: NAK
-Block Explorer: https://explorer.nakharax.io
+Block Explorer: https://explorer.nakharax.com
 ```
 
 ### Get Test Tokens
 
-Visit the faucet: https://faucet.nakharax.io
+Visit the faucet: https://faucet.nakharax.com
 
 Enter your wallet address and claim 10 NAK (once per 24 hours).
 
@@ -329,7 +329,7 @@ Need help? We're here:
 - **Discord**: https://discord.gg/nakharax (#dev-help)
 - **GitHub Discussions**: Ask questions
 - **GitHub Issues**: Report bugs
-- **Documentation**: https://docs.nakharax.io
+- **Documentation**: https://docs.nakharax.com
 
 ---
 

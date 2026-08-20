@@ -9,7 +9,7 @@
 #   --ws-port PORT         WebSocket port (default: 8546)
 #   --data-dir PATH        Data directory (default: /var/lib/nakharax)
 #   --chain-id ID          Chain ID (default: 86137)
-#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakharax.io)
+#   --domain DOMAIN        Domain for nginx config (e.g., testnet-rpc.nakharax.com)
 #   --ssl-email EMAIL      Email for Let's Encrypt SSL
 
 set -e

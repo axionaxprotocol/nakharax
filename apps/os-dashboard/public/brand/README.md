@@ -1,4 +1,4 @@
-# nakharax.io brand assets
+# nakharax.com brand assets
 
 Source of truth for the current SVG logo direction.
 

@@ -602,4 +602,4 @@ wsl sudo service redis-server start
 Need help? 
 - Check [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues)
 - Join our [Discord](https://discord.gg/nakharax)
-- Read [Documentation](https://docs.nakharax.io)
+- Read [Documentation](https://docs.nakharax.com)

@@ -95,10 +95,10 @@ On each VPS (or from another machine):
 # RPC
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharax.io
+  https://rpc.nakharax.com
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakharax.io
+  https://rpc-au.nakharax.com
 ```
 
 If running Docker Compose on the VPS:
@@ -122,7 +122,7 @@ bash scripts/check-vps-status.sh
 ```
 
 - **Explorer:** `docker logs nakharax-explorer-backend`; เปิด `nginx/conf.d/explorer.conf` (ย้ายจาก `.disabled`)
-- **API:** `api.nakharax.io` → same `explorer-backend:3001`
+- **API:** `api.nakharax.com` → same `explorer-backend:3001`
 - **Faucet:** `FAUCET_PRIVATE_KEY` ใน `.env`; `RPC_URL` ชี้ `http://rpc-node:8545` ใน compose แล้ว
 
 EU (217.216.109.5) ไม่ต้องรัน explorer/faucet แยก — ใช้โดเมนที่ชี้ AU

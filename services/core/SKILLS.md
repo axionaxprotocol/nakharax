@@ -157,7 +157,7 @@ Extended methods: `system_status`, `system_health`, `system_version`, `metrics_j
 - **Server Components first** — fetch data on server, pass to client; add `"use client"` only for interactivity.
 - **SDK-first business logic** — never put RPC calls or contract ABI in app components.
 - **Cyberpunk/Futuristic dark theme** — Tailwind CSS, dark mode default, consistent with brand identity.
-- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakharax.io`, token symbol `NAK`, decimals `18`.
+- **MetaMask integration** — Chain ID `86137`, RPC `https://rpc.nakharax.com`, token symbol `NAK`, decimals `18`.
 
 ---
 

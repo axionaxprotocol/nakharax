@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Rebrand helper: preview / apply Nakharax -> nakharax.io identifier renames.
+    Rebrand helper: preview / apply Nakharax -> nakharax.com identifier renames.
 
 .DESCRIPTION
     DRY-RUN BY DEFAULT. Prints every file + match count for the chosen scope and changes nothing.
@@ -37,7 +37,7 @@ $ErrorActionPreference = 'Stop'
 
 # Ordered replacements. MOST-SPECIFIC FIRST.
 $domainFirst = @(
-    @{ From = 'nakharax.io';     To = 'nakharax.io' },
+    @{ From = 'nakharax.com';     To = 'nakharax.com' },
     @{ From = 'axionaxprotocol'; To = 'axionaxprotocol' }   # GitHub org (rename the repo to match)
 )
 $generic = @(
@@ -49,7 +49,7 @@ $presets = @{
     Full = $domainFirst + $generic
     A    = @( @{ From = '"nakharax-core"'; To = '"nakharax-core"' }, @{ From = 'nakharax-core/'; To = 'nakharax-core/' } )
     B    = @( @{ From = '@nakharax/sdk'; To = '@nakharax/sdk' }, @{ From = 'nakharax-os-dashboard'; To = 'nakharax-os-dashboard' } )
-    C    = @( @{ From = 'NAKHARAX_'; To = 'NAKHARAX_' }, @{ From = 'nakharax-node'; To = 'nakharax-node' }, @{ From = 'nakharax.io'; To = 'nakharax.io' } )
+    C    = @( @{ From = 'NAKHARAX_'; To = 'NAKHARAX_' }, @{ From = 'nakharax-node'; To = 'nakharax-node' }, @{ From = 'nakharax.com'; To = 'nakharax.com' } )
     D    = @( @{ From = 'NAKt'; To = 'NAKt' }, @{ From = 'MockNAKToken'; To = 'MockNAKToken' }, @{ From = "'NAK'"; To = "'NAK'" }, @{ From = '"NAK"'; To = '"NAK"' }, @{ From = '`NAK`'; To = '`NAK`' } )
 }
 

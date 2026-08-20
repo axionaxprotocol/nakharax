@@ -146,14 +146,14 @@ Instead of running a local node, connect to live validators:
 ```bash
 # In web-universe
 cd web-universe
-echo "NEXT_PUBLIC_RPC_URL=https://nakharax.io/rpc/" > apps/web/.env.local
+echo "NEXT_PUBLIC_RPC_URL=https://nakharax.com/rpc/" > apps/web/.env.local
 pnpm dev
 ```
 
 **RPC Endpoints:**
-- **HTTPS**: https://nakharax.io/rpc/
-- **EU Validator**: https://rpc.nakharax.io
-- **AU Validator**: https://rpc-au.nakharax.io
+- **HTTPS**: https://nakharax.com/rpc/
+- **EU Validator**: https://rpc.nakharax.com
+- **AU Validator**: https://rpc-au.nakharax.com
 
 **Chain ID:** 86137 (0x15079)
 
@@ -202,8 +202,8 @@ docker-compose -f monitoring/docker-compose.yaml up -d
 
 ## 🔗 Links
 
-- **Website**: https://nakharax.io
-- **Explorer**: https://nakharax.io/explorer
+- **Website**: https://nakharax.com
+- **Explorer**: https://nakharax.com/explorer
 - **GitHub**: https://github.com/axionaxprotocol
 
 ---

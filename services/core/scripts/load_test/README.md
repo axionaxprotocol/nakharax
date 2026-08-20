@@ -9,7 +9,7 @@ Scripts to validate protocol targets:
 
 - Python 3.10+
 - `web3` (e.g. `pip install web3`)
-- Running Nakharax RPC (e.g. `https://rpc.nakharax.io` or local node)
+- Running Nakharax RPC (e.g. `https://rpc.nakharax.com` or local node)
 
 ## 1. Block timing & finality (no funded account)
 

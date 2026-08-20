@@ -27,7 +27,7 @@ Three main options: **CI → VPS** (auto on push), **GitHub Pages** (static), an
 3. After push to `main` workflow runs and deploys
 4. URL at **Environments → github-pages** or `https://<org>.github.io/<repo>/`
 
-**Custom domain (e.g. nakharax.io):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
+**Custom domain (e.g. nakharax.com):** Add in Settings → Pages → Custom domain and configure CNAME per [docs/web/DNS_SETUP.md](./DNS_SETUP.md)
 
 ---
 

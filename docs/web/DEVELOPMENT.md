@@ -186,7 +186,7 @@ cp apps/marketplace/.env.example apps/marketplace/.env
 
 RPC Endpoints:
 
-- **HTTPS (Recommended)**: https://nakharax.io/rpc/
+- **HTTPS (Recommended)**: https://nakharax.com/rpc/
 - **EU Validator**: http://217.216.109.5:8545
 - **AU Validator**: http://46.250.244.4:8545
 
@@ -213,6 +213,6 @@ If you restart a validator and its **block height drops to a low number** (e.g. 
 
 ## 🔗 Links
 
-- **Website**: https://nakharax.io
-- **Explorer**: https://nakharax.io/explorer
+- **Website**: https://nakharax.com
+- **Explorer**: https://nakharax.com/explorer
 - **GitHub**: https://github.com/axionaxprotocol

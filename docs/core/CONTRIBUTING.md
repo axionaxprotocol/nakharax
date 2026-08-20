@@ -69,6 +69,6 @@ See the main [README](README.md#testing--verification) for more test commands an
 ## Questions
 
 - **Issues:** [GitHub Issues](https://github.com/axionaxprotocol/nakharax/issues).
-- **Website:** [nakharax.io](https://nakharax.io).
+- **Website:** [nakharax.com](https://nakharax.com).
 
 Thanks for contributing.

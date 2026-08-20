@@ -428,7 +428,7 @@ docker compose logs blockscout
 
 ## 🆘 ต้องการความช่วยเหลือ?
 
-- **Documentation:** https://docs.nakharax.io
+- **Documentation:** https://docs.nakharax.com
 - **GitHub:** https://github.com/axionaxprotocol/nakharax
 - **Discord:** https://discord.gg/nakharax
 

@@ -197,7 +197,7 @@ ram = 15  # GB
 
 [network]
 # RPC endpoint (connect to testnet)
-rpc_url = "https://rpc.nakharax.io"
+rpc_url = "https://rpc.nakharax.com"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]
@@ -304,7 +304,7 @@ cat ~/nakharax-worker/keys/worker-key.json
 
 ```bash
 # Connect to testnet RPC
-export NAKHARAX_RPC="https://rpc.nakharax.io"
+export NAKHARAX_RPC="https://rpc.nakharax.com"
 
 # Register worker (requires NAK tokens for gas)
 # An auto-register script will be available in the future

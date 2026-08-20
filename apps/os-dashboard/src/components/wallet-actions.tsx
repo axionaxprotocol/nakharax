@@ -46,7 +46,7 @@ export function WalletActions() {
     } catch {
       setHint({
         type: "error",
-        msg: "RPC connection failed. Check https://rpc.nakharax.io or your configured node.",
+        msg: "RPC connection failed. Check https://rpc.nakharax.com or your configured node.",
       });
     } finally {
       setIsRefreshing(false);

@@ -2,7 +2,7 @@
 
 **Host:** `217.216.109.5` (EU)  
 **App:** `apps/os-dashboard` (Next.js 14, Obsidian OS UI)  
-**Suggested domain:** `https://app.nakharax.io` (หรือ `https://os.nakharax.io`)
+**Suggested domain:** `https://app.nakharax.com` (หรือ `https://os.nakharax.com`)
 
 Chain services (RPC, explorer, faucet) อยู่บน **46.250.244.4 (AU)** — OS dashboard บน EU เรียก RPC ผ่าน HTTPS สาธารณะ
 
@@ -42,7 +42,7 @@ nano .env.production
 ```env
 NODE_ENV=production
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.io
+NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com
 NEXT_PUBLIC_RPC_EU=http://217.216.109.5:8545
 NEXT_PUBLIC_RPC_AU=http://46.250.244.4:8545
 PORT=3030
@@ -77,14 +77,14 @@ bash apps/os-dashboard/scripts/vps-deploy.sh
 
 ## 4. Nginx (ตัวอย่าง)
 
-คัดลอก [`apps/os-dashboard/nginx/app.nakharax.io.conf.example`](../../apps/os-dashboard/nginx/app.nakharax.io.conf.example) ไป `/etc/nginx/sites-enabled/` แล้ว:
+คัดลอก [`apps/os-dashboard/nginx/app.nakharax.com.conf.example`](../../apps/os-dashboard/nginx/app.nakharax.com.conf.example) ไป `/etc/nginx/sites-enabled/` แล้ว:
 
 ```bash
-certbot certonly --nginx -d app.nakharax.io
+certbot certonly --nginx -d app.nakharax.com
 nginx -t && systemctl reload nginx
 ```
 
-DNS: **A record** `app.nakharax.io` → `217.216.109.5`
+DNS: **A record** `app.nakharax.com` → `217.216.109.5`
 
 ---
 
@@ -104,7 +104,7 @@ DNS: **A record** `app.nakharax.io` → `217.216.109.5`
 curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3030/
 # คาดหวัง 200
 
-curl -sI https://app.nakharax.io | head -1
+curl -sI https://app.nakharax.com | head -1
 ```
 
 ---

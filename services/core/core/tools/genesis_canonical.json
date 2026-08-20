@@ -18,13 +18,13 @@
         "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://rpc.nakharax.io:30303"
+        "node_url": "http://rpc.nakharax.com:30303"
       },
       {
         "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
         "stake": 25000000000000000000000000000,
         "public_key": "0x",
-        "node_url": "http://rpc-au.nakharax.io:30303"
+        "node_url": "http://rpc-au.nakharax.com:30303"
       }
     ],
     "balances": {

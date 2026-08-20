@@ -12,8 +12,8 @@ export const nakharaxLocal = defineChain({
     symbol: "NAK",
   },
   rpcUrls: {
-    default: { http: ["https://rpc.nakharax.io"] },
-    public: { http: ["https://rpc.nakharax.io"] },
+    default: { http: ["https://rpc.nakharax.com"] },
+    public: { http: ["https://rpc.nakharax.com"] },
   },
 });
 

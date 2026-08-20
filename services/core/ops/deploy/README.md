@@ -30,7 +30,7 @@ Built with 💜 by the nakharax team
 Production-ready deployment infrastructure for **nakharax protocol** services.
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.io)
+[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)](https://www.docker.com/)
 [![Status](https://img.shields.io/badge/Status-Pre--Testnet-orange)](https://github.com/axionaxprotocol/nakharax)
 
@@ -140,7 +140,7 @@ REDIS_PASSWORD=your_redis_password
 FAUCET_PRIVATE_KEY=0x...
 GRAFANA_PASSWORD=your_grafana_password
 VPS_IP=YOUR_VPS_IP
-DOMAIN=nakharax.io
+DOMAIN=nakharax.com
 ```
 
 ### 3. Run Setup Script
@@ -162,8 +162,8 @@ The script automatically:
 ```
 
          Nginx Reverse Proxy (SSL)
-    rpc.nakharax.io | explorer.nakharax.io
-         faucet.nakharax.io
+    rpc.nakharax.com | explorer.nakharax.com
+         faucet.nakharax.com
 
 
 
@@ -188,7 +188,7 @@ The script automatically:
 - HTTP JSON-RPC endpoint
 - WebSocket support
 - CORS enabled for public access
-- Health check: `https://rpc.nakharax.io/health`
+- Health check: `https://rpc.nakharax.com/health`
 
 ### Block Explorer (Port 3001)
 
@@ -430,8 +430,8 @@ Use our [Issue Manager](../issue-manager) to track:
 ### External Resources
 
 - **GitHub Organization**: https://github.com/axionaxprotocol
-- **Protocol Website**: https://nakharax.io
-- **Documentation**: https://docs.nakharax.io
+- **Protocol Website**: https://nakharax.com
+- **Documentation**: https://docs.nakharax.com
 
 ---
 
@@ -457,7 +457,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## Support
 
 - **Issues**: https://github.com/axionaxprotocol/nakharax-deploy/issues
-- **Docs**: https://docs.nakharax.io or [`nakharax-docs`](https://github.com/axionaxprotocol/nakharax-docs)
+- **Docs**: https://docs.nakharax.com or [`nakharax-docs`](https://github.com/axionaxprotocol/nakharax-docs)
 - **GitHub Organization**: https://github.com/axionaxprotocol
 
 ### Community (Coming Q1 2026)

@@ -11,7 +11,7 @@ Following the remediation of findings from the v1.0 audit, the nakharax protocol
 
 **Deployment Status:**
 
-- **Web Interface:** https://nakharax.io (Active)
+- **Web Interface:** https://nakharax.com (Active)
 - **Infrastructure Node:** VPS (Active)
 - **Version:** v1.9.0-testnet
 
@@ -50,9 +50,9 @@ Following the remediation of findings from the v1.0 audit, the nakharax protocol
 | Component         | Version | Status     | Endpoint                        |
 | ----------------- | ------- | ---------- | ------------------------------- |
 | **Core Protocol** | v1.9.0  | 🟢 Healthy | Internal (30303)                |
-| **Frontend**      | v1.9.0  | 🟢 Healthy | https://nakharax.io             |
-| **Marketplace**   | v1.9.0  | 🟢 Healthy | https://nakharax.io/marketplace |
-| **Explorer API**  | v1.9.0  | 🟢 Healthy | https://nakharax.io/api/        |
+| **Frontend**      | v1.9.0  | 🟢 Healthy | https://nakharax.com             |
+| **Marketplace**   | v1.9.0  | 🟢 Healthy | https://nakharax.com/marketplace |
+| **Explorer API**  | v1.9.0  | 🟢 Healthy | https://nakharax.com/api/        |
 
 ## 4. Recommendations for Mainnet
 

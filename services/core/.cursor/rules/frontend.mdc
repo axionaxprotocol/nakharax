@@ -118,7 +118,7 @@ pnpm build                               # build all packages
 const NAKHARAX_TESTNET = {
   chainId: "0x15079",  // 86137 in hex
   chainName: "Nakharax Testnet",
-  rpcUrls: ["https://rpc.nakharax.io"],
+  rpcUrls: ["https://rpc.nakharax.com"],
   nativeCurrency: { name: "NAK", symbol: "NAK", decimals: 18 },
 }
 ```

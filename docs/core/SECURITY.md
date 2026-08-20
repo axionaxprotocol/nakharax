@@ -16,7 +16,7 @@ If you discover a security vulnerability in **nakharax** (blockchain core, node,
 
 **Do not** open a public GitHub issue for security-sensitive findings.
 
-1. **Email:** Send details to the maintainers (e.g. via the contact listed on [nakharax.io](https://nakharax.io) or the organization profile).
+1. **Email:** Send details to the maintainers (e.g. via the contact listed on [nakharax.com](https://nakharax.com) or the organization profile).
 2. **Include:** Description of the issue, steps to reproduce, impact, and suggested fix if any.
 3. **Response:** We aim to acknowledge within 72 hours and will work with you on a fix and disclosure timeline.
 

@@ -19,7 +19,7 @@ set -euo pipefail
 
 # ── Defaults ────────────────────────────────────────────────────────────────
 CONTAINER_NAME="${CONTAINER_NAME:-nakharax-validator}"  # docker container grep pattern
-MONITOR_RPC="${MONITOR_RPC:-https://rpc.nakharax.io}" # RPC on the OTHER validator to monitor
+MONITOR_RPC="${MONITOR_RPC:-https://rpc.nakharax.com}" # RPC on the OTHER validator to monitor
 LOCAL_RPC="http://127.0.0.1:8545"
 KILL_DURATION=30        # seconds the validator stays down
 RECOVERY_WAIT=45        # seconds to wait for recovery after restart

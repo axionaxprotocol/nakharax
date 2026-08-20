@@ -132,7 +132,7 @@ impl NetworkConfig {
     /// Resolution order (first wins):
     ///
     /// 1. `NAKHARAX_EXTERNAL_ADDRS` — comma-separated multiaddrs.
-    ///    *Example:* `/ip4/rpc-au.nakharax.io/tcp/30303,/ip4/rpc-au.nakharax.io/udp/30303/quic-v1`
+    ///    *Example:* `/ip4/rpc-au.nakharax.com/tcp/30303,/ip4/rpc-au.nakharax.com/udp/30303/quic-v1`
     /// 2. `NAKHARAX_PUBLIC_IP` — bare IPv4/IPv6 literal. We synthesize
     ///    `/ip4/<IP>/tcp/<port>` from it. This is the convenient form for
     ///    Docker / systemd operators who don't want to write multiaddrs.

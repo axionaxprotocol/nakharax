@@ -3,8 +3,8 @@
 This document provides the necessary constants and ABI for integrating the **nakharax Frontend** with the DeAI Core.
 
 ## 🔗 Network Details
-- **RPC Endpoint (Primary)**: `https://rpc.nakharax.io` (EU Validator)
-- **RPC Endpoint (Backup)**: `https://rpc-au.nakharax.io` (AU Validator)
+- **RPC Endpoint (Primary)**: `https://rpc.nakharax.com` (EU Validator)
+- **RPC Endpoint (Backup)**: `https://rpc-au.nakharax.com` (AU Validator)
   > **✅ CONFIRMED**: These are the Oldest Validator Nodes, ensuring correct Block Height and consensus data.
 - **Chain ID**: `86137`
 - **Currency**: `NAK`
@@ -32,5 +32,5 @@ The Python worker runs locally on the user's machine.
 
 ## 🧪 Testing
 To verify the system is running:
-1.  Check RPC: `curl https://rpc.nakharax.io`
+1.  Check RPC: `curl https://rpc.nakharax.com`
 2.  Check Worker: `python core/deai/worker_node.py`

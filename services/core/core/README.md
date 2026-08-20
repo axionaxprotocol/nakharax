@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.75+-orange)](https://www.rust-lang.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org/)
-[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.io)
+[![Protocol](https://img.shields.io/badge/Protocol-nakharax-purple)](https://nakharax.com)
 
 ---
 
@@ -47,7 +47,7 @@ This is the **core component** of the nakharax Protocol. Complete ecosystem repo
 
 **ANY network claiming to be "nakharax Mainnet" is a SCAM.**
 
-Verify at: https://nakharax.io/networks
+Verify at: https://nakharax.com/networks
 
 ---
 
@@ -480,9 +480,9 @@ This core implementation is part of the complete nakharax Protocol ecosystem:
 - 🔥 Documentation completion
 
 ### Phase 3: Public Testnet Launch 🎯 (Target: Q1 2026)
-- 🔜 Deploy RPC nodes (https://rpc.nakharax.io)
-- 🔜 Launch block explorer (https://explorer.nakharax.io)
-- 🔜 Token faucet service (https://faucet.nakharax.io)
+- 🔜 Deploy RPC nodes (https://rpc.nakharax.com)
+- 🔜 Launch block explorer (https://explorer.nakharax.com)
+- 🔜 Token faucet service (https://faucet.nakharax.com)
 - 🔜 Community channels (Discord, Twitter, Telegram)
 - 🔜 Developer documentation & tutorials
 - 🔜 Bug bounty program
@@ -540,7 +540,7 @@ Key security mechanisms:
 - **Fraud-Proof Window** with validator accountability
 - **DA Pre-commit** with live audits
 
-🐛 **Found a vulnerability?** Please report to security@nakharax.io (PGP key
+🐛 **Found a vulnerability?** Please report to security@nakharax.com (PGP key
 available)
 
 ## 🤝 Contributing
@@ -554,7 +554,7 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 - **📝 Improve Docs**: Fix typos, add examples, clarify guides
 - **🧪 Write Tests**: Increase test coverage and quality
 - **🔧 Fix Issues**: Check [good first issue](https://github.com/axionaxprotocol/nakharax/labels/good%20first%20issue) label
-- **🔐 Security**: Report vulnerabilities to security@nakharax.io
+- **🔐 Security**: Report vulnerabilities to security@nakharax.com
 
 ### 📋 Development Workflow
 
@@ -659,14 +659,14 @@ This project is licensed under the **GNU Affero General Public License v3.0
 
 - **GitHub Organization**: https://github.com/axionaxprotocol
 - **Core Repository**: https://github.com/axionaxprotocol/nakharax
-- **Website**: https://nakharax.io
-- **Documentation**: https://docs.nakharax.io (see [`../nakharax-docs`](../nakharax-docs))
+- **Website**: https://nakharax.com
+- **Documentation**: https://docs.nakharax.com (see [`../nakharax-docs`](../nakharax-docs))
 
 ### Network Endpoints
 
-- **Testnet RPC**: https://rpc.nakharax.io (Q1 2026)
-- **Block Explorer**: https://explorer.nakharax.io (Q1 2026)
-- **Token Faucet**: https://faucet.nakharax.io (Q1 2026)
+- **Testnet RPC**: https://rpc.nakharax.com (Q1 2026)
+- **Block Explorer**: https://explorer.nakharax.com (Q1 2026)
+- **Token Faucet**: https://faucet.nakharax.com (Q1 2026)
 
 ### Development
 

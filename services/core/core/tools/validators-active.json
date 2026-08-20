@@ -4,19 +4,19 @@
     "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
     "stake": "25000000000000000000000000000",
     "commission": 0.1,
-    "enode": "enode://GENERATED@rpc.nakharax.io:30303",
+    "enode": "enode://GENERATED@rpc.nakharax.com:30303",
     "location": "EU",
     "operator": "Nakharax Genesis EU",
-    "ip": "rpc.nakharax.io"
+    "ip": "rpc.nakharax.com"
   },
   {
     "name": "Validator-AU-01",
     "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
     "stake": "25000000000000000000000000000",
     "commission": 0.1,
-    "enode": "enode://GENERATED@rpc-au.nakharax.io:30303",
+    "enode": "enode://GENERATED@rpc-au.nakharax.com:30303",
     "location": "AU",
     "operator": "Nakharax Genesis AU",
-    "ip": "rpc-au.nakharax.io"
+    "ip": "rpc-au.nakharax.com"
   }
 ]

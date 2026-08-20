@@ -136,7 +136,7 @@
 [Repository](https://github.com/axionaxprotocol/nakharax)
 
 <!-- Website -->
-[Protocol](https://nakharax.io)
+[Protocol](https://nakharax.com)
 ```
 
 ### Link Validation

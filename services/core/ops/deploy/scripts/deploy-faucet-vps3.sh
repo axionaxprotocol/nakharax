@@ -14,7 +14,7 @@ echo "=============================================="
 echo "  Deploy Testnet Faucet on VPS3"
 echo "=============================================="
 echo "  Compose: $COMPOSE_FILE"
-echo "  RPC:     https://rpc.nakharax.io"
+echo "  RPC:     https://rpc.nakharax.com"
 echo "  Chain:   86137"
 echo "=============================================="
 

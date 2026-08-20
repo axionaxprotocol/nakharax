@@ -1,6 +1,6 @@
 <div align="center">
 
-# nakharax.io
+# nakharax.com
 
 ### Cheap, accessible compute for everyone — a paid, verifiable grid for parallel science & AI
 
@@ -20,7 +20,7 @@
 
 ## What's inside
 
-This repository is the **monolithic working tree** for **nakharax.io** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
+This repository is the **monolithic working tree** for **nakharax.com** (formerly the Axionax Protocol). Sub-trees are scoped along a strict Web ↔ Core boundary defined in `.windsurfrules`:
 
 ```
 nakharax/
@@ -40,19 +40,19 @@ nakharax/
 
 ## Naming & rebrand
 
-The project was renamed **Axionax → nakharax.io**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
+The project was renamed **Axionax → nakharax.com**. The in-repo rename is **complete and verified** (cargo test + pytest + frontend typecheck all green):
 
 | Layer | Result |
 |---|---|
-| Brand / docs / UI | ✅ nakharax.io |
+| Brand / docs / UI | ✅ nakharax.com |
 | Code identifiers | ✅ crates, binary `nakharax-node`, packages (`@nakharax/sdk`), import paths |
 | Env vars | ✅ `NAKHARAX_*` (was `AXIONAX_*`) |
-| Domain refs | ✅ `nakharax.io` in configs/SDK (was `axionax.org`) |
+| Domain refs | ✅ `nakharax.com` in configs/SDK (was `axionax.org`) |
 | Native token | ✅ `NAK` (was `AXX`) — contract, genesis, tokenomics |
 
 **Remaining (external / coordinated — not a repo edit):**
 - Rename the GitHub repo/org so `github.com/...` URLs resolve.
-- Stand up `nakharax.io` DNS + SSL, then redeploy nodes from this renamed tree.
+- Stand up `nakharax.com` DNS + SSL, then redeploy nodes from this renamed tree.
 - A handful of filenames still contain `axionax` (deploy scripts, a stale build artifact) — tracked in [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md).
 
 The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
@@ -122,10 +122,10 @@ python3 scripts/join-nakharax.py
 
 | Validator | IP | Role | RPC (direct) |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharax.io` |
+| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharax.com` |
 | #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
 
-**Public HTTPS (AU):** `https://rpc.nakharax.io` · `explorer` · `api` · `faucet`  
+**Public HTTPS (AU):** `https://rpc.nakharax.com` · `explorer` · `api` · `faucet`  
 **Nakharax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
 P2P bootnodes are advertised via `NAKHARAX_BOOTSTRAP_NODES` — see `services/core/configs/`.

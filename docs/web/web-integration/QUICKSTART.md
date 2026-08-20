@@ -395,7 +395,7 @@ docker compose up -d
 
 ## 🆘 Getting Help
 
-- **Documentation:** https://docs.nakharax.io
+- **Documentation:** https://docs.nakharax.com
 - **GitHub Issues:** https://github.com/axionaxprotocol/nakharax/issues
 - **Discord:** https://discord.gg/nakharax
 - **Telegram:** https://t.me/nakharax

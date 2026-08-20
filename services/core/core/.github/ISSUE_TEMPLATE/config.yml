@@ -4,11 +4,11 @@ contact_links:
     url: https://discord.gg/nakharax
     about: Join our Discord for questions and discussions
   - name: 📖 Documentation
-    url: https://docs.nakharax.io
+    url: https://docs.nakharax.com
     about: Check our documentation for guides and references
   - name: 🔒 Security Vulnerability
-    url: mailto:security@nakharax.io
+    url: mailto:security@nakharax.com
     about: Report security vulnerabilities privately via email
   - name: 🏛️ Governance Forum
-    url: https://forum.nakharax.io
+    url: https://forum.nakharax.com
     about: Discuss protocol governance and proposals

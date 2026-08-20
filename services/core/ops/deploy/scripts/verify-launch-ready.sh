@@ -102,15 +102,15 @@ check_dns() {
     fi
 }
 
-check_dns "nakharax.io" "GitHub Pages"
-check_dns "rpc.nakharax.io" "VPS"
-check_dns "explorer.nakharax.io" "VPS"
-check_dns "faucet.nakharax.io" "VPS"
+check_dns "nakharax.com" "GitHub Pages"
+check_dns "rpc.nakharax.com" "VPS"
+check_dns "explorer.nakharax.com" "VPS"
+check_dns "faucet.nakharax.com" "VPS"
 echo ""
 
 # 3. Check RPC Endpoint
 echo "3. Checking RPC Endpoint..."
-RPC_URL="${RPC_URL:-https://rpc.nakharax.io}"
+RPC_URL="${RPC_URL:-https://rpc.nakharax.com}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$RPC_URL/health" | grep -q "200"; then
     check_pass "RPC endpoint is accessible: $RPC_URL"
@@ -121,7 +121,7 @@ echo ""
 
 # 4. Check Explorer
 echo "4. Checking Block Explorer..."
-EXPLORER_URL="${EXPLORER_URL:-https://explorer.nakharax.io}"
+EXPLORER_URL="${EXPLORER_URL:-https://explorer.nakharax.com}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$EXPLORER_URL" | grep -q "200\|301\|302"; then
     check_pass "Explorer is accessible: $EXPLORER_URL"
@@ -132,7 +132,7 @@ echo ""
 
 # 5. Check Faucet
 echo "5. Checking Faucet..."
-FAUCET_URL="${FAUCET_URL:-https://faucet.nakharax.io}"
+FAUCET_URL="${FAUCET_URL:-https://faucet.nakharax.com}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$FAUCET_URL" | grep -q "200\|301\|302"; then
     check_pass "Faucet is accessible: $FAUCET_URL"
@@ -143,7 +143,7 @@ echo ""
 
 # 6. Check GitHub Pages
 echo "6. Checking Website..."
-WEBSITE_URL="${WEBSITE_URL:-https://nakharax.io}"
+WEBSITE_URL="${WEBSITE_URL:-https://nakharax.com}"
 
 if curl -f -s -o /dev/null -w "%{http_code}" "$WEBSITE_URL" | grep -q "200"; then
     check_pass "Website is accessible: $WEBSITE_URL"
@@ -164,9 +164,9 @@ check_ssl() {
     fi
 }
 
-check_ssl "rpc.nakharax.io"
-check_ssl "explorer.nakharax.io"
-check_ssl "faucet.nakharax.io"
+check_ssl "rpc.nakharax.com"
+check_ssl "explorer.nakharax.com"
+check_ssl "faucet.nakharax.com"
 echo ""
 
 # 8. Check Docker Services

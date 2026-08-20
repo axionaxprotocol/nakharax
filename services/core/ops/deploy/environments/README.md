@@ -22,7 +22,7 @@ environments/
 ## Mainnet
 
 - **Chain ID:** 86150 (reserved, not launched)
-- Verify official network info at https://nakharax.io/networks
+- Verify official network info at https://nakharax.com/networks
 
 ## Configuration
 
@@ -48,4 +48,4 @@ For the **public testnet** stack, use `testnet/public/docker-compose.yaml` (see 
 
 ## Security
 
-See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@nakharax.io.
+See project `SECURITY.md` / `docs/SECURITY.md` and report issues to security@nakharax.com.

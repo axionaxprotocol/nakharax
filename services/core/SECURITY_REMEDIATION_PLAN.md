@@ -384,10 +384,10 @@ echo "ops/deploy/VPS_CONNECTION.txt" >> .gitignore
 **1. `core/deai/rpc_client.py` (line 10)**
 ```python
 # BEFORE:
-def __init__(self, rpc_url: str = "https://rpc.nakharax.io"):
+def __init__(self, rpc_url: str = "https://rpc.nakharax.com"):
 
 # AFTER:
-def __init__(self, rpc_url: str = "https://rpc.nakharax.io"):
+def __init__(self, rpc_url: str = "https://rpc.nakharax.com"):
     if rpc_url.startswith("http://") and "localhost" not in rpc_url and "127.0.0.1" not in rpc_url:
         import warnings
         warnings.warn(
@@ -401,24 +401,24 @@ def __init__(self, rpc_url: str = "https://rpc.nakharax.io"):
 ```toml
 # BEFORE:
 bootnodes = [
-    "https://rpc.nakharax.io",
-    "https://rpc-au.nakharax.io"
+    "https://rpc.nakharax.com",
+    "https://rpc-au.nakharax.com"
 ]
 
 # AFTER:
 bootnodes = [
-    "https://rpc.nakharax.io",
-    "https://rpc-au.nakharax.io"
+    "https://rpc.nakharax.com",
+    "https://rpc-au.nakharax.com"
 ]
 ```
 
 **3. `configs/monolith_sentinel.toml`, `configs/monolith_worker.toml`, `configs/monolith_scout_single.toml`**
 ```toml
 # BEFORE:
-bootnodes = ["https://rpc.nakharax.io", "https://rpc-au.nakharax.io"]
+bootnodes = ["https://rpc.nakharax.com", "https://rpc-au.nakharax.com"]
 
 # AFTER:
-bootnodes = ["https://rpc.nakharax.io", "https://rpc-au.nakharax.io"]
+bootnodes = ["https://rpc.nakharax.com", "https://rpc-au.nakharax.com"]
 ```
 
 ---
@@ -551,8 +551,8 @@ use jsonrpsee::server::middleware::rpc::RpcServiceBuilder;
 
 let cors = CorsLayer::new()
     .allow_origin(AllowOrigin::list([
-        "https://explorer.nakharax.io".parse().unwrap(),
-        "https://app.nakharax.io".parse().unwrap(),
+        "https://explorer.nakharax.com".parse().unwrap(),
+        "https://app.nakharax.com".parse().unwrap(),
     ]))
     .allow_methods([Method::POST])
     .allow_headers([header::CONTENT_TYPE]);
@@ -686,7 +686,7 @@ pub fn mainnet() -> Self {
 cors_origins = ["*"]
 
 # AFTER:
-cors_origins = ["https://explorer.nakharax.io", "https://app.nakharax.io", "https://faucet.nakharax.io"]
+cors_origins = ["https://explorer.nakharax.com", "https://app.nakharax.com", "https://faucet.nakharax.com"]
 ```
 
 **ไฟล์:** `ops/deploy/nginx/conf.d/rpc.conf`
@@ -740,8 +740,8 @@ add_header Access-Control-Allow-Origin $cors_origin always;
 
 แทนที่ด้วย DNS:
 ```
-https://rpc.nakharax.io  → https://rpc-eu.nakharax.io
-https://rpc-au.nakharax.io   → https://rpc-au.nakharax.io
+https://rpc.nakharax.com  → https://rpc-eu.nakharax.com
+https://rpc-au.nakharax.com   → https://rpc-au.nakharax.com
 ```
 
 ---

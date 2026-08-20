@@ -77,7 +77,7 @@ LOCAL_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
 
 PUBLIC_HEX=$(curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc.nakharax.io | jq -r '.result')
+  https://rpc.nakharax.com | jq -r '.result')
 
 python3 - <<'PY'
 import os

@@ -210,7 +210,7 @@ ram = 15  # GB
 
 [network]
 # Connect to your RPC node
-rpc_url = "https://rpc.nakharax.io"
+rpc_url = "https://rpc.nakharax.com"
 ws_url = "ws://217.216.109.5:8546"
 
 [performance]

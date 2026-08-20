@@ -2,7 +2,7 @@
 
 A self-hosted, Umbrel-style web dashboard for managing an Nakharax node (Obsidian OS UI).
 
-**Production host (EU):** `217.216.109.5` → `https://app.nakharax.io`  
+**Production host (EU):** `217.216.109.5` → `https://app.nakharax.com`  
 Deploy guide: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md)
 
 ## Features (alpha)

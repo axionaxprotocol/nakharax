@@ -427,8 +427,8 @@ The protocol is live on a public testnet:
 |-----------|-------|
 | Chain ID | 86137 |
 | Validators | 2 (AU: 46.250.244.4, ES: 217.216.109.5) |
-| RPC | `https://rpc.nakharax.io` |
-| Dashboard | `https://app.nakharax.io` |
+| RPC | `https://rpc.nakharax.com` |
+| Dashboard | `https://app.nakharax.com` |
 | Block time | ~5 seconds |
 | Consensus | PoPC (s=1000, confidence=0.99) |
 | Token (testnet) | NAKt (1 Billion supply for testing) |

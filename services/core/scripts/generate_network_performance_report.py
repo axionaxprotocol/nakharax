@@ -5,7 +5,7 @@ reports/NETWORK_PERFORMANCE_SUMMARY.md plus JSON artifacts under reports/.
 
 Usage (from repo root):
   python scripts/generate_network_performance_report.py
-  python scripts/generate_network_performance_report.py --rpc https://rpc.nakharax.io --light-duration 60 --block-duration 90
+  python scripts/generate_network_performance_report.py --rpc https://rpc.nakharax.com --light-duration 60 --block-duration 90
 
 Requires: requests (optimize suite), web3 (block-time script). See scripts/requirements.txt
 """
@@ -142,7 +142,7 @@ def main() -> int:
     reports.mkdir(parents=True, exist_ok=True)
 
     ap = argparse.ArgumentParser(description="Generate NETWORK_PERFORMANCE_SUMMARY.md from live tests")
-    ap.add_argument("--rpc", default="https://rpc.nakharax.io", help="JSON-RPC URL")
+    ap.add_argument("--rpc", default="https://rpc.nakharax.com", help="JSON-RPC URL")
     ap.add_argument("--light-duration", type=float, default=45.0, help="Light phase duration (seconds)")
     ap.add_argument("--light-rps", type=float, default=2.5, help="Target RPS for light usage")
     ap.add_argument("--block-duration", type=int, default=45, help="Block-time probe duration (seconds)")

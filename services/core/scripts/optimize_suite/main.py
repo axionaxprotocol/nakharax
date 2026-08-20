@@ -32,7 +32,7 @@ def _reports_to_json(rpc_url: str, reports: List[ScenarioReport]) -> dict[str, A
 
 
 def main(argv: list[str] | None = None) -> int:
-    default_rpc = os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharax.io").strip()
+    default_rpc = os.environ.get("NAKHARAX_RPC_URL", "https://rpc.nakharax.com").strip()
     ap = argparse.ArgumentParser(
         description="Simulate light testnet traffic and optional RPC stress (authorized use only)."
     )

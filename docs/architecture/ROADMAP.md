@@ -318,7 +318,7 @@ This roadmap is living document. We follow agile principles:
 
 - **GitHub Projects**: https://github.com/axionaxprotocol/nakharax/projects
 - **Discord**: https://discord.gg/nakharax
-- **Blog**: https://blog.nakharax.io
+- **Blog**: https://blog.nakharax.com
 - **Twitter**: @nakharax
 
 ---

@@ -7,7 +7,7 @@ class NakharaxRpcClient:
     """
     Simple JSON-RPC client for Nakharax Chain
     """
-    def __init__(self, rpc_url: str = "https://rpc.nakharax.io"):
+    def __init__(self, rpc_url: str = "https://rpc.nakharax.com"):
         self.rpc_url = rpc_url
         self.headers = {'content-type': 'application/json'}
         self.id_counter = 0

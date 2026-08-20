@@ -14,7 +14,7 @@
 
 **PoPC Consensus** · **EVM-Compatible** · **DeAI at the Edge**
 
-[Website](https://nakharax.io) · [Documentation](https://axionaxprotocol.github.io/nakharax-docs/) · [Web Universe](https://github.com/axionaxprotocol/nakharax)
+[Website](https://nakharax.com) · [Documentation](https://axionaxprotocol.github.io/nakharax-docs/) · [Web Universe](https://github.com/axionaxprotocol/nakharax)
 
 </div>
 
@@ -51,7 +51,7 @@
 
 ## Quick Start — Join the Network
 
-> **End users** → [nakharax.io](https://nakharax.io)
+> **End users** → [nakharax.com](https://nakharax.com)
 >
 > **Node Operators** — follow the steps below to run your own node.
 
@@ -116,8 +116,8 @@ python3 scripts/update-node.py --full-deps
 
 | Node | IP | Role | RPC |
 |------|-----|------|-----|
-| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharax.io` |
-| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharax.io` |
+| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharax.com` |
+| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharax.com` |
 
 EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) · AU: [ops/deploy/VPS_AU_ALL_IN_ONE.md](ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
@@ -130,7 +130,7 @@ EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) 
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakharax.io
+  https://rpc-au.nakharax.com
 ```
 
 **Run your own full node (anywhere on the Internet)** — no allowlist: build `nakharax-node`, use the same genesis as testnet, set `NAKHARAX_BOOTSTRAP_NODES`, open P2P port **30303**. Step-by-step: [docs/RUN_PUBLIC_FULL_NODE.md](docs/RUN_PUBLIC_FULL_NODE.md) · bootstrap list template: [docs/PUBLIC_TESTNET_BOOTSTRAPS.txt](docs/PUBLIC_TESTNET_BOOTSTRAPS.txt)
@@ -390,7 +390,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Support
 
-[Website](https://nakharax.io) · [Docs](https://axionaxprotocol.github.io/nakharax-docs/) · [Issues](https://github.com/axionaxprotocol/nakharax/issues)
+[Website](https://nakharax.com) · [Docs](https://axionaxprotocol.github.io/nakharax-docs/) · [Issues](https://github.com/axionaxprotocol/nakharax/issues)
 
 ---
 

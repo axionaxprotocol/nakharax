@@ -6,10 +6,10 @@
 
 | บทบาท | Container | พอร์ตภายใน | โดเมน (DNS → 46.250.244.4) |
 |--------|-----------|------------|----------------------------|
-| Validator + RPC + P2P | `nakharax-rpc` | 8545, 8546, 30303 | `rpc.nakharax.io`, `rpc-au.nakharax.io` |
-| Explorer (backend + UI proxy) | `nakharax-explorer-backend` | 3001 | `explorer.nakharax.io` |
-| REST / indexer API | same as explorer | 3001 | `api.nakharax.io` |
-| Faucet | `nakharax-faucet` | 3002 | `faucet.nakharax.io` |
+| Validator + RPC + P2P | `nakharax-rpc` | 8545, 8546, 30303 | `rpc.nakharax.com`, `rpc-au.nakharax.com` |
+| Explorer (backend + UI proxy) | `nakharax-explorer-backend` | 3001 | `explorer.nakharax.com` |
+| REST / indexer API | same as explorer | 3001 | `api.nakharax.com` |
+| Faucet | `nakharax-faucet` | 3002 | `faucet.nakharax.com` |
 | TLS + reverse proxy | `nakharax-nginx` | 80, 443 | ทุก subdomain ด้านบน |
 | Postgres / Redis | internal | — | ไม่เปิดสู่ internet |
 
@@ -42,11 +42,11 @@ bash scripts/check-vps-status.sh --detailed
 
 | Host | ใช้สำหรับ |
 |------|-----------|
-| `rpc.nakharax.io` | JSON-RPC HTTPS (+ `/ws` WebSocket) |
-| `rpc-au.nakharax.io` | RPC สำรอง / region AU |
-| `explorer.nakharax.io` | Block explorer UI |
-| `api.nakharax.io` | Explorer REST API (proxy ไป `explorer-backend:3001`) |
-| `faucet.nakharax.io` | Testnet faucet |
+| `rpc.nakharax.com` | JSON-RPC HTTPS (+ `/ws` WebSocket) |
+| `rpc-au.nakharax.com` | RPC สำรอง / region AU |
+| `explorer.nakharax.com` | Block explorer UI |
+| `api.nakharax.com` | Explorer REST API (proxy ไป `explorer-backend:3001`) |
+| `faucet.nakharax.com` | Testnet faucet |
 
 ---
 
@@ -71,7 +71,7 @@ curl -s -X POST http://localhost:8545 \
 # คาดหวัง "0x15079" (86137)
 
 # จากภายนอก (หลัง DNS + SSL)
-curl -s -X POST https://rpc.nakharax.io \
+curl -s -X POST https://rpc.nakharax.com \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```

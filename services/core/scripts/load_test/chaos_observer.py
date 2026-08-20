@@ -6,7 +6,7 @@ This script monitors the testnet while the operator manually stops/starts
 a validator on one of the VPS nodes. It does NOT require SSH access.
 
 Usage:
-  python chaos_observer.py --monitor-rpc https://rpc.nakharax.io --duration 120
+  python chaos_observer.py --monitor-rpc https://rpc.nakharax.com --duration 120
 
 The operator should:
   1. Start this script
@@ -165,8 +165,8 @@ def main():
         "--monitor-rpc",
         nargs="+",
         default=[
-            os.environ.get("NAKHARAX_RPC_EU", "https://rpc.nakharax.io"),
-            os.environ.get("NAKHARAX_RPC_AU", "https://rpc-au.nakharax.io"),
+            os.environ.get("NAKHARAX_RPC_EU", "https://rpc.nakharax.com"),
+            os.environ.get("NAKHARAX_RPC_AU", "https://rpc-au.nakharax.com"),
         ],
         help="RPC endpoint(s) to monitor",
     )

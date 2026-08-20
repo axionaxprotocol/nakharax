@@ -225,7 +225,7 @@ cargo build --release
 ```bash
 # RPC Settings
 export nakharax_RPC_ADDR="0.0.0.0:8545"
-export nakharax_RPC_CORS_ORIGINS="https://app.nakharax.io"
+export nakharax_RPC_CORS_ORIGINS="https://app.nakharax.com"
 
 # Network Settings
 export nakharax_CHAIN_ID=86137

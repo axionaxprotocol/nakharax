@@ -25,9 +25,9 @@
 ```env
 NODE_ENV=production
 NEXT_PUBLIC_CHAIN_ID=86137
-NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.io
-NEXT_PUBLIC_FAUCET_URL=https://faucet.nakharax.io
-FAUCET_API_URL=https://faucet-api.nakharax.io
+NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com
+NEXT_PUBLIC_FAUCET_URL=https://faucet.nakharax.com
+FAUCET_API_URL=https://faucet-api.nakharax.com
 ```
 
 ถ้าใช้ reverse proxy ภายในโดเมนเดียวกัน ให้ตั้ง `NEXT_PUBLIC_RPC_EU` / `NEXT_PUBLIC_RPC_AU` เป็น path เช่น `/rpc/eu` ตามที่ Nginx ตั้งไว้

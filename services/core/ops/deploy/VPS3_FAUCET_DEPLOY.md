@@ -76,14 +76,14 @@ curl -s http://127.0.0.1:3002/info
 
 ---
 
-## 5. Nginx (ให้ faucet.nakharax.io ชี้มาที่ Faucet)
+## 5. Nginx (ให้ faucet.nakharax.com ชี้มาที่ Faucet)
 
 ถ้า Nginx รันบน host (ไม่ใช่ใน Docker) และ Faucet รันใน container ที่ bind port 3002:
 
 - ใช้ `proxy_pass http://127.0.0.1:3002` (ไม่ใช้ `http://faucet:3002`)
 - ตัวอย่าง config: `ops/deploy/nginx/conf.d/faucet-vps3.conf.example`
-- ตั้ง DNS: faucet.nakharax.io → 217.216.109.5
-- ออก SSL: `certbot --nginx -d faucet.nakharax.io`
+- ตั้ง DNS: faucet.nakharax.com → 217.216.109.5
+- ออก SSL: `certbot --nginx -d faucet.nakharax.com`
 
 ---
 

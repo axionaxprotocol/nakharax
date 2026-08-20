@@ -33,7 +33,7 @@ Instead, please use one of the following methods:
 
 #### 2. Email
 
-Send details to: **security@nakharax.io**
+Send details to: **security@nakharax.com**
 
 Encrypt sensitive information using our PGP key (available upon request).
 
@@ -285,9 +285,9 @@ In case of a security incident:
 
 ### Emergency Contacts
 
-- **Security Team**: security@nakharax.io
+- **Security Team**: security@nakharax.com
 - **Discord**: @security-team (for urgent issues)
-- **Status Page**: https://status.nakharax.io
+- **Status Page**: https://status.nakharax.com
 
 ---
 
@@ -298,7 +298,7 @@ Subscribe to security notifications:
 - **GitHub Watch**: Enable "Security alerts"
 - **Discord**: #security-announcements channel
 - **Twitter**: [@nakharax](https://twitter.com/nakharax)
-- **Email**: Subscribe at https://nakharax.io/subscribe
+- **Email**: Subscribe at https://nakharax.com/subscribe
 
 ---
 
@@ -352,7 +352,7 @@ Nakharax complies with:
 
 For security-related questions:
 
-- **Email**: security@nakharax.io
+- **Email**: security@nakharax.com
 - **Discord**: https://discord.gg/nakharax (#security)
 - **GitHub**: Open a Security Advisory
 

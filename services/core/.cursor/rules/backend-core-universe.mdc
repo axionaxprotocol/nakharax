@@ -87,8 +87,8 @@ python hydra_manager.py                                             # HYDRA dual
 
 | Node | IP | Role | Public URLs |
 |---|---|---|---|
-| EU | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `https://app.nakharax.io`, `http://217.216.109.5:8545` |
-| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakharax.io`, explorer, api, faucet |
+| EU | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `https://app.nakharax.com`, `http://217.216.109.5:8545` |
+| AU | `46.250.244.4` | Validator + chain stack | `https://rpc.nakharax.com`, explorer, api, faucet |
 
 EU OS: `docs/web/VPS_EU_OS_DASHBOARD.md` · AU chain: `ops/deploy/VPS_AU_ALL_IN_ONE.md`
 

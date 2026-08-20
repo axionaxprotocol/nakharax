@@ -36,9 +36,9 @@ Web application for distributing testnet NAK tokens to developers and testers.
 
 # Deploy faucet
 sudo bash scripts/setup_faucet.sh \
-  --domain testnet-faucet.nakharax.io \
-  --ssl-email admin@nakharax.io \
-  --rpc-url https://testnet-rpc.nakharax.io \
+  --domain testnet-faucet.nakharax.com \
+  --ssl-email admin@nakharax.com \
+  --rpc-url https://testnet-rpc.nakharax.com \
   --chain-id 86137 \
   --private-key "YOUR_PRIVATE_KEY_HERE"
 ```
@@ -65,7 +65,7 @@ cargo build --release
 ```bash
 # EXAMPLE - Replace with your actual values (NEVER commit real keys)
 export FAUCET_PRIVATE_KEY="0x0000000000000000000000000000000000000000000000000000000000000000"
-export RPC_URL="https://testnet-rpc.nakharax.io"
+export RPC_URL="https://testnet-rpc.nakharax.com"
 export CHAIN_ID="86137"
 ```
 
@@ -176,8 +176,8 @@ const MAX_REQUESTS_PER_IP: usize = 3;
 Edit `public/index.html`:
 
 ```javascript
-const FAUCET_API = 'https://testnet-faucet.nakharax.io';
-const EXPLORER_URL = 'https://testnet-explorer.nakharax.io';
+const FAUCET_API = 'https://testnet-faucet.nakharax.com';
+const EXPLORER_URL = 'https://testnet-explorer.nakharax.com';
 ```
 
 ## Security
@@ -217,7 +217,7 @@ sudo systemctl status nakharax-faucet
 sudo journalctl -u nakharax-faucet -f
 
 # API health
-curl https://testnet-faucet.nakharax.io/health
+curl https://testnet-faucet.nakharax.com/health
 ```
 
 ### Monitor Balance
@@ -225,7 +225,7 @@ curl https://testnet-faucet.nakharax.io/health
 ```bash
 # Get faucet wallet address from private key
 # Check balance via RPC
-curl -X POST https://testnet-rpc.nakharax.io \
+curl -X POST https://testnet-rpc.nakharax.com \
   -H 'Content-Type: application/json' \
   -d '{
     "jsonrpc":"2.0",
@@ -334,7 +334,7 @@ Common enhancements:
 
 ## Support
 
-- **Documentation**: https://docs.nakharax.io
+- **Documentation**: https://docs.nakharax.com
 - **Issues**: https://github.com/axionaxprotocol/nakharax/issues
 - **Discord**: https://discord.gg/nakharax
 
