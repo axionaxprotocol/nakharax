@@ -58,25 +58,79 @@
 
 
 /* --------------------------------------------------------------------------
-   Wallpaper variants (dark mode only)
+   Curated Plasma Atmosphere Variants (Dark Obsidian Core)
    -------------------------------------------------------------------------- */
 
-html[data-theme="sunset"] {
-  --wp-base-from: #1A0F14;
-  --wp-base-to: #0B080A;
-  --wp-blob-1: rgba(245, 158, 11, 0.05);
-  --wp-blob-2: rgba(239, 68, 68, 0.05);
-  --wp-blob-3: rgba(168, 85, 247, 0.05);
-  --wp-blob-4: rgba(234, 179, 8, 0.05);
+html[data-theme="aurora"] {
+  --wp-base-from: #020617;
+  --wp-base-to: #0F172A;
+  --wp-blob-1: rgba(41, 240, 106, 0.18);
+  --wp-blob-2: rgba(34, 211, 238, 0.16);
+  --wp-blob-3: rgba(168, 85, 247, 0.15);
+  --wp-blob-4: rgba(255, 122, 26, 0.13);
 }
 
 html[data-theme="ocean"] {
-  --wp-base-from: #020817;
-  --wp-base-to: #0F172A;
-  --wp-blob-1: rgba(56, 189, 248, 0.05);
-  --wp-blob-2: rgba(59, 130, 246, 0.05);
-  --wp-blob-3: rgba(14, 165, 233, 0.05);
-  --wp-blob-4: rgba(34, 211, 238, 0.05);
+  --wp-base-from: #020617;
+  --wp-base-to: #0B1528;
+  --wp-blob-1: rgba(56, 189, 248, 0.20);
+  --wp-blob-2: rgba(59, 130, 246, 0.18);
+  --wp-blob-3: rgba(34, 211, 238, 0.16);
+  --wp-blob-4: rgba(99, 102, 241, 0.14);
+}
+
+html[data-theme="cyberpunk"] {
+  --wp-base-from: #090314;
+  --wp-base-to: #020617;
+  --wp-blob-1: rgba(34, 211, 238, 0.20);
+  --wp-blob-2: rgba(236, 72, 153, 0.20);
+  --wp-blob-3: rgba(250, 204, 21, 0.14);
+  --wp-blob-4: rgba(168, 85, 247, 0.16);
+}
+
+html[data-theme="emerald"] {
+  --wp-base-from: #010E0A;
+  --wp-base-to: #020617;
+  --wp-blob-1: rgba(16, 185, 129, 0.22);
+  --wp-blob-2: rgba(34, 197, 94, 0.18);
+  --wp-blob-3: rgba(20, 184, 166, 0.16);
+  --wp-blob-4: rgba(5, 150, 105, 0.14);
+}
+
+html[data-theme="midnight"] {
+  --wp-base-from: #020617;
+  --wp-base-to: #0A0F1D;
+  --wp-blob-1: rgba(30, 41, 59, 0.35);
+  --wp-blob-2: rgba(15, 23, 42, 0.40);
+  --wp-blob-3: rgba(51, 65, 85, 0.25);
+  --wp-blob-4: rgba(71, 85, 105, 0.20);
+}
+
+html[data-theme="sunset"] {
+  --wp-base-from: #0D050B;
+  --wp-base-to: #020617;
+  --wp-blob-1: rgba(251, 146, 60, 0.20);
+  --wp-blob-2: rgba(244, 63, 94, 0.20);
+  --wp-blob-3: rgba(168, 85, 247, 0.16);
+  --wp-blob-4: rgba(234, 88, 12, 0.14);
+}
+
+html[data-theme="vapor"] {
+  --wp-base-from: #0B0418;
+  --wp-base-to: #020617;
+  --wp-blob-1: rgba(168, 85, 247, 0.22);
+  --wp-blob-2: rgba(6, 182, 212, 0.18);
+  --wp-blob-3: rgba(236, 72, 153, 0.18);
+  --wp-blob-4: rgba(139, 92, 246, 0.15);
+}
+
+html[data-theme="gold"] {
+  --wp-base-from: #0F0B02;
+  --wp-base-to: #020617;
+  --wp-blob-1: rgba(234, 179, 8, 0.20);
+  --wp-blob-2: rgba(249, 115, 22, 0.18);
+  --wp-blob-3: rgba(217, 119, 6, 0.16);
+  --wp-blob-4: rgba(202, 138, 4, 0.14);
 }
 
 /* Base */

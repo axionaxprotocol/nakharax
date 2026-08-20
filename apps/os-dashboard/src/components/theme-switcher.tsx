@@ -3,47 +3,63 @@
 import { useEffect, useRef, useState } from "react";
 import { Palette, Check, Sparkles, Pause } from "lucide-react";
 
-type Theme = { id: string; name: string; swatch: string };
+type Theme = { id: string; name: string; swatch: string; desc: string };
 
-const THEMES: Theme[] = [
-  { id: "aurora", name: "Aurora", swatch: "linear-gradient(135deg, #5eead4 0%, #6366f1 50%, #ec4899 100%)" },
-  { id: "midnight", name: "Midnight", swatch: "linear-gradient(135deg, #1f2937 0%, #0f172a 50%, #020617 100%)" },
-  { id: "ocean", name: "Ocean", swatch: "linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #22d3ee 100%)" },
-  { id: "forest", name: "Forest", swatch: "linear-gradient(135deg, #22c55e 0%, #10b981 50%, #14b8a6 100%)" },
-  { id: "cyberpunk", name: "Cyberpunk", swatch: "linear-gradient(135deg, #ec4899 0%, #22d3ee 50%, #facc15 100%)" },
-  { id: "sunset", name: "Sunset", swatch: "linear-gradient(135deg, #fb923c 0%, #f43f5e 50%, #a855f7 100%)" },
-  { id: "rose", name: "Rose", swatch: "linear-gradient(135deg, #f472b6 0%, #ec4899 50%, #a855f7 100%)" },
-  { id: "pastel", name: "Pastel", swatch: "linear-gradient(135deg, #c4b5fd 0%, #fcd3c4 50%, #a5f3fc 100%)" },
+const CURATED_THEMES: Theme[] = [
+  {
+    id: "aurora",
+    name: "Aurora (Default)",
+    desc: "Quantum Emerald & Cyan",
+    swatch: "linear-gradient(135deg, #29F06A 0%, #22D3EE 50%, #A855F7 100%)",
+  },
+  {
+    id: "ocean",
+    name: "Deep Pacific",
+    desc: "Institutional Cobalt & Sky",
+    swatch: "linear-gradient(135deg, #38BDF8 0%, #3B82F6 50%, #6366F1 100%)",
+  },
+  {
+    id: "emerald",
+    name: "Sovereign Mesh",
+    desc: "Matrix Emerald & Mint",
+    swatch: "linear-gradient(135deg, #10B981 0%, #22C55E 50%, #14B8A6 100%)",
+  },
+  {
+    id: "cyberpunk",
+    name: "Cyber Matrix",
+    desc: "Neon Cyan & Magenta",
+    swatch: "linear-gradient(135deg, #22D3EE 0%, #EC4899 50%, #FACC15 100%)",
+  },
+  {
+    id: "vapor",
+    name: "Electric Vapor",
+    desc: "Deep Purple & Neon Cyan",
+    swatch: "linear-gradient(135deg, #A855F7 0%, #06B6D4 50%, #EC4899 100%)",
+  },
+  {
+    id: "sunset",
+    name: "Solar Flare",
+    desc: "Warm Twilight & Amber",
+    swatch: "linear-gradient(135deg, #FB923C 0%, #F43F5E 50%, #A855F7 100%)",
+  },
+  {
+    id: "gold",
+    name: "Prestige Gold",
+    desc: "Executive Gold & Amber",
+    swatch: "linear-gradient(135deg, #EAB308 0%, #F97316 50%, #D97706 100%)",
+  },
+  {
+    id: "midnight",
+    name: "Obsidian Stealth",
+    desc: "Ultra Dark Monochrome",
+    swatch: "linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #020617 100%)",
+  },
 ];
 
 type Anim = "on" | "off";
 
-type CustomColors = {
-  base: string;
-  blob1: string;
-  blob2: string;
-  blob3: string;
-  blob4: string;
-};
-
 const KEY_THEME = "nakharax-theme";
 const KEY_ANIM = "nakharax-anim";
-const KEY_CUSTOM = "nakharax-custom";
-
-const DEFAULT_CUSTOM: CustomColors = {
-  base: "#020617",
-  blob1: "#29F06A",
-  blob2: "#22D3EE",
-  blob3: "#A855F7",
-  blob4: "#FF7A1A",
-};
-
-function hexToRgba(hex: string, alpha: number): string {
-  const m = hex.replace("#", "").match(/.{2}/g);
-  if (!m || m.length < 3) return `rgba(0,0,0,${alpha})`;
-  const [r, g, b] = m.map((x) => parseInt(x, 16));
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
 
 function applyTheme(id: string) {
   const html = document.documentElement;
@@ -52,17 +68,6 @@ function applyTheme(id: string) {
   );
   if (id === "aurora") html.removeAttribute("data-theme");
   else html.setAttribute("data-theme", id);
-}
-
-function applyCustom(c: CustomColors) {
-  const html = document.documentElement;
-  html.setAttribute("data-theme", "custom");
-  html.style.setProperty("--wp-base-from", c.base);
-  html.style.setProperty("--wp-base-to", c.base);
-  html.style.setProperty("--wp-blob-1", hexToRgba(c.blob1, 0.22));
-  html.style.setProperty("--wp-blob-2", hexToRgba(c.blob2, 0.22));
-  html.style.setProperty("--wp-blob-3", hexToRgba(c.blob3, 0.2));
-  html.style.setProperty("--wp-blob-4", hexToRgba(c.blob4, 0.2));
 }
 
 function applyAnim(a: Anim) {
@@ -75,11 +80,9 @@ export function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("aurora");
   const [anim, setAnim] = useState<Anim>("on");
-  const [custom, setCustom] = useState<CustomColors>(DEFAULT_CUSTOM);
-  const [showCustom, setShowCustom] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Hydrate from localStorage and ensure Pure Dark Obsidian Theme
+  // Hydrate from localStorage and enforce Dark Obsidian
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute("data-mode", "dark");
@@ -88,20 +91,9 @@ export function ThemeSwitcher() {
 
     const t = localStorage.getItem(KEY_THEME) || "aurora";
     const a = (localStorage.getItem(KEY_ANIM) as Anim) || "on";
-    const cRaw = localStorage.getItem(KEY_CUSTOM);
     setActive(t);
     setAnim(a);
     applyAnim(a);
-    if (t === "custom" && cRaw) {
-      try {
-        const c = JSON.parse(cRaw) as CustomColors;
-        setCustom(c);
-        applyCustom(c);
-        return;
-      } catch {
-        /* fallthrough */
-      }
-    }
     applyTheme(t);
   }, []);
 
@@ -118,7 +110,6 @@ export function ThemeSwitcher() {
     setActive(id);
     applyTheme(id);
     localStorage.setItem(KEY_THEME, id);
-    setShowCustom(false);
   };
 
   const toggleAnim = () => {
@@ -128,107 +119,77 @@ export function ThemeSwitcher() {
     localStorage.setItem(KEY_ANIM, next);
   };
 
-  const updateCustom = (patch: Partial<CustomColors>) => {
-    const next = { ...custom, ...patch };
-    setCustom(next);
-    applyCustom(next);
-    setActive("custom");
-    localStorage.setItem(KEY_CUSTOM, JSON.stringify(next));
-    localStorage.setItem(KEY_THEME, "custom");
-  };
-
   return (
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors"
-        aria-label="Wallpaper Atmosphere"
-        title="Atmospheric Lighting"
+        className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-slate-300 hover:text-white hover:border-white/25 hover:bg-white/[0.08] transition-all backdrop-blur-xl"
+        aria-label="Plasma Atmosphere Palette"
+        title="Atmospheric Color Themes"
       >
-        <Palette size={14} />
+        <Palette size={13} className="text-emerald-400" />
+        <span className="text-[11px] font-mono font-medium hidden sm:inline">Atmosphere</span>
       </button>
+
       {open && (
-        <div className="absolute right-0 top-7 w-72 rounded-2xl border border-white/15 bg-slate-950/85 p-3.5 shadow-2xl backdrop-blur-3xl">
-          {/* Header & Animation toggle */}
-          <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300">
-              Plasma Auras
-            </span>
+        <div className="absolute right-0 top-9 w-80 rounded-2xl border border-white/20 bg-slate-950/90 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-3xl z-50 animate-scale-in">
+          {/* Header & Drift Switch */}
+          <div className="flex items-center justify-between mb-3.5 border-b border-white/10 pb-2.5">
+            <div>
+              <div className="text-[12px] font-bold text-white tracking-wide">
+                Plasma Atmosphere
+              </div>
+              <div className="text-[10px] font-mono text-slate-400">
+                Curated Refraction Palettes
+              </div>
+            </div>
             <button
               onClick={toggleAnim}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 px-2 py-1 text-[11px] font-mono transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 px-2.5 py-1 text-[10.5px] font-mono transition-colors"
             >
-              {anim === "on" ? <Sparkles size={12} className="text-emerald-400" /> : <Pause size={12} />}
-              {anim === "on" ? "Drift: ON" : "Drift: OFF"}
+              {anim === "on" ? <Sparkles size={11} className="text-emerald-400" /> : <Pause size={11} />}
+              {anim === "on" ? "Motion: ON" : "Motion: OFF"}
             </button>
           </div>
 
-          {/* Wallpaper presets */}
-          <div className="grid grid-cols-4 gap-2 mb-3">
-            {THEMES.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => selectTheme(t.id)}
-                title={t.name}
-                className="group relative aspect-square rounded-xl ring-1 ring-white/15 overflow-hidden transition-all hover:scale-105 hover:ring-emerald-400"
-              >
-                <div className="absolute inset-0" style={{ background: t.swatch }} />
-                {active === t.id && (
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <Check size={14} className="text-white drop-shadow" />
+          {/* 8 Curated Atmosphere Presets */}
+          <div className="grid grid-cols-2 gap-2">
+            {CURATED_THEMES.map((t) => {
+              const isSelected = active === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => selectTheme(t.id)}
+                  className={`group relative flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all duration-200 ${
+                    isSelected
+                      ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_20px_rgba(41,240,106,0.2)]"
+                      : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.07]"
+                  }`}
+                >
+                  <div
+                    className="h-7 w-7 shrink-0 rounded-lg ring-1 ring-white/20 shadow-sm relative overflow-hidden"
+                    style={{ background: t.swatch }}
+                  >
+                    {isSelected && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <Check size={13} className="text-white drop-shadow" />
+                      </div>
+                    )}
                   </div>
-                )}
-                <span className="absolute bottom-0 inset-x-0 bg-black/60 backdrop-blur-sm text-[9px] text-center text-white py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {t.name}
-                </span>
-              </button>
-            ))}
+                  <div className="min-w-0 flex-1">
+                    <div className={`text-[11.5px] font-bold truncate ${isSelected ? "text-emerald-300" : "text-white"}`}>
+                      {t.name}
+                    </div>
+                    <div className="text-[9.5px] text-slate-400 truncate">
+                      {t.desc}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
-
-          {/* Custom color picker toggle */}
-          <button
-            onClick={() => setShowCustom((v) => !v)}
-            className="w-full text-center text-[11px] font-mono text-emerald-400 hover:text-emerald-300 py-1 rounded border border-emerald-500/20 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors"
-          >
-            {showCustom ? "Close Custom Palette" : "Customize Light Spectrum"}
-          </button>
-
-          {showCustom && (
-            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
-              <ColorRow label="Background" value={custom.base} onChange={(v) => updateCustom({ base: v })} />
-              <ColorRow label="Aura 1 (Green)" value={custom.blob1} onChange={(v) => updateCustom({ blob1: v })} />
-              <ColorRow label="Aura 2 (Cyan)" value={custom.blob2} onChange={(v) => updateCustom({ blob2: v })} />
-              <ColorRow label="Aura 3 (Purple)" value={custom.blob3} onChange={(v) => updateCustom({ blob3: v })} />
-              <ColorRow label="Aura 4 (Orange)" value={custom.blob4} onChange={(v) => updateCustom({ blob4: v })} />
-            </div>
-          )}
         </div>
       )}
-    </div>
-  );
-}
-
-function ColorRow({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div className="flex items-center justify-between text-xs font-mono">
-      <span className="text-slate-400">{label}</span>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="h-5 w-5 rounded border-0 bg-transparent cursor-pointer"
-        />
-        <span className="text-slate-300 uppercase text-[10px]">{value}</span>
-      </div>
     </div>
   );
 }
