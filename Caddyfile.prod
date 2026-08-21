@@ -1,0 +1,15 @@
+# NakharaX Production Caddyfile (Auto-TLS)
+{
+    email admin@nakharax.com
+}
+
+# L1 RPC Gateway & WebSocket Endpoint
+rpc.nakharax.com {
+    reverse_proxy /ws nakharax-genesis-node:8546
+    reverse_proxy nakharax-genesis-node:8545
+}
+
+# Web Terminal & OS Dashboard
+app.nakharax.com {
+    reverse_proxy web-os:3000
+}

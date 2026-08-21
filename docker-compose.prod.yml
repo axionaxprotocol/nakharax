@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # ===========================================================================
+  # 1. Edge Ingress & Auto-TLS Proxy (Caddy)
+  # ===========================================================================
+  caddy:
+    image: caddy:2-alpine
+    container_name: nakharax-edge-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.prod:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - nakharax-mesh
+
+  # ===========================================================================
+  # 2. L1 Genesis Validator Node (Frankfurt EU - Chain 86137)
+  # ===========================================================================
+  nakharax-genesis-node:
+    image: ghcr.io/axionaxprotocol/nakharax-node:latest
+    container_name: nakharax-genesis-validator
+    restart: unless-stopped
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+      - "30303:30303"
+    environment:
+      - CHAIN_ID=86137
+      - NETWORK=nakharax-testnet
+      - NODE_ROLE=validator
+      - BLOCK_TIME=3000
+      - GENESIS_PATH=/root/.nakharax/genesis.json
+    volumes:
+      - ./services/core/core/tools/genesis.json:/root/.nakharax/genesis.json:ro
+      - genesis_node_data:/root/.nakharax
+    networks:
+      - nakharax-mesh
+
+  # ===========================================================================
+  # 3. Testnet Faucet Microservice (Dispenses 100 tNAK per claim)
+  # ===========================================================================
+  faucet:
+    image: ghcr.io/axionaxprotocol/nakharax-faucet:latest
+    container_name: nakharax-prod-faucet
+    restart: unless-stopped
+    environment:
+      - RPC_URL=http://nakharax-genesis-node:8545
+      - CHAIN_ID=86137
+      - FAUCET_AMOUNT=100
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - nakharax-genesis-node
+      - redis
+    networks:
+      - nakharax-mesh
+
+  # ===========================================================================
+  # 4. Redis Cache (<1ms Kill-Switch & Rate Limiter)
+  # ===========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: nakharax-prod-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - nakharax-mesh
+
+  # ===========================================================================
+  # 5. PostgreSQL / TimescaleDB (Metrics & PDPA Audit Trail)
+  # ===========================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: nakharax-prod-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=nakharax_prod
+      - POSTGRES_USER=nakharax
+      - POSTGRES_PASSWORD=nakharax_sovereign_secure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nakharax-mesh
+
+volumes:
+  caddy_data:
+  caddy_config:
+  genesis_node_data:
+  redis_data:
+  postgres_data:
+
+networks:
+  nakharax-mesh:
+    driver: bridge
