@@ -57,15 +57,18 @@ export function Card({
   interactive = false,
   padded = true,
   tone,
+  onClick,
 }: {
   className?: string;
   children: ReactNode;
   interactive?: boolean;
   padded?: boolean;
   tone?: Tone;
+  onClick?: () => void;
 }) {
   return (
     <div
+      onClick={onClick}
       className={cn(
         "relative rounded-xl border border-white/[0.12] bg-slate-950/40 backdrop-blur-2xl transition-all duration-300",
         padded && "p-5 sm:p-6",
@@ -141,21 +144,24 @@ export function PageShell({
 export function SectionHeader({
   title,
   description,
+  subtitle,
   action,
 }: {
   title: ReactNode;
   description?: ReactNode;
+  subtitle?: ReactNode;
   action?: ReactNode;
 }) {
+  const desc = description ?? subtitle;
   return (
     <div className="flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between border-b border-white/[0.08] pb-3">
       <div>
         <h2 className="text-[1.25rem] font-bold tracking-tight text-white sm:text-[1.35rem]">
           {title}
         </h2>
-        {description && (
+        {desc && (
           <p className="mt-0.5 text-[13px] text-slate-400">
-            {description}
+            {desc}
           </p>
         )}
       </div>

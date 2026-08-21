@@ -137,3 +137,26 @@ class LoRAWeightMerger:
         threshold = torch.kthvalue(flat, flat.numel() - k + 1).values
         mask = tensor.abs() >= threshold
         return tensor * mask.float()
+
+
+def ties_merging(
+    base_weights: Dict[str, torch.Tensor],
+    adapters: List[Dict[str, torch.Tensor]],
+    weights: Optional[List[float]] = None,
+    density: float = 0.2,
+) -> Dict[str, torch.Tensor]:
+    """Top-level functional interface for TIES parameter merging."""
+    merger = LoRAWeightMerger()
+    return merger.ties_merge(base_weights, adapters, weights, density)
+
+
+def dare_merging(
+    base_weights: Dict[str, torch.Tensor],
+    adapters: List[Dict[str, torch.Tensor]],
+    weights: Optional[List[float]] = None,
+    drop_rate: float = 0.5,
+) -> Dict[str, torch.Tensor]:
+    """Top-level functional interface for DARE parameter merging."""
+    merger = LoRAWeightMerger()
+    return merger.dare_merge(base_weights, adapters, weights, drop_rate)
+

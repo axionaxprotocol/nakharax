@@ -167,3 +167,26 @@ class ComputeBackend:
             "device": device_str,
             "optical_bridge_available": self._optical_ops is not None,
         }
+
+
+def get_compute_backend(config: Optional[Dict[str, Any]] = None) -> ComputeBackend:
+    """Factory helper to instantiate active ComputeBackend HAL."""
+    return ComputeBackend(config or {})
+
+
+def probe_hardware() -> Dict[str, Any]:
+    """Probe system hardware and return detected acceleration capabilities."""
+    backend = get_compute_backend()
+    caps = backend.capabilities_dict()
+    cuda_available = TORCH_AVAILABLE and torch.cuda.is_available()
+    mps_available = TORCH_AVAILABLE and hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+    return {
+        "status": "online",
+        "backend": caps["compute_type"],
+        "device": caps["device"],
+        "cuda_available": cuda_available,
+        "mps_available": mps_available,
+        "hailo_available": HAILO_AVAILABLE,
+        "optical_available": OPTICAL_AVAILABLE,
+    }
+
