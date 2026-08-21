@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Activity, ArrowUpRight, Cpu, Layers, Wallet } from "lucide-react";
 
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { useLiveBlock } from "@/lib/use-live-block";
 import { cn } from "@/lib/cn";
 
 const NAV_LINKS = [
@@ -19,6 +20,7 @@ const NAV_LINKS = [
 
 export function MenuBar() {
   const pathname = usePathname();
+  const { blockNumber, isLive } = useLiveBlock();
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 h-14 border-b border-white/[0.12] bg-slate-950/75 shadow-[0_4px_30px_rgba(0,0,0,0.6)] backdrop-blur-3xl">
@@ -82,13 +84,23 @@ export function MenuBar() {
 
         {/* Right: Clean Action Cluster */}
         <div className="flex items-center gap-2.5 sm:gap-3">
-          {/* PoPC Live Pill */}
-          <div className="hidden xl:inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-mono backdrop-blur-xl">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(41,240,106,0.8)]" />
+          {/* Real-time PoPC Live Pill */}
+          <Link
+            href="/apps/explorer"
+            className="hidden lg:inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-mono backdrop-blur-xl transition-all hover:bg-white/10 hover:border-emerald-500/40"
+          >
+            <span
+              className={cn(
+                "h-1.5 w-1.5 rounded-full shadow-[0_0_6px_rgba(41,240,106,0.8)]",
+                isLive ? "animate-pulse bg-emerald-400" : "bg-amber-400"
+              )}
+            />
             <span className="text-slate-300 font-medium">PoPC Live</span>
             <span className="text-slate-500">·</span>
             <span className="text-cyan-300 font-semibold">Chain 86137</span>
-          </div>
+            <span className="text-slate-500">·</span>
+            <span className="text-emerald-400 font-bold">#{blockNumber.toLocaleString()}</span>
+          </Link>
 
           {/* Atmospheric Lighting Picker */}
           <ThemeSwitcher />

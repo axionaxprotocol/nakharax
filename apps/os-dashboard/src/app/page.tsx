@@ -29,6 +29,7 @@ import {
   StatusPill,
 } from "@/components/card";
 import { QuickConnectBox } from "@/components/quick-connect";
+import { LiveStatsSection } from "@/components/live-stats";
 import { DEFAULT_NODES, getNodeStatus } from "@/lib/rpc";
 
 export const dynamic = "force-dynamic";
@@ -106,38 +107,14 @@ export default async function Home() {
       </section>
 
       {/* =========================================================================
-          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS (WITH EXPLICIT MOCK/LIVE TAGS)
+          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS (REAL-TIME LIVE SYNC)
           ========================================================================= */}
-      <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
-        <StatCard
-          label="Consensus block"
-          value={maxBlock > 0 ? `#${maxBlock.toLocaleString()}` : "Syncing..."}
-          hint={maxBlock > 0 ? "RPC-observed height (Live)" : "Connecting to Node RPC"}
-          icon={<Layers3 size={18} />}
-          tone={maxBlock > 0 ? "chain" : "neutral"}
-        />
-        <StatCard
-          label="Active gateways"
-          value={`${online}/${totalNodes} Online`}
-          hint={isOnline ? "Active gateway cluster (Live)" : "Reconnecting to Node RPC"}
-          icon={<Server size={18} />}
-          tone={isOnline ? "ai" : "danger"}
-        />
-        <StatCard
-          label="DHT peer mesh"
-          value={totalPeers > 0 ? `${totalPeers} Connected` : "Mesh Initialized"}
-          hint={totalPeers > 0 ? "Live peer connections (BFT Mesh)" : "Direct P2P Libp2p"}
-          icon={<RadioTower size={18} />}
-          tone={totalPeers > 0 ? "violet" : "neutral"}
-        />
-        <StatCard
-          label="Claim policy"
-          value="Evidence"
-          hint="Zero AI slop · Repeatable tests"
-          icon={<Gauge size={18} />}
-          tone="warn"
-        />
-      </section>
+      <LiveStatsSection
+        initialBlock={maxBlock}
+        initialOnline={online}
+        initialTotalNodes={totalNodes}
+        initialPeers={totalPeers}
+      />
 
       {/* =========================================================================
           SECTION 3: DEVELOPER INGRESS & TERMINAL QUICK-CONNECT
