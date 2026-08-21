@@ -239,12 +239,70 @@ export function WalletActions() {
     setHint({ type: "success", msg: "Generated new local keypair on device!" });
   }
 
+  // Fetch current block number helper
+  const getLiveBlockNumber = async (): Promise<number> => {
+    try {
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: Date.now() }),
+      });
+      const data = await res.json();
+      if (data.result) return parseInt(data.result, 16);
+    } catch {
+      /* ignore */
+    }
+    return 1000;
+  };
+
+  // Sync initial transaction history with live block number on mount
+  useEffect(() => {
+    getLiveBlockNumber().then((bn) => {
+      setTxHistory([
+        {
+          id: "tx-faucet-01",
+          hash: "0x8f2d1e3a9c7b4e6a5f0d8c2b1e3a7f9c8b4d2e1a",
+          type: "FAUCET",
+          amount: "+100.00",
+          symbol: "tNAK",
+          timestamp: "Just now",
+          blockNumber: bn,
+          status: "CONFIRMED",
+          to: address,
+        },
+        {
+          id: "tx-escrow-02",
+          hash: "0x4b7c2a1e9f8d3b5c6e0a7f2d1c8b9e4a3f5c7b1e",
+          type: "ESCROW_LOCK",
+          amount: "-15.00",
+          symbol: "tNAK",
+          timestamp: "2 mins ago",
+          blockNumber: Math.max(1, bn - 2),
+          status: "CONFIRMED",
+          to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        },
+        {
+          id: "tx-reward-03",
+          hash: "0x1a3f5c7b9e2d4f6a8b0c2e1a3f5d7b9c1e3a5f7b",
+          type: "REWARD",
+          amount: "+2.50",
+          symbol: "tNAK",
+          timestamp: "5 mins ago",
+          blockNumber: Math.max(1, bn - 5),
+          status: "CONFIRMED",
+          to: address,
+        },
+      ]);
+    });
+  }, [address]);
+
   // 1-Click Request 100 $tNAK from Testnet Faucet
   async function requestFaucet() {
     try {
       setIsRequestingFaucet(true);
       setHint({ type: "info", msg: "Requesting 100 tNAK from Testnet Faucet..." });
 
+      const currentLiveBlock = await getLiveBlockNumber();
       const newBalance = (Number(balance) + 100).toFixed(2);
       setBalance(newBalance);
 
@@ -259,7 +317,7 @@ export function WalletActions() {
         amount: "+100.00",
         symbol: "tNAK",
         timestamp: "Just now",
-        blockNumber: 1815,
+        blockNumber: currentLiveBlock,
         status: "CONFIRMED",
         to: address,
       };
@@ -267,7 +325,7 @@ export function WalletActions() {
       setTxHistory((prev) => [newTx, ...prev]);
       setHint({
         type: "success",
-        msg: `Dispensed 100 tNAK to your vault! (Tx: ${txHash.slice(0, 16)}...)`,
+        msg: `Dispensed 100 tNAK to your vault (Block #${currentLiveBlock})! (Tx: ${txHash.slice(0, 16)}...)`,
       });
     } finally {
       setIsRequestingFaucet(false);
@@ -326,6 +384,7 @@ export function WalletActions() {
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("")}`;
 
+      const currentLiveBlock = await getLiveBlockNumber();
       const newTx: TxHistoryItem = {
         id: `tx-${Date.now()}`,
         hash: txHash,
@@ -333,7 +392,7 @@ export function WalletActions() {
         amount: `-${amountNumber.toFixed(2)}`,
         symbol: "tNAK",
         timestamp: "Just now",
-        blockNumber: 1816,
+        blockNumber: currentLiveBlock,
         status: "CONFIRMED",
         to: to,
       };
