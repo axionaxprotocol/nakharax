@@ -111,22 +111,22 @@ export default async function Home() {
       <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Consensus block"
-          value={maxBlock > 0 ? maxBlock.toLocaleString() : "86,137"}
-          hint={maxBlock > 0 ? "RPC-observed height (Live)" : "Genesis height (Mock Reference)"}
+          value={maxBlock > 0 ? `#${maxBlock.toLocaleString()}` : "Syncing..."}
+          hint={maxBlock > 0 ? "RPC-observed height (Live)" : "Connecting to Node RPC"}
           icon={<Layers3 size={18} />}
           tone={maxBlock > 0 ? "chain" : "neutral"}
         />
         <StatCard
           label="Active gateways"
           value={`${online}/${totalNodes} Online`}
-          hint={isOnline ? "Active gateway cluster (Live)" : "No local node connected (Live Probe)"}
+          hint={isOnline ? "Active gateway cluster (Live)" : "Reconnecting to Node RPC"}
           icon={<Server size={18} />}
           tone={isOnline ? "ai" : "danger"}
         />
         <StatCard
           label="DHT peer mesh"
-          value={totalPeers > 0 ? totalPeers.toString() : "14,802"}
-          hint={totalPeers > 0 ? "Live peer connections" : "Simulated routing table (Mock)"}
+          value={totalPeers > 0 ? `${totalPeers} Connected` : "Mesh Initialized"}
+          hint={totalPeers > 0 ? "Live peer connections (BFT Mesh)" : "Direct P2P Libp2p"}
           icon={<RadioTower size={18} />}
           tone={totalPeers > 0 ? "violet" : "neutral"}
         />
