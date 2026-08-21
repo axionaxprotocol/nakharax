@@ -43,7 +43,69 @@ export default function WorkerManagerPage() {
     "DeAI-Whisper-Medium",
   ]);
   const [copied, setCopied] = useState(false);
-  const [isSimulatedRunning, setIsSimulatedRunning] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [detectedSpecs, setDetectedSpecs] = useState<string | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [regNotice, setRegNotice] = useState<string | null>(null);
+
+  const autoDetectHardware = () => {
+    setIsDetecting(true);
+    try {
+      const cores = navigator.hardwareConcurrency || 8;
+      const mem = (navigator as any).deviceMemory || 16;
+      let detectedGpu = "Auto-Detected Compute Host";
+      try {
+        const canvas = document.createElement("canvas");
+        const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        if (gl) {
+          const debugInfo = (gl as any).getExtension("WEBGL_debug_renderer_info");
+          if (debugInfo) {
+            detectedGpu = (gl as any).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || detectedGpu;
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+
+      setGpuName(detectedGpu);
+      setVramAllocated(String(Math.min(32, Math.max(8, mem))));
+      setDetectedSpecs(`Detected: ${cores} CPU Cores · ~${mem}GB RAM · ${detectedGpu}`);
+    } finally {
+      setIsDetecting(false);
+    }
+  };
+
+  const registerWorkerOnChain = async () => {
+    setIsRegistering(true);
+    setRegNotice(null);
+    try {
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nakharax_registerWorker",
+          params: [
+            {
+              address: workerAddress,
+              accelerator: gpuName,
+              vram: `${vramAllocated}GB`,
+              models: selectedModels,
+            },
+          ],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      if (data.result?.success) {
+        setRegNotice(`✅ Worker Registered On-Chain! Address: ${workerAddress.slice(0, 14)}...`);
+      }
+    } catch {
+      setRegNotice("Worker registration broadcast error.");
+    } finally {
+      setIsRegistering(false);
+    }
+  };
 
   const toggleModel = (model: string) => {
     setSelectedModels((prev) =>
@@ -220,22 +282,39 @@ max_cache_size_gb = 10
                 </select>
               </div>
 
-              <div>
-                <label className="block text-[10.5px] font-mono uppercase tracking-wider text-slate-400">
-                  VRAM Allocation Limit
-                </label>
-                <select
-                  value={vramAllocated}
-                  onChange={(e) => setVramAllocated(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 font-mono text-[11.5px] text-white focus:border-emerald-500/50 focus:outline-none"
-                >
-                  <option value="8">8 GB (Lightweight)</option>
-                  <option value="16">16 GB (Standard)</option>
-                  <option value="24">24 GB (Pro GPU)</option>
-                  <option value="32">32 GB (RTX 5090)</option>
-                  <option value="48">48 GB (Dual GPU)</option>
-                </select>
+            <div className="flex items-center justify-between pt-1">
+              <button
+                type="button"
+                onClick={autoDetectHardware}
+                disabled={isDetecting}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 text-xs font-mono font-semibold text-cyan-300 transition-all"
+              >
+                <RefreshCw size={12} className={isDetecting ? "animate-spin" : ""} />
+                <span>Auto-Detect My Hardware</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={registerWorkerOnChain}
+                disabled={isRegistering}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 px-3.5 py-1.5 text-xs font-bold text-slate-950 transition-all shadow-sm"
+              >
+                <Power size={12} />
+                <span>{isRegistering ? "Broadcasting..." : "Register Worker On-Chain"}</span>
+              </button>
+            </div>
+
+            {detectedSpecs && (
+              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-2.5 text-[11px] font-mono text-cyan-200">
+                {detectedSpecs}
               </div>
+            )}
+
+            {regNotice && (
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-[11px] font-mono text-emerald-200">
+                {regNotice}
+              </div>
+            )}
             </div>
 
             <div>
