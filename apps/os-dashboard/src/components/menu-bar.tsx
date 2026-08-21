@@ -55,7 +55,13 @@ export function MenuBar() {
           >
             {NAV_LINKS.map(({ href, label }) => {
               const active =
-                href === "/" ? pathname === "/" : pathname?.startsWith(href);
+                href === "/"
+                  ? pathname === "/"
+                  : href === "/activity"
+                  ? pathname === "/activity" ||
+                    (pathname?.startsWith("/activity/") &&
+                      !pathname?.startsWith("/activity/models"))
+                  : pathname === href || pathname?.startsWith(`${href}/`);
               return (
                 <Link
                   key={href}
