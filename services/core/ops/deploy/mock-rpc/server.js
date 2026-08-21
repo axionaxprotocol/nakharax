@@ -9,7 +9,17 @@ const WS_PORT = process.env.WS_PORT || 8546;
 const HOST = process.env.HOST || '127.0.0.1';
 const CHAIN_ID = process.env.CHAIN_ID || '86137';
 const NETWORK = process.env.NETWORK || 'nakharax-testnet';
-const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '5000'); // 5 seconds
+const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '3000'); // 3 seconds block cadence
+// Enable full CORS for browser dashboards & MetaMask
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(express.json({ strict: false, type: 'application/json' }));
 

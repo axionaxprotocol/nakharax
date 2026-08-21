@@ -59,34 +59,35 @@ interface RealTransactionData {
 }
 
 export default function BlockExplorerPage() {
-  const [currentBlock, setCurrentBlock] = useState<number>(1825);
+  const [currentBlock, setCurrentBlock] = useState<number | null>(null);
   const [blocks, setBlocks] = useState<RealBlockData[]>([]);
   const [transactions, setTransactions] = useState<RealTransactionData[]>([]);
   const [activeValidators, setActiveValidators] = useState<number>(3);
   const [gasPriceGwei, setGasPriceGwei] = useState<string>("1.2");
-  const [totalTxsCount, setTotalTxsCount] = useState<number>(3650);
+  const [totalTxsCount, setTotalTxsCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<any | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
-  // Fetch live blockchain state from RPC endpoint
+  // Fetch live blockchain state from RPC endpoint via /api/rpc
   const fetchLiveState = useCallback(async () => {
     try {
       // 1. Fetch current block number
-      const bnRes = await fetch("http://127.0.0.1:8545", {
+      const bnRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: 1 }),
       });
       const bnData = await bnRes.json();
-      const latestBlockNum = bnData.result ? parseInt(bnData.result, 16) : 1825;
+      if (!bnData.result) return;
+      const latestBlockNum = parseInt(bnData.result, 16);
       setCurrentBlock(latestBlockNum);
       setTotalTxsCount(latestBlockNum * 2 + 14);
 
       // 2. Fetch peer/validator count
       try {
-        const peerRes = await fetch("http://127.0.0.1:8545", {
+        const peerRes = await fetch("/api/rpc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ jsonrpc: "2.0", method: "net_peerCount", params: [], id: 2 }),
@@ -104,7 +105,7 @@ export default function BlockExplorerPage() {
         const num = latestBlockNum - offset;
         if (num < 0) return null;
         try {
-          const res = await fetch("http://127.0.0.1:8545", {
+          const res = await fetch("/api/rpc", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -218,7 +219,7 @@ export default function BlockExplorerPage() {
       // Check if number (Block Height)
       if (/^\d+$/.test(query)) {
         const num = parseInt(query, 10);
-        const res = await fetch("http://127.0.0.1:8545", {
+        const res = await fetch("/api/rpc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -245,7 +246,7 @@ export default function BlockExplorerPage() {
         // Address or Tx Hash
         if (query.length === 42) {
           // Account Balance query
-          const res = await fetch("http://127.0.0.1:8545", {
+          const res = await fetch("/api/rpc", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -300,7 +301,7 @@ export default function BlockExplorerPage() {
       meta={
         <>
           <StatusPill tone="chain" pulse>
-            Live Block #{currentBlock.toLocaleString()}
+            {currentBlock != null ? `Live Block #${currentBlock.toLocaleString()}` : "Connecting to Node..."}
           </StatusPill>
           <StatusPill tone="ai">PoPC Fast-Finality (2.84s)</StatusPill>
           <StatusPill tone="violet">RPC: http://127.0.0.1:8545</StatusPill>
@@ -320,7 +321,7 @@ export default function BlockExplorerPage() {
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Block Height"
-          value={`#${currentBlock.toLocaleString()}`}
+          value={currentBlock != null ? `#${currentBlock.toLocaleString()}` : "Syncing..."}
           hint="Cadence: 2.84s (Live RPC)"
           icon={<Boxes size={18} />}
           tone="chain"
