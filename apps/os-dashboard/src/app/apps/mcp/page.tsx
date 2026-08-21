@@ -12,6 +12,7 @@ import {
   Code2,
   Cpu,
   Database,
+  Download,
   ExternalLink,
   Flame,
   Globe2,
@@ -231,6 +232,36 @@ export default function MCPMarketplacePage() {
     }
   }
 
+  const [exportedNotice, setExportedNotice] = useState<string | null>(null);
+
+  const exportClaudeDesktopConfig = () => {
+    const config = {
+      mcpServers: {
+        "nakharax-quant-risk": {
+          url: "http://127.0.0.1:8000/mcp/quant-risk/sse",
+          transport: "sse",
+        },
+        "nakharax-evm-auditor": {
+          url: "http://127.0.0.1:8545/mcp/auditor",
+          transport: "websocket",
+        },
+        "nakharax-web-harvester": {
+          url: "http://127.0.0.1:8545/mcp/crawler/sse",
+          transport: "sse",
+        },
+      },
+    };
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "claude_desktop_config.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportedNotice("✅ Downloaded claude_desktop_config.json! Place in %APPDATA%\\Claude\\");
+    setTimeout(() => setExportedNotice(null), 5000);
+  };
+
   return (
     <PageShell
       eyebrow="Agentic Operating System"
@@ -239,19 +270,30 @@ export default function MCPMarketplacePage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            MCP Mesh Active
+            MCP Gateway Live
           </StatusPill>
-          <StatusPill tone="violet">{skills.length} Specialized Servers</StatusPill>
+          <StatusPill tone="chain">{skills.length} Registered Skills</StatusPill>
+          {exportedNotice && <StatusPill tone="violet">{exportedNotice}</StatusPill>}
         </>
       }
       actions={
-        <Link
-          href="/apps"
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold text-white transition-colors hover:bg-white/10"
-        >
-          <ArrowLeft size={13} />
-          Modules
-        </Link>
+        <>
+          <button
+            type="button"
+            onClick={exportClaudeDesktopConfig}
+            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 px-4 py-2 text-[11px] font-semibold text-emerald-300 transition-colors"
+          >
+            <Download size={13} />
+            Export Claude Desktop MCP JSON
+          </button>
+          <Link
+            href="/apps"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-semibold text-white transition-colors hover:bg-white/10"
+          >
+            <ArrowLeft size={13} />
+            Modules
+          </Link>
+        </>
       }
     >
       {/* 4 Architecture Stat Blocks */}

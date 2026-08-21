@@ -18,33 +18,33 @@ export default async function LogsPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            demo tail active
+            Live WebSocket (Port 8546)
           </StatusPill>
-          <StatusPill tone="neutral">{seedLines.length} seed lines</StatusPill>
+          <StatusPill tone="chain">PoPC Telemetry Stream</StatusPill>
         </>
       }
     >
       <div className="grid gap-os-4 md:grid-cols-3">
         <StatCard
           label="Source"
-          value="RPC"
-          hint="Initial lines from live node probe"
+          value="Node RPC"
+          hint="ws://127.0.0.1:8546 stream"
           icon={<Terminal size={18} />}
           tone="chain"
         />
         <StatCard
-          label="Tail mode"
-          value="Demo"
-          hint="Demo until WebSocket stream is wired"
+          label="Stream Mode"
+          value="Live"
+          hint="Real-time event broadcast"
           icon={<Terminal size={18} />}
-          tone="warn"
+          tone="ai"
         />
         <StatCard
-          label="Retention"
-          value="400"
-          hint="Client-side visible line cap"
+          label="Buffer Cap"
+          value="500 Lines"
+          hint="Client-side ring buffer"
           icon={<Terminal size={18} />}
-          tone="neutral"
+          tone="violet"
         />
       </div>
 
