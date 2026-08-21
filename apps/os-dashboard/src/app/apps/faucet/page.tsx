@@ -57,7 +57,7 @@ export default function TestnetFaucetPage() {
   // Fetch live on-chain faucet treasury balance
   const fetchLiveFaucetStats = useCallback(async () => {
     try {
-      const bnRes = await fetch("http://127.0.0.1:8545", {
+      const bnRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: 1 }),
@@ -70,7 +70,7 @@ export default function TestnetFaucetPage() {
       }
 
       // Query treasury account
-      const balRes = await fetch("http://127.0.0.1:8545", {
+      const balRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -105,7 +105,7 @@ export default function TestnetFaucetPage() {
       setReceiptNotice("Broadcasting nakharax_faucet JSON-RPC to Node RPC...");
 
       // Call live RPC
-      const res = await fetch("http://127.0.0.1:8545", {
+      const res = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

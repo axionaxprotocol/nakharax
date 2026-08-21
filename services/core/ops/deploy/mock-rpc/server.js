@@ -383,8 +383,64 @@ function handleRpcMethod(method, params, id) {
       transactions[txHash] = tx;
       pendingTransactions.push(tx);
       networkStats.totalTransactions++;
-      
       return jsonRpcResponse(id, txHash);
+    }
+      
+    case 'eth_sendTransaction': {
+      const [txObj] = params;
+      const txHash = generateHash();
+      const fromAddr = (txObj?.from || generateAddress()).toLowerCase();
+      const toAddr = (txObj?.to || generateAddress()).toLowerCase();
+      const valHex = txObj?.value || '0x0';
+      const valWei = BigInt(valHex);
+
+      // Deduct balance from sender if account exists
+      if (accounts[fromAddr]) {
+        const curBal = BigInt(accounts[fromAddr].balance || '0x0');
+        if (curBal >= valWei) {
+          accounts[fromAddr].balance = '0x' + (curBal - valWei).toString(16);
+        }
+      }
+
+      // Credit balance to recipient
+      if (!accounts[toAddr]) {
+        accounts[toAddr] = { balance: '0x0', nonce: '0x0' };
+      }
+      const recBal = BigInt(accounts[toAddr].balance || '0x0');
+      accounts[toAddr].balance = '0x' + (recBal + valWei).toString(16);
+
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: toHex(accounts[fromAddr]?.nonce || 0),
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: fromAddr,
+        to: toAddr,
+        value: valHex,
+        gas: '0x5208',
+        gasPrice: '0x470de4df82', // 1.2 Gwei
+        input: txObj?.data || '0x',
+        v: '0x1b',
+        r: generateHash(),
+        s: generateHash(),
+        type: txObj?.data?.length > 10 ? 'DEAI_COMPUTE_JOB' : 'TRANSFER',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  tx         INFO  mined tx ${txHash.slice(0, 16)}... from=${fromAddr.slice(0, 10)}... to=${toAddr.slice(0, 10)}... value=${valHex}`);
+      return jsonRpcResponse(id, txHash);
+    }
+
+    case 'nakharax_getRecentTransactions': {
+      const allTxs = Object.values(transactions).slice(-25).reverse();
+      return jsonRpcResponse(id, allTxs);
     }
 
     case 'eth_getTransactionByHash': {
@@ -565,13 +621,36 @@ function handleRpcMethod(method, params, id) {
       if (!addr || !addr.startsWith('0x') || addr.length < 10) {
         return jsonRpcError(id, -32602, 'Invalid recipient address');
       }
-      const current = accounts[addr] ? parseInt(accounts[addr].balance, 16) : 0;
+      const current = accounts[addr] ? BigInt(accounts[addr].balance) : 0n;
       const addedWei = BigInt(Math.floor(amount * 1e18));
-      const newBal = (BigInt(current) + addedWei).toString(16);
+      const newBal = (current + addedWei).toString(16);
       accounts[addr] = { balance: '0x' + newBal, nonce: '0x0' };
       const txHash = generateHash();
-      broadcastLog(`${new Date().toISOString()}  faucet     INFO  dispensed ${amount} tNAK -> ${addr.slice(0, 12)}... tx=${txHash.slice(0, 16)}...`);
-      return jsonRpcResponse(id, { success: true, txHash, amount, recipient: addr });
+
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: '0x0',
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: '0x0000000000000000000000000000000000000001',
+        to: addr,
+        value: '0x' + addedWei.toString(16),
+        gas: '0x5208',
+        gasPrice: '0x470de4df82', // 1.2 Gwei
+        input: '0x6e616b68617261785f666175636574',
+        type: 'FAUCET_DISPENSE',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  faucet     INFO  dispensed ${amount} tNAK -> ${addr.slice(0, 12)}... tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
+      return jsonRpcResponse(id, { success: true, txHash, blockNumber, amount, recipient: addr });
     }
 
     // =========================================================================
