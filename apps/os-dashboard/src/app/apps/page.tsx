@@ -37,8 +37,8 @@ type App = {
 const APPS: App[] = [
   {
     id: "propsentinel",
-    name: "PropSentinel Risk",
-    desc: "Live microservice route. Opens telemetry, drawdown limits, kill-switch events, and account risk monitoring.",
+    name: "XpFirm PropSentinel (xpfirm.com)",
+    desc: "Institutional Quant Risk Management Terminal for Prop Traders. Real-time Monte Carlo drawdown shields, sub-ms MT5 Kill-Switch circuit breakers, and risk telemetry.",
     icon: Skull,
     tone: "danger",
     state: "live",
