@@ -8,9 +8,9 @@ async function main() {
   const [deployer] = await hre.ethers.getSigners();
   console.log("Deployer Address:", deployer.address);
 
-  // 1. Deploy $tNAK Token (1 Billion Supply)
+  // 1. Deploy $tNAK Token (1 Trillion Supply as per genesis.json)
   const Token = await hre.ethers.getContractFactory("NakharaxToken");
-  const token = await Token.deploy(1000000000);
+  const token = await Token.deploy(1000000000000); // 1,000,000,000,000 $tNAK
   await token.waitForDeployment();
   const tokenAddress = await token.getAddress();
   console.log("✅ NakharaxToken ($tNAK) deployed to:", tokenAddress);

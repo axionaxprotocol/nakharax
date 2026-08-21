@@ -14,7 +14,7 @@
     "londonBlock": 0,
     "nakharax": {
       "consensus": "popc",
-      "blockTime": 2,
+      "blockTime": 3,
       "epochLength": 100,
       "minValidatorStake": "10000000000000000000000",
       "maxValidators": 100,
