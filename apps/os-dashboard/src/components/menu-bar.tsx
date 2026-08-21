@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Activity, ArrowUpRight, Cpu, Layers } from "lucide-react";
+import { Activity, ArrowUpRight, Cpu, Layers, Wallet } from "lucide-react";
 
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { cn } from "@/lib/cn";
@@ -14,7 +14,7 @@ const NAV_LINKS = [
   { href: "/activity/models", label: "Models" },
   { href: "/nodes", label: "Node Mesh" },
   { href: "/apps", label: "Microservices" },
-  { href: "/wallet", label: "Key Vault" },
+  { href: "/wallet", label: "Wallet & Vault" },
   { href: "/activity", label: "Telemetry" },
 ];
 
@@ -126,6 +126,15 @@ export function MenuBar() {
               {date}
             </span>
           </div>
+
+          {/* Wallet / Key Vault Pill */}
+          <Link
+            href="/wallet"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 text-xs font-mono font-semibold text-cyan-300 transition-all hover:shadow-[0_0_12px_rgba(34,211,238,0.25)]"
+          >
+            <Wallet size={13} />
+            <span className="hidden sm:inline">Wallet</span>
+          </Link>
 
           {/* Action CTA */}
           <Link
