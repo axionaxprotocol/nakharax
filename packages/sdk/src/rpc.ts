@@ -10,11 +10,11 @@ import { TESTNET_CHAIN_ID } from "./types";
 
 export type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer };
 
-/** Curated default testnet endpoints — keep in sync with deploy docs. */
+/** Curated default testnet endpoints — prioritized with active local daemon & multi-region gateways. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
-  { id: "rpc-public", name: "Public RPC (AU)", url: "https://rpc.nakharax.com" },
-  { id: "rpc-eu", name: "Validator EU", url: "http://217.216.109.5:8545" },
-  { id: "rpc-au", name: "Validator AU", url: "http://46.250.244.4:8545" },
+  { id: "rpc-local", name: "Local Sovereign Daemon", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
+  { id: "rpc-eu", name: "Validator EU (Frankfurt)", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
+  { id: "rpc-ap", name: "Validator AP (Singapore)", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
 ];
 
 export interface RpcCallOptions {
