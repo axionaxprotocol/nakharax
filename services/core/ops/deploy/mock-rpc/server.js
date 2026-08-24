@@ -709,19 +709,19 @@ function handleRpcMethod(method, params, id) {
       const routingPeers = [
         {
           peer_id: "12D3KooWStZ9M8...Frankfurt-Val1",
-          addresses: ["/ip4/217.216.109.5/tcp/30303", "/ip4/217.216.109.5/udp/30303/quic-v1"]
+          addresses: ["/dns4/eu-val1.nakharax.net/tcp/30303", "/dns4/eu-val1.nakharax.net/udp/30303/quic-v1"]
         },
         {
           peer_id: "12D3KooWKn7P4...Sydney-Val2",
-          addresses: ["/ip4/46.250.244.4/tcp/30303", "/ip4/46.250.244.4/udp/30303/quic-v1"]
+          addresses: ["/dns4/au-val2.nakharax.net/tcp/30303", "/dns4/au-val2.nakharax.net/udp/30303/quic-v1"]
         },
         {
           peer_id: "12D3KooWVa8B2...Tokyo-WorkerGPU",
-          addresses: ["/ip4/142.93.18.90/tcp/30303"]
+          addresses: ["/dns4/jp-gpu1.nakharax.net/tcp/30303"]
         },
         {
           peer_id: "12D3KooWRx5T1...Virginia-Sentinel",
-          addresses: ["/ip4/198.51.100.42/tcp/30303"]
+          addresses: ["/dns4/us-sentinel.nakharax.net/tcp/30303"]
         }
       ];
       return jsonRpcResponse(id, routingPeers);

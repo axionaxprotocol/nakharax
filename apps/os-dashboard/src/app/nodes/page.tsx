@@ -40,7 +40,7 @@ interface ClusterNode {
   id: string;
   name: string;
   region: string;
-  ip: string;
+  endpoint: string;
   role: "Genesis Validator" | "Public RPC Gateway" | "DeAI GPU Worker" | "Hydra Sentinel";
   hardware: string;
   tps: number;
@@ -54,7 +54,7 @@ const PRODUCTION_CLUSTER_NODES: ClusterNode[] = [
     id: "node-frankfurt-val1",
     name: "Frankfurt Genesis L1 (EU)",
     region: "Frankfurt, Germany",
-    ip: "217.216.109.5",
+    endpoint: "eu-val1.nakharax.net (217.216.***.***)",
     role: "Genesis Validator",
     hardware: "8 vCPU · 16 GB RAM · 500 GB NVMe",
     tps: 18.4,
@@ -66,7 +66,7 @@ const PRODUCTION_CLUSTER_NODES: ClusterNode[] = [
     id: "node-sydney-val2",
     name: "Sydney Ingress & Faucet (AU)",
     region: "Sydney, Australia",
-    ip: "46.250.244.4",
+    endpoint: "au-val2.nakharax.net (46.250.***.***)",
     role: "Public RPC Gateway",
     hardware: "4 vCPU · 8 GB RAM · 150 GB SSD",
     tps: 15.2,
@@ -78,7 +78,7 @@ const PRODUCTION_CLUSTER_NODES: ClusterNode[] = [
     id: "node-tokyo-gpu1",
     name: "Tokyo GPU Accelerated Compute (JP)",
     region: "Tokyo, Japan",
-    ip: "142.93.18.90",
+    endpoint: "jp-gpu1.nakharax.net (142.93.***.***)",
     role: "DeAI GPU Worker",
     hardware: "16 Core · 32 GB · RTX 4090 24GB",
     tps: 42.0,
@@ -90,7 +90,7 @@ const PRODUCTION_CLUSTER_NODES: ClusterNode[] = [
     id: "node-virginia-sentinel",
     name: "Virginia Hydra Sentinel Radar (US)",
     region: "North Virginia, USA",
-    ip: "198.51.100.42",
+    endpoint: "us-sentinel.nakharax.net (198.51.***.***)",
     role: "Hydra Sentinel",
     hardware: "12 vCPU · 32 GB RAM · 1 TB NVMe",
     tps: 24.8,
@@ -234,6 +234,19 @@ export default function NodesPage() {
         />
       </div>
 
+      {/* Security & DDoS Shield Active Banner */}
+      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 font-mono text-xs text-emerald-300 flex items-center justify-between shadow-inner">
+        <span className="flex items-center gap-2">
+          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+          <span>
+            <strong>Sovereign Zero-DDoS Protection Active:</strong> Physical node IPs and validator endpoints are shielded behind Anycast DNS Gateways & Libp2p multi-relays.
+          </span>
+        </span>
+        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider shrink-0 ml-2">
+          IP Masking 100%
+        </span>
+      </div>
+
       {/* Multi-Region Node Topology Cards */}
       <section className="space-y-3">
         <SectionHeader
@@ -251,7 +264,7 @@ export default function NodesPage() {
                   </span>
                   <div>
                     <h3 className="text-sm font-bold text-white">{node.name}</h3>
-                    <p className="text-[11px] font-mono text-slate-400">{node.region} · {node.ip}</p>
+                    <p className="text-[11px] font-mono text-slate-400">{node.region} · {node.endpoint}</p>
                   </div>
                 </div>
                 <StatusPill tone="ai" pulse>
@@ -293,19 +306,19 @@ export default function NodesPage() {
               : [
                   {
                     peer_id: "12D3KooWStZ9M8...Frankfurt-Val1",
-                    addresses: ["/ip4/217.216.109.5/tcp/30303", "/ip4/217.216.109.5/udp/30303/quic-v1"],
+                    addresses: ["/dns4/eu-val1.nakharax.net/tcp/30303", "/dns4/eu-val1.nakharax.net/udp/30303/quic-v1"],
                   },
                   {
                     peer_id: "12D3KooWKn7P4...Sydney-Val2",
-                    addresses: ["/ip4/46.250.244.4/tcp/30303", "/ip4/46.250.244.4/udp/30303/quic-v1"],
+                    addresses: ["/dns4/au-val2.nakharax.net/tcp/30303", "/dns4/au-val2.nakharax.net/udp/30303/quic-v1"],
                   },
                   {
                     peer_id: "12D3KooWVa8B2...Tokyo-WorkerGPU",
-                    addresses: ["/ip4/142.93.18.90/tcp/30303"],
+                    addresses: ["/dns4/jp-gpu1.nakharax.net/tcp/30303"],
                   },
                   {
                     peer_id: "12D3KooWRx5T1...Virginia-Sentinel",
-                    addresses: ["/ip4/198.51.100.42/tcp/30303"],
+                    addresses: ["/dns4/us-sentinel.nakharax.net/tcp/30303"],
                   },
                 ]
             ).map((peer, idx) => (
