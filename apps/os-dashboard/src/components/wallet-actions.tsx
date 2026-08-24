@@ -127,16 +127,16 @@ export function WalletActions() {
 
   // Staking Form State
   const [stakeAmount, setStakeAmount] = useState("");
-  const [stakedBalance, setStakedBalance] = useState("2500.00");
-  const [escrowLocked, setEscrowLocked] = useState("50.00");
+  const [stakedBalance, setStakedBalance] = useState("0.00");
+  const [escrowLocked, setEscrowLocked] = useState("0.00");
 
-  const [balance, setBalance] = useState("100.00");
+  const [balance, setBalance] = useState("0.00");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isStaking, setIsStaking] = useState(false);
   const [isRequestingFaucet, setIsRequestingFaucet] = useState(false);
   const [metaMaskConnected, setMetaMaskConnected] = useState(false);
-  const [txHistory, setTxHistory] = useState<TxHistoryItem[]>(INITIAL_TX_HISTORY);
+  const [txHistory, setTxHistory] = useState<TxHistoryItem[]>([]);
   const [demoReceipt, setDemoReceipt] = useState<string | null>(null);
   const [hint, setHint] = useState<{
     type: "error" | "success" | "info";
@@ -248,6 +248,45 @@ export function WalletActions() {
       setHint({ type: "error", msg: `MetaMask Error: ${err.message || String(err)}` });
     }
   }
+
+  // Sync real on-chain transactions directly from node RPC
+  const syncTransactions = useCallback(async () => {
+    try {
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nakharax_getRecentTransactions",
+          params: [],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      if (Array.isArray(data.result) && data.result.length > 0) {
+        const mapped: TxHistoryItem[] = data.result.map((tx: any) => ({
+          id: tx.hash,
+          hash: tx.hash,
+          type: (tx.type?.replace("_DISPENSE", "") || "TRANSFER") as any,
+          amount: `${(parseInt(tx.value || "0x0", 16) / 1e18).toFixed(2)}`,
+          symbol: "tNAK",
+          timestamp: tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleTimeString() : "Just now",
+          blockNumber: parseInt(tx.blockNumber || "0x0", 16),
+          status: "CONFIRMED",
+          to: tx.to,
+        }));
+        setTxHistory(mapped);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    void syncTransactions();
+    const interval = setInterval(syncTransactions, 5000);
+    return () => clearInterval(interval);
+  }, [syncTransactions]);
 
   // Generate new random account locally on device
   function generateNewAccount() {
