@@ -39,6 +39,8 @@ export function PropsentinelClient({
   const [deferredSearch, setDeferredSearch] = useState("");
   const [isPending, startTransition] = useTransition();
   const [filter, setFilter] = useState<FilterState>("all");
+  const [isHalting, setIsHalting] = useState(false);
+  const [haltNotice, setHaltNotice] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialData) {
@@ -101,9 +103,6 @@ export function PropsentinelClient({
       </div>
     );
   }
-
-  const [isHalting, setIsHalting] = useState(false);
-  const [haltNotice, setHaltNotice] = useState<string | null>(null);
 
   const triggerEmergencyKillSwitch = () => {
     setIsHalting(true);

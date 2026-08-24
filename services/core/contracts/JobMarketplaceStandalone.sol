@@ -208,6 +208,14 @@ contract JobMarketplaceStandalone {
         return _jobs[jobId];
     }
 
+    function getWorker(address workerAddr) external view returns (Worker memory) {
+        return _workers[workerAddr];
+    }
+
+    function getWorkerList() external view returns (address[] memory) {
+        return _workerList;
+    }
+
     function getPendingJobs() external view returns (uint256[] memory) {
         return _pendingJobIds;
     }

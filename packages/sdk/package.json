@@ -10,7 +10,8 @@
     ".": "./src/index.ts",
     "./rpc": "./src/rpc.ts",
     "./types": "./src/types.ts",
-    "./client": "./src/client.ts"
+    "./client": "./src/client.ts",
+    "./contracts": "./src/contracts.ts"
   },
   "scripts": {
     "build": "node ../../node_modules/typescript/bin/tsc --noEmit",

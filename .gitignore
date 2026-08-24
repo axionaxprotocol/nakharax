@@ -9,6 +9,10 @@ dist/
 build/
 out/
 target/
+artifacts/
+cache/
+typechain/
+typechain-types/
 
 # Env & secrets
 .env
