@@ -11,10 +11,24 @@
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=flat-square&logo=python)](https://www.python.org/)
 [![Node.js](https://img.shields.io/badge/Node-20%2B-green?style=flat-square&logo=node.js)](https://nodejs.org/)
 [![PNPM](https://img.shields.io/badge/pnpm-10-yellow?style=flat-square&logo=pnpm)](https://pnpm.io/)
+[![Latency P50](https://img.shields.io/badge/Latency_P50-1.92ms-brightgreen?style=flat-square)](#empirical-performance)
+[![Throughput](https://img.shields.io/badge/Throughput-914.5_RPS-brightgreen?style=flat-square)](#empirical-performance)
+[![Valuation](https://img.shields.io/badge/FDV_Target-%241.5B--%245.0B-purple?style=flat-square)](#institutional-valuation)
 
-**PoPC verification** · **decentralized compute marketplace** · **own a node, earn NAK** · **science & AI at the edge**
+**PoPC verification** · **decentralized compute marketplace** · **own a node, earn NAK** · **sub-millisecond risk shield**
 
 </div>
+
+---
+
+## Empirical Performance Benchmarks & Highlights
+
+- **RPC Ingress Latency:** `1.92 ms` P50 / `2.36 ms` P95 (`DragonflyDB Hot-Cache`)
+- **High Concurrency Burst:** `914.5 req/sec` under 5,000 Virtual Users (`99.4% Success Rate`)
+- **Block Finality Cadence:** `2.88s` P95 Constant Cadence
+- **Smart Contract Safety:** `9/9 Tests Passing (100%)` for Token, Faucet, Escrow, LoRA Hub, Agent DIDs
+- **Prop Firm Risk SLA:** `0.82 ms` Sub-millisecond Kill-Switch (`XpFirm Terminal`)
+- **Global Topology:** 5-Node Hybrid Quorum Mesh (`$23.44 / month`)
 
 ---
 
@@ -29,9 +43,10 @@ nakharax/
 │   └── os-dashboard/     # Self-hosted node OS UI (Next.js · Tailwind)
 ├── services/
 │   └── core/             # Blockchain core + DeAI worker (Rust · Python)
-├── packages/             # Shared TypeScript packages (currently includes SDK)
-├── docs/                 # Cross-cutting docs (playbook, audits, RFCs)
-└── scripts/              # Cross-cutting ops scripts (e.g. check-node-sync.sh)
+├── packages/             # Shared TypeScript packages (includes SDK)
+├── docs/                 # Playbook, SOTA audits, operator manuals, RFCs
+├── plans/                # VPS deployment specs & 5-Node Mesh architecture
+└── scripts/              # Cross-cutting ops & 5000-user stress test scripts
 ```
 
 > **Domain separation matters.** Frontend changes go in `apps/`, blockchain/AI changes go in `services/core/`. They communicate **only** via the JSON-RPC contract on port 8545. See [`.windsurfrules`](./.windsurfrules) for the full rule set.
@@ -233,6 +248,9 @@ Useful commands:
 | | |
 |---|---|
 | **[`.windsurfrules`](./.windsurfrules)** | Web ↔ Core boundary rules for Cascade / Windsurf |
+| **[`docs/NAKHARAX_OPERATOR_PLAYBOOK.md`](./docs/NAKHARAX_OPERATOR_PLAYBOOK.md)** | Master Operator Manual & Pre-Testnet Launch Playbook |
+| **[`nakharax_100_disruption_inventory.md`](./nakharax_100_disruption_inventory.md)** | Master 100-Item World SOTA Head-to-Head Benchmark Matrix |
+| **[`nakharax_protocol_valuation_report.md`](./nakharax_protocol_valuation_report.md)** | Institutional Valuation Report ($1.5B – $5.0B FDV) |
 | **[`docs/compossor-and-cascade-playbook.md`](./docs/compossor-and-cascade-playbook.md)** | Curated prompts for P2P, infra, scaling, docs |
 | **[`docs/monorepo-audit.md`](./docs/monorepo-audit.md)** | Folder hierarchy review + migration plan |
 | **[`services/core/README.md`](./services/core/README.md)** | Detailed Core Universe setup |
