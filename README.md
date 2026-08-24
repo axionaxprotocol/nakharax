@@ -49,7 +49,7 @@ nakharax/
 └── scripts/              # Cross-cutting ops & 5000-user stress test scripts
 ```
 
-> **Domain separation matters.** Frontend changes go in `apps/`, blockchain/AI changes go in `services/core/`. They communicate **only** via the JSON-RPC contract on port 8545. See [`.windsurfrules`](./.windsurfrules) for the full rule set.
+> **Domain separation matters.** Frontend changes go in `apps/`, blockchain/AI changes go in `services/core/`. They communicate **only** via the JSON-RPC contract on port 8545. See [`.windsurfrules`](./.windsurfrules).
 
 ---
 
@@ -65,10 +65,14 @@ The project was renamed **Axionax → nakharax.com**. The in-repo rename is **co
 | Domain refs | ✅ `nakharax.com` in configs/SDK (was `axionax.org`) |
 | Native token | ✅ `NAK` (was `AXX`) — contract, genesis, tokenomics |
 
-**Remaining (external / coordinated — not a repo edit):**
-- Rename the GitHub repo/org so `github.com/...` URLs resolve.
-- Stand up `nakharax.com` DNS + SSL, then redeploy nodes from this renamed tree.
-- A handful of filenames still contain `axionax` (deploy scripts, a stale build artifact) — tracked in [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md).
+**Status (2026-08-10):**
+- ✅ **In-repo migration complete** — `.io` → `.com` domain refs updated throughout codebase
+- ⏳ **Awaiting external coordination** (not a repo edit):
+  - GitHub repo/org rename: `github.com/axionaxprotocol/nakharax` → `github.com/nakharax/nakharax`
+  - DNS + SSL: Stand up `nakharax.com` and redeploy validator nodes from this codebase
+  - Build artifacts: `README.pdf`, PyO3 bridge `.so`, and `package-lock.json` files
+
+See [`docs/REBRAND_MIGRATION.md`](docs/REBRAND_MIGRATION.md) for the detailed migration runbook (risk categories A–D and coordinated cut-over sequence).
 
 The compass for what we are building is [`docs/NORTH_STAR.md`](docs/NORTH_STAR.md).
 
@@ -135,25 +139,33 @@ python3 scripts/join-nakharax.py
 
 ### Testnet (Chain ID `86137`)
 
-| Validator | IP | Role | RPC (direct) |
+**⚠️ Development Status:** Currently, only **local Docker** and **developer testing** environments are running. Production validators are not yet deployed.
+
+| Validator | IP | Role | Status |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Validator + RPC + **Nakharax OS** | `http://217.216.109.5:8545` · `https://app.nakharax.com` |
-| #2 (AU) | `46.250.244.4` | Validator + **chain services** | `http://46.250.244.4:8545` |
+| #1 (EU) | `217.216.109.5` | Planned: Validator + RPC + Nakharax OS | ⏳ Awaiting deployment |
+| #2 (AU) | `46.250.244.4` | Planned: Validator + chain services | ⏳ Awaiting deployment |
 
-**Public HTTPS (AU):** `https://rpc.nakharax.com` · `explorer` · `api` · `faucet`  
-**Nakharax OS (EU):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · AU stack: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
+**Local Testing:**
+- Run the full dev stack with `docker compose -f services/core/docker-compose.dev.yml up -d`
+- RPC available at `http://localhost:8545`
+- OS Dashboard available at `http://localhost:3030` (after running `pnpm dev` in `apps/os-dashboard`)
 
-P2P bootnodes are advertised via `NAKHARAX_BOOTSTRAP_NODES` — see `services/core/configs/`.
+**Public HTTPS (planned):** `https://rpc.nakharax.com` · `explorer` · `api` · `faucet`  
+**Nakharax OS (planned):** [`docs/web/VPS_EU_OS_DASHBOARD.md`](docs/web/VPS_EU_OS_DASHBOARD.md) · Deployment runbook: [`services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md`](services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
 
-Current validated status (2026-05-01):
-- AU (`46.250.244.4`) and EU (`217.216.109.5`) nodes are connected and report `peers: 1`.
-- Cross-node handshake tests in `services/core/core/core/network/tests/handshake_test.rs` pass (including the ignored mDNS test when run explicitly).
+P2P bootnodes will be advertised via `NAKHARAX_BOOTSTRAP_NODES` once deployed — see `services/core/configs/`.
+
+**Development verification (local testing):**
+- Cross-node handshake tests in `services/core/core/core/network/tests/handshake_test.rs` pass locally
+- All smart contract tests pass: `cargo test --workspace` → 201/201 expected
 
 ### Key constants
 
 | | Value |
 |---|---|
 | Mainnet Chain ID | `86150` |
+| Testnet Chain ID | `86137` |
 | RPC port | `8545` (HTTP) · `8546` (WS) |
 | P2P port | `30303` (TCP + QUIC) |
 | Health port | `8080` |
@@ -181,7 +193,7 @@ If your node sees zero peers across the public internet:
    p2p::identify: Identify received observed_addr=/ip4/<YOUR-PUBLIC-IP>/tcp/30303/...
    ```
    That `observed_addr` is what other peers see. If it's wrong, the node is mis-NATed.
-4. **Use the bundled health script** for sync drift:
+4. **Use the bundled health script** for sync drift (when nodes are running):
    ```bash
    ./scripts/check-node-sync.sh http://localhost:8545 http://46.250.244.4:8545 10
    ```
