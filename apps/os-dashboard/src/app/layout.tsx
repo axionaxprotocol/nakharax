@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { MenuBar } from "@/components/menu-bar";
+import { FloatingSentinelChat } from "@/components/floating-sentinel-chat";
 
 export const metadata: Metadata = {
   title: {
@@ -65,6 +66,8 @@ export default function RootLayout({
             {children}
           </div>
         </main>
+        {/* Global Floating DeAI Sentinel & NOESIS-VX Assistant */}
+        <FloatingSentinelChat />
       </body>
     </html>
   );
