@@ -7,6 +7,8 @@ import { AccountCard } from "./account-card";
 import { RiskTimeline } from "./risk-timeline";
 import { MonteCarloSimulator } from "./monte-carlo-simulator";
 import { CitadelKillSwitchPanel } from "./citadel-killswitch-panel";
+import { RegimeClusterMatrix } from "./regime-cluster-matrix";
+import { BrokerExecutionProfiler } from "./broker-execution-profiler";
 import { useTelemetryStore } from "@/lib/store/telemetry";
 import type { DashboardData, RiskEvent } from "@/lib/propsentinel";
 
@@ -268,6 +270,12 @@ export function PropsentinelClient({
         onRearm={rearmTradingTerminals}
         isHalting={isHalting}
       />
+
+      {/* Quantitative Market Regime Markov Clustering Engine */}
+      <RegimeClusterMatrix />
+
+      {/* Broker Execution Slippage & Spread SLA Profiler */}
+      <BrokerExecutionProfiler />
     </div>
   );
 }

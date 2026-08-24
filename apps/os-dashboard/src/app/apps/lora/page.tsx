@@ -390,6 +390,38 @@ export default function LoRAMergingPage() {
               </div>
             </div>
 
+            {/* Layer-wise Tensor Density Visualizer & VRAM Footprint */}
+            <div className="rounded-xl border border-white/10 bg-slate-950 p-3.5 space-y-2.5 font-mono text-[11px]">
+              <div className="flex items-center justify-between text-slate-400">
+                <span className="uppercase text-[9.5px] tracking-wider text-slate-300 font-bold">Layer-wise Tensor Density (Attention vs MLP)</span>
+                <span className="text-emerald-400 font-bold">VRAM Est: 15.04 GB</span>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
+                <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
+                  <div className="text-slate-400">q_proj</div>
+                  <div className="font-bold text-cyan-300">92% Dense</div>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
+                  <div className="text-slate-400">v_proj</div>
+                  <div className="font-bold text-cyan-300">95% Dense</div>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
+                  <div className="text-slate-400">gate_proj</div>
+                  <div className="font-bold text-indigo-300">76% Dense</div>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
+                  <div className="text-slate-400">down_proj</div>
+                  <div className="font-bold text-indigo-300">81% Dense</div>
+                </div>
+              </div>
+
+              <div className="text-[10px] text-slate-400 flex items-center justify-between pt-1 border-t border-white/10">
+                <span>Task Vector Scaling: <strong className="text-white">τ = 1.0 (Identity Orthogonal)</strong></span>
+                <span className="text-emerald-400 font-semibold">TIES Fast Sign Resolv</span>
+              </div>
+            </div>
+
             <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3 text-[11px] font-mono text-slate-300 space-y-1">
               <div className="text-slate-400 uppercase text-[9.5px] tracking-wider">Fusion Recipe Summary</div>
               <div>• Base: <span className="text-white font-semibold">{baseModel}</span></div>
