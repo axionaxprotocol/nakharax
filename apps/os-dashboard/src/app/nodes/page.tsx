@@ -41,68 +41,86 @@ interface ClusterNode {
   name: string;
   region: string;
   endpoint: string;
-  role: "Genesis Validator" | "Public RPC Gateway" | "DeAI GPU Worker" | "Hydra Sentinel";
+  role: "Local Live Host" | "Genesis Validator" | "Public RPC Gateway" | "DeAI GPU Worker" | "Hydra Sentinel";
   hardware: string;
   tps: number;
-  status: "ONLINE" | "STANDBY" | "SYNCING";
+  status: "ACTIVE_LIVE" | "STANDBY_BLUEPRINT";
   latencyMs: number;
   blockHeight: number;
+  hostingTier: string;
 }
 
-const PRODUCTION_CLUSTER_NODES: ClusterNode[] = [
+const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
+  {
+    id: "node-local-rig",
+    name: "Localhost Sovereign Node (This Machine)",
+    region: "Local Development Rig",
+    endpoint: "127.0.0.1:8545 (HTTP) · 127.0.0.1:8546 (WS)",
+    role: "Local Live Host",
+    hardware: "Local Host CPU / GPU · Windows x64",
+    tps: 18.4,
+    status: "ACTIVE_LIVE",
+    latencyMs: 1,
+    blockHeight: 1845,
+    hostingTier: "Active Hardware (Current Machine)",
+  },
   {
     id: "node-frankfurt-val1",
     name: "Frankfurt Genesis L1 (EU)",
     region: "Frankfurt, Germany",
-    endpoint: "eu-val1.nakharax.net (217.216.***.***)",
+    endpoint: "eu-val1.nakharax.net (Contabo VPS)",
     role: "Genesis Validator",
     hardware: "8 vCPU · 16 GB RAM · 500 GB NVMe",
     tps: 18.4,
-    status: "ONLINE",
+    status: "STANDBY_BLUEPRINT",
     latencyMs: 12,
     blockHeight: 1845,
+    hostingTier: "Contabo VPS (€6/mo) · Standby for 1 Sept",
   },
   {
     id: "node-sydney-val2",
     name: "Sydney Ingress & Faucet (AU)",
     region: "Sydney, Australia",
-    endpoint: "au-val2.nakharax.net (46.250.***.***)",
+    endpoint: "au-val2.nakharax.net (Contabo VPS)",
     role: "Public RPC Gateway",
     hardware: "4 vCPU · 8 GB RAM · 150 GB SSD",
     tps: 15.2,
-    status: "ONLINE",
+    status: "STANDBY_BLUEPRINT",
     latencyMs: 142,
     blockHeight: 1845,
+    hostingTier: "Contabo VPS (€6/mo) · Standby for 1 Sept",
   },
   {
     id: "node-tokyo-gpu1",
     name: "Tokyo GPU Accelerated Compute (JP)",
     region: "Tokyo, Japan",
-    endpoint: "jp-gpu1.nakharax.net (142.93.***.***)",
+    endpoint: "jp-gpu1.nakharax.net (RunPod / Dedicated)",
     role: "DeAI GPU Worker",
     hardware: "16 Core · 32 GB · RTX 4090 24GB",
     tps: 42.0,
-    status: "ONLINE",
+    status: "STANDBY_BLUEPRINT",
     latencyMs: 98,
     blockHeight: 1844,
+    hostingTier: "RunPod / GPU Cloud · Standby for 1 Sept",
   },
   {
     id: "node-virginia-sentinel",
     name: "Virginia Hydra Sentinel Radar (US)",
     region: "North Virginia, USA",
-    endpoint: "us-sentinel.nakharax.net (198.51.***.***)",
+    endpoint: "us-sentinel.nakharax.net (GCP $32k credits)",
     role: "Hydra Sentinel",
     hardware: "12 vCPU · 32 GB RAM · 1 TB NVMe",
     tps: 24.8,
-    status: "ONLINE",
+    status: "STANDBY_BLUEPRINT",
     latencyMs: 180,
     blockHeight: 1845,
+    hostingTier: "Google Cloud Build · Standby for 1 Sept",
   },
 ];
 
 export default function NodesPage() {
   const { blockNumber: globalBlock, isLive, latencyMs: globalLatency } = useLiveBlock();
-  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(PRODUCTION_CLUSTER_NODES);
+  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(PLANNED_VPS_BLUEPRINTS);
   const [dhtPeers, setDhtPeers] = useState<KadPeer[]>([]);
   const [isProbing, setIsProbing] = useState(false);
   const [diagnosticResult, setDiagnosticResult] = useState<string | null>(null);
@@ -134,13 +152,13 @@ export default function NodesPage() {
         prev.map((node) => ({
           ...node,
           blockHeight: globalBlock,
-          latencyMs: Math.max(8, Math.floor(node.latencyMs * (0.9 + Math.random() * 0.2))),
+          latencyMs: node.id === "node-local-rig" ? (globalLatency || 1) : node.latencyMs,
         }))
       );
     } finally {
       setIsProbing(false);
     }
-  }, [globalBlock]);
+  }, [globalBlock, globalLatency]);
 
   useEffect(() => {
     void probeAllNodes();
@@ -169,16 +187,16 @@ export default function NodesPage() {
 
   return (
     <PageShell
-      eyebrow="Node Mesh & Kademlia Radar"
-      title="Multi-Region L1 Validator Cluster & Compute Mesh"
-      description="Real-time multi-region consensus health, Kademlia DHT routing table, and low-latency JSON-RPC gateway diagnostics."
+      eyebrow="Node Topology & Deployment Blueprint"
+      title="Sovereign Local Node & Public VPS Deployment Planner"
+      description="Active local node daemon running on this machine (127.0.0.1:8545) alongside blueprint architecture for Public Testnet VPS clusters (Contabo / GCP)."
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            4/4 Cluster Nodes Active
+            Active Host: 127.0.0.1:8545
           </StatusPill>
           <StatusPill tone="chain">PoPC Live · #{globalBlock.toLocaleString()}</StatusPill>
-          <StatusPill tone="violet">P2P Port: 30303 / 8545</StatusPill>
+          <StatusPill tone="violet">Local Devnet Mode</StatusPill>
         </>
       }
       actions={
@@ -267,8 +285,11 @@ export default function NodesPage() {
                     <p className="text-[11px] font-mono text-slate-400">{node.region} · {node.endpoint}</p>
                   </div>
                 </div>
-                <StatusPill tone="ai" pulse>
-                  {node.status}
+                <StatusPill
+                  tone={node.status === "ACTIVE_LIVE" ? "ai" : "chain"}
+                  pulse={node.status === "ACTIVE_LIVE"}
+                >
+                  {node.status === "ACTIVE_LIVE" ? "LIVE ACTIVE HOST" : "STANDBY BLUEPRINT"}
                 </StatusPill>
               </div>
 
@@ -284,7 +305,9 @@ export default function NodesPage() {
                   <Cpu size={13} className="text-cyan-400" />
                   Hardware: <strong className="text-white">{node.hardware}</strong>
                 </span>
-                <span className="text-emerald-400 font-semibold">Port 8545 Live</span>
+                <span className={node.status === "ACTIVE_LIVE" ? "text-emerald-400 font-semibold" : "text-slate-400 font-mono"}>
+                  {node.hostingTier}
+                </span>
               </div>
             </Card>
           ))}
