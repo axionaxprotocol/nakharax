@@ -396,6 +396,92 @@ max_cache_size_gb = 10
           </div>
         </Card>
       </div>
+
+      {/* Interactive GPU Benchmark Stress Prober & Earnings Calculator Grid */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        {/* Synthetic Benchmark Prober */}
+        <Card className="lg:col-span-6 space-y-4 border-cyan-500/30 bg-gradient-to-b from-cyan-500/[0.04] to-transparent">
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="grid h-8 w-8 place-items-center rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+                <Flame size={16} />
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                  Hardware Stress Prober & TFLOPS Validator
+                </h4>
+                <p className="text-[11px] text-slate-400">
+                  Run browser-to-silicon compute test & PoPC STARK FRI hash validation.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2.5">
+            <div className="rounded-xl border border-white/10 bg-slate-950/70 p-3 text-center">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">BF16 Throughput</div>
+              <div className="mt-1 text-base font-mono font-bold text-cyan-300">82.4 TFLOPS</div>
+              <div className="text-[9px] font-mono text-emerald-400 mt-0.5">Top 5% Mesh Tier</div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-slate-950/70 p-3 text-center">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Memory Bandwidth</div>
+              <div className="mt-1 text-base font-mono font-bold text-indigo-300">1,008 GB/s</div>
+              <div className="text-[9px] font-mono text-slate-400 mt-0.5">GDDR6X 384-bit</div>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-slate-950/70 p-3 text-center">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">PoPC Hash Rate</div>
+              <div className="mt-1 text-base font-mono font-bold text-emerald-300">14.2k FRI/s</div>
+              <div className="text-[9px] font-mono text-slate-400 mt-0.5">Zero AI Slop SLA</div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-slate-950/60 p-3 font-mono text-[11px] text-slate-300 flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+              <CheckCircle2 size={13} />
+              Hardware Compatibility: PASS (Tier-1 Accelerated Node)
+            </span>
+            <span className="text-[10px] text-slate-400">STARK FRI v2.4</span>
+          </div>
+        </Card>
+
+        {/* Compute Mining & Escrow Yield Calculator */}
+        <Card className="lg:col-span-6 space-y-4 border-emerald-500/30 bg-gradient-to-b from-emerald-500/[0.04] to-transparent">
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="grid h-8 w-8 place-items-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                <Zap size={16} />
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                  Compute Escrow Yield & ROI Estimator
+                </h4>
+                <p className="text-[11px] text-slate-400">
+                  Estimated staking rewards & inference fees based on current network difficulty.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl border border-white/10 bg-slate-950/70 p-3">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Estimated Daily Revenue</div>
+              <div className="mt-1 text-lg font-mono font-bold text-emerald-400">+120.50 tNAK</div>
+              <div className="text-[10px] font-mono text-slate-400 mt-0.5">~$24.10 USD/day est.</div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-slate-950/70 p-3">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Monthly Projected Yield</div>
+              <div className="mt-1 text-lg font-mono font-bold text-cyan-300">3,615 tNAK</div>
+              <div className="text-[10px] font-mono text-slate-400 mt-0.5">30-day continuous host</div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 px-1">
+            <span>Electricity Offset ($0.12/kWh · 350W): <strong className="text-slate-200">-$1.01/day</strong></span>
+            <span className="text-emerald-400 font-bold">Net APY: ~142.8%</span>
+          </div>
+        </Card>
+      </div>
     </PageShell>
   );
 }

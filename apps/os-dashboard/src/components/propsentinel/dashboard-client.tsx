@@ -5,6 +5,8 @@ import { Search, Shield, Wifi, WifiOff } from "lucide-react";
 
 import { AccountCard } from "./account-card";
 import { RiskTimeline } from "./risk-timeline";
+import { MonteCarloSimulator } from "./monte-carlo-simulator";
+import { CitadelKillSwitchPanel } from "./citadel-killswitch-panel";
 import { useTelemetryStore } from "@/lib/store/telemetry";
 import type { DashboardData, RiskEvent } from "@/lib/propsentinel";
 
@@ -89,6 +91,15 @@ export function PropsentinelClient({
       return matchSearch && matchFilter;
     });
   }, [accountMap, deferredSearch, filter]);
+
+  const totalPortfolioEquity = useMemo(() => {
+    return (
+      filteredAccounts.reduce(
+        (acc, a) => acc + (a.portfolio?.equity || 0),
+        0,
+      ) || 100000
+    );
+  }, [filteredAccounts]);
 
   if (!initialData) {
     return (
@@ -247,6 +258,16 @@ export function PropsentinelClient({
           <RiskTimeline events={events} />
         </div>
       </div>
+
+      {/* Institutional Monte Carlo Drawdown Simulation Rail */}
+      <MonteCarloSimulator baseEquity={totalPortfolioEquity} />
+
+      {/* Sub-Millisecond Kill-Switch Profiler & Remote Citadel Telegram Bot */}
+      <CitadelKillSwitchPanel
+        onTriggerHalt={triggerEmergencyKillSwitch}
+        onRearm={rearmTradingTerminals}
+        isHalting={isHalting}
+      />
     </div>
   );
 }
