@@ -38,6 +38,7 @@ import {
   StatCard,
   StatusPill,
 } from "@/components/card";
+import { SelfEvolvingAgentSandbox } from "@/components/self-evolving-agent-sandbox";
 import type { SovereignAgentIdentity } from "@nakharax/sdk";
 
 const INITIAL_AGENTS: SovereignAgentIdentity[] = [
@@ -192,6 +193,17 @@ export default function SovereignAgentsPage() {
           tone="warn"
         />
       </div>
+
+      {/* =========================================================================
+          SECTION: RECURSIVE SELF-EVOLVING AGENT PROVING GROUNDS
+          ========================================================================= */}
+      <section className="space-y-3">
+        <SectionHeader
+          title="Recursive Self-Evolving Agent Proving Grounds"
+          subtitle="Empirical demonstration of autonomous neural adaptation, LoRA delta merging, and skill acquisition on L1"
+        />
+        <SelfEvolvingAgentSandbox />
+      </section>
 
       {/* 2-Column Layout: Left Fleet List, Right Minting Studio */}
       <div className="grid gap-5 lg:grid-cols-12">
