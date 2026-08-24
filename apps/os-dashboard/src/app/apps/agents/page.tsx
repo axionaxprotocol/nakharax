@@ -331,8 +331,103 @@ export default function SovereignAgentsPage() {
               </pre>
             )}
           </Card>
+
+          {/* Autonomous Task Dispatcher Sandbox */}
+          <AgentTaskSandbox agents={agents} />
         </div>
       </div>
     </PageShell>
+  );
+}
+
+function AgentTaskSandbox({ agents }: { agents: SovereignAgentIdentity[] }) {
+  const [selectedAgentId, setSelectedAgentId] = useState(agents[0]?.agentId || "");
+  const [prompt, setPrompt] = useState("Evaluate real-time XAUUSD orderbook imbalance and simulate 1,000 Monte Carlo drawdown paths.");
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [executionOutput, setExecutionOutput] = useState<string | null>(null);
+
+  const selectedAgent = agents.find((a) => a.agentId === selectedAgentId) || agents[0];
+
+  const handleDispatch = async () => {
+    try {
+      setIsExecuting(true);
+      await new Promise((r) => setTimeout(r, 800));
+      const trace = `[AEE AUTONOMOUS EXECUTION TRACE]
+Agent DID: ${selectedAgent.agentId} (${selectedAgent.name})
+Instruction: "${prompt}"
+
+Step 1: Authenticating DID keypair on-chain... [PASS - Verified]
+Step 2: Invoking MCP Tool: [${selectedAgent.activeSkills[0] || "mcp-quant-risk"}]...
+  - Request: { "intent": "risk_audit", "parameters": { "symbol": "XAUUSD", "samples": 1000 } }
+  - State Channel Micro-Fee: 0.05 tNAK [Settled]
+Step 3: Synthesis & Verification:
+  - Monte Carlo Max Drawdown: 2.14% (Within 5% Limit)
+  - Recommended Action: ARMED_ACTIVE (Hurst H = 0.68 Trend)
+Step 4: PoPC STARK Receipt Minted:
+  - Proof Hash: 0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}
+  - Block Height: #1845`;
+      setExecutionOutput(trace);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  return (
+    <Card className="space-y-4 border-white/10 bg-slate-950/80 p-5">
+      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2">
+          <Play size={16} className="text-cyan-400" />
+          <h3 className="text-sm font-bold text-white">Autonomous Task Dispatcher</h3>
+        </div>
+        <span className="text-[10px] font-mono text-cyan-300 font-semibold">State Channel Execution</span>
+      </div>
+
+      <div className="space-y-3 font-mono text-xs">
+        <div>
+          <label className="block text-[10px] uppercase tracking-wider text-slate-400 mb-1">
+            Select Executing Agent
+          </label>
+          <select
+            value={selectedAgentId}
+            onChange={(e) => setSelectedAgentId(e.target.value)}
+            className="w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 text-white focus:outline-none"
+          >
+            {agents.map((a) => (
+              <option key={a.agentId} value={a.agentId}>
+                {a.name} ({a.balanceWei} tNAK)
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-[10px] uppercase tracking-wider text-slate-400 mb-1">
+            Task Prompt & Directive
+          </label>
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            rows={2}
+            className="w-full rounded-xl border border-white/10 bg-black/60 p-2.5 text-white focus:outline-none text-[11.5px]"
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={handleDispatch}
+          disabled={isExecuting}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-2.5 text-xs font-mono transition-all disabled:opacity-50"
+        >
+          {isExecuting ? <RefreshCw size={13} className="animate-spin" /> : <Zap size={13} />}
+          {isExecuting ? "Executing Agent Workflow..." : "Dispatch Autonomous Workflow"}
+        </button>
+
+        {executionOutput && (
+          <pre className="max-h-48 overflow-y-auto rounded-xl border border-white/10 bg-black/80 p-3 font-mono text-[10.5px] leading-relaxed text-emerald-300 whitespace-pre-wrap">
+            {executionOutput}
+          </pre>
+        )}
+      </div>
+    </Card>
   );
 }

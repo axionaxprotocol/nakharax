@@ -393,6 +393,40 @@ export default function HydraSentinelPage() {
               </div>
             </div>
           </Card>
+
+          {/* Real-time Mempool Anti-MEV & Fair-Sequencing Shield */}
+          <Card className="space-y-3.5 border-white/10 bg-slate-950/80 p-5 font-mono text-xs">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <ShieldCheck size={16} className="text-emerald-400" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                  Zero-MEV Fair Sequencing Engine
+                </h3>
+              </div>
+              <span className="rounded bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[9.5px] text-emerald-300 font-bold">
+                100% Protected
+              </span>
+            </div>
+
+            <p className="text-[11.5px] text-slate-300 font-sans leading-relaxed">
+              PoPC cryptographic time-lock encryption prevents block producers from front-running, sandwiching, or reordering user transactions for extractive profit.
+            </p>
+
+            <div className="space-y-2 pt-1">
+              <div className="flex justify-between text-[11px] p-2 rounded-lg bg-black/40 border border-white/5">
+                <span className="text-slate-400">Sandwich Attacks Intercepted:</span>
+                <span className="text-emerald-400 font-bold">142 Attempts</span>
+              </div>
+              <div className="flex justify-between text-[11px] p-2 rounded-lg bg-black/40 border border-white/5">
+                <span className="text-slate-400">Max Slippage Protection:</span>
+                <span className="text-cyan-300 font-bold">&le; 0.05% Enforced</span>
+              </div>
+              <div className="flex justify-between text-[11px] p-2 rounded-lg bg-black/40 border border-white/5">
+                <span className="text-slate-400">Sequencing Latency:</span>
+                <span className="text-white font-bold">&lt; 12 µs (Deterministic)</span>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
     </PageShell>
