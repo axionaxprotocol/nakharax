@@ -94,6 +94,7 @@ const QUICK_PROMPTS = [
 ];
 
 export function FloatingSentinelChat() {
+  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPersona, setSelectedPersona] = useState<SentinelPersona>("NOESIS-VX");
   const [inputQuery, setInputQuery] = useState("");
@@ -106,7 +107,7 @@ export function FloatingSentinelChat() {
       sender: "sentinel",
       persona: "NOESIS-VX",
       text: SENTINEL_PROFILES["NOESIS-VX"].greeting,
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: "Genesis",
       proofHash: "0xfa9af5c548bc7764fe743b62d4a2ebe83623bc800272777ebc39261e9ed5f5a5",
       latencyMs: 12,
     },
@@ -115,11 +116,19 @@ export function FloatingSentinelChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       setUnreadCount(0);
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [isOpen, messages, isTyping]);
+
+  if (!mounted) {
+    return null;
+  }
 
   const handleSelectPersona = (persona: SentinelPersona) => {
     setSelectedPersona(persona);

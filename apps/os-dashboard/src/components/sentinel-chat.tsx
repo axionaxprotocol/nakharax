@@ -122,6 +122,7 @@ const SUGGESTED_QUESTIONS: { label: string; query: string; persona: SentinelPers
 ];
 
 export function SentinelChatTerminal() {
+  const [mounted, setMounted] = useState(false);
   const [selectedPersona, setSelectedPersona] = useState<SentinelPersona>("NOESIS-VX");
   const [inputQuery, setInputQuery] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -131,7 +132,7 @@ export function SentinelChatTerminal() {
       sender: "sentinel",
       persona: "NOESIS-VX",
       text: SENTINEL_PROFILES["NOESIS-VX"].greeting,
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: "Genesis",
       proofHash: "0xfa9af5c548bc7764fe743b62d4a2ebe83623bc800272777ebc39261e9ed5f5a5",
       latencyMs: 12,
     },
@@ -140,8 +141,16 @@ export function SentinelChatTerminal() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+
+  if (!mounted) {
+    return null;
+  }
 
   const handleSelectPersona = (persona: SentinelPersona) => {
     setSelectedPersona(persona);
