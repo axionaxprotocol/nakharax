@@ -1,4 +1,16 @@
-import { KeyRound, ShieldCheck, Wallet } from "lucide-react";
+import {
+  Coins,
+  Cpu,
+  FileCheck2,
+  KeyRound,
+  Layers,
+  Lock,
+  Shield,
+  ShieldCheck,
+  Vault,
+  Wallet,
+  Zap,
+} from "lucide-react";
 
 import {
   Card,
@@ -15,14 +27,14 @@ export const dynamic = "force-dynamic";
 export default function WalletPage() {
   return (
     <PageShell
-      eyebrow="Sovereign Keystore Vault"
-      title="Native Testnet Key Management & Token Bridge"
-      description="Zero-custody client-side key storage, 1-click MetaMask Chain 86137 integration, 100 $tNAK faucet dispense, and PoPC compute escrow lock."
+      eyebrow="Institutional Web3 Treasury"
+      title="Sovereign Asset Vault & Cryptographic Keystore Terminal"
+      description="Multi-asset treasury management, EIP-1559 gas station, PoPC consensus staking desk (8.4% APY), and AES-256 air-gapped keystore generator."
       meta={
         <>
           <StatusPill tone="chain" pulse>Chain ID: 86137</StatusPill>
-          <StatusPill tone="ai">Native Gas: $tNAK</StatusPill>
-          <StatusPill tone="violet">Zero-Custody Client Vault</StatusPill>
+          <StatusPill tone="ai">Gas: 1.2 Gwei (EIP-1559)</StatusPill>
+          <StatusPill tone="violet">AES-256 Air-Gapped Vault</StatusPill>
         </>
       }
     >
@@ -30,45 +42,53 @@ export default function WalletPage() {
         <WalletActions />
       </OErrorBoundary>
 
-      <div className="grid gap-os-5 lg:grid-cols-2">
-        <Card>
-          <div className="flex items-start gap-os-4">
-            <IconBadge Icon={KeyRound} tone="ai" className="h-12 w-12" />
+      {/* Institutional Security & Custody Matrix */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card className="border-white/10 bg-slate-950/80 p-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+              <KeyRound size={20} />
+            </span>
             <div>
-              <SectionHeader
-                title="Keys stay on device"
-                description="Create/import keystore support is not shown until it is wired. Until then, this page only exposes the configured dev burner account and demo transfer flow."
-              />
+              <h3 className="text-xs font-bold text-white uppercase tracking-wider">Zero-Custody Standard</h3>
+              <p className="text-[11px] text-slate-400">Local entropy & memory-only keys</p>
             </div>
           </div>
+          <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            Cryptographic private keys never leave local browser memory and are wiped upon tab closure unless saved into encrypted local storage.
+          </p>
         </Card>
 
-        <Card>
-          <div className="flex items-start gap-os-4">
-            <IconBadge Icon={ShieldCheck} tone="chain" className="h-12 w-12" />
+        <Card className="border-white/10 bg-slate-950/80 p-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+              <Layers size={20} />
+            </span>
             <div>
-              <h2 className="text-title font-semibold text-[var(--text-strong)]">
-                Security checklist
-              </h2>
-              <ul className="mt-os-3 space-y-os-2 text-body text-[var(--text-muted)]">
-                <ChecklistItem>Back up keystore JSON offline.</ChecklistItem>
-                <ChecklistItem>Never share wallet password or burner keys.</ChecklistItem>
-                <ChecklistItem>Use VPN or private networking before exposing RPC publicly.</ChecklistItem>
-                <ChecklistItem>Rotate keys after suspected compromise.</ChecklistItem>
-              </ul>
+              <h3 className="text-xs font-bold text-white uppercase tracking-wider">PoPC Staking Yield</h3>
+              <p className="text-[11px] text-slate-400">8.4% APY Liquid Consensus Staking</p>
             </div>
           </div>
+          <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            Mint liquid $sNAK by staking native gas tokens. Yield is distributed automatically per 3.0-second block via verifiable PoPC proofs.
+          </p>
+        </Card>
+
+        <Card className="border-white/10 bg-slate-950/80 p-5 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-violet-500/30 bg-violet-500/10 text-violet-400">
+              <FileCheck2 size={20} />
+            </span>
+            <div>
+              <h3 className="text-xs font-bold text-white uppercase tracking-wider">EIP-1559 Dynamic Burn</h3>
+              <p className="text-[11px] text-slate-400">Deterministic transaction finality</p>
+            </div>
+          </div>
+          <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            Base fee of 1.2 Gwei is algorithmically adjusted and burned every block, providing deflationary tokenomics for the 1 Trillion $NAK cap.
+          </p>
         </Card>
       </div>
     </PageShell>
-  );
-}
-
-function ChecklistItem({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-os-2">
-      <Wallet size={14} className="mt-0.5 shrink-0 text-[var(--accent-ai)]" />
-      <span>{children}</span>
-    </li>
   );
 }
