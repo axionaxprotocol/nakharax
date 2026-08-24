@@ -1,25 +1,27 @@
-# nakharax VPS Quick Commands
-# Updated: 2026-05-24 — AU all-in-one services
+﻿# nakharax VPS Quick Commands
+# Generated: 2026-08-24 15:16:43
 
-# ── EU: Validator #1 + Nakharax OS (apps/os-dashboard :3030) ──
-#     DNS: app.nakharax.com → 217.216.109.5
+# Connect to VPS
 ssh root@217.216.109.5
-# Deploy OS: bash apps/os-dashboard/scripts/vps-deploy.sh
-# Docs: docs/web/VPS_EU_OS_DASHBOARD.md
 
-# ── AU Validator #2 + all public services ──
-#   rpc, explorer, api, faucet, nginx (docker-compose.vps.yml)
-ssh root@46.250.244.4
+# Upload files (run from parent directory)
+scp -r nakharax-deploy root@217.216.109.5:/opt/
 
-# Upload deploy bundle to AU
-scp -r services/core/ops/deploy root@46.250.244.4:/opt/nakharax/
+# OR clone from GitHub (on VPS)
+cd /opt
+git clone https://github.com/axionaxprotocol/nakharax-deploy.git
+cd nakharax-deploy
 
-# On AU (46.250.244.4)
-cd /opt/nakharax
-cp .env.example .env && nano .env
-# VPS_IP=46.250.244.4
-mv nginx/conf.d/explorer.conf.disabled nginx/conf.d/explorer.conf
-docker compose -f docker-compose.vps.yml up -d
-bash scripts/check-vps-status.sh --detailed
+# Setup
+cp .env.example .env
+nano .env
+chmod +x scripts/*.sh
 
-# See: VPS_AU_ALL_IN_ONE.md
+# Deploy
+sudo ./scripts/deploy-all-services.sh --check-only
+sudo ./scripts/deploy-all-services.sh --full
+
+# Manage
+./scripts/check-vps-status.sh
+./scripts/manage-services.sh logs rpc-node
+./scripts/manage-services.sh restart all

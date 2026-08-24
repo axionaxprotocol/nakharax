@@ -1,6 +1,6 @@
 # Testnet production readiness (automated)
 
-**UTC:** 2026-05-27T14:18:39.011306+00:00
+**UTC:** 2026-08-24T08:50:55.463886+00:00
 **Overall:** FAIL
 
 Criteria: **validators** height/hash among themselves; **public RPC** tip lag vs validators; **faucet** HTTP; all **chainId** match.
@@ -9,12 +9,11 @@ Criteria: **validators** height/hash among themselves; **public RPC** tip lag vs
 
 | OK | Check | Detail |
 |----|-------|--------|
-| no | eth_chainId https://rpc.nakharax.com | expected 0x15079, got '' err="HTTPSConnectionPool(host='rpc.nakharax.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1032)')))" |
-| no | eth_chainId https://rpc-au.nakharax.com | expected 0x15079, got '' err='HTTPSConnectionPool(host=\'rpc-au.nakharax.com\', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000025A88B796D0>: Failed to resolve \'rpc-au.nakharax.com\' ([Errno 11001] getaddrinfo failed)"))' |
-| no | eth_blockNumber https://rpc.nakharax.com | fail HTTPSConnectionPool(host='rpc.nakharax.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1032)'))) |
-| no | eth_blockNumber https://rpc-au.nakharax.com | fail HTTPSConnectionPool(host='rpc-au.nakharax.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000025A88B7A990>: Failed to resolve 'rpc-au.nakharax.com' ([Errno 11001] getaddrinfo failed)")) |
-| no | validators_height_consensus | one or more endpoints failed eth_blockNumber |
-| no | faucet_http https://faucet.nakharax.com | HTTPSConnectionPool(host='faucet.nakharax.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1032)'))) |
+| yes | eth_chainId http://127.0.0.1:8545 | match |
+| no | eth_chainId https://rpc.nakharax.com | expected 0x15079, got '' err='HTTPSConnectionPool(host=\'rpc.nakharax.com\', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000020F3BCFD400>: Failed to resolve \'rpc.nakharax.com\' ([Errno 11001] getaddrinfo failed)"))' |
+| yes | eth_blockNumber http://127.0.0.1:8545 | height=1638 |
+| no | eth_blockNumber https://rpc.nakharax.com | fail HTTPSConnectionPool(host='rpc.nakharax.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000020F3BD00910>: Failed to resolve 'rpc.nakharax.com' ([Errno 11001] getaddrinfo failed)")) |
+| yes | faucet_http | skipped |
 
 ## Manual follow-up
 

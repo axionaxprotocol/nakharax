@@ -58,6 +58,14 @@ class NakharaxRpcClient:
         result = self._call("net_peerCount")
         return int(result, 16) if result else 0
 
+    def get_block_number(self) -> int:
+        result = self._call("eth_blockNumber")
+        return int(result, 16) if result else 0
+
+    def get_balance(self, address: str) -> int:
+        result = self._call("eth_getBalance", [address, "latest"])
+        return int(result, 16) if result else 0
+
     def get_node_telemetry(self) -> Dict[str, Any]:
         """Fetch real-time node telemetry"""
         result = self._call("nak_getNodeTelemetry")

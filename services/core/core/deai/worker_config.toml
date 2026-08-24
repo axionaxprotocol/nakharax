@@ -18,7 +18,7 @@ bootnodes = [
     "https://rpc-au.nakharax.com"     # AU Validator
 ]
 chain_id = 86137
-contract_address = "0x0000000000000000000000000000000000000000"  # Placeholder
+contract_address = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"  # Deployed JobMarketplaceStandalone L1
 
 # Retry configuration for network resilience
 max_retries = 5

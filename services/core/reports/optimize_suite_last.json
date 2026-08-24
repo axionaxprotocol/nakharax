@@ -1,30 +1,30 @@
 {
-  "rpc_url": "https://rpc.nakharax.com",
-  "generated_at_utc": "2026-03-21T15:20:04.864427+00:00",
+  "rpc_url": "http://127.0.0.1:8545",
+  "generated_at_utc": "2026-08-24T08:46:09.017122+00:00",
   "scenarios": [
     {
       "name": "smoke",
       "ok": true,
       "summary": "smoke OK",
       "metrics": {
-        "eth_chainId_ms": 903.12,
-        "eth_blockNumber_ms": 700.6,
+        "eth_chainId_ms": 3.55,
+        "eth_blockNumber_ms": 1.91,
         "chain_id_hex": "0x15079",
-        "block_number_hex": "0x1af35"
+        "block_number_hex": "0x5f7"
       }
     },
     {
       "name": "light_usage",
       "ok": true,
-      "summary": "light: 48 core ok, 0 core fail over 45s (p50 472ms)",
+      "summary": "light: 96 core ok, 0 core fail over 45s (p50 2ms)",
       "metrics": {
-        "core_successes": 48,
+        "core_successes": 96,
         "core_failures": 0,
-        "optional_attempts": 3,
+        "optional_attempts": 16,
         "optional_ok": 0,
-        "latency_p50_ms": 472.43,
-        "latency_p95_ms": 648.79,
-        "latency_mean_ms": 489.81
+        "latency_p50_ms": 1.92,
+        "latency_p95_ms": 2.36,
+        "latency_mean_ms": 1.98
       }
     }
   ],
