@@ -1,9 +1,11 @@
-# 🚀 nakharax Worker Node - Vertex AI Workbench Setup
+# 🚀 nakharax Worker Node - Vertex AI Workbench Setup (DEPRECATED)
 
-**Platform**: Google Cloud Vertex AI Workbench  
-**Credit**: $300 GCP Free Credit  
-**Time**: 15-20 minutes  
-**Date**: 2025-11-25
+> [!NOTE]
+> **Status: DEPRECATED & ARCHIVED**  
+> NakharaX Protocol operates on 100% Sovereign Bare-Metal, Local Compute Rigs, and Dedicated VPS (Contabo/Hetzner/RunPod). Google Cloud / Vertex AI is no longer used.
+
+**Platform**: Legacy Google Cloud Archive  
+**Date**: Archived 2026-08-24
 
 ---
 

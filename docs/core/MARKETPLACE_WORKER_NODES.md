@@ -9,9 +9,8 @@ Summary of **worker node types** the system and repo docs expect on the **Comput
 | Type | Hardware | Doc Ref | Role |
 |------|----------|---------|------|
 | **Local PC** | CPU / AMD GPU / NVIDIA GPU | `WORKER_LOCAL_WINDOWS_AMD.md` | General worker, testing |
-| **Cloud GPU — RunPod** | NVIDIA A40 (48GB) | `WORKER_RUNPOD_A40_SETUP.md`, `RUNPOD_QUICK_START.md` | Heavy Training / Inference |
-| **Cloud — GCP** | VM + GPU (per config) | `gcp-worker-setup.md` | Training workloads |
-| **Cloud — Vertex AI** | Google Cloud AI (GPU/TPU) | `WORKER_VERTEX_AI_SETUP.md` | Training / Notebook |
+| **Cloud GPU — RunPod** | NVIDIA A40 (48GB) / RTX 4090 | `WORKER_RUNPOD_A40_SETUP.md`, `RUNPOD_QUICK_START.md` | Heavy Training / Inference |
+| **Dedicated VPS / Bare-Metal** | Linux x86_64 Multi-Core CPU/GPU | `scripts/run-worker.py` | High-throughput 24/7 worker |
 | **Monolith MK-I Sentinel** | RPi 5 + Hailo (NPU #0) | `configs/monolith_sentinel.toml`, HYDRA | Security / Vision |
 | **Monolith MK-I Worker** | RPi 5 + Hailo (NPU #1) | `configs/monolith_worker.toml`, HYDRA | General compute |
 
@@ -85,7 +84,7 @@ Marketplace / job assignment can use this to filter or rank workers by job fit.
 On the **Marketplace**, worker nodes are expected to include:
 
 1. **PC / Laptop** — SILICON, tier 1 (CPU or GPU), light Inference / Training
-2. **Cloud GPU (RunPod A40, GCP, Vertex AI)** — SILICON, tier 2, heavy Training / Inference
+2. **Cloud & Dedicated GPU (RunPod A40 / Dedicated VPS)** — SILICON, tier 2, heavy Training / Inference
 3. **Monolith MK-I Sentinel** — NPU (Hailo #0), tier 3, Security/Vision focus
 4. **Monolith MK-I Worker** — NPU (Hailo #1), tier 3, general compute
 5. **Monolith MK-II (future)** — PHOTONIC, tier 3, optical_bridge_available

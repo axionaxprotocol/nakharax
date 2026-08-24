@@ -201,11 +201,9 @@ Current infrastructure is 78% deployed (7/9 services operational) with MetaMask 
 - **Phase 1-2**: $25-35/month (current VPS only)
 - **Phase 3+**: $70-80/month (both VPS)
 
-### Alternative: Free Tier Options
-- **AWS Free Tier**: 12 months free (limited resources)
-- **Google Cloud**: $300 credit (3 months)
-- **Azure**: $200 credit (1 month)
-- Consider for development/testing before production
+### Infrastructure Strategy
+- **Sovereign VPS**: Dedicated Contabo (€6/mo) / Hetzner nodes
+- **Zero Cloud Lock-in**: Full self-hosted sovereignty without cloud vendor dependencies
 
 ---
 

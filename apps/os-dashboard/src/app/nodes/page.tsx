@@ -107,14 +107,14 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     id: "node-virginia-sentinel",
     name: "Virginia Hydra Sentinel Radar (US)",
     region: "North Virginia, USA",
-    endpoint: "us-sentinel.nakharax.net (GCP $32k credits)",
+    endpoint: "us-sentinel.nakharax.net (Dedicated VPS)",
     role: "Hydra Sentinel",
     hardware: "12 vCPU · 32 GB RAM · 1 TB NVMe",
     tps: 24.8,
     status: "STANDBY_BLUEPRINT",
     latencyMs: 180,
     blockHeight: 1845,
-    hostingTier: "Google Cloud Build · Standby for 1 Sept",
+    hostingTier: "Dedicated VPS / Hetzner · Standby for 1 Sept",
   },
 ];
 
@@ -189,7 +189,7 @@ export default function NodesPage() {
     <PageShell
       eyebrow="Node Topology & Deployment Blueprint"
       title="Sovereign Local Node & Public VPS Deployment Planner"
-      description="Active local node daemon running on this machine (127.0.0.1:8545) alongside blueprint architecture for Public Testnet VPS clusters (Contabo / GCP)."
+      description="Active local node daemon running on this machine (127.0.0.1:8545) alongside blueprint architecture for Public Testnet VPS clusters (Contabo / Hetzner / Dedicated Bare-Metal)."
       meta={
         <>
           <StatusPill tone="ai" pulse>
