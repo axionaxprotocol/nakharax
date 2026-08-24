@@ -26,17 +26,23 @@
 - **Multi-Modal Generation Workspaces:** Support for LLaMA-3.3 code synthesis with one-click copy, SDXL v3 image latent parameters, and Whisper audio transcription waveforms.
 - **PoPC STARK FRI Cryptographic Receipts:** Verifiable proof hashes linked directly to L1 Block Explorer.
 
-### 4. 💳 Sovereign Keystore Vault & Wallet Bridge (`/wallet`)
-- **Zero-Custody Local Keypair Management:** Client-side entropy generation with AES keystore encryption and one-click key rotation.
-- **MetaMask 1-Click Bridge:** Auto-injects NakharaX Testnet (Chain ID `86137`, RPC `http://127.0.0.1:8545`, symbol `$tNAK`).
-- **Live Faucet & Escrow Lock Engine:** 100 $tNAK instant faucet dispense with 12h cooldown, and real-time transaction ledger.
+### 4. 💳 Institutional Sovereign Web3 Treasury & Asset Management Terminal (`/wallet`)
+- **Multi-Asset Treasury Overview:** Total net worth calculator in $tNAK and USD ($tNAK Liquid, $sNAK Staked, Escrow Locked).
+- **4 Tabbed Workspaces:** Sovereign Keystore (HD path `m/44'/60'/0'/0/0`, AES-256 keystore export), Instant Transfer (EIP-1559 presets: Standard 1.0 Gwei, Fast 1.5 Gwei, Instant 2.5 Gwei), PoPC Consensus Staking Desk (8.4% APY), and Cold Storage Security.
+- **Live On-Chain Transaction & State Ledger:** Syncs directly with node RPC mempool and mined block receipts.
 
-### 5. 🌐 Multi-Region L1 Node Cluster & Kademlia Radar (`/nodes`)
-- **Sovereign Local Host (This Machine):** Active Genesis node on `127.0.0.1:8545` with planned Contabo/Hetzner VPS blueprints.
-- **Kademlia DHT Peer Discovery Mesh:** Domain-masked Anycast multi-addrs (`/dns4/.../tcp/30303` + QUIC) and connected peer table.
-- **Zero-DDoS Shield Active:** 100% masked IP architecture protecting node infrastructure.
+### 5. 🛡️ Hydra Sentinel Consensus Defense & Zero-MEV Shield (`/apps/sentinel`)
+- **Zero-MEV Fair Sequencing Engine:** Cryptographic time-lock encryption preventing front-running, sandwich attacks, and toxic arbitrage; enforces $\le 0.05\%$ slippage SLA.
+- **Byzantine Validator Slashing Radar:** Real-time dispute monitoring, token bucket rate limiter, and IP quarantine.
 
-### 6. 📜 100% Green L1 Smart Contracts Hardhat Test Suite (`@nakharax/contracts`)
+### 6. 🤖 Sovereign Autonomous Agent Fleet & Execution Sandbox (`/apps/agents`)
+- **Autonomous Task Dispatcher:** Interactive state channel execution terminal allowing direct workflow dispatching with full step-by-step cryptographic proof traces.
+- **On-Chain DID Minting Studio:** Self-sovereign W3C DID key derivation with equipped MCP skill belts.
+
+### 7. 🎯 100% Real Data Grounding Pass (System-Wide Authenticity)
+- **Elimination of Mock/Phantom Metrics:** Replaced arbitrary numbers across `/activity`, `/apps/subnets`, and `/apps/mcp` with truthful local rig telemetry (`127.0.0.1:8545`) and explicit Genesis deployment blueprints.
+
+### 8. 📜 100% Green L1 Smart Contracts Hardhat Test Suite (`@nakharax/contracts`)
 - Full unit test suite (9/9 tests green) covering `NakharaxToken` (1 Trillion fixed supply), `JobMarketplaceStandalone`, `FaucetTreasury`, `LoRAAdapterHub`, and `SovereignAgentRegistry`.
 
 ---
