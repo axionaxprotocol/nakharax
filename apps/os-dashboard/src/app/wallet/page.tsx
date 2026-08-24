@@ -14,14 +14,15 @@ export const dynamic = "force-dynamic";
 
 export default function WalletPage() {
   return (
-      <PageShell
-        eyebrow="Vault"
-      title="Inspect testnet balances and execute raw transfers."
-      description="The wallet view reads the configured RPC balance when available. Key management is strictly kept local on-device without third-party key storage."
+    <PageShell
+      eyebrow="Sovereign Keystore Vault"
+      title="Native Testnet Key Management & Token Bridge"
+      description="Zero-custody client-side key storage, 1-click MetaMask Chain 86137 integration, 100 $tNAK faucet dispense, and PoPC compute escrow lock."
       meta={
         <>
-          <StatusPill tone="chain">testnet vault</StatusPill>
-          <StatusPill tone="ai">local keypair</StatusPill>
+          <StatusPill tone="chain" pulse>Chain ID: 86137</StatusPill>
+          <StatusPill tone="ai">Native Gas: $tNAK</StatusPill>
+          <StatusPill tone="violet">Zero-Custody Client Vault</StatusPill>
         </>
       }
     >

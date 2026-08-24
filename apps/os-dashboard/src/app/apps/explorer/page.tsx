@@ -463,14 +463,37 @@ export default function BlockExplorerPage() {
 
         {/* Column 2: Live Transactions & Executions */}
         <div className="space-y-3">
-          <SectionHeader
-            title="Live Mempool & Transactions"
-            description="Micro-settlement, DeAI compute jobs, and MCP tool calls"
-          />
+          <div className="flex items-center justify-between">
+            <SectionHeader
+              title="Live Mempool & Transactions"
+              description="Micro-settlement, DeAI compute jobs, and MCP tool calls"
+            />
+          </div>
 
           <div className="space-y-2.5">
             {transactions.map((tx) => (
-              <Card key={tx.txHash} className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-cyan-500/30">
+              <Card
+                key={tx.txHash}
+                onClick={() =>
+                  setSearchResult({
+                    type: "TRANSACTION",
+                    query: `Tx ${tx.txHash.slice(0, 14)}...`,
+                    data: {
+                      hash: tx.txHash,
+                      from: tx.from,
+                      to: tx.to,
+                      value: tx.valueNak,
+                      type: tx.type,
+                      blockHeight: tx.blockHeight,
+                      status: tx.status,
+                      gasUsed: "21,000 (0.000021 tNAK)",
+                      popcProofRoot: "0x89f2a0b4c810de93847a1029384710bc89",
+                      starkPolynomialDegree: "1,024 constraints (FRI Fast Path)",
+                    },
+                  })
+                }
+                className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-cyan-500/30 cursor-pointer"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span
