@@ -36,6 +36,7 @@ import {
   StatCard,
   StatusPill,
 } from "@/components/card";
+import { SentinelChatTerminal } from "@/components/sentinel-chat";
 
 interface ValidatorNodeSecurity {
   nodeId: string;
@@ -225,6 +226,50 @@ export default function HydraSentinelPage() {
           {arbitrationNotice}
         </div>
       )}
+
+      {/* =========================================================================
+          SECTION 1: THE 7 SENTINELS & NOESIS COGNITIVE MATRIX
+          ========================================================================= */}
+      <section className="space-y-3">
+        <SectionHeader
+          title="The 7 Sentinels & NOESIS-VX Cognitive Matrix"
+          description="Autonomous on-chain immune system guarding temporal ordering, fraud anomalies, hardware attestation, and zero-MEV sequencing."
+        />
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { name: "NOESIS-VX", role: "Cognitive Core", desc: "Meta-governance & parameter auto-tuning", status: "ONLINE" },
+            { name: "SERAPH-VX", role: "Network Defense", desc: "Anti-DDoS & Zero-MEV Fair Sequencing", status: "ARMED" },
+            { name: "ORION-VX", role: "Fraud Detection", desc: "Isolation Forest ML PoPC proof auditor", status: "ONLINE" },
+            { name: "THEMIS-VX", role: "Dispute Arbitrator", desc: "Judicial on-chain slashing execution", status: "ACTIVE" },
+            { name: "AION-VX", role: "Temporal Integrity", desc: "3.0s deterministic timestamp ordering", status: "SYNCED" },
+            { name: "DIAOCHAN-VX", role: "Reputation Engine", desc: "Dynamic trust scoring & stake weighting", status: "100% REP" },
+            { name: "VULCAN-VX", role: "Hardware Attestation", desc: "GPU VRAM & TEE driver attestation", status: "VERIFIED" },
+            { name: "HYDRA-SHIELD", role: "Anycast Defense", desc: "100% masked physical node IPs", status: "PROTECTED" },
+          ].map((s) => (
+            <Card key={s.name} className="border-white/10 bg-slate-950/80 p-3.5 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-white">{s.name}</span>
+                <span className="rounded bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 text-[9px] font-mono font-bold text-emerald-300">
+                  {s.status}
+                </span>
+              </div>
+              <div className="text-[10.5px] font-mono text-cyan-300 font-semibold">{s.role}</div>
+              <p className="text-[11px] text-slate-400 font-sans leading-snug">{s.desc}</p>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 2: INTERACTIVE DEAI SENTINEL & NOESIS CHAT TERMINAL
+          ========================================================================= */}
+      <section className="space-y-3">
+        <SectionHeader
+          title="Interactive DeAI Sentinel & NOESIS-VX Chat Terminal"
+          description="Talk directly with the protocol cognitive core and security sentinels in real-time."
+        />
+        <SentinelChatTerminal />
+      </section>
 
       {/* 2-Column Grid */}
       <div className="grid gap-5 lg:grid-cols-12">
