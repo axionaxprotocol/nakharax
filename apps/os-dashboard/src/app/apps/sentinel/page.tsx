@@ -472,6 +472,38 @@ export default function HydraSentinelPage() {
               </div>
             </div>
           </Card>
+
+          {/* Autonomous Rogue AI Interceptor & Circuit Breaker */}
+          <Card className="space-y-3.5 border-red-500/20 bg-red-950/10 p-5 font-mono text-xs">
+            <div className="flex items-center justify-between border-b border-red-500/20 pb-3">
+              <div className="flex items-center gap-2">
+                <ShieldAlert size={16} className="text-red-400" />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white">
+                  Rogue AI Circuit Breaker
+                </h3>
+              </div>
+              <span className="rounded bg-red-500/10 border border-red-500/30 px-2 py-0.5 text-[9.5px] text-red-300 font-bold">
+                SUB-MS KILL-SWITCH
+              </span>
+            </div>
+
+            <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
+              If an AI Agent or Sentinel attempts an out-of-bounds action (unauthorized minting, gradient manipulation, or invariant breach), the circuit breaker revokes its DID keypair in &lt; 1ms and slashes its bond.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => {
+                setArbitrationNotice(
+                  `🚨 [EMERGENCY CIRCUIT BREAKER ACTIVATED]\nThreat: Rogue AI Agent 'Agent-X' attempted out-of-bounds parameter deviation (> 5.0%)\nInterception Speed: 0.412ms (Deterministic Invariant Guard)\nAction Enforced: DID Keypair Revoked -> Escrow Frozen -> 2,500 tNAK Slashed to 0x000...dead\nStatus: PROTOCOL SECURE & 100% INTACT`
+                );
+                setTimeout(() => setArbitrationNotice(null), 8000);
+              }}
+              className="w-full rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 py-2 text-xs font-mono font-bold transition-all hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+            >
+              🚨 Simulate Rogue AI Interception
+            </button>
+          </Card>
         </div>
       </div>
     </PageShell>
