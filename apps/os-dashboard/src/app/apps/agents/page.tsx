@@ -172,14 +172,14 @@ export default function SovereignAgentsPage() {
         />
         <StatCard
           label="Total Tasks Completed"
-          value="5,430"
-          hint="Machine-to-machine jobs"
+          value={agents.reduce((acc, a) => acc + (a.totalJobsExecuted || 0), 0)}
+          hint="Verified on-chain executions"
           icon={<Activity size={18} />}
           tone="chain"
         />
         <StatCard
           label="Agent Vaults"
-          value="850.5 tNAK"
+          value={`${agents.reduce((acc, a) => acc + (parseFloat(a.balanceWei) || 0), 0).toFixed(1)} tNAK`}
           hint="Total locked liquidity"
           icon={<Wallet size={18} />}
           tone="violet"

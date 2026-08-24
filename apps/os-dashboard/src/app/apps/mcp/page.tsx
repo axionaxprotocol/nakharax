@@ -306,9 +306,9 @@ export default function MCPMarketplacePage() {
           tone="ai"
         />
         <StatCard
-          label="Total Agent Calls"
-          value="1.35M"
-          hint="Inter-Agent tool invocations"
+          label="Invocation Transport"
+          value="JSON-RPC + SSE"
+          hint="Direct localhost & stream"
           icon={<Activity size={18} />}
           tone="chain"
         />

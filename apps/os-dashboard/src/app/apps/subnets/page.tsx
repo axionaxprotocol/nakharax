@@ -51,13 +51,13 @@ interface KnowledgeSubnet {
   name: string;
   category: "biotech" | "quantum" | "silicon" | "robotics" | "legal" | "cyber" | "education";
   description: string;
-  activeWorkers: number;
-  totalInferences: string;
-  stakedNak: string;
+  targetWorkers: string;
+  benchmarkThroughput: string;
+  minSubnetStake: string;
   tpsCapacity: string;
   specializedLoRA: string;
   mcpSkillsEnabled: string[];
-  growthRate: string;
+  status: "GENESIS_BLUEPRINT" | "DEVNET_ACTIVE";
   icon: any;
 }
 
@@ -67,13 +67,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #1: Genomic & CRISPR Molecular Synthesis",
     category: "biotech",
     description: "Distributed protein folding, CRISPR-Cas target discovery, and oncology compound docking without exposing private DNA sequences.",
-    activeWorkers: 384,
-    totalInferences: "14.2M",
-    stakedNak: "850,000 tNAK",
+    targetWorkers: "64 Dedicated Workers",
+    benchmarkThroughput: "450 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "450 tasks/s",
     specializedLoRA: "CRISPR-Cas12-Protein-v3",
     mcpSkillsEnabled: ["mcp-bio-docking", "mcp-alphafold-oracle"],
-    growthRate: "+28.4%",
+    status: "GENESIS_BLUEPRINT",
     icon: Dna,
   },
   {
@@ -81,13 +81,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #2: Superconductor & Materials Physics",
     category: "quantum",
     description: "High-temperature superconductor molecular lattices, solid-state electrolyte simulations, and fusion plasma magnetic containment.",
-    activeWorkers: 512,
-    totalInferences: "8.9M",
-    stakedNak: "1,200,000 tNAK",
+    targetWorkers: "64 Dedicated Workers",
+    benchmarkThroughput: "380 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "380 tasks/s",
     specializedLoRA: "Lattice-Quantum-MonteCarlo-v2",
     mcpSkillsEnabled: ["mcp-quantum-solver", "mcp-plasma-sim"],
-    growthRate: "+34.1%",
+    status: "GENESIS_BLUEPRINT",
     icon: Atom,
   },
   {
@@ -95,13 +95,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #3: Autonomous ASIC & RISC-V Chip Synthesizer",
     category: "silicon",
     description: "Automated Verilog/VHDL logic placement, timing closure optimization, and sub-nanometer neural accelerator topology generation.",
-    activeWorkers: 290,
-    totalInferences: "5.1M",
-    stakedNak: "640,000 tNAK",
+    targetWorkers: "32 Dedicated Workers",
+    benchmarkThroughput: "210 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "210 tasks/s",
     specializedLoRA: "RISCV-Verilog-Silicon-v4",
     mcpSkillsEnabled: ["mcp-verilog-prover", "mcp-timing-closure"],
-    growthRate: "+19.8%",
+    status: "GENESIS_BLUEPRINT",
     icon: Microchip,
   },
   {
@@ -109,13 +109,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #4: Zero-Day Forensic & Autonomous Cyber Mesh",
     category: "cyber",
     description: "Autonomous binary fuzzing, smart contract formal verification, kernel invariant testing, and zero-day threat intelligence synthesis.",
-    activeWorkers: 720,
-    totalInferences: "32.8M",
-    stakedNak: "2,450,000 tNAK",
+    targetWorkers: "128 Dedicated Workers",
+    benchmarkThroughput: "1,200 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "1,200 tasks/s",
     specializedLoRA: "Hydra-EVM-KernelFuzzer-v5",
     mcpSkillsEnabled: ["mcp-sec-auditor", "mcp-docker-sandbox"],
-    growthRate: "+42.0%",
+    status: "DEVNET_ACTIVE",
     icon: ShieldCheck,
   },
   {
@@ -123,13 +123,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #5: Swarm Robotics & Spatial Telemetry Mesh",
     category: "robotics",
     description: "Autonomous multi-agent drone swarm coordination, robotic manufacturing kinematics, and real-time spatial SLAM processing.",
-    activeWorkers: 430,
-    totalInferences: "19.4M",
-    stakedNak: "910,000 tNAK",
+    targetWorkers: "64 Dedicated Workers",
+    benchmarkThroughput: "850 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "850 tasks/s",
     specializedLoRA: "YOLOv11-Spatial-SLAM-v2",
     mcpSkillsEnabled: ["mcp-swarm-telemetry", "mcp-spatial-kinematics"],
-    growthRate: "+22.5%",
+    status: "GENESIS_BLUEPRINT",
     icon: Orbit,
   },
   {
@@ -137,13 +137,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #6: Multi-Jurisdiction Sovereign Legal Lexicon",
     category: "legal",
     description: "Cross-border regulatory harmonization, institutional contract synthesis, and trustless zero-knowledge tax compliance verification.",
-    activeWorkers: 180,
-    totalInferences: "3.7M",
-    stakedNak: "420,000 tNAK",
+    targetWorkers: "32 Dedicated Workers",
+    benchmarkThroughput: "140 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "140 tasks/s",
     specializedLoRA: "Lex-Jurisdiction-Universal-v1",
     mcpSkillsEnabled: ["mcp-legal-oracle", "mcp-zk-compliance"],
-    growthRate: "+15.3%",
+    status: "GENESIS_BLUEPRINT",
     icon: Scale,
   },
   {
@@ -151,13 +151,13 @@ const KNOWLEDGE_SUBNETS: KnowledgeSubnet[] = [
     name: "Subnet #7: Infinite Interdisciplinary Knowledge Graph",
     category: "education",
     description: "Autonomous cross-disciplinary research synthesis, connecting disconnected scientific papers into live executable hypotheses.",
-    activeWorkers: 640,
-    totalInferences: "26.1M",
-    stakedNak: "1,600,000 tNAK",
+    targetWorkers: "128 Dedicated Workers",
+    benchmarkThroughput: "920 tasks/s (Target)",
+    minSubnetStake: "50,000 tNAK",
     tpsCapacity: "920 tasks/s",
     specializedLoRA: "DeepSeek-Interdisciplinary-CoT-v3",
     mcpSkillsEnabled: ["mcp-deepseek-reasoner", "mcp-web-scout"],
-    growthRate: "+51.2%",
+    status: "GENESIS_BLUEPRINT",
     icon: GraduationCap,
   },
 ];
@@ -259,30 +259,30 @@ export default function SubnetsEcosystemPage() {
       {/* 4 Architecture Metric Cards */}
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
-          label="Active Subnets"
-          value="7 Scientific"
-          hint="Infinite domain specialization"
+          label="Domain Subnets"
+          value="7 Disciplines"
+          hint="Specialized compute blueprints"
           icon={<Network size={18} />}
           tone="ai"
         />
         <StatCard
-          label="Total Global Compute"
-          value="3,160 Nodes"
-          hint="Cross-regional GPU mesh"
+          label="Active Local Host"
+          value="1 Genesis Node"
+          hint="Devnet Mode (127.0.0.1:8545)"
           icon={<Cpu size={18} />}
           tone="chain"
         />
         <StatCard
-          label="Total Subnet Stake"
-          value="7.82M tNAK"
-          hint="Delegated proof of compute"
+          label="Min Subnet Stake"
+          value="50,000 tNAK"
+          hint="On-chain security threshold"
           icon={<ShieldCheck size={18} />}
           tone="warn"
         />
         <StatCard
-          label="Network Cadence"
-          value="2.84s"
-          hint="Subnet fast finality"
+          label="Block Cadence"
+          value="3.00s"
+          hint="PoPC fast deterministic finality"
           icon={<Zap size={18} />}
           tone="violet"
         />
@@ -344,34 +344,34 @@ export default function SubnetsEcosystemPage() {
                 <div className="flex items-start justify-between">
                   <IconBadge Icon={SubnetIcon} tone="ai" className="h-10 w-10" />
                   <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono text-emerald-300">
-                    {subnet.growthRate} Growth
+                    {subnet.status === "DEVNET_ACTIVE" ? "Devnet Active" : "Genesis Blueprint"}
                   </span>
                 </div>
 
                 <h3 className="mt-3 text-[14px] font-bold text-white leading-snug">
                   {subnet.name}
                 </h3>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-slate-300 line-clamp-3">
+                <p className="mt-1.5 text-[12px] leading-relaxed text-slate-300 line-clamp-3 font-sans">
                   {subnet.description}
                 </p>
               </div>
 
               <div className="space-y-2 border-t border-white/[0.08] pt-3 text-[11px] font-mono">
                 <div className="flex justify-between text-slate-400">
-                  <span>Active Node Workers:</span>
-                  <span className="font-semibold text-white">{subnet.activeWorkers} Nodes</span>
+                  <span>Target Compute:</span>
+                  <span className="font-semibold text-white">{subnet.targetWorkers}</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
-                  <span>Throughput Capacity:</span>
-                  <span className="font-semibold text-cyan-300">{subnet.tpsCapacity}</span>
+                  <span>Benchmark Target:</span>
+                  <span className="font-semibold text-cyan-300">{subnet.benchmarkThroughput}</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
                   <span>Dedicated LoRA:</span>
                   <span className="font-semibold text-emerald-300 truncate max-w-[140px]">{subnet.specializedLoRA}</span>
                 </div>
                 <div className="flex justify-between text-slate-400">
-                  <span>Security Stake:</span>
-                  <span className="font-semibold text-violet-300">{subnet.stakedNak}</span>
+                  <span>Min Security Stake:</span>
+                  <span className="font-semibold text-violet-300">{subnet.minSubnetStake}</span>
                 </div>
               </div>
 

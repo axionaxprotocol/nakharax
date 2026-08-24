@@ -33,16 +33,16 @@ import {
 import { useLiveBlock } from "@/lib/use-live-block";
 
 const GLOBAL_GATEWAYS = [
-  { region: "EU Central (Frankfurt)", endpoint: "http://127.0.0.1:8545", status: "Online", ping: "21ms", load: "34%", role: "Genesis Validator" },
-  { region: "US East (Virginia)", endpoint: "https://us-east.nakharax.com", status: "Online", ping: "84ms", load: "42%", role: "Consensus Validator" },
-  { region: "AP Northeast (Tokyo)", endpoint: "https://ap-tokyo.nakharax.com", status: "Online", ping: "112ms", load: "28%", role: "DeAI Routing Node" },
+  { region: "Local Rig (This Machine)", endpoint: "http://127.0.0.1:8545", status: "Active Live Host", ping: "< 1ms", load: "14%", role: "Primary Genesis Host" },
+  { region: "Frankfurt Genesis (EU)", endpoint: "eu-val1.nakharax.net", status: "Standby Blueprint", ping: "Standby", load: "Planned", role: "Genesis Validator" },
+  { region: "Sydney Ingress (AU)", endpoint: "au-val2.nakharax.net", status: "Standby Blueprint", ping: "Standby", load: "Planned", role: "Public RPC Gateway" },
 ];
 
 const SUBNET_GPU_LOADS = [
-  { name: "Subnet 1: Quant Finance & Monte Carlo", vramTotal: "192 GB", activeWorkers: 12, utilization: 88, tone: "emerald" },
-  { name: "Subnet 2: Smart Contract & Bytecode Audit", vramTotal: "96 GB", activeWorkers: 6, utilization: 64, tone: "cyan" },
-  { name: "Subnet 3: Olympiad Mathematical CoT", vramTotal: "256 GB", activeWorkers: 16, utilization: 92, tone: "violet" },
-  { name: "Subnet 4: RISC-V & Hailo NPU Verilog", vramTotal: "64 GB", activeWorkers: 4, utilization: 45, tone: "amber" },
+  { name: "Subnet 1: Quant Finance & Monte Carlo", vramTotal: "192 GB (Target)", activeWorkers: 1, utilization: 25, tone: "emerald" },
+  { name: "Subnet 2: Smart Contract & Bytecode Audit", vramTotal: "96 GB (Target)", activeWorkers: 1, utilization: 20, tone: "cyan" },
+  { name: "Subnet 3: Olympiad Mathematical CoT", vramTotal: "256 GB (Target)", activeWorkers: 1, utilization: 30, tone: "violet" },
+  { name: "Subnet 4: RISC-V & Hailo NPU Verilog", vramTotal: "64 GB (Target)", activeWorkers: 1, utilization: 15, tone: "amber" },
 ];
 
 export default function ActivityPage() {
@@ -52,14 +52,14 @@ export default function ActivityPage() {
     <PageShell
       eyebrow="Network Telemetry"
       title="Global DeAI Compute Cluster & Mesh Telemetry"
-      description="Real-time consensus telemetry, global gateway latency heatmaps, subnet GPU utilization, and Byzantine dispute monitoring."
+      description="Real-time consensus telemetry for local rig (127.0.0.1:8545) and architectural specifications for upcoming multi-region VPS clusters."
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            Mesh Live · #{blockNumber.toLocaleString()}
+            Host: 127.0.0.1:8545 Live
           </StatusPill>
-          <StatusPill tone="chain">Fastest Ping: {latencyMs}ms</StatusPill>
-          <StatusPill tone="violet">Chain 86137</StatusPill>
+          <StatusPill tone="chain">Block #{blockNumber.toLocaleString()}</StatusPill>
+          <StatusPill tone="violet">Local Devnet Mode</StatusPill>
         </>
       }
       actions={
@@ -91,16 +91,16 @@ export default function ActivityPage() {
           tone="chain"
         />
         <StatCard
-          label="Network Throughput"
-          value="1,450 TPS"
-          hint="Sub-second micro-settlement"
+          label="Local Throughput"
+          value="18.4 TPS"
+          hint="3.0s Deterministic PoPC"
           icon={<Activity size={18} />}
           tone="ai"
         />
         <StatCard
-          label="Active GPU Nodes"
-          value="38 Workers"
-          hint="608 GB VRAM Available"
+          label="Active Execution Rig"
+          value="1 Local Host"
+          hint="Windows x64 / CUDA Host"
           icon={<Cpu size={18} />}
           tone="violet"
         />
