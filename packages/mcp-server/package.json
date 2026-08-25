@@ -1,0 +1,33 @@
+{
+  "name": "@nakharax/mcp-server",
+  "version": "1.9.0",
+  "description": "Official Model Context Protocol (MCP) Server for NakharaX Protocol & XpFirm Quantitative Risk Terminal",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "nakharax-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "nakharax",
+    "mcp",
+    "model-context-protocol",
+    "deai",
+    "consensus",
+    "quant-risk"
+  ],
+  "author": "NakharaX Protocol Engineers",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "typescript": "^5.4.5"
+  }
+}

@@ -54,21 +54,21 @@ def _fmt_md(
     commands: dict[str, str],
 ) -> str:
     lines: list[str] = [
-        "# สรุปผลทดสอบ Performance เครือข่าย (Nakharax)",
+        "# NakharaX Network Performance Benchmark Summary",
         "",
-        f"**สร้างอัตโนมัติ:** {generated_utc}",
-        f"**RPC ที่ทดสอบ:** `{rpc}`",
+        f"**Generated At:** {generated_utc}",
+        f"**Tested RPC Target:** `{rpc}`",
         "",
         "---",
         "",
-        "## 1. Optimize suite",
+        "## 1. Optimization Test Suite",
         "",
-        f"คำสั่ง: `{commands['optimize']}`",
+        f"**Execution Command:** `{commands['optimize']}`",
         "",
     ]
 
     overall = optimize.get("overall_ok")
-    lines.append(f"- **สถานะรวม:** {'PASS' if overall else 'FAIL'}")
+    lines.append(f"- **Overall Status:** **{'PASS' if overall else 'FAIL'}**")
     lines.append("")
 
     for sc in optimize.get("scenarios", []):
@@ -78,27 +78,27 @@ def _fmt_md(
         metrics = sc.get("metrics", {})
         lines.append(f"### {name}")
         lines.append("")
-        lines.append(f"- ผล: **{'PASS' if ok else 'FAIL'}** — {summary}")
+        lines.append(f"- **Result:** **{'PASS' if ok else 'FAIL'}** — {summary}")
         if metrics:
             lines.append("")
-            lines.append("| Metric | ค่า |")
-            lines.append("|--------|-----|")
+            lines.append("| Metric | Value |")
+            lines.append("|--------|-------|")
             for k, v in metrics.items():
                 lines.append(f"| `{k}` | {v} |")
         lines.append("")
 
-    lines.append(f"รายงานดิบ: `reports/optimize_suite_last.json`")
+    lines.append(f"**Raw Benchmark Artifact:** `reports/optimize_suite_last.json` ")
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append("## 2. Block timing (`tps_finality_test.py` — block-time)")
+    lines.append("## 2. Block Timing Metrics (`tps_finality_test.py` — Block Production)")
     lines.append("")
 
     if block_time_error:
-        lines.append(f"*ไม่ได้รันหรือล้มเหลว:* {block_time_error}")
+        lines.append(f"*Status / Error:* {block_time_error}")
         lines.append("")
     elif block_time:
-        lines.append(f"คำสั่ง: `{commands['block_time']}`")
+        lines.append(f"**Execution Command:** `{commands['block_time']}`")
         lines.append("")
         dur = block_time.get("duration_sec", "?")
         bp = block_time.get("blocks_produced", "?")
@@ -108,30 +108,29 @@ def _fmt_md(
         ft = block_time.get(
             "block_time_target_met", block_time.get("finality_target_met", False)
         )
-        lines.append("| Metric | ค่า |")
-        lines.append("|--------|-----|")
+        lines.append("| Metric | Value |")
+        lines.append("|--------|-------|")
         lines.append(f"| Duration (s) | {dur} |")
         lines.append(f"| Blocks produced | {bp} |")
         lines.append(f"| Blocks/sec | {bps} |")
         lines.append(f"| Avg block time (s) | {abt} |")
-        lines.append(f"| Target avg interval ≤ {mbt}s (production-style) | {'PASS' if ft else 'FAIL'} |")
+        lines.append(f"| Target avg interval ≤ {mbt}s | {'PASS' if ft else 'FAIL'} |")
         lines.append("")
         lines.append(
-            "**หมายเหตุ:** วัดผ่านการ poll HTTP (ประมาณการ); เกณฑ์ default 5s รองรับ block ~2s + margin เครือข่าย; "
-            "ปรับด้วย `--max-block-time-sec` ใน `tps_finality_test.py`"
+            "**Note:** Measured via HTTP polling approximation. Default 5s threshold supports block interval ~2s + network margin."
         )
         lines.append("")
-        lines.append("รายงานดิบ: `reports/block_time_last.json`")
+        lines.append("**Raw Benchmark Artifact:** `reports/block_time_last.json` ")
     else:
-        lines.append("*ไม่มีข้อมูล block-time*")
+        lines.append("*No block-time metrics available*")
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append("## 3. ขั้นถัดไป")
+    lines.append("## 3. Next Steps & Recommendations")
     lines.append("")
-    lines.append("- รันซ้ำจากเครื่อง/VPS ใกล้ RPC เพื่อลด latency ที่วัด")
-    lines.append("- เพิ่ม `--block-duration` เพื่อให้ค่าเฉลี่ยเสถียรขึ้น")
-    lines.append("- โหมด TPS ต้องมี funded key — ดู `scripts/load_test/tps_finality_test.py --help`")
+    lines.append("- Execute repeat runs directly from edge VPS instances adjacent to target RPC.")
+    lines.append("- Increase `--block-duration` for long-term variance stabilization.")
+    lines.append("- Full TPS load mode requires a funded private key — refer to `scripts/load_test/tps_finality_test.py --help`.")
     lines.append("")
     return "\n".join(lines)
 

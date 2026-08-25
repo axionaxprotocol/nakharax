@@ -109,12 +109,17 @@ curl -sX POST http://localhost:8545 \
      -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```
 
-Open the OS dashboard:
+Open the OS dashboard & Mock RPC:
 
 ```bash
-cd apps/os-dashboard
+# From workspace root
 pnpm install
+
+# Option A: Run Next.js OS Dashboard
 pnpm dev          # http://localhost:3030
+
+# Option B: Run lightweight Mock RPC Node server (for frontend dev without Docker)
+pnpm mock-rpc     # http://localhost:8545
 ```
 
 ---
@@ -143,8 +148,8 @@ python3 scripts/join-nakharax.py
 
 | Validator | IP | Role | Status |
 |---|---|---|---|
-| #1 (EU) | `217.216.109.5` | Planned: Validator + RPC + Nakharax OS | ⏳ Awaiting deployment |
-| #2 (AU) | `46.250.244.4` | Planned: Validator + chain services | ⏳ Awaiting deployment |
+| #1 (EU) | `217.216.109.5` | Legacy VPS (Offline) — Awaiting fresh VPS provisioning | 🔴 Offline |
+| #2 (AU) | `46.250.244.4` | Legacy VPS (Offline) — Awaiting fresh VPS provisioning | 🔴 Offline |
 
 **Local Testing:**
 - Run the full dev stack with `docker compose -f services/core/docker-compose.dev.yml up -d`
@@ -233,9 +238,11 @@ systemctl start nakharax-node
 ## Development
 
 ```bash
-# Web universe (apps/)
+# Web universe (apps/ & packages/)
 pnpm install                                  # at repo root, hydrates all workspaces
-pnpm --filter nakharax-os-dashboard dev        # dashboard on :3030
+pnpm dev                                      # dashboard on :3030
+pnpm mock-rpc                                 # mock RPC node on :8545
+pnpm build                                    # builds contracts, sdk, and dashboard
 
 # Core universe (services/core)
 cd services/core/core
@@ -248,7 +255,10 @@ Useful commands:
 
 | Command | Purpose |
 |---|---|
+| `pnpm dev` | Run Next.js OS Dashboard at root (port 3030) |
+| `pnpm mock-rpc` | Run Node.js Mock RPC server at root (port 8545) |
 | `pnpm --filter nakharax-os-dashboard icons:resize` | Rebuild optimized logo + favicon set via sharp |
+| `pnpm contracts:compile` | Compile Solidity contracts in `@nakharax/contracts` |
 | `./scripts/check-node-sync.sh` | Compare local vs. peer block height |
 | `python3 services/core/scripts/health-check.py` | Worker config + RPC reachability check |
 | `docker compose -f services/core/docker-compose.dev.yml logs -f nakharax-node` | Tail node logs |

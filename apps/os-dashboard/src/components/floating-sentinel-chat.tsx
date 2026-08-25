@@ -86,11 +86,11 @@ const SENTINEL_PROFILES: Record<
 };
 
 const QUICK_PROMPTS = [
-  { label: "⚡ PoPC Consensus", query: "PoPC ทำงานอย่างไร และต่างจาก PoW / PoS อย่างไร?" },
-  { label: "🛡️ Zero-MEV", query: "SERAPH-VX ป้องกัน Sandwich Attack ใน Mempool อย่างไร?" },
-  { label: "🔎 Fraud ML", query: "ORION-VX ตรวจจับการโกง PoPC Proof ด้วย Isolation Forest อย่างไร?" },
-  { label: "📈 XpFirm Risk", query: "XpFirm PropSentinel และ Sub-ms Kill-Switch ทำงานอย่างไร?" },
-  { label: "🪙 Tokenomics", query: "โครงสร้าง Tokenomics และ Total Supply ของ $tNAK เป็นอย่างไร?" },
+  { label: "⚡ PoPC Consensus", query: "How does PoPC function, and how does it differ from PoW / PoS?" },
+  { label: "🛡️ Zero-MEV", query: "How does SERAPH-VX prevent Mempool Sandwich Attacks?" },
+  { label: "🔎 Fraud ML", query: "How does ORION-VX detect invalid PoPC Proofs using Isolation Forest?" },
+  { label: "📈 XpFirm Risk", query: "How does XpFirm PropSentinel and its sub-ms Kill-Switch operate?" },
+  { label: "🪙 Tokenomics", query: "What is the tokenomics structure and total supply ceiling of $tNAK?" },
 ];
 
 export function FloatingSentinelChat() {
@@ -385,75 +385,75 @@ function generateSentinelResponse(query: string, persona: SentinelPersona): stri
   const q = query.toLowerCase();
 
   // 1. PoPC Consensus Mechanics
-  if (q.includes("popc") || q.includes("consensus") || q.includes("proof of practical compute") || q.includes("ฉันทามติ")) {
+  if (q.includes("popc") || q.includes("consensus") || q.includes("proof of practical compute")) {
     return `⚡ [PoPC (Proof of Practical Compute) Architecture]
 
-PoPC คือกลไกฉันทามติของ NakharaX L1 ที่ออกแบบมาทดแทน PoW และ PoS:
-1. ไม่สูญเปล่า: โหนดนำพลังงานไปรัน "งานคำนวณ AI ที่มีประโยชน์จริง" (Inference, Tensor Fusion, Monte Carlo)
-2. STARK FRI Proofs: ทุกงานที่เสร็จจะสร้าง Polynomial Proof ยืนยันบนเชน
-3. BFT Fast-Finality: ตรวจสอบแบบ Probabilistic Sampling รวดเร็วในระดับไมโครวินาที
-4. Block Cadence: 3.0 วินาที (Chain ID 86137)`;
+PoPC is NakharaX L1's novel consensus mechanism replacing PoW and PoS:
+1. Useful Work: Nodes execute useful AI workloads (Inference, Tensor Fusion, Monte Carlo).
+2. STARK FRI Proofs: Every completed task produces a verifiable polynomial proof on-chain.
+3. BFT Fast-Finality: Probabilistic verification completes in microseconds without full re-execution.
+4. Block Cadence: 3.0-second fixed block time (Chain ID: 86137).`;
   }
 
   // 2. MEV & SERAPH-VX Defense
   if (q.includes("mev") || q.includes("sandwich") || q.includes("front-run") || q.includes("seraph") || q.includes("ddos")) {
     return `🛡️ [SERAPH-VX Zero-MEV Fair Sequencing Shield]
 
-SERAPH-VX ปกป้อง Mempool และจัดลำดับธุรกรรม:
-1. Time-Lock Fair Ordering: จัดคิวตาม Timestamp เข้ารหัส ป้องกันการแทรกธุรกรรม (Zero Sandwiching)
-2. Enforced Max Slippage (≤ 0.05%): ป้องกัน Toxic Arbitrage
-3. Token Bucket Rate Limiter: สกัด DDoS ทันทีที่เกินโควตา 500 req/s ต่อ IP
-4. Sequencing Latency: < 12 µs ป้องกันการดักฟัง Transaction`;
+SERAPH-VX protects the mempool and enforces fair ordering:
+1. Time-Lock Fair Ordering: Encrypted timestamps prevent transaction front-running (Zero Sandwiching).
+2. Enforced Max Slippage (≤ 0.05%): Prevents toxic arbitrage vectors.
+3. Token Bucket Rate Limiter: Mitigates DDoS floods over 500 req/s per IP.
+4. Sequencing Latency: Sub-12 µs execution latency.`;
   }
 
   // 3. Fraud Detection & ORION-VX
-  if (q.includes("fraud") || q.includes("orion") || q.includes("isolation forest") || q.includes("โกง") || q.includes("ปลอม")) {
+  if (q.includes("fraud") || q.includes("orion") || q.includes("isolation forest")) {
     return `🔎 [ORION-VX Isolation Forest Fraud Detection]
 
-ORION-VX ทำงานอยู่ที่ 'services/core/core/deai/fraud_detection.py':
-1. Feature Extraction: ดึงสถิติ Sample Entropy, Merkle Path Variance, Latency, Output Distribution
-2. Isolation Forest ML: ตรวจจับคะแนน Anomaly Score หากสูงเกินเกณฑ์จะถูกจัดเป็น 'SUSPICIOUS'
-3. Auto-Dispute: ส่งเรื่องให้ THEMIS-VX ริบเงิน Stake ค้ำประกันทันที`;
+ORION-VX operates inside 'services/core/core/deai/fraud_detection.py':
+1. Feature Extraction: Extracts Sample Entropy, Merkle Path Variance, Latency, and Output Distribution.
+2. Isolation Forest ML: Identifies statistical anomalies; flags outputs breaching thresholds as 'SUSPICIOUS'.
+3. Auto-Dispute: Escalates disputes to THEMIS-VX for immediate automated stake slashing.`;
   }
 
   // 4. XpFirm PropSentinel & Quant Risk
   if (q.includes("propsentinel") || q.includes("xpfirm") || q.includes("kill-switch") || q.includes("markov") || q.includes("monte carlo") || q.includes("drawdown")) {
     return `📈 [XpFirm PropSentinel Quantitative Risk Engine]
 
-PropSentinel เป็นเทอร์มินัลจัดการความเสี่ยงสำหรับ Prop Traders:
-1. Markov 4-State Regime Classifier: วิเคราะห์สภาวะตลาด 4 รูปแบบ พร้อมคำนวณ Hurst Exponent ($H$)
-2. Monte Carlo 1,000-Path Simulator: คำนวณความน่าจะเป็นของ Max Drawdown Breach ($VaR_{95}$, $CVaR_{99}$)
-3. Sub-ms Kill-Switch (0.804ms): สั่งปิด Order ฉุกเฉินตรงสู่ MetaTrader 5 MQL5 EA ผ่าน Shared Memory C-ABI
-4. SaaS Compliance: ให้บริการเฉพาะซอฟต์แวร์ Risk Management เท่านั้น`;
+PropSentinel is an institutional risk management terminal for prop traders:
+1. Markov 4-State Regime Classifier: Evaluates 4 market regimes with real-time Hurst Exponent ($H$).
+2. Monte Carlo 1,000-Path Simulator: Calculates stochastic drawdown bounds ($VaR_{95}$, $CVaR_{99}$).
+3. Sub-ms Kill-Switch (0.804ms): Triggers emergency liquidations to MetaTrader 5 MQL5 EA via C-ABI Shared Memory.
+4. Pure SaaS Compliance: Strictly functions as software risk infrastructure.`;
   }
 
   // 5. Tokenomics & $tNAK
-  if (q.includes("token") || q.includes("tnak") || q.includes("supply") || q.includes("gas") || q.includes("โทเคน") || q.includes("เหรียญ")) {
+  if (q.includes("token") || q.includes("tnak") || q.includes("supply") || q.includes("gas")) {
     return `🪙 [NakharaX Native Tokenomics ($tNAK)]
 
-1. Fixed Max Supply: 1,000,000,000,000 $NAK (1 ล้านล้านเหรียญ ตาม Smart Contract 'NakharaxToken.sol')
-2. Chain ID: 86137 (0x15079)
-3. EIP-1559 Dynamic Gas Burn: ค่า Gas พื้นฐาน 1.0 - 1.2 Gwei ถูก Burn ทิ้งอย่างถาวร
-4. PoPC Staking Yield: 8.4% APY สำหรับผู้ที่ร่วมค้ำประกันโหนด Validator และ Workers
-5. Utility: จ่ายค่าแก๊ส, วางเงินค้ำประกันงาน DeAI Tasks, จ่ายค่าธรรมเนียม State Channel`;
+1. Fixed Max Supply Ceiling: 1,000,000,000,000 $NAK (1 Trillion fixed supply in 'NakharaxToken.sol').
+2. Chain ID: 86137 (0x15079).
+3. EIP-1559 Dynamic Gas Burn: Base gas fees (1.0 – 1.2 Gwei) are permanently burnt.
+4. PoPC Staking Yield: 8.4% APY for securing validator nodes and compute worker pools.
+5. Ecosystem Utility: L1 gas settlement, DeAI job escrow collateral, and AI agent state channel fees.`;
   }
 
   // 6. Slashing & THEMIS-VX
-  if (q.includes("slash") || q.includes("themis") || q.includes("dispute") || q.includes("ริบ") || q.includes("ลงโทษ")) {
+  if (q.includes("slash") || q.includes("themis") || q.includes("dispute")) {
     return `⚖️ [THEMIS-VX Slashing Rules]
 
-1. Double-Signing: Validator เซ็นบล็อกซ้ำซ้อน 2 สาย จะถูกริบเงิน Stake 100% และแบนถาวร
-2. Fake Compute Results: Worker ส่งผลลัพธ์คำนวณ Tensor ผิดพลาด จะถูกริบเงินค้ำประกัน 2,500 tNAK
-3. Missed Block Quarantine: โหนดออฟไลน์เกิน 100 บล็อกติดต่อกัน จะถูกปลดชั่วคราว`;
+1. Double-Signing: Validators double-signing blocks suffer 100% stake slashing and permanent blacklisting.
+2. Fake Compute Results: Workers submitting corrupted outputs forfeit 2,500 tNAK escrow collateral to the burn address.
+3. Missed Block Quarantine: Nodes offline for over 100 consecutive blocks are temporarily quarantined.`;
   }
 
   return `🧠 [NOESIS-VX Cognitive Synthesis]
-คำถาม: "${query}"
+Query: "${query}"
 
-ระบบประมวลผลผ่าน Knowledge Base ของ NakharaX Protocol (Chain 86137 / PoPC Consensus / XpFirm Risk Brain):
-- ระบบทำงานในรูปแบบ Decentralized Sovereign DeAI
-- ปลอด Cloud Lock-in รันบน Dedicated Bare-Metal & Edge Hardware
-- ข้อมูลทั้งหมดสามารถตรวจสอบได้แบบ On-Chain Receipt ผ่าน Explorer
+Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / XpFirm Risk Brain):
+- Operating as a Sovereign Decentralized DeAI network.
+- Zero Cloud Lock-in: Runs on bare-metal and sovereign edge hardware.
+- Fully Verifiable: All execution states yield cryptographic on-chain STARK receipts.
 
-หากท่านมีข้อสงสัยเกี่ยวกับโมดูลใดเพิ่มเติม สามารถสอบถามได้ทันทีครับ`;
+Contact the cognitive core anytime for additional protocol specifications.`;
 }

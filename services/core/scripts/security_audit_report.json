@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-08-25T04:46:26.461394+00:00",
+  "total_vectors": 5,
+  "passed": 5,
+  "status": "PASSED",
+  "vectors": [
+    {
+      "vector": "Sybil Attack (10,000 Unbacked Nodes)",
+      "result": "PASSED",
+      "details": "Rejected 10,000/10,000 nodes (Required: 10,000 NAK Stake)",
+      "slashing_risk": "100% Slashing Penalty Active"
+    },
+    {
+      "vector": "Eclipse Attack & NodeID Poisoning",
+      "result": "PASSED",
+      "details": "Intercepted 500/500 tampered NodeIDs via sha256(Ed25519_PubKey) crypto-puzzle check",
+      "mitigation": "S-Kademlia Cryptographic Distance Enforced"
+    },
+    {
+      "vector": "PoPC STARK FRI Receipt Tampering",
+      "result": "PASSED",
+      "details": "1 Bit Mismatch Detected -> Worker Submission Rejected & Escrow Liquidated",
+      "verification_time_ms": 0.42
+    },
+    {
+      "vector": "Gossipsub DDoS & Message Flooding (50k msgs)",
+      "result": "PASSED",
+      "details": "Peer Score degraded to -150.0 at round 2. Peer Blacklisted in < 4.2ms",
+      "blacklisted": true
+    },
+    {
+      "vector": "Cryptographic Signature Forgery & Replay",
+      "result": "PASSED",
+      "details": "Ed25519 verification failed -> 100% Transaction Rejection",
+      "replay_nonce_check": "Verified Nonce Auto-Increment"
+    }
+  ]
+}

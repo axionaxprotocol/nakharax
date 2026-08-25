@@ -1,101 +1,93 @@
-# nakharax Core - Testnet Testing Guide
+# NakharaX Core — Public Testnet Execution & Testing Manual
 
-วันที่: 22 ตุลาคม 2025
-
-## 🎯 วิธีการทดสอบ Testnet
-
-มี 2 วิธีในการทดสอบ nakharax Core:
+**Document Date:** October 22, 2025  
+**Target Specification:** NakharaX Testnet Ingress & Simulation Harness  
 
 ---
 
-## วิธีที่ 1: Full Testnet (แนะนำ) ✨
+## 🎯 Testnet Verification Methods
 
-### เตรียมความพร้อม
+Testing NakharaX Core can be executed via 2 distinct methodologies:
 
-**1. เปิด Docker Desktop**
+---
 
-- กด Windows Key → พิมพ์ "Docker Desktop"
-- เปิดโปรแกรม
-- รอให้ไอคอนใน system tray เปลี่ยนเป็นสีเขียว (พร้อมใช้งาน)
+## Method 1: Full Testnet Stack (Recommended) ✨
 
-**2. ตรวจสอบ Docker**
+### Prerequisites & Initialization
 
+#### 1. Launch Docker Engine
+- Open Docker Desktop.
+- Verify status indicator displays active status.
+
+#### 2. Verify Docker Engine Environment
 ```powershell
 docker --version
 docker ps
 ```
 
-ผลลัพธ์ที่ถูกต้อง:
-
-```
+Expected Output:
+```text
 Docker version 24.x.x
 CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
 ```
 
-### เริ่ม Testnet
+### Launch Testnet Stack
 
 ```powershell
-# 1. ไปยังโฟลเดอร์ Testnet
+# 1. Navigate to Testnet directory
 cd nakharax_v1.5_Testnet_in_a_Box
 
-# 2. เริ่ม services ทั้งหมด
+# 2. Launch all stack services
 docker compose up -d
 
-# 3. ตรวจสอบว่า services ทำงาน
+# 3. Verify running service containers
 docker compose ps
 ```
 
-**Services ที่ควรเห็น:**
+**Required Container Services:**
+- ✅ `hardhat` — Anvil JSON-RPC Server (`:8545`)
+- ✅ `blockscout` — Block Explorer (`:4000-4001`)
+- ✅ `faucet` — Token Faucet Service (`:8080-8081`)
+- ✅ `reverse-proxy` — Nginx Ingress Gateway (`:80`, `:443`)
 
-- ✅ `hardhat` - Anvil RPC (Port 8545)
-- ✅ `blockscout` - Explorer (Port 4000-4001)
-- ✅ `faucet` - Token Faucet (Port 8080-8081)
-- ✅ `reverse-proxy` - Nginx (Port 80, 443)
+### Verify Network Endpoints
 
-### ทดสอบ Endpoints
-
-**1. ทดสอบ RPC:**
-
+#### 1. Test RPC Ingress:
 ```powershell
-# ตรวจสอบ Chain ID
+# Verify Chain ID
 curl -X POST http://localhost:8545 `
   -H "Content-Type: application/json" `
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}'
 ```
 
-ผลลัพธ์ที่คาดหวัง:
-
+Expected Output:
 ```json
 { "jsonrpc": "2.0", "result": "0x7a69", "id": 1 }
 ```
+*(0x7a69 = 31337 decimal)*
 
-(0x7a69 = 31337 ในเลขฐาน 10)
-
-**2. เปิด Blockscout Explorer:**
-
-```
+#### 2. Access Blockscout Explorer UI:
+```text
 http://localhost:4001
 ```
 
-**3. เปิด Faucet Web UI:**
-
-```
+#### 3. Access Faucet Web UI:
+```text
 http://localhost:8080
 ```
 
-### รัน nakharax Node
+### Launch Local NakharaX Node Daemon
 
 ```powershell
-# กลับไปโฟลเดอร์หลัก
+# Return to repository root
 cd ..
 
-# เริ่ม node (เชื่อมต่อกับ Anvil)
+# Start Node connected to Anvil RPC
 .\build\nakharax-core.exe start --network testnet
 ```
 
-คุณจะเห็น:
-
-```
+Expected Terminal Output:
+```text
 🚀 Starting nakharax Core v1.5.0-testnet
 📂 Data directory: .nakharax
 🌐 Network: testnet
@@ -110,23 +102,22 @@ Press Ctrl+C to stop...
 
 ---
 
-## วิธีที่ 2: Demo Mode (ไม่ต้องใช้ Docker) 🎮
+## Method 2: Standalone CLI Demo Mode 🎮
 
-ทดสอบ CLI และ features โดยไม่ต้องเชื่อมต่อกับ blockchain จริง
+Verify CLI functions without requiring an active blockchain connection.
 
-### 1. ทดสอบ Configuration
+### 1. Verify Configuration Subsystem
 
 ```powershell
-# สร้าง config
+# Initialize configuration blueprint
 .\build\nakharax-core.exe config init
 
-# แสดง config ปัจจุบัน
+# Display active configuration
 .\build\nakharax-core.exe config show
 ```
 
-**ผลลัพธ์:**
-
-```
+Output:
+```text
 📋 Current Configuration:
   Chain ID: 31337
   Network: testnet
@@ -135,41 +126,40 @@ Press Ctrl+C to stop...
   ASR Top K: 64
 ```
 
-### 2. ทดสอบ Key Management
+### 2. Verify Key Management Subsystem
 
 ```powershell
-# สร้าง validator key
+# Generate Validator keypair
 .\build\nakharax-core.exe keys generate --type validator
 
-# สร้าง worker key
+# Generate Worker keypair
 .\build\nakharax-core.exe keys generate --type worker
 
-# แสดงรายการ keys
+# List registered keystores
 .\build\nakharax-core.exe keys list
 ```
 
-### 3. ทดสอบ Validator Commands
+### 3. Verify Validator Subsystem
 
 ```powershell
-# ดูสถานะ validator (mock data)
+# Inspect Validator status
 .\build\nakharax-core.exe validator status
 
-# จำลอง validator start
+# Simulate Validator start
 .\build\nakharax-core.exe validator start
 ```
 
-**ผลลัพธ์:**
-
-```
+Output:
+```text
 🏛️  Starting validator node...
 ✅ Validator started successfully!
 📊 PoPC validation enabled
 ```
 
-### 4. ทดสอบ Worker Commands
+### 4. Verify Worker Registration Subsystem
 
 ```powershell
-# สร้างไฟล์ worker specs
+# Create worker specification file
 $specs = @"
 {
   "gpus": [{
@@ -186,16 +176,15 @@ $specs = @"
 "@
 $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
 
-# Register worker
+# Register Worker
 .\build\nakharax-core.exe worker register --specs worker-specs.json
 
-# Check worker status
+# Inspect Worker Status
 .\build\nakharax-core.exe worker status
 ```
 
-**ผลลัพธ์:**
-
-```
+Output:
+```text
 📊 Worker Status:
   Status: Active
   Jobs Completed: 567
@@ -203,85 +192,57 @@ $specs | Out-File -FilePath worker-specs.json -Encoding UTF8
   Current Quota: 8.2%
 ```
 
-### 5. ทดสอบ Staking Commands
+### 5. Verify Staking Subsystem
 
 ```powershell
-# Check balance
+# Check stake balance
 .\build\nakharax-core.exe stake balance
 
-# Deposit stake (mock)
+# Deposit stake collateral
 .\build\nakharax-core.exe stake deposit 10000 --address 0x1234...
 
-# Withdraw stake
+# Withdraw stake collateral
 .\build\nakharax-core.exe stake withdraw 5000
 ```
 
 ---
 
-## 🔬 การทดสอบ Advanced Features
+## 🔬 Advanced Feature Verification
 
-### ทดสอบ PoPC (Demo Mode)
-
+### PoPC Consensus Verification
 ```powershell
-# แสดงข้อมูล PoPC configuration
 .\build\nakharax-core.exe config show
 ```
+- **Sample Size:** Number of verification samples ($s=1000$).
+- **Fraud Window:** Open challenge window for Byzantine fault reports.
 
-ดู:
-
-- Sample Size: จำนวนตัวอย่างที่ใช้ validate (1000)
-- Fraud Window: เวลาที่เปิดให้รายงานการโกง
-
-### ทดสอบ ASR (Demo Mode)
-
+### ASR Worker Selection Verification
 ```powershell
-# Worker registration แสดงการทำงานของ ASR
 .\build\nakharax-core.exe worker register --specs worker-specs.json
 ```
-
-ASR จะ:
-
-- คำนวณ suitability score
-- ประเมิน performance metrics
-- ใช้ VRF สำหรับการเลือก
-
-### ทดสอบ PPC (Demo Mode)
-
-```powershell
-# แสดง pricing information
-.\build\nakharax-core.exe config show
-```
-
-ดู PPC parameters:
-
-- Target Utilization: 0.7 (70%)
-- Target Queue Time: 60s
-- Price Range: 0.001 - 10.0 NAK
+Evaluates:
+- Suitability score calculation
+- VRF-backed probabilistic worker selection
 
 ---
 
-## 📊 การทดสอบกับ Testnet จริง (เมื่อ Docker พร้อม)
+## 📊 Testing Against Active Testnet RPC
 
-### 1. ขอ Test Tokens จาก Faucet
+### 1. Request Tokens from Faucet
 
-**Option A: ใช้ Web UI**
+#### Method A: Web UI
+1. Open `http://localhost:8080`
+2. Enter target wallet address.
+3. Click "Request Tokens".
 
-1. เปิด http://localhost:8080
-2. กรอก address ที่ต้องการ
-3. กด "Request Tokens"
-
-**Option B: ใช้ curl**
-
+#### Method B: cURL API Call
 ```powershell
-# แทนที่ YOUR_ADDRESS ด้วย address จริง
 curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" `
   "http://localhost:8081/request?address=0xYourAddress"
 ```
 
-### 2. ตรวจสอบ Balance
-
+### 2. Verify Account Balance
 ```powershell
-# ใช้ curl เรียก RPC
 curl -X POST http://localhost:8545 `
   -H "Content-Type: application/json" `
   -d '{
@@ -292,8 +253,7 @@ curl -X POST http://localhost:8545 `
   }'
 ```
 
-### 3. Submit Job (Custom API)
-
+### 3. Submit DeAI Job Payload
 ```powershell
 $jobSpec = @"
 {
@@ -322,118 +282,22 @@ curl -X POST http://localhost:8545 `
   -d $jobSpec
 ```
 
-### 4. ตรวจสอบ Job Status
-
-```powershell
-curl -X POST http://localhost:8545 `
-  -H "Content-Type: application/json" `
-  -d '{
-    "jsonrpc":"2.0",
-    "method":"axn_getJobStatus",
-    "params":["job_abc123"],
-    "id":1
-  }'
-```
-
-### 5. ดู Transactions บน Explorer
-
-เปิด Blockscout:
-
-```
-http://localhost:4001
-```
-
 ---
 
 ## 🛠️ Troubleshooting
 
-### Docker ไม่ทำงาน
+### Docker Engine Offline
+- **Error:** `The system cannot find the file specified`
+- **Solution:** Open Docker Desktop, wait for engine start, and verify via `docker ps`.
 
-**Problem:** `The system cannot find the file specified`
-
-**Solution:**
-
-1. เปิด Docker Desktop
-2. รอให้ Docker Engine start (ดูที่ system tray)
-3. ทดสอบ: `docker ps`
-
-### Port ถูกใช้งานแล้ว
-
-**Problem:** `port is already allocated`
-
-**Solution:**
-
-```powershell
-# หา process ที่ใช้ port 8545
-netstat -ano | findstr :8545
-
-# Kill process (ใช้ PID จากคำสั่งข้างบน)
-taskkill /PID <PID> /F
-
-# Restart testnet
-docker compose restart
-```
-
-### ไม่สามารถเชื่อมต่อ RPC
-
-**Problem:** Connection refused
-
-**Solution:**
-
-```powershell
-# ตรวจสอบว่า hardhat ทำงาน
-docker compose ps hardhat
-
-# ดู logs
-docker compose logs hardhat
-
-# Restart
-docker compose restart hardhat
-```
-
-### Blockscout ไม่แสดงข้อมูล
-
-**Problem:** No blocks shown
-
-**Solution:**
-
-```powershell
-# Restart blockscout
-docker compose restart blockscout
-
-# ตรวจสอบ logs
-docker compose logs blockscout
-```
+### Port Allocation Collision
+- **Error:** `port is already allocated`
+- **Solution:** Identify PID holding port 8545 via `netstat -ano | findstr :8545` and terminate via `taskkill /PID <PID> /F`.
 
 ---
 
-## 📚 ขั้นตอนต่อไป
+## References
 
-1. **อ่านเอกสาร:**
-   - `QUICKSTART.md` - Quick start guide
-   - `docs/API_REFERENCE.md` - API documentation
-   - `docs/TESTNET_INTEGRATION.md` - Testnet integration
-
-2. **ทดสอบ Features:**
-   - PoPC validation
-   - ASR worker selection
-   - PPC dynamic pricing
-
-3. **พัฒนา Applications:**
-   - สร้าง worker node
-   - Submit compute jobs
-   - Build monitoring tools
-
----
-
-## 🆘 ต้องการความช่วยเหลือ?
-
-- **Documentation:** https://docs.nakharax.com
-- **GitHub:** https://github.com/axionaxprotocol/nakharax
-- **Discord:** https://discord.gg/nakharax
-
----
-
-**Happy Testing! 🚀**
-
-Last updated: October 22, 2025
+- `QUICKSTART.md` — Quick start guide
+- `docs/API_REFERENCE.md` — Complete RPC specification
+- `docs/TESTNET_INTEGRATION.md` — Testnet integration manual

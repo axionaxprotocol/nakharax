@@ -91,32 +91,32 @@ const SENTINEL_PROFILES: Record<
 const SUGGESTED_QUESTIONS: { label: string; query: string; persona: SentinelPersona }[] = [
   {
     label: "⚡ PoPC Consensus",
-    query: "PoPC (Proof of Practical Compute) ทำงานอย่างไร และต่างจาก PoW / PoS อย่างไร?",
+    query: "How does PoPC (Proof of Practical Compute) function, and how does it differ from PoW / PoS?",
     persona: "NOESIS-VX",
   },
   {
     label: "🛡️ Zero-MEV Shield",
-    query: "SERAPH-VX ป้องกัน Sandwich Attack และการ Front-running ใน Mempool อย่างไร?",
+    query: "How does SERAPH-VX prevent Sandwich Attacks and Mempool Front-running?",
     persona: "SERAPH-VX",
   },
   {
     label: "🔎 ML Fraud Detection",
-    query: "ORION-VX ใช้ Isolation Forest ตรวจจับ Worker ที่ส่งผล AI ปลอมได้อย่างไร?",
+    query: "How does ORION-VX utilize Isolation Forest machine learning to detect dishonest compute workers?",
     persona: "ORION-VX",
   },
   {
     label: "📈 XpFirm PropSentinel",
-    query: "XpFirm PropSentinel ใช้โมเดล Markov 4-State และ Sub-ms Kill-Switch ป้องกันความเสี่ยงให้เทรดเดอร์อย่างไร?",
+    query: "How does XpFirm PropSentinel utilize Markov 4-State regime modeling and sub-ms Kill-Switches for trader risk?",
     persona: "NOESIS-VX",
   },
   {
     label: "🪙 Tokenomics $tNAK",
-    query: "โครงสร้าง Tokenomics ของเหรียญ $tNAK, Total Supply, และการใช้จ่าย Gas ในระบบเป็นอย่างไร?",
+    query: "What is the tokenomics structure of $tNAK, its total supply ceiling, and gas burn mechanics?",
     persona: "NOESIS-VX",
   },
   {
     label: "⚖️ Slashing Rules",
-    query: "กรณีใดบ้างที่ Validator หรือ Worker จะถูก THEMIS-VX ตัดสินริบเหรียญ (Slashing)?",
+    query: "Under what conditions will THEMIS-VX execute automated stake slashing for validators or workers?",
     persona: "THEMIS-VX",
   },
 ];
@@ -378,94 +378,94 @@ function generateSentinelResponse(query: string, persona: SentinelPersona): stri
   const q = query.toLowerCase();
 
   // 1. PoPC Consensus Mechanics
-  if (q.includes("popc") || q.includes("consensus") || q.includes("proof of practical compute") || q.includes("ฉันทามติ")) {
+  if (q.includes("popc") || q.includes("consensus") || q.includes("proof of practical compute")) {
     return `⚡ [PoPC (Proof of Practical Compute) Architecture Specification]
 
-PoPC คือกลไกฉันทามติแบบใหม่ของ NakharaX L1 ซึ่งถูกออกแบบมาเพื่อแก้ปัญหาของ PoW และ PoS:
+PoPC is NakharaX L1's novel consensus mechanism designed to supersede PoW and PoS:
 
-1. พลังงานไม่สูญเปล่า: แทนที่จะให้โหนดสุ่มคำนวณเลข SHA-256 ไร้ประโยชน์ (PoW) โหนดใน NakharaX จะต้องรัน "งานคำนวณ AI ที่มีประโยชน์จริง" (AI Inference, Matrix Tensor Merging, Monte Carlo Simulations)
-2. STARK FRI Cryptographic Proofs: ทุกครั้งที่ Worker ประมวลผลงานเสร็จ โหนดจะต้องสร้าง Polynomial Proof (Proof Hash) ส่งกลับมาบนเชน
-3. BFT Fast-Finality: เครือข่ายใช้การตรวจสอบแบบสุ่มตัวอย่าง (Probabilistic Sampling) ทำให้โหนดอื่นตรวจสอบความถูกต้องได้ในเวลาไม่กี่ไมโครวินาที โดยไม่ต้องรันโมเดล AI ซ้ำทั้งหมด
-4. รอบบล็อกคงที่ (Block Cadence): 3.0 วินาที (Deterministic Cadence) Chain ID 86137`;
+1. Useful Work Utilization: Instead of wasteful SHA-256 hash grinding (PoW), nodes execute useful AI compute tasks (AI Inference, Matrix Tensor Merging, Monte Carlo Simulations).
+2. STARK FRI Cryptographic Proofs: Workers produce verifiable polynomial proofs (Proof Hash) submitted directly on-chain upon task completion.
+3. BFT Fast-Finality: The network employs probabilistic sampling, allowing peer nodes to verify proof validity in microseconds without re-executing full model compute.
+4. Deterministic Block Cadence: Fixed 3.0-second block intervals (Chain ID: 86137).`;
   }
 
   // 2. MEV & SERAPH-VX Defense
   if (q.includes("mev") || q.includes("sandwich") || q.includes("front-run") || q.includes("seraph") || q.includes("ddos")) {
     return `🛡️ [SERAPH-VX Zero-MEV Fair Sequencing & Anti-Sandwich Shield]
 
-SERAPH-VX ทำหน้าที่รักษาความปลอดภัยระดับ Mempool และจัดลำดับธุรกรรม:
+SERAPH-VX guards the transaction mempool and enforces fair ordering:
 
-1. Time-Lock Fair Ordering: ธุรกรรมทั้งหมดใน Mempool จะถูกจัดคิวตาม Timestamp ที่ถูกเข้ารหัสทางคณิตศาสตร์ ทำให้ Block Producer ไม่สามารถแอบสลับคิวหรือแทรกธุรกรรมเพื่อทำกำไร (Zero Sandwiching)
-2. Enforced Max Slippage (≤ 0.05%): สกัดกั้นธุรกรรมที่มีความเสี่ยงต่อ Toxic Arbitrage
-3. Token Bucket Rate Limiter: สกัดกั้นการยิง Flood DDoS ทันทีที่เกินโควตา 500 req/s ต่อ IP
-4. Deterministic Sequencing Latency: < 12 µs ป้องกันการดักฟัง Transaction ล่วงหน้า`;
+1. Time-Lock Fair Ordering: Transactions in the mempool are queued according to cryptographically encrypted timestamps, preventing block producers from reordering or front-running transactions (Zero Sandwiching).
+2. Enforced Max Slippage (≤ 0.05%): Intercepts transactions susceptible to toxic arbitrage.
+3. Token Bucket Rate Limiter: Mitigates DDoS floods immediately when ingress exceeds 500 req/s per IP.
+4. Deterministic Sequencing Latency: Sub-12 µs execution latency prevents transaction eavesdropping.`;
   }
 
   // 3. Fraud Detection & ORION-VX
-  if (q.includes("fraud") || q.includes("orion") || q.includes("isolation forest") || q.includes("โกง") || q.includes("ปลอม")) {
+  if (q.includes("fraud") || q.includes("orion") || q.includes("isolation forest")) {
     return `🔎 [ORION-VX Isolation Forest Fraud Detection Subsystem]
 
-ORION-VX ทำงานอยู่ที่ 'services/core/core/deai/fraud_detection.py' โดยใช้ Machine Learning:
+ORION-VX operates inside 'services/core/core/deai/fraud_detection.py' using machine learning:
 
-1. Feature Vector Extraction: ดึงสถิติจาก PoPC Proof ได้แก่ Sample Entropy, Merkle Path Variance, Execution Latency, และ Tensor Output Distribution
-2. Isolation Forest Anomaly Scoring: ตรวจจับรูปแบบความผิดปกติทางสถิติ หากคะแนน Anomaly Score สูงเกิน Threshold (Contamination 0.01) ผลงานจะถูกจัดเป็น 'SUSPICIOUS'
-3. Auto-Dispute Trigger: ส่งเรื่องต่อไปยัง Smart Contract ให้ THEMIS-VX สั่งริบเหรียญค้ำประกัน (Stake Slashed) และกระจายงานใหม่ไปยัง Worker อื่นทันที`;
+1. Feature Vector Extraction: Extracts telemetry metrics from PoPC Proofs, including Sample Entropy, Merkle Path Variance, Execution Latency, and Tensor Output Distribution.
+2. Isolation Forest Anomaly Scoring: Identifies statistical anomalies. If the anomaly score breaches the contamination threshold (0.01), the output is flagged as 'SUSPICIOUS'.
+3. Auto-Dispute Trigger: Escalates verification disputes to smart contracts for THEMIS-VX to execute automated stake slashing and re-assign tasks.`;
   }
 
   // 4. XpFirm PropSentinel & Quant Risk
   if (q.includes("propsentinel") || q.includes("xpfirm") || q.includes("kill-switch") || q.includes("markov") || q.includes("monte carlo") || q.includes("drawdown")) {
     return `📈 [XpFirm PropSentinel Quantitative Risk Engine]
 
-PropSentinel เป็นเทอร์มินัลจัดการความเสี่ยงระดับสถาบันสำหรับ Prop Traders:
+PropSentinel is an institutional-grade risk terminal designed for prop firm traders:
 
-1. Markov 4-State Regime-Switching Volatility: วิเคราะห์สภาวะตลาดแบบ Vector Real-Time ออกเป็น 4 Regimes (Trending Momentum, News Liquidity Shock, Asian Consolidation, Spread Vacuum) พร้อมคำนวณ Hurst Exponent ($H$)
-2. Monte Carlo 1,000-Path Simulator: คำนวณความน่าจะเป็นของ Max Drawdown Breach ($VaR_{95}$, $CVaR_{99}$)
-3. Sub-Millisecond Kill-Switch (0.804ms): ฮาร์ดแวร์ Circuit Breaker เชื่อมตรงสู่ MetaTrader 5 MQL5 EA ผ่าน Shared Memory C-ABI เพื่อปิด Order ฉุกเฉินเมื่อพอร์ตแตะ Daily Drawdown Limit
-4. SaaS Compliance: ให้บริการเป็นซอฟต์แวร์ Risk Management เท่านั้น ไม่มีสัญญาผลกำไรหรือ Managed Trading`;
+1. Markov 4-State Regime-Switching Volatility: Real-time vector-based market regime classification across 4 regimes (Trending Momentum, News Liquidity Shock, Asian Consolidation, Spread Vacuum) with real-time Hurst Exponent ($H$) calculation.
+2. Monte Carlo 1,000-Path Simulator: Computes stochastic drawdown probability bounds ($VaR_{95}$, $CVaR_{99}$).
+3. Sub-Millisecond Kill-Switch (0.804ms): Hardware circuit breaker connected directly to MetaTrader 5 MQL5 EA via C-ABI Shared Memory for emergency liquidation upon reaching daily drawdown thresholds.
+4. Pure SaaS Compliance: Strictly operates as a software risk management tool with zero profit-sharing or managed account claims.`;
   }
 
   // 5. Tokenomics & $tNAK
-  if (q.includes("token") || q.includes("tnak") || q.includes("supply") || q.includes("gas") || q.includes("โทเคน") || q.includes("เหรียญ")) {
+  if (q.includes("token") || q.includes("tnak") || q.includes("supply") || q.includes("gas")) {
     return `🪙 [NakharaX Native Tokenomics ($tNAK)]
 
-โครงสร้างทางเศรษฐศาสตร์ของโทเคน $tNAK:
+Economic parameters of the native $tNAK token:
 
-1. Fixed Max Supply: 1,000,000,000,000 $NAK (1 ล้านล้านเหรียญ ตาม Smart Contract 'NakharaxToken.sol')
-2. Chain ID: 86137 (0x15079)
-3. EIP-1559 Dynamic Gas Burn: ค่า Gas พื้นฐานเริ่มต้นที่ 1.0 - 1.2 Gwei โดยค่าธรรมเนียมส่วน Base Fee จะถูก Burn ทิ้งอย่างถาวร
-4. PoPC Staking Yield: ผลตอบแทน 8.4% APY สำหรับผู้ที่ Stake $tNAK เพื่อร่วมค้ำประกันโหนด Validator และ DeAI Workers
-5. Utility: จ่ายค่าแก๊ส L1, วางเงินค้ำประกันงาน DeAI Tasks, จ่ายค่าธรรมเนียม State Channel ของ AI Agents`;
+1. Fixed Max Supply Ceiling: 1,000,000,000,000 $NAK (1 Trillion fixed supply in 'NakharaxToken.sol').
+2. Chain ID: 86137 (0x15079).
+3. EIP-1559 Dynamic Gas Burn: Base gas fees fluctuate between 1.0 – 1.2 Gwei; base fee tokens are permanently burnt.
+4. PoPC Staking Yield: 8.4% APY for staking $tNAK to secure validator nodes and DeAI worker pools.
+5. Ecosystem Utility: L1 gas settlement, DeAI compute job escrow collateral, and AI agent state channel fees.`;
   }
 
   // 6. Slashing & THEMIS-VX
-  if (q.includes("slash") || q.includes("themis") || q.includes("dispute") || q.includes("ริบ") || q.includes("ลงโทษ")) {
+  if (q.includes("slash") || q.includes("themis") || q.includes("dispute")) {
     return `⚖️ [THEMIS-VX On-Chain Judicial & Slashing Protocol]
 
-THEMIS-VX ปฏิบัติตามกฎเกณฑ์ที่เขียนไว้ใน 'JobMarketplaceStandalone.sol':
+THEMIS-VX enforces judicial invariants defined in 'JobMarketplaceStandalone.sol':
 
-1. Double-Signing Penalty: Validator ที่เซ็นบล็อกซ้ำซ้อน 2 สายพร้อมกัน จะถูกริบเงิน Stake 100% และแบนถาวร
-2. Fake Compute Results: Worker ที่ส่งผลลัพธ์คำนวณ Tensor ผิดพลาดหรือไม่ผ่านการยืนยัน STARK Proof จะถูกริบเงินค้ำประกัน 2,500 tNAK ส่งเข้า Burn Address (0x000...dead)
-3. Missed Block Quarantine: โหนดที่ออฟไลน์เกิน 100 บล็อกติดต่อกัน จะถูกลดคะแนน Reputation และปลดจากการเป็น Active Validator ชั่วคราว`;
+1. Double-Signing Penalty: Validators caught double-signing blocks suffer 100% stake slashing and permanent node blacklisting.
+2. Invalid Compute Results: Workers submitting corrupted tensor outputs or invalid STARK proofs forfeit 2,500 tNAK escrow collateral to the burn address.
+3. Missed Block Quarantine: Nodes offline for over 100 consecutive blocks suffer reputation score degradation and temporary validator pool quarantine.`;
   }
 
   // Default response based on persona
   if (persona === "SERAPH-VX") {
     return `🛡️ [SERAPH-VX Sentinel Response]
-รับทราบคำสั่ง: ทราฟฟิกเครือข่ายและเกราะป้องกัน Mempool อยู่ในสถานะ 100% Protected (Zero-MEV Fair Sequencing Active, Slippage ≤ 0.05%). หากต้องการตรวจสอบความปลอดภัยของโหนดหรือ Mempool สามารถระบุ Transaction Hash เพื่อให้ตรวจสอบได้ทันทีครับ`;
+Command acknowledged: Ingress channels and mempool shields are operating at 100% capacity (Zero-MEV Fair Sequencing Active, Slippage SLA ≤ 0.05%). Provide a transaction hash to execute an immediate mempool security inspection.`;
   }
 
   if (persona === "ORION-VX") {
     return `🔎 [ORION-VX ML Auditor Response]
-รับทราบคำสั่ง: ระบบสแกน Isolation Forest กำลังเฝ้าตรวจ PoPC Proofs บนเชน หากต้องการตรวจสอบความถูกต้องของงานประมวลผล DeAI สามารถระบุ Job ID เพื่อดึง Feature Vector มาประเมิน Anomaly Score ได้ทันทีครับ`;
+Command acknowledged: Isolation Forest statistical audit models are actively monitoring on-chain PoPC proofs. Provide a Job ID to retrieve feature vectors and evaluate anomaly confidence scores.`;
   }
 
   return `🧠 [NOESIS-VX Cognitive Synthesis]
-คำถาม: "${query}"
+Query: "${query}"
 
-ระบบได้ทำการประมวลผลผ่าน Knowledge Base ของ NakharaX Protocol (Chain 86137 / PoPC Consensus / XpFirm Risk Brain):
-- ระบบทำงานในรูปแบบ Decentralized Sovereign DeAI
-- ปลอด Cloud Lock-in และรันบน Dedicated Bare-Metal & Edge Hardware
-- ข้อมูลและสถานะทั้งหมดสามารถตรวจสอบความถูกต้องได้แบบ On-Chain Receipt ผ่าน Explorer
+Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / XpFirm Risk Brain):
+- Operating as a Sovereign Decentralized DeAI network.
+- Zero Cloud Lock-in: Runs on bare-metal and sovereign edge hardware.
+- Fully Verifiable: All execution states yield cryptographic on-chain STARK receipts.
 
-หากท่านมีข้อสงสัยเกี่ยวกับโมดูลใดเพิ่มเติม สามารถสอบถามได้ตลอด 24 ชั่วโมงครับ`;
+Contact the cognitive core anytime for additional protocol specifications.`;
 }

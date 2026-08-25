@@ -47,7 +47,7 @@ def test_live_marketplace_lifecycle():
     worker_account = Account.create()
     log.info("Worker Wallet Generated: %s", worker_account.address)
 
-    # 2. Check RPC Availability
+    # 2. Check RPC Availability & Marketplace Contract Address
     rpc_available = False
     try:
         from web3 import Web3
@@ -56,7 +56,13 @@ def test_live_marketplace_lifecycle():
     except Exception:
         rpc_available = False
 
-    target_address = DEPLOYED_MARKETPLACE_ADDRESS if rpc_available else "0x0000000000000000000000000000000000000000"
+    env_address = os.environ.get("NAKHARAX_MARKETPLACE_ADDRESS", "").strip()
+    if env_address and env_address != "0x0000000000000000000000000000000000000000":
+        target_address = env_address
+    elif rpc_available and os.environ.get("REQUIRE_LIVE_MARKETPLACE"):
+        target_address = DEPLOYED_MARKETPLACE_ADDRESS
+    else:
+        target_address = "0x0000000000000000000000000000000000000000"
 
     # 3. Instantiate ContractManager
     cm = ContractManager(

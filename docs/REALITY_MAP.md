@@ -144,11 +144,11 @@ engineers before any new feature scope.
 > hardware. Photonics and global scale are the research roadmap, not the current product.
 
 The highest-leverage proof-point is the **AI-compute marketplace, end-to-end**:
-submit job → worker runs it (torch) → result committed on-chain → AXX settles. This lifecycle
+submit job → worker runs it (torch) → result committed on-chain → NAK settles. This lifecycle
 **already runs offline today** via `core/deai/demo_marketplace_dryrun.py` (real torch compute,
 MOCK contract, zero on-chain side effects). The only missing piece for a LIVE demo is deploying
 the JobMarketplace contract (it already exists and matches the worker ABI) and setting
-`AXIONAX_MARKETPLACE_ADDRESS`.
+`NAKHARAX_MARKETPLACE_ADDRESS`.
 
 ---
 

@@ -45,7 +45,7 @@ export function MenuBar() {
                 NAKHARAX
               </span>
               <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[9.5px] font-mono font-bold tracking-wider text-emerald-300 uppercase">
-                DEAI OS
+                PORTAL
               </span>
             </div>
           </Link>

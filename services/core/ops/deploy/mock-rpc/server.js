@@ -361,15 +361,16 @@ function handleRpcMethod(method, params, id) {
     case 'eth_sendRawTransaction': {
       const [signedTx] = params;
       const txHash = generateHash();
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
       
       const tx = {
         hash: txHash,
         nonce: toHex(Math.floor(Math.random() * 1000)),
-        blockHash: null,
-        blockNumber: null,
-        transactionIndex: null,
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
         from: generateAddress(),
-        to: params.to || generateAddress(),
+        to: null,
         value: '0x0',
         gas: '0x5208',
         gasPrice: '0x3b9aca00',
@@ -381,7 +382,7 @@ function handleRpcMethod(method, params, id) {
       };
       
       transactions[txHash] = tx;
-      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
       networkStats.totalTransactions++;
       return jsonRpcResponse(id, txHash);
     }

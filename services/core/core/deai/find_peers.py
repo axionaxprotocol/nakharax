@@ -6,8 +6,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from rpc_client import NakharaxRpcClient
 
 def find_peers():
-    print("🔍 Scanning Network for Peers (via rpc.nakharax.com)...")
-    client = NakharaxRpcClient()
+    rpc_url = os.getenv("NAKHARAX_RPC_URL", "http://127.0.0.1:8545")
+    print(f"🔍 Scanning Network for Peers (via {rpc_url})...")
+    client = NakharaxRpcClient(rpc_url=rpc_url)
     
     # 1. Check Node Version
     version = client._call("web3_clientVersion", [])
@@ -25,19 +26,21 @@ def find_peers():
     # 3. Try to get Peer Details
     print("\nAttempting to fetch peer details...")
     
-    methods_to_try = ["admin_peers", "net_peers", "parity_netPeers"]
+    methods_to_try = ["nakharax_getKadRoutingTable", "admin_peers", "net_peers"]
     
     for method in methods_to_try:
         print(f"   Trying '{method}'...", end=" ")
-        result = client._call(method, [])
-        
-        if result and isinstance(result, list):
-            print(f"✅ Success! Found {len(result)} peers.")
-            for peer in result:
-                print(f"   - {peer}")
-            return
-        else:
-            print(f"❌ Failed (Result: {str(result)[:50]}...)")
+        try:
+            result = client._call(method, [])
+            if result and isinstance(result, list):
+                print(f"✅ Success! Found {len(result)} peers.")
+                for peer in result:
+                    print(f"   - {peer}")
+                return
+            else:
+                print(f"❌ Empty (Result: {str(result)[:50]}...)")
+        except Exception as e:
+            print(f"❌ Failed ({e})")
 
     print("\n⚠️ Could not retrieve peer details. The RPC node likely disables admin/debug methods.")
 

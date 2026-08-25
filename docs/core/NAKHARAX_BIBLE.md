@@ -127,6 +127,8 @@ This repository contains many documents. This file is the central index: content
 
 | Document | Description |
 |----------|-------------|
+| [100_DISRUPTION_INVENTORY_MASTER.md](../100_DISRUPTION_INVENTORY_MASTER.md) | Institutional 100-item disruption inventory across 10 engineering domains |
+| [100_PROTOCOL_COMPARISONS_AND_BENCHMARKS.md](../100_PROTOCOL_COMPARISONS_AND_BENCHMARKS.md) | Canonical 100-point architectural & benchmark comparison matrix |
 | [DOCUMENTATION_PRINCIPLES.md](DOCUMENTATION_PRINCIPLES.md) | Documentation principles — canonical, formal, English |
 | [core/docs/API_REFERENCE.md](../core/docs/API_REFERENCE.md) | RPC API reference |
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | How to contribute (Fork, branch, PR) |

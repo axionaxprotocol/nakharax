@@ -242,7 +242,7 @@ python worker_node.py start
 
 ## Job Submission and Execution
 
-**Protocol Workflow**: Workers participate in the core workflow defined in [`../architecture/NAKHARAX_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล`](../architecture/NAKHARAX_PROTOCOL.md#1-core-workflow-v15-ไม่มีประมูล):
+**Protocol Workflow**: Workers participate in the core workflow defined in [`../architecture/NAKHARAX_PROTOCOL.md`](../architecture/NAKHARAX_PROTOCOL.md):
 1. Assign (via ASR) → 2. Execute → 3. Commit + DA Pre-commit → 4. Wait k → 5. Challenge → 6. Prove → 7. Verify
 
 ### 1. Receive Job

@@ -1,121 +1,92 @@
-# Quick Start - การทดสอบ nakharax Core
+# Getting Started — NakharaX Core Testnet Verification
 
-## สถานการณ์ปัจจุบัน ✅
+## Quick Status Overview
 
-- ✅ nakharax Core binary พร้อมใช้งาน (build/nakharax-core.exe)
-- ✅ ทุก CLI commands ทำงานได้ปกติ
-- ⚠️ Docker Engine ยังไม่ได้เปิด (จำเป็นสำหรับ Full Testnet)
+- ✅ **Compiled Core Binaries Ready:** (`build/nakharax-core.exe`)
+- ✅ **CLI Subsystem Operational:** Verified across node, validator, and key management subcommands.
+- ⚠️ **Docker Engine Required:** Necessary for full multi-container testnet initialization.
 
-## วิธีทดสอบ
+---
 
-### 1. ทดสอบ CLI (ไม่ต้องใช้ Docker)
+## Verification Procedures
 
-รันสคริปต์ทดสอบอัตโนมัติ:
+### 1. CLI Subsystem Verification (Offline / Local Mode)
+
+Execute automated test suite:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File quick-test.ps1
 ```
 
-### 2. ทดสอบ Full Testnet (ต้องใช้ Docker)
+### 2. Full Testnet Infrastructure (Docker Container Mode)
 
-**ขั้นตอนที่ 1: เปิด Docker Desktop**
+#### Step 1: Launch Docker Engine
+- Launch Docker Desktop.
+- Wait for status indicator to show active/running engine.
 
-- เปิดโปรแกรม Docker Desktop
-- รอจนกว่า icon จะเป็นสีเขียว (Engine running)
-
-**ขั้นตอนที่ 2: เริ่มต้น Testnet**
+#### Step 2: Initialize Testnet Infrastructure
 
 ```powershell
 cd nakharax_v1.5_Testnet_in_a_Box
 powershell -ExecutionPolicy Bypass -File start-testnet.ps1
 ```
 
-**ขั้นตอนที่ 3: เริ่มต้น nakharax Node**
+#### Step 3: Launch Local Node Daemon
 
 ```powershell
 cd ..
 .\build\nakharax-core.exe start --network testnet
 ```
 
-## Testnet Endpoints
+---
 
-เมื่อ Testnet ทำงานแล้ว คุณจะสามารถเข้าถึง:
+## Active Testnet Endpoints
 
-- **RPC Node**: http://localhost:8545
-- **Block Explorer**: http://localhost:4001
-- **Faucet**: http://localhost:8080
+Upon infrastructure initialization, the following local endpoints become active:
 
-## คำสั่งที่ใช้บ่อย
-
-```powershell
-# แสดง version
-.\build\nakharax-core.exe version
-
-# สร้าง keypair
-.\build\nakharax-core.exe keys generate --type validator
-
-# เริ่ม validator
-.\build\nakharax-core.exe validator start
-
-# ดู status
-.\build\nakharax-core.exe validator status
-.\build\nakharax-core.exe worker status
-
-# Configuration
-.\build\nakharax-core.exe config show
-
-# Help
-.\build\nakharax-core.exe --help
-```
-
-## เอกสารเพิ่มเติม
-
-- `TESTING_GUIDE.md` - คู่มือทดสอบแบบละเอียด
-- `QUICKSTART.md` - Quick start guide
-- `docs/API_REFERENCE.md` - API documentation
-- `docs/BUILD.md` - Build instructions
-
-## Troubleshooting
-
-### Docker Engine ไม่ทำงาน
-
-```
-Error: error during connect: this error may indicate that the docker daemon is not running
-```
-
-**แก้ไข**: เปิด Docker Desktop และรอให้ Engine เริ่มทำงาน
-
-### Port ถูกใช้งานแล้ว
-
-```
-Error: port 8545 is already in use
-```
-
-**แก้ไข**: หยุด process ที่ใช้ port นั้นอยู่ หรือเปลี่ยน port ใน config
-
-### Container ไม่เริ่มทำงาน
-
-```powershell
-# ดู logs
-docker compose logs anvil
-docker compose logs blockscout
-docker compose logs faucet
-
-# Restart services
-docker compose down
-docker compose up -d
-```
-
-## ขั้นตอนต่อไป
-
-1. ✅ ทดสอบ CLI ด้วย `quick-test.ps1` (เสร็จแล้ว)
-2. ⏳ เปิด Docker Desktop
-3. ⏳ รัน `start-testnet.ps1` ใน nakharax_v1.5_Testnet_in_a_Box/
-4. ⏳ ทดสอบการเชื่อมต่อกับ Testnet
-5. ⏳ ส่ง transaction ทดสอบ
-6. ⏳ ทดสอบ PoPC validation
+- **JSON-RPC Node:** `http://localhost:8545`
+- **Block Explorer:** `http://localhost:4001`
+- **Token Faucet:** `http://localhost:8080`
 
 ---
 
-**หมายเหตุ**: ปัจจุบันอยู่ในโหมด Demo (mock data) เพราะ Docker Engine ยังไม่ได้เปิด  
-เมื่อเปิด Docker แล้ว คุณจะสามารถทดสอบกับ blockchain จริงได้
+## Frequently Used Commands
+
+```powershell
+# Display Core Version
+.\build\nakharax-core.exe version
+
+# Generate Validator Keypair
+.\build\nakharax-core.exe keys generate --type validator
+
+# Launch Validator Node
+.\build\nakharax-core.exe validator start
+
+# Inspect Telemetry & Status
+.\build\nakharax-core.exe validator status
+.\build\nakharax-core.exe worker status
+
+# Display Active Configuration
+.\build\nakharax-core.exe config show
+```
+
+---
+
+## Related Documentation
+
+- `TESTING_GUIDE.md` — Comprehensive testing playbook
+- `QUICKSTART.md` — Developer quickstart guide
+- `docs/API_REFERENCE.md` — Complete RPC API specifications
+- `docs/BUILD.md` — Source compilation manual
+
+---
+
+## Troubleshooting Guide
+
+### Docker Engine Offline
+- **Error:** `error during connect: docker daemon is not running`
+- **Resolution:** Launch Docker Desktop and wait for engine status indicator to turn green.
+
+### Ingress Port Collision
+- **Error:** `port 8545 is already in use`
+- **Resolution:** Terminate conflicting process on port 8545 or update RPC port in config.

@@ -212,7 +212,7 @@ export default async function Home() {
           ========================================================================= */}
       <section className="space-y-3.5">
         <SectionHeader
-          title="Operating system consoles"
+          title="Protocol consoles"
           description="Dedicated consoles for compute workloads, node ownership, telemetry auditing, and local key vault."
         />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

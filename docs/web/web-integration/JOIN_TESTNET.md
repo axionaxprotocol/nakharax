@@ -1,454 +1,85 @@
-# วิธีเข้าร่วม Nakharax Testnet 🚀
+# How to Join NakharaX Testnet 🚀
 
-**เวอร์ชัน**: v1.9.0-testnet (Genesis Public Testnet)  
-**Synced core ref**: `nakharax@28f42cf`  
-**อัพเดทล่าสุด**: 24 เมษายน 2026  
-**ภาษา**: ไทย 🇹🇭
-
----
-
-## 📋 สารบัญ
-
-1. [ข้อมูลเครือข่าย](#ข้อมูลเครือข่าย)
-2. [เพิ่มเครือข่ายใน MetaMask](#เพิ่มเครือข่ายใน-metamask)
-3. [ขอเหรียญทดสอบจาก Faucet](#ขอเหรียญทดสอบจาก-faucet)
-4. [ใช้งาน Block Explorer](#ใช้งาน-block-explorer)
-5. [Deploy Smart Contract](#deploy-smart-contract)
-6. [แก้ปัญหา](#แก้ปัญหา)
+**Version**: v1.9.0-testnet (Genesis Public Testnet)  
+**Last Updated**: April 24, 2026  
+**Language**: English (International Standard) 🌐
 
 ---
 
-## 🌐 ข้อมูลเครือข่าย
+## 📋 Table of Contents
 
-### Network Details
-
-- **ชื่อเครือข่าย**: Nakharax Testnet
-- **Chain ID**: 86137 (0x15079)
-- **สัญลักษณ์**: NAK (18 decimals)
-- **Block Time**: 2 วินาที (ตาม genesis)
-- **Consensus**: Proof of Probabilistic Checking (PoPC)
-- **Genesis SHA-256**: `0xed1bdac7c278e5b4f58a1eceb7594a4238e39bb63e1018e38ec18a555c762b55`
-
-### Endpoints
-
-- **RPC URL**: `https://rpc.nakharax.com` (nginx บน AU `46.250.244.4` → local validator)
-- **WebSocket**: `wss://rpc.nakharax.com/ws`
-- **Explorer**: https://explorer.nakharax.com (AU)
-- **API**: https://api.nakharax.com (AU — explorer backend)
-- **Faucet**: https://faucet.nakharax.com (AU)
-- **Nakharax OS**: https://app.nakharax.com (EU `217.216.109.5`)
-- **Website**: https://nakharax.com
-
-### Validator Nodes (direct RPC fallback)
-
-- **EU Validator #1**: http://217.216.109.5:8545
-- **AU Validator #2 + services**: http://46.250.244.4:8545
-
-Deploy: [VPS_AU_ALL_IN_ONE.md](../../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
+1. [Network Parameters](#network-parameters)
+2. [Add Network to MetaMask](#add-network-to-metamask)
+3. [Request Testnet Tokens from Faucet](#request-testnet-tokens-from-faucet)
+4. [Using the Block Explorer](#using-the-block-explorer)
+5. [Troubleshooting](#troubleshooting)
 
 ---
 
-## 🦊 เพิ่มเครือข่ายใน MetaMask
+## 🌐 Network Parameters
 
-### วิธีที่ 1: เพิ่มแบบอัตโนมัติ (แนะนำ)
-
-1. เข้าไปที่ https://nakharax.com
-2. คลิกปุ่ม **"Connect Wallet"**
-3. เลือก MetaMask
-4. คลิก **"Add nakharax Network"**
-5. อนุมัติการเพิ่มเครือข่ายใน MetaMask
-
-### วิธีที่ 2: เพิ่มด้วยตนเอง
-
-#### ขั้นตอนที่ 1: เปิด MetaMask
-
-- คลิกที่ชื่อเครือข่ายด้านบน
-- เลือก **"Add Network"** หรือ **"เพิ่มเครือข่าย"**
-- คลิก **"Add a network manually"**
-
-#### ขั้นตอนที่ 2: กรอกข้อมูล
-
-```
-Network Name (ชื่อเครือข่าย):
-nakharax Testnet
-
-New RPC URL:
-https://rpc.nakharax.com
-
-Chain ID:
-86137
-
-Currency Symbol:
-NAK
-
-Block Explorer URL (optional):
-https://explorer.nakharax.com
-```
-
-#### ขั้นตอนที่ 3: บันทึก
-
-- คลิก **"Save"** หรือ **"บันทึก"**
-- เครือข่าย nakharax Testnet จะปรากฏในรายการ
+- **Network Name**: NakharaX Testnet
+- **Currency Symbol**: NAK (18 decimals)
+- **Target Block Time**: 2 seconds
+- **Chain ID**: `86137` (`0x15079`)
+- **RPC Endpoint**: `https://rpc.nakharax.com`
+- **Block Explorer**: `https://explorer.nakharax.com`
 
 ---
 
-## 💰 ขอเหรียญทดสอบจาก Faucet
+## 🦊 Add Network to MetaMask
 
-### ก่อนเริ่ม
+### Method 1: Automatic Setup (Recommended)
 
-- ต้องมี MetaMask ที่เชื่อมต่อกับ nakharax Testnet แล้ว
-- ต้องมี Twitter/Discord account (สำหรับ anti-spam)
+1. Navigate to https://nakharax.com
+2. Click **"Connect Wallet"**
+3. Select MetaMask
+4. Click **"Add NakharaX Network"**
+5. Approve the network prompt in MetaMask
 
-### ขั้นตอน
+### Method 2: Manual Configuration
 
-#### วิธีที่ 1: ผ่านเว็บไซต์
+#### Step 1: Open MetaMask Network Menu
+- Click the network selector dropdown at the top of MetaMask.
+- Click **"Add Network"**.
+- Select **"Add a network manually"**.
 
-1. **เข้าไปที่ Faucet**
-   - URL: https://faucet.nakharax.com
-   - หรือไปที่ https://nakharax.com → คลิก "Faucet"
+#### Step 2: Enter Network Parameters
+- **Network Name**: NakharaX Testnet
+- **New RPC URL**: `https://rpc.nakharax.com`
+- **Chain ID**: `86137`
+- **Currency Symbol**: NAK
+- **Block Explorer URL**: `https://explorer.nakharax.com`
 
-2. **เชื่อมต่อ Wallet**
-   - คลิกปุ่ม "Connect Wallet"
-   - เลือก MetaMask
-   - อนุมัติการเชื่อมต่อ
-
-3. **ขอเหรียญ**
-   - คลิกปุ่ม "Request Tokens"
-   - รอ 5-10 วินาที
-   - ได้รับ **10 NAK** (ฟรี!)
-
-4. **ตรวจสอบยอด**
-   - เปิด MetaMask
-   - ดูยอดเงิน NAK ที่เพิ่มขึ้น
-
-#### วิธีที่ 2: ผ่าน API (สำหรับนักพัฒนา)
-
-```bash
-# ขอเหรียญผ่าน API
-curl -X POST https://faucet.nakharax.com/api/request \
-  -H "Content-Type: application/json" \
-  -d '{
-    "address": "0xYourAddressHere",
-    "captcha": "optional-captcha-token"
-  }'
-```
-
-### ข้อจำกัด
-
-- **จำนวนต่อครั้ง**: 10 NAK
-- **ความถี่**: 1 ครั้งต่อ 24 ชั่วโมง ต่อ address
-- **Maximum**: 100 NAK ต่อวัน (ทั้งระบบ)
-
-### ถ้าต้องการเหรียญมากขึ้น
-
-- เข้า Discord: https://discord.gg/nakharax
-- ติดต่อทีม Community Manager
-- อธิบายว่าจะใช้ทำอะไร (development, testing, etc.)
+#### Step 3: Save Configuration
+- Click **"Save"**.
+- The NakharaX Testnet network will now appear in your active network list.
 
 ---
 
-## 🔍 ใช้งาน Block Explorer
+## 💰 Request Testnet Tokens from Faucet
 
-### เข้าใช้งาน
+### Prerequisites
+- Active MetaMask extension connected to NakharaX Testnet.
 
-- URL: https://explorer.nakharax.com
-- ไม่ต้อง login หรือเชื่อมต่อ wallet
-
-### ฟีเจอร์หลัก
-
-#### 1. ดูข้อมูล Blocks
-
-- ไปที่ **Blocks** tab
-- ดู block number, timestamp, transactions
-- คลิกที่ block number เพื่อดูรายละเอียด
-
-#### 2. ค้นหา Transactions
-
-```
-ค้นหาได้ด้วย:
-- Transaction Hash (0x...)
-- Block Number (#123456)
-- Address (0x...)
-```
-
-#### 3. ตรวจสอบ Address
-
-- ใส่ address ของคุณในช่องค้นหา
-- ดูยอดเงิน (Balance)
-- ดูประวัติ transactions
-- ดู token holdings
-
-#### 4. ดูข้อมูล Smart Contracts
-
-- ไปที่ **Contracts** tab
-- ดู verified contracts
-- อ่าน source code
-- ทดสอบเรียก functions
-
-### ตัวอย่างการใช้งาน
-
-**ตรวจสอบ transaction ของคุณ:**
-
-1. Copy transaction hash จาก MetaMask
-2. ไปที่ https://explorer.nakharax.com
-3. Paste hash ในช่องค้นหา
-4. กด Enter
-5. ดูรายละเอียด: status, gas used, block number
+### Steps
+1. Navigate to https://nakharax.com → Click **"Faucet"**.
+2. Click **"Connect Wallet"** and approve the prompt.
+3. Click **"Request Tokens"**.
+4. Receive **10 tNAK** testnet tokens instantly.
 
 ---
 
-## 📦 Deploy Smart Contract
+## 🔍 Using the Block Explorer
 
-### เตรียมตัว
-
-```bash
-# ติดตั้ง Hardhat
-npm install --save-dev hardhat
-
-# หรือใช้ Foundry
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-```
-
-### สร้าง Project
-
-#### ด้วย Hardhat
-
-```bash
-npx hardhat init
-```
-
-#### ด้วย Foundry
-
-```bash
-forge init my-project
-cd my-project
-```
-
-### ตั้งค่า Network
-
-**hardhat.config.js:**
-
-```javascript
-require('@nomicfoundation/hardhat-toolbox');
-
-module.exports = {
-  solidity: '0.8.20',
-  networks: {
-    nakharax: {
-      url: 'https://rpc.nakharax.com',
-      chainId: 86137,
-      accounts: [process.env.PRIVATE_KEY],
-    },
-  },
-};
-```
-
-**foundry.toml:**
-
-```toml
-[profile.default]
-src = "src"
-out = "out"
-libs = ["lib"]
-
-[rpc_endpoints]
-nakharax = "https://rpc.nakharax.com"
-```
-
-### Deploy Contract
-
-#### ด้วย Hardhat
-
-```bash
-# เขียน deploy script ใน scripts/deploy.js
-npx hardhat run scripts/deploy.js --network nakharax
-```
-
-#### ด้วย Foundry
-
-```bash
-forge create --rpc-url nakharax \
-  --private-key $PRIVATE_KEY \
-  src/MyContract.sol:MyContract
-```
-
-### Verify Contract
-
-```bash
-# Hardhat
-npx hardhat verify --network nakharax \
-  DEPLOYED_CONTRACT_ADDRESS \
-  "Constructor Arg 1" "Constructor Arg 2"
-
-# Foundry
-forge verify-contract \
-  --chain-id 86137 \
-  --compiler-version v0.8.20 \
-  DEPLOYED_CONTRACT_ADDRESS \
-  src/MyContract.sol:MyContract
-```
+Visit `https://explorer.nakharax.com` to inspect:
+- Mined Blocks & Transaction Receipts
+- Validator Node Telemetry & Active Staking Vaults
+- DeAI Task Submissions & STARK Verification Receipts
 
 ---
 
-## 🔧 แก้ปัญหา
+## 🛠️ Troubleshooting
 
-### ปัญหาที่พบบ่อย
-
-#### 1. MetaMask ไม่สามารถเชื่อมต่อได้
-
-**อาการ**: "Could not connect to the network"
-
-**แก้ไข**:
-
-```bash
-# ทดสอบ RPC connection
-curl -X POST https://rpc.nakharax.com \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
-
-# ถ้าไม่ได้ลอง node สำรอง
-# EU: http://217.216.109.5:8545
-# AU: http://46.250.244.4:8545
-```
-
-**วิธีแก้**:
-
-- ตรวจสอบ internet connection
-- ลบและเพิ่มเครือข่ายใหม่
-- ลอง RPC URL สำรอง
-- Clear cache ของ browser
-- Restart MetaMask
-
-#### 2. Faucet ไม่ส่งเหรียญ
-
-**อาการ**: "Request failed" หรือไม่มียอดเพิ่ม
-
-**เช็คเคส**:
-
-- รอแล้ว 24 ชั่วโมงหรือยัง?
-- Address ถูกต้องหรือไม่?
-- Network เลือกถูกหรือไม่?
-
-**วิธีแก้**:
-
-1. ตรวจสอบ address ว่าถูกต้อง
-2. เช็ค error message ใน console
-3. ลองใหม่หลัง 5 นาที
-4. ติดต่อ support ใน Discord
-
-#### 3. Transaction ค้าง (Pending)
-
-**อาการ**: Transaction pending นานเกิน 5 นาที
-
-**วิธีแก้**:
-
-```javascript
-// เช็ค transaction status
-curl -X POST https://rpc.nakharax.com \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc":"2.0",
-    "method":"eth_getTransactionReceipt",
-    "params":["0xYourTxHash"],
-    "id":1
-  }'
-```
-
-**ถ้า null**:
-
-- Transaction ยังไม่ถูก mine
-- ลองเพิ่ม gas price
-- Speed up transaction ใน MetaMask
-
-**ถ้ามี receipt**:
-
-- Transaction เสร็จแล้ว
-- Refresh MetaMask
-
-#### 4. Contract Deploy ล้มเหลว
-
-**สาเหตุที่พบบ่อย**:
-
-- Gas ไม่พอ → เพิ่ม gas limit
-- Bytecode ใหญ่เกินไป → optimize contract
-- Constructor arguments ผิด → ตรวจสอบ args
-- Nonce ผิด → reset MetaMask account
-
-**วิธีแก้**:
-
-```bash
-# ทดสอบ estimate gas ก่อน
-cast estimate \
-  --rpc-url https://rpc.nakharax.com \
-  --from YOUR_ADDRESS \
-  CONTRACT_BYTECODE
-```
-
-#### 5. เงินหายหลัง Deploy
-
-**สาเหตุ**: ส่ง native NAK ไปในขณะ deploy
-
-**ป้องกัน**:
-
-- ตรวจสอบว่า `value: 0` ใน transaction
-- ไม่ต้องส่งเงินตอน deploy contract ธรรมดา
-- ส่งเงินได้ถ้า constructor เป็น `payable`
-
----
-
-## 📞 ช่องทางติดต่อ
-
-### หาความช่วยเหลือ
-
-- **Discord**: https://discord.gg/nakharax (ช่อง #testnet-support)
-- **GitHub Issues**: https://github.com/axionaxprotocol/nakharax/issues
-- **Twitter**: https://twitter.com/nakharax (@nakharax)
-- **Email**: support@nakharax.com
-
-### รายงานปัญหา
-
-ก่อนรายงานปัญหา กรุณาเตรียมข้อมูลเหล่านี้:
-
-- Transaction hash (ถ้ามี)
-- Address ของคุณ
-- รายละเอียดปัญหา
-- Screenshot (ถ้าเป็นไปได้)
-- Browser และ OS version
-
----
-
-## 🎯 Next Steps
-
-เมื่อเข้าร่วม Testnet แล้ว คุณสามารถ:
-
-1. **ลอง Deploy Contract**
-   - ERC-20 Token
-   - ERC-721 NFT
-   - Simple DeFi protocols
-
-2. **สำรวจ Ecosystem**
-   - Marketplace: https://marketplace.nakharax.com
-   - Documentation: https://docs.nakharax.com
-   - GitHub: https://github.com/axionaxprotocol
-
-3. **ร่วมพัฒนา**
-   - อ่าน [Contributing Guide](./CONTRIBUTING.md)
-   - ดู [Good First Issues](https://github.com/axionaxprotocol/nakharax/labels/good%20first%20issue)
-   - เข้า Developer Channel บน Discord
-
----
-
-## 📚 เอกสารเพิ่มเติม
-
-- [Architecture Overview](./ARCHITECTURE.md)
-- [API Reference](./API_REFERENCE.md)
-- [Smart Contract Guide](./SMART_CONTRACT_EXAMPLES.md)
-- [Validator Setup](./VALIDATOR_SETUP_GUIDE.md)
-- [Testnet Status](./TESTNET_STATUS.md)
-
----
-
-**สนุกกับการพัฒนาบน nakharax Testnet! 🚀**
-
-_Last Updated: December 5, 2025 | v1.8.0-testnet_
+- **Issue**: RPC Connection Timeout
+- **Solution**: Ensure your firewall allows outbound HTTPS on port 443, or switch to `http://127.0.0.1:8545` for local developer nodes.

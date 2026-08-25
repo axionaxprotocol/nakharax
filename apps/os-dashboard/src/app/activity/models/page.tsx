@@ -41,16 +41,14 @@ const MODEL_CATALOG: Omit<
   ModelInfo,
   "deployedOn" | "totalInferences" | "avgLatencyMs" | "lastUsed"
 >[] = [
-  { id: "m-deepseek-r1", name: "DeAI-DeepSeek-R1-8B", version: "Distill-Q4", type: "llm", size: "8B", precision: "INT4", status: "active" },
-  { id: "m-deepseek-v3", name: "DeAI-DeepSeek-V3-MoE", version: "3.0", type: "llm", size: "671B-MoE", precision: "INT4", status: "active" },
-  { id: "m-llama33-70b", name: "DeAI-LLaMA-3.3-70B", version: "3.3", type: "llm", size: "70B", precision: "INT8", status: "active" },
-  { id: "m-qwen25-coder", name: "DeAI-Qwen-2.5-Coder", version: "2.5", type: "llm", size: "14B", precision: "INT8", status: "active" },
-  { id: "m-flux-schnell", name: "DeAI-Flux.1-Schnell", version: "1.0", type: "vision", size: "12B", precision: "FP16", status: "active" },
-  { id: "m-yolo11", name: "DeAI-YOLOv11-Edge", version: "11.0", type: "vision", size: "nano", precision: "INT8", status: "active" },
-  { id: "m-whisper-turbo", name: "DeAI-Whisper-Turbo", version: "v3", type: "audio", size: "Turbo", precision: "FP16", status: "active" },
-  { id: "m-bge-m3", name: "DeAI-BGE-M3", version: "1.0", type: "embedding", size: "M3", precision: "INT8", status: "active" },
-  { id: "m-zoedepth", name: "DeAI-ZoeDepth-v2", version: "2.1", type: "depth", size: "v2", precision: "FP16", status: "active" },
-  { id: "m-sdxl", name: "DeAI-SDXL-Legacy", version: "v3.2", type: "vision", size: "v3", precision: "FP16", status: "deprecated" },
+  { id: "m-deepseek-r1-8b", name: "DeepSeek-R1-Distill-Qwen-8B", version: "Distill-Q4", type: "llm", size: "8B", precision: "INT4", status: "active" },
+  { id: "m-deepseek-coder-v2", name: "DeepSeek-Coder-V2-Lite-16B", version: "V2-MoE", type: "llm", size: "16B-MoE", precision: "INT8", status: "active" },
+  { id: "m-janus-pro-7b", name: "Janus-Pro-7B-Multimodal", version: "Pro-1.0", type: "vision", size: "7B", precision: "FP16", status: "active" },
+  { id: "m-deepseek-math-7b", name: "DeepSeek-Math-7B-Prover", version: "V2.0", type: "llm", size: "7B", precision: "INT8", status: "active" },
+  { id: "m-deepspec-qwen3", name: "DeepSpec-Qwen3-Speculative", version: "Spec-1.0", type: "llm", size: "Draft-3B", precision: "INT4", status: "active" },
+  { id: "m-deepseek-v3-moe", name: "DeepSeek-V3-Full-MoE", version: "3.1", type: "llm", size: "671B-MoE", precision: "INT4", status: "active" },
+  { id: "m-propsentinel-quant", name: "PropSentinel-Quant-Risk-Engine", version: "v4.1", type: "llm", size: "Markov-4State", precision: "FP32", status: "active" },
+  { id: "m-bge-m3", name: "DeAI-BGE-M3-Embedding", version: "1.0", type: "embedding", size: "M3", precision: "INT8", status: "active" },
 ];
 
 const NODES = [

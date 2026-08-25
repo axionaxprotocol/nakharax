@@ -8,7 +8,7 @@
 | **Date**     | July 2026                               |
 | **Status**   | Testnet (Chain ID 86137)                |
 | **Token**    | NAK                                     |
-| **Website**  | [nakhara.io](https://nakhara.io)        |
+| **Website**  | [nakharax.com](https://nakharax.com)      |
 | **License**  | AGPLv3 (core) / MIT (tooling)           |
 
 ---
@@ -73,7 +73,7 @@ The protocol has three layers:
 
 The chain layer is a custom Layer-1 blockchain implemented in Rust (~19 crates). It provides EVM-compatible smart contract execution, native staking and governance, and serves as the settlement rail for the compute marketplace.
 
-**Key design decision:** The chain is a **receipt rail**. It records job commitments, result hashes, and payment settlements. The actual compute happens off-chain on worker nodes. The chain does not need to be a fast L1 — throughput is governed by block gas limit, currently configured at ~286 TPS on testnet (30M gas per block, 5-second block time, 21,000 gas per transfer). This is sufficient for settlement transactions; the compute throughput scales horizontally with worker count, independent of chain TPS.
+**Key design decision:** The chain is a **receipt rail**. It records job commitments, result hashes, and payment settlements. The actual compute happens off-chain on worker nodes. The chain does not need to be a fast L1 — throughput is governed by block gas limit, currently configured at ~286 TPS on testnet (30M gas per block, 3-second block time, 21,000 gas per transfer). This is sufficient for settlement transactions; the compute throughput scales horizontally with worker count, independent of chain TPS.
 
 ### 2.2 Compute Layer
 
@@ -421,15 +421,15 @@ In this arena, the relevant metric is **cost per unit of compute vs. cloud provi
 
 ## 12. Current Testnet
 
-The protocol is live on a public testnet:
+The protocol is active in development and local testnet environment (`Chain ID 86137`):
 
 | Parameter | Value |
 |-----------|-------|
 | Chain ID | 86137 |
-| Validators | 2 (AU: 46.250.244.4, ES: 217.216.109.5) |
-| RPC | `https://rpc.nakharax.com` |
-| Dashboard | `https://app.nakharax.com` |
-| Block time | ~5 seconds |
+| Active Validators | Local Docker / Developer Node (Legacy VPS 217.216.109.5 / 46.250.244.4 offline; awaiting new VPS provisioning) |
+| RPC | `http://localhost:8545` (Planned: `https://rpc.nakharax.com`) |
+| Dashboard | `http://localhost:3030` (Planned: `https://app.nakharax.com`) |
+| Block time | ~3 seconds (3000ms cadence) |
 | Consensus | PoPC (s=1000, confidence=0.99) |
 | Token (testnet) | NAKt (1 Billion supply for testing) |
 

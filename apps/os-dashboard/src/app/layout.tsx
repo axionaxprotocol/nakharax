@@ -5,23 +5,23 @@ import { FloatingSentinelChat } from "@/components/floating-sentinel-chat";
 
 export const metadata: Metadata = {
   title: {
-    default: "Nakharax OS",
-    template: "%s · Nakharax OS",
+    default: "Nakharax Protocol Portal",
+    template: "%s · Nakharax Protocol Portal",
   },
   description:
-    "Local-first DeAI compute OS for self-owned nodes, affordable inference, and sovereign workloads.",
-  applicationName: "Nakharax OS",
+    "Sovereign DeAI compute portal for self-owned nodes, affordable inference, and verifiable workloads.",
+  applicationName: "Nakharax Protocol Portal",
   openGraph: {
-    title: "Nakharax OS",
+    title: "Nakharax Protocol Portal",
     description:
-      "Self-owned DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
+      "Sovereign DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nakharax OS",
+    title: "Nakharax Protocol Portal",
     description:
-      "Self-owned DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
+      "Sovereign DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
   },
 };
 

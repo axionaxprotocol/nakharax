@@ -1,109 +1,95 @@
-# วิธีเพิ่ม NAK Token บน MetaMask 🦊
+# How to Register & Add NAK Tokens on MetaMask 🦊
 
-## ปัญหาที่พบบ่อย
+## Common Configuration Issues
 
-หากคุณไม่สามารถเพิ่ม NAK Token บน MetaMask ได้ อาจเกิดจากสาเหตุต่อไปนี้:
+If you experience issues registering NAK Tokens on MetaMask, verify the following configuration vectors:
 
-### 1. ⚠️ ยังไม่ได้เชื่อมต่อกับ Nakharax Network
+### 1. ⚠️ Unverified Network Connection
 
-**วิธีแก้:**
+**Remediation Steps:**
 
-1. เปิด MetaMask
-2. คลิกที่ dropdown เลือก network ด้านบน
-3. คลิก "Add Network" หรือ "Custom RPC"
-4. กรอกข้อมูลดังนี้:
+1. Open MetaMask.
+2. Click the network selection dropdown at the top of the interface.
+3. Click **"Add Network"** or **"Custom RPC"**.
+4. Enter the following parameters:
 
-```
-Network Name: Nakharax Testnet
-RPC URL: https://testnet-rpc.nakharax.com
+```text
+Network Name: NakharaX Testnet
+RPC URL: https://rpc.nakharax.com
 Chain ID: 86137
 Currency Symbol: NAK
 Block Explorer: https://explorer.nakharax.com
 ```
 
-### 2. ⚠️ ใช้ Token Address ไม่ถูกต้อง
+### 2. ⚠️ Incorrect Contract Address Specification
 
-**Token Address ที่ถูกต้อง:**
+**Canonical Contract Address:**
 
+```text
+Mainnet Deployment Target: 0x0000000000000000000000000000000000001000
+Testnet Deployment Target: Refer to deployed-contracts.json
 ```
-Mainnet: 0x0000000000000000000000000000000000001000
-Testnet: (ตรวจสอบจาก config.json หรือ faucet)
-```
 
-### 3. ⚠️ MetaMask ไม่รองรับ ERC-20 Token บน Network นี้
+### 3. ⚠️ Active Network Mismatch
 
-**วิธีแก้:**
+**Remediation Steps:**
 
-- ตรวจสอบว่าคุณเชื่อมต่อกับ Nakharax Network แล้ว
-- Token จะแสดงเฉพาะเมื่อคุณอยู่ใน network ที่ถูกต้อง
+- Confirm your active wallet session is bound to NakharaX Testnet (`86137`).
+- Assets are displayed exclusively when connected to the corresponding network.
 
 ---
 
-## วิธีเพิ่ม Token ด้วยตนเอง (Manual)
+## Manual Asset Import Workflow
 
-### ขั้นตอนที่ 1: เปิด MetaMask
+### Step 1: Initialize MetaMask Interface
+1. Click the MetaMask browser extension icon.
+2. Confirm active connection to **NakharaX Testnet**.
 
-1. คลิกที่ไอคอน MetaMask extension
-2. ตรวจสอบว่าคุณเชื่อมต่อกับ **Nakharax Testnet** แล้ว
+### Step 2: Navigate to Import Panel
+1. Scroll to the bottom of the **Assets** tab.
+2. Click **"Import tokens"**.
+3. Select the **"Custom Token"** tab.
 
-### ขั้นตอนที่ 2: เพิ่ม Token
+### Step 3: Input Contract Specifications
 
-1. เลื่อนลงไปที่รายการ Assets
-2. คลิก **"Import tokens"** หรือ **"Add Token"**
-3. เลือกแท็บ **"Custom Token"**
-
-### ขั้นตอนที่ 3: กรอกข้อมูล Token
-
-```
+```text
 Token Contract Address: 0x0000000000000000000000000000000000001000
 Token Symbol: NAK
-Token Decimal: 18
+Token Decimals: 18
 ```
 
-4. คลิก **"Add Custom Token"**
-5. คลิก **"Import Tokens"** เพื่อยืนยัน
+4. Click **"Add Custom Token"**.
+5. Click **"Import Tokens"** to confirm registration.
 
-### ✅ เสร็จสิ้น!
+### ✅ Registration Complete
 
-ตอนนี้คุณจะเห็น NAK Token ในรายการ Assets ของ MetaMask แล้ว
-
----
-
-## วิธีเพิ่ม Token แบบอัตโนมัติ (Recommended)
-
-### จาก Web Interface
-
-1. เชื่อมต่อ wallet ที่ https://nakharax.com
-2. คลิกที่ปุ่ม **Connect Wallet**
-3. เมื่อเชื่อมต่อสำเร็จ คลิกที่ dropdown wallet menu
-4. คลิกปุ่ม **"Add NAK Token"**
-5. MetaMask จะเปิดหน้าต่างยืนยัน ให้คลิก **"Add Token"**
-
-### จาก Local Testnet UI
-
-หากคุณใช้ Local Testnet (Testnet in a Box):
-
-1. เปิดไฟล์ `index.html` ใน browser
-2. คลิกปุ่ม **"Connect Wallet"**
-3. คลิกปุ่ม **"Add NAK Token"**
-4. MetaMask จะเปิดหน้าต่างยืนยัน ให้คลิก **"Add Token"**
+The $NAK asset token is now visible in your MetaMask asset portfolio.
 
 ---
 
-## Code Integration
+## Automated Asset Import Workflow (Recommended)
 
-### สำหรับ Developers
+### Via Web Interface
+1. Connect your wallet at `https://nakharax.com`.
+2. Click **"Connect Wallet"**.
+3. Upon successful connection, open the wallet dropdown menu.
+4. Click **"Add NAK Token"**.
+5. Approve the `wallet_watchAsset` prompt in MetaMask.
 
-ใช้ฟังก์ชัน `wallet_watchAsset` เพื่อเพิ่ม token โดยอัตโนมัติ:
+---
+
+## Developer Code Integration
+
+### Programmatic EIP-747 Asset Addition (`wallet_watchAsset`)
 
 ```javascript
-async function addAXXToken() {
+async function addNAKToken() {
   const tokenAddress = '0x0000000000000000000000000000000000001000';
   const tokenSymbol = 'NAK';
   const tokenDecimals = 18;
 
   try {
-    const wasAdded = await ethereum.request({
+    const wasAdded = await window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20',
@@ -116,9 +102,9 @@ async function addAXXToken() {
     });
 
     if (wasAdded) {
-      console.log('✅ Token added successfully!');
+      console.log('✅ NAK Token added successfully!');
     } else {
-      console.log('❌ User declined to add token');
+      console.log('❌ User declined token addition');
     }
   } catch (error) {
     console.error('Error adding token:', error);
@@ -126,12 +112,11 @@ async function addAXXToken() {
 }
 ```
 
-### React/TypeScript Integration
+### React & TypeScript Integration Pattern
 
 ```typescript
 import { addTokenToMetaMask } from '@/lib/web3';
 
-// ใช้งานใน component
 const handleAddToken = async () => {
   try {
     const wasAdded = await addTokenToMetaMask({
@@ -141,74 +126,36 @@ const handleAddToken = async () => {
     });
 
     if (wasAdded) {
-      alert('เพิ่ม Token สำเร็จ! ✅');
+      console.log('Token successfully registered!');
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('MetaMask watchAsset error:', error);
   }
 };
 ```
 
 ---
 
-## การแก้ปัญหาเพิ่มเติม
+## Troubleshooting Guide
 
-### ❌ "Invalid address" Error
+### ❌ "Invalid address" Exception
+- **Root Cause:** Malformed contract address checksum or cross-chain address mismatch.
+- **Resolution:** Verify address string against canonical contract deployment outputs.
 
-**สาเหตุ:**
-
-- Token address ไม่ถูกต้อง
-- ใช้ address จาก network อื่น
-
-**วิธีแก้:**
-
-- ตรวจสอบ address อีกครั้ง
-- ใช้ address ที่ถูกต้องสำหรับ network นั้นๆ
-
-### ❌ Token ไม่แสดงหลังจากเพิ่ม
-
-**สาเหตุ:**
-
-- คุณไม่ได้อยู่ใน Nakharax Network
-- Balance เป็น 0
-
-**วิธีแก้:**
-
-1. Switch ไปยัง Nakharax Network
-2. ขอ test tokens จาก faucet: https://faucet.nakharax.com
-3. Refresh MetaMask (Lock -> Unlock)
-
-### ❌ "User rejected the request"
-
-**สาเหตุ:**
-
-- ผู้ใช้คลิก "Cancel" ใน MetaMask popup
-
-**วิธีแก้:**
-
-- ลองอีกครั้งและคลิก "Add Token" เพื่อยืนยัน
+### ❌ Zero Asset Visibility
+- **Root Cause:** Wallet is connected to wrong chain ID or balance is 0.
+- **Resolution:** Switch network to Chain ID `86137` and request test tokens from `https://faucet.nakharax.com`.
 
 ---
 
-## เอกสารอ้างอิง
+## Standard Specification References
 
-- [MetaMask Documentation](https://docs.metamask.io/)
-- [EIP-747: wallet_watchAsset](https://eips.ethereum.org/EIPS/eip-747)
-- [Nakharax Network Configuration](./CHAIN_ID_CONFIGURATION.md)
-- [Web3 Integration Guide](./DEVELOPER_GUIDE.md)
-
----
-
-## ติดต่อสอบถาม
-
-หากยังมีปัญหา กรุณาติดต่อ:
-
-- **Discord**: [Nakharax Community](https://discord.gg/nakharax)
-- **GitHub Issues**: [nakharax](https://github.com/axionaxprotocol/nakharax/issues)
-- **Email**: support@nakharax.com
+- [MetaMask Developer Documentation](https://docs.metamask.io/)
+- [EIP-747 Specification](https://eips.ethereum.org/EIPS/eip-747)
+- [NakharaX Chain ID Configuration](./CHAIN_ID_CONFIGURATION.md)
 
 ---
 
-**อัปเดตล่าสุด:** เมษายน 2026  
-**Synced core ref:** `nakharax@28f42cf`  
-**Version:** 1.1.0 (Genesis Public Testnet)
+**Last Updated:** April 2026  
+**Synced Core Commit:** `nakharax@28f42cf`  
+**Specification Version:** v1.1.0 (Genesis Public Testnet)

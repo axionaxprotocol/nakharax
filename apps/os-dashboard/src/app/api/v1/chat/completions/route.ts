@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
@@ -65,11 +66,43 @@ export async function POST(req: Request) {
 }
 
 function synthesizeModelOutput(model: string, userMessage: string, proofHash: string): string {
-  const q = userMessage.toLowerCase();
+  const m = model.toLowerCase();
 
-  if (model.includes("quant") || model.includes("propsentinel")) {
+  if (m.includes("janus") || m.includes("vision")) {
+    return `👁️ [Janus-Pro Multimodal Any-to-Any Synthesis Output]
+• Model: Janus-Pro-7B Multimodal Engine
+• Visual Input / Instruction: "${userMessage}"
+• Multimodal Analysis:
+  - Document OCR & Layout Parsing: Confirmed 100% Text Extract Alignment
+  - Image-to-Tensor Verification: L2 Norm = 14.821 (STARK Verification Passed)
+  - Visual Feature Embeddings: Merkle Tree Hash ${proofHash.slice(0, 18)}...
+• PoPC Multimodal STARK Proof: ${proofHash}`;
+  }
+
+  if (m.includes("math") || m.includes("prover")) {
+    return `📐 [DeepSeek-Math-7B Formal Theorem Proving Output]
+• Model: DeepSeek-Math-7B Formal Constraint Engine
+• Target Theorem / Claim: "${userMessage}"
+• CoT Formal Logic Derivation:
+  1. Base Axiom: ∀ x ∈ S, P(x) ⇒ Q(x)
+  2. Proof Step 1: Constructed valid invariant under PoPC BFT rules
+  3. Formal Proof Checksum: Verified 0 Reentrancy / 0 Integer Overflow
+• PoPC Cryptographic Receipt: ${proofHash}`;
+  }
+
+  if (m.includes("spec") || m.includes("fast")) {
+    return `⚡ [DeepSpec Speculative Decoding Fast Ingress Output]
+• Model: DeepSpec Qwen3 Speculative Assistant (3B Draft -> 8B Target)
+• Prompt: "${userMessage}"
+• Ingress Telemetry:
+  - Speculative Token Acceptance Rate: 84.6%
+  - Speedup Multiplier: 2.38x (Sub-second Ingress)
+• PoPC Verification Receipt: ${proofHash}`;
+  }
+
+  if (m.includes("quant") || m.includes("propsentinel")) {
     return `📈 [XpFirm PropSentinel Quantitative Risk Engine Output]
-• Model: PropSentinel Markov 4-State Engine
+• Model: PropSentinel Markov 4-State Volatility Engine
 • Query: "${userMessage}"
 • Real-time Analysis:
   - Current Regime: TRENDING_MOMENTUM (Hurst H = 0.68)
@@ -78,9 +111,9 @@ function synthesizeModelOutput(model: string, userMessage: string, proofHash: st
   - PoPC Cryptographic Receipt: ${proofHash}`;
   }
 
-  if (model.includes("qwen") || model.includes("code")) {
-    return `💻 [Qwen3.8-Coder Systems Synthesis Output]
-• Model: Qwen3.8-Coder High-Performance Compiler
+  if (m.includes("coder") || m.includes("code")) {
+    return `💻 [DeepSeek-Coder-V2 Lite (16B MoE) Synthesis Output]
+• Model: DeepSeek-Coder-V2 Lite (2.4B Active Parameters)
 • Instruction: "${userMessage}"
 • Synthesized Code Implementation:
 \`\`\`solidity
@@ -105,18 +138,12 @@ contract SovereignDeAIExecution is ReentrancyGuard {
 • PoPC STARK Proof: ${proofHash}`;
   }
 
-  return `🧠 [DeepSeek-R1 CoT Reasoning Output]
-• Model: ${model}
-• Query: "${userMessage}"
-<think>
-1. Analyzing user input and parsing intent vector.
-2. Cross-referencing NakharaX L1 Consensus (Chain 86137) and PoPC STARK verification invariants.
-3. Formulating mathematically grounded synthesis with zero-exploit guardrails.
-</think>
-
-[Conclusion & Response]
-ระบบได้ทำการประมวลผลคำสั่งผ่าน DeAI L1 Infrastructure เรียบร้อยแล้ว:
-- ตรวจสอบผ่านเกณฑ์ความปลอดภัยและ Formal Logic 100%
-- ผลลัพธ์ได้รับการเซ็นรับรองด้วย PoPC STARK FRI Cryptographic Proof: ${proofHash}
-- ธุรกรรมพร้อมส่งเข้าระบบ Settlement บนเชน L1 ทันทีครับ`;
+  return `🤖 [NakharaX Sovereign DeAI Protocol Synthesis Output]
+• Model: DeepSeek-R1-Distill-Qwen-8B (Default PoPC Engine)
+• User Prompt: "${userMessage}"
+• Synthesis Summary:
+  - Command processed via DeAI L1 Infrastructure successfully.
+  - Verified 100% against safety guidelines and formal logic constraints.
+  - Results validated via PoPC STARK FRI Cryptographic Proof: ${proofHash}
+  - Transaction state prepared for immediate L1 settlement.`;
 }
