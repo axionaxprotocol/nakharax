@@ -36,15 +36,6 @@ type App = {
 
 const APPS: App[] = [
   {
-    id: "propsentinel",
-    name: "XpFirm PropSentinel (xpfirm.com)",
-    desc: "Institutional Quant Risk Management Terminal for Prop Traders. Real-time Monte Carlo drawdown shields, sub-ms MT5 Kill-Switch circuit breakers, and risk telemetry.",
-    icon: Skull,
-    tone: "danger",
-    state: "live",
-    href: "/apps/propsentinel",
-  },
-  {
     id: "worker",
     name: "DeAI Worker Config & CLI",
     desc: "CLI Configuration generator. Generates monolith_worker.toml for GPU driver binding and worker daemon launch.",

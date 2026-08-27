@@ -1,11 +1,21 @@
-<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-mark-transparent-title">
-  <title id="nakharax-mark-transparent-title">Nakharax mono transparent mark</title>
-  <path d="M128 34L207 80V176L128 222L49 176V80L128 34Z" stroke="currentColor" stroke-width="3" opacity="0.22"/>
-  <path d="M70 181V75L186 181V75" stroke="currentColor" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M184 76L72 180" stroke="currentColor" stroke-width="11" stroke-linecap="round" opacity="0.88"/>
-  <path d="M78 202H178" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity="0.72"/>
-  <circle cx="70" cy="75" r="6" fill="currentColor"/>
-  <circle cx="186" cy="75" r="6" fill="currentColor"/>
-  <circle cx="70" cy="181" r="6" fill="currentColor"/>
-  <circle cx="186" cy="181" r="6" fill="currentColor"/>
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-mark-trans">
+  <title id="nakharax-mark-trans">NakharaX Transparent Mark</title>
+  <defs>
+    <linearGradient id="mark-grad" x1="70" y1="75" x2="186" y2="181" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="50%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Hexagon -->
+  <path d="M128 34L207 80V176L128 222L49 176V80L128 34Z" stroke="#334155" stroke-width="3"/>
+  <!-- N+X Monogram -->
+  <path d="M72 181V75L184 181V75" stroke="url(#mark-grad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M182 77L74 179" stroke="#38BDF8" stroke-width="11" stroke-linecap="round"/>
+  <path d="M80 202H176" stroke="#10B981" stroke-width="8" stroke-linecap="round"/>
+  <!-- Node Anchors -->
+  <circle cx="72" cy="75" r="7" fill="#FFFFFF"/>
+  <circle cx="184" cy="75" r="7" fill="#FFFFFF"/>
+  <circle cx="72" cy="181" r="7" fill="#FFFFFF"/>
+  <circle cx="184" cy="181" r="7" fill="#FFFFFF"/>
 </svg>

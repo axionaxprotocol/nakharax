@@ -39,6 +39,7 @@ let contracts = {};
 let validators = [];
 let workers = {};
 let jobs = {};
+let stakingPools = {}; // addr -> { staked: BigInt, sNakShares: BigInt, lastClaimBlock: number, unbondingQueue: [] }
 
 // Network stats
 let networkStats = {
@@ -487,15 +488,60 @@ function handleRpcMethod(method, params, id) {
       return jsonRpcResponse(id, pendingTransactions);
 
     // =========================================================================
-    // Call & Logs
+    // Call & Logs (ERC-20 Token & Contract Compatibility)
     // =========================================================================
     case 'eth_call': {
       const [txObj, block] = params;
-      // Return empty for unknown contracts, or mock response
-      if (txObj.data?.startsWith('0x70a08231')) {
-        // balanceOf(address) - return mock balance
-        return jsonRpcResponse(id, '0x' + '0'.repeat(56) + 'de0b6b3a7640000'); // 1 token
+      const data = txObj?.data || '0x';
+      const to = (txObj?.to || '').toLowerCase();
+      const isSNak = to === '0xe7f1725e7734ce288f8367e1bb143e90bb3f0512';
+
+      // 1. balanceOf(address) - 0x70a08231
+      if (data.startsWith('0x70a08231')) {
+        const targetAddr = ('0x' + data.slice(data.length - 40)).toLowerCase();
+        let balanceWei = 0n;
+
+        if (isSNak) {
+          const pool = stakingPools[targetAddr];
+          balanceWei = pool?.sNakShares || 0n;
+        } else {
+          const acc = accounts[targetAddr];
+          balanceWei = acc ? BigInt(acc.balance || '0x0') : 0n;
+        }
+
+        const hexVal = balanceWei.toString(16).padStart(64, '0');
+        return jsonRpcResponse(id, '0x' + hexVal);
       }
+
+      // 2. decimals() - 0x313ce567
+      if (data.startsWith('0x313ce567')) {
+        return jsonRpcResponse(id, '0x' + '12'.padStart(64, '0')); // 18 decimals
+      }
+
+      // 3. symbol() - 0x95d89b41
+      if (data.startsWith('0x95d89b41')) {
+        const sym = isSNak ? 'sNAK' : 'tNAK';
+        const hexOffset = '0000000000000000000000000000000000000000000000000000000000000020';
+        const hexLen = (sym.length).toString(16).padStart(64, '0');
+        const hexData = Buffer.from(sym, 'utf8').toString('hex').padEnd(64, '0');
+        return jsonRpcResponse(id, '0x' + hexOffset + hexLen + hexData);
+      }
+
+      // 4. name() - 0x06fdde03
+      if (data.startsWith('0x06fdde03')) {
+        const name = isSNak ? 'Staked NakharaX' : 'NakharaX Token';
+        const hexOffset = '0000000000000000000000000000000000000000000000000000000000000020';
+        const hexLen = (name.length).toString(16).padStart(64, '0');
+        const hexData = Buffer.from(name, 'utf8').toString('hex').padEnd(64, '0');
+        return jsonRpcResponse(id, '0x' + hexOffset + hexLen + hexData);
+      }
+
+      // 5. totalSupply() - 0x18160ddd
+      if (data.startsWith('0x18160ddd')) {
+        const total = BigInt('100000000000000000000000000'); // 100M tokens
+        return jsonRpcResponse(id, '0x' + total.toString(16).padStart(64, '0'));
+      }
+
       return jsonRpcResponse(id, '0x');
     }
 
@@ -652,6 +698,236 @@ function handleRpcMethod(method, params, id) {
 
       broadcastLog(`${new Date().toISOString()}  faucet     INFO  dispensed ${amount} tNAK -> ${addr.slice(0, 12)}... tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
       return jsonRpcResponse(id, { success: true, txHash, blockNumber, amount, recipient: addr });
+    }
+
+    // =========================================================================
+    // Staking & PoPC Consensus Delegation Methods
+    // =========================================================================
+    case 'nak_stake':
+    case 'popc_stake': {
+      const [userAddr, amountTokens, validatorAddr] = params;
+      const addr = (userAddr || '').toLowerCase();
+      const amount = parseFloat(amountTokens || '0');
+      if (!addr || isNaN(amount) || amount <= 0) {
+        return jsonRpcError(id, -32602, 'Invalid staking parameters');
+      }
+
+      const amountWei = BigInt(Math.floor(amount * 1e18));
+      const curLiquidWei = accounts[addr] ? BigInt(accounts[addr].balance || '0x0') : 0n;
+      if (curLiquidWei < amountWei) {
+        return jsonRpcError(id, -32000, 'Insufficient liquid balance to stake');
+      }
+
+      // Deduct liquid balance
+      accounts[addr].balance = '0x' + (curLiquidWei - amountWei).toString(16);
+
+      // Add to staking state
+      if (!stakingPools[addr]) {
+        stakingPools[addr] = { staked: 0n, sNakShares: 0n, lastClaimBlock: blockNumber, unbondingQueue: [] };
+      }
+      stakingPools[addr].staked += amountWei;
+      stakingPools[addr].sNakShares += amountWei;
+
+      const txHash = generateHash();
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: '0x0',
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: addr,
+        to: validatorAddr || '0x0000000000000000000000000000000000000008',
+        value: '0x' + amountWei.toString(16),
+        gas: '0x186a0', // 100k gas
+        gasPrice: '0x470de4df82',
+        input: '0xd0e30db0', // stake(uint256)
+        type: 'STAKING_DEPOSIT',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  staking    INFO  🥩 Staked ${amount} tNAK -> ${addr.slice(0, 12)}... minted ${amount} sNAK | tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
+      return jsonRpcResponse(id, {
+        success: true,
+        txHash,
+        blockNumber,
+        staked: (Number(stakingPools[addr].staked) / 1e18).toFixed(2),
+        sNakBalance: (Number(stakingPools[addr].sNakShares) / 1e18).toFixed(2)
+      });
+    }
+
+    case 'nak_unstake':
+    case 'popc_unstake': {
+      const [userAddr, amountTokens] = params;
+      const addr = (userAddr || '').toLowerCase();
+      const amount = parseFloat(amountTokens || '0');
+      if (!addr || isNaN(amount) || amount <= 0) {
+        return jsonRpcError(id, -32602, 'Invalid unstaking parameters');
+      }
+
+      const amountWei = BigInt(Math.floor(amount * 1e18));
+      const pool = stakingPools[addr];
+      if (!pool || pool.staked < amountWei) {
+        return jsonRpcError(id, -32000, 'Insufficient staked balance');
+      }
+
+      pool.staked -= amountWei;
+      pool.sNakShares -= amountWei;
+      const unbondId = `unbond-${Date.now()}`;
+      const releaseTime = Date.now() + 300000; // 300s testnet cooldown
+
+      pool.unbondingQueue.push({
+        id: unbondId,
+        amount,
+        releaseTime,
+        claimed: false
+      });
+
+      const txHash = generateHash();
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: '0x0',
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: addr,
+        to: '0x0000000000000000000000000000000000000008',
+        value: '0x' + amountWei.toString(16),
+        gas: '0x186a0',
+        gasPrice: '0x470de4df82',
+        input: '0x2e17de78', // unstake(uint256)
+        type: 'UNSTAKE_INITIATED',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  staking    INFO  🔓 Unstaked ${amount} sNAK -> ${addr.slice(0, 12)}... cooldown=300s | tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
+      return jsonRpcResponse(id, {
+        success: true,
+        txHash,
+        blockNumber,
+        unbondId,
+        releaseTime,
+        remainingStaked: (Number(pool.staked) / 1e18).toFixed(2)
+      });
+    }
+
+    case 'nak_claimUnbonded':
+    case 'popc_claim': {
+      const [userAddr, unbondId] = params;
+      const addr = (userAddr || '').toLowerCase();
+      const pool = stakingPools[addr];
+      if (!pool) return jsonRpcError(id, -32000, 'No active staking profile found');
+
+      const item = pool.unbondingQueue.find(u => u.id === unbondId);
+      if (!item || item.claimed) return jsonRpcError(id, -32000, 'Unbonding item not found or already claimed');
+
+      item.claimed = true;
+      const claimedWei = BigInt(Math.floor(item.amount * 1e18));
+      const curBal = accounts[addr] ? BigInt(accounts[addr].balance || '0x0') : 0n;
+      accounts[addr] = { balance: '0x' + (curBal + claimedWei).toString(16), nonce: '0x0' };
+
+      const txHash = generateHash();
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: '0x0',
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: '0x0000000000000000000000000000000000000008',
+        to: addr,
+        value: '0x' + claimedWei.toString(16),
+        gas: '0x186a0',
+        gasPrice: '0x470de4df82',
+        input: '0x4e71d92d', // claim()
+        type: 'UNSTAKE_CLAIMED',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  staking    INFO  ✅ Claimed ${item.amount} tNAK -> ${addr.slice(0, 12)}... | tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
+      return jsonRpcResponse(id, { success: true, txHash, blockNumber, amount: item.amount });
+    }
+
+    case 'nak_resetWallet':
+    case 'nakharax_resetWallet': {
+      const [userAddr] = params;
+      const addr = (userAddr || '').toLowerCase();
+      if (addr) {
+        accounts[addr] = { balance: '0x0', nonce: 0, code: null };
+        delete stakingPools[addr];
+      } else {
+        Object.keys(accounts).forEach(a => {
+          accounts[a] = { balance: '0x0', nonce: 0, code: null };
+        });
+        Object.keys(stakingPools).forEach(a => delete stakingPools[a]);
+      }
+      broadcastLog(`${new Date().toISOString()}  wallet     INFO  🔄 Reset wallet balances to 0.00 for ${addr || 'ALL'}`);
+      return jsonRpcResponse(id, { success: true, resetAddress: addr || 'ALL' });
+    }
+
+    case 'nak_harvestRewards':
+    case 'popc_harvest': {
+      const [userAddr, amountTokens] = params;
+      const addr = (userAddr || '').toLowerCase();
+      const amount = parseFloat(amountTokens || '0.01');
+      const rewardWei = BigInt(Math.floor(amount * 1e18));
+      const curBal = accounts[addr] ? BigInt(accounts[addr].balance || '0x0') : 0n;
+      accounts[addr] = { balance: '0x' + (curBal + rewardWei).toString(16), nonce: '0x0' };
+
+      const txHash = generateHash();
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: '0x0',
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: '0x0000000000000000000000000000000000000008',
+        to: addr,
+        value: '0x' + rewardWei.toString(16),
+        gas: '0x186a0',
+        gasPrice: '0x470de4df82',
+        input: '0x4641257d', // harvest()
+        type: 'REWARD',
+        timestamp: Math.floor(Date.now() / 1000)
+      };
+
+      transactions[txHash] = tx;
+      pendingTransactions.push(tx);
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+
+      broadcastLog(`${new Date().toISOString()}  staking    INFO  🌾 Harvested ${amount} tNAK PoPC yield -> ${addr.slice(0, 12)}... | tx=${txHash.slice(0, 16)}... block=#${blockNumber}`);
+      return jsonRpcResponse(id, { success: true, txHash, blockNumber, rewardAmount: amount });
+    }
+
+    case 'nak_getStakeInfo':
+    case 'popc_getStakeInfo': {
+      const [userAddr] = params;
+      const addr = (userAddr || '').toLowerCase();
+      const pool = stakingPools[addr] || { staked: 0n, sNakShares: 0n, lastClaimBlock: blockNumber, unbondingQueue: [] };
+      return jsonRpcResponse(id, {
+        staked: (Number(pool.staked) / 1e18).toFixed(2),
+        sNakBalance: (Number(pool.sNakShares) / 1e18).toFixed(2),
+        unbondingQueue: pool.unbondingQueue,
+        apy: '8.40%'
+      });
     }
 
     case 'nakharax_getRecentTransactions':

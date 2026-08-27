@@ -1,6 +1,20 @@
-# Nakharax Documentation Changelog
+# Nakharax Documentation & Protocol Changelog
 
-> **History of documentation changes** — Last Updated: May 3, 2026
+> **History of documentation & protocol changes** — Last Updated: August 25, 2026
+
+---
+
+## 2026-08-25 — SOTA Topology Radar, Sovereign Command Center & Web3 Direct Bridge
+
+### Added
+- **Global Defense-Grade P2P Topology Radar (`react-simple-maps` + TopoJSON Atlas)**: Sub-millisecond offline-first global mesh map across 5 continents with plasma laser flows, sonar ripples, and live GossipSub transmission ticker HUD.
+- **Sovereign Command Center Home Page**: Institutional Bloomberg/Palantir-style dashboard with live block ingress ticker, 4-Bento Flagship Engines, and standardized 100 $tNAK Faucet rate.
+- **Web3 Direct Bridge (EIP-3085 & EIP-747)**: 1-Click network configuration for MetaMask/Rabby (Chain ID 86137) and native $tNAK / $sNAK token watching.
+- **ERC-20 Full Compatibility on Node RPC**: Upgraded `eth_call` decoding for `balanceOf`, `decimals = 18`, `symbol`, `name`, and `totalSupply`.
+- **Minimalist Architectural N+X Brand Mark**: Redesigned clean vector logo and full icon suite (`public/brand/nakharax-token.svg`, `favicon.ico`, `icon.png`, `apple-icon.png`).
+- **Autonomous Python Mining Daemon (`worker_daemon.py`)**: STARK FRI Low-Degree Extension polynomial proof solver with 1,024 constraints (1.96ms solver).
+- **Master 100-Item Disruption Inventory (`docs/100_DISRUPTION_INVENTORY_MASTER.md`)**: Comprehensive competitive benchmarking across 10 core engineering domains.
+- **Official Model Context Protocol Server (`packages/mcp-server`)**: TypeScript STDIO server exposing 5 tools and 2 resources.
 
 ---
 

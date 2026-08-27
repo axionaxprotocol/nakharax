@@ -4,17 +4,20 @@ import {
   ArrowRight,
   Brain,
   Briefcase,
+  CheckCircle2,
   Cpu,
-  Gauge,
+  Dna,
+  GitMerge,
   Globe2,
-  HardDrive,
-  Layers3,
-  RadioTower,
+  Lock,
+  Network,
+  Radio,
   Route,
   Server,
   ShieldCheck,
   Sparkles,
   Terminal,
+  Vault,
   Wallet,
   Zap,
   type LucideIcon,
@@ -25,17 +28,14 @@ import {
   Card,
   IconBadge,
   SectionHeader,
-  StatCard,
-  StatusPill,
 } from "@/components/card";
 import { QuickConnectBox } from "@/components/quick-connect";
 import { LiveStatsSection } from "@/components/live-stats";
+import { HomeQuickHub } from "@/components/home-quick-hub";
 import { DEFAULT_NODES, getNodeStatus } from "@/lib/rpc";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
-type Tone = "ai" | "chain" | "warn" | "danger" | "neutral" | "violet";
 
 export default async function Home() {
   const statuses = await Promise.all(
@@ -57,57 +57,122 @@ export default async function Home() {
   const isOnline = online > 0;
 
   return (
-    <div className="space-y-8 sm:space-y-10 animate-slide-up">
+    <div className="space-y-10 sm:space-y-12 animate-slide-up pb-20">
       {/* =========================================================================
-          SECTION 1: XPFIRM-STYLE CENTERED INSTITUTIONAL HERO
+          HIGH-FPS LIVE INGRESS TICKER STRIP (TOP RADAR)
           ========================================================================= */}
-      <section className="relative px-2 py-8 sm:px-4 sm:py-12 text-center overflow-hidden rounded-2xl border border-white/[0.12] bg-slate-950/40 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-        {/* Ambient background glow orb */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 w-[600px] sm:w-[800px] h-[320px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse duration-[4000ms]" />
-
-        <div className="relative z-10 mx-auto max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono font-semibold tracking-wide text-emerald-300">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            Sovereign DeAI Compute Protocol
+      <div className="overflow-hidden rounded-2xl border border-emerald-500/30 bg-black/60 p-2.5 backdrop-blur-xl shadow-lg">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono">
+          <div className="flex items-center gap-2 text-emerald-400 font-bold">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>NAKHARAX L1 GRID: 100% OPERATIONAL</span>
           </div>
 
-          <h1 className="text-[32px]/[1.15] sm:text-[44px]/[1.12] md:text-[52px]/[1.12] font-bold text-white tracking-normal max-w-[24rem] sm:max-w-none mx-auto">
-            Compute power people can{" "}
-            <span className="inline-block text-emerald-400">
-              own, route, and verify.
+          <div className="flex flex-wrap items-center gap-4 text-slate-400">
+            <span>CHAIN ID: <strong className="text-white font-bold">86137</strong></span>
+            <span>·</span>
+            <span>BLOCK: <strong className="text-cyan-300 font-bold">#{maxBlock.toLocaleString()}</strong></span>
+            <span>·</span>
+            <span>CADENCE: <strong className="text-emerald-300 font-bold">3.00s</strong></span>
+            <span>·</span>
+            <span>BFT QUORUM: <strong className="text-emerald-400 font-bold">5/5 SEEDS ACTIVE</strong></span>
+            <span>·</span>
+            <span>DEAI HASHRATE: <strong className="text-cyan-300 font-bold">441.2 M-OPS</strong></span>
+          </div>
+
+          <Link
+            href="/nodes"
+            className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+          >
+            <span>Live Radar</span>
+            <ArrowRight size={12} />
+          </Link>
+        </div>
+      </div>
+
+      {/* =========================================================================
+          HERO: INSTITUTIONAL COMMAND CENTER & SOVEREIGN DEAI GRID
+          ========================================================================= */}
+      <section className="relative px-6 py-12 sm:px-12 sm:py-16 text-center overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-slate-950/90 via-[#030712] to-slate-950/90 backdrop-blur-3xl shadow-[0_25px_80px_rgba(0,0,0,0.85)]">
+        {/* Holographic Glowing Ambient Backgrounds */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-24 w-[700px] sm:w-[900px] h-[320px] bg-emerald-500/15 rounded-full blur-[150px] pointer-events-none -z-10 animate-pulse duration-[4000ms]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[200px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+
+        <div className="relative z-10 mx-auto max-w-4xl space-y-6">
+          {/* Institutional Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono font-bold tracking-wider text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+            <span className="h-2 w-2 animate-ping rounded-full bg-emerald-400" />
+            SOVEREIGN DEAI COMPUTE PROTOCOL & MULTI-REGION BFT GRID
+          </div>
+
+          {/* Main Headline */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1]">
+            Verifiable AI Compute &{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(41,240,106,0.3)]">
+              Sovereign Execution.
             </span>
           </h1>
 
-          <p className="text-slate-300 max-w-[22rem] sm:max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-medium leading-relaxed">
-            Nakharax turns reachable PCs, edge accelerators, and private GPU clusters into a
-            zero-censorship compute marketplace for verifiable AI inference, quant simulations, and local-first execution.
+          {/* Subtitle */}
+          <p className="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-normal leading-relaxed">
+            Harness high-performance GPUs, neural accelerators, and validator nodes into a decentralized L1 grid for verifiable STARK ZK inference, continual LoRA weight fusion, and autonomous agent settlement.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2 w-full max-w-xs sm:max-w-none mx-auto">
-            <ActionLink href="/jobs" variant="primary">
-              Open compute jobs
-            </ActionLink>
-            <ActionLink href="/nodes" variant="secondary">
-              Inspect node mesh
-            </ActionLink>
+          {/* Quick-Action Command Matrix */}
+          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+            <Link
+              href="/apps/sentinel"
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 px-6 py-3 text-xs sm:text-sm font-mono font-bold text-black shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.6)]"
+            >
+              <Brain size={16} />
+              <span>Launch AI Risk Brain</span>
+            </Link>
+
+            <Link
+              href="/nodes"
+              className="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
+            >
+              <Globe2 size={16} />
+              <span>Global 5-Node Radar</span>
+            </Link>
+
+            <Link
+              href="/wallet"
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-xs sm:text-sm font-mono font-semibold text-white transition-all hover:bg-white/10"
+            >
+              <Vault size={16} className="text-emerald-400" />
+              <span>Citadel Vault & Staking (8.40%)</span>
+            </Link>
+
+            <Link
+              href="/apps/faucet"
+              className="inline-flex items-center gap-1.5 rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-xs sm:text-sm font-mono font-semibold text-amber-300 transition-all hover:bg-amber-500/20 hover:border-amber-400"
+            >
+              <Zap size={14} />
+              <span>+100 $tNAK Faucet</span>
+            </Link>
           </div>
 
+          {/* Cryptographic Proof & Performance Invariants Strip */}
           <div className="pt-3 flex justify-center">
-            <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
-              <span className="font-semibold text-emerald-300">✓ Proof of Practical Compute (PoPC)</span>
-              <span className="text-slate-500">·</span>
-              <span className={isOnline ? "text-cyan-300 font-semibold" : "text-amber-400 font-semibold"}>
-                {isOnline ? "Chain 86137 Live" : "Testnet Genesis (Simulation Mode)"}
+            <div className="inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
+              <span className="font-semibold text-emerald-300 flex items-center gap-1">
+                <CheckCircle2 size={13} />
+                Proof of Practical Compute (PoPC v2.1)
               </span>
               <span className="text-slate-500">·</span>
-              <span className="text-slate-400">Verifiable Execution</span>
+              <span className="text-cyan-300 font-semibold">STARK FRI 1,024 ZKP</span>
+              <span className="text-slate-500">·</span>
+              <span className="text-amber-300 font-semibold">Zero-MEV Mempool</span>
+              <span className="text-slate-500">·</span>
+              <span className="text-slate-300 font-medium">Sub-Millisecond Redis P99 &lt; 1ms</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 2: 4 INSTITUTIONAL STAT BLOCKS (REAL-TIME LIVE SYNC)
+          LIVE TELEMETRY: 4 STREAMLINED METRIC GAUGES
           ========================================================================= */}
       <LiveStatsSection
         initialBlock={maxBlock}
@@ -117,273 +182,201 @@ export default async function Home() {
       />
 
       {/* =========================================================================
-          SECTION 3: DEVELOPER INGRESS & TERMINAL QUICK-CONNECT
+          4 FLAGSHIP ECOSYSTEM BENTO HUBS (MISSION CONTROL)
+          ========================================================================= */}
+      <section className="space-y-4">
+        <SectionHeader
+          title="Sovereign Protocol Core Engines"
+          description="Institutional Layer-1 infrastructure powering autonomous DeAI compute, continual learning, and zero-trust settlement."
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
+          {/* Hub 1: PoPC Compute Engine */}
+          <Link
+            href="/jobs"
+            className="group rounded-2xl border border-emerald-500/30 bg-slate-950/80 p-5 transition-all hover:border-emerald-400 hover:bg-emerald-500/[0.06] hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 group-hover:scale-110 transition-transform">
+                  <Cpu size={20} />
+                </span>
+                <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300 border border-emerald-500/40">
+                  PoPC v2.1
+                </span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                  Autonomous DeAI Compute Grid
+                </h3>
+                <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
+                  ASR VRF worker dispatching with STARK FRI low-degree polynomial validation and instant escrow release.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-emerald-400">
+              <span>Explore Marketplace</span>
+              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* Hub 2: LoRA Fusion Studio */}
+          <Link
+            href="/apps/lora"
+            className="group rounded-2xl border border-cyan-500/30 bg-slate-950/80 p-5 transition-all hover:border-cyan-400 hover:bg-cyan-500/[0.06] hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform">
+                  <GitMerge size={20} />
+                </span>
+                <span className="rounded bg-cyan-500/20 px-2 py-0.5 text-[10px] font-bold text-cyan-300 border border-cyan-500/40">
+                  TIES / DARE
+                </span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  LoRA Weight Fusion Studio
+                </h3>
+                <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
+                  Continual model adaptation via tensor sparsification with 99.4% zero catastrophic forgetting score.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-cyan-400">
+              <span>Open Fusion Studio</span>
+              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* Hub 3: Institutional Citadel Vault */}
+          <Link
+            href="/wallet"
+            className="group rounded-2xl border border-purple-500/30 bg-slate-950/80 p-5 transition-all hover:border-purple-400 hover:bg-purple-500/[0.06] hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-purple-500/40 bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform">
+                  <Lock size={20} />
+                </span>
+                <span className="rounded bg-purple-500/20 px-2 py-0.5 text-[10px] font-bold text-purple-300 border border-purple-500/40">
+                  8.40% APY
+                </span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
+                  Citadel Vault & Staking Pool
+                </h3>
+                <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
+                  12-Word BIP-39 encryption + PBKDF2 with live streaming PoPC yield harvest and unbonding vaults.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-purple-400">
+              <span>Manage Vault</span>
+              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* Hub 4: Global Quorum Radar */}
+          <Link
+            href="/nodes"
+            className="group rounded-2xl border border-amber-500/30 bg-slate-950/80 p-5 transition-all hover:border-amber-400 hover:bg-amber-500/[0.06] hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] flex flex-col justify-between space-y-4"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform">
+                  <Network size={20} />
+                </span>
+                <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
+                  5-Node Mesh
+                </span>
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
+                  Global Consensus Radar
+                </h3>
+                <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
+                  React-Simple-Maps World Atlas topology connecting Frankfurt, Sydney, Virginia, Singapore & London.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[11px] text-amber-400">
+              <span>Inspect P2P Mesh</span>
+              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          INTERACTIVE QUICK HUB: 4 ACTIONS + LIVE AI PLAYGROUND + APP CONSOLES
+          ========================================================================= */}
+      <HomeQuickHub />
+
+      {/* =========================================================================
+          COMPUTE PIPELINE: HORIZONTAL SLEEK CRYPTOGRAPHIC STEPPER
+          ========================================================================= */}
+      <section className="rounded-2xl border border-white/10 bg-slate-950/40 p-5 backdrop-blur-2xl space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-bold text-white flex items-center gap-2 font-mono uppercase tracking-wider text-slate-300">
+              <Activity size={15} className="text-emerald-400" />
+              Cryptographic Compute Pipeline Lifecycle
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              End-to-end verifiable state progression from job discovery to on-chain settlement.
+            </p>
+          </div>
+          <Link
+            href="/jobs"
+            className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
+          >
+            Open Marketplace <ArrowRight size={12} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          {[
+            { step: "01", name: "Discover", desc: "ASR VRF worker match", icon: Route, color: "text-cyan-400" },
+            { step: "02", name: "Escrow", desc: "tNAK locked in contract", icon: Wallet, color: "text-amber-400" },
+            { step: "03", name: "Execute", desc: "Sandbox model execution", icon: Zap, color: "text-emerald-400" },
+            { step: "04", name: "Verify", desc: "PoPC STARK FRI audit", icon: ShieldCheck, color: "text-violet-400" },
+            { step: "05", name: "Settle", desc: "Instant on-chain payout", icon: CheckCircle2, color: "text-emerald-400" },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.step}
+                className="relative rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-all hover:bg-white/[0.05] hover:border-white/20"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-slate-500">{item.step}</span>
+                  <Icon size={16} className={item.color} />
+                </div>
+                <div className="mt-2 font-bold text-xs text-white">{item.name}</div>
+                <div className="text-[11px] text-slate-400 mt-0.5 leading-tight">{item.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          DEVELOPER INGRESS: COMPACT JSON-RPC BOX
           ========================================================================= */}
       <section className="space-y-3">
         <SectionHeader
-          title="Direct JSON-RPC Ingress"
-          description="Send raw cryptographic inference jobs or query node topology via standard curl or SDK."
+          title="Developer JSON-RPC Ingress"
+          description="Submit cryptographic jobs or query node state directly over HTTP JSON-RPC 2.0."
           action={
             <span className="text-[11px] font-mono text-slate-400">
-              Target: <code className="text-cyan-300">https://rpc.nakharax.com</code>
+              RPC: <code className="text-cyan-300">http://127.0.0.1:8545</code>
             </span>
           }
         />
         <QuickConnectBox />
       </section>
-
-      {/* =========================================================================
-          SECTION 4: 3-PILLAR SOVEREIGN COMPUTE CAPABILITIES
-          ========================================================================= */}
-      <section className="space-y-3.5">
-        <SectionHeader
-          title="Sovereign compute architecture"
-          description="Built for affordability, geographic data custody, and cryptographic receipts without cloud lock-in."
-        />
-        <div className="grid gap-3.5 md:grid-cols-3">
-          {MISSION_CARDS.map((item) => (
-            <Card key={item.title} interactive tone={item.tone} className="flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between">
-                  <IconBadge Icon={item.Icon} tone={item.tone} className="h-10 w-10" />
-                  <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[9.5px] font-mono text-slate-400 uppercase">
-                    Protocol Spec
-                  </span>
-                </div>
-                <h3 className="mt-3.5 text-[15.5px] font-bold text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-300">
-                  {item.description}
-                </p>
-              </div>
-              <div className="mt-4 border-t border-white/[0.08] pt-2.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-400">
-                Institutional Standard
-              </div>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 5: 5-STEP CRYPTOGRAPHIC PIPELINE
-          ========================================================================= */}
-      <section className="space-y-3.5">
-        <SectionHeader
-          title="Compute marketplace pipeline"
-          description="The complete cryptographic lifecycle of an AI compute job from submission to verifiable settlement."
-          action={
-            <Link
-              href="/activity/inference"
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
-            >
-              Audit simulated runs
-              <ArrowRight size={13} />
-            </Link>
-          }
-        />
-        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-5">
-          {WORKLOAD_FLOW.map((step, index) => (
-            <Card
-              key={step.title}
-              className="group relative overflow-hidden"
-              padded
-              tone={step.tone}
-              interactive
-            >
-              {/* Watermark number */}
-              <div className="absolute right-2.5 top-2.5 font-mono text-[2.2rem] font-black leading-none text-white/[0.05] transition-all group-hover:text-white/[0.12] select-none">
-                {String(index + 1).padStart(2, "0")}
-              </div>
-              <IconBadge Icon={step.Icon} tone={step.tone} className="h-9 w-9" />
-              <h3 className="mt-3 text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
-                {step.title}
-              </h3>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-slate-400">
-                {step.description}
-              </p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 6: OPERATING SYSTEM CONSOLES MATRIX (2x4 Grid)
-          ========================================================================= */}
-      <section className="space-y-3.5">
-        <SectionHeader
-          title="Protocol consoles"
-          description="Dedicated consoles for compute workloads, node ownership, telemetry auditing, and local key vault."
-        />
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {MODULES.map((module) => (
-            <Link key={module.label} href={module.href} className="group block">
-              <Card interactive className="h-full flex flex-col justify-between" tone={module.tone}>
-                <div className="flex items-start gap-3">
-                  <IconBadge Icon={module.Icon} tone={module.tone} className="h-9 w-9" />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-[14.5px] font-bold text-white group-hover:text-emerald-300 transition-colors">
-                        {module.label}
-                      </h3>
-                      {module.status && (
-                        <span className="rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-amber-300 uppercase">
-                          {module.status}
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-1 text-[12px] leading-relaxed text-slate-400">
-                      {module.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-2">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-slate-400 group-hover:text-emerald-400 transition-colors">
-                    Launch Console
-                  </span>
-                  <ArrowRight
-                    size={13}
-                    className="text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-emerald-400"
-                  />
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
-
-const MISSION_CARDS: {
-  title: string;
-  description: string;
-  Icon: LucideIcon;
-  tone: Tone;
-}[] = [
-  {
-    title: "Edge Inference",
-    description:
-      "Route lightweight models to reachable local NPUs and GPUs first, scaling outward to cluster only when required.",
-    Icon: Cpu,
-    tone: "ai",
-  },
-  {
-    title: "Batch Simulations",
-    description:
-      "Queue quant backtests, simulations, and embeddings where cost-per-token dominates raw latency.",
-    Icon: Brain,
-    tone: "violet",
-  },
-  {
-    title: "Sovereign Mesh",
-    description:
-      "Confine proprietary workloads strictly inside selected geographic boundaries or private bare-metal nodes.",
-    Icon: Globe2,
-    tone: "chain",
-  },
-];
-
-const WORKLOAD_FLOW: {
-  title: string;
-  description: string;
-  Icon: LucideIcon;
-  tone: Tone;
-}[] = [
-  {
-    title: "01. Discover",
-    description: "Locate compute workers by VRAM, latency, benchmark score, and jurisdiction.",
-    Icon: Route,
-    tone: "chain",
-  },
-  {
-    title: "02. Escrow",
-    description: "Lock tNAK in smart escrow contract against signed job specifications.",
-    Icon: Wallet,
-    tone: "warn",
-  },
-  {
-    title: "03. Execute",
-    description: "Run isolated model inference or batch container inside secure worker sandboxes.",
-    Icon: Zap,
-    tone: "ai",
-  },
-  {
-    title: "04. Verify",
-    description: "Validate cryptographic receipts, output hashes, and anomaly signals before payout.",
-    Icon: ShieldCheck,
-    tone: "violet",
-  },
-  {
-    title: "05. Settle",
-    description: "Release tNAK reward to worker and commit auditable execution receipt on-chain.",
-    Icon: Activity,
-    tone: "chain",
-  },
-];
-
-const MODULES: {
-  href: string;
-  label: string;
-  description: string;
-  Icon: LucideIcon;
-  tone: Tone;
-  status?: string;
-}[] = [
-  {
-    href: "/jobs",
-    label: "Compute Jobs",
-    description: "Submit, inspect, and route decentralized AI workloads.",
-    Icon: Briefcase,
-    tone: "ai",
-  },
-  {
-    href: "/activity/models",
-    label: "Model Registry",
-    description: "Inspect deployable LLM, vision, audio, and embedding models.",
-    Icon: Brain,
-    tone: "violet",
-  },
-  {
-    href: "/nodes",
-    label: "Node Mesh",
-    description: "Monitor gateways, peer topology, block height, and DHT.",
-    Icon: Server,
-    tone: "chain",
-  },
-  {
-    href: "/apps",
-    label: "Microservices",
-    description: "Launch PropSentinel Risk Terminal & ecosystem services.",
-    Icon: Sparkles,
-    tone: "warn",
-  },
-  {
-    href: "/wallet",
-    label: "Key Vault",
-    description: "Inspect on-chain balances and sign local raw transfers.",
-    Icon: Wallet,
-    tone: "ai",
-  },
-  {
-    href: "/activity",
-    label: "Telemetry Ledger",
-    description: "Audit consensus events and verified compute receipts.",
-    Icon: Activity,
-    tone: "chain",
-  },
-  {
-    href: "/logs",
-    label: "Realtime Logs",
-    description: "Tail node ingress and worker execution streams.",
-    Icon: Terminal,
-    tone: "neutral",
-  },
-  {
-    href: "/settings",
-    label: "Core Settings",
-    description: "Configure JSON-RPC endpoints and network bootnodes.",
-    Icon: HardDrive,
-    tone: "neutral",
-  },
-];

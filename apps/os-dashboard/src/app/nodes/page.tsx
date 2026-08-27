@@ -35,6 +35,7 @@ import {
   type NodeStatus,
 } from "@/lib/rpc";
 import { useLiveBlock } from "@/lib/use-live-block";
+import { GlobalNodeMeshCanvas } from "@/components/global-node-mesh-canvas";
 
 interface ClusterNode {
   id: string;
@@ -266,7 +267,9 @@ export default function NodesPage() {
       </div>
 
       {/* Multi-Region Node Topology Cards */}
-      <section className="space-y-3">
+      <section className="space-y-4">
+        <GlobalNodeMeshCanvas liveBlock={globalBlock} />
+
         <SectionHeader
           title="Multi-Region L1 Node Cluster Topology"
           description="High-availability validator nodes and compute worker infrastructure powering testnet 86137."

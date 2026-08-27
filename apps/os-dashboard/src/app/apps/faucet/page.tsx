@@ -191,10 +191,22 @@ export default function TestnetFaucetPage() {
       {/* Main Form Box */}
       <div className="grid gap-5 lg:grid-cols-12">
         <Card className="space-y-4 border-white/10 bg-slate-950/80 p-6 lg:col-span-8">
-          <SectionHeader
-            title="Request Testnet Tokens"
-            description="Enter any EVM address (0x...) to receive 100 $tNAK immediately on Nakharax Testnet."
-          />
+          <div className="flex items-center gap-3.5 border-b border-white/10 pb-4">
+            <div className="h-12 w-12 rounded-xl border border-emerald-500/40 bg-black/70 p-2 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/nakharax-token.svg"
+                alt="NakharaX $tNAK"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Request $tNAK Testnet Tokens</h2>
+              <p className="text-xs text-slate-400 font-mono mt-0.5">
+                Enter any EVM address (0x...) to receive 100 $tNAK immediately on NakharaX Testnet.
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleRequestTokens} className="space-y-4 pt-2">
             <div>

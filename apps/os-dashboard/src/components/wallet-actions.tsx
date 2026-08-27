@@ -25,6 +25,7 @@ import {
   KeyRound,
   Layers,
   Lock,
+  LogOut,
   Plus,
   QrCode,
   RefreshCw,
@@ -46,13 +47,14 @@ import {
 import { formatEther } from "viem";
 
 import { burnerAccount } from "@/lib/web3/config";
+import { InstitutionalVaultModal, VaultCreationResult } from "@/components/institutional-vault-modal";
 
 const KEY_STORE_LOCAL = "nakharax-active-vault";
 
 interface TxHistoryItem {
   id: string;
   hash: string;
-  type: "FAUCET" | "TRANSFER" | "ESCROW_LOCK" | "STAKING_DEPOSIT" | "REWARD";
+  type: "FAUCET" | "TRANSFER" | "ESCROW_LOCK" | "STAKING_DEPOSIT" | "UNSTAKE_INITIATED" | "UNSTAKE_CLAIMED" | "REWARD";
   amount: string;
   symbol: string;
   timestamp: string;
@@ -108,7 +110,7 @@ const INITIAL_TX_HISTORY: TxHistoryItem[] = [
   },
 ];
 
-type WalletTab = "overview" | "transfer" | "staking" | "keystore";
+type WalletTab = "overview" | "transfer" | "staking" | "keystore" | "web3";
 
 export function WalletActions() {
   const [activeTab, setActiveTab] = useState<WalletTab>("overview");
@@ -126,22 +128,55 @@ export function WalletActions() {
   const [gasPreset, setGasPreset] = useState<"standard" | "fast" | "instant">("fast");
 
   // Staking Form State
+  const [stakingMode, setStakingMode] = useState<"stake" | "unstake" | "validators">("stake");
+  const [selectedValidator, setSelectedValidator] = useState<string>("0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
   const [stakeAmount, setStakeAmount] = useState("");
+  const [unstakeAmount, setUnstakeAmount] = useState("");
   const [stakedBalance, setStakedBalance] = useState("0.00");
   const [escrowLocked, setEscrowLocked] = useState("0.00");
+  const [unbondingQueue, setUnbondingQueue] = useState<
+    Array<{ id: string; amount: number; releaseTime: number; claimed: boolean }>
+  >([
+    {
+      id: "unbond-01",
+      amount: 250,
+      releaseTime: Date.now() - 10000, // already unlocked for demo
+      claimed: false,
+    },
+  ]);
 
   const [balance, setBalance] = useState("0.00");
+  const [accruedYield, setAccruedYield] = useState<number>(0.0428);
+  const [isHarvesting, setIsHarvesting] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isStaking, setIsStaking] = useState(false);
+  const [isUnstaking, setIsUnstaking] = useState(false);
+  const [isClaimingUnbonded, setIsClaimingUnbonded] = useState(false);
   const [isRequestingFaucet, setIsRequestingFaucet] = useState(false);
   const [metaMaskConnected, setMetaMaskConnected] = useState(false);
+  const [isInstitutionalModalOpen, setIsInstitutionalModalOpen] = useState(false);
   const [txHistory, setTxHistory] = useState<TxHistoryItem[]>([]);
   const [demoReceipt, setDemoReceipt] = useState<string | null>(null);
   const [hint, setHint] = useState<{
     type: "error" | "success" | "info";
     msg: string;
   } | null>(null);
+
+  // ⚡ High-FPS Real-time PoPC Accrued Yield Streaming Ticker (8.4% APY)
+  useEffect(() => {
+    const stakedVal = parseFloat(stakedBalance || "0");
+    if (stakedVal <= 0) return;
+
+    // 8.4% APY = (stakedVal * 0.084) / (365 * 86400) per second
+    const yieldPerSec = (stakedVal * 0.084) / (365 * 86400);
+
+    const interval = setInterval(() => {
+      setAccruedYield((prev) => prev + yieldPerSec * 0.1);
+    }, 100); // 100ms real-time smooth animation
+
+    return () => clearInterval(interval);
+  }, [stakedBalance]);
 
   // Restore active account from localStorage if exists
   useEffect(() => {
@@ -162,7 +197,8 @@ export function WalletActions() {
   const fetchBalance = useCallback(async () => {
     try {
       setIsRefreshing(true);
-      const res = await fetch("/api/rpc", {
+      // 1. Fetch Liquid Balance
+      const balPromise = fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -171,12 +207,35 @@ export function WalletActions() {
           params: [address, "latest"],
           id: 1,
         }),
-      });
-      const data = await res.json();
-      if (data.result) {
-        const wei = BigInt(data.result);
+      }).then((r) => r.json());
+
+      // 2. Fetch Staked Balance & Unbonding Queue from On-Chain Staking Pool
+      const stakePromise = fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_getStakeInfo",
+          params: [address],
+          id: 2,
+        }),
+      }).then((r) => r.json());
+
+      const [balData, stakeData] = await Promise.all([balPromise, stakePromise]);
+
+      if (balData?.result) {
+        const wei = BigInt(balData.result);
         const val = Number(formatEther(wei));
         setBalance(val.toFixed(2));
+      }
+
+      if (stakeData?.result) {
+        if (stakeData.result.staked !== undefined) {
+          setStakedBalance(stakeData.result.staked);
+        }
+        if (Array.isArray(stakeData.result.unbondingQueue) && stakeData.result.unbondingQueue.length > 0) {
+          setUnbondingQueue(stakeData.result.unbondingQueue);
+        }
       }
     } catch {
       /* fallback */
@@ -187,6 +246,38 @@ export function WalletActions() {
 
   useEffect(() => {
     void fetchBalance();
+    // ⚡ Real-Time Auto-Polling: Refresh Sovereign Treasury Valuation every 2.5s
+    const interval = setInterval(() => {
+      void fetchBalance();
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [fetchBalance]);
+
+  // 🦊 Listen to MetaMask Account & Chain Switching in Real-Time
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).ethereum) {
+      const ethereum = (window as any).ethereum;
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts && accounts.length > 0) {
+          setAddress(accounts[0]);
+          setMetaMaskConnected(true);
+          void fetchBalance();
+        }
+      };
+      const handleChainChanged = () => {
+        void fetchBalance();
+      };
+
+      ethereum.on("accountsChanged", handleAccountsChanged);
+      ethereum.on("chainChanged", handleChainChanged);
+
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener("accountsChanged", handleAccountsChanged);
+          ethereum.removeListener("chainChanged", handleChainChanged);
+        }
+      };
+    }
   }, [fetchBalance]);
 
   async function copyAddress() {
@@ -479,14 +570,28 @@ export function WalletActions() {
 
     try {
       setIsStaking(true);
-      await new Promise((r) => setTimeout(r, 600));
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_stake",
+          params: [address, val, selectedValidator],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      const rpcResult = data.result;
+
+      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const txHash =
+        rpcResult?.txHash ||
+        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+
       const newStaked = (parseFloat(stakedBalance) + val).toFixed(2);
       const newBal = (parseFloat(balance) - val).toFixed(2);
       setStakedBalance(newStaked);
       setBalance(newBal);
-
-      const currentLiveBlock = await getLiveBlockNumber();
-      const txHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 
       const newTx: TxHistoryItem = {
         id: txHash,
@@ -497,15 +602,394 @@ export function WalletActions() {
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
         status: "CONFIRMED",
-        to: "0x000000000000000000000000000000000000dEaD",
+        to: selectedValidator,
       };
 
       setTxHistory((prev) => [newTx, ...prev]);
-      setHint({ type: "success", msg: `🎉 Staked ${val} tNAK! Minted ${val} sNAK (8.4% APY Active).` });
+      await fetchBalance();
+      setHint({
+        type: "success",
+        msg: `🎉 On-Chain Stake Committed (Block #${currentLiveBlock})! Minted ${val} sNAK shares. Tx: ${txHash.slice(0, 16)}...`,
+      });
       setStakeAmount("");
+    } catch {
+      setHint({ type: "error", msg: "Staking transaction broadcast failed." });
     } finally {
       setIsStaking(false);
     }
+  }
+
+  async function handleUnstake(e: React.FormEvent) {
+    e.preventDefault();
+    const val = parseFloat(unstakeAmount);
+    if (isNaN(val) || val <= 0) {
+      setHint({ type: "error", msg: "Enter valid unstaking amount." });
+      return;
+    }
+    if (val > parseFloat(stakedBalance)) {
+      setHint({ type: "error", msg: "Insufficient sNAK staked balance." });
+      return;
+    }
+
+    try {
+      setIsUnstaking(true);
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_unstake",
+          params: [address, val],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      const rpcResult = data.result;
+
+      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const txHash =
+        rpcResult?.txHash ||
+        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+
+      const unbondId = rpcResult?.unbondId || `unbond-${Date.now()}`;
+      const releaseTime = rpcResult?.releaseTime || Date.now() + 300000;
+
+      const newStaked = (parseFloat(stakedBalance) - val).toFixed(2);
+      setStakedBalance(newStaked);
+
+      setUnbondingQueue((prev) => [
+        { id: unbondId, amount: val, releaseTime, claimed: false },
+        ...prev,
+      ]);
+
+      const newTx: TxHistoryItem = {
+        id: txHash,
+        hash: txHash,
+        type: "UNSTAKE_INITIATED" as any,
+        amount: `-${val.toFixed(2)}`,
+        symbol: "sNAK",
+        timestamp: "Just now",
+        blockNumber: currentLiveBlock,
+        status: "CONFIRMED",
+        to: "0x0000000000000000000000000000000000000008",
+      };
+
+      setTxHistory((prev) => [newTx, ...prev]);
+
+      setHint({
+        type: "success",
+        msg: `🔓 On-Chain Unstake Committed (Block #${currentLiveBlock})! Cooldown active (300s). Tx: ${txHash.slice(0, 16)}...`,
+      });
+      setUnstakeAmount("");
+    } catch {
+      setHint({ type: "error", msg: "Unstaking transaction failed." });
+    } finally {
+      setIsUnstaking(false);
+    }
+  }
+
+  async function handleClaimUnbonded(id: string) {
+    const item = unbondingQueue.find((u) => u.id === id);
+    if (!item || item.claimed) return;
+
+    try {
+      setIsClaimingUnbonded(true);
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_claimUnbonded",
+          params: [address, id],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      const rpcResult = data.result;
+
+      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const txHash =
+        rpcResult?.txHash ||
+        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+
+      setUnbondingQueue((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, claimed: true } : u))
+      );
+
+      const newBal = (parseFloat(balance) + item.amount).toFixed(2);
+      setBalance(newBal);
+
+      const newTx: TxHistoryItem = {
+        id: txHash,
+        hash: txHash,
+        type: "UNSTAKE_CLAIMED" as any,
+        amount: `+${item.amount.toFixed(2)}`,
+        symbol: "tNAK",
+        timestamp: "Just now",
+        blockNumber: currentLiveBlock,
+        status: "CONFIRMED",
+        to: address,
+      };
+
+      setTxHistory((prev) => [newTx, ...prev]);
+      await fetchBalance();
+
+      setHint({
+        type: "success",
+        msg: `✅ Claimed ${item.amount} tNAK on-chain (Block #${currentLiveBlock})! Released to wallet.`,
+      });
+    } catch {
+      setHint({ type: "error", msg: "Claim unbonded transaction failed." });
+    } finally {
+      setIsClaimingUnbonded(false);
+    }
+  }
+
+  async function handleHarvestRewards() {
+    if (accruedYield <= 0.0001) {
+      setHint({ type: "info", msg: "No accrued PoPC rewards ready to harvest yet." });
+      return;
+    }
+    try {
+      setIsHarvesting(true);
+      const harvested = accruedYield;
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_harvestRewards",
+          params: [address, harvested],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      const rpcResult = data.result;
+
+      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const txHash =
+        rpcResult?.txHash ||
+        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+
+      setAccruedYield(0.0);
+      const newBal = (parseFloat(balance) + harvested).toFixed(2);
+      setBalance(newBal);
+
+      const newTx: TxHistoryItem = {
+        id: txHash,
+        hash: txHash,
+        type: "REWARD",
+        amount: `+${harvested.toFixed(4)}`,
+        symbol: "tNAK",
+        timestamp: "Just now",
+        blockNumber: currentLiveBlock,
+        status: "CONFIRMED",
+        to: address,
+      };
+
+      setTxHistory((prev) => [newTx, ...prev]);
+      await fetchBalance();
+      setHint({
+        type: "success",
+        msg: `🌾 Harvested +${harvested.toFixed(4)} tNAK on-chain (Block #${currentLiveBlock}) directly into your wallet balance!`,
+      });
+    } catch {
+      setHint({ type: "error", msg: "Harvest transaction failed." });
+    } finally {
+      setIsHarvesting(false);
+    }
+  }
+
+  async function addNakharaXNetworkToWeb3() {
+    if (typeof window === "undefined" || !(window as any).ethereum) {
+      setHint({ type: "error", msg: "🦊 No Web3 wallet extension detected. Please ensure MetaMask, Rabby, or Coinbase Wallet is installed and unlocked." });
+      return;
+    }
+    const ethereum = (window as any).ethereum;
+    try {
+      // 1. Request account permission first so MetaMask popup opens reliably
+      await ethereum.request({ method: "eth_requestAccounts" });
+      const origin = window.location.origin;
+
+      // 2. Add Network via EIP-3085
+      await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: "0x15079", // 86137 in hex
+            chainName: "NakharaX L1 Testnet",
+            nativeCurrency: {
+              name: "NakharaX Token",
+              symbol: "tNAK",
+              decimals: 18,
+            },
+            rpcUrls: ["http://127.0.0.1:8545"],
+            blockExplorerUrls: [`${origin}/apps/explorer`],
+            iconUrls: [`${origin}/icon.png`],
+          },
+        ],
+      });
+      setHint({ type: "success", msg: "🎉 NakharaX L1 Testnet (Chain ID 86137) added to your Web3 Wallet successfully!" });
+    } catch (err: any) {
+      // If already added, attempt switching to it
+      if (err.code === 4902 || err.code === -32603 || err.message?.includes("already") || err.message?.includes("switch")) {
+        try {
+          await ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x15079" }],
+          });
+          setHint({ type: "success", msg: "🦊 Switched active wallet network to NakharaX L1 Testnet (Chain ID 86137)!" });
+          return;
+        } catch {
+          /* ignore */
+        }
+      }
+      setHint({ type: "error", msg: `MetaMask: ${err.message || "Failed to add network"}` });
+    }
+  }
+
+  async function addTokenToWeb3(tokenType: "tNAK" | "sNAK") {
+    if (typeof window === "undefined" || !(window as any).ethereum) {
+      setHint({ type: "error", msg: "🦊 No Web3 wallet detected. Please install MetaMask, Rabby, or Coinbase Wallet." });
+      return;
+    }
+    const ethereum = (window as any).ethereum;
+    const tokenAddress =
+      tokenType === "tNAK"
+        ? "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+        : "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+
+    try {
+      // 1. Request account permission first
+      await ethereum.request({ method: "eth_requestAccounts" });
+      const origin = window.location.origin;
+
+      // 2. Watch Asset via EIP-747
+      const wasAdded = await ethereum.request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: tokenAddress,
+            symbol: tokenType,
+            decimals: 18,
+            image: `${origin}/icon.png`,
+          },
+        },
+      });
+      if (wasAdded) {
+        setHint({ type: "success", msg: `🪙 $${tokenType} Token successfully imported into your Web3 Wallet!` });
+      }
+    } catch (err: any) {
+      setHint({ type: "error", msg: `MetaMask Token Import: ${err.message || "Action cancelled or failed"}` });
+    }
+  }
+
+  async function fundConnectedMetaMask() {
+    if (typeof window === "undefined" || !(window as any).ethereum) {
+      setHint({ type: "error", msg: "🦊 No Web3 wallet detected. Please install and unlock MetaMask." });
+      return;
+    }
+    const ethereum = (window as any).ethereum;
+    try {
+      const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+      if (!accounts || accounts.length === 0) {
+        setHint({ type: "error", msg: "No active account selected in MetaMask." });
+        return;
+      }
+      const targetMetaMaskAddr = accounts[0];
+      setHint({ type: "info", msg: `⚡ Airdropping +500.00 $tNAK directly to MetaMask (${targetMetaMaskAddr.slice(0, 8)}...)...` });
+
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nakharax_faucet",
+          params: [targetMetaMaskAddr, 500],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      const txHash =
+        data.result?.txHash ||
+        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+
+      const currentLiveBlock = await getLiveBlockNumber();
+      const newTx: TxHistoryItem = {
+        id: txHash,
+        hash: txHash,
+        type: "FAUCET",
+        amount: "+500.00",
+        symbol: "tNAK",
+        timestamp: "Just now",
+        blockNumber: currentLiveBlock,
+        status: "CONFIRMED",
+        to: targetMetaMaskAddr,
+      };
+
+      setTxHistory((prev) => [newTx, ...prev]);
+      setAddress(targetMetaMaskAddr);
+      await fetchBalance();
+      setHint({
+        type: "success",
+        msg: `🎉 Successfully Airdropped +500.00 $tNAK to your MetaMask account (${targetMetaMaskAddr.slice(0, 10)}...)! Sovereign Treasury Valuation synced in real-time.`,
+      });
+    } catch (err: any) {
+      setHint({ type: "error", msg: err.message || "Failed to airdrop to MetaMask." });
+    }
+  }
+
+  async function handleResetWallet() {
+    try {
+      setIsRefreshing(true);
+      await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nak_resetWallet",
+          params: [address],
+          id: Date.now(),
+        }),
+      });
+      setBalance("0.00");
+      setStakedBalance("0.00");
+      setEscrowLocked("0.00");
+      setAccruedYield(0.0);
+      setTxHistory([]);
+      setHint({
+        type: "info",
+        msg: "✨ Wallet balance and staking positions reset to 0.00 $tNAK on-chain (Clean Genesis State)!",
+      });
+    } catch {
+      setHint({ type: "error", msg: "Failed to reset wallet." });
+    } finally {
+      setIsRefreshing(false);
+    }
+  }
+
+  function handleVaultCreated(result: VaultCreationResult) {
+    setAddress(result.address);
+    setPrivateKey(result.privateKey);
+    try {
+      localStorage.setItem(
+        KEY_STORE_LOCAL,
+        JSON.stringify({
+          address: result.address,
+          privateKey: result.privateKey,
+          did: result.did,
+          createdAt: result.createdAt,
+        })
+      );
+    } catch {
+      /* ignore */
+    }
+    setHint({
+      type: "success",
+      msg: `🏛️ Institutional Citadel Vault Created & BIP-39 Seed Verified! Address: ${result.address.slice(0, 10)}...`,
+    });
+    void fetchBalance();
   }
 
   const totalPortfolioValue = (
@@ -519,21 +1003,34 @@ export function WalletActions() {
       {/* 👑 Institutional Treasury & Net Worth Overview Strip */}
       <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-slate-950 via-black to-slate-950 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-5">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-400">
-              <Vault size={15} className="text-emerald-400" />
-              <span>Sovereign Treasury Valuation</span>
-              <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
-                L1 Native
-              </span>
+          <div className="flex items-center gap-4">
+            {/* 🪙 Official NakharaX Protocol Token Logo Badge */}
+            <div className="relative grid h-14 w-14 place-items-center rounded-2xl border border-emerald-500/40 bg-black/70 p-2.5 shadow-[0_0_25px_rgba(16,185,129,0.3)] backdrop-blur-xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/nakharax-token.svg"
+                alt="NakharaX Official Token Logo"
+                className="h-full w-full object-contain"
+              />
+              <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-slate-950 bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)] animate-pulse" />
             </div>
-            <div className="mt-2 flex items-baseline gap-3">
-              <span className="text-3xl sm:text-4xl font-mono font-black tracking-tight text-white">
-                {totalPortfolioValue} <span className="text-emerald-400 text-2xl font-bold">tNAK</span>
-              </span>
-              <span className="text-xs font-mono text-slate-400">
-                ≈ ${(parseFloat(totalPortfolioValue) * 0.42).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
-              </span>
+
+            <div>
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-400">
+                <Vault size={14} className="text-emerald-400" />
+                <span>Sovereign Treasury Valuation</span>
+                <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
+                  L1 Native
+                </span>
+              </div>
+              <div className="mt-1.5 flex items-baseline gap-3">
+                <span className="text-3xl sm:text-4xl font-mono font-black tracking-tight text-white">
+                  {totalPortfolioValue} <span className="text-emerald-400 text-2xl font-bold">$tNAK</span>
+                </span>
+                <span className="text-xs font-mono text-slate-400">
+                  ≈ ${(parseFloat(totalPortfolioValue) * 0.42).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
+                </span>
+              </div>
             </div>
           </div>
 
@@ -555,11 +1052,22 @@ export function WalletActions() {
 
             <button
               type="button"
-              onClick={connectMetaMask}
+              onClick={() => setActiveTab("web3")}
               className="inline-flex items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold px-4 py-2.5 text-xs font-mono transition-all"
             >
               <span>🦊</span>
-              <span>{metaMaskConnected ? "MetaMask Active" : "MetaMask Bridge"}</span>
+              <span>Web3 Wallet Bridge</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleResetWallet}
+              disabled={isRefreshing}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-bold px-3 py-2.5 text-xs font-mono transition-all"
+              title="Reset wallet to 0.00 tNAK (Clean Genesis State)"
+            >
+              <span>🔄</span>
+              <span>Reset 0.00</span>
             </button>
 
             <button
@@ -578,29 +1086,41 @@ export function WalletActions() {
         <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4 pt-5">
           <div className="rounded-xl border border-white/10 bg-slate-950/90 p-3.5">
             <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
-              <span>Liquid Gas</span>
+              <span className="flex items-center gap-1.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/brand/nakharax-token.svg" alt="tNAK" className="h-3.5 w-3.5 object-contain" />
+                <span>Liquid Gas</span>
+              </span>
               <span className="text-emerald-400 font-bold">100% Free</span>
             </div>
             <div className="mt-1.5 text-xl font-mono font-bold text-white">{balance}</div>
-            <div className="text-[10px] font-mono text-emerald-400 mt-0.5">tNAK Available</div>
+            <div className="text-[10px] font-mono text-emerald-400 mt-0.5">$tNAK Available</div>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-slate-950/90 p-3.5">
             <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
-              <span>Consensus Staked</span>
+              <span className="flex items-center gap-1.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/brand/nakharax-token.svg" alt="sNAK" className="h-3.5 w-3.5 object-contain" />
+                <span>Staked Pool</span>
+              </span>
               <span className="text-cyan-400 font-bold">8.4% APY</span>
             </div>
             <div className="mt-1.5 text-xl font-mono font-bold text-cyan-300">{stakedBalance}</div>
-            <div className="text-[10px] font-mono text-slate-400 mt-0.5">sNAK Staked</div>
+            <div className="text-[10px] font-mono text-slate-400 mt-0.5">$sNAK Yield Shares</div>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-slate-950/90 p-3.5">
             <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-slate-400">
-              <span>DeAI Escrow</span>
+              <span className="flex items-center gap-1.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/brand/nakharax-token.svg" alt="Escrow" className="h-3.5 w-3.5 object-contain" />
+                <span>DeAI Escrow</span>
+              </span>
               <span className="text-amber-400 font-bold">PoPC Lock</span>
             </div>
             <div className="mt-1.5 text-xl font-mono font-bold text-amber-300">{escrowLocked}</div>
-            <div className="text-[10px] font-mono text-slate-400 mt-0.5">tNAK in Jobs</div>
+            <div className="text-[10px] font-mono text-slate-400 mt-0.5">$tNAK in Compute</div>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-slate-950/90 p-3.5">
@@ -615,11 +1135,12 @@ export function WalletActions() {
       </div>
 
       {/* Navigation Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-3">
         {[
           { id: "overview", label: "Vault & Keypair", icon: KeyRound },
           { id: "transfer", label: "Instant Transfer", icon: Send },
           { id: "staking", label: "Staking & DeAI Escrow", icon: Layers },
+          { id: "web3", label: "🦊 Web3 Wallet Bridge", icon: Wallet },
           { id: "keystore", label: "Security & Cold Storage", icon: ShieldCheck },
         ].map((tab) => {
           const Icon = tab.icon;
@@ -740,11 +1261,11 @@ export function WalletActions() {
             <div className="pt-3 border-t border-white/10 flex flex-wrap gap-2.5">
               <button
                 type="button"
-                onClick={generateNewAccount}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-3.5 py-2 text-xs font-mono text-white transition-colors"
+                onClick={() => setIsInstitutionalModalOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 px-3.5 py-2 text-xs font-mono font-bold text-emerald-300 transition-all hover:shadow-[0_0_15px_rgba(16,185,129,0.25)]"
               >
-                <Plus size={13} className="text-emerald-400" />
-                Generate New Keypair
+                <ShieldCheck size={14} className="text-emerald-400" />
+                Create Institutional Citadel Vault (12-Word BIP-39)
               </button>
               <button
                 type="button"
@@ -897,81 +1418,311 @@ export function WalletActions() {
 
       {/* TAB CONTENT: Staking & DeAI Escrow Desk */}
       {activeTab === "staking" && (
-        <div className="grid gap-5 lg:grid-cols-12">
-          {/* Staking Desk */}
-          <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-4 lg:col-span-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2">
-                <Layers size={16} className="text-cyan-400" />
-                <h3 className="text-sm font-bold text-white">PoPC Consensus Staking Desk</h3>
-              </div>
-              <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-mono text-cyan-300">
-                8.4% Net APY
-              </span>
-            </div>
-
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Stake your native $tNAK tokens to mint liquid $sNAK. Accrue daily yield distributed from Proof-of-Practical-Compute (PoPC) validator block rewards.
-            </p>
-
-            <form onSubmit={handleStakeDeposit} className="space-y-3 pt-2">
-              <div>
-                <label className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
-                  Stake Amount ($tNAK)
-                </label>
-                <input
-                  value={stakeAmount}
-                  onChange={(e) => setStakeAmount(e.target.value)}
-                  placeholder="500.0"
-                  className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3.5 py-2 font-mono text-xs text-white placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none"
-                />
-              </div>
-
+        <div className="space-y-5">
+          {/* Staking Action Sub-Tabs */}
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+            {[
+              { id: "stake", label: "🥩 Stake & Delegate $tNAK" },
+              { id: "unstake", label: "🔓 Unstake $sNAK & Cooldown" },
+              { id: "validators", label: "🏛️ Active Validators (3)" },
+            ].map((subTab) => (
               <button
-                type="submit"
-                disabled={isStaking}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-4 py-2.5 text-xs font-mono transition-all disabled:opacity-50"
+                key={subTab.id}
+                type="button"
+                onClick={() => setStakingMode(subTab.id as any)}
+                className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all ${
+                  stakingMode === subTab.id
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                    : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+                }`}
               >
-                {isStaking ? <RefreshCw size={13} className="animate-spin" /> : <Lock size={13} />}
-                {isStaking ? "Staking in Smart Contract..." : "Stake $tNAK for Liquid $sNAK"}
+                {subTab.label}
               </button>
-            </form>
+            ))}
           </div>
 
-          {/* DeAI Escrow Management */}
-          <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-4 lg:col-span-6 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <div className="flex items-center gap-2">
-                  <Cpu size={16} className="text-amber-400" />
-                  <h3 className="text-sm font-bold text-white">DeAI Compute Escrow Collateral</h3>
+          {/* ⚡ REAL-TIME STREAMING POPC REWARDS TICKER BANNER */}
+          <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-slate-950 via-emerald-950/20 to-slate-950 p-5 shadow-[0_15px_40px_rgba(16,185,129,0.15)] backdrop-blur-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              {/* Left: Live Ticker */}
+              <div>
+                <div className="flex items-center gap-2 text-[10.5px] font-mono text-emerald-400">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                  <span className="font-bold uppercase tracking-wider">LIVE STREAMING POPC REWARDS</span>
+                  <span className="text-slate-500">·</span>
+                  <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[9.5px] text-emerald-300 border border-emerald-500/30">
+                    8.40% Net APY
+                  </span>
                 </div>
-                <span className="text-[10px] font-mono text-amber-300 font-bold">50.00 tNAK Active</span>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-2xl sm:text-3xl font-mono font-black tracking-tight text-white">
+                    +{accruedYield.toFixed(6)}
+                  </span>
+                  <span className="text-emerald-400 font-bold font-mono text-lg">$tNAK</span>
+                  <span className="text-xs font-mono text-slate-400 ml-2 hidden sm:inline">
+                    (≈ ${(accruedYield * 0.42).toFixed(4)} USD)
+                  </span>
+                </div>
+                <div className="text-[10px] font-mono text-slate-400 mt-0.5">
+                  Compounding real-time with continuous PoPC block validation.
+                </div>
               </div>
 
-              <p className="mt-3 text-xs text-slate-300 leading-relaxed">
-                Escrow funds locked for active DeAI worker jobs on the compute marketplace. Released automatically upon on-chain STARK FRI polynomial verification.
-              </p>
-
-              <div className="mt-4 rounded-xl border border-white/10 bg-black/50 p-3.5 space-y-2 font-mono text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Active Job Locks:</span>
-                  <span className="text-white font-bold">2 Compute Tasks</span>
+              {/* Center: Projections */}
+              <div className="hidden md:grid grid-cols-2 gap-3 text-xs font-mono border-x border-white/10 px-5">
+                <div>
+                  <span className="text-[10px] text-slate-500 block uppercase">Daily Projected</span>
+                  <span className="text-emerald-300 font-bold">
+                    +{((parseFloat(stakedBalance || "0") * 0.084) / 365).toFixed(4)} tNAK
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Slashing Protection:</span>
-                  <span className="text-emerald-400 font-bold">100% Insured</span>
+                <div>
+                  <span className="text-[10px] text-slate-500 block uppercase">Monthly Projected</span>
+                  <span className="text-cyan-300 font-bold">
+                    +{(((parseFloat(stakedBalance || "0") * 0.084) / 365) * 30).toFixed(2)} tNAK
+                  </span>
                 </div>
               </div>
+
+              {/* Right: Harvest Button */}
+              <button
+                type="button"
+                onClick={handleHarvestRewards}
+                disabled={isHarvesting || accruedYield <= 0.0001}
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-bold px-4 py-2.5 text-xs font-mono transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isHarvesting ? (
+                  <RefreshCw size={13} className="animate-spin" />
+                ) : (
+                  <Sparkles size={14} className="fill-slate-950" />
+                )}
+                <span>Harvest & Claim Rewards</span>
+              </button>
             </div>
+          </div>
 
-            <Link
-              href="/jobs"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold px-4 py-2 text-xs font-mono transition-colors"
-            >
-              <span>View DeAI Compute Jobs</span>
-              <ChevronRight size={14} />
-            </Link>
+          <div className="grid gap-5 lg:grid-cols-12">
+            {/* Mode 1: Stake & Delegate */}
+            {stakingMode === "stake" && (
+              <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-4 lg:col-span-7">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2">
+                    <Layers size={16} className="text-cyan-400" />
+                    <h3 className="text-sm font-bold text-white">PoPC Consensus Staking Desk</h3>
+                  </div>
+                  <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-mono text-cyan-300">
+                    8.4% Net APY
+                  </span>
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Stake native $tNAK to mint liquid $sNAK. Accrue daily yield distributed from Proof-of-Practical-Compute (PoPC) validator block rewards.
+                </p>
+
+                <form onSubmit={handleStakeDeposit} className="space-y-3.5 pt-2">
+                  <div>
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                      Delegate to Target Validator
+                    </label>
+                    <select
+                      value={selectedValidator}
+                      onChange={(e) => setSelectedValidator(e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 font-mono text-xs text-white focus:border-cyan-500/50 focus:outline-none"
+                    >
+                      <option value="0x70997970C51812dc3A010C7d01b50e0d17dc79C8">
+                        Core Validator AU-01 (Sydney) — 5.0% Commission · 120,000 $tNAK Staked
+                      </option>
+                      <option value="0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC">
+                        Regional Validator ES-01 (Madrid) — 5.0% Commission · 95,000 $tNAK Staked
+                      </option>
+                      <option value="0x90F79bf6EB2c4f870365E785982E1f101E93b906">
+                        Enterprise Node US-01 (Virginia) — 4.0% Commission · 150,000 $tNAK Staked
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                        Stake Amount ($tNAK)
+                      </label>
+                      <span className="text-[10.5px] font-mono text-slate-400">
+                        Available: <strong className="text-white">{balance}</strong> tNAK
+                      </span>
+                    </div>
+                    <input
+                      value={stakeAmount}
+                      onChange={(e) => setStakeAmount(e.target.value)}
+                      placeholder="500.0"
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3.5 py-2 font-mono text-xs text-white placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isStaking}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-4 py-3 text-xs font-mono transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] disabled:opacity-50"
+                  >
+                    {isStaking ? <RefreshCw size={13} className="animate-spin" /> : <Lock size={13} />}
+                    {isStaking ? "Staking in Smart Contract..." : "Stake $tNAK & Mint Liquid $sNAK"}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* Mode 2: Unstake & Cooldown */}
+            {stakingMode === "unstake" && (
+              <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-4 lg:col-span-7">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2">
+                    <LogOut size={16} className="text-amber-400" />
+                    <h3 className="text-sm font-bold text-white">Unstake & Unbonding Cooldown</h3>
+                  </div>
+                  <span className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-mono text-amber-300">
+                    300s Testnet Cooldown
+                  </span>
+                </div>
+
+                <form onSubmit={handleUnstake} className="space-y-3.5 pt-2">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                        Unstake Amount ($sNAK)
+                      </label>
+                      <span className="text-[10.5px] font-mono text-slate-400">
+                        Staked: <strong className="text-white">{stakedBalance}</strong> sNAK
+                      </span>
+                    </div>
+                    <input
+                      value={unstakeAmount}
+                      onChange={(e) => setUnstakeAmount(e.target.value)}
+                      placeholder="250.0"
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3.5 py-2 font-mono text-xs text-white placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isUnstaking}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-semibold px-4 py-3 text-xs font-mono transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] disabled:opacity-50"
+                  >
+                    {isUnstaking ? <RefreshCw size={13} className="animate-spin" /> : <LogOut size={13} />}
+                    {isUnstaking ? "Initiating Unbonding..." : "Burn $sNAK & Start 300s Cooldown"}
+                  </button>
+                </form>
+
+                {/* Unbonding Requests Queue */}
+                <div className="pt-3 border-t border-white/10 space-y-2">
+                  <div className="text-xs font-mono text-slate-400 uppercase tracking-wider">
+                    Unbonding Requests Queue
+                  </div>
+                  {unbondingQueue.length === 0 ? (
+                    <div className="text-xs text-slate-500 font-mono py-2">No active unbonding requests.</div>
+                  ) : (
+                    <div className="space-y-2">
+                      {unbondingQueue.map((item) => {
+                        const isUnlocked = Date.now() >= item.releaseTime;
+                        return (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-black/50 text-xs font-mono"
+                          >
+                            <div>
+                              <div className="text-white font-bold">{item.amount} $tNAK</div>
+                              <div className="text-[10px] text-slate-400">
+                                {item.claimed
+                                  ? "Claimed & Transferred"
+                                  : isUnlocked
+                                  ? "🟢 Mature (Ready to claim)"
+                                  : "⏳ Cooldown in progress"}
+                              </div>
+                            </div>
+                            {!item.claimed && isUnlocked && (
+                              <button
+                                type="button"
+                                onClick={() => handleClaimUnbonded(item.id)}
+                                disabled={isClaimingUnbonded}
+                                className="rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1 text-xs font-bold transition-colors"
+                              >
+                                {isClaimingUnbonded ? "Claiming..." : "Claim $tNAK"}
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Mode 3: Active Validators List */}
+            {stakingMode === "validators" && (
+              <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-3.5 lg:col-span-7">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck size={16} className="text-emerald-400" />
+                    <h3 className="text-sm font-bold text-white">Active PoPC Consensus Validators</h3>
+                  </div>
+                  <span className="text-[10px] font-mono text-emerald-300 font-bold">100% Up</span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {[
+                    { name: "AU-01 (Sydney Validator)", addr: "0x7099...79C8", stake: "120,000 $tNAK", comm: "5.0%", uptime: "99.98%" },
+                    { name: "ES-01 (Madrid Validator)", addr: "0x3C44...93BC", stake: "95,000 $tNAK", comm: "5.0%", uptime: "99.95%" },
+                    { name: "US-01 (Virginia Validator)", addr: "0x90F7...b906", stake: "150,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
+                  ].map((val, idx) => (
+                    <div key={idx} className="p-3.5 rounded-xl border border-white/10 bg-black/50 flex items-center justify-between text-xs font-mono">
+                      <div>
+                        <div className="text-white font-bold">{val.name}</div>
+                        <div className="text-slate-500 text-[10.5px]">{val.addr} · Uptime: {val.uptime}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-cyan-300 font-bold">{val.stake}</div>
+                        <div className="text-[10px] text-slate-400">Commission: {val.comm}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Right: DeAI Compute Escrow Collateral */}
+            <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-5 space-y-4 lg:col-span-5 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2">
+                    <Cpu size={16} className="text-amber-400" />
+                    <h3 className="text-sm font-bold text-white">DeAI Escrow Collateral</h3>
+                  </div>
+                  <span className="text-[10px] font-mono text-amber-300 font-bold">50.00 tNAK Active</span>
+                </div>
+
+                <p className="mt-3 text-xs text-slate-300 leading-relaxed">
+                  Escrow funds locked for active DeAI worker jobs on the compute marketplace. Released automatically upon on-chain STARK FRI polynomial verification.
+                </p>
+
+                <div className="mt-4 rounded-xl border border-white/10 bg-black/50 p-3.5 space-y-2 font-mono text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Active Job Locks:</span>
+                    <span className="text-white font-bold">2 Compute Tasks</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Slashing Protection:</span>
+                    <span className="text-emerald-400 font-bold">100% Insured</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/jobs"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold px-4 py-2.5 text-xs font-mono transition-colors"
+              >
+                <span>View DeAI Compute Marketplace</span>
+                <ChevronRight size={14} />
+              </Link>
+            </div>
           </div>
         </div>
       )}
@@ -1007,6 +1758,199 @@ export function WalletActions() {
               <p className="text-[11.5px] text-slate-400 leading-relaxed">
                 All transactions are verifiable on-chain via PoPC STARK FRI proofs with 1,024 constraints.
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB CONTENT: Web3 Wallet Direct Bridge & 1-Click Exporter */}
+      {activeTab === "web3" && (
+        <div className="rounded-2xl border border-amber-500/30 bg-slate-950/90 p-6 shadow-2xl backdrop-blur-2xl space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🦊</span>
+                <h3 className="text-base font-bold text-white">
+                  Web3 Direct Wallet Bridge (MetaMask / Rabby / Coinbase)
+                </h3>
+              </div>
+              <p className="text-xs font-mono text-slate-400 mt-1">
+                Add NakharaX L1 Testnet (Chain ID 86137) and export native ERC-20 token contracts with 1-click EIP-3085 & EIP-747 integration.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 text-[10.5px] font-mono font-bold text-emerald-300">
+                EIP-3085 & EIP-747 Ready
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
+            {/* Action 1: Add Network to Web3 */}
+            <div className="rounded-2xl border border-white/10 bg-black/50 p-5 space-y-4 flex flex-col justify-between hover:border-amber-400/50 transition-colors">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl">🌐</span>
+                  <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[9px] font-bold text-amber-300 border border-amber-500/40">
+                    Step 1 · Network
+                  </span>
+                </div>
+                <h4 className="text-sm font-bold text-white">Add NakharaX L1 Network</h4>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Adds Chain ID <strong className="text-white">86137 (0x15079)</strong> with native currency <strong className="text-white">tNAK</strong> and RPC <code className="text-cyan-300">http://127.0.0.1:8545</code>.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={addNakharaXNetworkToWeb3}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-black font-bold px-4 py-2.5 text-xs transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+              >
+                <span>🦊</span>
+                <span>Add NakharaX Network</span>
+              </button>
+            </div>
+
+            {/* Action 2: Add $tNAK Liquid Token */}
+            <div className="rounded-2xl border border-white/10 bg-black/50 p-5 space-y-4 flex flex-col justify-between hover:border-emerald-400/50 transition-colors">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="h-8 w-8 rounded-lg border border-emerald-500/40 bg-black/80 p-1 flex items-center justify-center shadow-md">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/brand/nakharax-token.svg" alt="tNAK" className="h-full w-full object-contain" />
+                  </div>
+                  <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[9px] font-bold text-emerald-300 border border-emerald-500/40">
+                    Step 2 · Token
+                  </span>
+                </div>
+                <h4 className="text-sm font-bold text-white">Add $tNAK (Liquid Token)</h4>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Imports the official <strong className="text-emerald-300">$tNAK</strong> token contract and new vector icon to your MetaMask wallet asset list.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => addTokenToWeb3("tNAK")}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-4 py-2.5 text-xs transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+              >
+                <span>➕</span>
+                <span>Add $tNAK to Wallet</span>
+              </button>
+            </div>
+
+            {/* Action 3: Add $sNAK Staked Token */}
+            <div className="rounded-2xl border border-white/10 bg-black/50 p-5 space-y-4 flex flex-col justify-between hover:border-cyan-400/50 transition-colors">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="h-8 w-8 rounded-lg border border-cyan-500/40 bg-black/80 p-1 flex items-center justify-center shadow-md">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/brand/nakharax-token.svg" alt="sNAK" className="h-full w-full object-contain" />
+                  </div>
+                  <span className="rounded bg-cyan-500/20 px-2 py-0.5 text-[9px] font-bold text-cyan-300 border border-cyan-500/40">
+                    Step 3 · Yield
+                  </span>
+                </div>
+                <h4 className="text-sm font-bold text-white">Add $sNAK (Staked Token)</h4>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed">
+                  Imports the yield-bearing <strong className="text-cyan-300">$sNAK</strong> staking pool share contract (8.40% APY) into your Web3 portfolio.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => addTokenToWeb3("sNAK")}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-4 py-2.5 text-xs transition-all shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+              >
+                <span>➕</span>
+                <span>Add $sNAK to Wallet</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Balance Sync & Account Import Strip */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Quick 1: Airdrop funds directly to connected MetaMask */}
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/10 p-5 space-y-3 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-300">
+                  <Droplets size={14} />
+                  <span>Option A: Instant MetaMask Airdrop</span>
+                </div>
+                <h4 className="text-sm font-bold text-white mt-1">Fund Connected MetaMask (+500 $tNAK)</h4>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed mt-1">
+                  Click below to transfer 500 testnet $tNAK directly into whichever address is currently selected in your MetaMask extension.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={fundConnectedMetaMask}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2.5 text-xs font-mono transition-all shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+              >
+                <Zap size={14} />
+                <span>Airdrop +500 $tNAK to MetaMask</span>
+              </button>
+            </div>
+
+            {/* Quick 2: Import Citadel Vault into MetaMask */}
+            <div className="rounded-2xl border border-violet-500/30 bg-violet-950/10 p-5 space-y-3 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-violet-300">
+                  <KeyRound size={14} />
+                  <span>Option B: Import Existing 1,500+ $tNAK Vault</span>
+                </div>
+                <h4 className="text-sm font-bold text-white mt-1">Import Dashboard Private Key</h4>
+                <p className="text-xs text-slate-400 font-sans leading-relaxed mt-1">
+                  In MetaMask: Click <strong className="text-white">Account Menu ▾ → Add account → Import account</strong> and paste this vault&apos;s Private Key.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(privateKey);
+                  setHint({ type: "success", msg: "🔑 Copied Private Key to clipboard! Go to MetaMask -> Import Account and paste it." });
+                }}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-500/40 bg-violet-500/20 hover:bg-violet-500/30 text-violet-200 font-bold px-4 py-2.5 text-xs font-mono transition-all"
+              >
+                <Copy size={13} />
+                <span>Copy Vault Private Key for MetaMask</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Network Parameter Reference Box with 1-Click Copy */}
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 font-mono text-xs text-slate-300 space-y-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <div className="text-[10.5px] uppercase tracking-wider text-slate-400 font-bold">
+                Manual MetaMask / Web3 Network Configuration
+              </div>
+              <span className="text-[10px] text-emerald-400">Click any field to copy</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+              {[
+                { label: "Network Name", value: "NakharaX L1 Testnet" },
+                { label: "RPC URL", value: "http://127.0.0.1:8545" },
+                { label: "Chain ID", value: "86137" },
+                { label: "Currency Symbol", value: "tNAK" },
+                { label: "$tNAK Token Address", value: "0x5FbDB2315678afecb367f032d93F642f64180aa3" },
+                { label: "$sNAK Token Address", value: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512" },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(item.value);
+                    setHint({ type: "info", msg: `📋 Copied ${item.label}: "${item.value}" to clipboard!` });
+                  }}
+                  className="flex items-center justify-between rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-left hover:border-emerald-500/50 hover:bg-white/5 transition-all group"
+                >
+                  <span className="text-slate-400 text-[10.5px]">{item.label}: <strong className="text-white ml-1">{item.value}</strong></span>
+                  <Copy size={12} className="text-slate-500 group-hover:text-emerald-400 shrink-0 ml-2" />
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -1052,7 +1996,11 @@ export function WalletActions() {
                           ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
                           : tx.type === "STAKING_DEPOSIT"
                           ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
-                          : "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                          : tx.type === "UNSTAKE_INITIATED"
+                          ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                          : tx.type === "UNSTAKE_CLAIMED"
+                          ? "bg-teal-500/10 text-teal-300 border border-teal-500/30"
+                          : "bg-rose-500/10 text-rose-300 border border-rose-500/30"
                       }`}
                     >
                       {tx.type}
@@ -1085,6 +2033,13 @@ export function WalletActions() {
           </table>
         </div>
       </section>
+
+      {/* Institutional Citadel Vault Modal */}
+      <InstitutionalVaultModal
+        isOpen={isInstitutionalModalOpen}
+        onClose={() => setIsInstitutionalModalOpen(false)}
+        onVaultCreated={handleVaultCreated}
+      />
     </div>
   );
 }

@@ -44,11 +44,11 @@ import type { SovereignAgentIdentity } from "@nakharax/sdk";
 const INITIAL_AGENTS: SovereignAgentIdentity[] = [
   {
     agentId: "did:nakharax:0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    name: "PropSentinel Quant Agent",
+    name: "NOESIS-VX Reasoning Prover",
     ownerAddress: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     balanceWei: "250.0",
     reputationScore: 99.9,
-    activeSkills: ["mcp-quant-risk", "mcp-onchain-indexer"],
+    activeSkills: ["mcp-deepseek-reasoner", "mcp-onchain-indexer"],
     totalJobsExecuted: 1420,
     createdAt: Date.now() - 86400000 * 14,
   },
@@ -64,11 +64,11 @@ const INITIAL_AGENTS: SovereignAgentIdentity[] = [
   },
   {
     agentId: "did:nakharax:0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    name: "DeepSeek Reasoning Prover",
+    name: "TIES Weight Merger Specialist",
     ownerAddress: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
     balanceWei: "420.0",
     reputationScore: 99.8,
-    activeSkills: ["mcp-deepseek-reasoner", "mcp-web-scout"],
+    activeSkills: ["mcp-ties-weight-merger", "mcp-web-scout"],
     totalJobsExecuted: 3120,
     createdAt: Date.now() - 86400000 * 21,
   },

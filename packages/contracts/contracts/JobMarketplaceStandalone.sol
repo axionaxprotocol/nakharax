@@ -204,6 +204,91 @@ contract JobMarketplaceStandalone {
         emit RewardClaimed(jobId, msg.sender, workerReward);
     }
 
+    function cancelJob(uint256 jobId) external nonReentrant {
+        Job storage job = _jobs[jobId];
+        require(job.id != 0, "job not found");
+        require(job.submitter == msg.sender, "not submitter");
+        require(job.status == 0, "can only cancel pending job");
+
+        job.status = 4; // Cancelled
+        _removePending(jobId);
+        uint256 refundAmount = job.reward + job.deposit;
+        require(nakToken.transfer(msg.sender, refundAmount), "refund failed");
+        emit JobCancelled(jobId);
+        emit JobRefunded(jobId);
+    }
+
+    function disputeJob(uint256 jobId) external nonReentrant {
+        Job storage job = _jobs[jobId];
+        require(job.id != 0, "job not found");
+        require(job.submitter == msg.sender || msg.sender == owner, "not authorized to dispute");
+        require(job.status == 2, "job not in completed state");
+        require(block.timestamp < job.completedAt + disputePeriod, "dispute window closed");
+
+        job.status = 3; // Disputed
+        emit JobDisputed(jobId, msg.sender);
+    }
+
+    function resolveDispute(
+        uint256 jobId,
+        bool workerFault,
+        uint256 slashAmount
+    ) external nonReentrant onlyOwner {
+        Job storage job = _jobs[jobId];
+        require(job.id != 0, "job not found");
+        require(job.status == 3, "job not disputed");
+
+        job.status = 5; // Resolved
+
+        if (workerFault) {
+            _workers[job.worker].jobsFailed += 1;
+            if (_workers[job.worker].reputation >= 20) {
+                _workers[job.worker].reputation -= 20;
+            } else {
+                _workers[job.worker].reputation = 0;
+            }
+
+            if (slashAmount > 0) {
+                uint256 actualSlash = slashAmount > _workers[job.worker].stake ? _workers[job.worker].stake : slashAmount;
+                _workers[job.worker].stake -= actualSlash;
+                if (_workers[job.worker].stake < minStake) {
+                    _workers[job.worker].active = false;
+                    emit WorkerDeactivated(job.worker);
+                }
+                emit SlashApplied(job.worker, actualSlash);
+            }
+
+            uint256 refundToSubmitter = job.reward + job.deposit;
+            require(nakToken.transfer(job.submitter, refundToSubmitter), "refund failed");
+            emit JobRefunded(jobId);
+        } else {
+            uint256 fee = (job.reward * platformFeeRate) / 10_000;
+            uint256 workerReward = job.reward - fee;
+            require(nakToken.transfer(job.worker, workerReward), "reward failed");
+            require(nakToken.transfer(job.submitter, job.deposit), "deposit failed");
+            if (fee > 0) {
+                require(nakToken.transfer(owner, fee), "fee failed");
+            }
+            emit RewardClaimed(jobId, job.worker, workerReward);
+        }
+    }
+
+    function slashWorker(address workerAddr, uint256 amount) external nonReentrant onlyOwner {
+        require(_workers[workerAddr].active, "worker not active");
+        uint256 actualSlash = amount > _workers[workerAddr].stake ? _workers[workerAddr].stake : amount;
+        _workers[workerAddr].stake -= actualSlash;
+        if (_workers[workerAddr].stake < minStake) {
+            _workers[workerAddr].active = false;
+            emit WorkerDeactivated(workerAddr);
+        }
+        if (_workers[workerAddr].reputation >= 20) {
+            _workers[workerAddr].reputation -= 20;
+        } else {
+            _workers[workerAddr].reputation = 0;
+        }
+        emit SlashApplied(workerAddr, actualSlash);
+    }
+
     function getJob(uint256 jobId) external view returns (Job memory) {
         return _jobs[jobId];
     }

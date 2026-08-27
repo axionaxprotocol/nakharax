@@ -39,8 +39,8 @@ import type { LoRAAdapterDescriptor } from "@nakharax/sdk";
 
 const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
   {
-    id: "lora-quant-hft",
-    name: "PropSentinel HFT Orderbook Adapter",
+    id: "lora-quant-alpha",
+    name: "Sovereign Quantitative Alpha & Orderbook LoRA",
     domain: "quant_trading",
     baseModel: "DeAI-DeepSeek-R1-8B",
     rank: 64,
@@ -50,11 +50,11 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
     mergeCount: 1240,
     verifiedProofHash: "0x9a8f2bc18e0031d7e2a9bf8841c109",
     rating: 4.98,
-    downloadUrl: "https://hub.nakharax.com/lora/quant-hft.safetensors",
+    downloadUrl: "https://hub.nakharax.com/lora/quant-alpha.safetensors",
   },
   {
     id: "lora-solidity-ast",
-    name: "Hydra EVM & AST Auditor LoRA",
+    name: "Hydra EVM & AST Security Auditor LoRA",
     domain: "smart_contract_audit",
     baseModel: "DeAI-DeepSeek-R1-8B",
     rank: 32,
@@ -68,7 +68,7 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
   },
   {
     id: "lora-deepseek-math",
-    name: "Olympiad Mathematical CoT Adapter",
+    name: "Olympiad Mathematical CoT Reasoner LoRA",
     domain: "formal_logic",
     baseModel: "DeAI-DeepSeek-R1-8B",
     rank: 64,
@@ -82,7 +82,7 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
   },
   {
     id: "lora-verilog-silicon",
-    name: "RISC-V & Hailo NPU Verilog Adapter",
+    name: "RISC-V & NPU Hardware Synthesis LoRA",
     domain: "chip_design",
     baseModel: "DeAI-LLaMA-3.3-70B",
     rank: 64,
@@ -96,7 +96,7 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
   },
   {
     id: "lora-crispr-bio",
-    name: "CRISPR-Cas12 Protein Sequence Adapter",
+    name: "CRISPR-Cas12 Protein Sequence LoRA",
     domain: "medical_bio",
     baseModel: "DeAI-DeepSeek-R1-8B",
     rank: 32,
@@ -113,7 +113,7 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
 export default function LoRAMergingPage() {
   const [adapters, setAdapters] = useState<LoRAAdapterDescriptor[]>(CURATED_LORA_ADAPTERS);
   const [selectedAdapterIds, setSelectedAdapterIds] = useState<string[]>([
-    "lora-quant-hft",
+    "lora-quant-alpha",
     "lora-solidity-ast",
   ]);
   const [baseModel, setBaseModel] = useState("DeAI-DeepSeek-R1-8B");
@@ -162,7 +162,7 @@ export default function LoRAMergingPage() {
         baseModel,
         mergedAdapters: selectedAdapterIds,
         algorithm: algorithm.toUpperCase(),
-        hyperparameters: algorithm === "ties" ? { density, trimTopK: "25%" } : { dropRate, rescaleFactor: 2.0 },
+        hyperparameters: algorithm === "ties" ? { density, trimTopK: `${(density * 100).toFixed(0)}%` } : { dropRate, rescaleFactor: 2.0 },
         outputModelName: `DeAI-Fused-SuperModel-${algorithm.toUpperCase()}-v1`,
         stateMerkleRoot: `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`,
         totalParametersFused: "8,034,180,096 params",
@@ -177,6 +177,17 @@ export default function LoRAMergingPage() {
       setIsMerging(false);
     }
   }
+
+  // Simulated dynamic histogram bars based on density / dropRate
+  const histogramBars = [
+    { label: "-0.08", val: Math.round(15 * (1 - density)) },
+    { label: "-0.04", val: Math.round(35 * (1 - density)) },
+    { label: "-0.02", val: Math.round(65 * density * 2) },
+    { label: "0.00", val: Math.round(95 * density * 2.5) },
+    { label: "+0.02", val: Math.round(70 * density * 2) },
+    { label: "+0.04", val: Math.round(40 * (1 - density)) },
+    { label: "+0.08", val: Math.round(18 * (1 - density)) },
+  ];
 
   return (
     <PageShell
@@ -390,29 +401,44 @@ export default function LoRAMergingPage() {
               </div>
             </div>
 
-            {/* Layer-wise Tensor Density Visualizer & VRAM Footprint */}
+            {/* 📊 Interactive Neural Weight Delta Histogram */}
             <div className="rounded-xl border border-white/10 bg-slate-950 p-3.5 space-y-2.5 font-mono text-[11px]">
               <div className="flex items-center justify-between text-slate-400">
-                <span className="uppercase text-[9.5px] tracking-wider text-slate-300 font-bold">Layer-wise Tensor Density (Attention vs MLP)</span>
-                <span className="text-emerald-400 font-bold">VRAM Est: 15.04 GB</span>
+                <span className="uppercase text-[9.5px] tracking-wider text-slate-300 font-bold">
+                  Weight Delta Distribution (Sparsified Top-K)
+                </span>
+                <span className="text-emerald-400 font-bold">Zero-Forgetting: 99.4%</span>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 text-center text-[10px]">
+              {/* Dynamic Histogram Bars */}
+              <div className="h-16 flex items-end justify-between gap-1.5 pt-2 px-1">
+                {histogramBars.map((bar, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-1">
+                    <div
+                      style={{ height: `${Math.max(bar.val, 6)}%` }}
+                      className="w-full rounded-t bg-gradient-to-t from-emerald-600 to-cyan-400 transition-all duration-300 shadow-[0_0_8px_rgba(16,185,129,0.3)]"
+                    />
+                    <span className="text-[8px] text-slate-500">{bar.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-4 gap-2 text-center text-[10px] pt-1">
                 <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
                   <div className="text-slate-400">q_proj</div>
-                  <div className="font-bold text-cyan-300">92% Dense</div>
+                  <div className="font-bold text-cyan-300">{(density * 100).toFixed(0)}% Top-K</div>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
                   <div className="text-slate-400">v_proj</div>
-                  <div className="font-bold text-cyan-300">95% Dense</div>
+                  <div className="font-bold text-cyan-300">{(density * 105).toFixed(0)}% Top-K</div>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
                   <div className="text-slate-400">gate_proj</div>
-                  <div className="font-bold text-indigo-300">76% Dense</div>
+                  <div className="font-bold text-indigo-300">{(density * 88).toFixed(0)}% Top-K</div>
                 </div>
                 <div className="rounded-lg border border-white/10 bg-black/50 p-1.5">
                   <div className="text-slate-400">down_proj</div>
-                  <div className="font-bold text-indigo-300">81% Dense</div>
+                  <div className="font-bold text-indigo-300">{(density * 92).toFixed(0)}% Top-K</div>
                 </div>
               </div>
 

@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { MenuBar } from "@/components/menu-bar";
 import { FloatingSentinelChat } from "@/components/floating-sentinel-chat";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +23,16 @@ export const metadata: Metadata = {
     title: "Nakharax Protocol Portal",
     description:
       "Sovereign DeAI compute console for Nakharax nodes, workers, jobs, and wallet operations.",
+  },
+  icons: {
+    icon: [
+      { url: "/brand/nakharax-token.svg", type: "image/svg+xml" },
+      { url: "/icon.png", sizes: "256x256", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/brand/nakharax-token.svg",
   },
 };
 
@@ -59,13 +70,14 @@ export default function RootLayout({
         <MenuBar />
         <main
           id="main-content"
-          className="min-h-screen pb-14 pt-16 sm:pt-20"
+          className="min-h-screen pb-6 pt-16 sm:pt-20"
           tabIndex={-1}
         >
           <div className="mx-auto max-w-[1450px] px-4 py-2 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
+        <Footer />
         {/* Global Floating DeAI Sentinel & NOESIS-VX Assistant */}
         <FloatingSentinelChat />
       </body>

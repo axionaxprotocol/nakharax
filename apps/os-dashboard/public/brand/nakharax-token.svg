@@ -1,129 +1,77 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-quantum-hex-title">
-  <title id="nakharax-quantum-hex-title">NakharaX Quantum Hex-Core Token Icon</title>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nakharax-brand-mark">
+  <title id="nakharax-brand-mark">NakharaX Sovereign Protocol Mark</title>
+  
+  <!-- Obsidian Matte Foundation -->
+  <rect width="512" height="512" rx="112" fill="#080C14"/>
+  <rect x="4" y="4" width="504" height="504" rx="108" stroke="#1E293B" stroke-width="2"/>
+  
+  <!-- Subtle Ambient Glow -->
+  <circle cx="256" cy="256" r="180" fill="url(#core-glow)" opacity="0.18"/>
   
   <defs>
-    <!-- Background Gradient -->
-    <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#020617" />
-      <stop offset="100%" stop-color="#000000" />
+    <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="60%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
-
-    <!-- Outer Hex Facet Gradients -->
-    <linearGradient id="facet-top" x1="256" y1="52" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.85" />
-      <stop offset="50%" stop-color="#818CF8" stop-opacity="0.6" />
-      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.2" />
+    
+    <linearGradient id="primary-stroke" x1="140" y1="140" x2="372" y2="372" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="50%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#10B981"/>
     </linearGradient>
 
-    <linearGradient id="facet-left" x1="78" y1="154" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#059669" stop-opacity="0.25" />
-    </linearGradient>
-
-    <linearGradient id="facet-right" x1="434" y1="154" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#A855F7" stop-opacity="0.85" />
-      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3" />
-    </linearGradient>
-
-    <linearGradient id="facet-bot-left" x1="78" y1="358" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#10B981" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.25" />
-    </linearGradient>
-
-    <linearGradient id="facet-bot-right" x1="434" y1="358" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#29F06A" stop-opacity="0.3" />
-    </linearGradient>
-
-    <linearGradient id="facet-bot" x1="256" y1="460" x2="256" y2="256" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#29F06A" stop-opacity="0.85" />
-      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.2" />
-    </linearGradient>
-
-    <!-- Inner Core Glow -->
-    <radialGradient id="core-flare" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
-      <stop offset="25%" stop-color="#67E8F9" stop-opacity="0.9" />
-      <stop offset="55%" stop-color="#29F06A" stop-opacity="0.6" />
-      <stop offset="80%" stop-color="#818CF8" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Quantum Ring Aura -->
-    <linearGradient id="quantum-ring" x1="160" y1="160" x2="352" y2="352" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.9" />
-      <stop offset="50%" stop-color="#A855F7" stop-opacity="0.6" />
-      <stop offset="100%" stop-color="#29F06A" stop-opacity="0.9" />
-    </linearGradient>
-
-    <!-- Specular Highlight Gradients -->
-    <linearGradient id="specular-line" x1="78" y1="154" x2="256" y2="52" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.2" />
-      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="1" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.3" />
-    </linearGradient>
-
-    <linearGradient id="specular-right" x1="256" y1="52" x2="434" y2="154" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3" />
-      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.9" />
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.2" />
+    <linearGradient id="cross-stroke" x1="368" y1="148" x2="144" y2="364" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#34D399"/>
     </linearGradient>
   </defs>
 
-  <!-- Base Rounded Container with Deep Cosmic Vignette -->
-  <rect width="512" height="512" rx="120" fill="url(#bg-glow)" />
-  <rect width="510" height="510" x="1" y="1" rx="119" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2" />
+  <!-- Outer Isometric Hexagonal Mesh Lattice -->
+  <path 
+    d="M256 68L418 162V350L256 444L94 350V162L256 68Z" 
+    stroke="#1E293B" 
+    stroke-width="6" 
+    stroke-linejoin="round"
+  />
+  <path 
+    d="M256 92L398 174V338L256 420L114 338V174L256 92Z" 
+    stroke="#0F172A" 
+    stroke-width="2" 
+    stroke-dasharray="8 8"
+  />
 
-  <!-- Ambient Radiant Glow Halo Behind Hexagon -->
-  <circle cx="256" cy="256" r="160" fill="url(#core-flare)" opacity="0.45" />
+  <!-- The Architectural N+X Cryptographic Compute Monogram -->
+  <!-- Left Pillar (Verification) & Right Pillar (Settlement) connected via Diagonal (N) -->
+  <path 
+    d="M144 362V150L368 362V150" 
+    stroke="url(#primary-stroke)" 
+    stroke-width="44" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
 
-  <!-- 3D Isometric Crystal Hexagon (Outer Facets) -->
-  <!-- Top Center Facet -->
-  <path d="M256 64L422 160L256 256L90 160Z" fill="url(#facet-top)" />
-  
-  <!-- Left Side Facet -->
-  <path d="M90 160L256 256L256 448L90 352Z" fill="url(#facet-left)" />
+  <!-- The Intersecting Routing Vector (Completing the 'X') -->
+  <path 
+    d="M364 154L148 358" 
+    stroke="url(#cross-stroke)" 
+    stroke-width="22" 
+    stroke-linecap="round" 
+    opacity="0.95"
+  />
 
-  <!-- Right Side Facet -->
-  <path d="M422 160L422 352L256 448L256 256Z" fill="url(#facet-right)" />
+  <!-- Base Consensus Anchor Line -->
+  <path 
+    d="M160 404H352" 
+    stroke="#10B981" 
+    stroke-width="16" 
+    stroke-linecap="round" 
+    opacity="0.85"
+  />
 
-  <!-- Inner Refractive Geometries -->
-  <path d="M256 128L366 192L256 256L146 192Z" fill="url(#facet-bot)" opacity="0.75" />
-  <path d="M146 192L256 256L256 384L146 320Z" fill="url(#facet-bot-left)" opacity="0.65" />
-  <path d="M366 192L366 320L256 384L256 256Z" fill="url(#facet-bot-right)" opacity="0.65" />
-
-  <!-- Quantum Orbital Ring -->
-  <circle cx="256" cy="256" r="92" stroke="url(#quantum-ring)" stroke-width="4" stroke-dasharray="14 8" opacity="0.85" />
-  <circle cx="256" cy="256" r="124" stroke="#22D3EE" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="6 12" />
-
-  <!-- Crystal Edge Structural Seams (Glass Frame) -->
-  <path d="M256 64L422 160V352L256 448L90 352V160L256 64Z" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="4" stroke-linejoin="round" />
-  <path d="M256 64V256M90 160L256 256M422 160L256 256M256 256V448" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="3" />
-
-  <!-- Razor-Sharp Specular Highlights -->
-  <path d="M90 160L256 64" stroke="url(#specular-line)" stroke-width="5" stroke-linecap="round" />
-  <path d="M256 64L422 160" stroke="url(#specular-right)" stroke-width="5" stroke-linecap="round" />
-
-  <!-- Central Quantum Flare (Proof of Practical Compute - PoPC) -->
-  <!-- Horizontal Flare Beam -->
-  <ellipse cx="256" cy="256" rx="140" ry="8" fill="url(#core-flare)" opacity="0.85" />
-  <!-- Vertical Flare Beam -->
-  <ellipse cx="256" cy="256" rx="8" ry="140" fill="url(#core-flare)" opacity="0.85" />
-  <!-- Diagonal Flare Beam 1 -->
-  <ellipse cx="256" cy="256" rx="100" ry="6" transform="rotate(45 256 256)" fill="url(#core-flare)" opacity="0.7" />
-  <!-- Diagonal Flare Beam 2 -->
-  <ellipse cx="256" cy="256" rx="100" ry="6" transform="rotate(-45 256 256)" fill="url(#core-flare)" opacity="0.7" />
-
-  <!-- Super-dense Bright Singularity Center -->
-  <circle cx="256" cy="256" r="28" fill="#FFFFFF" />
-  <circle cx="256" cy="256" r="42" fill="#22D3EE" opacity="0.6" />
-  <circle cx="256" cy="256" r="64" fill="#29F06A" opacity="0.35" />
-
-  <!-- Quantum Node Satellites (Corner Vertices) -->
-  <circle cx="256" cy="64" r="7" fill="#FFFFFF" />
-  <circle cx="422" cy="160" r="7" fill="#A855F7" />
-  <circle cx="422" cy="352" r="7" fill="#6366F1" />
-  <circle cx="256" cy="448" r="7" fill="#29F06A" />
-  <circle cx="90" cy="352" r="7" fill="#10B981" />
-  <circle cx="90" cy="160" r="7" fill="#22D3EE" />
+  <!-- Precision Node Vertices (4 Anchor Beacons) -->
+  <circle cx="144" cy="150" r="14" fill="#FFFFFF" stroke="#10B981" stroke-width="4"/>
+  <circle cx="368" cy="150" r="14" fill="#FFFFFF" stroke="#06B6D4" stroke-width="4"/>
+  <circle cx="144" cy="362" r="14" fill="#FFFFFF" stroke="#06B6D4" stroke-width="4"/>
+  <circle cx="368" cy="362" r="14" fill="#FFFFFF" stroke="#10B981" stroke-width="4"/>
 </svg>
