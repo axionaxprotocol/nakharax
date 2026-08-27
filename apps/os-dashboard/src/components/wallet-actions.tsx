@@ -257,11 +257,26 @@ export function WalletActions() {
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).ethereum) {
       const ethereum = (window as any).ethereum;
+
+      // 1. Immediately check if MetaMask is already connected & unlocked
+      ethereum
+        .request({ method: "eth_accounts" })
+        .then((accounts: string[]) => {
+          if (accounts && accounts.length > 0) {
+            setAddress(accounts[0]);
+            setMetaMaskConnected(true);
+            void fetchBalance();
+          }
+        })
+        .catch(() => {});
+
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
           setMetaMaskConnected(true);
           void fetchBalance();
+        } else {
+          setMetaMaskConnected(false);
         }
       };
       const handleChainChanged = () => {

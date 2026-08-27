@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -47,6 +47,43 @@ export default function WorkerManagerPage() {
   const [detectedSpecs, setDetectedSpecs] = useState<string | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [regNotice, setRegNotice] = useState<string | null>(null);
+
+  // Sync worker address with active MetaMask account or saved vault
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).ethereum) {
+      const ethereum = (window as any).ethereum;
+      ethereum
+        .request({ method: "eth_accounts" })
+        .then((accounts: string[]) => {
+          if (accounts && accounts.length > 0) {
+            setWorkerAddress(accounts[0]);
+          }
+        })
+        .catch(() => {});
+
+      const handleAccounts = (accounts: string[]) => {
+        if (accounts && accounts.length > 0) {
+          setWorkerAddress(accounts[0]);
+        }
+      };
+      ethereum.on("accountsChanged", handleAccounts);
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener("accountsChanged", handleAccounts);
+        }
+      };
+    } else {
+      try {
+        const saved = localStorage.getItem("nakharax-active-vault");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.address) setWorkerAddress(parsed.address);
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  }, []);
 
   const autoDetectHardware = () => {
     setIsDetecting(true);

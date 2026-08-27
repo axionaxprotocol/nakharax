@@ -41,16 +41,41 @@ export default function TestnetFaucetPage() {
   const [totalDispensed, setTotalDispensed] = useState<number>(1420);
   const [currentBlock, setCurrentBlock] = useState<number>(1830);
 
-  // Restore saved wallet address if available
+  // Restore saved wallet address or sync with active MetaMask account
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("nakharax-active-vault");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.address) setRecipientAddress(parsed.address);
+    if (typeof window !== "undefined" && (window as any).ethereum) {
+      const ethereum = (window as any).ethereum;
+      ethereum
+        .request({ method: "eth_accounts" })
+        .then((accounts: string[]) => {
+          if (accounts && accounts.length > 0) {
+            setRecipientAddress(accounts[0]);
+          }
+        })
+        .catch(() => {});
+
+      const handleAccountsChanged = (accounts: string[]) => {
+        if (accounts && accounts.length > 0) {
+          setRecipientAddress(accounts[0]);
+        }
+      };
+
+      ethereum.on("accountsChanged", handleAccountsChanged);
+      return () => {
+        if (ethereum.removeListener) {
+          ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        }
+      };
+    } else {
+      try {
+        const saved = localStorage.getItem("nakharax-active-vault");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.address) setRecipientAddress(parsed.address);
+        }
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
     }
   }, []);
 
