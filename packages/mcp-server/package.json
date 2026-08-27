@@ -1,7 +1,7 @@
 {
   "name": "@nakharax/mcp-server",
   "version": "1.9.0",
-  "description": "Official Model Context Protocol (MCP) Server for NakharaX Protocol & XpFirm Quantitative Risk Terminal",
+  "description": "Official Model Context Protocol (MCP) Server for NakharaX Layer-1 DeAI Protocol & PoPC Compute Grid",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -18,7 +18,8 @@
     "model-context-protocol",
     "deai",
     "consensus",
-    "quant-risk"
+    "stark-fri",
+    "popc"
   ],
   "author": "NakharaX Protocol Engineers",
   "license": "Apache-2.0",

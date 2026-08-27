@@ -118,8 +118,8 @@ async function runBenchmark() {
   console.log(`   ➜ Verification Time: ${starkDuration.toFixed(2)} ms`);
   console.log(`   ➜ Throughput:        ${Number(proofsPerSec).toLocaleString()} proofs/sec (Target > 50,000) -> [PASS ✅]\n`);
 
-  // 3. Benchmark Quant Monte Carlo Risk Engine
-  console.log("📈 [3/4] Benchmarking XpFirm PropSentinel Monte Carlo Engine (1,000-Path XAUUSD Simulation)...");
+  // 3. Benchmark PoPC Stochastic Validation & Simulation Engine
+  console.log("📈 [3/4] Benchmarking PoPC Stochastic Matrix & Monte Carlo Validation Engine (1,000 Paths)...");
   const mcStart = performance.now();
   const mcResult = computeQuantMonteCarlo(1000, 100);
   const mcDuration = performance.now() - mcStart;

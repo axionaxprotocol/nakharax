@@ -65,18 +65,6 @@ export async function GET() {
       pricing: { input: "$0.04/1M", output: "$0.15/1M", token: "$tNAK" },
       target_hardware: "Low-Latency Ingress Gateways",
     },
-    {
-      id: "propsentinel-quant-risk",
-      object: "model",
-      created: 1787540000,
-      owned_by: "nakharax-xpfirm",
-      permission: [],
-      root: "propsentinel-quant-risk",
-      parent: null,
-      description: "XpFirm PropSentinel Monte Carlo (1,000-path) & Markov 4-State Volatility Brain",
-      pricing: { input: "$0.05/1M", output: "$0.20/1M", token: "$tNAK" },
-      target_hardware: "Prop Firm Risk Terminal Workers",
-    },
   ];
 
   return NextResponse.json({

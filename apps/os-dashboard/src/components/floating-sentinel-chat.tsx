@@ -49,7 +49,7 @@ const SENTINEL_PROFILES: Record<
     description: "System-wide meta-analysis, parameter auto-tuning, and master protocol knowledge.",
     icon: Brain,
     tone: "ai",
-    greeting: "Greetings, Sovereign Operator. I am NOESIS-VX, the Supreme Cognitive Core. Ask me anything about consensus mechanics, L1 tokenomics, XpFirm risk systems, or testnet architecture.",
+    greeting: "Greetings, Sovereign Operator. I am NOESIS-VX, the Supreme Cognitive Core. Ask me anything about consensus mechanics, L1 tokenomics, DeAI compute grid, or testnet architecture.",
   },
   "SERAPH-VX": {
     name: "SERAPH-VX",
@@ -89,7 +89,7 @@ const QUICK_PROMPTS = [
   { label: "⚡ PoPC Consensus", query: "How does PoPC function, and how does it differ from PoW / PoS?" },
   { label: "🛡️ Zero-MEV", query: "How does SERAPH-VX prevent Mempool Sandwich Attacks?" },
   { label: "🔎 Fraud ML", query: "How does ORION-VX detect invalid PoPC Proofs using Isolation Forest?" },
-  { label: "📈 XpFirm Risk", query: "How does XpFirm PropSentinel and its sub-ms Kill-Switch operate?" },
+  { label: "🤖 DeAI Compute", query: "How do Worker Nodes execute PyTorch models and generate STARK FRI proofs?" },
   { label: "🪙 Tokenomics", query: "What is the tokenomics structure and total supply ceiling of $tNAK?" },
 ];
 
@@ -416,15 +416,14 @@ ORION-VX operates inside 'services/core/core/deai/fraud_detection.py':
 3. Auto-Dispute: Escalates disputes to THEMIS-VX for immediate automated stake slashing.`;
   }
 
-  // 4. XpFirm PropSentinel & Quant Risk
-  if (q.includes("propsentinel") || q.includes("xpfirm") || q.includes("kill-switch") || q.includes("markov") || q.includes("monte carlo") || q.includes("drawdown")) {
-    return `📈 [XpFirm PropSentinel Quantitative Risk Engine]
+  // 4. DeAI Compute & Worker STARK FRI
+  if (q.includes("worker") || q.includes("deai") || q.includes("compute") || q.includes("pytorch") || q.includes("gpu")) {
+    return `🤖 [NakharaX DeAI Compute & STARK FRI Kernel]
 
-PropSentinel is an institutional risk management terminal for prop traders:
-1. Markov 4-State Regime Classifier: Evaluates 4 market regimes with real-time Hurst Exponent ($H$).
-2. Monte Carlo 1,000-Path Simulator: Calculates stochastic drawdown bounds ($VaR_{95}$, $CVaR_{99}$).
-3. Sub-ms Kill-Switch (0.804ms): Triggers emergency liquidations to MetaTrader 5 MQL5 EA via C-ABI Shared Memory.
-4. Pure SaaS Compliance: Strictly functions as software risk infrastructure.`;
+Edge workers process tasks within sandboxed runtime environments:
+1. Model Execution: Evaluates batch LLM inferences (Qwen, DeepSeek-R1) and vector embeddings.
+2. STARK FRI Prover: Generates cryptographic low-degree polynomial constraint proofs in 1.96ms.
+3. Settlement & Rewards: Merkle roots are committed on-chain to 'JobMarketplaceStandalone.sol' for instant token release.`;
   }
 
   // 5. Tokenomics & $tNAK
@@ -450,7 +449,7 @@ PropSentinel is an institutional risk management terminal for prop traders:
   return `🧠 [NOESIS-VX Cognitive Synthesis]
 Query: "${query}"
 
-Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / XpFirm Risk Brain):
+Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / STARK FRI Engine):
 - Operating as a Sovereign Decentralized DeAI network.
 - Zero Cloud Lock-in: Runs on bare-metal and sovereign edge hardware.
 - Fully Verifiable: All execution states yield cryptographic on-chain STARK receipts.

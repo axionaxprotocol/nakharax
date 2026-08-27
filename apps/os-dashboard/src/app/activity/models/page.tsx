@@ -47,7 +47,6 @@ const MODEL_CATALOG: Omit<
   { id: "m-deepseek-math-7b", name: "DeepSeek-Math-7B-Prover", version: "V2.0", type: "llm", size: "7B", precision: "INT8", status: "active" },
   { id: "m-deepspec-qwen3", name: "DeepSpec-Qwen3-Speculative", version: "Spec-1.0", type: "llm", size: "Draft-3B", precision: "INT4", status: "active" },
   { id: "m-deepseek-v3-moe", name: "DeepSeek-V3-Full-MoE", version: "3.1", type: "llm", size: "671B-MoE", precision: "INT4", status: "active" },
-  { id: "m-propsentinel-quant", name: "PropSentinel-Quant-Risk-Engine", version: "v4.1", type: "llm", size: "Markov-4State", precision: "FP32", status: "active" },
   { id: "m-bge-m3", name: "DeAI-BGE-M3-Embedding", version: "1.0", type: "embedding", size: "M3", precision: "INT8", status: "active" },
 ];
 

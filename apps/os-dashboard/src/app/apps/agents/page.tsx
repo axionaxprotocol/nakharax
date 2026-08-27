@@ -301,7 +301,6 @@ export default function SovereignAgentsPage() {
               </label>
               <div className="space-y-1.5">
                 {[
-                  { id: "mcp-quant-risk", label: "PropSentinel Quant Risk Brain" },
                   { id: "mcp-sec-auditor", label: "Hydra Smart Contract Auditor" },
                   { id: "mcp-deepseek-reasoner", label: "DeepSeek-R1 CoT Prover" },
                   { id: "mcp-onchain-indexer", label: "Nakharax Topology Indexer" },

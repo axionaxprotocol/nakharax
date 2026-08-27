@@ -45,23 +45,6 @@ import type { MCPSkillDescriptor } from "@nakharax/sdk";
 
 const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
   {
-    id: "mcp-quant-risk",
-    name: "PropSentinel Quant Risk Brain",
-    description: "Real-time Monte Carlo drawdown simulation, sub-millisecond MT5 halt evaluation, and market regime clustering.",
-    category: "finance",
-    providerAddress: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    feePerCallWei: "0.05",
-    rating: 4.98,
-    totalCalls: 142800,
-    verified: true,
-    endpointUrl: "http://127.0.0.1:8000/mcp/quant-risk",
-    transport: "sse",
-    schema: {
-      input: { equity: "number", dailyDrawdownLimit: "number", openPositions: "array" },
-      output: { riskScore: "number", haltRecommended: "boolean", simulatedMaxLoss: "number" },
-    },
-  },
-  {
     id: "mcp-sec-auditor",
     name: "Hydra Smart Contract & Binary Auditor",
     description: "Automated bytecode decompiler, reentrancy scanner, Slither AST analyzer, and formal verification prover.",

@@ -9,7 +9,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 // =============================================================================
-// NakharaX Sovereign Protocol & XpFirm Quant Risk MCP Server
+// NakharaX Sovereign Protocol & DeAI Compute Grid MCP Server
 // =============================================================================
 
 const server = new Server(
@@ -68,21 +68,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: "nakharax_query_propsentinel_risk",
-        description: "Evaluate XpFirm PropSentinel quantitative trader risk via Markov 4-State regime modeling, Hurst Exponent (H), Monte Carlo VaR, and sub-ms Kill-Switch status.",
+        name: "nakharax_query_staking_metrics",
+        description: "Query NakharaX PoPC liquid staking pool ($sNAK), validator delegation distribution, and annualized yield telemetry (8.4% APY).",
         inputSchema: {
           type: "object",
           properties: {
-            account_id: {
+            validator_address: {
               type: "string",
-              description: "Prop firm trading account ID (e.g. 'FTMO-100K-8821', 'FUNDEDNEXT-200K-042').",
-            },
-            current_drawdown_pct: {
-              type: "number",
-              description: "Current account equity drawdown percentage (0.0 to 100.0).",
+              description: "Optional target validator EVM address (0x...).",
             },
           },
-          required: ["account_id", "current_drawdown_pct"],
         },
       },
       {
@@ -198,14 +193,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
   }
 
-  // Tool 3: nakharax_query_propsentinel_risk
-  if (name === "nakharax_query_propsentinel_risk") {
-    const accountId = String(args?.account_id || "ACCOUNT-001");
-    const drawdownPct = Number(args?.current_drawdown_pct || 0);
-
-    const isBreach = drawdownPct >= 4.5;
-    const regime = drawdownPct > 3.0 ? "NEWS_LIQUIDITY_SHOCK" : "TRENDING_MOMENTUM";
-    const hurstExponent = drawdownPct > 3.0 ? 0.38 : 0.68;
+  // Tool 3: nakharax_query_staking_metrics
+  if (name === "nakharax_query_staking_metrics") {
+    const validatorAddress = String(args?.validator_address || "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
 
     return {
       content: [
@@ -213,21 +203,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           type: "text",
           text: JSON.stringify(
             {
-              terminal: "XpFirm PropSentinel Quant Risk Terminal",
-              account_id: accountId,
-              current_equity_drawdown_pct: drawdownPct,
-              max_daily_drawdown_limit_pct: 5.0,
-              market_regime: regime,
-              hurst_exponent: hurstExponent,
-              regime_classification: hurstExponent > 0.5 ? "PERSISTENT_TREND" : "MEAN_REVERTING_NOISE",
-              monte_carlo_simulations: 1000,
-              var_95_drawdown_prob_pct: (drawdownPct * 1.12).toFixed(2) + "%",
-              cvar_99_expected_shortfall_pct: (drawdownPct * 1.35).toFixed(2) + "%",
-              sub_ms_kill_switch_status: isBreach ? "TRIGGERED_HALT" : "ARMED_HEALTHY",
-              kill_switch_response_latency: "0.804 ms (C-ABI Shared Memory)",
-              action_recommendation: isBreach
-                ? "EMERGENCY HALT: MT5 Order Liquidation Dispatched via Shared Memory."
-                : "OPTIMAL: Account risk parameters remain strictly within safe SLA bounds.",
+              pool_contract: "0xPoPCStakingPool_Mainnet_86137",
+              total_staked_nak: "15,482,000.00 tNAK",
+              liquid_token_issued: "15,482,000.00 sNAK",
+              base_annual_apy_pct: 8.4,
+              active_genesis_validators: 5,
+              target_validator: validatorAddress,
+              validator_status: "ACTIVE_PRODUCING",
+              commission_rate_bps: 500, // 5%
+              popc_consensus_rewards_24h: "+12,480.50 tNAK",
+              unbonding_cooldown_seconds: 300,
             },
             null,
             2
@@ -277,7 +262,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const inventoryData = [
       { domain: 1, title: "Consensus Architecture & L1 Structure", metric: "RPC Ingress P50", sota_leader: "Infura (45.0 ms)", nakharax_result: "1.92 ms", multiplier: "23.4x Faster" },
       { domain: 2, title: "DeAI Machine Learning & Hardware HAL", metric: "LoRA Bandwidth", sota_leader: "Hugging Face (100.0%)", nakharax_result: "0.05% (TIES/DARE)", multiplier: "2,000.0x Savings" },
-      { domain: 3, title: "Prop Firm Risk Management Terminal", metric: "Kill-Switch Latency", sota_leader: "Commercial EA (250.0 ms)", nakharax_result: "0.804 ms", multiplier: "310.9x Faster" },
+      { domain: 3, title: "Liquid Staking & Validator Pools", metric: "PoPC Reward Streaming", sota_leader: "Lido / RocketPool (24h Batch)", nakharax_result: "3.0s Cadence Instant Yield", multiplier: "28,800x Real-time" },
       { domain: 4, title: "Smart Contract Safety & Formal Verification", metric: "Memory Safety", sota_leader: "Standard EVM (0.01% Unsafe)", nakharax_result: "0 Unsafe Blocks", multiplier: "100.0% Verified" },
       { domain: 5, title: "Cross-Border Settlement & Micro-Payments", metric: "Tx Settlement", sota_leader: "Ethereum L1 (12.0 s)", nakharax_result: "3.0 s", multiplier: "4.0x Faster" },
     ];

@@ -52,7 +52,7 @@ const SENTINEL_PROFILES: Record<
     description: "System-wide meta-analysis, autonomous parameter auto-tuning, and master protocol knowledge.",
     icon: Brain,
     tone: "ai",
-    greeting: "Greetings, Sovereign Operator. I am NOESIS-VX, the Supreme Cognitive Core of NakharaX. Ask me anything regarding consensus mechanics, L1 tokenomics, XpFirm risk systems, or testnet architecture.",
+    greeting: "Greetings, Sovereign Operator. I am NOESIS-VX, the Supreme Cognitive Core of NakharaX. Ask me anything regarding consensus mechanics, L1 tokenomics, DeAI compute grid, or testnet architecture.",
   },
   "SERAPH-VX": {
     name: "SERAPH-VX",
@@ -105,8 +105,8 @@ const SUGGESTED_QUESTIONS: { label: string; query: string; persona: SentinelPers
     persona: "ORION-VX",
   },
   {
-    label: "📈 XpFirm PropSentinel",
-    query: "How does XpFirm PropSentinel utilize Markov 4-State regime modeling and sub-ms Kill-Switches for trader risk?",
+    label: "🤖 DeAI Compute",
+    query: "How do Worker Nodes execute PyTorch models and generate cryptographic STARK FRI proofs?",
     persona: "NOESIS-VX",
   },
   {
@@ -412,16 +412,16 @@ ORION-VX operates inside 'services/core/core/deai/fraud_detection.py' using mach
 3. Auto-Dispute Trigger: Escalates verification disputes to smart contracts for THEMIS-VX to execute automated stake slashing and re-assign tasks.`;
   }
 
-  // 4. XpFirm PropSentinel & Quant Risk
-  if (q.includes("propsentinel") || q.includes("xpfirm") || q.includes("kill-switch") || q.includes("markov") || q.includes("monte carlo") || q.includes("drawdown")) {
-    return `📈 [XpFirm PropSentinel Quantitative Risk Engine]
+  // 4. DeAI Compute & Worker STARK FRI
+  if (q.includes("worker") || q.includes("deai") || q.includes("compute") || q.includes("pytorch") || q.includes("gpu")) {
+    return `🤖 [NakharaX DeAI Compute & STARK FRI Kernel]
 
-PropSentinel is an institutional-grade risk terminal designed for prop firm traders:
+Edge workers process tasks within sandboxed runtime environments:
 
-1. Markov 4-State Regime-Switching Volatility: Real-time vector-based market regime classification across 4 regimes (Trending Momentum, News Liquidity Shock, Asian Consolidation, Spread Vacuum) with real-time Hurst Exponent ($H$) calculation.
-2. Monte Carlo 1,000-Path Simulator: Computes stochastic drawdown probability bounds ($VaR_{95}$, $CVaR_{99}$).
-3. Sub-Millisecond Kill-Switch (0.804ms): Hardware circuit breaker connected directly to MetaTrader 5 MQL5 EA via C-ABI Shared Memory for emergency liquidation upon reaching daily drawdown thresholds.
-4. Pure SaaS Compliance: Strictly operates as a software risk management tool with zero profit-sharing or managed account claims.`;
+1. Model Execution: Evaluates batch LLM inferences (Qwen, DeepSeek-R1) and high-dimensional vector embeddings.
+2. STARK FRI Prover: Generates cryptographic low-degree polynomial constraint proofs in 1.96ms without trusted setup.
+3. On-Chain Settlement: Merkle roots are committed to 'JobMarketplaceStandalone.sol' for immediate escrow reward release.
+4. Auto-Verification: PoPC consensus statistical sampling verifies outputs at O(s) cost without full re-execution.`;
   }
 
   // 5. Tokenomics & $tNAK
@@ -462,7 +462,7 @@ Command acknowledged: Isolation Forest statistical audit models are actively mon
   return `🧠 [NOESIS-VX Cognitive Synthesis]
 Query: "${query}"
 
-Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / XpFirm Risk Brain):
+Synthesized via NakharaX Protocol Knowledge Base (Chain ID 86137 / PoPC Consensus / STARK FRI Engine):
 - Operating as a Sovereign Decentralized DeAI network.
 - Zero Cloud Lock-in: Runs on bare-metal and sovereign edge hardware.
 - Fully Verifiable: All execution states yield cryptographic on-chain STARK receipts.

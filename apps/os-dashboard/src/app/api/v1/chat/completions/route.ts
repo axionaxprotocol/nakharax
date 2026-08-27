@@ -100,17 +100,6 @@ function synthesizeModelOutput(model: string, userMessage: string, proofHash: st
 • PoPC Verification Receipt: ${proofHash}`;
   }
 
-  if (m.includes("quant") || m.includes("propsentinel")) {
-    return `📈 [XpFirm PropSentinel Quantitative Risk Engine Output]
-• Model: PropSentinel Markov 4-State Volatility Engine
-• Query: "${userMessage}"
-• Real-time Analysis:
-  - Current Regime: TRENDING_MOMENTUM (Hurst H = 0.68)
-  - 1,000-Path Monte Carlo Simulation: Max Drawdown Probability = 1.84% (< 5.0% SLA)
-  - Sub-ms Kill-Switch Status: ARMED (0.804ms C-ABI Shared Memory Hook)
-  - PoPC Cryptographic Receipt: ${proofHash}`;
-  }
-
   if (m.includes("coder") || m.includes("code")) {
     return `💻 [DeepSeek-Coder-V2 Lite (16B MoE) Synthesis Output]
 • Model: DeepSeek-Coder-V2 Lite (2.4B Active Parameters)
