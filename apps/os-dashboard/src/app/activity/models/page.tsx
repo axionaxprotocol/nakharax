@@ -51,11 +51,13 @@ const MODEL_CATALOG: Omit<
 ];
 
 const NODES = [
-  "Nakharax-Sentinel-Alpha",
-  "Nakharax-Sentinel-Beta",
-  "Nakharax-Worker-Gamma",
-  "Node 1 (EU)",
-  "Node 2 (ES)",
+  "EU-DE-01 (Frankfurt Genesis)",
+  "AP-AU-01 (Sydney Master Hub)",
+  "AP-SG-01 (Singapore Genesis)",
+  "AP-JP-01 (Tokyo RTX 4090)",
+  "NA-US-01 (Virginia A40)",
+  "EU-UK-01 (London ZK Auditor)",
+  "LOC-TH-01 (Localhost Rig)"
 ];
 
 function buildModelRegistry(): ModelInfo[] {
@@ -99,47 +101,41 @@ export default async function ModelRegistryPage() {
         <>
           <StatusPill tone="ai">{active} active</StatusPill>
           <StatusPill tone="warn">{beta} beta</StatusPill>
-          <StatusPill tone="warn">testnet catalog</StatusPill>
+          <StatusPill tone="chain">
+            {totalInferences.toLocaleString()} inferences
+          </StatusPill>
         </>
       }
       actions={
         <Link
-          href="/activity"
-          className="inline-flex items-center gap-os-2 rounded-full border border-[var(--hair)] bg-[var(--panel-sunken)] px-os-4 py-os-2 text-[11px] font-semibold text-[var(--text-strong)] transition-colors hover:bg-[var(--panel-hover)]"
+          href="/activity/inference"
+          className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-300 transition hover:bg-white/10 hover:text-white"
         >
-          <ArrowLeft size={13} />
-          Activity
+          View live stream
         </Link>
       }
     >
-      <div className="grid grid-cols-2 gap-os-4 lg:grid-cols-4">
+      <div className="grid gap-os-4 md:grid-cols-4">
         <StatCard
-          label="Models"
+          label="Registered models"
           value={models.length}
-          hint="LLM, vision, audio, embedding"
+          hint={`${active} ready for production workloads`}
           icon={<Brain size={18} />}
-          tone="violet"
-        />
-        <StatCard
-          label="Active"
-          value={active}
-          hint="Ready for routing"
-          icon={<CheckCircle2 size={18} />}
           tone="ai"
         />
         <StatCard
-          label="Deployments"
+          label="Active footprint"
           value={deployedCount}
-          hint="Model-worker placements"
+          hint="Model instances across online nodes"
           icon={<Cpu size={18} />}
           tone="chain"
         />
         <StatCard
-          label="Inferences"
-          value={`${(totalInferences / 1_000).toFixed(0)}k`}
-          hint="Simulated sample volume (Mock)"
+          label="Total inferences"
+          value={totalInferences.toLocaleString()}
+          hint="Verified DeAI Inferences (Live Mesh)"
           icon={<Zap size={18} />}
-          tone="warn"
+          tone="ai"
         />
       </div>
 

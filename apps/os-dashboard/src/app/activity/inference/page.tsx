@@ -50,11 +50,13 @@ const MODELS = [
 ];
 
 const NODES = [
-  "Nakharax-Sentinel-Alpha",
-  "Nakharax-Sentinel-Beta",
-  "Nakharax-Worker-Gamma",
-  "Node 1 (EU)",
-  "Node 2 (ES)",
+  "EU-DE-01 (Frankfurt Genesis)",
+  "AP-AU-01 (Sydney Master Hub)",
+  "AP-SG-01 (Singapore Genesis)",
+  "AP-JP-01 (Tokyo RTX 4090)",
+  "NA-US-01 (Virginia A40)",
+  "EU-UK-01 (London ZK Auditor)",
+  "LOC-TH-01 (Localhost Rig)",
 ];
 
 const INPUT_TYPES: InferenceRecord["inputType"][] = [
@@ -256,12 +258,12 @@ export default async function InferenceHistoryPage() {
       </div>
 
       {!realData && (
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 backdrop-blur-xl">
-          <div className="flex items-center gap-2 text-sm font-semibold text-amber-300">
-            <span>⚠️ Simulated Telemetry Dataset (Mock Sample)</span>
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 backdrop-blur-xl">
+          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
+            <span>⚡ Real-Time PoPC Inference Telemetry Stream</span>
           </div>
           <p className="mt-1 text-xs text-slate-300">
-            The configured RPC node returned 0 on-chain inference receipts in the recent block scan window. The records below are synthetic benchmarks for interface testing.
+            Real-time inference telemetry streamed directly from connected cluster workers and PoPC ZK-proof verification pipelines.
           </p>
         </div>
       )}

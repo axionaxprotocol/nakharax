@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Activity,
@@ -68,11 +68,34 @@ const AVAILABLE_MODELS = [
 
 export default function JobsPage() {
   const { blockNumber, isLive, latencyMs } = useLiveBlock();
+  const [activeAddress, setActiveAddress] = useState("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
   const [selectedModel, setSelectedModel] = useState("DeAI-DeepSeek-R1-8B");
   const [prompt, setPrompt] = useState("Perform formal mathematical proof verification for Byzantine Fault Tolerant PoPC consensus state transitions.");
   const [rewardNak, setRewardNak] = useState("15.0");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [jobReceipt, setJobReceipt] = useState<any | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("nakharax-active-vault");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.address) {
+          setActiveAddress(parsed.address);
+        }
+      }
+      if (typeof window !== "undefined" && (window as any).ethereum) {
+        (window as any).ethereum
+          .request({ method: "eth_accounts" })
+          .then((accs: string[]) => {
+            if (accs && accs.length > 0) setActiveAddress(accs[0]);
+          })
+          .catch(() => {});
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   async function handleDispatchJob(e: React.FormEvent) {
     e.preventDefault();
@@ -94,7 +117,7 @@ export default function JobsPage() {
               model: selectedModel,
               prompt: prompt.trim(),
               reward: rewardNak,
-              from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+              from: activeAddress,
             },
           ],
           id: Date.now(),

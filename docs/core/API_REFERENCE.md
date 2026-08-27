@@ -2,7 +2,7 @@
 
 ## Overview
 
-Nakharax Core provides a modular blockchain infrastructure with Proof of Probabilistic Checking (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
+Nakharax Core provides a modular blockchain infrastructure with Proof of Practical Compute (PoPC) (PoPC), Auto Selection Router (ASR), and Predictive Pricing Controller (PPC).
 
 ---
 

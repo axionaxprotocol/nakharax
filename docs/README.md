@@ -116,4 +116,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for commit format and style guidelines
 
 ---
 
-_Last updated: May 3, 2026_
+_Last Updated: August 27, 2026_

@@ -31,6 +31,7 @@ import {
 } from "@/components/card";
 import { QuickConnectBox } from "@/components/quick-connect";
 import { LiveStatsSection } from "@/components/live-stats";
+import { TopRadarTicker } from "@/components/top-radar-ticker";
 import { HomeQuickHub } from "@/components/home-quick-hub";
 import { DEFAULT_NODES, getNodeStatus } from "@/lib/rpc";
 
@@ -61,34 +62,7 @@ export default async function Home() {
       {/* =========================================================================
           HIGH-FPS LIVE INGRESS TICKER STRIP (TOP RADAR)
           ========================================================================= */}
-      <div className="overflow-hidden rounded-2xl border border-emerald-500/30 bg-black/60 p-2.5 backdrop-blur-xl shadow-lg">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono">
-          <div className="flex items-center gap-2 text-emerald-400 font-bold">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>NAKHARAX L1 GRID: 100% OPERATIONAL</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 text-slate-400">
-            <span>CHAIN ID: <strong className="text-white font-bold">86137</strong></span>
-            <span>·</span>
-            <span>BLOCK: <strong className="text-cyan-300 font-bold">#{maxBlock.toLocaleString()}</strong></span>
-            <span>·</span>
-            <span>CADENCE: <strong className="text-emerald-300 font-bold">3.00s</strong></span>
-            <span>·</span>
-            <span>BFT QUORUM: <strong className="text-emerald-400 font-bold">5/5 SEEDS ACTIVE</strong></span>
-            <span>·</span>
-            <span>DEAI HASHRATE: <strong className="text-cyan-300 font-bold">441.2 M-OPS</strong></span>
-          </div>
-
-          <Link
-            href="/nodes"
-            className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
-          >
-            <span>Live Radar</span>
-            <ArrowRight size={12} />
-          </Link>
-        </div>
-      </div>
+      <TopRadarTicker initialBlock={maxBlock} />
 
       {/* =========================================================================
           HERO: INSTITUTIONAL COMMAND CENTER & SOVEREIGN DEAI GRID
@@ -133,7 +107,7 @@ export default async function Home() {
               className="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
             >
               <Globe2 size={16} />
-              <span>Global 5-Node Radar</span>
+              <span>Global 7-Node Radar</span>
             </Link>
 
             <Link
@@ -289,7 +263,7 @@ export default async function Home() {
                   <Network size={20} />
                 </span>
                 <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
-                  5-Node Mesh
+                  7-Node Mesh
                 </span>
               </div>
               <div>
@@ -297,7 +271,7 @@ export default async function Home() {
                   Global Consensus Radar
                 </h3>
                 <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
-                  React-Simple-Maps World Atlas topology connecting Frankfurt, Sydney, Virginia, Singapore & London.
+                  React-Simple-Maps World Atlas topology connecting Frankfurt, Sydney, Virginia, Tokyo, Singapore, London & Localhost.
                 </p>
               </div>
             </div>

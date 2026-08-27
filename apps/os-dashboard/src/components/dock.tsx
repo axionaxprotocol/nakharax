@@ -63,7 +63,7 @@ const DOCK_APPS: readonly DockApp[] = [
   },
   {
     href: "/wallet",
-    label: "Key Vault",
+    label: "Wallet",
     Icon: Wallet,
     activeColor: "from-emerald-500/40 via-lime-500/25 to-teal-500/10 border-emerald-400/80 text-emerald-200",
     glowColor: "rgba(41, 240, 106, 0.5)",

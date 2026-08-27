@@ -2,14 +2,18 @@ import Link from "next/link";
 import {
   Bot,
   Boxes,
+  Building2,
   Cpu,
   Droplets,
   Eye,
+  Flame,
   GitMerge,
   Network,
   Plug,
   Shield,
   Skull,
+  Trophy,
+  Vote,
   Workflow,
   type LucideIcon,
 } from "lucide-react";
@@ -35,6 +39,33 @@ type App = {
 };
 
 const APPS: App[] = [
+  {
+    id: "treasury",
+    name: "DAO Treasury & EIP-1559 Burn Terminal",
+    desc: "Live Sovereign Economic Engine. Real-time 50% EIP-1559 fee burning, 30% DAO Treasury routing, and 45% Mainnet Reserve schedule.",
+    icon: Building2,
+    tone: "chain",
+    state: "live",
+    href: "/apps/treasury",
+  },
+  {
+    id: "governance",
+    name: "DAO Governance & Sovereign Council",
+    desc: "Live On-Chain Democracy. Vote on protocol upgrades, tune system parameters, manage the 30% DAO Treasury, and inspect 7 Sentinels.",
+    icon: Vote,
+    tone: "chain",
+    state: "live",
+    href: "/apps/governance",
+  },
+  {
+    id: "leaderboard",
+    name: "DeAI Mining & Validator Leaderboard",
+    desc: "Live Global Rankings. Real-time compute power, STARK proofs completed, testnet points, and $tNAK mining rewards.",
+    icon: Trophy,
+    tone: "ai",
+    state: "live",
+    href: "/apps/leaderboard",
+  },
   {
     id: "worker",
     name: "DeAI Worker Config & CLI",

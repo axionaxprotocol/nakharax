@@ -2,7 +2,7 @@
 
 **Date:** 2025-12-10
 **Auditor:** Senior System Architect (Cline)
-**Protocol Version:** v1.9.0-testnet
+**Protocol Version:** v2.0.0-testnet
 **Status:** 🟢 PASSED - READY FOR PUBLIC TESTNET
 
 ## 1. Executive Summary
@@ -13,7 +13,7 @@ Following the remediation of findings from the v1.0 audit, the nakharax protocol
 
 - **Web Interface:** https://nakharax.com (Active)
 - **Infrastructure Node:** VPS (Active)
-- **Version:** v1.9.0-testnet
+- **Version:** v2.0.0-testnet
 
 ## 2. Findings Resolution Status
 

@@ -341,9 +341,18 @@ export function WalletConnectModal({
                     )}
                   </button>
                 ) : (
-                  <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/30">
-                    <ShieldCheck size={15} />
-                    <span>Connected to NakharaX Testnet (Chain ID 86137)</span>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/30">
+                      <ShieldCheck size={15} />
+                      <span>Connected to NakharaX Testnet (Chain ID 86137)</span>
+                    </div>
+                    <div className="flex items-center justify-between px-2.5 py-1 text-[11px] font-mono text-neutral-400 bg-black/40 rounded-lg border border-white/5">
+                      <span className="flex items-center gap-1.5 text-emerald-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        7/7 Mesh Nodes Online (1ms)
+                      </span>
+                      <span className="text-neutral-500">BFT Quorum 100%</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -365,7 +374,7 @@ export function WalletConnectModal({
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 p-2.5 text-xs font-mono font-semibold text-amber-300 transition-colors"
                 >
                   <Zap size={13} />
-                  <span>Get 1,000 $NAKt</span>
+                  <span>Get +100 $tNAK</span>
                 </Link>
               </div>
 

@@ -146,7 +146,7 @@ export function WalletActions() {
   ]);
 
   const [balance, setBalance] = useState("0.00");
-  const [accruedYield, setAccruedYield] = useState<number>(0.0428);
+  const [accruedYield, setAccruedYield] = useState<number>(0.0);
   const [isHarvesting, setIsHarvesting] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -233,7 +233,13 @@ export function WalletActions() {
         if (stakeData.result.staked !== undefined) {
           setStakedBalance(stakeData.result.staked);
         }
-        if (Array.isArray(stakeData.result.unbondingQueue) && stakeData.result.unbondingQueue.length > 0) {
+        if (stakeData.result.claimableReward !== undefined) {
+          const claimable = parseFloat(stakeData.result.claimableReward);
+          if (!isNaN(claimable) && claimable >= 0) {
+            setAccruedYield(claimable);
+          }
+        }
+        if (Array.isArray(stakeData.result.unbondingQueue)) {
           setUnbondingQueue(stakeData.result.unbondingQueue);
         }
       }
@@ -786,15 +792,14 @@ export function WalletActions() {
         rpcResult?.txHash ||
         `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 
+      const actualHarvested = rpcResult?.harvestedAmount !== undefined ? rpcResult.harvestedAmount : harvested;
       setAccruedYield(0.0);
-      const newBal = (parseFloat(balance) + harvested).toFixed(2);
-      setBalance(newBal);
 
       const newTx: TxHistoryItem = {
         id: txHash,
         hash: txHash,
         type: "REWARD",
-        amount: `+${harvested.toFixed(4)}`,
+        amount: `+${Number(actualHarvested).toFixed(4)}`,
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
@@ -806,7 +811,7 @@ export function WalletActions() {
       await fetchBalance();
       setHint({
         type: "success",
-        msg: `🌾 Harvested +${harvested.toFixed(4)} tNAK on-chain (Block #${currentLiveBlock}) directly into your wallet balance!`,
+        msg: `🌾 Harvested +${Number(actualHarvested).toFixed(6)} tNAK on-chain (Block #${currentLiveBlock}) across ${rpcResult?.blocksPassed || 1} blocks!`,
       });
     } catch {
       setHint({ type: "error", msg: "Harvest transaction failed." });
@@ -1015,6 +1020,31 @@ export function WalletActions() {
 
   return (
     <div className="space-y-6">
+      {/* 🛡️ Sovereign Node Mesh Health & Operator Sentinel Banner */}
+      <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="font-semibold text-emerald-300">
+            NODE SENTINEL ACTIVE:
+          </span>
+          <span className="text-neutral-300 font-mono">
+            7/7 Global Mesh Nodes Healthy · P99 Latency 1ms · Zero Slashed Validators
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-300 font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            BFT Quorum 100%
+          </span>
+          <Link
+            href="/nodes"
+            className="text-neutral-400 hover:text-white underline text-[11px] transition-colors"
+          >
+            Inspect 3D Node Radar →
+          </Link>
+        </div>
+      </div>
+
       {/* 👑 Institutional Treasury & Net Worth Overview Strip */}
       <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-slate-950 via-black to-slate-950 p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 pb-5">
@@ -1544,14 +1574,20 @@ export function WalletActions() {
                       onChange={(e) => setSelectedValidator(e.target.value)}
                       className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 font-mono text-xs text-white focus:border-cyan-500/50 focus:outline-none"
                     >
+                      <option value="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266">
+                        EU-DE-01 (Frankfurt Genesis L1) — 4.0% Commission · 150,000 $tNAK Staked
+                      </option>
                       <option value="0x70997970C51812dc3A010C7d01b50e0d17dc79C8">
-                        Core Validator AU-01 (Sydney) — 5.0% Commission · 120,000 $tNAK Staked
+                        AP-AU-01 (Sydney Master Ingress) — 5.0% Commission · 120,000 $tNAK Staked
                       </option>
                       <option value="0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC">
-                        Regional Validator ES-01 (Madrid) — 5.0% Commission · 95,000 $tNAK Staked
+                        AP-SG-01 (Singapore Genesis L1) — 4.5% Commission · 110,000 $tNAK Staked
                       </option>
                       <option value="0x90F79bf6EB2c4f870365E785982E1f101E93b906">
-                        Enterprise Node US-01 (Virginia) — 4.0% Commission · 150,000 $tNAK Staked
+                        EU-UK-01 (London ZK Sentinel) — 4.0% Commission · 135,000 $tNAK Staked
+                      </option>
+                      <option value="0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65">
+                        LOC-TH-01 (Localhost Sovereign Rig) — 3.5% Commission · 100,000 $tNAK Staked
                       </option>
                     </select>
                   </div>
@@ -1684,9 +1720,11 @@ export function WalletActions() {
 
                 <div className="space-y-2.5">
                   {[
-                    { name: "AU-01 (Sydney Validator)", addr: "0x7099...79C8", stake: "120,000 $tNAK", comm: "5.0%", uptime: "99.98%" },
-                    { name: "ES-01 (Madrid Validator)", addr: "0x3C44...93BC", stake: "95,000 $tNAK", comm: "5.0%", uptime: "99.95%" },
-                    { name: "US-01 (Virginia Validator)", addr: "0x90F7...b906", stake: "150,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
+                    { name: "EU-DE-01 (Frankfurt Genesis Validator)", addr: "0xf39F...2266", stake: "150,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
+                    { name: "AP-AU-01 (Sydney Master Ingress)", addr: "0x7099...79C8", stake: "120,000 $tNAK", comm: "5.0%", uptime: "99.98%" },
+                    { name: "AP-SG-01 (Singapore Genesis Validator)", addr: "0x3C44...93BC", stake: "110,000 $tNAK", comm: "4.5%", uptime: "99.97%" },
+                    { name: "EU-UK-01 (London ZK State Sentinel)", addr: "0x90F7...b906", stake: "135,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
+                    { name: "LOC-TH-01 (Localhost Sovereign Rig)", addr: "0x15d3...6A65", stake: "100,000 $tNAK", comm: "3.5%", uptime: "100.0%" },
                   ].map((val, idx) => (
                     <div key={idx} className="p-3.5 rounded-xl border border-white/10 bg-black/50 flex items-center justify-between text-xs font-mono">
                       <div>

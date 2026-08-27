@@ -4,7 +4,7 @@
 
 **Last Updated**: May 3, 2026  
 **Network**: Testnet (Chain ID: 86137)  
-**Token Symbol**: NAKt (Testnet Token)
+**Token Symbol**: $tNAK (Testnet Token)
 
 ---
 
@@ -18,9 +18,9 @@ The Nakharax Testnet uses a simplified token model designed for testing and deve
 
 | Parameter | Value |
 |-----------|-------|
-| **Token Symbol** | NAKt |
+| **Token Symbol** | $tNAK |
 | **Token Name** | Nakharax Testnet Token |
-| **Total Supply** | 1,000,000,000 NAKt (1 Billion) |
+| **Total Supply** | 1,000,000,000 $tNAK (1 Billion) |
 | **Supply Model** | Fixed (no inflation) |
 | **Precision** | 18 decimals |
 | **Network** | Testnet |
@@ -33,16 +33,16 @@ The Nakharax Testnet uses a simplified token model designed for testing and deve
 
 | Allocation | Amount | Purpose |
 |------------|--------|---------|
-| **Testnet Faucet** | 500,000,000 NAKt | Free distribution for developers and testers |
-| **Validator Rewards** | 300,000,000 NAKt | Block rewards for testnet validators |
-| **Development Reserve** | 200,000,000 NAKt | Core team testing and development |
+| **Testnet Faucet** | 500,000,000 $tNAK | Free distribution for developers and testers |
+| **Validator Rewards** | 300,000,000 $tNAK | Block rewards for testnet validators |
+| **Development Reserve** | 200,000,000 $tNAK | Core team testing and development |
 
 ### Faucet Details
 
 - **URL**: `https://faucet.nakharax.com` (planned) / Direct RPC request
-- **Daily Limit**: 1,000 NAKt per address
+- **Daily Limit**: 1,000 $tNAK per address
 - **Rate Limiting**: 1 request per hour per IP
-- **Minimum Balance**: 0.01 NAKt (for gas)
+- **Minimum Balance**: 0.01 $tNAK (for gas)
 
 ---
 
@@ -50,7 +50,7 @@ The Nakharax Testnet uses a simplified token model designed for testing and deve
 
 | Feature | Testnet | Mainnet (Planned) |
 |---------|---------|-------------------|
-| **Total Supply** | 1 Billion NAKt | 1 Trillion NAK |
+| **Total Supply** | 1 Billion $tNAK | 1 Trillion NAK |
 | **Vesting** | None (immediate) | Yes (4-year vesting) |
 | **Value** | No real value | Market-determined |
 | **Faucet** | Free unlimited | N/A (purchase only) |
@@ -64,20 +64,20 @@ The Nakharax Testnet uses a simplified token model designed for testing and deve
 ### 1. Gas Fees
 
 - **Purpose**: Pay for transaction execution
-- **Cost**: Minimal (0.001-0.1 NAKt per transaction)
+- **Cost**: Minimal (0.001-0.1 $tNAK per transaction)
 - **Burned**: No (recycled to faucet)
 
 ### 2. Staking (Testing)
 
-- **Minimum Stake**: 1,000 NAKt (testnet)
+- **Minimum Stake**: 1,000 $tNAK (testnet)
 - **Mainnet Equivalent**: 10,000 NAK
-- **Rewards**: 1 NAKt per block (distributed to validator)
+- **Rewards**: 1 $tNAK per block (distributed to validator)
 - **Unstaking Period**: 1 block (testnet) vs 21 days (mainnet)
 
 ### 3. Compute Marketplace (PoPC)
 
-- **Job Payment**: NAKt for compute jobs
-- **Worker Collateral**: 100 NAKt minimum
+- **Job Payment**: $tNAK for compute jobs
+- **Worker Collateral**: 100 $tNAK minimum
 - **Price Mechanism**: Posted Price Controller (testing)
 
 ---
@@ -106,7 +106,7 @@ Contact testnet validators for development allocation:
 
 ### Method 3: Block Rewards
 
-Run a validator node and earn block rewards (1 NAKt per block).
+Run a validator node and earn block rewards (1 $tNAK per block).
 
 ---
 
@@ -114,17 +114,17 @@ Run a validator node and earn block rewards (1 NAKt per block).
 
 ### Block Rewards
 
-- **Reward per Block**: 1.0 NAKt
+- **Reward per Block**: 1.0 $tNAK
 - **Block Time**: ~2 seconds
-- **Daily Emission**: ~43,200 NAKt
+- **Daily Emission**: ~43,200 $tNAK
 - **Target**: Sustainable for multi-year testing
 
 ### Validator Economics
 
 | Metric | Testnet Value |
 |--------|---------------|
-| **Min Stake** | 1,000 NAKt |
-| **Block Reward** | 1.0 NAKt |
+| **Min Stake** | 1,000 $tNAK |
+| **Block Reward** | 1.0 $tNAK |
 | **Expected ROI** | N/A (testing) |
 | **Validator Count** | 2 (target: 10+) |
 
@@ -132,7 +132,7 @@ Run a validator node and earn block rewards (1 NAKt per block).
 
 ## Migration to Mainnet
 
-⚠️ **Important**: Testnet tokens (NAKt) have no value and will not be convertible to mainnet NAK.
+⚠️ **Important**: Testnet tokens ($tNAK) have no value and will not be convertible to mainnet NAK.
 
 ### Mainnet Launch
 
@@ -147,7 +147,7 @@ Run a validator node and earn block rewards (1 NAKt per block).
 | Parameter | Value |
 |-----------|-------|
 | **Chain ID** | 86137 (0x15079) |
-| **Symbol** | NAKt |
+| **Symbol** | $tNAK |
 | **Decimals** | 18 |
 | **Block Time** | 2 seconds |
 | **Genesis** | April 24, 2026 |
@@ -164,4 +164,4 @@ Run a validator node and earn block rewards (1 NAKt per block).
 
 ---
 
-_Last updated: May 3, 2026_
+_Last Updated: August 27, 2026_

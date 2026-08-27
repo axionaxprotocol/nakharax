@@ -79,7 +79,7 @@ const APPS: AppItem[] = [
   {
     id: "faucet",
     name: "Testnet Faucet",
-    badge: "Instant 1,000 $NAKt",
+    badge: "Instant 100 $tNAK",
     category: ["popular", "tools"],
     description: "Instant testnet token dispenser for developers, operators, and compute jobs.",
     href: "/apps/faucet",
@@ -327,7 +327,7 @@ export function HomeQuickHub() {
               Chain 86137
             </span>
           </div>
-          <h3 className="mt-3 text-base font-bold text-white">Claim Testnet $NAKt</h3>
+          <h3 className="mt-3 text-base font-bold text-white">Claim Testnet $tNAK</h3>
           <p className="mt-1 text-xs text-slate-300">Get free tokens for gas, staking, and compute jobs.</p>
           <button
             onClick={handleQuickFaucet}
@@ -342,17 +342,17 @@ export function HomeQuickHub() {
             {faucetClaiming ? (
               <>
                 <RefreshCw size={12} className="animate-spin" />
-                <span>Claiming 1,000 $NAKt...</span>
+                <span>Claiming 100 $tNAK...</span>
               </>
             ) : faucetClaimed ? (
               <>
                 <Check size={12} className="text-emerald-400" />
-                <span>+1,000 $NAKt Claimed!</span>
+                <span>+100 $tNAK Claimed!</span>
               </>
             ) : (
               <>
                 <Zap size={12} />
-                <span>1-Click Claim (Free)</span>
+                <span>1-Click Claim (+100 $tNAK)</span>
               </>
             )}
           </button>

@@ -2,7 +2,7 @@
 
 Version: 1.9.0-testnet
 
-Last Updated: May 3, 2026
+Last Updated: August 27, 2026
 
 ## Testnet Endpoints
 

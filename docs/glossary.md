@@ -3,35 +3,35 @@
 > **Technical Terms & Definitions** — Reference for developers and users
 
 **Last Updated**: May 3, 2026  
-**Version**: v1.9.0-testnet
+**Version**: v2.0.0-testnet
 
 ---
 
 ## A
 
-### ASR (Auto Selection Router)
+### ASR (Auto-Selection Router)
 **Type**: Core Component  
-Top-K weighted VRF-based router for assigning compute jobs to workers. Uses K=64 with max_quota=12.5% per worker.
+Top-K weighted VRF-based router for assigning DeAI compute jobs to GPU workers. Uses K=64 (range: 32–256) with max_quota=15.0% per worker to prevent centralization and ε=5% exploratory newcomer routing.
 
-### NAK
-**Type**: Token  
-Native utility token of Nakharax protocol. Mainnet: 1 trillion supply. Testnet (NAKt): 1 billion supply.
+### $NAK
+**Type**: Native Sovereign Token  
+The native gas, staking, and settlement token of NakharaX Protocol. Mainnet fixed supply cap: **1,000,000,000,000 $NAK (1 Trillion)** with 18 decimals.
 
-### NAKt
-**Type**: Token  
-Testnet version of NAK token. Used for testing purposes only, no real value.
+### $tNAK
+**Type**: Testnet Utility Token  
+Testnet version of the $NAK token (Chain ID 86137). Used exclusively for testnet benchmarking, faucet distribution, and compute escrow testing.
 
 ---
 
 ## B
 
-### Block Time
+### Block Time (Cadence)
 **Type**: Network Parameter  
-Target time between blocks. Testnet: ~2 seconds.
+Pipelined block interval between consensus states. Standardized at **1.0 second (1,000ms)** for sub-second transaction finality.
 
 ### Bootnode
 **Type**: Network Node  
-Entry point for new nodes joining the P2P network. Advertises other peers via DHT.
+Entry point for new nodes joining the decentralized P2P network. Discovers and advertises peers via Kademlia DHT routing table.
 
 ---
 
@@ -39,13 +39,13 @@ Entry point for new nodes joining the P2P network. Advertises other peers via DH
 
 ### Chain ID
 **Type**: Network Parameter  
-Unique identifier for the blockchain network.
-- Testnet: `86137` (0x15079)
-- Mainnet (planned): `86150`
+EIP-155 unique identifier for EVM transaction replay protection.
+- Public Testnet: `86137` (`0x15079`)
+- Mainnet: `86150`
 
 ### Consensus
 **Type**: Protocol Mechanism  
-**PoPC (Proof of Probabilistic Consensus)** — Sampling-based validation with s=1000, confidence=0.99
+**PoPC (Proof of Practical Compute)** — Hybrid consensus combining BFT Byzantine Fault Tolerant state replication with verifiable off-chain AI compute verification (STARK FRI 1,024 constraints with stratified sampling s=1,000).
 
 ### Core Universe
 **Type**: Domain  
@@ -81,11 +81,11 @@ Error-correcting code for data redundancy. Reed-Solomon and Fountain codes under
 
 ### Faucet
 **Type**: Service  
-Distributes free testnet tokens (NAKt). Rate limited: 1,000 NAKt per address per day.
+Distributes free testnet tokens ($tNAK). Rate limited: **100 $tNAK** per request with 12h cooldown per address.
 
 ### Finality
 **Type**: Network Property  
-Time until transaction is considered irreversible. Current testnet: ~2–5s (1-block confirmation).
+Time until transaction is considered cryptographically irreversible. Standardized at **1.0 second** (sub-second fast finality via BFT block pipeline).
 
 ---
 
@@ -153,7 +153,7 @@ Software running Nakharax protocol. Types: Validator, RPC, Full, Light, Worker.
 **Type**: Network Participant  
 Another node connected via P2P protocol on port 30303 (TCP + QUIC).
 
-### PoPC (Proof of Probabilistic Consensus)
+### PoPC (Proof of Practical Compute (PoPC))
 **Type**: Consensus Algorithm  
 Core validation mechanism using stratified sampling (s=1000) with 99% confidence.
 
@@ -191,7 +191,7 @@ Economical punishment for validator misbehavior (disabled on testnet).
 
 ### Staking
 **Type**: Economics  
-Locking NAK tokens to participate in consensus. Min: 10,000 NAK (mainnet), 1,000 NAKt (testnet).
+Locking NAK tokens to participate in consensus. Min: 10,000 NAK (mainnet), 1,000 $tNAK (testnet).
 
 ---
 
@@ -255,7 +255,7 @@ Ability to upgrade without stopping the network.
 | EC | Erasure Coding | Technology |
 | HYDRA | High-Performance Validator | Node Type |
 | NPU | Neural Processing Unit | Hardware |
-| PoPC | Proof of Probabilistic Consensus | Consensus |
+| PoPC | Proof of Practical Compute (PoPC) | Consensus |
 | PPC | Posted Price Controller | Economics |
 | P2P | Peer-to-Peer | Network |
 | RPC | Remote Procedure Call | API |
@@ -273,4 +273,4 @@ Ability to upgrade without stopping the network.
 
 ---
 
-_Last updated: May 3, 2026_
+_Last Updated: August 27, 2026_

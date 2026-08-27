@@ -31,16 +31,17 @@ def main():
 
     # Named known roles
     account_labels = {
-        "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266": "Genesis Deployer / Founder 1",
-        "0x70997970C51812dc3A010C7d01b50e0d17dc79C8": "Core Validator Node (AU-01)",
-        "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC": "DeAI Worker Pool Escrow",
-        "0x90F79bf6EB2c4f870365E785982E1f101E93b906": "Faucet Treasury Pool",
-        "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65": "Ecosystem Community Vault",
-        "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc": "DePIN Staking Yield Pool",
-        "0x976EA74026E726554dB657fA54763abd0C3a0aa9": "NOESIS-VX Agent Treasury",
-        "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955": "Hydra Slashing Insurance Pool",
-        "0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f": "PoPC Miner Reward Fund",
-        "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720": "Strategic Liquidity Reserve",
+        "0x0000000000000000000000000000000000000001": "Node-01: Frankfurt Genesis Validator (EU)",
+        "0x0000000000000000000000000000000000000002": "Node-02: Sydney Master Hub & Faucet (AU)",
+        "0x0000000000000000000000000000000000000003": "Node-05: Singapore Genesis Validator (SG)",
+        "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": "Node-07: Localhost Sovereign Rig (Founder #0)",
+        "0x70997970c51812dc3a010c7d01b50e0d17dc79c8": "Node-04: Tokyo GPU Worker RTX 4090 (JP)",
+        "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc": "Node-03: Virginia PyTorch Worker A40 (US)",
+        "0x90f79bf6eb2c4f870365e785982e1f101e93b906": "Node-06: London ZK State Auditor (UK)",
+        "0x15d34aaf54267db7d7c367839aaf71a00a2c6a65": "Ecosystem Community Treasury",
+        "0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f": "DAO Ecosystem & Protocol Reserve Treasury Vault",
+        "0x9965507d1a55bcc2695c58ba16fb37d819b0a4df": "DePIN Staking Yield Reserve",
+        "0x976ea74026e726554db657fa54763abd0c3a0aa9": "NOESIS-VX Autonomous Agent Vault",
     }
 
     for i, addr in enumerate(accounts):
@@ -48,10 +49,14 @@ def main():
         bal_wei = int(bal_hex, 16)
         bal_tnak = bal_wei / (10**18)
         nonce_hex = rpc('eth_getTransactionCount', [addr, 'latest'])
-        nonce = int(nonce_hex, 16)
+        clean_hex = str(nonce_hex).replace('0x', '') or '0'
+        try:
+            nonce = int(clean_hex, 16)
+        except Exception:
+            nonce = 0
         total_liquid += bal_tnak
 
-        label = account_labels.get(addr, f"Operator Account {i+1}")
+        label = account_labels.get(addr.lower(), f"Operator Account {i+1}")
         print(f"  [{i+1:<2}] {addr} | Nonce: {nonce:<3} | Balance: {bal_tnak:>14,.2f} $tNAK | ({label})")
 
     print("-" * 75)

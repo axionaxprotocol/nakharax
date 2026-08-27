@@ -168,11 +168,13 @@ class DeAIWorkerDaemon:
         print(f"  {C_BOLD}STARK FRI Proofs:{C_RESET}        {C_BOLD}{self.total_stark_fri_proofs}{C_RESET} (1,024 Constraints/Proof)")
         print(f"  {C_BOLD}Cumulative Mined Rewards:{C_RESET} {C_GREEN}{C_BOLD}+{self.cumulative_rewards_nak:.4f} $tNAK{C_RESET}")
         print(f"{C_DIM}───────────────────────────────────────────────────────────────────────────{C_RESET}")
+        merkle = latest_job.get('merkleRoot') or '0x00000000000000000000'
+        tx_hash = latest_job.get('txHash') or '0x00000000000000000000'
         print(f"  {C_BOLD}Latest On-Chain Receipt:{C_RESET}")
         print(f"    • Task:       {latest_job.get('model', 'DeAI-DeepSeek-R1')}")
-        print(f"    • Merkle ZK:  {latest_job.get('merkleRoot', '0x...')[:22]}...")
+        print(f"    • Merkle ZK:  {merkle[:22]}...")
         print(f"    • Compute:    {latest_job.get('executionTimeMs', 0)} ms")
-        print(f"    • Tx Hash:    {C_CYAN}{latest_job.get('txHash', '0x...')[:22]}...{C_RESET}")
+        print(f"    • Tx Hash:    {C_CYAN}{tx_hash[:22]}...{C_RESET}")
         print(f"{C_DIM}───────────────────────────────────────────────────────────────────────────{C_RESET}")
         print(f"  {C_GREEN}● LISTENING FOR NEXT ON-CHAIN DEAI COMPUTE TASK...{C_RESET} (Press Ctrl+C to stop)")
 

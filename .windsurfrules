@@ -62,3 +62,16 @@ It is critical to maintain separation of concerns and avoid mixing contexts betw
 - ไม่ต้องมีคำขึ้นต้นประเภท "Certainly!", "I can help with that", หรือ "Here is the code" 
 - เริ่มต้นด้วยการบอกปัญหา (ถ้ามี) ตามด้วยแนวทางแก้ไข และจบด้วยโค้ดที่ปรับปรุงแล้ว
 - ถ้ามี Trade-off (ข้อดีข้อเสียที่ต้องแลก) ระหว่างความเร็วในการเขียนกับการสเกลระบบ ต้องบอกฉันเสมอ
+
+# 5. NakharaX Protocol Reality Invariants & Anti-Hallucination Sentinel
+- **Strict Isolation:** NakharaX Protocol คือ Layer-1 DeAI Compute Marketplace บริสุทธิ์ ห้ามนำโปรเจกต์ภายนอก (XpFirm / MT5 Prop Firm) มาปนใน NakharaX เด็ดขาด
+- **Canonical Ground Truth:**
+  - Chain ID: `86137` (`0x15079`)
+  - Native Token: `$tNAK` (Testnet) / `$NAK` (Mainnet) | Decimals: 18 | Cap: 1,000,000,000,000 (1 Trillion)
+  - 7 Canonical Mesh Nodes: Frankfurt, Sydney, Virginia, Tokyo, Singapore, London, Localhost (100% BFT Quorum)
+  - Citadel Staking APY: 8.40% | Faucet: 100 $tNAK per claim
+- **Governance Upgrades:**
+  - Minimum proposal stake: 100,000 NAK
+  - Anti-flashloan: Snapshot block = `proposal_created_block - 1`
+  - Upgrade threshold: 20% Quorum, 75% Supermajority approval, 7-Day Security Timelock
+- **Truth Verification:** รัน `pnpm reality:check` เพื่อตรวจสอบความถูกต้องระดับ 100% Truth Score เสมอ

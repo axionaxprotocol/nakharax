@@ -12,9 +12,9 @@
 | --- | --- |
 | **เวอร์ชัน (Version)** | 3.3 (August 2026 Edition — Pre-Mainnet Genesis) |
 | **สถานะโครงข่าย (Network Status)** | Testnet Active (Chain ID: `86137` / `0x15079`) \| Mainnet Target (`86150`) |
-| **เหรียญประจำเครือข่าย (Native Token)** | **$NAK** (18 Decimals) \| Testnet Token: **$tNAK** / **$NAKt** |
+| **เหรียญประจำเครือข่าย (Native Token)** | **$NAK** (18 Decimals) \| Testnet Token: **$tNAK** / **$tNAK** |
 | **ระยะเวลาต่อบล็อก (Block Time)** | ~2.88 – 3.00 วินาที (P95 Constant Cadence) |
-| **กลไกฉันทามติ (Consensus)** | **PoPC** (Proof of Probabilistic Checking, $s=1000$, $\alpha=0.99$) |
+| **กลไกฉันทามติ (Consensus)** | **PoPC** (Proof of Practical Compute (PoPC), $s=1000$, $\alpha=0.99$) |
 | **ใบอนุญาตซอฟต์แวร์ (License)** | AGPLv3 (Core Engine) / MIT (Tooling & SDK) |
 | **เว็บไซต์ & แดชบอร์ดหลัก** | [nakharax.com](https://nakharax.com) \| [app.nakharax.com](https://app.nakharax.com) (Nakharax OS) |
 | **การเชื่อมต่อมาตรฐาน (Ports)** | P2P: `30303` \| RPC HTTP: `8545` \| WebSocket: `8546` \| OS Dashboard: `3030` |
@@ -25,7 +25,7 @@
 
 **Nakharax Protocol** เป็นเครือข่ายโครงสร้างพื้นฐานทางกายภาพแบบกระจายศูนย์ (DePIN) ที่เปลี่ยนทรัพยากรประมวลผลที่ไม่ได้ใช้งานจากฮาร์ดแวร์ระดับผู้บริโภค (Consumer Hardware) เช่น พีซี, เวิร์กสเตชัน, เครื่อง Mac และบอร์ด Edge NPU (เช่น Raspberry Pi + Hailo, Orange Pi, Arduino VENTUNO Q) ให้กลายเป็นโครงข่ายซูเปอร์คอมพิวเตอร์ระดับโลก สำหรับงานประมวลผล AI และงานวิจัยวิทยาศาสตร์ที่มีลักษณะอิสระต่อกัน (Embarrassingly-Parallel Workloads)
 
-โปรโตคอลใช้กลไกฉันทามติและการพิสูจน์ผลลัพธ์แบบ **Proof of Probabilistic Checking (PoPC)** ซึ่งตรวจสอบความถูกต้องของการประมวลผลผ่านการสุ่มตรวจทางสถิติ (Statistical Sampling) ช่วยลดความซับซ้อนในการตรวจสอบจาก $O(n)$ เหลือเพียง $O(s)$ ($s \ll n$) ทำให้การยืนยันผลลัพธ์งาน AI ขนาดใหญ่เกิดขึ้นบนบล็อกเชนได้จริงโดยไม่ต้องรันซ้ำทั้งหมด พร้อมเชื่อมต่อเข้ากับ **Model Context Protocol (MCP)** และระบบรักษาความปลอดภัยอัตโนมัติด้วย **DeAI 7-Sentinels Shield**
+โปรโตคอลใช้กลไกฉันทามติและการพิสูจน์ผลลัพธ์แบบ **Proof of Practical Compute (PoPC) (PoPC)** ซึ่งตรวจสอบความถูกต้องของการประมวลผลผ่านการสุ่มตรวจทางสถิติ (Statistical Sampling) ช่วยลดความซับซ้อนในการตรวจสอบจาก $O(n)$ เหลือเพียง $O(s)$ ($s \ll n$) ทำให้การยืนยันผลลัพธ์งาน AI ขนาดใหญ่เกิดขึ้นบนบล็อกเชนได้จริงโดยไม่ต้องรันซ้ำทั้งหมด พร้อมเชื่อมต่อเข้ากับ **Model Context Protocol (MCP)** และระบบรักษาความปลอดภัยอัตโนมัติด้วย **DeAI 7-Sentinels Shield**
 
 ---
 
@@ -99,7 +99,7 @@
 
 ### 3. กลไกฉันทามติ PoPC และการแก้ปัญหา Non-Deterministic AI Compute
 
-#### 3.1 หลักการทางคณิตศาสตร์ของ PoPC (Proof of Probabilistic Checking)
+#### 3.1 หลักการทางคณิตศาสตร์ของ PoPC (Proof of Practical Compute (PoPC))
 
 การคำนวณแบบเดิมบังคับให้โหนดตรวจสอบต้องรันซ้ำ 100% ทำให้สิ้นเปลืองพลังงานแบบ $O(n)$ Nakharax PoPC แบ่งงานเป็นชิ้นย่อยและสร้าง Merkle Tree จากผลลัพธ์ จากนั้นเปิดให้ Validator สุ่มตรวจสอบเพียง $s$ ตัวอย่าง ($s=1000$) โดยใช้ค่าสุ่มที่สร้างจาก **ECVRF**
 

@@ -46,7 +46,7 @@ export function LiveStatsSection({
       <StatCard
         label="Proof of Practical Compute"
         value="PoPC Fast-Finality"
-        hint="2.84s Block Cadence (Live)"
+        hint="1.0s Block Cadence (Live)"
         icon={<ShieldCheck size={18} />}
         tone="chain"
       />

@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm --filter nakharax-os-dashboard dev",
-    "dev:all": "concurrently \"pnpm mock-rpc\" \"pnpm dev\"",
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "pnpm --filter nakharax-os-dashboard dev",
+    "dev:all": "node scripts/dev.mjs",
     "build": "pnpm --filter @nakharax/contracts compile && pnpm --filter @nakharax/sdk build && pnpm --filter nakharax-os-dashboard build",
     "typecheck": "pnpm --filter @nakharax/sdk typecheck",
     "mock-rpc": "node services/core/ops/deploy/mock-rpc/server.js",
     "test": "pnpm --filter @nakharax/contracts test",
+    "testnet:simulate": "node scripts/simulate_live_testnet.mjs",
+    "worker": "python services/core/deai/worker_daemon.py",
+    "reality:check": "python scripts/reality_check.py",
     "contracts:compile": "pnpm --filter @nakharax/contracts compile",
     "contracts:test": "pnpm --filter @nakharax/contracts test"
   },

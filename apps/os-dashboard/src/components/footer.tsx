@@ -166,7 +166,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/apps/faucet" className="hover:text-amber-300 transition-colors flex items-center justify-between group">
-                  <span>Testnet Faucet (1,000 $NAKt)</span>
+                  <span>Testnet Faucet (+100 $tNAK)</span>
                   <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>

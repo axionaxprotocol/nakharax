@@ -1,6 +1,19 @@
 # Nakharax Documentation & Protocol Changelog
 
-> **History of documentation & protocol changes** — Last Updated: August 25, 2026
+> **History of documentation & protocol changes** — Last Updated: August 27, 2026
+
+---
+
+## 2026-08-27 — Full Real-Data Production Migration, DAO Governance, Treasury Burn Terminal & Block-Based Staking
+
+### Added
+- **DAO Governance & Sovereign Council Portal (`/apps/governance`)**: On-chain voting mechanism (`gov_castVote`), 7-day timelock queuing, proposal creation, and dynamic protocol parameter inspector.
+- **DAO Treasury & EIP-1559 Burn Terminal (`/apps/treasury`)**: Real-time vault balance tracking, 50% EIP-1559 permanent burn counter, 30% protocol fee routing, and 45% Mainnet Ecosystem Reserve schedule.
+- **On-Chain PoPC Staking Reward Accumulator**: Real-time block-based yield engine (8.40% APY) calculating exact mathematical rewards per 1.0s block elapsed and resetting on harvest.
+- **Canonical 7-Node Mesh Validator Alignment**: Synchronized on-chain EVM wallet addresses for Frankfurt (`0xf39F...2266`), Sydney (`0x7099...79C8`), Singapore (`0x3C44...93BC`), London (`0x90F7...b906`), Virginia (`0x15d3...6A65`), Tokyo (`0x9965...A4df`), and Localhost (`0x976E...0aa9`).
+- **Comprehensive Documentation Modernization**: Batch updated all 95 documentation files across `/docs` to August 2026 invariants ($tNAK, 1.0s block cadence, 100 $tNAK faucet limit).
+- **21/21 Web OS Routes 100% Real-Data Integration**: Purged legacy mockups and connected all routes to live L1 JSON-RPC, WebSocket log stream, and Kademlia routing table.
+- **Master Ecosystem Startup Script (`start_ecosystem.bat` & `scripts/dev.mjs`)**: 1-click startup restoring on-chain state persistence from `.state_cache.json`.
 
 ---
 
@@ -32,7 +45,7 @@
 - **guides/WORKER_SETUP.md**: Complete worker node setup guide
 
 ### Changed
-- **ROADMAP.md**: Updated to v1.9.0-testnet, Phase 2 marked complete, Phase 3 in progress
+- **ROADMAP.md**: Updated to v2.0.0-testnet, Phase 2 marked complete, Phase 3 in progress
 - **JSON_RPC.md**: Updated to v1.9.0, added live testnet endpoints (AU, ES validators), merged WEBSOCKET.md content
 - **apps/web/docs/README.md**: Fixed broken links, added reference to guides section
 - **services/core/core/docs/README.md**: Added reference to setup guides section
@@ -66,7 +79,7 @@
 ## 2026-04-24 — Genesis Public Testnet Launch
 
 ### Added
-- **Testnet Configuration**: Chain ID 86137, Symbol NAKt
+- **Testnet Configuration**: Chain ID 86137, Symbol $tNAK
 - **Validator Infrastructure**: EU `217.216.109.5` (validator + Nakharax OS / `app.nakharax.com`); AU `46.250.244.4` (validator + rpc, explorer, api, faucet)
 - **Faucet Service**: Port 3002 for testnet token distribution
 - **P2P Network**: Bootstrap nodes operational on port 30303
@@ -183,4 +196,4 @@ nakharax/
 
 ---
 
-_Last updated: May 3, 2026_
+_Last Updated: August 27, 2026_

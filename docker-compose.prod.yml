@@ -87,6 +87,25 @@ services:
     networks:
       - nakharax-mesh
 
+  # ===========================================================================
+  # 6. Web Terminal & OS Dashboard (Next.js 14 Standalone Production)
+  # ===========================================================================
+  web-os:
+    build:
+      context: .
+      dockerfile: apps/os-dashboard/Dockerfile
+    container_name: nakharax-web-os
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com
+      - NEXT_PUBLIC_CHAIN_ID=86137
+    depends_on:
+      - nakharax-genesis-node
+    networks:
+      - nakharax-mesh
+
 volumes:
   caddy_data:
   caddy_config:

@@ -60,7 +60,7 @@ export interface InstitutionalNode {
   };
 }
 
-const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
+const INSTITUTIONAL_7_NODES: InstitutionalNode[] = [
   {
     id: "node-au-01",
     name: "Master Compute Hub & Database",
@@ -80,11 +80,11 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
       peerId: "12D3KooWSmJgK7yEa8ZfL19c4d2e1a3b5c7b1e2a3d4f5e6a7b8c",
       multiaddr: "/ip4/46.250.x.x/tcp/30303/p2p/12D3KooW...",
       protocol: "libp2p/kad/1.0.0",
-      latencyMs: 2.1,
-      jitterMs: 0.2,
+      latencyMs: 128.4,
+      jitterMs: 1.2,
     },
     consensus: {
-      votingWeight: "20.0% (1/5)",
+      votingWeight: "14.28% (1/7)",
       bftStatus: "HEALTHY",
       blockHeight: 2580,
       tps: 34.8,
@@ -100,9 +100,9 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
     coordinates: [8.6821, 50.1109],
     provider: "OVHcloud VPS-1 NVMe",
     hardware: {
-      vcpu: 2,
-      ramGb: 4,
-      storage: "40 GB NVMe",
+      vcpu: 8,
+      ramGb: 16,
+      storage: "500 GB NVMe",
       antiDdos: "OVHcloud VAC (TB/s Multi-Tier)",
     },
     p2p: {
@@ -113,7 +113,7 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
       jitterMs: 0.8,
     },
     consensus: {
-      votingWeight: "20.0% (1/5)",
+      votingWeight: "14.28% (1/7)",
       bftStatus: "VALIDATING",
       blockHeight: 2580,
       tps: 42.0,
@@ -121,57 +121,57 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
   },
   {
     id: "node-us-01",
-    name: "Genesis Validator #2 & DeAI Worker",
+    name: "Genesis Validator #2 & DeAI Worker (A40)",
     code: "NA-US-01",
     role: "DEAI_WORKER",
     countryName: "United States of America",
     region: "Virginia (US-East)",
     coordinates: [-78.4769, 38.0307],
-    provider: "OVHcloud VPS-1 NVMe",
+    provider: "NVIDIA A40 GPU Cloud",
     hardware: {
-      vcpu: 2,
-      ramGb: 4,
-      storage: "40 GB NVMe",
-      antiDdos: "OVHcloud VAC Hardware Guard",
+      vcpu: 32,
+      ramGb: 64,
+      storage: "1 TB NVMe",
+      antiDdos: "Enterprise Hardware Guard",
     },
     p2p: {
       peerId: "12D3KooWTz5xM9qP2bK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1f2",
       multiaddr: "/ip4/142.44.x.x/tcp/30303/p2p/12D3KooW...",
       protocol: "libp2p/kad/1.0.0",
-      latencyMs: 28.4,
-      jitterMs: 1.1,
+      latencyMs: 165.2,
+      jitterMs: 1.4,
     },
     consensus: {
-      votingWeight: "20.0% (1/5)",
+      votingWeight: "14.28% (1/7)",
       bftStatus: "VALIDATING",
       blockHeight: 2580,
-      tps: 38.2,
+      tps: 48.6,
     },
   },
   {
     id: "node-sg-01",
-    name: "Genesis Validator #3 & DeAI Worker",
+    name: "Genesis Validator #3 & Edge Worker",
     code: "AP-SG-01",
-    role: "DEAI_WORKER",
+    role: "PRIMARY_VALIDATOR",
     countryName: "Singapore",
     region: "Singapore (AP-East)",
     coordinates: [103.8198, 1.3521],
-    provider: "OVHcloud VPS-1 NVMe",
+    provider: "Singapore Edge Hub",
     hardware: {
-      vcpu: 2,
-      ramGb: 4,
-      storage: "40 GB NVMe",
+      vcpu: 8,
+      ramGb: 16,
+      storage: "250 GB NVMe",
       antiDdos: "OVHcloud VAC Hardware Guard",
     },
     p2p: {
       peerId: "12D3KooWLy7rN2bP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1f2",
       multiaddr: "/ip4/139.99.x.x/tcp/30303/p2p/12D3KooW...",
       protocol: "libp2p/gossipsub/1.2.0",
-      latencyMs: 18.2,
+      latencyMs: 46.2,
       jitterMs: 0.6,
     },
     consensus: {
-      votingWeight: "20.0% (1/5)",
+      votingWeight: "14.28% (1/7)",
       bftStatus: "VALIDATING",
       blockHeight: 2580,
       tps: 39.5,
@@ -179,31 +179,89 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
   },
   {
     id: "node-uk-01",
-    name: "Genesis Validator #4 & Security Auditor",
+    name: "Genesis Validator #4 & ZK State Auditor",
     code: "EU-UK-01",
     role: "SECURITY_AUDITOR",
     countryName: "United Kingdom",
     region: "London (EU-West)",
     coordinates: [-0.1278, 51.5074],
-    provider: "OVHcloud VPS-1 NVMe",
+    provider: "Dedicated ZK Auditor VPS",
     hardware: {
-      vcpu: 2,
-      ramGb: 4,
-      storage: "40 GB NVMe",
-      antiDdos: "OVHcloud VAC Hardware Guard",
+      vcpu: 12,
+      ramGb: 32,
+      storage: "1 TB NVMe",
+      antiDdos: "Dedicated ZK Hardware Shield",
     },
     p2p: {
       peerId: "12D3KooWPq9xM1rP4yD4c1b2e3a7f9c8b4d2e1a5a9c8e7f1b2d3",
       multiaddr: "/ip4/51.38.x.x/tcp/30303/p2p/12D3KooW...",
       protocol: "libp2p/kad/1.0.0",
-      latencyMs: 16.0,
-      jitterMs: 0.5,
+      latencyMs: 172.0,
+      jitterMs: 0.9,
     },
     consensus: {
-      votingWeight: "20.0% (1/5)",
+      votingWeight: "14.28% (1/7)",
       bftStatus: "VALIDATING",
       blockHeight: 2580,
       tps: 36.1,
+    },
+  },
+  {
+    id: "node-jp-01",
+    name: "Tokyo GPU Accelerated Compute (RTX 4090)",
+    code: "AP-JP-01",
+    role: "DEAI_WORKER",
+    countryName: "Japan",
+    region: "Tokyo (AP-Northeast)",
+    coordinates: [139.6917, 35.6895],
+    provider: "RunPod Dedicated RTX 4090",
+    hardware: {
+      vcpu: 16,
+      ramGb: 32,
+      storage: "500 GB NVMe",
+      antiDdos: "NVIDIA Tensor Core Guard",
+    },
+    p2p: {
+      peerId: "12D3KooWVa8B2kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1",
+      multiaddr: "/ip4/153.120.x.x/tcp/30303/p2p/12D3KooW...",
+      protocol: "libp2p/kad/1.0.0",
+      latencyMs: 82.1,
+      jitterMs: 0.7,
+    },
+    consensus: {
+      votingWeight: "14.28% (1/7)",
+      bftStatus: "VALIDATING",
+      blockHeight: 2580,
+      tps: 44.0,
+    },
+  },
+  {
+    id: "node-loc-01",
+    name: "Localhost Sovereign Rig (Operator Terminal)",
+    code: "LOC-TH-01",
+    role: "MASTER_HUB",
+    countryName: "Thailand",
+    region: "Local Development Rig",
+    coordinates: [100.5018, 13.7563],
+    provider: "Local Host CPU/GPU",
+    hardware: {
+      vcpu: 16,
+      ramGb: 32,
+      storage: "2 TB NVMe",
+      antiDdos: "Localhost Sovereign Shield",
+    },
+    p2p: {
+      peerId: "12D3KooWLoc77kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1",
+      multiaddr: "/ip4/127.0.0.1/tcp/8545/p2p/12D3KooW...",
+      protocol: "libp2p/kad/1.0.0",
+      latencyMs: 1.0,
+      jitterMs: 0.1,
+    },
+    consensus: {
+      votingWeight: "14.28% (1/7)",
+      bftStatus: "HEALTHY",
+      blockHeight: 2580,
+      tps: 52.4,
     },
   },
 ];
@@ -211,16 +269,20 @@ const INSTITUTIONAL_5_NODES: InstitutionalNode[] = [
 const MESH_CONNECTIONS: Array<[number, number]> = [
   [0, 1], // AU <-> EU
   [0, 3], // AU <-> SG
+  [0, 5], // AU <-> JP
   [1, 2], // EU <-> US
   [1, 4], // EU <-> UK
   [2, 4], // US <-> UK
-  [2, 3], // US <-> SG
-  [3, 1], // SG <-> EU
+  [2, 5], // US <-> JP
+  [3, 5], // SG <-> JP
+  [3, 6], // SG <-> TH/Local
+  [5, 6], // JP <-> TH/Local
+  [1, 6], // EU <-> TH/Local
 ];
 
 export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number }) {
   const [mounted, setMounted] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<InstitutionalNode>(INSTITUTIONAL_5_NODES[0]);
+  const [selectedNode, setSelectedNode] = useState<InstitutionalNode>(INSTITUTIONAL_7_NODES[0]);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [isAuditing, setIsAuditing] = useState(false);
   const [auditTimestamp, setAuditTimestamp] = useState<string>("T-0 REAL-TIME CONSENSUS SYNCHRONIZED");
@@ -228,8 +290,8 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
   // Simulated live telemetry stream packets
   const [telemetryLogs, setTelemetryLogs] = useState<string[]>([
     `[GOSSIPSUB] AP-AU-01 ──» EU-DE-01 (PoPC Block #${liveBlock} Verified · 14.5ms)`,
-    `[ZKP-STARK] NA-US-01 ──» AP-SG-01 (1,024 Constraints Confirmed · 18.2ms)`,
-    `[QUORUM-SIG] EU-UK-01 ──» AP-AU-01 (Deterministic State Root Signed · 16.0ms)`,
+    `[ZKP-STARK] NA-US-01 ──» AP-JP-01 (1,024 Constraints Confirmed · 82.1ms)`,
+    `[QUORUM-SIG] EU-UK-01 ──» LOC-TH-01 (Deterministic State Root Signed · 1.0ms)`,
   ]);
 
   useEffect(() => {
@@ -237,9 +299,9 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
     const interval = setInterval(() => {
       const msgs = [
         `[POPC-BATCH] AP-AU-01 ──» NA-US-01 (Mining Receipt Mined · 28.4ms · 0.00% Loss)`,
-        `[ZKP-STARK] AP-SG-01 ──» EU-DE-01 (FRI Layer LDE Proved · 18.2ms · 441 M-Ops)`,
+        `[ZKP-STARK] AP-SG-01 ──» AP-JP-01 (FRI Layer LDE Proved · 82.1ms · 441 M-Ops)`,
         `[GOSSIPSUB] EU-DE-01 ──» EU-UK-01 (EIP-1559 BaseFee 1.2 Gwei Propagated)`,
-        `[BYZANTINE] AP-AU-01 ──» AP-SG-01 (5/5 Weighted Quorum Confirmed · 100% OK)`,
+        `[BYZANTINE] LOC-TH-01 ──» AP-SG-01 (7/7 Weighted Quorum Confirmed · 100% OK)`,
       ];
       const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
       setTelemetryLogs((prev) => [randomMsg, prev[0], prev[1]]);
@@ -248,12 +310,12 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
   }, [liveBlock]);
 
   // Map country name to node
-  const activeCountries = INSTITUTIONAL_5_NODES.map((n) => n.countryName);
+  const activeCountries = INSTITUTIONAL_7_NODES.map((n) => n.countryName);
 
   function triggerConsensusAudit() {
     setIsAuditing(true);
     setTimeout(() => {
-      setAuditTimestamp(`AUDIT PASS: 5/5 SIGNATURES VERIFIED AT BLOCK #${liveBlock}`);
+      setAuditTimestamp(`AUDIT PASS: 7/7 SIGNATURES VERIFIED AT BLOCK #${liveBlock}`);
       setIsAuditing(false);
     }, 500);
   }
@@ -335,10 +397,10 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-mono font-bold tracking-wider text-white uppercase">
-                  NAKHARAX L1 CONSENSUS RADAR · 5-NODE HYBRID QUORUM
+                  NAKHARAX L1 CONSENSUS RADAR · 7-NODE GLOBAL MESH QUORUM
                 </h3>
                 <span className="rounded border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-300">
-                  BFT QUORUM 100%
+                  BFT QUORUM 7/7 (100%)
                 </span>
               </div>
               <p className="text-[10.5px] font-mono text-slate-400">
@@ -402,7 +464,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 geographies.map((geo) => {
                   const countryName = geo.properties.name;
                   const isNodeHost = activeCountries.includes(countryName);
-                  const matchingNode = INSTITUTIONAL_5_NODES.find(
+                  const matchingNode = INSTITUTIONAL_7_NODES.find(
                     (n) => n.countryName === countryName
                   );
                   const isSelected =
@@ -452,8 +514,8 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
 
             {/* ⚡ High-Tech Double-Layer Laser Beam Mesh Lines */}
             {MESH_CONNECTIONS.map(([fromIdx, toIdx], idx) => {
-              const n1 = INSTITUTIONAL_5_NODES[fromIdx];
-              const n2 = INSTITUTIONAL_5_NODES[toIdx];
+              const n1 = INSTITUTIONAL_7_NODES[fromIdx];
+              const n2 = INSTITUTIONAL_7_NODES[toIdx];
               const isHighlighted =
                 selectedNode.id === n1.id || selectedNode.id === n2.id;
 
@@ -487,7 +549,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             })}
 
             {/* 🎯 5 Institutional Node Markers with Triple Sonar Radar Waves */}
-            {INSTITUTIONAL_5_NODES.map((node) => {
+            {INSTITUTIONAL_7_NODES.map((node) => {
               const isSelected = selectedNode.id === node.id;
 
               return (
@@ -612,7 +674,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.06] text-slate-300">
-              {INSTITUTIONAL_5_NODES.map((node) => {
+              {INSTITUTIONAL_7_NODES.map((node) => {
                 const isSelected = selectedNode.id === node.id;
                 return (
                   <tr

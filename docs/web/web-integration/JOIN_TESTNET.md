@@ -1,6 +1,6 @@
 # How to Join NakharaX Testnet 🚀
 
-**Version**: v1.9.0-testnet (Genesis Public Testnet)  
+**Version**: v2.0.0-testnet (Genesis Public Testnet)  
 **Last Updated**: April 24, 2026  
 **Language**: English (International Standard) 🌐
 

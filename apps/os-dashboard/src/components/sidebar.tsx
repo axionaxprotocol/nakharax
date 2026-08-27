@@ -11,6 +11,7 @@ import {
   Settings,
   Activity,
   Terminal,
+  Vote,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
@@ -19,6 +20,7 @@ const NAV = [
   { href: "/nodes", label: "Nodes", icon: Server },
   { href: "/jobs", label: "Jobs", icon: Briefcase },
   { href: "/apps", label: "Apps", icon: Boxes },
+  { href: "/apps/governance", label: "DAO Governance", icon: Vote },
   { href: "/wallet", label: "Wallet", icon: Wallet },
   { href: "/activity", label: "Activity", icon: Activity },
   { href: "/logs", label: "Logs", icon: Terminal },
@@ -32,7 +34,11 @@ export function Sidebar() {
       <div className="glass rounded-2xl flex flex-col items-center gap-1 p-2">
         {NAV.map(({ href, label, icon: Icon }) => {
           const active =
-            href === "/" ? pathname === "/" : pathname?.startsWith(href);
+            href === "/"
+              ? pathname === "/"
+              : href === "/apps"
+              ? pathname === "/apps"
+              : pathname?.startsWith(href);
           return (
             <Link
               key={href}

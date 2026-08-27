@@ -1,8 +1,8 @@
-# NakharaX Protocol — Architecture Specification v1.9.0
+# NakharaX Protocol — Architecture Specification v2.0.0 (August 2026)
 
-This specification details the architectural components of the **NakharaX Protocol** (v1.9.0-testnet).
+This specification details the architectural components of the **NakharaX Protocol** (v2.0.0-testnet).
 
-**Last Updated:** May 3, 2026 | **Protocol Version:** v1.9.0-testnet
+**Last Updated:** May 3, 2026 | **Protocol Version:** v2.0.0-testnet
 
 ---
 
@@ -233,7 +233,7 @@ flowchart TB
 
 ---
 
-## 7) Recommended Protocol Parameters (v1.9.0)
+## 7) Recommended Protocol Parameters (v2.0.0 - August 2026)
 
 | Parameter | Recommended Value | Specification & Description |
 |---|---|---|

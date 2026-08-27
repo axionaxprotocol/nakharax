@@ -13,8 +13,9 @@ import { cn } from "@/lib/cn";
 const NAV_LINKS = [
   { href: "/", label: "Overview" },
   { href: "/jobs", label: "Compute" },
-  { href: "/activity/models", label: "Models" },
   { href: "/nodes", label: "Nodes" },
+  { href: "/wallet", label: "Wallet" },
+  { href: "/apps/governance", label: "Governance" },
   { href: "/apps", label: "Apps" },
   { href: "/activity", label: "Telemetry" },
 ];
@@ -88,6 +89,8 @@ export function MenuBar() {
                 const active =
                   href === "/"
                     ? pathname === "/"
+                    : href === "/apps"
+                    ? pathname === "/apps"
                     : href === "/activity"
                     ? pathname === "/activity" ||
                       (pathname?.startsWith("/activity/") &&

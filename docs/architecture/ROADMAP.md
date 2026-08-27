@@ -323,6 +323,6 @@ This roadmap is living document. We follow agile principles:
 
 ---
 
-**Last Updated**: May 3, 2026 | v1.9.0-testnet
+**Last Updated**: May 3, 2026 | v2.0.0-testnet
 
 **Next Review**: 2026-06-01

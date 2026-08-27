@@ -7,7 +7,7 @@
 > **Current Testnet Configuration:**
 >
 > - Testnet uses simplified token model for testing
-> - Total Supply: 1 Billion NAKt (for testing)
+> - Total Supply: 1 Billion $tNAK (for testing)
 > - No vesting implementation (immediate distribution)
 > - See [TOKENOMICS_TESTNET.md](./TOKENOMICS_TESTNET.md) for current testnet configuration
 
@@ -84,40 +84,52 @@ The NAK token is the native utility token of the nakharax protocol, designed to 
 - Quarterly unlocks
 - Transparency reports required
 
-## Emission Schedule
+## Emission Schedule & Mainnet Parameters (Ratified Option A)
 
-### Staking Rewards
+### Core Blockchain Cadence & Supply
+- **Total Supply**: 1,000,000,000,000 NAK (1 Trillion Fixed Cap)
+- **Block Cadence**: 1.0 second (1,000ms Pipelined Finality)
+- **Annual Block Count**: 31,536,000 blocks / year
+- **Ecosystem & Staking Reserve**: 45% (450,000,000,000 NAK)
 
-- **Target APY**: ~2.25%
-- **Source**: Ecosystem Reserve
-- **Distribution**: Proportional to stake and performance
-- **Adjustments**: DAO-governed based on network participation
+### Mainnet Block Reward & Emission Model (Option A)
+- **Genesis Block Reward**: **1,000 NAK / block**
+- **Daily Emission**: 86,400,000 NAK / day
+- **Annual Initial Emission**: 31,536,000,000 NAK / year (~3.15% of Total Supply)
+- **Emission Duration**: ~14.2 years without halving (25+ years with 4-year halving schedule)
 
-### Reward Distribution
+### Halving Schedule (4-Year Epoch Cycles)
+- **Epoch 1 (Year 1–4)**: 1,000 NAK / block (~31.536B NAK / year)
+- **Epoch 2 (Year 5–8)**: 500 NAK / block (~15.768B NAK / year)
+- **Epoch 3 (Year 9–12)**: 250 NAK / block (~7.884B NAK / year)
+- **Epoch 4+ (Year 13+)**: Pure Fee Economy (90%+ revenue from DeAI 5% compute fee + Gas fees)
 
+### Staking & Compute Rewards Distribution Formula
 ```
 Total Rewards per Epoch = Ecosystem Reserve × Emission Rate / Epochs per Year
 
 Validator Reward_i = (Stake_i / Total_Stake) × Total Rewards × Performance_i
-Worker Reward_i = Job_Value × (1 - Protocol_Fee) × Quality_Score_i
+Worker Reward_i = Job_Value × (1 - Protocol_Fee 5%) × Quality_Score_i
 ```
 
-### Performance Metrics
-
-- **Validators**: Uptime, vote participation, DA audit participation
-- **Workers**: PoPC pass rate, DA reliability, SLA compliance
+### Fee Split Invariant (Protocol 3-Tier Allocation)
+- **50% EIP-1559 BaseFee Burn**: Permanently burned from circulation.
+- **30% DAO Ecosystem Treasury**: Direct ingress to `0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f`.
+- **20% Validator Priority Yield**: Rewarded to block validator for transaction ordering.
 
 ## Economic Parameters (Governance-Controlled)
 
 | Parameter                   | Initial Value | Description                   |
 | --------------------------- | ------------- | ----------------------------- |
+| **Block Time**              | 1.0 second    | Pipelined consensus cadence   |
+| **Genesis Block Reward**    | 1,000 NAK     | Coinbase reward per block     |
 | **Validator Min Stake**     | 100,000 NAK   | Minimum to become validator   |
 | **Worker Stake Ratio**      | 10-20%        | Stake as % of job value       |
-| **Protocol Fee**            | 5%            | Fee on compute jobs           |
+| **Protocol Fee**            | 5%            | Fee on compute jobs (Treasury)|
 | **Slash Rate (Fraud)**      | 100%          | Penalty for proven fraud      |
 | **Slash Rate (DA Fail)**    | 50%           | Penalty for DA unavailability |
 | **Slash Rate (False PASS)** | 500 bp (5%)   | Validator voting wrong        |
-| **Emission Rate**           | 2.25% APY     | Annual staking yield target   |
+| **Annual Emission Rate**    | ~3.15%        | Annual staking yield target   |
 
 ## Token Flow Diagram
 

@@ -3,7 +3,7 @@
 > **Complete guide to setting up an Nakharax compute worker node**
 
 **Last Updated**: May 3, 2026  
-**Protocol Version**: v1.9.0-testnet
+**Protocol Version**: v2.0.0-testnet
 
 ---
 
@@ -14,7 +14,7 @@ This guide covers setting up a worker node on the Nakharax Compute Marketplace. 
 **Primary Reference**: See [`../architecture/NAKHARAX_PROTOCOL.md`](../architecture/NAKHARAX_PROTOCOL.md) for complete protocol architecture, including:
 - Core workflow: Post → Assign → Execute → Commit → DA Pre-commit → Wait k → Challenge → Prove → Verify → Seal → Fraud Window → Finalize
 - ASR (Auto-Selection Router) with K=64 and weighted VRF
-- PoPC (Proof of Probabilistic Checking) with s=1000 samples
+- PoPC (Proof of Practical Compute (PoPC)) with s=1000 samples
 - Data Availability requirements
 - Security and anti-fraud mechanisms
 
@@ -466,4 +466,4 @@ python worker_node.py start
 
 ---
 
-_Last updated: May 3, 2026_
+_Last Updated: August 27, 2026_

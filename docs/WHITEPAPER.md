@@ -15,7 +15,7 @@
 
 ## Abstract
 
-Nakharax is a DePIN (Decentralized Physical Infrastructure Network) that turns idle consumer hardware — PCs, Macs, Raspberry Pis — into a global compute grid for embarrassingly-parallel science and AI workloads. The protocol uses **Proof of Probabilistic Checking (PoPC)** — a consensus mechanism that verifies compute results through statistical sampling rather than full re-execution — to provide trustless verification at O(s) cost instead of O(n). The NAK token serves as the settlement and incentive layer: clients pay NAK for compute jobs, workers earn NAK for executing them, and validators stake NAK to secure the verification process. The blockchain is the trust and settlement rail, not the product; the product is cheap, verifiable compute.
+Nakharax is a DePIN (Decentralized Physical Infrastructure Network) that turns idle consumer hardware — PCs, Macs, Raspberry Pis — into a global compute grid for embarrassingly-parallel science and AI workloads. The protocol uses **Proof of Practical Compute (PoPC) (PoPC)** — a consensus mechanism that verifies compute results through statistical sampling rather than full re-execution — to provide trustless verification at O(s) cost instead of O(n). The NAK token serves as the settlement and incentive layer: clients pay NAK for compute jobs, workers earn NAK for executing them, and validators stake NAK to secure the verification process. The blockchain is the trust and settlement rail, not the product; the product is cheap, verifiable compute.
 
 The protocol is implemented, tested, and running on a live testnet. This paper describes the architecture as built, cites measured performance from the codebase, and distinguishes between what is shipping and what remains on the roadmap.
 
@@ -104,7 +104,7 @@ Client locks NAK in escrow
 
 ---
 
-## 3. Proof of Probabilistic Checking (PoPC)
+## 3. Proof of Practical Compute (PoPC) (PoPC)
 
 ### 3.1 Motivation
 
@@ -431,7 +431,7 @@ The protocol is active in development and local testnet environment (`Chain ID 8
 | Dashboard | `http://localhost:3030` (Planned: `https://app.nakharax.com`) |
 | Block time | ~3 seconds (3000ms cadence) |
 | Consensus | PoPC (s=1000, confidence=0.99) |
-| Token (testnet) | NAKt (1 Billion supply for testing) |
+| Token (testnet) | $tNAK (1 Billion supply for testing) |
 
 Anyone can run a full node or worker by cloning the repository and running `python3 scripts/join-nakharax.py`.
 

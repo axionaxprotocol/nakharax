@@ -70,7 +70,7 @@ export default function WalletPage() {
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed font-sans">
-            Mint liquid $sNAK by staking native gas tokens. Yield is distributed automatically per 3.0-second block via verifiable PoPC proofs.
+            Mint liquid $sNAK by staking native gas tokens. Yield is distributed automatically per 1.0-second block via verifiable PoPC proofs.
           </p>
         </Card>
 

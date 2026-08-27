@@ -25,7 +25,7 @@
 
 - Build **Universal Grid** that turns Edge devices (Raspberry Pi, PC, Mac) into AI compute nodes
 - Use **Geo-Hierarchy** architecture for geographic scaling
-- Verify correctness with **PoPC** (Proof of Probabilistic Checking)
+- Verify correctness with **PoPC** (Proof of Practical Compute (PoPC))
 
 ---
 
@@ -37,7 +37,7 @@
 | ----------------------- | -------------------------------------------------------------------------------------- |
 | **Repository**          | [nakharax](https://github.com/axionaxprotocol/nakharax)      |
 | **Languages**           | Rust (80% — Core Logic) + Python (20% — DeAI Layer)                                    |
-| **Consensus**           | PoPC (Proof of Probabilistic Checking)                                                 |
+| **Consensus**           | PoPC (Proof of Practical Compute (PoPC))                                                 |
 | **Verification**        | Statistical probabilistic checking instead of full re-execution — \(O(s)\) vs \(O(n)\) |
 | **Finality**            | ~2–5s (1-block confirmation on testnet)                                                |
 | **Validator Committee** | VRF (Verifiable Random Function) for selection                                         |
