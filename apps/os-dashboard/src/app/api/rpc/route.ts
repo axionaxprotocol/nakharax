@@ -2,17 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || "http://127.0.0.1:8545";
+const LOCAL_RPC = "http://127.0.0.1:8545";
+const DEFAULT_RPC = process.env.RPC_URL || process.env.NEXT_PUBLIC_RPC_URL || LOCAL_RPC;
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const res = await fetch(RPC_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      cache: "no-store",
-    });
+    
+    // First try default RPC, fallback to local node if unreachable
+    let res: Response;
+    try {
+      res = await fetch(DEFAULT_RPC, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        cache: "no-store",
+      });
+    } catch {
+      res = await fetch(LOCAL_RPC, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        cache: "no-store",
+      });
+    }
+
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {
@@ -22,3 +36,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
