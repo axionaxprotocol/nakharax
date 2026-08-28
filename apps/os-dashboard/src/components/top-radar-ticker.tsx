@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useLiveBlock } from "@/lib/use-live-block";
+import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 interface TopRadarTickerProps {
   initialBlock: number;
 }
 
 export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
-  const { blockNumber, isLive, latencyMs } = useLiveBlock();
+  const { blockNumber, isLive, latencyMs, totalActiveNodes, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
   const displayBlock = isLive && blockNumber > 0 ? blockNumber : (initialBlock > 0 ? initialBlock : 1000);
 
   return (
@@ -33,12 +33,14 @@ export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
           </span>
           <span>·</span>
           <span>
-            CADENCE: <strong className="text-emerald-300 font-bold">3.00s</strong>
+            CADENCE: <strong className="text-emerald-300 font-bold">1.00s</strong>
           </span>
           <span>·</span>
           <span>
-            BFT QUORUM:{" "}
-            <strong className="text-emerald-400 font-bold">7/7 NODES ACTIVE</strong>
+            BFT MESH:{" "}
+            <strong className="text-emerald-400 font-bold">
+              {totalActiveNodes} NODES ACTIVE {totalWorkersCount > 0 ? `(${totalWorkersCount} GPU WORKER${totalWorkersCount > 1 ? "S" : ""} · ${totalNetworkHashrateMops.toFixed(0)} M-Ops/s)` : ""}
+            </strong>
           </span>
           <span>·</span>
           <span>

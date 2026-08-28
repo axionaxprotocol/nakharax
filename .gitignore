@@ -34,6 +34,12 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# AI Models & State Cache
+models/
+*.gguf
+*.bin
+.state_cache.json
+
 # Agent Metadata
 .antigravitycli/
 .gemini/

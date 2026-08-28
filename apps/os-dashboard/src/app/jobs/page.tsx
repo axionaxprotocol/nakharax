@@ -29,7 +29,7 @@ import {
   StatCard,
   StatusPill,
 } from "@/components/card";
-import { useLiveBlock } from "@/lib/use-live-block";
+import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 const AVAILABLE_MODELS = [
   {
@@ -67,7 +67,7 @@ const AVAILABLE_MODELS = [
 ];
 
 export default function JobsPage() {
-  const { blockNumber, isLive, latencyMs } = useLiveBlock();
+  const { blockNumber, isLive, latencyMs, workersList, totalActiveNodes } = useNetworkMesh();
   const [activeAddress, setActiveAddress] = useState("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
   const [selectedModel, setSelectedModel] = useState("DeAI-DeepSeek-R1-8B");
   const [prompt, setPrompt] = useState("Perform formal mathematical proof verification for Byzantine Fault Tolerant PoPC consensus state transitions.");
@@ -141,7 +141,7 @@ export default function JobsPage() {
 4. Conclude: State transition holds deterministically under Byzantine adversarial conditions.`;
         finalContent = `FORMAL VERIFICATION RESULT: PASS (Score: 100% Deterministic)
 • Consensus Invariant: Validated across 5 active validators.
-• STARK FRI Polynomial Soundness: Verified within 142ms on NVIDIA RTX 4090 worker.
+• STARK FRI Polynomial Soundness: Verified within 142ms on NVIDIA RTX 4090 / GTX 1070 Ti worker.
 • Escrow Claim: Authorization signature generated and broadcast to JobMarketplaceStandalone contract.`;
       } else if (selectedModel === "DeAI-LLaMA-3.3-70B") {
         finalContent = `\`\`\`rust
@@ -162,12 +162,18 @@ pub fn verify_popc_proof(root: &[u8; 32], fri_commitments: &[[u8; 32]]) -> bool 
         finalContent = `[00:00.00 -> 00:03.42] "Initiating Nakharax DeAI compute cluster task."\n[00:03.42 -> 00:07.10] "Proof of Practical Compute verified across all edge worker nodes."`;
       }
 
+      const assignedWorkerName = data.result?.worker
+        ? `${data.result.worker.slice(0, 10)}... (LAN GPU Worker)`
+        : workersList.length > 0
+        ? `${workersList[0].name} (${workersList[0].address.slice(0, 10)}...)`
+        : "Auto-Routed Active Worker (PC-2 GTX 1070 Ti)";
+
       const receipt = {
         jobId,
         model: selectedModel,
         status: "COMPLETED_POPC",
         blockNumber: blockNumber,
-        assignedWorker: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8 (Validator EU)",
+        assignedWorker: assignedWorkerName,
         executionTimeMs: 142,
         escrowSettled: `${rewardNak} tNAK`,
         proofHash: `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`,

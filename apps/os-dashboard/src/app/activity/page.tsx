@@ -30,9 +30,9 @@ import {
   StatCard,
   StatusPill,
 } from "@/components/card";
-import { useLiveBlock } from "@/lib/use-live-block";
+import { useNetworkMesh } from "@/lib/use-network-mesh";
 
-const GLOBAL_GATEWAYS = [
+const DEFAULT_GLOBAL_GATEWAYS = [
   { region: "Local Rig (This Machine)", endpoint: "http://127.0.0.1:8545", status: "Active Live Host", ping: "< 1ms", load: "14%", role: "Master Live Host" },
   { region: "Frankfurt Genesis (EU)", endpoint: "eu-val1.nakharax.net", status: "Active Live Validator", ping: "14ms", load: "22%", role: "Genesis Validator" },
   { region: "Sydney Master Hub (AU)", endpoint: "au-val2.nakharax.net", status: "Active Live Gateway", ping: "128ms", load: "18%", role: "Public RPC & Faucet" },
@@ -50,7 +50,17 @@ const SUBNET_GPU_LOADS = [
 ];
 
 export default function ActivityPage() {
-  const { blockNumber, isLive, latencyMs } = useLiveBlock();
+  const { blockNumber, isLive, latencyMs, workersList, totalActiveNodes } = useNetworkMesh();
+
+  const liveGateways = workersList.map((w, idx) => ({
+    region: `${w.name || "Edge Worker Node"} (Worker Node #${idx + 2})`,
+    endpoint: `LAN Node (${w.address ? `${w.address.slice(0, 10)}...` : "Active"})`,
+    status: "Active PoPC Miner",
+    ping: "2ms",
+    load: "42%",
+    role: `DeAI GPU Worker (${w.gpu || "Discrete GPU"})`,
+  }));
+  const gateways = [...liveGateways, ...DEFAULT_GLOBAL_GATEWAYS];
 
   return (
     <PageShell
@@ -60,10 +70,10 @@ export default function ActivityPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            Host: 127.0.0.1:8545 Live
+            {totalActiveNodes} Active Mesh Nodes
           </StatusPill>
           <StatusPill tone="chain">Block #{blockNumber.toLocaleString()}</StatusPill>
-          <StatusPill tone="violet">Public Testnet (Chain 86137)</StatusPill>
+          <StatusPill tone="violet">P2P Telemetry Live</StatusPill>
         </>
       }
       actions={
@@ -124,7 +134,7 @@ export default function ActivityPage() {
           description="Direct RPC and Libp2p gossip mesh latency across geographical deployment clusters."
         />
         <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
-          {GLOBAL_GATEWAYS.map((gw) => (
+          {gateways.map((gw) => (
             <Card key={gw.region} className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">

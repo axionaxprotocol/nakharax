@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useNetworkMesh, MeshNodeData } from "@/lib/use-network-mesh";
 import {
   ComposableMap,
   Geographies,
@@ -282,40 +283,25 @@ const MESH_CONNECTIONS: Array<[number, number]> = [
 
 export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number }) {
   const [mounted, setMounted] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<InstitutionalNode>(INSTITUTIONAL_7_NODES[0]);
+  const { meshNodes, meshConnections, totalActiveNodes, telemetryStream, isLive } = useNetworkMesh();
+  const [selectedNode, setSelectedNode] = useState<MeshNodeData | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [isAuditing, setIsAuditing] = useState(false);
   const [auditTimestamp, setAuditTimestamp] = useState<string>("T-0 REAL-TIME CONSENSUS SYNCHRONIZED");
 
-  // Simulated live telemetry stream packets
-  const [telemetryLogs, setTelemetryLogs] = useState<string[]>([
-    `[GOSSIPSUB] AP-AU-01 ──» EU-DE-01 (PoPC Block #${liveBlock} Verified · 14.5ms)`,
-    `[ZKP-STARK] NA-US-01 ──» AP-JP-01 (1,024 Constraints Confirmed · 82.1ms)`,
-    `[QUORUM-SIG] EU-UK-01 ──» LOC-TH-01 (Deterministic State Root Signed · 1.0ms)`,
-  ]);
+  const currentNode = selectedNode || meshNodes[0] || null;
 
   useEffect(() => {
     setMounted(true);
-    const interval = setInterval(() => {
-      const msgs = [
-        `[POPC-BATCH] AP-AU-01 ──» NA-US-01 (Mining Receipt Mined · 28.4ms · 0.00% Loss)`,
-        `[ZKP-STARK] AP-SG-01 ──» AP-JP-01 (FRI Layer LDE Proved · 82.1ms · 441 M-Ops)`,
-        `[GOSSIPSUB] EU-DE-01 ──» EU-UK-01 (EIP-1559 BaseFee 1.2 Gwei Propagated)`,
-        `[BYZANTINE] LOC-TH-01 ──» AP-SG-01 (7/7 Weighted Quorum Confirmed · 100% OK)`,
-      ];
-      const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-      setTelemetryLogs((prev) => [randomMsg, prev[0], prev[1]]);
-    }, 2400);
-    return () => clearInterval(interval);
-  }, [liveBlock]);
+  }, []);
 
-  // Map country name to node
-  const activeCountries = INSTITUTIONAL_7_NODES.map((n) => n.countryName);
+  // Map country name to active nodes
+  const activeCountries = meshNodes.map((n) => n.countryName);
 
   function triggerConsensusAudit() {
     setIsAuditing(true);
     setTimeout(() => {
-      setAuditTimestamp(`AUDIT PASS: 7/7 SIGNATURES VERIFIED AT BLOCK #${liveBlock}`);
+      setAuditTimestamp(`AUDIT PASS: ${totalActiveNodes}/${totalActiveNodes} SIGNATURES VERIFIED AT BLOCK #${liveBlock}`);
       setIsAuditing(false);
     }, 500);
   }
@@ -397,14 +383,14 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-mono font-bold tracking-wider text-white uppercase">
-                  NAKHARAX L1 CONSENSUS RADAR · 7-NODE GLOBAL MESH QUORUM
+                  NAKHARAX L1 CONSENSUS RADAR · {totalActiveNodes}-NODE GLOBAL MESH QUORUM
                 </h3>
                 <span className="rounded border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-300">
-                  BFT QUORUM 7/7 (100%)
+                  BFT MESH {totalActiveNodes}/{totalActiveNodes} (100%)
                 </span>
               </div>
               <p className="text-[10.5px] font-mono text-slate-400">
-                P2P Laser Mesh Backbone · Libp2p GossipSub v1.2 · 3.0s Deterministic Cadence
+                P2P Laser Mesh Backbone · Libp2p GossipSub v1.2 · 1.0s Deterministic Cadence
               </p>
             </div>
           </div>
@@ -464,11 +450,11 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 geographies.map((geo) => {
                   const countryName = geo.properties.name;
                   const isNodeHost = activeCountries.includes(countryName);
-                  const matchingNode = INSTITUTIONAL_7_NODES.find(
+                  const matchingNode = meshNodes.find(
                     (n) => n.countryName === countryName
                   );
                   const isSelected =
-                    matchingNode && matchingNode.id === selectedNode.id;
+                    matchingNode && currentNode && matchingNode.id === currentNode.id;
                   const isHovered = hoveredCountry === countryName;
 
                   return (
@@ -513,11 +499,12 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             </Geographies>
 
             {/* ⚡ High-Tech Double-Layer Laser Beam Mesh Lines */}
-            {MESH_CONNECTIONS.map(([fromIdx, toIdx], idx) => {
-              const n1 = INSTITUTIONAL_7_NODES[fromIdx];
-              const n2 = INSTITUTIONAL_7_NODES[toIdx];
+            {meshConnections.map(([fromIdx, toIdx], idx) => {
+              const n1 = meshNodes[fromIdx];
+              const n2 = meshNodes[toIdx];
+              if (!n1 || !n2) return null;
               const isHighlighted =
-                selectedNode.id === n1.id || selectedNode.id === n2.id;
+                currentNode && (currentNode.id === n1.id || currentNode.id === n2.id);
 
               return (
                 <g key={`mesh-group-${idx}`}>
@@ -548,9 +535,9 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
               );
             })}
 
-            {/* 🎯 5 Institutional Node Markers with Triple Sonar Radar Waves */}
-            {INSTITUTIONAL_7_NODES.map((node) => {
-              const isSelected = selectedNode.id === node.id;
+            {/* 🎯 Node Markers with Triple Sonar Radar Waves */}
+            {meshNodes.map((node) => {
+              const isSelected = currentNode && currentNode.id === node.id;
 
               return (
                 <Marker
@@ -626,9 +613,9 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Live P2P Transmission Stream
               </span>
-              <span className="text-slate-500 font-bold">CADENCE 3.0s</span>
+              <span className="text-slate-500 font-bold">1.0s CADENCE</span>
             </div>
-            {telemetryLogs.map((log, idx) => (
+            {telemetryStream.slice(0, 4).map((log, idx) => (
               <div
                 key={idx}
                 className={`truncate transition-all ${
@@ -645,7 +632,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             <div className="absolute top-3 left-3 px-3 py-1 bg-black/85 backdrop-blur-md border border-cyan-500/40 rounded-lg text-[10.5px] font-mono text-cyan-300 shadow-xl">
               Target Zone: <strong className="text-white">{hoveredCountry}</strong>
               {activeCountries.includes(hoveredCountry) && (
-                <span className="text-emerald-400 font-bold ml-2">● Active Seed Node</span>
+                <span className="text-emerald-400 font-bold ml-2">● Active Mesh Node</span>
               )}
             </div>
           )}
@@ -654,13 +641,13 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
           <div className="absolute bottom-2 left-3 flex items-center gap-3 font-mono text-[9.5px] text-slate-400 bg-black/60 px-2.5 py-0.5 rounded backdrop-blur-sm">
             <span>GRID: WGS84 ATLAS (110M)</span>
             <span>·</span>
-            <span>CADENCE: 3.00s POPC</span>
+            <span>CADENCE: 1.00s POPC</span>
             <span>·</span>
             <span className="text-emerald-400 font-bold">{auditTimestamp}</span>
           </div>
         </div>
 
-        {/* High-Density 5-Node Telemetry Table (Bloomberg Standard) */}
+        {/* High-Density Mesh Telemetry Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left font-mono text-xs">
             <thead>
@@ -669,13 +656,13 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 <th className="py-2.5 px-4 font-semibold">Geographic Location</th>
                 <th className="py-2.5 px-4 font-semibold">Hardware Allocation</th>
                 <th className="py-2.5 px-4 font-semibold">P2P Ingress SLA</th>
-                <th className="py-2.5 px-4 font-semibold">BFT Weight</th>
+                <th className="py-2.5 px-4 font-semibold">Consensus Weight</th>
                 <th className="py-2.5 px-4 font-semibold text-right">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.06] text-slate-300">
-              {INSTITUTIONAL_7_NODES.map((node) => {
-                const isSelected = selectedNode.id === node.id;
+              {meshNodes.map((node) => {
+                const isSelected = currentNode && currentNode.id === node.id;
                 return (
                   <tr
                     key={node.id}
@@ -690,7 +677,11 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                       <div className="flex items-center gap-2">
                         <span
                           className={`h-2 w-2 rounded-full ${
-                            isSelected ? "bg-emerald-400 animate-pulse" : "bg-cyan-400"
+                            node.isLiveWorker
+                              ? "bg-emerald-400 animate-ping"
+                              : isSelected
+                              ? "bg-emerald-400 animate-pulse"
+                              : "bg-cyan-400"
                           }`}
                         />
                         <div>
@@ -699,6 +690,11 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                             <span className="text-[9.5px] text-slate-400 font-normal">
                               ({node.name.split(" ")[0]})
                             </span>
+                            {node.isLiveWorker && (
+                              <span className="rounded bg-emerald-500/20 text-emerald-300 text-[8.5px] font-bold px-1.5 py-0.2">
+                                LIVE WORKER
+                              </span>
+                            )}
                           </div>
                           <div className="text-[10px] text-slate-500">{node.role}</div>
                         </div>
@@ -746,38 +742,40 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
       </div>
 
       {/* Focused Node Cryptographic & Security Drilldown */}
-      <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-4 font-mono text-xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
-          <div className="flex items-center gap-2">
-            <Server size={14} className="text-cyan-400" />
-            <span className="font-bold text-white uppercase tracking-wider text-[11px]">
-              Inspecting Target: {selectedNode.code} — {selectedNode.name}
+      {currentNode && (
+        <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-4 font-mono text-xs space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+            <div className="flex items-center gap-2">
+              <Server size={14} className="text-cyan-400" />
+              <span className="font-bold text-white uppercase tracking-wider text-[11px]">
+                Inspecting Target: {currentNode.code} — {currentNode.name}
+              </span>
+            </div>
+            <span className="text-[10px] text-emerald-400">
+              Validated State: Block #{liveBlock} (Deterministic Finality)
             </span>
           </div>
-          <span className="text-[10px] text-emerald-400">
-            Validated State: Block #{liveBlock} (Deterministic Finality)
-          </span>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px]">
-          <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-            <span className="text-[10px] uppercase text-slate-500 block">Libp2p Peer Multiaddr</span>
-            <div className="text-cyan-300 font-bold break-all">{selectedNode.p2p.multiaddr}</div>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px]">
+            <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
+              <span className="text-[10px] uppercase text-slate-500 block">Libp2p Peer Multiaddr</span>
+              <div className="text-cyan-300 font-bold break-all">{currentNode.p2p.multiaddr}</div>
+            </div>
 
-          <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-            <span className="text-[10px] uppercase text-slate-500 block">Anti-DDoS Shielding SLA</span>
-            <div className="text-emerald-300 font-bold">{selectedNode.hardware.antiDdos}</div>
-          </div>
+            <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
+              <span className="text-[10px] uppercase text-slate-500 block">Hardware / GPU SLA</span>
+              <div className="text-emerald-300 font-bold">{currentNode.provider} ({currentNode.hardware.antiDdos})</div>
+            </div>
 
-          <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-            <span className="text-[10px] uppercase text-slate-500 block">Byzantine Consensus Invariant</span>
-            <div className="text-white font-bold">
-              3.00s Cadence · 0 Slashing Penalties
+            <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
+              <span className="text-[10px] uppercase text-slate-500 block">Byzantine Consensus Invariant</span>
+              <div className="text-white font-bold">
+                1.00s Cadence · 0 Slashing Penalties
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

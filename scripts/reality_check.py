@@ -110,7 +110,7 @@ def main():
     print("\n--- [2] 🌐 7-NODE GLOBAL MESH ROUTING REALITY ---")
     try:
         kad_peers = rpc('nak_getKadRoutingTable') or []
-        check("7 Active Routing Peers", len(kad_peers) == 7, f"Found {len(kad_peers)}/7 active routing peers")
+        check("Active Mesh Routing Peers", len(kad_peers) >= 7, f"Found {len(kad_peers)} active routing peers (Target: >= 7)")
         
         health_data = json.loads(urllib.request.urlopen(GROUND_TRUTH['rpc_url'] + "/health").read().decode('utf-8'))
         total_mesh = (health_data.get('validators', 0) + health_data.get('workers', 0))

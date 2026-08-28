@@ -46,8 +46,9 @@ class DeAIWorkerDaemon:
         self,
         rpc_url: str = "http://127.0.0.1:8545",
         worker_address: Optional[str] = None,
-        worker_name: str = "NVIDIA-RTX-4090-Worker-01",
-        vram_gb: int = 24,
+        worker_name: str = "NVIDIA-Worker-01",
+        gpu_model: Optional[str] = None,
+        vram_gb: int = 8,
         stake_amount: float = 100.0,
         poll_interval: float = 3.0,
     ):
@@ -55,6 +56,7 @@ class DeAIWorkerDaemon:
         self.worker_address = worker_address or self._generate_worker_address()
         self.worker_name = worker_name
         self.vram_gb = vram_gb
+        self.gpu_model = gpu_model or f"{worker_name} ({vram_gb}GB VRAM)"
         self.stake_amount = stake_amount
         self.poll_interval = poll_interval
 
@@ -62,7 +64,8 @@ class DeAIWorkerDaemon:
         self.total_jobs_completed = 0
         self.cumulative_rewards_nak = 0.0
         self.total_stark_fri_proofs = 0
-        self.current_hashrate_mops = 428.5  # Mega-Ops/sec
+        self.baseline_hashrate = 220.0 if "1070" in self.gpu_model else (428.5 if "4090" in self.gpu_model else 180.0)
+        self.current_hashrate_mops = self.baseline_hashrate
         self.running = True
 
     def _generate_worker_address(self) -> str:
@@ -88,12 +91,14 @@ class DeAIWorkerDaemon:
     def register_worker_onchain(self) -> bool:
         """Register worker hardware specifications on L1 node."""
         print(f"{C_CYAN}[Worker Init]{C_RESET} Registering on NakharaX L1 RPC: {self.rpc_url}...")
+        cuda_cores = 2432 if "1070" in self.gpu_model else (16384 if "4090" in self.gpu_model else 3584)
+        tensor_cores = 0 if "1070" in self.gpu_model else (512 if "4090" in self.gpu_model else 112)
         specs = {
             "name": self.worker_name,
             "address": self.worker_address,
-            "gpu": f"NVIDIA RTX 4090 ({self.vram_gb}GB VRAM)",
-            "cuda_cores": 16384,
-            "tensor_cores": 512,
+            "gpu": f"{self.gpu_model} ({self.vram_gb}GB VRAM)",
+            "cuda_cores": cuda_cores,
+            "tensor_cores": tensor_cores,
             "popc_verifier": "STARK-FRI-1024-ZK",
             "stake_nak": self.stake_amount,
         }
@@ -161,7 +166,7 @@ class DeAIWorkerDaemon:
         print(f"{C_BOLD}{C_CYAN}╚═════════════════════════════════════════════════════════════════════════╝{C_RESET}")
         print(f"  {C_BOLD}Worker Node:{C_RESET}     {self.worker_name} ({self.worker_address[:10]}...{self.worker_address[-6:]})")
         print(f"  {C_BOLD}L1 Target:{C_RESET}       {self.rpc_url} (Chain ID 86137)")
-        print(f"  {C_BOLD}GPU Cluster:{C_RESET}     NVIDIA RTX 4090 ({self.vram_gb}GB VRAM) · 16,384 CUDA Cores")
+        print(f"  {C_BOLD}GPU Cluster:{C_RESET}     {self.gpu_model} ({self.vram_gb}GB VRAM)")
         print(f"  {C_BOLD}PoPC Hashrate:{C_RESET}   {C_GREEN}{self.current_hashrate_mops:.1f} M-Ops/sec{C_RESET}")
         print(f"{C_DIM}───────────────────────────────────────────────────────────────────────────{C_RESET}")
         print(f"  {C_BOLD}Total Jobs Solved:{C_RESET}       {C_BOLD}{self.total_jobs_completed}{C_RESET}")
@@ -207,7 +212,7 @@ class DeAIWorkerDaemon:
                 self.total_jobs_completed += 1
                 self.total_stark_fri_proofs += 1
                 self.cumulative_rewards_nak += reward
-                self.current_hashrate_mops = round(random.uniform(415.0, 442.0), 1)
+                self.current_hashrate_mops = round(random.uniform(self.baseline_hashrate * 0.96, self.baseline_hashrate * 1.04), 1)
 
                 proof_result["model"] = selected_model
                 proof_result["txHash"] = tx_hash
@@ -223,21 +228,129 @@ class DeAIWorkerDaemon:
             print(f"\n{C_YELLOW}Mining daemon stopped gracefully.{C_RESET}")
 
 
+def auto_detect_gpu() -> Dict[str, Any]:
+    """Auto-detect GPU model and VRAM using nvidia-smi or Windows WMI."""
+    import subprocess
+    # 1. Try nvidia-smi
+    try:
+        output = subprocess.check_output(
+            ["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader,nounits"],
+            stderr=subprocess.DEVNULL,
+            text=True
+        ).strip()
+        if output:
+            parts = output.split('\n')[0].split(',')
+            name = parts[0].strip()
+            vram_mb = float(parts[1].strip())
+            return {"gpu": name, "vram": max(1, round(vram_mb / 1024))}
+    except Exception:
+        pass
+
+    # 2. Try Windows PowerShell CIM
+    if sys.platform == "win32":
+        try:
+            cmd = 'powershell -NoProfile -Command "Get-CimInstance Win32_VideoController | Select-Object -Property Name, AdapterRAM | ConvertTo-Json"'
+            output = subprocess.check_output(cmd, shell=True, text=True, stderr=subprocess.DEVNULL)
+            data = json.loads(output)
+            if isinstance(data, list):
+                for item in data:
+                    name = item.get("Name", "")
+                    if any(vendor in name.upper() for vendor in ["NVIDIA", "GEFORCE", "GTX", "RTX", "AMD", "RADEON"]):
+                        bytes_ram = item.get("AdapterRAM") or 0
+                        vram = round(bytes_ram / (1024**3)) if bytes_ram > 0 else 8
+                        return {"gpu": name, "vram": vram}
+                item = data[0]
+            else:
+                item = data
+            name = item.get("Name", "NVIDIA Discrete GPU")
+            bytes_ram = item.get("AdapterRAM") or 0
+            vram = round(bytes_ram / (1024**3)) if bytes_ram > 0 else 8
+            return {"gpu": name, "vram": vram}
+        except Exception:
+            pass
+
+    return {"gpu": "NVIDIA GeForce GTX 1070 Ti", "vram": 8}
+
+
+def auto_discover_l1_rpc(port: int = 8545, timeout: float = 0.35) -> str:
+    """Auto-discover NakharaX L1 RPC node on local network subnet."""
+    import socket
+    from concurrent.futures import ThreadPoolExecutor
+
+    # 1. Test localhost first
+    try:
+        req = urllib.request.Request(f"http://127.0.0.1:{port}/health")
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data.get("network") == "nakharax-testnet" or data.get("chainId") == "86137":
+                return f"http://127.0.0.1:{port}"
+    except Exception:
+        pass
+
+    # 2. Get local LAN subnet prefix
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        prefix = ".".join(local_ip.split(".")[:3])
+    except Exception:
+        prefix = "192.168.1"
+
+    print(f"{C_CYAN}[Auto-Discovery]{C_RESET} Probing LAN subnet {prefix}.1-254 for NakharaX L1 Node...")
+
+    def check_ip(ip: str) -> Optional[str]:
+        try:
+            req = urllib.request.Request(f"http://{ip}:{port}/health")
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                if data.get("network") == "nakharax-testnet" or data.get("chainId") == "86137":
+                    return f"http://{ip}:{port}"
+        except Exception:
+            pass
+        return None
+
+    ips = [f"{prefix}.{i}" for i in range(1, 255)]
+    with ThreadPoolExecutor(max_workers=64) as executor:
+        results = executor.map(check_ip, ips)
+        for r in results:
+            if r:
+                print(f"{C_GREEN}✔ Found NakharaX L1 Node at: {r}{C_RESET}")
+                return r
+
+    print(f"{C_YELLOW}⚠ LAN scan found no active node. Falling back to localhost.{C_RESET}")
+    return f"http://127.0.0.1:{port}"
+
+
 def main():
     parser = argparse.ArgumentParser(description="NakharaX DeAI Autonomous Worker Mining Daemon")
-    parser.add_argument("--rpc", type=str, default="http://127.0.0.1:8545", help="L1 RPC endpoint URL")
-    parser.add_argument("--worker-name", type=str, default="NVIDIA-RTX-4090-Worker-01", help="Worker identifier")
-    parser.add_argument("--vram", type=int, default=24, help="GPU VRAM capacity in GB")
+    parser.add_argument("--rpc", type=str, default="auto", help="L1 RPC endpoint URL (or 'auto' for zero-config discovery)")
+    parser.add_argument("--worker-name", type=str, default=None, help="Worker identifier")
+    parser.add_argument("--gpu", type=str, default=None, help="GPU hardware model")
+    parser.add_argument("--vram", type=int, default=None, help="GPU VRAM capacity in GB")
     parser.add_argument("--stake", type=float, default=100.0, help="Worker staking collateral in tNAK")
     parser.add_argument("--interval", type=float, default=3.0, help="Polling interval in seconds")
     parser.add_argument("--iterations", type=int, default=None, help="Max mining iterations (default: infinite)")
 
     args = parser.parse_args()
 
+    # 1. Zero-Config Hardware Detection
+    hw = auto_detect_gpu()
+    gpu_model = args.gpu or hw["gpu"]
+    vram = args.vram or hw["vram"]
+    worker_name = args.worker_name or (gpu_model.replace(" ", "-").replace("GeForce-", "").replace("NVIDIA-", "") + "-Node")
+
+    # 2. Zero-Config LAN RPC Discovery
+    if args.rpc == "auto" or not args.rpc:
+        rpc_url = auto_discover_l1_rpc()
+    else:
+        rpc_url = args.rpc
+
     daemon = DeAIWorkerDaemon(
-        rpc_url=args.rpc,
-        worker_name=args.worker_name,
-        vram_gb=args.vram,
+        rpc_url=rpc_url,
+        worker_name=worker_name,
+        gpu_model=gpu_model,
+        vram_gb=vram,
         stake_amount=args.stake,
         poll_interval=args.interval,
     )

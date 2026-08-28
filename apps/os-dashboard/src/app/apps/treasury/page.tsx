@@ -100,8 +100,8 @@ export default function TreasuryPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const treasuryBalance = typeof stats?.liquidBalance === 'string' 
-    ? parseFloat(stats.liquidBalance) 
+  const treasuryBalance = typeof (stats as any)?.liquidBalance === 'string' 
+    ? parseFloat((stats as any).liquidBalance) 
     : (stats?.treasuryBalanceTokens ?? 10008.67);
   const totalBurned = typeof stats?.totalBurnedTokens === 'number' 
     ? stats.totalBurnedTokens 

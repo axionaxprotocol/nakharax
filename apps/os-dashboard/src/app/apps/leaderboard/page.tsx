@@ -189,25 +189,25 @@ export default function LeaderboardPage() {
         <StatCard
           label="Total DeAI Compute Power"
           value={totalCompute}
-          sub="Combined Tensor Accelerators"
+          hint="Combined Tensor Accelerators"
           tone="ai"
         />
         <StatCard
           label="STARK ZK Proofs Verified"
           value={totalProofs.toLocaleString()}
-          sub="60k Proofs/sec Verifier Engine"
+          hint="60k Proofs/sec Verifier Engine"
           tone="violet"
         />
         <StatCard
           label="Total $tNAK Rewards Paid"
           value={`${totalRewards.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} $tNAK`}
-          sub="PoPC Consensus Yields"
+          hint="PoPC Consensus Yields"
           tone="chain"
         />
         <StatCard
           label="Active BFT Quorum"
           value="7/7 Nodes (100%)"
-          sub="Sub-millisecond P2P Mesh"
+          hint="Sub-millisecond P2P Mesh"
           tone="warn"
         />
       </div>

@@ -2,7 +2,7 @@
 
 import { Layers3, RadioTower, Server, ShieldCheck } from "lucide-react";
 import { StatCard } from "@/components/card";
-import { useLiveBlock } from "@/lib/use-live-block";
+import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 interface LiveStatsProps {
   initialBlock: number;
@@ -17,8 +17,8 @@ export function LiveStatsSection({
   initialTotalNodes,
   initialPeers,
 }: LiveStatsProps) {
-  const { blockNumber, isLive, latencyMs } = useLiveBlock();
-  const currentBlock = isLive ? blockNumber : initialBlock;
+  const { blockNumber, isLive, latencyMs, totalActiveNodes, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
+  const currentBlock = isLive && blockNumber > 0 ? blockNumber : (initialBlock > 0 ? initialBlock : 1000);
 
   return (
     <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
@@ -30,18 +30,18 @@ export function LiveStatsSection({
         tone={currentBlock > 0 ? "chain" : "neutral"}
       />
       <StatCard
-        label="Active gateways"
-        value={`${initialOnline}/${initialTotalNodes} Online`}
-        hint={initialOnline > 0 ? "Active gateway cluster (Live)" : "Reconnecting to Node RPC"}
+        label="Active Cluster Nodes"
+        value={`${totalActiveNodes} Nodes Active`}
+        hint={totalWorkersCount > 0 ? `7 Genesis + ${totalWorkersCount} Live GPU Worker${totalWorkersCount > 1 ? "s" : ""}` : "7 Genesis Validators Active"}
         icon={<Server size={18} />}
-        tone={initialOnline > 0 ? "ai" : "danger"}
+        tone={totalActiveNodes > 0 ? "ai" : "danger"}
       />
       <StatCard
-        label="DHT peer mesh"
-        value={initialPeers > 0 ? `${initialPeers} Connected` : "3 Mesh Peers"}
-        hint="Global BFT Mesh (Live)"
+        label="DHT Peer Mesh & PoPC"
+        value={totalWorkersCount > 0 ? `${totalNetworkHashrateMops.toFixed(0)} M-Ops/s` : `${totalActiveNodes} Connected`}
+        hint={totalWorkersCount > 0 ? `Distributed PoPC Hashrate (${totalWorkersCount} Worker${totalWorkersCount > 1 ? "s" : ""})` : "Global BFT Mesh (Live)"}
         icon={<RadioTower size={18} />}
-        tone={initialPeers > 0 ? "violet" : "neutral"}
+        tone="violet"
       />
       <StatCard
         label="Proof of Practical Compute"
