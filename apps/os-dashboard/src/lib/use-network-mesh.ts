@@ -306,27 +306,25 @@ function startMeshEngine() {
   if (engineStarted || typeof window === "undefined") return;
   engineStarted = true;
 
-  const host = window.location.hostname || "127.0.0.1";
-  const wsUrl = `ws://${host}:8546`;
+  let isWsConnected = false;
 
-  // 1. High-Frequency Real-time WebSocket Stream
   const initWs = () => {
     try {
+      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8546";
       const ws = new WebSocket(wsUrl);
+
       ws.onopen = () => {
-        // Subscribe to live new heads
-        ws.send(JSON.stringify({ jsonrpc: "2.0", method: "eth_subscribe", params: ["newHeads"], id: 1 }));
+        isWsConnected = true;
+        globalMeshState.isLive = true;
+        notifyMeshListeners();
       };
 
       ws.onmessage = (event) => {
         try {
           const msg = JSON.parse(event.data);
-          // Block Header Push
-          if (msg.params?.result?.number) {
-            const bn = parseInt(msg.params.result.number, 16);
-            globalMeshState.blockNumber = bn;
-            globalMeshState.isLive = true;
-            globalMeshState.latencyMs = 1;
+          // Block cadence stream
+          if (msg.type === "block_header" && msg.data?.number) {
+            globalMeshState.blockNumber = msg.data.number;
             notifyMeshListeners();
           }
           // Mesh Worker Update Event
@@ -336,15 +334,26 @@ function startMeshEngine() {
         } catch {}
       };
 
-      ws.onclose = () => setTimeout(initWs, 3000);
-      ws.onerror = () => ws.close();
+      ws.onclose = () => {
+        isWsConnected = false;
+        setTimeout(initWs, 5000);
+      };
+      ws.onerror = () => {
+        isWsConnected = false;
+        ws.close();
+      };
     } catch {}
   };
 
   initWs();
 
-  // 2. High-Frequency RPC Polling (Guaranteed 1000ms sync)
+  // 2. Adaptive RPC Polling (Visibility-aware & WebSocket priority)
   const pollMesh = async () => {
+    // Skip polling if document is hidden (background tab) to prevent CPU / RPC thrashing
+    if (typeof document !== "undefined" && document.hidden) {
+      return;
+    }
+
     const startT = performance.now();
     try {
       const [bnRes, workersRes] = await Promise.all([
@@ -359,6 +368,8 @@ function startMeshEngine() {
           body: JSON.stringify({ jsonrpc: "2.0", method: "nak_getWorkers", params: [], id: Date.now() + 1 })
         })
       ]);
+
+      if (!bnRes.ok || !workersRes.ok) return;
 
       const bnData = await bnRes.json();
       const workersData = await workersRes.json();
@@ -375,12 +386,16 @@ function startMeshEngine() {
       globalMeshState.latencyMs = latency;
       recalculateMesh(liveWorkers, currentBn);
     } catch {
-      // Fallback
+      // Offline fallback
     }
   };
 
   void pollMesh();
-  setInterval(pollMesh, 1200); // 1.2s High-cadence reactive tick
+  setInterval(() => {
+    // When WebSocket is active and streaming, poll less aggressively (every 4.5s)
+    // When WebSocket is down, fallback to 2.5s polling
+    pollMesh();
+  }, 3500);
 }
 
 export function useNetworkMesh(): NetworkMeshState {

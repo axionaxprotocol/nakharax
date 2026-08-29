@@ -96,7 +96,10 @@ export default function TreasuryPage() {
 
   useEffect(() => {
     fetchTreasuryData();
-    const interval = setInterval(fetchTreasuryData, 2000);
+    const interval = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) return;
+      fetchTreasuryData();
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 

@@ -3,10 +3,20 @@
     email admin@nakharax.com
 }
 
+(security_headers) {
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}
+
 # 1. L1 Public JSON-RPC Gateway & WebSocket (HTTPS + WSS)
 rpc.nakharax.com {
+    import security_headers
     header Access-Control-Allow-Origin *
-    header Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    header Access-Control-Allow-Methods "POST, OPTIONS"
     header Access-Control-Allow-Headers "Content-Type, Authorization"
 
     reverse_proxy /ws nakharax-genesis-node:8546
@@ -15,15 +25,19 @@ rpc.nakharax.com {
 
 # 2. Main Web OS Terminal & Sovereign Dashboard
 app.nakharax.com, nakharax.com, www.nakharax.com {
+    import security_headers
     reverse_proxy web-os:3000
 }
 
 # 3. Public Faucet Gateway
 faucet.nakharax.com {
+    import security_headers
     reverse_proxy faucet:8080
 }
 
 # 4. Block & Tx Explorer
 explorer.nakharax.com {
+    import security_headers
     reverse_proxy web-os:3000
 }
+

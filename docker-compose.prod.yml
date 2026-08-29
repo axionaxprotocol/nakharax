@@ -22,13 +22,13 @@ services:
   # 2. L1 Genesis Validator Node (Frankfurt EU - Chain 86137)
   # ===========================================================================
   nakharax-genesis-node:
-    image: ghcr.io/axionaxprotocol/nakharax-node:latest
+    image: ghcr.io/axionaxprotocol/nakharax-node:v1.9.0-testnet
     container_name: nakharax-genesis-validator
     restart: unless-stopped
     ports:
-      - "8545:8545"
-      - "8546:8546"
-      - "30303:30303"
+      - "127.0.0.1:8545:8545" # Bound strictly to loopback on host for local admin
+      - "127.0.0.1:8546:8546" # Bound strictly to loopback on host for local admin
+      - "30303:30303"         # Public P2P Mesh Ingress
     environment:
       - CHAIN_ID=86137
       - NETWORK=nakharax-testnet
@@ -45,7 +45,7 @@ services:
   # 3. Testnet Faucet Microservice (Dispenses 100 tNAK per claim)
   # ===========================================================================
   faucet:
-    image: ghcr.io/axionaxprotocol/nakharax-faucet:latest
+    image: ghcr.io/axionaxprotocol/nakharax-faucet:v1.9.0-testnet
     container_name: nakharax-prod-faucet
     restart: unless-stopped
     environment:
@@ -79,9 +79,9 @@ services:
     container_name: nakharax-prod-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=nakharax_prod
-      - POSTGRES_USER=nakharax
-      - POSTGRES_PASSWORD=nakharax_sovereign_secure
+      - POSTGRES_DB=${POSTGRES_DB:-nakharax_prod}
+      - POSTGRES_USER=${POSTGRES_USER:-nakharax}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password must be provided in .env.prod}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

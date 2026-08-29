@@ -115,6 +115,24 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
+const RPC_ENDPOINT = process.env.RPC_URL || "http://127.0.0.1:8545";
+
+async function queryRpc(method: string, params: any[] = []): Promise<any> {
+  try {
+    const res = await fetch(RPC_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", method, params, id: 1 }),
+      signal: AbortSignal.timeout(3000),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return data.result;
+    }
+  } catch {}
+  return null;
+}
+
 // -----------------------------------------------------------------------------
 // 2. Tool Execution Request Handler
 // -----------------------------------------------------------------------------
@@ -125,8 +143,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   // Tool 1: nakharax_get_network_status
   if (name === "nakharax_get_network_status") {
     const isDetailed = args?.detailed === true;
-    const mockHeight = 1248500 + Math.floor(Math.random() * 50);
-    const mockHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+    const telemetry = await queryRpc("nak_getNodeTelemetry");
+    const blockNumberHex = await queryRpc("eth_blockNumber");
+    const isLive = telemetry !== null;
+
+    const blockHeight = blockNumberHex ? parseInt(blockNumberHex, 16) : 1000;
 
     return {
       content: [
@@ -137,15 +158,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               network: "NakharaX Public Testnet",
               chain_id: 86137,
               hex_chain_id: "0x15079",
-              block_height: mockHeight,
-              latest_block_hash: mockHash,
-              block_cadence_seconds: 3.0,
-              active_validators: 5,
-              total_p2p_mesh_nodes: isDetailed ? 1000000 : 12485,
-              base_gas_fee_gwei: 1.12,
-              gas_burn_rate_tnak: "842,100 tNAK/day",
-              rpc_ingress_p50_ms: 1.92,
-              rpc_ingress_p99_ms: 14.80,
+              telemetry_source: isLive ? "LIVE_L1_RPC" : "DEV_SIMULATION_SANDBOX",
+              is_live_chain: isLive,
+              block_height: isLive ? telemetry.block_height || blockHeight : blockHeight,
+              active_validators: isLive ? telemetry.validators_active || 5 : 5,
+              total_p2p_mesh_nodes: isLive ? telemetry.peer_count || 7 : 7,
+              tps: isLive ? telemetry.tps || 18.4 : 18.4,
               consensus_mechanism: "PoPC (Proof of Practical Compute) STARK FRI",
               zero_mev_shield: "SERAPH-VX Fair Time-Lock Active",
             },

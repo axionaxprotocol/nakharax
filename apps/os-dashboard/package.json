@@ -9,7 +9,7 @@
     "serve:lh": "next start -p 3031",
     "lighthouse:run": "lighthouse http://127.0.0.1:3031/ --only-categories=performance,accessibility,best-practices,seo --preset=desktop --quiet --chrome-flags=\"--headless=new --no-sandbox\" --output=json --output=html --output-path=./lighthouse-results/lhr",
     "lighthouse:report": "pnpm build && start-server-and-test serve:lh http-get://127.0.0.1:3031 lighthouse:run",
-    "lint": "next lint",
+    "lint": "node ../../node_modules/next/dist/bin/next lint",
     "mock-rpc": "node ../../services/core/ops/deploy/mock-rpc/server.js",
     "icons:resize": "node scripts/resize-icons.mjs"
   },

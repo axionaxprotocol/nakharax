@@ -21,39 +21,7 @@ import {
   X,
 } from "lucide-react";
 
-// Standard BIP-39 wordlist subset for secure deterministic generation
-const BIP39_WORDS = [
-  "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
-  "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act",
-  "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit",
-  "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "agent", "agree",
-  "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien",
-  "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always",
-  "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle",
-  "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety",
-  "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area",
-  "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive",
-  "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist",
-  "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit",
-  "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware",
-  "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag",
-  "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel",
-  "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef",
-  "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best",
-  "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird",
-  "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind",
-  "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil",
-  "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom",
-  "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze",
-  "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom",
-  "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk",
-  "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "busy", "butter",
-  "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm",
-  "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon",
-  "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart",
-  "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle",
-  "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "cereal",
-];
+import { generateCryptographicSeed, encryptKeystore, type KeystoreV3 } from "@/lib/crypto-vault";
 
 export interface VaultCreationResult {
   address: string;
@@ -61,6 +29,7 @@ export interface VaultCreationResult {
   mnemonic: string[];
   passwordHash: string;
   did: string;
+  keystore?: KeystoreV3;
   createdAt: number;
 }
 
@@ -98,28 +67,26 @@ export function InstitutionalVaultModal({
   // Generated Keypair Cache
   const [generatedResult, setGeneratedResult] = useState<VaultCreationResult | null>(null);
 
-  // 1. Generate Mnemonic Phrase & Private Key
-  function generateNewMnemonic() {
-    const randomIndices = Array.from(crypto.getRandomValues(new Uint16Array(12))).map(
-      (n) => n % BIP39_WORDS.length
-    );
-    const words = randomIndices.map((idx) => BIP39_WORDS[idx]);
-    setMnemonicWords(words);
+  // 1. Generate Mnemonic Phrase & Private Key with Real Cryptography
+  async function generateNewMnemonic(masterPass: string) {
+    const seed = generateCryptographicSeed();
+    setMnemonicWords(seed.mnemonic);
 
-    // Deterministic address & key from random entropy
-    const randomKeyBytes = Array.from(crypto.getRandomValues(new Uint8Array(32)))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    const randomAddrBytes = Array.from(crypto.getRandomValues(new Uint8Array(20)))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
+    // Securely encrypt the private key using Web Crypto API (PBKDF2 + AES-256-GCM)
+    let encryptedVault: KeystoreV3 | undefined;
+    try {
+      encryptedVault = await encryptKeystore(seed.privateKey, masterPass);
+    } catch {
+      /* ignore */
+    }
 
     const newResult: VaultCreationResult = {
-      address: `0x${randomAddrBytes}`,
-      privateKey: `0x${randomKeyBytes}`,
-      mnemonic: words,
-      passwordHash: `pbkdf2_sha256_${Date.now()}`,
-      did: `did:nak:vault:0x${randomAddrBytes}`,
+      address: seed.address,
+      privateKey: seed.privateKey,
+      mnemonic: seed.mnemonic,
+      passwordHash: `pbkdf2_aes_gcm_sha256_${Date.now()}`,
+      did: `did:nak:vault:${seed.address.toLowerCase()}`,
+      keystore: encryptedVault,
       createdAt: Date.now(),
     };
 
@@ -127,7 +94,7 @@ export function InstitutionalVaultModal({
   }
 
   // Handle Step 1 Submit (Password Set)
-  function handlePasswordSubmit(e: React.FormEvent) {
+  async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPasswordError(null);
 
@@ -140,7 +107,7 @@ export function InstitutionalVaultModal({
       return;
     }
 
-    generateNewMnemonic();
+    await generateNewMnemonic(password);
     setStep(2);
   }
 

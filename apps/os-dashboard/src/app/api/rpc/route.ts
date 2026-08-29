@@ -4,8 +4,59 @@ export const dynamic = "force-dynamic";
 
 const LOCAL_RPC = "http://127.0.0.1:8545";
 const DEFAULT_RPC = process.env.RPC_URL || process.env.NEXT_PUBLIC_RPC_URL || LOCAL_RPC;
+const ENABLE_MOCK_FALLBACK = process.env.ENABLE_DEV_MOCK_FALLBACK === "true" || process.env.NODE_ENV === "development" && process.env.ENABLE_DEV_MOCK_FALLBACK === "true";
 
-function handleFallbackRpc(method: string, params: any[] = [], id: any = 1) {
+/**
+ * Strict Method Allowlist for public Ingress RPC Gateway
+ * Prevents unauthorized internal or dangerous methods from being invoked.
+ */
+const ALLOWED_EXACT_METHODS = new Set([
+  // Standard EVM / Ethereum JSON-RPC Methods
+  "eth_blockNumber",
+  "eth_chainId",
+  "eth_getBalance",
+  "eth_getCode",
+  "eth_getTransactionCount",
+  "eth_getBlockByNumber",
+  "eth_getBlockByHash",
+  "eth_getTransactionByHash",
+  "eth_getTransactionReceipt",
+  "eth_sendRawTransaction",
+  "eth_sendTransaction",
+  "eth_call",
+  "eth_estimateGas",
+  "eth_gasPrice",
+  "eth_maxPriorityFeePerGas",
+  "eth_feeHistory",
+  "eth_syncing",
+  "eth_mining",
+  "eth_accounts",
+  "eth_getLogs",
+  "net_version",
+  "net_peerCount",
+  "net_listening",
+  "web3_clientVersion",
+  "web3_sha3",
+]);
+
+function isMethodAllowed(method: string): boolean {
+  if (!method || typeof method !== "string") return false;
+  if (ALLOWED_EXACT_METHODS.has(method)) return true;
+  // Allow verified protocol namespace methods
+  if (
+    method.startsWith("nak_") ||
+    method.startsWith("nakharax_") ||
+    method.startsWith("gov_") ||
+    method.startsWith("popc_") ||
+    method.startsWith("did_") ||
+    method.startsWith("mesh_")
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function handleDevFallbackRpc(method: string, params: any[] = [], id: any = 1) {
   const baseTimestamp = 1787800000000;
   const currentElapsedSec = Math.max(0, Math.floor((Date.now() - baseTimestamp) / 1000));
   const currentBlockNumber = 1000 + Math.floor(currentElapsedSec / 3);
@@ -28,7 +79,7 @@ function handleFallbackRpc(method: string, params: any[] = [], id: any = 1) {
     case "eth_maxPriorityFeePerGas":
       return { jsonrpc: "2.0", id, result: "0x3b9aca00" };
     case "eth_getBalance":
-      return { jsonrpc: "2.0", id, result: "0x56bc75e2d63100000" }; // 100 tNAK
+      return { jsonrpc: "2.0", id, result: "0x56bc75e2d63100000" };
     case "eth_getBlockByNumber": {
       const blockNum = params[0] === "latest" ? currentBlockNumber : parseInt(params[0], 16) || currentBlockNumber;
       return {
@@ -55,7 +106,7 @@ function handleFallbackRpc(method: string, params: any[] = [], id: any = 1) {
           chain_id: "86137",
           chain_name: "nakharax-testnet",
           block_height: currentBlockNumber,
-          peer_count: 5,
+          peer_count: 7,
           tps: 18.4,
           mempool_size: 0,
           validators_active: 5,
@@ -64,24 +115,6 @@ function handleFallbackRpc(method: string, params: any[] = [], id: any = 1) {
           version: "v1.9.0-hydra-mainnet-ready",
           status: "HEALTHY_OPTIMAL",
         },
-      };
-    case "nak_getRecentTransactions":
-    case "nakharax_getRecentTransactions":
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: [
-          {
-            hash: "0x8f2d1e3a9c7b4e6a5f0d8c2b1e3a7f9c8b4d2e1a5a9c8e7f1b2d3c4e5f6a7b8c",
-            from: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-            to: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-            value: "0x56bc75e2d63100000",
-            blockNumber: "0x" + currentBlockNumber.toString(16),
-            type: "DEAI_COMPUTE_JOB",
-            status: "CONFIRMED_POPC",
-            age: "Just now",
-          },
-        ],
       };
     default:
       return { jsonrpc: "2.0", id, result: "0x0" };
@@ -92,8 +125,35 @@ export async function POST(req: NextRequest) {
   let body: any = {};
   try {
     body = await req.json();
-    
-    // First try default RPC, fallback to local node if unreachable
+  } catch {
+    return NextResponse.json(
+      { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error: Invalid JSON payload" } },
+      { status: 400 }
+    );
+  }
+
+  const { method, id = 1 } = body;
+
+  // 1. Method Validation via Allowlist
+  if (!method || !isMethodAllowed(method)) {
+    return NextResponse.json(
+      {
+        jsonrpc: "2.0",
+        id,
+        error: {
+          code: -32601,
+          message: `Method '${method}' is not allowed or unsupported by gateway proxy`,
+        },
+      },
+      { status: 403 }
+    );
+  }
+
+  // 2. Upstream Proxy Request with Timeout
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
     let res: Response | null = null;
     try {
       res = await fetch(DEFAULT_RPC, {
@@ -101,6 +161,7 @@ export async function POST(req: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         cache: "no-store",
+        signal: controller.signal,
       });
     } catch {
       if (DEFAULT_RPC !== LOCAL_RPC) {
@@ -110,11 +171,14 @@ export async function POST(req: NextRequest) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
             cache: "no-store",
+            signal: controller.signal,
           });
         } catch {
           res = null;
         }
       }
+    } finally {
+      clearTimeout(timeoutId);
     }
 
     if (res && res.ok) {
@@ -122,12 +186,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(data);
     }
 
-    // Resilient simulated fallback when RPC node is offline
-    const fallbackData = handleFallbackRpc(body.method, body.params, body.id);
-    return NextResponse.json(fallbackData);
+    // 3. Fallback handling: ONLY when explicitly enabled for offline dev mode
+    if (ENABLE_MOCK_FALLBACK) {
+      const fallbackData = handleDevFallbackRpc(body.method, body.params, body.id);
+      return NextResponse.json(fallbackData);
+    }
+
+    // Return honest JSON-RPC 2.0 error when upstream is unreachable
+    return NextResponse.json(
+      {
+        jsonrpc: "2.0",
+        id,
+        error: {
+          code: -32603,
+          message: "Upstream Layer-1 RPC gateway unavailable or returned invalid response",
+        },
+      },
+      { status: 502 }
+    );
   } catch (error: any) {
-    const fallbackData = handleFallbackRpc(body?.method || "eth_blockNumber", body?.params || [], body?.id || 1);
-    return NextResponse.json(fallbackData);
+    if (ENABLE_MOCK_FALLBACK) {
+      const fallbackData = handleDevFallbackRpc(body?.method || "eth_blockNumber", body?.params || [], body?.id || 1);
+      return NextResponse.json(fallbackData);
+    }
+
+    return NextResponse.json(
+      {
+        jsonrpc: "2.0",
+        id,
+        error: {
+          code: -32603,
+          message: `Internal RPC Proxy Error: ${error?.message || "Unknown error"}`,
+        },
+      },
+      { status: 502 }
+    );
   }
 }
 

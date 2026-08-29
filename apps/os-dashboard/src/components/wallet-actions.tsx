@@ -46,7 +46,7 @@ import {
 } from "lucide-react";
 import { formatEther } from "viem";
 
-import { burnerAccount } from "@/lib/web3/config";
+import { generateEphemeralKeypair, encryptKeystore, decryptKeystore, type KeystoreV3 } from "@/lib/crypto-vault";
 import { InstitutionalVaultModal, VaultCreationResult } from "@/components/institutional-vault-modal";
 
 const KEY_STORE_LOCAL = "nakharax-active-vault";
@@ -114,10 +114,8 @@ type WalletTab = "overview" | "transfer" | "staking" | "keystore" | "web3";
 
 export function WalletActions() {
   const [activeTab, setActiveTab] = useState<WalletTab>("overview");
-  const [address, setAddress] = useState<string>(burnerAccount.address);
-  const [privateKey, setPrivateKey] = useState<string>(
-    "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
-  );
+  const [address, setAddress] = useState<string>("");
+  const [privateKey, setPrivateKey] = useState<string>("");
   const [copied, setCopied] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [showQR, setShowQR] = useState(false);
@@ -178,20 +176,26 @@ export function WalletActions() {
     return () => clearInterval(interval);
   }, [stakedBalance]);
 
-  // Restore active account from localStorage if exists
+  // Restore active account from localStorage if exists or initialize clean ephemeral session
   useEffect(() => {
     try {
       const saved = localStorage.getItem(KEY_STORE_LOCAL);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.address && parsed.privateKey) {
+        if (parsed.address) {
           setAddress(parsed.address);
-          setPrivateKey(parsed.privateKey);
+          if (parsed.privateKey) {
+            setPrivateKey(parsed.privateKey);
+          }
+          return;
         }
       }
     } catch {
       /* ignore */
     }
+    const pair = generateEphemeralKeypair();
+    setAddress(pair.address);
+    setPrivateKey(pair.privateKey);
   }, []);
 
   const fetchBalance = useCallback(async () => {
@@ -400,24 +404,21 @@ export function WalletActions() {
     return () => clearInterval(interval);
   }, [syncTransactions]);
 
-  // Generate new random account locally on device
+  // Generate new cryptographic keypair locally on device
   function generateNewAccount() {
-    const randomHex = Array.from(crypto.getRandomValues(new Uint8Array(32)))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    const newPriv = `0x${randomHex}`;
-    const randomAddrHex = Array.from(crypto.getRandomValues(new Uint8Array(20)))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    const newAddr = `0x${randomAddrHex}`;
-
-    setPrivateKey(newPriv);
-    setAddress(newAddr);
-    localStorage.setItem(
-      KEY_STORE_LOCAL,
-      JSON.stringify({ address: newAddr, privateKey: newPriv, createdAt: Date.now() })
-    );
-    setHint({ type: "success", msg: "Generated new local keypair on device!" });
+    const pair = generateEphemeralKeypair();
+    setPrivateKey(pair.privateKey);
+    setAddress(pair.address);
+    try {
+      localStorage.setItem(
+        KEY_STORE_LOCAL,
+        JSON.stringify({ address: pair.address, createdAt: Date.now() })
+      );
+    } catch {
+      /* ignore */
+    }
+    setHint({ type: "success", msg: "Generated new cryptographic keypair on device!" });
+    void fetchBalance();
   }
 
   // Fetch current block number helper
@@ -483,30 +484,62 @@ export function WalletActions() {
     }
   }
 
-  // Export encrypted JSON keystore
-  function exportKeystore() {
-    const payload = {
-      address,
-      crypto: {
-        cipher: "aes-256-gcm",
-        ciphertext: privateKey.slice(2),
-        kdf: "scrypt",
-        kdfparams: { n: 8192, r: 8, p: 1, dklen: 32 },
-      },
-      id: crypto.randomUUID(),
-      version: 3,
-      network: "nakharax-testnet",
-      chainId: 86137,
-      hdPath: "m/44'/60'/0'/0/0",
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nakharax-vault-${address.slice(0, 8)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    setHint({ type: "success", msg: "Institutional Keystore JSON exported securely!" });
+  // Export genuine password-encrypted JSON keystore (PBKDF2 + AES-256-GCM)
+  async function exportKeystore() {
+    if (!privateKey) {
+      setHint({ type: "error", msg: "No private key loaded in active session to export." });
+      return;
+    }
+    const pass = prompt("Set a Master Password (min 6 characters) to encrypt your Keystore JSON:");
+    if (!pass || pass.length < 6) {
+      setHint({ type: "error", msg: "Password must be at least 6 characters long." });
+      return;
+    }
+    try {
+      const keystore = await encryptKeystore(privateKey as `0x${string}`, pass);
+      const blob = new Blob([JSON.stringify(keystore, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `nakharax-keystore-${address.slice(0, 8)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setHint({ type: "success", msg: "Institutional Keystore JSON encrypted with AES-256-GCM & exported securely!" });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Failed to export encrypted keystore: ${err?.message || "Encryption error"}` });
+    }
+  }
+
+  // Import encrypted Keystore JSON file
+  async function handleImportKeystoreFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as KeystoreV3;
+      if (!parsed.crypto || !parsed.address) {
+        setHint({ type: "error", msg: "Invalid Keystore file format." });
+        return;
+      }
+      const pass = prompt(`Enter Master Password to decrypt Keystore for ${parsed.address.slice(0, 10)}...:`);
+      if (!pass) return;
+      
+      const decryptedKey = await decryptKeystore(parsed, pass);
+      setPrivateKey(decryptedKey);
+      setAddress(parsed.address);
+      try {
+        localStorage.setItem(
+          KEY_STORE_LOCAL,
+          JSON.stringify({ address: parsed.address, keystore: parsed, createdAt: Date.now() })
+        );
+      } catch {}
+      setHint({ type: "success", msg: `🔓 Keystore decrypted successfully! Loaded wallet ${parsed.address.slice(0, 10)}...` });
+      void fetchBalance();
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Keystore import failed: ${err?.message || "Decryption error"}` });
+    } finally {
+      e.target.value = "";
+    }
   }
 
   // Handle Transfer
@@ -997,7 +1030,7 @@ export function WalletActions() {
         KEY_STORE_LOCAL,
         JSON.stringify({
           address: result.address,
-          privateKey: result.privateKey,
+          keystore: result.keystore,
           did: result.did,
           createdAt: result.createdAt,
         })
@@ -1320,6 +1353,16 @@ export function WalletActions() {
                 <Download size={13} />
                 Export Encrypted Keystore (JSON)
               </button>
+              <label className="inline-flex items-center gap-1.5 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 px-3.5 py-2 text-xs font-mono text-purple-300 transition-colors cursor-pointer">
+                <Upload size={13} />
+                Import Keystore (JSON)
+                <input
+                  type="file"
+                  accept=".json,application/json"
+                  className="hidden"
+                  onChange={handleImportKeystoreFile}
+                />
+              </label>
             </div>
           </div>
 

@@ -8,24 +8,50 @@ const app = express();
 
 const PORT = process.env.PORT || 8545;
 const WS_PORT = process.env.WS_PORT || 8546;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HOST || '127.0.0.1';
 const CHAIN_ID = process.env.CHAIN_ID || '86137';
 const NETWORK = process.env.NETWORK || 'nakharax-testnet';
 const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '1000'); // 1.0s High-Velocity Cadence (2026 Golden Standard)
 const STATE_FILE = path.join(__dirname, '.state_cache.json');
 
-// Enable full CORS for browser dashboards & MetaMask
+// In-Memory IP Rate Limiter (Max 120 req / 10s per IP)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW_MS = 10000;
+const MAX_REQUESTS_PER_WINDOW = 120;
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.startTime > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, { startTime: now, count: 1 });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= MAX_REQUESTS_PER_WINDOW;
+}
+
+// Configurable CORS for Dashboards & RPC Consumers
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  const origin = req.headers.origin || '*';
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
+
+  const clientIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+  if (!checkRateLimit(clientIp)) {
+    return res.status(429).json({
+      jsonrpc: '2.0',
+      id: null,
+      error: { code: -32000, message: 'Too many requests: Rate limit exceeded (120 req/10s)' }
+    });
+  }
   next();
 });
 
-app.use(express.json({ strict: false, type: 'application/json' }));
+app.use(express.json({ limit: '2mb', strict: false, type: 'application/json' }));
 
 // =============================================================================
 // Mock Blockchain State

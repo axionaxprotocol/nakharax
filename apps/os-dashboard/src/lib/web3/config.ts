@@ -1,25 +1,28 @@
 import { defineChain } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
 
-// Define Custom Live Node
-export const nakharaxLocal = defineChain({
-  id: 86137, // Adjusted to match the live node's likely chain id (assuming testnet) or fallback to 1337 if needed. We'll use 86137 based on previous knowledge of Nakharax Testnet
-  name: "Nakharax Network",
-  network: "nakharax-net",
+/**
+ * NakharaX L1 Testnet Chain Configuration
+ * Chain ID: 86137
+ */
+export const nakharaxTestnet = defineChain({
+  id: 86137,
+  name: "NakharaX Testnet",
+  network: "nakharax-testnet",
   nativeCurrency: {
     decimals: 18,
-    name: "Nakharax",
-    symbol: "NAK",
+    name: "NakharaX Testnet Token",
+    symbol: "tNAK",
   },
   rpcUrls: {
-    default: { http: ["https://rpc.nakharax.com"] },
-    public: { http: ["https://rpc.nakharax.com"] },
+    default: { http: [process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com"] },
+    public: { http: [process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com"] },
+  },
+  blockExplorers: {
+    default: { name: "NakharaX Explorer", url: "https://explorer.nakharax.com" },
   },
 });
 
-// DEV ONLY: Default burner account (Hardhat/Anvil Account #0)
-// NEVER USE THIS ON MAINNET/TESTNET
-export const DEV_BURNER_KEY = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
-export const burnerAccount = privateKeyToAccount(DEV_BURNER_KEY);
+export const nakharaxLocal = nakharaxTestnet;
+
 
 
