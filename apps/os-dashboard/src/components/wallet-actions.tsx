@@ -182,11 +182,13 @@ export function WalletActions() {
       const saved = localStorage.getItem(KEY_STORE_LOCAL);
       if (saved) {
         const parsed = JSON.parse(saved);
+        // Security migration: Purge legacy plaintext privateKey from localStorage
+        if (parsed.privateKey) {
+          delete parsed.privateKey;
+          localStorage.setItem(KEY_STORE_LOCAL, JSON.stringify(parsed));
+        }
         if (parsed.address) {
           setAddress(parsed.address);
-          if (parsed.privateKey) {
-            setPrivateKey(parsed.privateKey);
-          }
           return;
         }
       }

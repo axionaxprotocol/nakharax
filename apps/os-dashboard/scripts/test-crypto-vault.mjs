@@ -1,4 +1,4 @@
-import { generateCryptographicSeed, generateEphemeralKeypair, encryptKeystore, decryptKeystore } from "../src/lib/crypto-vault.ts";
+import { generateCryptographicSeed, deriveAccountFromMnemonic, generateEphemeralKeypair, encryptKeystore, decryptKeystore } from "../src/lib/crypto-vault.ts";
 import assert from "assert";
 
 console.log("🔒 Running Web Crypto Vault Unit Test Suite...");
@@ -36,16 +36,23 @@ async function runTests() {
   }
   assert.ok(failed, "Decryption with wrong password MUST throw an error");
 
-  // Test 5: BIP-39 Seed Generation & Derivation
+  // Test 5: BIP-39 Seed Generation
   const seed = generateCryptographicSeed();
   console.log("  [5] BIP-39 12-Word Seed Generated:", seed.mnemonic.slice(0, 3).join(" "), "...");
   assert.equal(seed.mnemonic.length, 12, "Must generate exactly 12 mnemonic words");
   assert.ok(seed.address.startsWith("0x"), "Seed address must be valid 0x");
 
-  console.log("\n✅ ALL 5 CRYPTO VAULT TESTS PASSED CLEANLY!");
+  // Test 6: Mnemonic Recovery Roundtrip (Verify 12 words restore the exact same address and key)
+  const restored = deriveAccountFromMnemonic(seed.mnemonic.join(" "));
+  console.log("  [6] Mnemonic Recovery Roundtrip Verified:", restored.address);
+  assert.equal(restored.address.toLowerCase(), seed.address.toLowerCase(), "Restored address MUST match generated seed address");
+  assert.equal(restored.privateKey.toLowerCase(), seed.privateKey.toLowerCase(), "Restored private key MUST match generated seed private key");
+
+  console.log("\n✅ ALL 6 CRYPTO VAULT TESTS PASSED CLEANLY!");
 }
 
 runTests().catch((err) => {
   console.error("❌ Test failed:", err);
   process.exit(1);
 });
+

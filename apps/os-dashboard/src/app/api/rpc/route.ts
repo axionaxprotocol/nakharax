@@ -8,9 +8,9 @@ const ENABLE_MOCK_FALLBACK = process.env.ENABLE_DEV_MOCK_FALLBACK === "true" || 
 
 /**
  * Strict Method Allowlist for public Ingress RPC Gateway
- * Prevents unauthorized internal or dangerous methods from being invoked.
+ * Prevents unauthorized internal or mutation methods (e.g. gov_setParameter) from passing through.
  */
-const ALLOWED_EXACT_METHODS = new Set([
+const STRICT_ALLOWED_METHODS = new Set([
   // Standard EVM / Ethereum JSON-RPC Methods
   "eth_blockNumber",
   "eth_chainId",
@@ -37,23 +37,40 @@ const ALLOWED_EXACT_METHODS = new Set([
   "net_listening",
   "web3_clientVersion",
   "web3_sha3",
+
+  // Verified Protocol Telemetry & Read Query Methods
+  "nak_getNodeTelemetry",
+  "nakharax_getNodeTelemetry",
+  "nak_getWorkers",
+  "nakharax_getWorkers",
+  "nak_getKadRoutingTable",
+  "nakharax_getKadRoutingTable",
+  "nak_getStakeInfo",
+  "nakharax_getStakeInfo",
+  "nak_getRecentTransactions",
+  "nakharax_getRecentTransactions",
+  "nak_getJobs",
+  "nakharax_getJobs",
+  "nak_getJob",
+  "nakharax_getJob",
+  "nak_getProtocolParameters",
+  "nakharax_getProtocolParameters",
+  "nak_getMeshTopology",
+  "nakharax_getMeshTopology",
+  "nak_getRecentBlocks",
+  "nakharax_getRecentBlocks",
+  "nakharax_faucet",
+
+  // Verified DAO Governance Read Query Methods (No direct mutations without on-chain signature)
+  "gov_getStats",
+  "gov_getProposal",
+  "gov_getProposals",
+  "gov_getVotes",
 ]);
 
 function isMethodAllowed(method: string): boolean {
   if (!method || typeof method !== "string") return false;
-  if (ALLOWED_EXACT_METHODS.has(method)) return true;
-  // Allow verified protocol namespace methods
-  if (
-    method.startsWith("nak_") ||
-    method.startsWith("nakharax_") ||
-    method.startsWith("gov_") ||
-    method.startsWith("popc_") ||
-    method.startsWith("did_") ||
-    method.startsWith("mesh_")
-  ) {
-    return true;
-  }
-  return false;
+  return STRICT_ALLOWED_METHODS.has(method);
 }
 
 function handleDevFallbackRpc(method: string, params: any[] = [], id: any = 1) {
@@ -134,7 +151,7 @@ export async function POST(req: NextRequest) {
 
   const { method, id = 1 } = body;
 
-  // 1. Method Validation via Allowlist
+  // 1. Method Validation via Strict Allowlist
   if (!method || !isMethodAllowed(method)) {
     return NextResponse.json(
       {
@@ -149,36 +166,46 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 2. Upstream Proxy Request with Timeout
+  // 2. Upstream Proxy Request with Isolated Timeout Controllers
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
-
     let res: Response | null = null;
+
+    // First attempt: DEFAULT_RPC with independent timeout
+    const controller1 = new AbortController();
+    const timeoutId1 = setTimeout(() => controller1.abort(), 6000);
     try {
       res = await fetch(DEFAULT_RPC, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         cache: "no-store",
-        signal: controller.signal,
+        signal: controller1.signal,
       });
     } catch {
+      res = null;
+    } finally {
+      clearTimeout(timeoutId1);
+    }
+
+    // Fallback attempt: LOCAL_RPC with fresh, independent AbortController
+    if (!res || !res.ok) {
       if (DEFAULT_RPC !== LOCAL_RPC) {
+        const controller2 = new AbortController();
+        const timeoutId2 = setTimeout(() => controller2.abort(), 4000);
         try {
           res = await fetch(LOCAL_RPC, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
             cache: "no-store",
-            signal: controller.signal,
+            signal: controller2.signal,
           });
         } catch {
           res = null;
+        } finally {
+          clearTimeout(timeoutId2);
         }
       }
-    } finally {
-      clearTimeout(timeoutId);
     }
 
     if (res && res.ok) {

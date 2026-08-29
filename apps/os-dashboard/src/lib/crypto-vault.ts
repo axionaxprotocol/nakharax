@@ -218,13 +218,31 @@ export function generateCryptographicSeed(): { mnemonic: string[]; address: stri
   const mnemonicString = generateMnemonic(english);
   const words = mnemonicString.split(" ");
   const account = mnemonicToAccount(mnemonicString);
-
-  const privateKey = generatePrivateKey();
-  const derivedAcc = privateKeyToAccount(privateKey);
+  const hdKey = account.getHdKey();
+  if (!hdKey.privateKey) {
+    throw new Error("Failed to derive private key from HD seed");
+  }
+  const privateKey = (`0x${bytesToHex(hdKey.privateKey)}`) as `0x${string}`;
 
   return {
     mnemonic: words,
-    address: derivedAcc.address,
+    address: account.address,
+    privateKey: privateKey,
+  };
+}
+
+/**
+ * Derive account and private key from an existing BIP-39 mnemonic string
+ */
+export function deriveAccountFromMnemonic(mnemonicString: string): { address: string; privateKey: `0x${string}` } {
+  const account = mnemonicToAccount(mnemonicString.trim());
+  const hdKey = account.getHdKey();
+  if (!hdKey.privateKey) {
+    throw new Error("Failed to derive private key from HD seed");
+  }
+  const privateKey = (`0x${bytesToHex(hdKey.privateKey)}`) as `0x${string}`;
+  return {
+    address: account.address,
     privateKey: privateKey,
   };
 }
