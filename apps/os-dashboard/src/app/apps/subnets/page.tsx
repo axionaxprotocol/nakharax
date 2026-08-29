@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
+import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -198,7 +198,7 @@ export default function SubnetsEcosystemPage() {
     setStakeNotice(`Broadcasting stake transaction for ${name} to Node RPC...`);
 
     try {
-      const stakePayload = (`0x7374616b655f7375626e6574_${id}`) as `0x${string}`;
+      const stakePayload = encodeTxMemo(`stake_subnet:${id}`);
       const txHash = await broadcastRawTransaction({
         to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         value: BigInt("100000000000000000"), // 0.1 tNAK deposit fee

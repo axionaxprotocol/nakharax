@@ -62,29 +62,6 @@ const STRICT_ALLOWED_METHODS = new Set([
   "nakharax_getTreasuryStats",
   "nak_getSentinels",
   "nakharax_getSentinels",
-  "nak_sentinelHeartbeat",
-  "nakharax_sentinelHeartbeat",
-  "nak_reportFraudSlash",
-  "nakharax_reportFraudSlash",
-  "nak_recordQueryGas",
-  "nakharax_recordQueryGas",
-  "nakharax_faucet",
-
-  // Verified Staking & Liquid Delegation Methods
-  "nak_stake",
-  "nakharax_stake",
-  "popc_stake",
-  "nak_unstake",
-  "nakharax_unstake",
-  "popc_unstake",
-  "nak_claimUnbonded",
-  "nakharax_claimUnbonded",
-  "popc_claim",
-  "nak_harvestRewards",
-  "nakharax_harvestRewards",
-  "popc_harvest",
-  "nak_resetWallet",
-  "nakharax_resetWallet",
 
   // Verified Validator Set Methods
   "axn_getValidatorSet",
@@ -98,8 +75,6 @@ const STRICT_ALLOWED_METHODS = new Set([
   "gov_getProposal",
   "gov_getProposals",
   "gov_getVotes",
-  "gov_castVote",
-  "gov_createProposal",
   "nak_getProposals",
 ]);
 
@@ -166,58 +141,6 @@ function handleDevFallbackRpc(method: string, params: any[] = [], id: any = 1) {
           apy: "8.40%",
         },
       };
-    case "nak_stake":
-    case "popc_stake":
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: {
-          success: true,
-          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
-          blockNumber: currentBlockNumber,
-          staked: parseFloat(params[1] || "100").toFixed(2),
-          sNakBalance: parseFloat(params[1] || "100").toFixed(2),
-        },
-      };
-    case "nak_unstake":
-    case "popc_unstake":
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: {
-          success: true,
-          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
-          blockNumber: currentBlockNumber,
-          unbondId: `unbond-${Date.now()}`,
-          releaseTime: Date.now() + 300000,
-          remainingStaked: "0.00",
-        },
-      };
-    case "nak_claimUnbonded":
-    case "popc_claim":
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: {
-          success: true,
-          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
-          blockNumber: currentBlockNumber,
-          amount: 100,
-        },
-      };
-    case "nak_harvestRewards":
-    case "popc_harvest":
-      return {
-        jsonrpc: "2.0",
-        id,
-        result: {
-          success: true,
-          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
-          blockNumber: currentBlockNumber,
-          harvestedAmount: params[1] || 0.1,
-          blocksPassed: 10,
-        },
-      };
     case "nak_getNodeTelemetry":
     case "nakharax_getNodeTelemetry":
       return {
@@ -238,7 +161,14 @@ function handleDevFallbackRpc(method: string, params: any[] = [], id: any = 1) {
         },
       };
     default:
-      return { jsonrpc: "2.0", id, result: "0x0" };
+      return {
+        jsonrpc: "2.0",
+        id,
+        error: {
+          code: -32601,
+          message: `Method '${method}' has no offline dev fallback implementation`,
+        },
+      };
   }
 }
 
@@ -355,4 +285,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

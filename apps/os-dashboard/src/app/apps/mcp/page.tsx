@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
+import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -172,7 +172,7 @@ export default function MCPMarketplacePage() {
       setExecutionResult("Dispatching tool execution request through Sovereign Agent State Channel...");
 
       // Broadcast on-chain transaction for MCP tool execution
-      const toolPayload = (`0x6d63705f63616c6c_${selectedSkill.id}`) as `0x${string}`;
+      const toolPayload = encodeTxMemo(`mcp_call:${selectedSkill.id}:${testPayload}`);
       const txHash = await broadcastRawTransaction({
         to: selectedSkill.providerAddress as `0x${string}`,
         value: BigInt(50000000000000000), // 0.05 tNAK fee
@@ -195,8 +195,8 @@ export default function MCPMarketplacePage() {
       };
 
       setExecutionResult(JSON.stringify(receipt, null, 2));
-    } catch {
-      setExecutionResult(JSON.stringify({ error: "Execution timeout" }, null, 2));
+    } catch (err: any) {
+      setExecutionResult(JSON.stringify({ error: err?.message || "Execution transaction rejected" }, null, 2));
     } finally {
       setIsExecuting(false);
     }

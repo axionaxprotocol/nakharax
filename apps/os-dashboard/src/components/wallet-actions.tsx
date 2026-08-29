@@ -52,6 +52,19 @@ import { InstitutionalVaultModal, VaultCreationResult } from "@/components/insti
 
 const KEY_STORE_LOCAL = "nakharax-active-vault";
 
+function requireRpcTxHash(data: any, operation: string): string {
+  if (data?.error) {
+    throw new Error(data.error.message || `${operation} RPC error`);
+  }
+
+  const txHash = typeof data?.result === "string" ? data.result : data?.result?.txHash;
+  if (typeof txHash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(txHash)) {
+    throw new Error(`${operation} did not return a valid on-chain transaction hash.`);
+  }
+
+  return txHash;
+}
+
 interface TxHistoryItem {
   id: string;
   hash: string;
@@ -457,9 +470,7 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
-      const txHash =
-        data.result?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "Faucet request");
       const currentLiveBlock = data.result?.blockNumber || (await getLiveBlockNumber());
 
       const newTx: TxHistoryItem = {
@@ -480,8 +491,8 @@ export function WalletActions() {
         type: "success",
         msg: `🎉 Dispensed 100 tNAK (Block #${currentLiveBlock})! (Tx: ${txHash.slice(0, 16)}...)`,
       });
-    } catch {
-      setHint({ type: "error", msg: "Faucet request failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Faucet request failed: ${err?.message || "RPC error"}` });
     } finally {
       setIsRequestingFaucet(false);
     }
@@ -635,9 +646,7 @@ export function WalletActions() {
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
-      const txHash =
-        rpcResult?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "Staking transaction");
 
       const newStaked = (parseFloat(stakedBalance) + val).toFixed(2);
       const newBal = (parseFloat(balance) - val).toFixed(2);
@@ -701,9 +710,7 @@ export function WalletActions() {
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
-      const txHash =
-        rpcResult?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "Unstaking transaction");
 
       const unbondId = rpcResult?.unbondId || `unbond-${Date.now()}`;
       const releaseTime = rpcResult?.releaseTime || Date.now() + 300000;
@@ -765,9 +772,7 @@ export function WalletActions() {
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
-      const txHash =
-        rpcResult?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "Claim transaction");
 
       setUnbondingQueue((prev) =>
         prev.map((u) => (u.id === id ? { ...u, claimed: true } : u))
@@ -827,9 +832,7 @@ export function WalletActions() {
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
-      const txHash =
-        rpcResult?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "Harvest transaction");
 
       const actualHarvested = rpcResult?.harvestedAmount !== undefined ? rpcResult.harvestedAmount : harvested;
       setAccruedYield(0.0);
@@ -970,9 +973,7 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
-      const txHash =
-        data.result?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      const txHash = requireRpcTxHash(data, "MetaMask faucet request");
 
       const currentLiveBlock = await getLiveBlockNumber();
       const newTx: TxHistoryItem = {

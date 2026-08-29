@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
+import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -100,7 +100,7 @@ export default function SovereignAgentsPage() {
       const agentDid = `did:nakharax:0x${randomBytes}`;
 
       // Broadcast on-chain transaction for agent DID mint
-      const mintPayload = (`0x6167656e745f6d696e74_${randomBytes}`) as `0x${string}`;
+      const mintPayload = encodeTxMemo(`agent_mint:${randomBytes}`);
       const txHash = await broadcastRawTransaction({
         to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         value: BigInt(500000000000000000), // 0.5 tNAK mint fee
@@ -121,6 +121,8 @@ export default function SovereignAgentsPage() {
       setAgents([createdAgent, ...agents]);
       setMintReceipt(`✅ Sovereign Agent Minted On-Chain!\nDID: ${agentDid}\nTx Hash: ${txHash}\nInitial Balance: ${initialFund} tNAK\nEquipped Skills: ${selectedSkills.join(", ")}`);
       setNewAgentName("");
+    } catch (err: any) {
+      setMintReceipt(`❌ Agent mint failed: ${err?.message || "Transaction rejected"}`);
     } finally {
       setIsMinting(false);
     }

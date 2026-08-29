@@ -1,4 +1,3 @@
-import { generateEphemeralKeypair } from "../crypto-vault";
 import { privateKeyToAccount } from "viem/accounts";
 import { parseGwei } from "viem";
 
@@ -9,30 +8,53 @@ export interface BroadcastTxParams {
   privateKey?: `0x${string}`;
 }
 
+export function encodeTxMemo(memo: string): `0x${string}` {
+  const bytes = new TextEncoder().encode(memo);
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `0x${hex}` as `0x${string}`;
+}
+
 /**
  * Sign and broadcast a transaction client-side using eth_sendRawTransaction
  * Guarantees zero private key leakage to RPC gateways.
  */
 export async function broadcastRawTransaction(params: BroadcastTxParams): Promise<string> {
-  const pk = params.privateKey || generateEphemeralKeypair().privateKey;
-  const account = privateKeyToAccount(pk);
+  if (!params.privateKey) {
+    throw new Error("A wallet private key is required to authorize this transaction.");
+  }
 
-  let nonce = 0;
-  try {
-    const nonceRes = await fetch("/api/rpc", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jsonrpc: "2.0",
-        method: "eth_getTransactionCount",
-        params: [account.address, "pending"],
-        id: 1,
-      }),
-    });
-    const nonceJson = await nonceRes.json();
-    if (nonceJson.result) nonce = parseInt(nonceJson.result, 16);
-  } catch {
-    /* fallback nonce 0 */
+  if (params.data && !/^0x(?:[0-9a-fA-F]{2})*$/.test(params.data)) {
+    throw new Error("Transaction data must be 0x-prefixed even-length hex.");
+  }
+
+  const account = privateKeyToAccount(params.privateKey);
+  const nonceRes = await fetch("/api/rpc", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "eth_getTransactionCount",
+      params: [account.address, "pending"],
+      id: Date.now(),
+    }),
+  });
+
+  if (!nonceRes.ok) {
+    throw new Error(`Failed to fetch account nonce: RPC returned HTTP ${nonceRes.status}`);
+  }
+
+  const nonceJson = await nonceRes.json();
+  if (nonceJson.error) {
+    throw new Error(nonceJson.error.message || `Failed to fetch account nonce: RPC Error code ${nonceJson.error.code}`);
+  }
+
+  if (typeof nonceJson.result !== "string" || !/^0x[0-9a-fA-F]+$/.test(nonceJson.result)) {
+    throw new Error("Failed to fetch account nonce: RPC returned an invalid nonce.");
+  }
+
+  const nonce = parseInt(nonceJson.result, 16);
+  if (!Number.isSafeInteger(nonce) || nonce < 0) {
+    throw new Error("Failed to fetch account nonce: nonce is outside the safe integer range.");
   }
 
   const rawTx = await account.signTransaction({

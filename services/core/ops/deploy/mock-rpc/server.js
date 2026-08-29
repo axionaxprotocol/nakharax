@@ -720,23 +720,11 @@ async function handleRpcMethod(method, params, id) {
         dataPayload = parsed.data || '0x';
         txHash = keccak256(signedTx);
       } catch (evmErr) {
-        // 2. Attempt native JSON-serialized transaction decoding (Rust core JSON wire format)
-        try {
-          const rawBytes = Buffer.from(signedTx.slice(2), 'hex');
-          const jsonTx = JSON.parse(rawBytes.toString('utf8'));
-          if (!jsonTx.from) throw new Error('Missing from address in transaction JSON');
-          fromAddr = jsonTx.from.toLowerCase();
-          toAddr = jsonTx.to ? jsonTx.to.toLowerCase() : null;
-          valWei = jsonTx.value ? BigInt(jsonTx.value) : 0n;
-          valHex = '0x' + valWei.toString(16);
-          nonce = jsonTx.nonce || 0;
-          gasLimit = jsonTx.gas_limit ? BigInt(jsonTx.gas_limit) : 21000n;
-          gasPriceWei = jsonTx.gas_price ? BigInt(jsonTx.gas_price) : 1200000000n;
-          dataPayload = jsonTx.data ? (Array.isArray(jsonTx.data) ? '0x' + Buffer.from(jsonTx.data).toString('hex') : jsonTx.data) : '0x';
-          txHash = '0x' + Buffer.from(rawBytes).toString('hex').slice(0, 64);
-        } catch (jsonErr) {
-          return jsonRpcError(id, -32602, `Invalid raw transaction: Failed to parse serialized transaction (${evmErr.message})`);
-        }
+        return jsonRpcError(
+          id,
+          -32602,
+          `Invalid raw transaction: mock RPC accepts only cryptographically recoverable EVM serialized transactions; submit native Ed25519 JSON transactions to the Rust core RPC (${evmErr.message})`
+        );
       }
 
       const gasFeeWei = gasLimit * gasPriceWei;
@@ -803,91 +791,7 @@ async function handleRpcMethod(method, params, id) {
     }
       
     case 'eth_sendTransaction': {
-      const [txObj] = params;
-      const txHash = generateHash();
-      const fromAddr = (txObj?.from || generateAddress()).toLowerCase();
-      const toAddr = (txObj?.to || generateAddress()).toLowerCase();
-      const valHex = txObj?.value || '0x0';
-      const valWei = BigInt(valHex);
-
-      const gasLimit = 21000n;
-      const gasPriceWei = 1200000000n; // 1.2 Gwei
-      const gasFeeWei = gasLimit * gasPriceWei; // 25,200,000,000,000 Wei (0.0000252 tNAK)
-
-      // 🪙 Protocol 3-Tier Fee Split Invariant:
-      // 1. 50% EIP-1559 Permanent Burn
-      // 2. 30% DAO Ecosystem Treasury Vault
-      // 3. 20% Block Validator / Miner Priority Reward
-      const burnWei = (gasFeeWei * 50n) / 100n;
-      const treasuryWei = (gasFeeWei * 30n) / 100n;
-      const validatorWei = gasFeeWei - burnWei - treasuryWei;
-
-      const fromAcc = getOrCreateAccount(fromAddr, '1000');
-      const toAcc = getOrCreateAccount(toAddr, '0');
-      const TREASURY_ADDR = '0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f';
-      const treasuryAcc = getOrCreateAccount(TREASURY_ADDR, '10000');
-
-      // Deduct balance from sender (Value + Total Gas Fee)
-      if (fromAcc) {
-        const curBal = BigInt(fromAcc.balance || '0x0');
-        const totalDeduct = valWei + gasFeeWei;
-        if (curBal >= totalDeduct) {
-          fromAcc.balance = '0x' + (curBal - totalDeduct).toString(16);
-        } else if (curBal >= valWei) {
-          fromAcc.balance = '0x' + (curBal - valWei).toString(16);
-        } else {
-          fromAcc.balance = '0x0';
-        }
-        fromAcc.nonce = (fromAcc.nonce || 0) + 1;
-      }
-
-      // Credit balance to recipient (Exact Value)
-      if (toAcc) {
-        const recBal = BigInt(toAcc.balance || '0x0');
-        toAcc.balance = '0x' + (recBal + valWei).toString(16);
-      }
-
-      // Credit 30% Protocol Cut to DAO Treasury Account
-      if (treasuryAcc) {
-        const curTreasury = BigInt(treasuryAcc.balance || '0x0');
-        treasuryAcc.balance = '0x' + (curTreasury + treasuryWei).toString(16);
-      }
-
-      // Track Cumulative Metrics
-      networkStats.totalBurnedWei = (networkStats.totalBurnedWei || 0n) + burnWei;
-      networkStats.totalTreasuryWei = (networkStats.totalTreasuryWei || 0n) + treasuryWei;
-
-      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
-      const tx = {
-        hash: txHash,
-        nonce: toHex(fromAcc?.nonce || 0),
-        blockHash: curBlock.hash,
-        blockNumber: toHex(blockNumber),
-        transactionIndex: toHex(curBlock.transactions.length),
-        from: fromAddr,
-        to: toAddr,
-        value: valHex,
-        gas: '0x5208',
-        gasPrice: '0x470de4df82', // 1.2 Gwei
-        gasUsed: '0x5208',
-        burnedFee: '0x' + burnWei.toString(16),
-        treasuryFee: '0x' + treasuryWei.toString(16),
-        validatorReward: '0x' + validatorWei.toString(16),
-        input: txObj?.data || '0x',
-        v: '0x1b',
-        r: generateHash(),
-        s: generateHash(),
-        type: txObj?.data?.length > 10 ? 'DEAI_COMPUTE_JOB' : 'TRANSFER',
-        timestamp: Math.floor(Date.now() / 1000)
-      };
-
-      transactions[txHash] = tx;
-      pendingTransactions.push(tx);
-      curBlock.transactions.push(txHash);
-      networkStats.totalTransactions++;
-
-      broadcastLog(`${new Date().toISOString()}  tx         INFO  mined tx ${txHash.slice(0, 16)}... from=${fromAddr.slice(0, 10)}... to=${toAddr.slice(0, 10)}... value=${valHex} [50% Burn: 0.0000126 tNAK | 30% DAO Treasury: 0.00000756 tNAK]`);
-      return jsonRpcResponse(id, txHash);
+      return jsonRpcError(id, -32601, 'eth_sendTransaction is disabled; sign client-side and submit eth_sendRawTransaction');
     }
 
     case 'nak_getBurnStats':

@@ -21,7 +21,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Card, IconBadge } from "@/components/card";
-import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
+import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 
 interface EvolutionStep {
   generation: number;
@@ -128,17 +128,12 @@ export function SelfEvolvingAgentSandbox() {
         .join("");
       const proofHash = `0x${proofBytes}`;
 
-      // Broadcast on-chain transaction for evolution proof
-      try {
-        const evoPayload = (`0x65766f6c7574696f6e5f67656e_${nextGenIndex + 1}_${proofBytes}`) as `0x${string}`;
-        await broadcastRawTransaction({
-          to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-          value: BigInt(0),
-          data: evoPayload,
-        });
-      } catch {
-        /* fallback */
-      }
+      const evoPayload = encodeTxMemo(`evolution_gen:${nextGenIndex + 1}:${proofBytes}`);
+      await broadcastRawTransaction({
+        to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        value: BigInt(0),
+        data: evoPayload,
+      });
 
       const newStep: EvolutionStep = {
         generation: nextGenIndex + 1,
@@ -170,6 +165,8 @@ export function SelfEvolvingAgentSandbox() {
           `• PoPC STARK Proof Hash: ${proofHash}\n` +
           `• Status: Autonomous Generation ${nextGenIndex + 1} Confirmed on Chain 86137`
       );
+    } catch (err: any) {
+      setEvolutionLog(`❌ Evolution proof broadcast failed: ${err?.message || "Transaction rejected"}`);
     } finally {
       setIsEvolving(false);
     }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
+import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -137,7 +137,7 @@ export default function LoRAMergingPage() {
       setMergeReceipt("Submitting Weight Deltas to PoPC Consensus Merging Engine...");
 
       // Broadcast on-chain transaction for weight merge
-      const mergePayload = (`0x6c6f72615f6d65726765_${algorithm}_${selectedAdapterIds.join("_")}`) as `0x${string}`;
+      const mergePayload = encodeTxMemo(`lora_merge:${algorithm}:${selectedAdapterIds.join(",")}`);
       const txHash = await broadcastRawTransaction({
         to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         value: BigInt(200000000000000000), // 0.2 tNAK fee
@@ -158,8 +158,8 @@ export default function LoRAMergingPage() {
       };
 
       setMergeReceipt(JSON.stringify(receipt, null, 2));
-    } catch {
-      setMergeReceipt(JSON.stringify({ error: "Merging error" }, null, 2));
+    } catch (err: any) {
+      setMergeReceipt(JSON.stringify({ error: err?.message || "Merging transaction rejected" }, null, 2));
     } finally {
       setIsMerging(false);
     }
