@@ -59,13 +59,12 @@ export async function broadcastRawTransaction(params: BroadcastTxParams): Promis
 
   const data = await res.json();
   if (data.error) {
-    throw new Error(data.error.message || "RPC rejected raw transaction");
+    throw new Error(data.error.message || `RPC Error code: ${data.error.code}`);
   }
 
-  return (
-    data.result ||
-    `0x${Array.from(crypto.getRandomValues(new Uint8Array(32)))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("")}`
-  );
+  if (!data.result || typeof data.result !== "string" || !data.result.startsWith("0x")) {
+    throw new Error("RPC gateway did not return a valid on-chain transaction hash receipt.");
+  }
+
+  return data.result;
 }

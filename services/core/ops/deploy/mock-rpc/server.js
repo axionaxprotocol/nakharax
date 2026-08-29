@@ -3,6 +3,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
+const { parseTransaction, recoverTransactionAddress, keccak256 } = require('viem');
 
 const app = express();
 
@@ -500,7 +501,7 @@ app.get('/health', (req, res) => {
 // JSON-RPC Handler
 // =============================================================================
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
   const { jsonrpc, method, params = [], id } = req.body;
 
   if (jsonrpc !== '2.0') {
@@ -510,7 +511,7 @@ app.post('/', (req, res) => {
   console.log(`[RPC] ${method}`);
 
   try {
-    const result = handleRpcMethod(method, params, id);
+    const result = await handleRpcMethod(method, params, id);
     return res.json(result);
   } catch (error) {
     console.error(`[RPC Error] ${method}:`, error.message);
@@ -518,7 +519,7 @@ app.post('/', (req, res) => {
   }
 });
 
-function handleRpcMethod(method, params, id) {
+async function handleRpcMethod(method, params, id) {
   switch (method) {
     // =========================================================================
     // Network Methods
@@ -611,22 +612,62 @@ function handleRpcMethod(method, params, id) {
     }
 
     case 'eth_getCode': {
-      const [address, block] = params;
-      const acc = accounts[address?.toLowerCase()];
-      return jsonRpcResponse(id, acc?.code || '0x');
+      const [address] = params || [];
+      const addr = (address || '').toLowerCase();
+      // If it's a known contract address, return synthetic bytecode
+      const knownContracts = [
+        '0x5fbdb2315678afecb367f032d93f642f64180aa3', // Token
+        '0xe7f1725e7734ce288f8367e1bb143e90bb3f0512', // Escrow
+        '0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0', // Staking
+        '0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9', // DAO
+        '0xdc64a140aa3e981100a9beca4e685f962f0cf6c9', // ZKP
+      ];
+      if (knownContracts.includes(addr)) {
+        return jsonRpcResponse(id, '0x608060405234801561001057600080fd5b50');
+      }
+      return jsonRpcResponse(id, '0x');
     }
 
-    case 'eth_getStorageAt': {
-      const [address, position, block] = params;
-      // Return empty storage
-      return jsonRpcResponse(id, '0x' + '0'.repeat(64));
+    case 'eth_getStorageAt':
+      return jsonRpcResponse(id, '0x0000000000000000000000000000000000000000000000000000000000000000');
+
+    // =========================================================================
+    // EVM Execution Methods
+    // =========================================================================
+    case 'eth_call': {
+      const [callObj, blockParam] = params;
+      const data = callObj?.data || '0x';
+      const to = (callObj?.to || '').toLowerCase();
+      
+      // Handle standard ERC-20 calls
+      if (data.startsWith('0x70a08231')) { // balanceOf(address)
+        const targetAddr = '0x' + data.slice(34).toLowerCase();
+        const account = accounts[targetAddr];
+        const bal = account ? BigInt(account.balance) : 0n;
+        return jsonRpcResponse(id, '0x' + bal.toString(16).padStart(64, '0'));
+      }
+      if (data.startsWith('0x18160ddd')) { // totalSupply()
+        return jsonRpcResponse(id, '0x' + (1000000000000000000000000000000n).toString(16).padStart(64, '0')); // 1T * 10^18
+      }
+      if (data.startsWith('0x313ce567')) { // decimals()
+        return jsonRpcResponse(id, '0x' + (18).toString(16).padStart(64, '0'));
+      }
+      if (data.startsWith('0x06fdde03')) { // name()
+        return jsonRpcResponse(id, '0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000094e616b6861726158000000000000000000000000000000000000000000000000');
+      }
+      if (data.startsWith('0x95d89b41')) { // symbol()
+        return jsonRpcResponse(id, '0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000034e414b0000000000000000000000000000000000000000000000000000000000');
+      }
+      
+      // Default success return (32 bytes of zeros or true)
+      return jsonRpcResponse(id, '0x0000000000000000000000000000000000000000000000000000000000000001');
     }
 
     // =========================================================================
-    // Gas Methods
+    // Gas & Fee Methods
     // =========================================================================
     case 'eth_gasPrice':
-      return jsonRpcResponse(id, '0x3b9aca00'); // 1 Gwei
+      return jsonRpcResponse(id, '0x470de4df82'); // 1.2 Gwei
 
     case 'eth_maxPriorityFeePerGas':
       return jsonRpcResponse(id, '0x3b9aca00'); // 1 Gwei
@@ -659,28 +700,102 @@ function handleRpcMethod(method, params, id) {
     // Transaction Methods
     // =========================================================================
     case 'eth_sendRawTransaction': {
-      const [signedTx] = params;
-      const txHash = generateHash();
+      const [signedTx] = params || [];
+      if (!signedTx || typeof signedTx !== 'string' || !signedTx.startsWith('0x') || signedTx.length < 20) {
+        return jsonRpcError(id, -32602, 'Invalid raw transaction: Missing or invalid hex-encoded transaction payload');
+      }
+
+      let fromAddr, toAddr, valWei, valHex, nonce, gasLimit, gasPriceWei, dataPayload, txHash;
+
+      // 1. Attempt standard EVM RLP / EIP-1559 transaction decoding & cryptographic recovery
+      try {
+        const parsed = parseTransaction(signedTx);
+        fromAddr = (await recoverTransactionAddress({ serializedTransaction: signedTx })).toLowerCase();
+        toAddr = parsed.to ? parsed.to.toLowerCase() : null;
+        valWei = parsed.value ? BigInt(parsed.value) : 0n;
+        valHex = '0x' + valWei.toString(16);
+        nonce = parsed.nonce || 0;
+        gasLimit = parsed.gas ? BigInt(parsed.gas) : 21000n;
+        gasPriceWei = parsed.gasPrice ? BigInt(parsed.gasPrice) : (parsed.maxFeePerGas ? BigInt(parsed.maxFeePerGas) : 1200000000n);
+        dataPayload = parsed.data || '0x';
+        txHash = keccak256(signedTx);
+      } catch (evmErr) {
+        // 2. Attempt native JSON-serialized transaction decoding (Rust core JSON wire format)
+        try {
+          const rawBytes = Buffer.from(signedTx.slice(2), 'hex');
+          const jsonTx = JSON.parse(rawBytes.toString('utf8'));
+          if (!jsonTx.from) throw new Error('Missing from address in transaction JSON');
+          fromAddr = jsonTx.from.toLowerCase();
+          toAddr = jsonTx.to ? jsonTx.to.toLowerCase() : null;
+          valWei = jsonTx.value ? BigInt(jsonTx.value) : 0n;
+          valHex = '0x' + valWei.toString(16);
+          nonce = jsonTx.nonce || 0;
+          gasLimit = jsonTx.gas_limit ? BigInt(jsonTx.gas_limit) : 21000n;
+          gasPriceWei = jsonTx.gas_price ? BigInt(jsonTx.gas_price) : 1200000000n;
+          dataPayload = jsonTx.data ? (Array.isArray(jsonTx.data) ? '0x' + Buffer.from(jsonTx.data).toString('hex') : jsonTx.data) : '0x';
+          txHash = '0x' + Buffer.from(rawBytes).toString('hex').slice(0, 64);
+        } catch (jsonErr) {
+          return jsonRpcError(id, -32602, `Invalid raw transaction: Failed to parse serialized transaction (${evmErr.message})`);
+        }
+      }
+
+      const gasFeeWei = gasLimit * gasPriceWei;
+      const burnWei = (gasFeeWei * 50n) / 100n;
+      const treasuryWei = (gasFeeWei * 30n) / 100n;
+      const validatorWei = gasFeeWei - burnWei - treasuryWei;
+
+      const fromAcc = getOrCreateAccount(fromAddr, '1000');
+      const toAcc = toAddr ? getOrCreateAccount(toAddr, '0') : null;
+      const TREASURY_ADDR = '0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f';
+      const treasuryAcc = getOrCreateAccount(TREASURY_ADDR, '10000');
+
+      // Deduct balance from sender
+      if (fromAcc) {
+        const curBal = BigInt(fromAcc.balance || '0x0');
+        const totalRequired = valWei + gasFeeWei;
+        if (curBal < totalRequired) {
+          return jsonRpcError(id, -32000, `Insufficient funds for transfer and gas fee (required ${totalRequired.toString()}, available ${curBal.toString()})`);
+        }
+        fromAcc.balance = '0x' + (curBal - totalRequired).toString(16);
+        fromAcc.nonce = Math.max((fromAcc.nonce || 0) + 1, nonce + 1);
+      }
+
+      // Credit balance to recipient
+      if (toAcc) {
+        const recBal = BigInt(toAcc.balance || '0x0');
+        toAcc.balance = '0x' + (recBal + valWei).toString(16);
+      }
+
+      // Credit 30% Protocol Cut to DAO Treasury Account
+      if (treasuryAcc) {
+        const curTreasury = BigInt(treasuryAcc.balance || '0x0');
+        treasuryAcc.balance = '0x' + (curTreasury + treasuryWei).toString(16);
+      }
+
+      // Track Cumulative Metrics
+      networkStats.totalBurnedWei = (networkStats.totalBurnedWei || 0n) + burnWei;
+      networkStats.totalTreasuryWei = (networkStats.totalTreasuryWei || 0n) + treasuryWei;
+
       const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
-      
       const tx = {
         hash: txHash,
-        nonce: toHex(Math.floor(Math.random() * 1000)),
+        nonce: toHex(nonce),
         blockHash: curBlock.hash,
         blockNumber: toHex(blockNumber),
         transactionIndex: toHex(curBlock.transactions.length),
-        from: generateAddress(),
-        to: null,
-        value: '0x0',
-        gas: '0x5208',
-        gasPrice: '0x3b9aca00',
-        input: signedTx.slice(0, 100),
-        v: '0x1b',
-        r: generateHash(),
-        s: generateHash(),
-        type: '0x0'
+        from: fromAddr,
+        to: toAddr,
+        value: valHex,
+        gas: '0x' + gasLimit.toString(16),
+        gasPrice: '0x' + gasPriceWei.toString(16),
+        gasUsed: '0x' + gasLimit.toString(16),
+        burnedFee: '0x' + burnWei.toString(16),
+        treasuryFee: '0x' + treasuryWei.toString(16),
+        validatorReward: '0x' + validatorWei.toString(16),
+        input: dataPayload,
+        status: '0x1',
       };
-      
+
       transactions[txHash] = tx;
       curBlock.transactions.push(txHash);
       networkStats.totalTransactions++;
