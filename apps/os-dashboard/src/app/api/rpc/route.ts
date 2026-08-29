@@ -21,8 +21,7 @@ const STRICT_ALLOWED_METHODS = new Set([
   "eth_getBlockByHash",
   "eth_getTransactionByHash",
   "eth_getTransactionReceipt",
-  "eth_sendRawTransaction",
-  "eth_sendTransaction",
+  "eth_sendRawTransaction", // Client-side signed serialized transaction (Zero private key exposure to RPC)
   "eth_call",
   "eth_estimateGas",
   "eth_gasPrice",
@@ -187,9 +186,10 @@ export async function POST(req: NextRequest) {
       clearTimeout(timeoutId1);
     }
 
-    // Fallback attempt: LOCAL_RPC with fresh, independent AbortController
+    // Fallback attempt: LOCAL_RPC ONLY in development environment
     if (!res || !res.ok) {
-      if (DEFAULT_RPC !== LOCAL_RPC) {
+      const isDev = process.env.NODE_ENV === "development";
+      if (isDev && DEFAULT_RPC !== LOCAL_RPC) {
         const controller2 = new AbortController();
         const timeoutId2 = setTimeout(() => controller2.abort(), 4000);
         try {

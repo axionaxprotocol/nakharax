@@ -21,6 +21,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Card, IconBadge } from "@/components/card";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 
 interface EvolutionStep {
   generation: number;
@@ -129,22 +130,11 @@ export function SelfEvolvingAgentSandbox() {
 
       // Broadcast on-chain transaction for evolution proof
       try {
-        await fetch("/api/rpc", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            method: "eth_sendTransaction",
-            params: [
-              {
-                from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-                to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-                value: "0x0",
-                data: `0x65766f6c7574696f6e5f67656e_${nextGenIndex + 1}_${proofBytes}`,
-              },
-            ],
-            id: Date.now(),
-          }),
+        const evoPayload = (`0x65766f6c7574696f6e5f67656e_${nextGenIndex + 1}_${proofBytes}`) as `0x${string}`;
+        await broadcastRawTransaction({
+          to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          value: BigInt(0),
+          data: evoPayload,
         });
       } catch {
         /* fallback */

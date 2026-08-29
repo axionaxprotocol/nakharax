@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -171,26 +172,12 @@ export default function MCPMarketplacePage() {
       setExecutionResult("Dispatching tool execution request through Sovereign Agent State Channel...");
 
       // Broadcast on-chain transaction for MCP tool execution
-      const toolPayload = `0x6d63705f63616c6c_${selectedSkill.id}`;
-      const res = await fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_sendTransaction",
-          params: [
-            {
-              from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-              to: selectedSkill.providerAddress,
-              value: "0x11c37937e08000", // 0.05 tNAK fee
-              data: toolPayload,
-            },
-          ],
-          id: Date.now(),
-        }),
+      const toolPayload = (`0x6d63705f63616c6c_${selectedSkill.id}`) as `0x${string}`;
+      const txHash = await broadcastRawTransaction({
+        to: selectedSkill.providerAddress as `0x${string}`,
+        value: BigInt(50000000000000000), // 0.05 tNAK fee
+        data: toolPayload,
       });
-      const data = await res.json();
-      const txHash = data.result || `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 
       const receipt = {
         onChainTxHash: txHash,

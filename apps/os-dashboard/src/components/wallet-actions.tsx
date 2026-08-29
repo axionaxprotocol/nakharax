@@ -47,6 +47,7 @@ import {
 import { formatEther } from "viem";
 
 import { generateEphemeralKeypair, encryptKeystore, decryptKeystore, type KeystoreV3 } from "@/lib/crypto-vault";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import { InstitutionalVaultModal, VaultCreationResult } from "@/components/institutional-vault-modal";
 
 const KEY_STORE_LOCAL = "nakharax-active-vault";
@@ -567,23 +568,14 @@ export function WalletActions() {
 
     try {
       setIsSending(true);
-      setHint({ type: "info", msg: "Broadcasting eth_sendTransaction to node RPC..." });
+      setHint({ type: "info", msg: "Signing & broadcasting eth_sendRawTransaction to node RPC..." });
 
-      const valWei = "0x" + BigInt(Math.floor(amountNumber * 1e18)).toString(16);
-      const res = await fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_sendTransaction",
-          params: [{ from: address, to: to, value: valWei }],
-          id: Date.now(),
-        }),
+      const valWei = BigInt(Math.floor(amountNumber * 1e18));
+      const txHash = await broadcastRawTransaction({
+        to: to as `0x${string}`,
+        value: valWei,
+        privateKey: privateKey ? (privateKey as `0x${string}`) : undefined,
       });
-      const data = await res.json();
-      const txHash =
-        data.result ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 
       const currentLiveBlock = await getLiveBlockNumber();
       const newTx: TxHistoryItem = {
@@ -601,11 +593,11 @@ export function WalletActions() {
       setTxHistory((prev) => [newTx, ...prev]);
       setDemoReceipt(txHash);
       await fetchBalance();
-      setHint({ type: "success", msg: `🎉 Transaction committed on-chain (Block #${currentLiveBlock})! Hash: ${txHash.slice(0, 18)}...` });
+      setHint({ type: "success", msg: `🎉 Raw Transaction signed & broadcast on-chain (Block #${currentLiveBlock})! Hash: ${txHash.slice(0, 18)}...` });
       setTo("");
       setAmount("");
-    } catch {
-      setHint({ type: "error", msg: "Transfer broadcast failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Transfer broadcast failed: ${err?.message || "Error"}` });
     } finally {
       setIsSending(false);
     }

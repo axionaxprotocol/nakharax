@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -99,26 +100,12 @@ export default function SovereignAgentsPage() {
       const agentDid = `did:nakharax:0x${randomBytes}`;
 
       // Broadcast on-chain transaction for agent DID mint
-      const mintPayload = `0x6167656e745f6d696e74_${randomBytes}`;
-      const res = await fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_sendTransaction",
-          params: [
-            {
-              from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-              to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-              value: "0x6f05b59d3b20000", // 0.5 tNAK mint fee
-              data: mintPayload,
-            },
-          ],
-          id: Date.now(),
-        }),
+      const mintPayload = (`0x6167656e745f6d696e74_${randomBytes}`) as `0x${string}`;
+      const txHash = await broadcastRawTransaction({
+        to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        value: BigInt(500000000000000000), // 0.5 tNAK mint fee
+        data: mintPayload,
       });
-      const data = await res.json();
-      const txHash = data.result || `0x${randomBytes}`;
 
       const createdAgent: SovereignAgentIdentity = {
         agentId: agentDid,

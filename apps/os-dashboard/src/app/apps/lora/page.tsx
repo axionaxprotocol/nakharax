@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -136,26 +137,12 @@ export default function LoRAMergingPage() {
       setMergeReceipt("Submitting Weight Deltas to PoPC Consensus Merging Engine...");
 
       // Broadcast on-chain transaction for weight merge
-      const mergePayload = `0x6c6f72615f6d65726765_${algorithm}_${selectedAdapterIds.join("_")}`;
-      const res = await fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_sendTransaction",
-          params: [
-            {
-              from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-              to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-              value: "0x2c68af0bb140000", // 0.2 tNAK fee
-              data: mergePayload,
-            },
-          ],
-          id: Date.now(),
-        }),
+      const mergePayload = (`0x6c6f72615f6d65726765_${algorithm}_${selectedAdapterIds.join("_")}`) as `0x${string}`;
+      const txHash = await broadcastRawTransaction({
+        to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        value: BigInt(200000000000000000), // 0.2 tNAK fee
+        data: mergePayload,
       });
-      const data = await res.json();
-      const txHash = data.result || `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 
       const receipt = {
         onChainTxHash: txHash,

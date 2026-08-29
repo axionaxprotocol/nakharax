@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import {
   Activity,
   AlertCircle,
@@ -197,28 +198,12 @@ export default function SubnetsEcosystemPage() {
     setStakeNotice(`Broadcasting stake transaction for ${name} to Node RPC...`);
 
     try {
-      const res = await fetch("http://127.0.0.1:8545", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_sendTransaction",
-          params: [
-            {
-              from: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-              to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-              value: "0x1bc16d674ec80000",
-            },
-          ],
-          id: Date.now(),
-        }),
+      const stakePayload = (`0x7374616b655f7375626e6574_${id}`) as `0x${string}`;
+      const txHash = await broadcastRawTransaction({
+        to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        value: BigInt("500000000000000000000"), // 500 tNAK
+        data: stakePayload,
       });
-      const data = await res.json();
-      const txHash =
-        data.result ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20)))
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join("")}`;
       setStakeNotice(
         `🎉 Staked 500 $tNAK on ${name} (Block #${currentBlock})!\nTx Hash: ${txHash}\nStatus: CONFIRMED_POPC`
       );
