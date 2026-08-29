@@ -201,14 +201,14 @@ export default function SubnetsEcosystemPage() {
       const stakePayload = (`0x7374616b655f7375626e6574_${id}`) as `0x${string}`;
       const txHash = await broadcastRawTransaction({
         to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-        value: BigInt("500000000000000000000"), // 500 tNAK
+        value: BigInt("100000000000000000"), // 0.1 tNAK deposit fee
         data: stakePayload,
       });
       setStakeNotice(
-        `🎉 Staked 500 $tNAK on ${name} (Block #${currentBlock})!\nTx Hash: ${txHash}\nStatus: CONFIRMED_POPC`
+        `🎉 Staked on ${name} (Block #${currentBlock})!\nTx Hash: ${txHash}\nStatus: CONFIRMED_POPC`
       );
-    } catch {
-      setStakeNotice(`🎉 Staked 500 $tNAK on ${name}!`);
+    } catch (err: any) {
+      setStakeNotice(`⚠️ Staking failed: ${err?.message || "Broadcast error"}`);
     }
 
     setTimeout(() => {

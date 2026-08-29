@@ -629,6 +629,9 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error.message || "Staking RPC error");
+      }
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
@@ -660,8 +663,8 @@ export function WalletActions() {
         msg: `🎉 On-Chain Stake Committed (Block #${currentLiveBlock})! Minted ${val} sNAK shares. Tx: ${txHash.slice(0, 16)}...`,
       });
       setStakeAmount("");
-    } catch {
-      setHint({ type: "error", msg: "Staking transaction broadcast failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Staking transaction failed: ${err?.message || "Broadcast error"}` });
     } finally {
       setIsStaking(false);
     }
@@ -692,6 +695,9 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error.message || "Unstaking RPC error");
+      }
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
@@ -729,8 +735,8 @@ export function WalletActions() {
         msg: `🔓 On-Chain Unstake Committed (Block #${currentLiveBlock})! Cooldown active (300s). Tx: ${txHash.slice(0, 16)}...`,
       });
       setUnstakeAmount("");
-    } catch {
-      setHint({ type: "error", msg: "Unstaking transaction failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Unstaking transaction failed: ${err?.message || "Broadcast error"}` });
     } finally {
       setIsUnstaking(false);
     }
@@ -753,6 +759,9 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error.message || "Claim RPC error");
+      }
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
@@ -786,8 +795,8 @@ export function WalletActions() {
         type: "success",
         msg: `✅ Claimed ${item.amount} tNAK on-chain (Block #${currentLiveBlock})! Released to wallet.`,
       });
-    } catch {
-      setHint({ type: "error", msg: "Claim unbonded transaction failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Claim unbonded transaction failed: ${err?.message || "Broadcast error"}` });
     } finally {
       setIsClaimingUnbonded(false);
     }
@@ -812,6 +821,9 @@ export function WalletActions() {
         }),
       });
       const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error.message || "Harvest RPC error");
+      }
       const rpcResult = data.result;
 
       const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
@@ -840,8 +852,8 @@ export function WalletActions() {
         type: "success",
         msg: `🌾 Harvested +${Number(actualHarvested).toFixed(6)} tNAK on-chain (Block #${currentLiveBlock}) across ${rpcResult?.blocksPassed || 1} blocks!`,
       });
-    } catch {
-      setHint({ type: "error", msg: "Harvest transaction failed." });
+    } catch (err: any) {
+      setHint({ type: "error", msg: `Harvest transaction failed: ${err?.message || "Broadcast error"}` });
     } finally {
       setIsHarvesting(false);
     }

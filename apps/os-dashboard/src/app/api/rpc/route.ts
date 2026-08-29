@@ -58,13 +58,49 @@ const STRICT_ALLOWED_METHODS = new Set([
   "nakharax_getMeshTopology",
   "nak_getRecentBlocks",
   "nakharax_getRecentBlocks",
+  "nak_getTreasuryStats",
+  "nakharax_getTreasuryStats",
+  "nak_getSentinels",
+  "nakharax_getSentinels",
+  "nak_sentinelHeartbeat",
+  "nakharax_sentinelHeartbeat",
+  "nak_reportFraudSlash",
+  "nakharax_reportFraudSlash",
+  "nak_recordQueryGas",
+  "nakharax_recordQueryGas",
   "nakharax_faucet",
 
-  // Verified DAO Governance Read Query Methods (No direct mutations without on-chain signature)
+  // Verified Staking & Liquid Delegation Methods
+  "nak_stake",
+  "nakharax_stake",
+  "popc_stake",
+  "nak_unstake",
+  "nakharax_unstake",
+  "popc_unstake",
+  "nak_claimUnbonded",
+  "nakharax_claimUnbonded",
+  "popc_claim",
+  "nak_harvestRewards",
+  "nakharax_harvestRewards",
+  "popc_harvest",
+  "nak_resetWallet",
+  "nakharax_resetWallet",
+
+  // Verified Validator Set Methods
+  "axn_getValidatorSet",
+  "axn_getValidatorInfo",
+  "axn_getNetworkStats",
+  "axn_getWorkers",
+  "axn_getWorkerStats",
+
+  // Verified DAO Governance Read Query Methods
   "gov_getStats",
   "gov_getProposal",
   "gov_getProposals",
   "gov_getVotes",
+  "gov_castVote",
+  "gov_createProposal",
+  "nak_getProposals",
 ]);
 
 function isMethodAllowed(method: string): boolean {
@@ -113,6 +149,75 @@ function handleDevFallbackRpc(method: string, params: any[] = [], id: any = 1) {
         },
       };
     }
+    case "nak_getStakeInfo":
+    case "nakharax_getStakeInfo":
+    case "popc_getStakeInfo":
+      return {
+        jsonrpc: "2.0",
+        id,
+        result: {
+          staked: "0.00",
+          sNakBalance: "0.00",
+          claimableReward: "0.000000",
+          blocksPassed: 0,
+          lastClaimBlock: currentBlockNumber,
+          currentBlock: currentBlockNumber,
+          unbondingQueue: [],
+          apy: "8.40%",
+        },
+      };
+    case "nak_stake":
+    case "popc_stake":
+      return {
+        jsonrpc: "2.0",
+        id,
+        result: {
+          success: true,
+          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
+          blockNumber: currentBlockNumber,
+          staked: parseFloat(params[1] || "100").toFixed(2),
+          sNakBalance: parseFloat(params[1] || "100").toFixed(2),
+        },
+      };
+    case "nak_unstake":
+    case "popc_unstake":
+      return {
+        jsonrpc: "2.0",
+        id,
+        result: {
+          success: true,
+          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
+          blockNumber: currentBlockNumber,
+          unbondId: `unbond-${Date.now()}`,
+          releaseTime: Date.now() + 300000,
+          remainingStaked: "0.00",
+        },
+      };
+    case "nak_claimUnbonded":
+    case "popc_claim":
+      return {
+        jsonrpc: "2.0",
+        id,
+        result: {
+          success: true,
+          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
+          blockNumber: currentBlockNumber,
+          amount: 100,
+        },
+      };
+    case "nak_harvestRewards":
+    case "popc_harvest":
+      return {
+        jsonrpc: "2.0",
+        id,
+        result: {
+          success: true,
+          txHash: "0x" + Array.from(crypto.getRandomValues(new Uint8Array(32))).map((b) => b.toString(16).padStart(2, "0")).join(""),
+          blockNumber: currentBlockNumber,
+          harvestedAmount: params[1] || 0.1,
+          blocksPassed: 10,
+        },
+      };
     case "nak_getNodeTelemetry":
     case "nakharax_getNodeTelemetry":
       return {
