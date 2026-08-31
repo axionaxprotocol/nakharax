@@ -70,7 +70,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
     it("should initialize with 1 Trillion supply and correct metadata", async function () {
       expect(await nakToken.name()).to.equal("NakharaX Token");
       expect(await nakToken.symbol()).to.equal("tNAK");
-      expect(await nakToken.decimals()).to.equal(18);
+      expect(await nakToken.decimals()).to.equal(18n);
       const expectedSupply = INITIAL_SUPPLY * 10n ** 18n;
       expect(await nakToken.totalSupply()).to.equal(expectedSupply);
     });
@@ -114,7 +114,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       expect(await faucetTreasury.dispenseAmount()).to.equal(newAmount);
 
       await faucetTreasury.setCooldown(3600);
-      expect(await faucetTreasury.cooldownTime()).to.equal(3600);
+      expect(await faucetTreasury.cooldownTime()).to.equal(3600n);
     });
   });
 
@@ -144,14 +144,14 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       await jobMarketplace.connect(submitter1).createJob(0, reward, 600, inputHash);
 
       const job1 = await jobMarketplace.getJob(1);
-      expect(job1.status).to.equal(0); // Pending
+      expect(job1.status).to.equal(0n); // Pending
       expect(job1.reward).to.equal(reward);
       expect(job1.submitter).to.equal(submitter1.address);
 
       // 3. Worker is assigned to job
       await jobMarketplace.connect(worker1).assignJob(1);
       const jobAssigned = await jobMarketplace.getJob(1);
-      expect(jobAssigned.status).to.equal(1); // Assigned
+      expect(jobAssigned.status).to.equal(1n); // Assigned
       expect(jobAssigned.worker).to.equal(worker1.address);
 
       // 4. Worker submits result & PoPC STARK proof
@@ -160,7 +160,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       await jobMarketplace.connect(worker1).submitResult(1, resultHash, proofHash);
 
       const jobCompleted = await jobMarketplace.getJob(1);
-      expect(jobCompleted.status).to.equal(2); // Completed
+      expect(jobCompleted.status).to.equal(2n); // Completed
       expect(jobCompleted.proofHash).to.equal(proofHash);
       expect(jobCompleted.resultHash).to.equal(resultHash);
 
@@ -191,7 +191,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
 
       expect(subBalAfter - subBalBefore).to.equal(totalDeposit);
       const job = await jobMarketplace.getJob(1);
-      expect(job.status).to.equal(4); // Cancelled
+      expect(job.status).to.equal(4n); // Cancelled
     });
 
     it("should support dispute and slashing for malicious/Byzantine workers", async function () {
@@ -219,7 +219,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
         .withArgs(1, submitter1.address);
 
       const disputedJob = await jobMarketplace.getJob(1);
-      expect(disputedJob.status).to.equal(3); // Disputed
+      expect(disputedJob.status).to.equal(3n); // Disputed
 
       // 5. DAO/Admin resolves dispute with 1,500 NAK slash against worker
       const slashAmount = ethers.parseEther("1500");
@@ -258,7 +258,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       const merkleRoot = ethers.keccak256(ethers.toUtf8Bytes("weights-tree-v1"));
       await loraHub.registerAdapter(adapterId, "Financial Specialist LoRA", "DeepSeek-R1", merkleRoot);
 
-      expect(await loraHub.getAdapterCount()).to.equal(1);
+      expect(await loraHub.getAdapterCount()).to.equal(1n);
       const adapter = await loraHub.adapters(adapterId);
       expect(adapter.name).to.equal("Financial Specialist LoRA");
       expect(adapter.author).to.equal(owner.address);
@@ -277,7 +277,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       const skills = ["mcp:sec-edgar", "mcp:mt5-risk-shield"];
       await agentRegistry.mintAgent(did, "QuantSentinel Agent", skills, { value: ethers.parseEther("0.5") });
 
-      expect(await agentRegistry.getAgentCount()).to.equal(1);
+      expect(await agentRegistry.getAgentCount()).to.equal(1n);
       const agent = await agentRegistry.agents(did);
       expect(agent.name).to.equal("QuantSentinel Agent");
       expect(agent.owner).to.equal(owner.address);
@@ -292,8 +292,9 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
 
   describe("6. TokenVesting (4-Year Cryptographic Release)", function () {
     const TOTAL_ALLOCATION = ethers.parseEther("1000000"); // 1 Million NAK
-    const ONE_YEAR = 365 * 24 * 3600; // 31,536,000 seconds
-    const FOUR_YEARS = 4 * ONE_YEAR;
+    const ONE_YEAR = 365n * 24n * 3600n; // 31,536,000 seconds
+    const ONE_YEAR_NUM = 365 * 24 * 3600;
+    const FOUR_YEARS = 4n * ONE_YEAR;
 
     it("should create a 4-year linear vesting schedule with 1-year cliff", async function () {
       const block = await ethers.provider.getBlock("latest");
@@ -309,7 +310,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
         true // revocable
       );
 
-      expect(await tokenVesting.getScheduleCount()).to.equal(1);
+      expect(await tokenVesting.getScheduleCount()).to.equal(1n);
       const schedules = await tokenVesting.getSchedulesByBeneficiary(user1.address);
       expect(schedules.length).to.equal(1);
 
@@ -338,7 +339,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       const scheduleId = schedules[0];
 
       // Fast-forward 6 months (halfway to cliff)
-      await ethers.provider.send("evm_increaseTime", [ONE_YEAR / 2]);
+      await ethers.provider.send("evm_increaseTime", [Math.floor(ONE_YEAR_NUM / 2)]);
       await ethers.provider.send("evm_mine", []);
 
       expect(await tokenVesting.getClaimableAmount(scheduleId)).to.equal(0n);
@@ -366,7 +367,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       const scheduleId = schedules[0];
 
       // Fast-forward to 2-year mark (50% duration)
-      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR + 1]);
+      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR_NUM + 1]);
       await ethers.provider.send("evm_mine", []);
 
       const userBalBefore = await nakToken.balanceOf(user1.address);
@@ -378,7 +379,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       expect(released50).to.be.closeTo(TOTAL_ALLOCATION / 2n, ethers.parseEther("100"));
 
       // Fast-forward to 4-year mark (100% completion)
-      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR]);
+      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR_NUM]);
       await ethers.provider.send("evm_mine", []);
 
       await tokenVesting.release(scheduleId);
@@ -404,7 +405,7 @@ describe("NakharaX L1 Smart Contracts Suite", function () {
       const scheduleId = schedules[0];
 
       // Fast-forward to 2 years (50% vested)
-      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR]);
+      await ethers.provider.send("evm_increaseTime", [2 * ONE_YEAR_NUM]);
       await ethers.provider.send("evm_mine", []);
 
       const ownerBalBefore = await nakToken.balanceOf(owner.address);

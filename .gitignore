@@ -18,6 +18,11 @@ typechain-types/
 .env
 .env.local
 .env.*.local
+.env.prod
+.env.production
+.env.production*
+**/.env.production
+**/.env.production*
 **/worker_key.json
 **/.env
 
@@ -39,6 +44,7 @@ models/
 *.gguf
 *.bin
 .state_cache.json
+**/.state_cache.json
 
 # Agent Metadata
 .antigravitycli/

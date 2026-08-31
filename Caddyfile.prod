@@ -28,7 +28,7 @@ rpc.nakharax.com {
 # 2. Main Web OS Terminal & Sovereign Dashboard
 app.nakharax.com, nakharax.com, www.nakharax.com {
     import security_headers
-    reverse_proxy web-os:3000
+    reverse_proxy web-os:3030
 }
 
 # 3. Public Faucet Gateway
@@ -40,6 +40,6 @@ faucet.nakharax.com {
 # 4. Block & Tx Explorer
 explorer.nakharax.com {
     import security_headers
-    reverse_proxy web-os:3000
+    reverse_proxy web-os:3030
 }
 

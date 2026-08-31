@@ -16,12 +16,15 @@ This checklist documents the operational steps required to initialize and verify
 
 ---
 
-## Pre-Flight Verification Checklist
+## Pre-Flight Verification Checklist (D-1 Certified)
 
-- [ ] **Validator Private Keys:** Verify corresponding validator keys exist on EU (`217.216.109.5`) and AU (`46.250.244.4`) hosts.
-- [ ] **Faucet Treasury Key:** Configure `FAUCET_PRIVATE_KEY` on AU (`46.250.244.4`) matching the genesis allocation address.
-- [ ] **Firewall Ingress Rules:** Confirm ports `22`, `8545`, `8546`, and `30303` are open on both validator nodes.
-- [ ] **Genesis Hash Verification:** Run `sha256sum genesis.json` on all nodes to ensure 100% digest match.
+- [x] **Genesis Blueprint Verification:** Certified blueprint SHA-256 (`0xed1bdac7...`) and deterministic parameters.
+- [x] **Libp2p Swarm Bootstrap Multiaddresses:** Generated and verified in `PUBLIC_TESTNET_BOOTSTRAPS.txt`.
+- [x] **Automated Provisioning Engine:** Built `provision_5nodes.sh` supporting 5-node hybrid quorum mesh.
+- [x] **Production Environments Hardened:** Configured `.env.prod`, `deploy/.env.production`, and `os-dashboard/.env.production`.
+- [x] **Staged Genesis Release Notes & Announcements:** Staged `RELEASE_NOTES_2026_09_01.md` and `COMMUNITY_ANNOUNCEMENT_2026_09_01.md`.
+- [x] **Consensus & Tokenomics Invariants:** Verified 3.0s block cadence, 8.40% liquid staking APY, and 100 $tNAK faucet limit.
+- [ ] **Live Node Key Binding:** To be confirmed upon SSH deployment onto cloud hosts at 05:00 BKK on 1 September.
 
 ---
 

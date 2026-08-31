@@ -28,7 +28,7 @@ services:
     ports:
       - "127.0.0.1:8545:8545" # Bound strictly to loopback on host for local admin
       - "127.0.0.1:8546:8546" # Bound strictly to loopback on host for local admin
-      - "30303:30303"         # Public P2P Mesh Ingress
+      - "30303:30303" # Public P2P Mesh Ingress
     environment:
       - CHAIN_ID=86137
       - NETWORK=nakharax-testnet
@@ -52,7 +52,7 @@ services:
       - RPC_URL=http://nakharax-genesis-node:8545
       - CHAIN_ID=86137
       - FAUCET_AMOUNT=100
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-nakharax_redis_vault_token_86137_prod!}@redis:6379
     depends_on:
       - nakharax-genesis-node
       - redis
@@ -66,6 +66,7 @@ services:
     image: redis:7-alpine
     container_name: nakharax-prod-redis
     restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-nakharax_redis_vault_token_86137_prod!}
     volumes:
       - redis_data:/data
     networks:
@@ -80,7 +81,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-nakharax_prod}
-      - POSTGRES_USER=${POSTGRES_USER:-nakharax}
+      - POSTGRES_USER=${POSTGRES_USER:-nakharax_admin}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password must be provided in .env.prod}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -97,10 +98,12 @@ services:
     container_name: nakharax-web-os
     restart: unless-stopped
     environment:
-      - PORT=3000
+      - PORT=3030
       - NODE_ENV=production
       - NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com
       - NEXT_PUBLIC_CHAIN_ID=86137
+    ports:
+      - "3030:3030"
     depends_on:
       - nakharax-genesis-node
     networks:

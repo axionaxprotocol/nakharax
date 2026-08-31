@@ -5,7 +5,7 @@
   "description": "NakharaX Protocol & DeAI L1 Smart Contracts",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test",
+    "test": "hardhat test test/contracts.test.js --network hardhat",
     "deploy": "hardhat run scripts/deploy.js",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
     "deploy:testnet": "hardhat run scripts/deploy.js --network nakharaxTestnet"

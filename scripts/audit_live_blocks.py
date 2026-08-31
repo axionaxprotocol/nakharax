@@ -43,6 +43,7 @@ def main():
 
     print("\n--- RECENT 12 BLOCKS VERIFICATION ---")
     unbroken = True
+    diff_ts_list = []
     for i, blk in enumerate(blocks):
         b_num = int(blk['number'], 16)
         b_hash = blk['hash']
@@ -59,17 +60,28 @@ def main():
                 unbroken = False
             prev_ts = int(blocks[i-1]['timestamp'], 16)
             diff_ts = ts - prev_ts
+            diff_ts_list.append(diff_ts)
         else:
-            diff_ts = 3
+            diff_ts = 0
 
-        print(f"  - Block #{b_num:<5} | Hash: {b_hash[:14]}... | Parent: {p_hash[:14]}... | +{diff_ts}s | Gas: {gas_used} | {status}")
+        ts_str = f"+{diff_ts}s" if i > 0 else "---"
+        print(f"  - Block #{b_num:<5} | Hash: {b_hash[:14]}... | Parent: {p_hash[:14]}... | {ts_str:<5} | Gas: {gas_used} | {status}")
 
     print("-" * 70)
     if unbroken:
         print("[SUCCESS] Cryptographic Parent Hash Invariant: 100% CONTINUOUS & UNBROKEN")
     else:
         print("[FAILED] Parent hash inconsistency detected")
-    print(f"[SUCCESS] Average Cadence: Exactly 3.00s deterministic block production")
+    
+    if diff_ts_list:
+        avg_cadence = sum(diff_ts_list) / len(diff_ts_list)
+        print(f"[METRIC] Measured Average Cadence: {avg_cadence:.2f}s per block (Samples: {len(diff_ts_list)})")
+        if abs(avg_cadence - 3.0) <= 0.2:
+            print("[SUCCESS] Cadence Verification: Deterministic 3.0s block production confirmed")
+        else:
+            print(f"[INFO] Cadence Verification: Measured {avg_cadence:.2f}s per block")
+    else:
+        print("[INFO] Insufficient blocks to calculate average cadence")
     print("=" * 70)
 
 if __name__ == "__main__":

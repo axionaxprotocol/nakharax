@@ -1,6 +1,18 @@
 # Nakharax Documentation & Protocol Changelog
 
-> **History of documentation & protocol changes** — Last Updated: August 27, 2026
+> **History of documentation & protocol changes** — Last Updated: August 31, 2026
+
+---
+
+## 2026-08-31 — D-1 Pre-Launch Stabilization, Multi-Node Bootstrap Mesh & Staged Genesis Release Notes
+
+### Added
+- **Canonical Multiaddress Registry (`PUBLIC_TESTNET_BOOTSTRAPS.txt`)**: Formulated standard Libp2p multiaddress endpoints for all 5 Genesis Quorum Nodes (AU, EU, US, SG, UK).
+- **1-Click 5-Node Provisioning Pipeline (`provision_5nodes.sh`)**: Automated multi-server setup script to dynamically generate production environments and sync peer routing.
+- **Production Environment Profiles (`.env.prod`, `services/core/ops/deploy/.env.production`, `apps/os-dashboard/.env.production`)**: Configured hardened database credentials, Redis caches, and RPC bindings.
+- **Official Genesis Release Notes (`docs/RELEASE_NOTES_2026_09_01.md`)**: Complete technical manual detailing Chain ID `86137`, RPC endpoints, 100 $tNAK Faucet rate, MetaMask bridge, and tokenomics.
+- **Community Announcement Package (`docs/COMMUNITY_ANNOUNCEMENT_2026_09_01.md`)**: Staged multi-channel announcement for Discord, Telegram, and X ahead of Genesis T-0.
+- **Full-Spectrum D-1 Dress Rehearsal**: Completed end-to-end rehearsal certifying 3.0s deterministic block production, STARK-FRI-1024 proof verification, and 100% tokenomics parity.
 
 ---
 

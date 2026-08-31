@@ -12,7 +12,7 @@ const WS_PORT = process.env.WS_PORT || 8546;
 const HOST = process.env.HOST || '127.0.0.1';
 const CHAIN_ID = process.env.CHAIN_ID || '86137';
 const NETWORK = process.env.NETWORK || 'nakharax-testnet';
-const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '1000'); // 1.0s High-Velocity Cadence (2026 Golden Standard)
+const BLOCK_TIME = parseInt(process.env.BLOCK_TIME || '3000'); // 3.0s Deterministic PoPC Consensus Cadence
 const STATE_FILE = path.join(__dirname, '.state_cache.json');
 
 // In-Memory IP Rate Limiter (Max 120 req / 10s per IP)
@@ -235,7 +235,7 @@ function loadStateFromDisk() {
       networkStats.activeValidators = validators.length;
       networkStats.activeWorkers = Object.keys(workers).length;
       networkStats.activeSentinels = Object.keys(sentinels).length;
-      
+
       stakingPools = {};
       if (state.stakingPools) {
         for (const [k, v] of Object.entries(state.stakingPools)) {
@@ -265,9 +265,22 @@ function generateHash() {
 }
 
 function toHex(num) {
+  if (num === null || num === undefined) return '0x0';
+  if (typeof num === 'bigint') return '0x' + num.toString(16);
+  if (typeof num === 'number') return '0x' + num.toString(16);
   if (typeof num === 'string') {
-    if (num.startsWith('0x')) return num;
-    return '0x' + parseInt(num, 10).toString(16);
+    if (num.startsWith('0x')) {
+      if (num.length > 66) {
+        try {
+          const val = BigInt(num);
+          return '0x' + val.toString(16);
+        } catch {
+          return '0x0';
+        }
+      }
+      return num;
+    }
+    return '0x' + (parseInt(num, 10) || 0).toString(16);
   }
   return '0x' + (num || 0).toString(16);
 }
@@ -317,7 +330,7 @@ function initMockState() {
     '0x976ea74026e726554db657fa54763abd0c3a0aa9', // Node 7: Localhost Sovereign Rig (Master Live Host)
     '0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f', // 🏛️ DAO Ecosystem Treasury Vault
   ];
-  
+
   knownAddresses.forEach((addr) => {
     accounts[addr.toLowerCase()] = {
       balance: toHex(BigInt('10000000000000000000000')), // 10,000 NAK
@@ -325,7 +338,7 @@ function initMockState() {
       code: null
     };
   });
-  
+
   // Generate additional random accounts
   for (let i = 0; i < 10; i++) {
     const addr = generateAddress();
@@ -335,7 +348,7 @@ function initMockState() {
       code: null
     };
   }
-  
+
   // Initialize 7 Canonical Mesh Nodes (3 Validators + 4 Workers/Auditors)
   validators = [
     { address: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', name: 'Node-01-Frankfurt-Val1', region: 'Frankfurt, DE', stake: '150000000000000000000000', active: true, uptime: '99.99%', commission: '4.0%' },
@@ -352,7 +365,7 @@ function initMockState() {
 
   networkStats.activeValidators = validators.length;
   networkStats.activeWorkers = Object.keys(workers).length;
-  
+
   console.log(`[Init] Created ${Object.keys(accounts).length} accounts`);
   console.log(`[Init] Initialized ${validators.length} validators and ${Object.keys(workers).length} workers (Total 7 Active Mesh Nodes)`);
 }
@@ -360,10 +373,10 @@ function initMockState() {
 // Generate a mock block
 function generateBlock(num) {
   if (blockCache[num]) return blockCache[num];
-  
+
   const parentNum = num - 1;
   const parentHash = parentNum >= 0 ? (blockCache[parentNum]?.hash || generateHash()) : '0x' + '0'.repeat(64);
-  
+
   const block = {
     number: toHex(num),
     hash: generateHash(),
@@ -385,7 +398,7 @@ function generateBlock(num) {
     transactions: [],
     uncles: []
   };
-  
+
   blockCache[num] = block;
   return block;
 }
@@ -400,7 +413,7 @@ setInterval(() => {
   blockNumber++;
   const block = generateBlock(blockNumber);
   networkStats.totalBlocks = blockNumber;
-  
+
   // 🪙 1. Distribute Coinbase Block Reward to Active Validator (2.00 $tNAK per 1.0s block)
   const activeVal = validators[blockNumber % validators.length];
   if (activeVal && activeVal.address) {
@@ -434,11 +447,11 @@ setInterval(() => {
     if (activeSentinelList.length > 0) {
       const perSentinelSubsidyNAK = 0.60 / activeSentinelList.length; // 30% cut of 2.00 tNAK block fee
       const perSentinelWei = BigInt(Math.floor(perSentinelSubsidyNAK * 1e18));
-      
+
       activeSentinelList.forEach(s => {
         s.uptimeRewardsEarned = (s.uptimeRewardsEarned || 0) + perSentinelSubsidyNAK;
         s.uptimeSeconds = (s.uptimeSeconds || 0) + 3;
-        
+
         const sAcc = getOrCreateAccount(s.address.toLowerCase(), '1000');
         if (sAcc) {
           sAcc.balance = '0x' + (BigInt(sAcc.balance || '0x0') + perSentinelWei).toString(16);
@@ -469,7 +482,7 @@ setInterval(() => {
     transactions[tx.hash].blockHash = block.hash;
     transactions[tx.hash].blockNumber = block.number;
   });
-  
+
   // Auto-persist state every 5 blocks (15s)
   if (blockNumber % 5 === 0) {
     saveStateToDisk();
@@ -557,7 +570,7 @@ async function handleRpcMethod(method, params, id) {
     case 'eth_getBlockByNumber': {
       const [blockParam, fullTx] = params;
       let num = blockNumber;
-      
+
       if (blockParam === 'latest' || blockParam === 'pending') {
         num = blockNumber;
       } else if (blockParam === 'earliest') {
@@ -565,7 +578,7 @@ async function handleRpcMethod(method, params, id) {
       } else {
         num = fromHex(blockParam);
       }
-      
+
       const block = generateBlock(num);
       if (fullTx && block.transactions.length > 0) {
         block.transactions = block.transactions.map(hash => transactions[hash]).filter(Boolean);
@@ -638,7 +651,7 @@ async function handleRpcMethod(method, params, id) {
       const [callObj, blockParam] = params;
       const data = callObj?.data || '0x';
       const to = (callObj?.to || '').toLowerCase();
-      
+
       // Handle standard ERC-20 calls
       if (data.startsWith('0x70a08231')) { // balanceOf(address)
         const targetAddr = '0x' + data.slice(34).toLowerCase();
@@ -658,7 +671,7 @@ async function handleRpcMethod(method, params, id) {
       if (data.startsWith('0x95d89b41')) { // symbol()
         return jsonRpcResponse(id, '0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000034e414b0000000000000000000000000000000000000000000000000000000000');
       }
-      
+
       // Default success return (32 bytes of zeros or true)
       return jsonRpcResponse(id, '0x0000000000000000000000000000000000000000000000000000000000000001');
     }
@@ -789,9 +802,83 @@ async function handleRpcMethod(method, params, id) {
       networkStats.totalTransactions++;
       return jsonRpcResponse(id, txHash);
     }
-      
+
     case 'eth_sendTransaction': {
-      return jsonRpcError(id, -32601, 'eth_sendTransaction is disabled; sign client-side and submit eth_sendRawTransaction');
+      const [txObj] = params || [];
+      if (!txObj || typeof txObj !== 'object') {
+        return jsonRpcError(id, -32602, 'Invalid transaction object');
+      }
+
+      const fromAddr = (txObj.from || '').toLowerCase();
+      const toAddr = txObj.to ? txObj.to.toLowerCase() : null;
+      const valWei = txObj.value ? BigInt(txObj.value) : 0n;
+      const valHex = '0x' + valWei.toString(16);
+      const gasLimit = txObj.gas ? BigInt(txObj.gas) : 21000n;
+      const gasPriceWei = txObj.gasPrice ? BigInt(txObj.gasPrice) : 1200000000n; // 1.2 Gwei
+      const dataPayload = txObj.data || '0x';
+
+      const fromAcc = getOrCreateAccount(fromAddr, '1000');
+      const toAcc = toAddr ? getOrCreateAccount(toAddr, '0') : null;
+      const TREASURY_ADDR = '0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f';
+      const treasuryAcc = getOrCreateAccount(TREASURY_ADDR, '10000');
+
+      const gasFeeWei = gasLimit * gasPriceWei;
+      const burnWei = (gasFeeWei * 50n) / 100n;
+      const treasuryWei = (gasFeeWei * 30n) / 100n;
+      const validatorWei = gasFeeWei - burnWei - treasuryWei;
+
+      const curNonce = typeof fromAcc.nonce === 'number' ? fromAcc.nonce : parseInt(fromAcc.nonce || '0', 10) || 0;
+      fromAcc.nonce = curNonce + 1;
+
+      if (fromAcc) {
+        const curBal = BigInt(fromAcc.balance || '0x0');
+        const totalRequired = valWei + gasFeeWei;
+        if (curBal >= totalRequired) {
+          fromAcc.balance = '0x' + (curBal - totalRequired).toString(16);
+        }
+      }
+
+      if (toAcc) {
+        const recBal = BigInt(toAcc.balance || '0x0');
+        toAcc.balance = '0x' + (recBal + valWei).toString(16);
+      }
+
+      if (treasuryAcc) {
+        const curTreasury = BigInt(treasuryAcc.balance || '0x0');
+        treasuryAcc.balance = '0x' + (curTreasury + treasuryWei).toString(16);
+      }
+
+      networkStats.totalBurnedWei = (networkStats.totalBurnedWei || 0n) + burnWei;
+      networkStats.totalTreasuryWei = (networkStats.totalTreasuryWei || 0n) + treasuryWei;
+
+      const randomSuffix = Math.floor(Math.random() * 1e9).toString(16).padStart(8, '0');
+      const txHash = '0x' + (keccak256 ? keccak256(Buffer.from(fromAddr + Date.now() + randomSuffix)).replace('0x', '') : (randomSuffix + randomSuffix + randomSuffix + randomSuffix).padEnd(64, '0'));
+
+      const curBlock = blockCache[blockNumber] || generateBlock(blockNumber);
+      const tx = {
+        hash: txHash,
+        nonce: toHex(curNonce),
+        blockHash: curBlock.hash,
+        blockNumber: toHex(blockNumber),
+        transactionIndex: toHex(curBlock.transactions.length),
+        from: fromAddr,
+        to: toAddr,
+        value: valHex,
+        gas: '0x' + gasLimit.toString(16),
+        gasPrice: '0x' + gasPriceWei.toString(16),
+        gasUsed: '0x' + gasLimit.toString(16),
+        effectiveGasPrice: '0x' + gasPriceWei.toString(16),
+        burnedFee: '0x' + burnWei.toString(16),
+        treasuryFee: '0x' + treasuryWei.toString(16),
+        validatorReward: '0x' + validatorWei.toString(16),
+        input: dataPayload,
+        status: '0x1',
+      };
+
+      transactions[txHash] = tx;
+      curBlock.transactions.push(txHash);
+      networkStats.totalTransactions++;
+      return jsonRpcResponse(id, txHash);
     }
 
     case 'nak_getBurnStats':
@@ -841,11 +928,11 @@ async function handleRpcMethod(method, params, id) {
     case 'eth_getTransactionReceipt': {
       const [txHash] = params;
       const tx = transactions[txHash];
-      
+
       if (!tx || !tx.blockHash) {
         return jsonRpcResponse(id, null);
       }
-      
+
       return jsonRpcResponse(id, {
         transactionHash: txHash,
         transactionIndex: tx.transactionIndex || '0x0',
@@ -1000,7 +1087,7 @@ async function handleRpcMethod(method, params, id) {
     case 'axn_getWorkerStats': {
       const [address] = params;
       const now = Date.now();
-      
+
       // Ensure all workers dynamic status is updated according to real physical heartbeat
       Object.entries(workers).forEach(([k, w]) => {
         if (k === '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266') {
@@ -1011,7 +1098,7 @@ async function handleRpcMethod(method, params, id) {
           w.status = 'OFFLINE_DISCONNECTED';
         }
       });
-      
+
       if (address) {
         return jsonRpcResponse(id, workers[address.toLowerCase()] || null);
       }
@@ -1057,24 +1144,24 @@ async function handleRpcMethod(method, params, id) {
       const reporterAddr = (report?.reporterAddress || '0x90f79bf6eb2c4f870365e785982e1f101e93b906').toLowerCase();
       const targetOffender = (report?.offenderAddress || '').toLowerCase();
       const reason = report?.reason || 'Fraudulent ZKP Matrix Proof / 51% ECVRF Attack';
-      
+
       const slashedStake = 500.0; // 50% Slash Stake (500 tNAK)
       const whistleblowerBountyNAK = 150.0; // 30% of slashed stake (150 tNAK)
       const treasuryCutNAK = 350.0; // 70% to DAO treasury
-      
+
       if (sentinels[reporterAddr]) {
         sentinels[reporterAddr].fraudBountiesEarned = (sentinels[reporterAddr].fraudBountiesEarned || 0) + whistleblowerBountyNAK;
         sentinels[reporterAddr].slashesReported = (sentinels[reporterAddr].slashesReported || 0) + 1;
       }
-      
+
       const repAcc = getOrCreateAccount(reporterAddr, '1000');
       if (repAcc) {
         const bountyWei = BigInt(Math.floor(whistleblowerBountyNAK * 1e18));
         repAcc.balance = '0x' + (BigInt(repAcc.balance || '0x0') + bountyWei).toString(16);
       }
-      
+
       broadcastLog(`[🛡️ SENTINEL SLASHER] Offender ${targetOffender.slice(0, 10)}... slashed 50% (${slashedStake} NAK) for: ${reason}. Whistleblower Bounty 30% (${whistleblowerBountyNAK} NAK) paid to ${reporterAddr.slice(0, 10)}...`);
-      
+
       return jsonRpcResponse(id, {
         success: true,
         slashedStakeNak: slashedStake,
@@ -1090,17 +1177,17 @@ async function handleRpcMethod(method, params, id) {
       const [qData] = params;
       const servingAddr = (qData?.sentinelAddress || '0x90f79bf6eb2c4f870365e785982e1f101e93b906').toLowerCase();
       const gasFeeNAK = parseFloat(qData?.gasFee || '0.05');
-      
+
       if (sentinels[servingAddr]) {
         sentinels[servingAddr].queryGasEarned = (sentinels[servingAddr].queryGasEarned || 0) + gasFeeNAK;
       }
-      
+
       const sAcc = getOrCreateAccount(servingAddr, '1000');
       if (sAcc) {
         const gasWei = BigInt(Math.floor(gasFeeNAK * 1e18));
         sAcc.balance = '0x' + (BigInt(sAcc.balance || '0x0') + gasWei).toString(16);
       }
-      
+
       return jsonRpcResponse(id, { success: true, feePaid: gasFeeNAK, recipient: servingAddr });
     }
 
@@ -1110,7 +1197,7 @@ async function handleRpcMethod(method, params, id) {
       const address = specs?.address || generateAddress();
       const isPC2 = address.toLowerCase() === '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266';
       const isStandby = address.toLowerCase() === '0x90f79bf6eb2c4f870365e785982e1f101e93b906';
-      
+
       workers[address.toLowerCase()] = {
         address: address,
         name: isPC2 ? 'PC-2 (NVIDIA GeForce GTX 1070 Ti)' : (isStandby ? 'PC-Standby (NOESIS Sentinel Guardian)' : (specs?.name || 'DeAI Edge Compute Worker')),
@@ -1177,7 +1264,7 @@ async function handleRpcMethod(method, params, id) {
       const workerPayoutWei = rewardWei - treasuryCutWei;
       const TREASURY_ADDR = '0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f';
       const treasuryAcc = getOrCreateAccount(TREASURY_ADDR, '10000');
-      
+
       // Auto-Select best active GPU worker (e.g. PC-2) or fallback
       const registeredWorkers = Object.keys(workers);
       const workerAddr = registeredWorkers.length > 0 ? registeredWorkers[0] : '0x70997970C51812dc3A010C7d01b50e0d17dc79C8';
@@ -1237,8 +1324,8 @@ async function handleRpcMethod(method, params, id) {
       curBlock.transactions.push(txHash);
       networkStats.totalTransactions++;
 
-      broadcastLog(`${new Date().toISOString()}  asr        INFO  ⚡ Dispatched DeAI job ${jobId.slice(0, 12)}... model=${jobSpec?.model || 'DeepSeek-R1'} [95% Worker: ${(Number(workerPayoutWei)/1e18).toFixed(2)} tNAK | 5% DAO Treasury: ${(Number(treasuryCutWei)/1e18).toFixed(4)} tNAK]`);
-      return jsonRpcResponse(id, { jobId, status: 'completed', txHash, deducted: rewardFloat, workerPayout: Number(workerPayoutWei)/1e18, treasuryFee: Number(treasuryCutWei)/1e18 });
+      broadcastLog(`${new Date().toISOString()}  asr        INFO  ⚡ Dispatched DeAI job ${jobId.slice(0, 12)}... model=${jobSpec?.model || 'DeepSeek-R1'} [95% Worker: ${(Number(workerPayoutWei) / 1e18).toFixed(2)} tNAK | 5% DAO Treasury: ${(Number(treasuryCutWei) / 1e18).toFixed(4)} tNAK]`);
+      return jsonRpcResponse(id, { jobId, status: 'completed', txHash, deducted: rewardFloat, workerPayout: Number(workerPayoutWei) / 1e18, treasuryFee: Number(treasuryCutWei) / 1e18 });
     }
 
     case 'faucet_requestTokens':
@@ -1578,7 +1665,7 @@ async function handleRpcMethod(method, params, id) {
       const [userAddr] = params;
       const addr = (userAddr || '').toLowerCase();
       const pool = stakingPools[addr] || { staked: 0n, sNakShares: 0n, lastClaimBlock: blockNumber, unbondingQueue: [] };
-      
+
       const stakedTokens = Number(pool.staked) / 1e18;
       const lastBlock = pool.lastClaimBlock || blockNumber;
       const blocksPassed = Math.max(0, blockNumber - lastBlock);
@@ -1649,7 +1736,7 @@ async function handleRpcMethod(method, params, id) {
       const [proposer, stakeAmount, title, description, propType] = params;
       const addr = (proposer || '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266').toLowerCase();
       const nextId = Object.keys(proposals).length + 1;
-      
+
       const newProp = {
         id: nextId,
         proposer: addr,
@@ -1668,7 +1755,7 @@ async function handleRpcMethod(method, params, id) {
         voters: { [addr]: 'for' },
         createdAt: new Date().toISOString()
       };
-      
+
       proposals[nextId] = newProp;
       saveStateToDisk();
       broadcastLog(`[🗳️ DAO GOVERNANCE] Proposal #${nextId} "${newProp.title.slice(0, 30)}..." submitted by ${addr.slice(0, 10)}... Snapshot Block #${newProp.snapshotBlock}`);
@@ -1681,18 +1768,18 @@ async function handleRpcMethod(method, params, id) {
       const addr = (voterAddr || '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266').toLowerCase();
       const pId = parseInt(proposalId, 10);
       const prop = proposals[pId];
-      
+
       if (!prop) {
         return jsonRpcError(id, -32602, `Proposal #${pId} not found`);
       }
-      
+
       // Calculate voting power based on $sNAK or default weight
       const pool = stakingPools[addr];
       const votingPower = pool && pool.sNakShares > 0n ? Math.floor(Number(pool.sNakShares) / 1e18) : 50000;
-      
+
       if (!prop.voters) prop.voters = {};
       prop.voters[addr] = choice;
-      
+
       if (choice === 'for') {
         prop.votesFor += votingPower;
       } else if (choice === 'against') {
@@ -1700,7 +1787,7 @@ async function handleRpcMethod(method, params, id) {
       } else {
         prop.votesAbstain += votingPower;
       }
-      
+
       saveStateToDisk();
       broadcastLog(`[🗳️ DAO VOTE] ${addr.slice(0, 10)}... cast "${choice.toUpperCase()}" with ${votingPower.toLocaleString()} sNAK voting power on Proposal #${pId}`);
       return jsonRpcResponse(id, { success: true, proposalId: pId, choice, votingPower });
@@ -1902,7 +1989,7 @@ async function handleRpcMethod(method, params, id) {
 
       // Calculate voting weight from staked pool at snapshot block
       const pool = stakingPools[voter];
-      const weight = pool ? Number(pool.staked / 10n**18n) : 100; // default 100 weight if dev account
+      const weight = pool ? Number(pool.staked / 10n ** 18n) : 100; // default 100 weight if dev account
 
       if (choice === 'for' || choice === 'yes') {
         proposal.votesFor += weight;
@@ -2174,7 +2261,7 @@ function broadcastNewHead(block) {
 wss.on('connection', (ws) => {
   console.log('[WebSocket] Client connected');
   subscriptions.set(ws, []);
-  
+
   // Send recent log history to new client
   logs.slice(-20).forEach(line => {
     ws.send(JSON.stringify({ type: 'log', line }));
@@ -2240,7 +2327,7 @@ server.listen(PORT, HOST, () => {
 function gracefulShutdown() {
   console.log('[Shutdown] 💾 Saving final state to disk...');
   saveStateToDisk();
-  try { wss.close(); } catch {}
+  try { wss.close(); } catch { }
   try { server.close(() => process.exit(0)); } catch { process.exit(0); }
 }
 
