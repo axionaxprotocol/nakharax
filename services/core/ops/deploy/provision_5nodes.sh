@@ -23,6 +23,17 @@ NODE3_PEER_ID="12D3KooWGfPNH2qM7s7Wr9uMuCe21zg4mETgvbHxrh1hrbXcLkCn"
 NODE4_PEER_ID="12D3KooWBYNGL89GNZBywpffNMkCZDi7fSDCfdqUF76FABCQ5dQN"
 NODE5_PEER_ID="12D3KooWNhGJwThe6iYqBddJwu3BH5YtZvinGqDZpETF4khpJWd2"
 
+# Dynamic Security Vault Generator (Zero Hardcoded Secrets)
+GEN_POSTGRES_PW=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | xxd -p)
+GEN_REDIS_PW=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | xxd -p)
+GEN_GRAFANA_PW=$(openssl rand -hex 16 2>/dev/null || head -c 16 /dev/urandom | xxd -p)
+GEN_FAUCET_KEY="0x$(openssl rand -hex 32 2>/dev/null || head -c 32 /dev/urandom | xxd -p)"
+
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-"$GEN_POSTGRES_PW"}
+REDIS_PASSWORD=${REDIS_PASSWORD:-"$GEN_REDIS_PW"}
+GRAFANA_PASSWORD=${GRAFANA_PASSWORD:-"$GEN_GRAFANA_PW"}
+FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY:-"$GEN_FAUCET_KEY"}
+
 echo "================================================================================"
 echo "       🚀 NAKHARAX PROTOCOL: 5-NODE GLOBAL QUORUM MESH PROVISIONING"
 echo "================================================================================"
@@ -38,11 +49,12 @@ echo -e "\n[1/4] 📄 Generating Production Environment Profiles..."
 cat > .env.prod << EOF
 POSTGRES_DB=nakharax_prod
 POSTGRES_USER=nakharax_admin
-POSTGRES_PASSWORD=nakharax_super_secure_vault_pass_2026!
-REDIS_PASSWORD=nakharax_redis_vault_token_86137_prod!
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+REDIS_PASSWORD=${REDIS_PASSWORD}
 CHAIN_ID=86137
 NEXT_PUBLIC_CHAIN_ID=86137
 NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com
+PORT=3030
 EOF
 
 # Step 2: Write Dynamic Multiaddress Blueprint
@@ -65,13 +77,13 @@ echo -e "\n[3/4] ⚙️ Synchronizing Services Deploy Environment..."
 cat > services/core/ops/deploy/.env.production << EOF
 POSTGRES_DB=nakharax_prod
 POSTGRES_USER=nakharax_admin
-POSTGRES_PASSWORD=nakharax_super_secure_vault_pass_2026!
-DB_PASSWORD=nakharax_super_secure_vault_pass_2026!
-REDIS_PASSWORD=nakharax_redis_vault_token_86137_prod!
-FAUCET_PRIVATE_KEY=0x6fd46fca7c77651631b4886c7d6a1d4ed0aac9f9d6e4635b07ef786758b61a8d
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+DB_PASSWORD=${POSTGRES_PASSWORD}
+REDIS_PASSWORD=${REDIS_PASSWORD}
+FAUCET_PRIVATE_KEY=${FAUCET_PRIVATE_KEY}
 FAUCET_AMOUNT=100
 RATE_LIMIT_MINUTES=1440
-GRAFANA_PASSWORD=nakharax_grafana_master_admin_2026!
+GRAFANA_PASSWORD=${GRAFANA_PASSWORD}
 VPS_IP=${NODE1_IP}
 DOMAIN=nakharax.com
 NAKHARAX_PUBLIC_IP=${NODE1_IP}

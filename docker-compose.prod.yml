@@ -52,7 +52,7 @@ services:
       - RPC_URL=http://nakharax-genesis-node:8545
       - CHAIN_ID=86137
       - FAUCET_AMOUNT=100
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-nakharax_redis_vault_token_86137_prod!}@redis:6379
+      - REDIS_URL=redis://:${REDIS_PASSWORD:?Redis password must be provided in .env.prod}@redis:6379
     depends_on:
       - nakharax-genesis-node
       - redis
@@ -66,7 +66,7 @@ services:
     image: redis:7-alpine
     container_name: nakharax-prod-redis
     restart: unless-stopped
-    command: redis-server --requirepass ${REDIS_PASSWORD:-nakharax_redis_vault_token_86137_prod!}
+    command: redis-server --requirepass ${REDIS_PASSWORD:?Redis password must be provided in .env.prod}
     volumes:
       - redis_data:/data
     networks:

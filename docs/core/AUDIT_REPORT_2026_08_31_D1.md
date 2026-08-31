@@ -52,7 +52,7 @@ All 5 bootstrap multiaddrs embed human-readable "peer IDs" that are **not valid 
 ### 🔴 A-02 — Public Hardhat private key = faucet + founder (`CRITICAL`)
 **Artifact:** [`services/core/ops/deploy/.env.production`](../../services/core/ops/deploy/.env.production)
 
-`FAUCET_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80` — the **well-known public Hardhat/Anvil account #0 key**, shipped verbatim in [`provision_5nodes.sh`](../../services/core/ops/deploy/provision_5nodes.sh:64).
+`FAUCET_PRIVATE_KEY=0xac09...[WELL_KNOWN_HARDHAT_ACCOUNT_0_KEY]...ff80` — the **well-known public Hardhat/Anvil account #0 key**, shipped verbatim in [`provision_5nodes.sh`](../../services/core/ops/deploy/provision_5nodes.sh:64).
 
 **Proof:** Derivation of that key → `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`, which is simultaneously:
 - the faucet funder,
