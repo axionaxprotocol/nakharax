@@ -107,7 +107,7 @@ export default async function Home() {
               className="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
             >
               <Globe2 size={16} />
-              <span>Global 7-Node Radar</span>
+              <span>Global 3-Node Radar</span>
             </Link>
 
             <Link
@@ -263,7 +263,7 @@ export default async function Home() {
                   <Network size={20} />
                 </span>
                 <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300 border border-amber-500/40">
-                  7-Node Mesh
+                  3-Node Mesh
                 </span>
               </div>
               <div>
@@ -271,7 +271,7 @@ export default async function Home() {
                   Global Consensus Radar
                 </h3>
                 <p className="text-xs text-slate-400 mt-1 font-sans leading-relaxed">
-                  React-Simple-Maps World Atlas topology connecting Frankfurt, Sydney, Virginia, Tokyo, Singapore, London & Localhost.
+                  React-Simple-Maps World Atlas topology connecting Frankfurt, Virginia & Singapore.
                 </p>
               </div>
             </div>

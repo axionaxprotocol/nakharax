@@ -31,256 +31,6 @@ import {
 // Local TopoJSON World Atlas for instant sub-millisecond zero-CDN loading
 const GEO_URL = "/world-countries-110m.json";
 
-export interface InstitutionalNode {
-  id: string;
-  name: string;
-  code: string;
-  role: "MASTER_HUB" | "PRIMARY_VALIDATOR" | "DEAI_WORKER" | "SECURITY_AUDITOR";
-  countryName: string;
-  region: string;
-  coordinates: [number, number]; // [lng, lat] for react-simple-maps
-  provider: string;
-  hardware: {
-    vcpu: number;
-    ramGb: number;
-    storage: string;
-    antiDdos: string;
-  };
-  p2p: {
-    peerId: string;
-    multiaddr: string;
-    protocol: string;
-    latencyMs: number;
-    jitterMs: number;
-  };
-  consensus: {
-    votingWeight: string;
-    bftStatus: "VALIDATING" | "HEALTHY";
-    blockHeight: number;
-    tps: number;
-  };
-}
-
-const INSTITUTIONAL_7_NODES: InstitutionalNode[] = [
-  {
-    id: "node-au-01",
-    name: "Master Compute Hub & Database",
-    code: "AP-AU-01",
-    role: "MASTER_HUB",
-    countryName: "Australia",
-    region: "Sydney (AP-Southeast)",
-    coordinates: [151.2093, -33.8688],
-    provider: "Contabo Cloud VPS 4",
-    hardware: {
-      vcpu: 4,
-      ramGb: 8,
-      storage: "100 GB SSD",
-      antiDdos: "Standard Ingress Filter",
-    },
-    p2p: {
-      peerId: "12D3KooWSmJgK7yEa8ZfL19c4d2e1a3b5c7b1e2a3d4f5e6a7b8c",
-      multiaddr: "/ip4/46.250.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/kad/1.0.0",
-      latencyMs: 128.4,
-      jitterMs: 1.2,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "HEALTHY",
-      blockHeight: 2580,
-      tps: 34.8,
-    },
-  },
-  {
-    id: "node-eu-01",
-    name: "Genesis Validator #1 & Public RPC",
-    code: "EU-DE-01",
-    role: "PRIMARY_VALIDATOR",
-    countryName: "Germany",
-    region: "Frankfurt (EU-Central)",
-    coordinates: [8.6821, 50.1109],
-    provider: "OVHcloud VPS-1 NVMe",
-    hardware: {
-      vcpu: 8,
-      ramGb: 16,
-      storage: "500 GB NVMe",
-      antiDdos: "OVHcloud VAC (TB/s Multi-Tier)",
-    },
-    p2p: {
-      peerId: "12D3KooWRh8qN3kP8yD4c1b2e3a7f9c8b4d2e1a5a9c8e7f1b2d3",
-      multiaddr: "/ip4/217.216.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/gossipsub/1.2.0",
-      latencyMs: 14.5,
-      jitterMs: 0.8,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "VALIDATING",
-      blockHeight: 2580,
-      tps: 42.0,
-    },
-  },
-  {
-    id: "node-us-01",
-    name: "Genesis Validator #2 & DeAI Worker (A40)",
-    code: "NA-US-01",
-    role: "DEAI_WORKER",
-    countryName: "United States of America",
-    region: "Virginia (US-East)",
-    coordinates: [-78.4769, 38.0307],
-    provider: "NVIDIA A40 GPU Cloud",
-    hardware: {
-      vcpu: 32,
-      ramGb: 64,
-      storage: "1 TB NVMe",
-      antiDdos: "Enterprise Hardware Guard",
-    },
-    p2p: {
-      peerId: "12D3KooWTz5xM9qP2bK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1f2",
-      multiaddr: "/ip4/142.44.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/kad/1.0.0",
-      latencyMs: 165.2,
-      jitterMs: 1.4,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "VALIDATING",
-      blockHeight: 2580,
-      tps: 48.6,
-    },
-  },
-  {
-    id: "node-sg-01",
-    name: "Genesis Validator #3 & Edge Worker",
-    code: "AP-SG-01",
-    role: "PRIMARY_VALIDATOR",
-    countryName: "Singapore",
-    region: "Singapore (AP-East)",
-    coordinates: [103.8198, 1.3521],
-    provider: "Singapore Edge Hub",
-    hardware: {
-      vcpu: 8,
-      ramGb: 16,
-      storage: "250 GB NVMe",
-      antiDdos: "OVHcloud VAC Hardware Guard",
-    },
-    p2p: {
-      peerId: "12D3KooWLy7rN2bP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1f2",
-      multiaddr: "/ip4/139.99.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/gossipsub/1.2.0",
-      latencyMs: 46.2,
-      jitterMs: 0.6,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "VALIDATING",
-      blockHeight: 2580,
-      tps: 39.5,
-    },
-  },
-  {
-    id: "node-uk-01",
-    name: "Genesis Validator #4 & ZK State Auditor",
-    code: "EU-UK-01",
-    role: "SECURITY_AUDITOR",
-    countryName: "United Kingdom",
-    region: "London (EU-West)",
-    coordinates: [-0.1278, 51.5074],
-    provider: "Dedicated ZK Auditor VPS",
-    hardware: {
-      vcpu: 12,
-      ramGb: 32,
-      storage: "1 TB NVMe",
-      antiDdos: "Dedicated ZK Hardware Shield",
-    },
-    p2p: {
-      peerId: "12D3KooWPq9xM1rP4yD4c1b2e3a7f9c8b4d2e1a5a9c8e7f1b2d3",
-      multiaddr: "/ip4/51.38.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/kad/1.0.0",
-      latencyMs: 172.0,
-      jitterMs: 0.9,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "VALIDATING",
-      blockHeight: 2580,
-      tps: 36.1,
-    },
-  },
-  {
-    id: "node-jp-01",
-    name: "Tokyo GPU Accelerated Compute (RTX 4090)",
-    code: "AP-JP-01",
-    role: "DEAI_WORKER",
-    countryName: "Japan",
-    region: "Tokyo (AP-Northeast)",
-    coordinates: [139.6917, 35.6895],
-    provider: "RunPod Dedicated RTX 4090",
-    hardware: {
-      vcpu: 16,
-      ramGb: 32,
-      storage: "500 GB NVMe",
-      antiDdos: "NVIDIA Tensor Core Guard",
-    },
-    p2p: {
-      peerId: "12D3KooWVa8B2kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1",
-      multiaddr: "/ip4/153.120.x.x/tcp/30303/p2p/12D3KooW...",
-      protocol: "libp2p/kad/1.0.0",
-      latencyMs: 82.1,
-      jitterMs: 0.7,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "VALIDATING",
-      blockHeight: 2580,
-      tps: 44.0,
-    },
-  },
-  {
-    id: "node-loc-01",
-    name: "Localhost Sovereign Rig (Operator Terminal)",
-    code: "LOC-TH-01",
-    role: "MASTER_HUB",
-    countryName: "Thailand",
-    region: "Local Development Rig",
-    coordinates: [100.5018, 13.7563],
-    provider: "Local Host CPU/GPU",
-    hardware: {
-      vcpu: 16,
-      ramGb: 32,
-      storage: "2 TB NVMe",
-      antiDdos: "Localhost Sovereign Shield",
-    },
-    p2p: {
-      peerId: "12D3KooWLoc77kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1",
-      multiaddr: "/ip4/127.0.0.1/tcp/8545/p2p/12D3KooW...",
-      protocol: "libp2p/kad/1.0.0",
-      latencyMs: 1.0,
-      jitterMs: 0.1,
-    },
-    consensus: {
-      votingWeight: "14.28% (1/7)",
-      bftStatus: "HEALTHY",
-      blockHeight: 2580,
-      tps: 52.4,
-    },
-  },
-];
-
-const MESH_CONNECTIONS: Array<[number, number]> = [
-  [0, 1], // AU <-> EU
-  [0, 3], // AU <-> SG
-  [0, 5], // AU <-> JP
-  [1, 2], // EU <-> US
-  [1, 4], // EU <-> UK
-  [2, 4], // US <-> UK
-  [2, 5], // US <-> JP
-  [3, 5], // SG <-> JP
-  [3, 6], // SG <-> TH/Local
-  [5, 6], // JP <-> TH/Local
-  [1, 6], // EU <-> TH/Local
-];
-
 export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number }) {
   const [mounted, setMounted] = useState(false);
   const { meshNodes, meshConnections, totalActiveNodes, telemetryStream, isLive } = useNetworkMesh();
@@ -390,7 +140,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 </span>
               </div>
               <p className="text-[10.5px] font-mono text-slate-400">
-                P2P Laser Mesh Backbone · Libp2p GossipSub v1.2 · 1.0s Deterministic Cadence
+                P2P Laser Mesh Backbone · Libp2p GossipSub v1.2 · 3.0s Deterministic Cadence
               </p>
             </div>
           </div>
@@ -406,7 +156,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
               <span>{isAuditing ? "Auditing Quorum..." : "Run Consensus Audit"}</span>
             </button>
             <div className="rounded-lg border border-white/10 bg-black/40 px-3 py-1.5 text-[10.5px] text-slate-300">
-              RTT P99: <strong className="text-emerald-400">18.4 ms</strong>
+              RTT P99: <strong className="text-emerald-400">Live</strong>
             </div>
           </div>
         </div>
@@ -471,8 +221,8 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                           fill: isSelected
                             ? "#065f46"
                             : isNodeHost
-                            ? "#0e7490"
-                            : "#0c1322",
+                              ? "#0e7490"
+                              : "#0c1322",
                           stroke: isSelected ? "#34d399" : isNodeHost ? "#0284c7" : "#1e293b",
                           strokeWidth: isSelected ? 0.9 : isNodeHost ? 0.6 : 0.35,
                           outline: "none",
@@ -613,14 +363,13 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Live P2P Transmission Stream
               </span>
-              <span className="text-slate-500 font-bold">1.0s CADENCE</span>
+              <span className="text-slate-500 font-bold">3.0s CADENCE</span>
             </div>
             {telemetryStream.slice(0, 4).map((log, idx) => (
               <div
                 key={idx}
-                className={`truncate transition-all ${
-                  idx === 0 ? "text-cyan-300 font-semibold" : "text-slate-400 opacity-70"
-                }`}
+                className={`truncate transition-all ${idx === 0 ? "text-cyan-300 font-semibold" : "text-slate-400 opacity-70"
+                  }`}
               >
                 {log}
               </div>
@@ -641,7 +390,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
           <div className="absolute bottom-2 left-3 flex items-center gap-3 font-mono text-[9.5px] text-slate-400 bg-black/60 px-2.5 py-0.5 rounded backdrop-blur-sm">
             <span>GRID: WGS84 ATLAS (110M)</span>
             <span>·</span>
-            <span>CADENCE: 1.00s POPC</span>
+            <span>CADENCE: 3.00s POPC</span>
             <span>·</span>
             <span className="text-emerald-400 font-bold">{auditTimestamp}</span>
           </div>
@@ -667,22 +416,20 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                   <tr
                     key={node.id}
                     onClick={() => setSelectedNode(node)}
-                    className={`cursor-pointer transition-colors ${
-                      isSelected
-                        ? "bg-emerald-500/10 text-white font-medium"
-                        : "hover:bg-white/[0.02]"
-                    }`}
+                    className={`cursor-pointer transition-colors ${isSelected
+                      ? "bg-emerald-500/10 text-white font-medium"
+                      : "hover:bg-white/[0.02]"
+                      }`}
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <span
-                          className={`h-2 w-2 rounded-full ${
-                            node.isLiveWorker
-                              ? "bg-emerald-400 animate-ping"
-                              : isSelected
+                          className={`h-2 w-2 rounded-full ${node.isLiveWorker
+                            ? "bg-emerald-400 animate-ping"
+                            : isSelected
                               ? "bg-emerald-400 animate-pulse"
                               : "bg-cyan-400"
-                          }`}
+                            }`}
                         />
                         <div>
                           <div className="font-bold text-white flex items-center gap-1.5">
@@ -770,7 +517,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
               <span className="text-[10px] uppercase text-slate-500 block">Byzantine Consensus Invariant</span>
               <div className="text-white font-bold">
-                1.00s Cadence · 0 Slashing Penalties
+                3.00s Cadence · 0 Slashing Penalties
               </div>
             </div>
           </div>

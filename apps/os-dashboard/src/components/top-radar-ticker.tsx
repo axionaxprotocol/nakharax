@@ -17,7 +17,7 @@ export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
       <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono">
         <div className="flex items-center gap-2 text-emerald-400 font-bold">
           <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>NAKHARAX L1 GRID: 100% OPERATIONAL</span>
+          <span>NAKHARAX L1 GRID: {totalActiveNodes > 0 ? `${totalActiveNodes}-NODE MESH LIVE` : "SYNCING"}</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 text-slate-400">
@@ -33,7 +33,7 @@ export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
           </span>
           <span>·</span>
           <span>
-            CADENCE: <strong className="text-emerald-300 font-bold">1.00s</strong>
+            CADENCE: <strong className="text-emerald-300 font-bold">3.00s</strong>
           </span>
           <span>·</span>
           <span>

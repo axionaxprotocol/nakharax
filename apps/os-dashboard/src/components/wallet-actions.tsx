@@ -1229,8 +1229,8 @@ export function WalletActions() {
               type="button"
               onClick={() => setActiveTab(tab.id as WalletTab)}
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-mono font-bold transition-all ${isActive
-                  ? "border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-sm"
-                  : "border border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+                ? "border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-sm"
+                : "border border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
                 }`}
             >
               <Icon size={14} className={isActive ? "text-emerald-400" : "text-slate-400"} />
@@ -1244,10 +1244,10 @@ export function WalletActions() {
       {hint && (
         <div
           className={`rounded-xl border p-3 text-xs font-mono leading-relaxed flex items-center justify-between ${hint.type === "error"
-              ? "border-rose-500/40 bg-rose-500/10 text-rose-300"
-              : hint.type === "success"
-                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-                : "border-cyan-500/40 bg-cyan-500/10 text-cyan-300"
+            ? "border-rose-500/40 bg-rose-500/10 text-rose-300"
+            : hint.type === "success"
+              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+              : "border-cyan-500/40 bg-cyan-500/10 text-cyan-300"
             }`}
         >
           <span>{hint.msg}</span>
@@ -1471,8 +1471,8 @@ export function WalletActions() {
                     type="button"
                     onClick={() => setGasPreset(preset.id as any)}
                     className={`rounded-xl border p-2.5 text-left font-mono transition-all ${gasPreset === preset.id
-                        ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
-                        : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
+                      ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
+                      : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
                       }`}
                   >
                     <div className="text-[11px] font-bold">{preset.name}</div>
@@ -1516,8 +1516,8 @@ export function WalletActions() {
                 type="button"
                 onClick={() => setStakingMode(subTab.id as any)}
                 className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all ${stakingMode === subTab.id
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+                  ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                  : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
                   }`}
               >
                 {subTab.label}
@@ -1613,20 +1613,14 @@ export function WalletActions() {
                       onChange={(e) => setSelectedValidator(e.target.value)}
                       className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 font-mono text-xs text-white focus:border-cyan-500/50 focus:outline-none"
                     >
-                      <option value="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266">
-                        EU-DE-01 (Frankfurt Genesis L1) — 4.0% Commission · 150,000 $tNAK Staked
+                      <option value="0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb">
+                        EU-DE-01 (Frankfurt Genesis L1 · VPS-01) — Genesis Validator
                       </option>
-                      <option value="0x70997970C51812dc3A010C7d01b50e0d17dc79C8">
-                        AP-AU-01 (Sydney Master Ingress) — 5.0% Commission · 120,000 $tNAK Staked
+                      <option value="0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326">
+                        NA-US-01 (Virginia Genesis Validator 01 · VPS-02) — Genesis Validator
                       </option>
-                      <option value="0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC">
-                        AP-SG-01 (Singapore Genesis L1) — 4.5% Commission · 110,000 $tNAK Staked
-                      </option>
-                      <option value="0x90F79bf6EB2c4f870365E785982E1f101E93b906">
-                        EU-UK-01 (London ZK Sentinel) — 4.0% Commission · 135,000 $tNAK Staked
-                      </option>
-                      <option value="0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65">
-                        LOC-TH-01 (Localhost Sovereign Rig) — 3.5% Commission · 100,000 $tNAK Staked
+                      <option value="0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb">
+                        AP-SG-01 (Singapore Genesis Validator 02 · VPS-03) — Genesis Validator
                       </option>
                     </select>
                   </div>
@@ -1759,11 +1753,9 @@ export function WalletActions() {
 
                 <div className="space-y-2.5">
                   {[
-                    { name: "EU-DE-01 (Frankfurt Genesis Validator)", addr: "0xf39F...2266", stake: "150,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
-                    { name: "AP-AU-01 (Sydney Master Ingress)", addr: "0x7099...79C8", stake: "120,000 $tNAK", comm: "5.0%", uptime: "99.98%" },
-                    { name: "AP-SG-01 (Singapore Genesis Validator)", addr: "0x3C44...93BC", stake: "110,000 $tNAK", comm: "4.5%", uptime: "99.97%" },
-                    { name: "EU-UK-01 (London ZK State Sentinel)", addr: "0x90F7...b906", stake: "135,000 $tNAK", comm: "4.0%", uptime: "99.99%" },
-                    { name: "LOC-TH-01 (Localhost Sovereign Rig)", addr: "0x15d3...6A65", stake: "100,000 $tNAK", comm: "3.5%", uptime: "100.0%" },
+                    { name: "EU-DE-01 (Frankfurt Genesis L1 · VPS-01)", addr: "0x26e7...e6cb", stake: "Genesis Validator", comm: "—", uptime: "Live" },
+                    { name: "NA-US-01 (Virginia Genesis Validator 01 · VPS-02)", addr: "0xca0e...3326", stake: "Genesis Validator", comm: "—", uptime: "Live" },
+                    { name: "AP-SG-01 (Singapore Genesis Validator 02 · VPS-03)", addr: "217.216.39.77:30303", stake: "Genesis Validator", comm: "—", uptime: "Live" },
                   ].map((val, idx) => (
                     <div key={idx} className="p-3.5 rounded-xl border border-white/10 bg-black/50 flex items-center justify-between text-xs font-mono">
                       <div>
@@ -2082,16 +2074,16 @@ export function WalletActions() {
                   <td className="py-3 pr-4">
                     <span
                       className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold ${tx.type === "FAUCET"
-                          ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
-                          : tx.type === "TRANSFER"
-                            ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
-                            : tx.type === "STAKING_DEPOSIT"
-                              ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
-                              : tx.type === "UNSTAKE_INITIATED"
-                                ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
-                                : tx.type === "UNSTAKE_CLAIMED"
-                                  ? "bg-teal-500/10 text-teal-300 border border-teal-500/30"
-                                  : "bg-rose-500/10 text-rose-300 border border-rose-500/30"
+                        ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
+                        : tx.type === "TRANSFER"
+                          ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
+                          : tx.type === "STAKING_DEPOSIT"
+                            ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
+                            : tx.type === "UNSTAKE_INITIATED"
+                              ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                              : tx.type === "UNSTAKE_CLAIMED"
+                                ? "bg-teal-500/10 text-teal-300 border border-teal-500/30"
+                                : "bg-rose-500/10 text-rose-300 border border-rose-500/30"
                         }`}
                     >
                       {tx.type}

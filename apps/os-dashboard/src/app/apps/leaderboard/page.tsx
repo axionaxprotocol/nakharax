@@ -127,7 +127,7 @@ export default function LeaderboardPage() {
         <StatCard
           label="STARK ZK Proofs Verified"
           value={totalProofs.toLocaleString()}
-          hint="60k Proofs/sec Verifier Engine"
+          hint="STARK FRI Verifier Engine"
           tone="violet"
         />
         <StatCard
@@ -138,8 +138,8 @@ export default function LeaderboardPage() {
         />
         <StatCard
           label="Active BFT Quorum"
-          value="7/7 Nodes (100%)"
-          hint="Sub-millisecond P2P Mesh"
+          value={`${leaderboard.length}/${leaderboard.length} Nodes (100%)`}
+          hint="3-Continent Genesis Mesh"
           tone="warn"
         />
       </div>

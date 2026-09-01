@@ -33,20 +33,9 @@ import {
 import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 const DEFAULT_GLOBAL_GATEWAYS = [
-  { region: "Local Rig (This Machine)", endpoint: "http://127.0.0.1:8545", status: "Active Live Host", ping: "< 1ms", load: "14%", role: "Master Live Host" },
-  { region: "Frankfurt Genesis (EU)", endpoint: "eu-val1.nakharax.net", status: "Active Live Validator", ping: "14ms", load: "22%", role: "Genesis Validator" },
-  { region: "Sydney Master Hub (AU)", endpoint: "au-val2.nakharax.net", status: "Active Live Gateway", ping: "128ms", load: "18%", role: "Public RPC & Faucet" },
-  { region: "Singapore Genesis (SG)", endpoint: "sg-val3.nakharax.net", status: "Active Live Validator", ping: "42ms", load: "19%", role: "Genesis Validator" },
-  { region: "Tokyo GPU RTX 4090 (JP)", endpoint: "jp-worker.nakharax.net", status: "Active Live Worker", ping: "82ms", load: "34%", role: "DeAI GPU Worker" },
-  { region: "Virginia PyTorch A40 (US)", endpoint: "us-worker.nakharax.net", status: "Active Live Worker", ping: "165ms", load: "28%", role: "DeAI GPU Worker" },
-  { region: "London ZK Auditor (UK)", endpoint: "uk-auditor.nakharax.net", status: "Active Live Sentinel", ping: "172ms", load: "15%", role: "Hydra Sentinel Auditor" },
-];
-
-const SUBNET_GPU_LOADS = [
-  { name: "Subnet 1: Quant Finance & Monte Carlo", vramTotal: "192 GB (Active)", activeWorkers: 1, utilization: 25, tone: "emerald" },
-  { name: "Subnet 2: Smart Contract & Bytecode Audit", vramTotal: "96 GB (Active)", activeWorkers: 1, utilization: 20, tone: "cyan" },
-  { name: "Subnet 3: Olympiad Mathematical CoT", vramTotal: "256 GB (Active)", activeWorkers: 1, utilization: 30, tone: "violet" },
-  { name: "Subnet 4: RISC-V & Hailo NPU Verilog", vramTotal: "64 GB (Active)", activeWorkers: 1, utilization: 15, tone: "amber" },
+  { region: "Frankfurt Genesis L1 (EU · VPS-01)", endpoint: "158.220.127.24:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Master Hub & Ingress" },
+  { region: "Virginia Genesis Validator 01 (US · VPS-02)", endpoint: "40.160.87.118:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Genesis Validator" },
+  { region: "Singapore Genesis Validator 02 (AP · VPS-03)", endpoint: "217.216.39.77:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Genesis Validator" },
 ];
 
 export default function ActivityPage() {
@@ -66,7 +55,7 @@ export default function ActivityPage() {
     <PageShell
       eyebrow="Network Telemetry"
       title="Global DeAI Compute Cluster & Mesh Telemetry"
-      description="Real-time consensus telemetry for local rig (127.0.0.1:8545) and multi-region 7-Node Global Mesh clusters."
+      description="Real-time consensus telemetry for the 3-continent Genesis Quorum Mesh (Frankfurt, Virginia & Singapore)."
       meta={
         <>
           <StatusPill tone="ai" pulse>
@@ -106,8 +95,8 @@ export default function ActivityPage() {
         />
         <StatCard
           label="Local Throughput"
-          value="18.4 TPS"
-          hint="1.0s Deterministic PoPC"
+          value={totalActiveNodes > 0 ? "3.0s Cadence" : "Awaiting Workers"}
+          hint="3.0s Deterministic PoPC"
           icon={<Activity size={18} />}
           tone="ai"
         />
@@ -171,32 +160,14 @@ export default function ActivityPage() {
           title="Subnet GPU Capacity & Workload Allocation"
           description="Decentralized VRAM utilization across active knowledge subnets."
         />
-        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-          {SUBNET_GPU_LOADS.map((sub) => (
-            <Card key={sub.name} className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Brain size={16} className="text-emerald-400" />
-                  <span className="text-xs font-bold text-white">{sub.name}</span>
-                </div>
-                <span className="text-xs font-mono font-bold text-emerald-400">{sub.utilization}%</span>
-              </div>
-
-              {/* Progress bar */}
-              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-900 border border-white/10">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-500"
-                  style={{ width: `${sub.utilization}%` }}
-                />
-              </div>
-
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1">
-                <span>Total Pool: <strong className="text-white">{sub.vramTotal}</strong></span>
-                <span>Active Nodes: <strong className="text-cyan-300">{sub.activeWorkers}</strong></span>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <Card className="p-6 text-center space-y-2 border-dashed">
+          <Brain size={20} className="mx-auto text-slate-500" />
+          <p className="text-sm font-bold text-white">No GPU Workers Connected</p>
+          <p className="text-xs text-slate-400 font-sans leading-relaxed">
+            No DeAI GPU worker has joined the network yet. Subnet compute allocation will appear here once a worker
+            connects and begins contributing practical compute.
+          </p>
+        </Card>
       </section>
     </PageShell>
   );

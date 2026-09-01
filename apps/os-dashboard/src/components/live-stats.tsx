@@ -32,7 +32,7 @@ export function LiveStatsSection({
       <StatCard
         label="Active Cluster Nodes"
         value={`${totalActiveNodes} Nodes Active`}
-        hint={totalWorkersCount > 0 ? `7 Genesis + ${totalWorkersCount} Live GPU Worker${totalWorkersCount > 1 ? "s" : ""}` : "7 Genesis Validators Active"}
+        hint={totalWorkersCount > 0 ? `${totalActiveNodes} Genesis + ${totalWorkersCount} Live GPU Worker${totalWorkersCount > 1 ? "s" : ""}` : `${totalActiveNodes} Genesis Validators Active`}
         icon={<Server size={18} />}
         tone={totalActiveNodes > 0 ? "ai" : "danger"}
       />
@@ -46,7 +46,7 @@ export function LiveStatsSection({
       <StatCard
         label="Proof of Practical Compute"
         value="PoPC Fast-Finality"
-        hint="1.0s Block Cadence (Live)"
+        hint="3.0s Block Cadence (Live)"
         icon={<ShieldCheck size={18} />}
         tone="chain"
       />
