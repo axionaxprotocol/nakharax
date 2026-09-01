@@ -1,73 +1,68 @@
-# 🌐 ผังการเชื่อมโยงเครือข่าย 7 โหนด Nakharax Protocol
-### Hybrid Architecture: 5 VPS Cloud Backbone + 2 Local PC Heavy Nodes
+# NakharaX Public Testnet — 7 VPS Topology
 
-**Target Network:** NakharaX Layer-1 Public Testnet (Chain ID: `86137`) & Mainnet Target (`86150`)  
-**Target Launch Date:** 1 September 2026  
-**Topology Type:** Hybrid Sovereign Quorum Mesh (5 Cloud Backbones + 2 Local High-Throughput Rigs)  
+Canonical infrastructure topology for Public Testnet launch on 1 September 2026.
 
----
+- All seven VPS instances are new.
+- Public IPv4 addresses, Peer IDs, regions, and providers are `UNASSIGNED` until procurement.
+- Legacy VPS addresses and identity keys must not be reused.
+- The seven network nodes do not imply seven genesis validators. The current genesis has two validators.
+- Mainnet target: 1 January 2027 (`2027-01-01`, 1 มกราคม 2570).
 
-## 1. การแบ่งบทบาทของทั้ง 7 โหนด (Role Distribution Architecture)
+## Node roles
+
+| Node | Primary role | Public ingress | Genesis validator address |
+|---|---|---|---|
+| VPS-01 | Seed/bootnode | `30303/TCP+UDP` | — |
+| VPS-02 | Validator-01 | `30303/TCP+UDP` | `0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326` |
+| VPS-03 | Validator-02 | `30303/TCP+UDP` | `0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb` |
+| VPS-04 | Public RPC primary | `80/443/TCP`, `30303/TCP+UDP` | — |
+| VPS-05 | Public RPC secondary + observer | `80/443/TCP`, `30303/TCP+UDP` | — |
+| VPS-06 | Faucet + observer | `80/443/TCP`, `30303/TCP+UDP` | — |
+| VPS-07 | Monitoring + observer | `30303/TCP+UDP`; monitoring via private access | — |
+
+All nodes bind JSON-RPC to `127.0.0.1:8545` and health/metrics to `127.0.0.1:8080`. Caddy is the only public HTTP ingress. SSH is restricted to the operator's allowlisted public IP.
+
+## Network flow
 
 ```text
-                       [ INTERNET / PUBLIC ACCESS ]
-                                     │
-           ┌─────────────────────────┼─────────────────────────┐
-           ▼                         ▼                         ▼
-   ┌───────────────┐         ┌───────────────┐         ┌───────────────┐
-   │     VPS-1     │         │     VPS-2     │         │     VPS-3     │
-   │  Public RPC   │         │  P2P Bootnode │         │   Meta-MCP    │
-   │ & Explorer API│         │ & Relay Mesh  │         │ Search Server │
-   └───────┬───────┘         └───────┬───────┘         └───────┬───────┘
-           │                         │                         │
-           └─────────────────────────┼─────────────────────────┘
-                                     │
-                         [ P2P GOSSIPSUB MESH ]
-                                     │
-           ┌─────────────────────────┼─────────────────────────┐
-           ▼                         ▼                         ▼
-   ┌───────────────┐         ┌───────────────┐         ┌───────────────┐
-   │     VPS-4     │         │     VPS-5     │         │     PC-1      │
-   │ Validator #1  │         │ Validator #2  │         │ Validator #3  │
-   │  (Cloud AU)   │         │  (Cloud ES)   │         │ (Home Lab DEV)│
-   └───────────────┘         └───────────────┘         └───────┬───────┘
-                                                               │
-                                                     [ Local High-Speed LAN ]
-                                                               │
-                                                               ▼
-                                                       ┌───────────────┐
-                                                       │     PC-2      │
-                                                       │  DeAI Worker  │
-                                                       │  (Qwen Flash) │
-                                                       └───────────────┘
+Internet users
+   |-- rpc.<domain> --------> VPS-04 RPC primary
+   |-- rpc-backup.<domain> -> VPS-05 RPC secondary
+   `-- faucet.<domain> -----> VPS-06 faucet
+
+VPS-01 seed <---- P2P 30303/TCP+UDP ----> VPS-02..VPS-07
+                  VPS-02/03 produce blocks
+                  VPS-04/05 serve RPC
+                  VPS-06 serves faucet
+                  VPS-07 observes and monitors
 ```
 
----
+## Procurement inventory
 
-## 2. รายละเอียดสเปกและหน้าที่ของแต่ละเครื่อง (Node Specifications & Firewall Matrix)
+Do not insert guessed or previously used values. Complete this table only after each new VPS exists.
 
-| โหนด (Node) | ประเภท (Type) | บทบาทหน้าที่ (Primary Operational Role) | การเปิดพอร์ตที่จำเป็น (Firewall Rules) |
-| :--- | :--- | :--- | :--- |
-| **VPS-1** | **Cloud** | **Public JSON-RPC & Explorer:** จุดเชื่อมต่อ MetaMask, Web OS Dashboard, และ dApps สาธารณะ | `8545/tcp` (RPC/HTTP), `8546/tcp` (WS), `9000/tcp+udp` (P2P), `80,443/tcp` (TLS) |
-| **VPS-2** | **Cloud** | **P2P Primary Bootnode:** โหนดกระจายพิกัด Peers ผ่าน Kademlia DHT และ Relay Mesh ทั่วโลก | `9000/tcp+udp` (libp2p Swarm & QUIC Discovery) |
-| **VPS-3** | **Cloud** | **Meta-MCP Search Hub:** รันฐานข้อมูล Vector สำหรับ AI Agents เข้ามาค้นหา Dynamic Tools | `8000/tcp` (MCP Gateway API), `9000/tcp+udp` (P2P) |
-| **VPS-4** | **Cloud** | **Consensus Validator #1 (Cloud AU):** ยืนยันบล็อกและรันฉันทามติ PoPC 24/7 (เซิร์ฟเวอร์ต่างประเทศ) | `9000/tcp+udp` (P2P Mesh เท่านั้น — ปิด RPC สู่สาธารณะ) |
-| **VPS-5** | **Cloud** | **Consensus Validator #2 (Cloud ES):** รัน Validator สำรองเพื่อป้องกันการ Fork และให้ได้ $\ge 2/3$ Quorum | `9000/tcp+udp` (P2P Mesh เท่านั้น — ปิด RPC สู่สาธารณะ) |
-| **PC-1** | **Local** | **Local Validator #3 & Core Dev (Home Lab):** ใช้ทดสอบโค้ด, อัปเกรด Rust Core และมอนิเตอร์เครือข่าย | `9000/tcp+udp` (P2P เชื่อมต่อออกไปยัง Bootnode) |
-| **PC-2** | **Local** | **Heavy DeAI Worker Node (Home Lab):** รัน Qwen 3.8-Flash-Next / PyTorch บน GPU/NPU รับงาน Batch หนักๆ | **ไม่ต้องเปิดพอร์ตขาเข้า** (Outbound Job Polling ผ่าน RPC/WS) |
+| Node | Provider | Region | Static IPv4 | Peer ID | Status |
+|---|---|---|---|---|---|
+| VPS-01 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-02 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-03 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-04 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-05 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-06 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
+| VPS-07 | TBD | TBD | `UNASSIGNED` | generated after first start | not provisioned |
 
----
+## Minimum sizing
 
-## 3. กลยุทธ์ความปลอดภัยและความทนทานต่อความผิดพลาด (Security & Fault Tolerance)
+| Role | Suggested minimum |
+|---|---|
+| Seed/observer | 2 vCPU, 4 GB RAM, 80 GB NVMe |
+| Validator | 4 vCPU, 8 GB RAM, 100 GB NVMe |
+| RPC | 4 vCPU, 8 GB RAM, 150 GB NVMe |
+| Faucet/observer | 2 vCPU, 4 GB RAM, 100 GB NVMe |
+| Monitoring/observer | 4 vCPU, 8 GB RAM, 200 GB NVMe |
 
-1. **Byzantine Fault Tolerance ($\ge 2/3$ BFT Quorum):**
-   - มี Validator 3 โหนดหลัก (VPS-4, VPS-5, PC-1)
-   - หากโหนดใดโหนดหนึ่งขัดข้อง เครือข่ายยังสามารถผลิตบล็อกและบรรลุฉันทามติได้อย่างต่อเนื่อง
+Use Ubuntu 22.04 or 24.04 LTS consistently, static IPv4, provider console access, automated snapshots, and at least three geographic/provider failure domains. Final region placement is intentionally undecided until procurement.
 
-2. **Isolation of Heavy AI Compute (การแยกส่วนประมวลผลหนัก):**
-   - งาน AI Inference หนักๆ (Qwen 3.8-Flash / DeepSeek / PyTorch) ถูกส่งไปรันที่ **PC-2** โดยเฉพาะ
-   - ตัวเครื่อง PC-2 ไม่ต้องเปิดพอร์ต Inbound ใดๆ สู่สาธารณะ (ทำงานผ่าน Polling Outbound) เพื่อความปลอดภัยสูงสุดจากการถูกโจมตีทางไซเบอร์
+## Activation rule
 
-3. **Public Gateway Shielding:**
-   - ผู้ใช้งานภายนอกและ MetaMask จะติดต่อผ่าน **VPS-1 (RPC & Dashboard)** และ **VPS-3 (MCP Hub)** เท่านั้น
-   - Validator Nodes (VPS-4, VPS-5) จะสื่อสารผ่านโครงข่าย P2P Mesh แบบปิด ช่วยป้องกันการโจมตีแบบ DDoS ไปยังโหนดฉันทามติโดยตรง
+Deployment remains blocked while any of the seven IPs is `UNASSIGNED`, the domain is unregistered, or the seed Peer ID has not been read from the new node. The executable procedure is [1_SEP_GENESIS_RUNBOOK.md](../ops/1_SEP_GENESIS_RUNBOOK.md).

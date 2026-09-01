@@ -52,9 +52,9 @@ struct PyValidator {
 impl PyValidator {
     #[new]
     fn new(address: String, stake_str: String) -> PyResult<Self> {
-        let stake = stake_str.parse::<u128>().map_err(|e| {
-            PyValueError::new_err(format!("Invalid stake amount: {}", e))
-        })?;
+        let stake = stake_str
+            .parse::<u128>()
+            .map_err(|e| PyValueError::new_err(format!("Invalid stake amount: {}", e)))?;
         Ok(PyValidator {
             address,
             stake,
@@ -195,9 +195,9 @@ struct PyTransaction {
 impl PyTransaction {
     #[new]
     fn new(from: String, to: String, value_str: String, data: Vec<u8>) -> PyResult<Self> {
-        let value = value_str.parse::<u128>().map_err(|e| {
-            PyValueError::new_err(format!("Invalid value amount: {}", e))
-        })?;
+        let value = value_str
+            .parse::<u128>()
+            .map_err(|e| PyValueError::new_err(format!("Invalid value amount: {}", e)))?;
         Ok(PyTransaction {
             from,
             to,
@@ -375,7 +375,11 @@ mod tests {
 
     #[test]
     fn test_py_validator_zero_stake() {
-        let v = PyValidator::new("0x0000000000000000000000000000000000000001".to_string(), "0".to_string()).unwrap();
+        let v = PyValidator::new(
+            "0x0000000000000000000000000000000000000001".to_string(),
+            "0".to_string(),
+        )
+        .unwrap();
         assert_eq!(v.stake, 0);
         assert!(v.is_active);
     }
@@ -389,7 +393,8 @@ mod tests {
             "0xto".to_string(),
             "1000".to_string(),
             vec![0x12, 0x34],
-        ).unwrap();
+        )
+        .unwrap();
         assert_eq!(tx.from, "0xfrom");
         assert_eq!(tx.to, "0xto");
         assert_eq!(tx.value, 1000u128);
@@ -398,20 +403,38 @@ mod tests {
 
     #[test]
     fn test_py_transaction_value_widened_to_u128() {
-        let tx = PyTransaction::new("0x1".to_string(), "0x2".to_string(), u64::MAX.to_string(), vec![]).unwrap();
+        let tx = PyTransaction::new(
+            "0x1".to_string(),
+            "0x2".to_string(),
+            u64::MAX.to_string(),
+            vec![],
+        )
+        .unwrap();
         assert_eq!(tx.value, u64::MAX as u128);
     }
 
     #[test]
     fn test_py_transaction_empty_data() {
-        let tx = PyTransaction::new("0x1".to_string(), "0x2".to_string(), "0".to_string(), vec![]).unwrap();
+        let tx = PyTransaction::new(
+            "0x1".to_string(),
+            "0x2".to_string(),
+            "0".to_string(),
+            vec![],
+        )
+        .unwrap();
         assert!(tx._data.is_empty());
         assert_eq!(tx.value, 0);
     }
 
     #[test]
     fn test_py_transaction_clone() {
-        let tx = PyTransaction::new("0xA".to_string(), "0xB".to_string(), "42".to_string(), vec![1, 2]).unwrap();
+        let tx = PyTransaction::new(
+            "0xA".to_string(),
+            "0xB".to_string(),
+            "42".to_string(),
+            vec![1, 2],
+        )
+        .unwrap();
         let tx2 = tx.clone();
         assert_eq!(tx.from, tx2.from);
         assert_eq!(tx.value, tx2.value);

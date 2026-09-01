@@ -19,7 +19,7 @@ We are proud to officially launch the **NakharaX L1 Public Testnet**, the sovere
 | :--- | :--- |
 | **Network Name** | NakharaX Public Testnet |
 | **New RPC URL** | `https://rpc.nakharax.com` |
-| **Direct Validator Fallback** | `http://46.250.244.4:8545` |
+| **Secondary RPC Backup** | `https://rpc-backup.nakharax.com` |
 | **Chain ID** | `86137` (Hex: `0x15079`) |
 | **Currency Symbol** | `$tNAK` |
 | **Block Explorer** | `https://explorer.nakharax.com` |

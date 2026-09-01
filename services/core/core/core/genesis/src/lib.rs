@@ -15,7 +15,7 @@ use std::collections::HashMap;
 // ---------------------------------------------------------------------------
 
 pub const CHAIN_ID: u64 = 86137;
-pub const CHAIN_NAME: &str = "Nakharax Mainnet";
+pub const CHAIN_NAME: &str = "Nakharax Public Testnet";
 pub const SYMBOL: &str = "NAK";
 pub const DECIMALS: u32 = 18;
 
@@ -25,8 +25,8 @@ const ONE_AXX: u128 = 10_u128.pow(18);
 /// Total supply: 1 trillion NAK
 pub const TOTAL_SUPPLY: u128 = 1_000_000_000_000 * ONE_AXX;
 
-/// Genesis timestamp — Q2 2026 Mainnet: 2026-04-01 00:00:00 UTC
-pub const GENESIS_TIMESTAMP: u64 = 1_775_001_600;
+/// Public testnet genesis timestamp: 2026-09-01 00:00:00 UTC
+pub const GENESIS_TIMESTAMP: u64 = 1_788_220_800;
 
 // ---------------------------------------------------------------------------
 // Allocation percentages (basis points, 10_000 = 100%)
@@ -56,8 +56,8 @@ pub const ADDR_PUBLIC_SALE: &str = "0x58abb3d4e75f232b4177bfd6061972a210f4c9e6";
 pub const ADDR_FAUCET: &str = "0x9dd7e28ccd04cfb6547adc7be2a8cf2beb434a1c";
 pub const ADDR_RESERVE: &str = "0xa61e8cb3ec1e6246a852ca0493f7e8c9c44006cd";
 
-pub const ADDR_VALIDATOR_EU: &str = "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326";
-pub const ADDR_VALIDATOR_AU: &str = "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb";
+pub const ADDR_VALIDATOR_01: &str = "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326";
+pub const ADDR_VALIDATOR_02: &str = "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb";
 
 // ---------------------------------------------------------------------------
 // Structs
@@ -137,7 +137,7 @@ pub struct ProtocolConfig {
 impl Default for ProtocolConfig {
     fn default() -> Self {
         Self {
-            block_time_ms: 2500,
+            block_time_ms: 3000,
             max_block_size: 5 * 1024 * 1024, // 5 MB
             max_txs_per_block: 10000,
             min_validator_stake: 10_000 * 10_u128.pow(18),
@@ -306,7 +306,7 @@ impl GenesisGenerator {
         TOTAL_SUPPLY / 10_000 * (bps as u128)
     }
 
-    /// Build the canonical mainnet / testnet genesis with full token allocation.
+    /// Build the canonical public-testnet genesis with full token allocation.
     ///
     /// Total supply: 1 trillion NAK (1,000,000,000,000)
     /// Creator alias: nakharaxius (10 %)
@@ -323,16 +323,16 @@ impl GenesisGenerator {
             config: ProtocolConfig::default(),
             validators: vec![
                 GenesisValidator {
-                    address: ADDR_VALIDATOR_EU.to_string(),
+                    address: ADDR_VALIDATOR_01.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc.nakharax.com:30303".to_string(),
+                    node_url: "http://vps-02.invalid:30303".to_string(),
                 },
                 GenesisValidator {
-                    address: ADDR_VALIDATOR_AU.to_string(),
+                    address: ADDR_VALIDATOR_02.to_string(),
                     stake: validator_half,
                     public_key: "0x".to_string(),
-                    node_url: "http://rpc-au.nakharax.com:30303".to_string(),
+                    node_url: "http://vps-03.invalid:30303".to_string(),
                 },
             ],
             balances: HashMap::new(),
@@ -356,10 +356,10 @@ impl GenesisGenerator {
             .insert(ADDR_TEAM.to_string(), Self::alloc(ALLOC_TEAM_BPS));
         config
             .balances
-            .insert(ADDR_VALIDATOR_EU.to_string(), validator_half);
+            .insert(ADDR_VALIDATOR_01.to_string(), validator_half);
         config
             .balances
-            .insert(ADDR_VALIDATOR_AU.to_string(), validator_half);
+            .insert(ADDR_VALIDATOR_02.to_string(), validator_half);
         config.balances.insert(
             ADDR_PUBLIC_SALE.to_string(),
             Self::alloc(ALLOC_PUBLIC_SALE_BPS),

@@ -20,15 +20,15 @@ from datetime import datetime, timezone
 CHAIN_ID_TESTNET = 86137
 CHAIN_ID_MAINNET = 86150
 CHAIN_ID = CHAIN_ID_TESTNET
-CHAIN_NAME = "Nakharax Testnet"
+CHAIN_NAME = "Nakharax Public Testnet"
 SYMBOL = "NAK"
 DECIMALS = 18
 ONE_AXX = 10 ** DECIMALS
 TOTAL_SUPPLY = 1_000_000_000_000  # 1 trillion NAK
 TOTAL_SUPPLY_WEI = TOTAL_SUPPLY * ONE_AXX
 
-# Q2 2026 Mainnet Genesis — 2026-04-01 00:00:00 UTC
-GENESIS_TIMESTAMP = 1_775_001_600
+# Public Testnet Genesis — 2026-09-01 00:00:00 UTC
+GENESIS_TIMESTAMP = 1_788_220_800
 
 CREATOR_ALIAS = "nakharaxius"
 EXTRA_DATA_TEXT = f"{CREATOR_ALIAS} - Genesis Block #0 - Nakharax Core Universe"
@@ -96,22 +96,18 @@ def _get_allocations(faucet_address: str | None = None) -> dict:
         "percent": 5,
         "split": [
             {
-                "address": _evm_addr("nakharax_genesis_validator_eu_217_76_61_116"),
-                "label": "Validator-EU-01",
-                "region": "EU",
-                "ip": "rpc.nakharax.com",
+                # Preserve the approved testnet allocation address while
+                # decoupling validator identity from the retired VPS IP.
+                "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
+                "label": "Validator-01",
+                "region": "TBD",
+                "ip": "vps-02.invalid",
             },
             {
-                "address": _evm_addr("nakharax_genesis_validator_au_46_250_244_4"),
-                "label": "Validator-AU-01",
-                "region": "AU",
-                "ip": "rpc-au.nakharax.com",
-            },
-            {
-                "address": _evm_addr("nakharax_genesis_validator_us_mainnet"),
-                "label": "Validator-US-01",
-                "region": "US",
-                "ip": "0.0.0.0",
+                "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+                "label": "Validator-02",
+                "region": "TBD",
+                "ip": "vps-03.invalid",
             },
         ],
     },
@@ -237,7 +233,7 @@ def build_genesis(faucet_address: str | None = None) -> dict:
             "londonBlock": 0,
             "nakharax": {
                 "consensus": "popc",
-                "blockTime": 2,
+                "blockTime": 3,
                 "epochLength": 100,
                 "minValidatorStake": _wei(10_000),
                 "maxValidators": 100,
@@ -271,7 +267,7 @@ def print_summary(genesis: dict, allocations: dict):
     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
 
     print("=" * 64)
-    print("  NAKHARAX — Genesis Block #0 (Q2 2026 Mainnet)")
+    print("  NAKHARAX — Public Testnet Genesis Block #0")
     print("=" * 64)
     print(f"  Creator     : {CREATOR_ALIAS}")
     print(f"  Chain ID    : {CHAIN_ID}")
@@ -302,7 +298,7 @@ def print_summary(genesis: dict, allocations: dict):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Nakharax Genesis Block #0 Generator (Q2 2026 Mainnet)")
+    parser = argparse.ArgumentParser(description="Nakharax Public Testnet Genesis Block #0 Generator")
     parser.add_argument("--out", default=None, help="Output path (default: genesis.json next to this script)")
     parser.add_argument("--verify", action="store_true", help="Run verification after generation")
     parser.add_argument("--faucet-address", default=None, help="Faucet EVM address (default: deterministic from seed)")
@@ -315,7 +311,7 @@ def main():
     if CHAIN_ID == CHAIN_ID_MAINNET:
         CHAIN_NAME = "Nakharax Mainnet"
     elif CHAIN_ID == CHAIN_ID_TESTNET:
-        CHAIN_NAME = "Nakharax Testnet"
+        CHAIN_NAME = "Nakharax Public Testnet"
     else:
         CHAIN_NAME = f"Nakharax Dev ({CHAIN_ID})"
 

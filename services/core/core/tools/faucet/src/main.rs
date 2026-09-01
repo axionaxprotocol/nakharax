@@ -97,7 +97,7 @@ async fn main() -> anyhow::Result<()> {
     )
     .map_err(|e| anyhow::anyhow!("FAUCET_PRIVATE_KEY contains invalid hex: {e}"))?;
 
-    // We can use ed25519_dalek directly as it is re-exported via crypto::signature 
+    // We can use ed25519_dalek directly as it is re-exported via crypto::signature
     // or just assume we have the right trait in scope.
     // The faucet requires the SigningKey from ed25519_dalek.
 

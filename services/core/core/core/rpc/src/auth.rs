@@ -11,11 +11,11 @@ impl SignedRequest {
     pub fn verify_and_recover_address(&self) -> Result<String, AuthError> {
         let vk = crypto::signature::public_key_from_bytes(&self.public_key)
             .ok_or(AuthError::InvalidPublicKey)?;
-            
+
         if !crypto::signature::verify(&vk, &self.message, &self.signature) {
             return Err(AuthError::InvalidSignature);
         }
-        
+
         Ok(crypto::signature::address_from_public_key(&vk))
     }
 }

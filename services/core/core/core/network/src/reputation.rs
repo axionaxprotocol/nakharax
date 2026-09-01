@@ -199,7 +199,7 @@ impl ReputationManager {
             .map(|(id, score)| (id.clone(), score.clone()))
             .collect();
 
-        peers.sort_by(|a, b| b.1.score.cmp(&a.1.score));
+        peers.sort_by_key(|a| std::cmp::Reverse(a.1.score));
         peers
     }
 

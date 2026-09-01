@@ -210,10 +210,11 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
     async fn create_proposal(&self, signed_tx: String) -> RpcResult<u64> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| GovernanceRpcError::AuthError(e.to_string()))?;
-            
+
         let params: CreateProposalParams = serde_json::from_slice(&req.message)
             .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
@@ -225,8 +226,8 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
             .map(|v| v.voting_power())
             .unwrap_or(0);
 
-        let ptype =
-            parse_proposal_type(&params.proposal_type).map_err(GovernanceRpcError::InvalidParams)?;
+        let ptype = parse_proposal_type(&params.proposal_type)
+            .map_err(GovernanceRpcError::InvalidParams)?;
 
         let gov = self.governance.read().await;
         let id = gov
@@ -250,10 +251,11 @@ impl GovernanceRpcServer for GovernanceRpcServerImpl {
     async fn vote(&self, signed_tx: String) -> RpcResult<bool> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| GovernanceRpcError::AuthError(e.to_string()))?;
-            
+
         let params: VoteParams = serde_json::from_slice(&req.message)
             .map_err(|e| GovernanceRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
@@ -350,7 +352,6 @@ fn parse_hex_u128(hex: &str) -> Result<u128, String> {
     let hex = hex.strip_prefix("0x").unwrap_or(hex);
     u128::from_str_radix(hex, 16).map_err(|e| format!("Invalid hex: {}", e))
 }
-
 
 fn parse_proposal_type(s: &str) -> Result<ProposalType, String> {
     if s == "text" || s.is_empty() {

@@ -197,10 +197,7 @@ pub fn ws_router(channel: LogChannel) -> Router {
         .with_state(channel)
 }
 
-async fn ws_handler(
-    ws: WebSocketUpgrade,
-    State(channel): State<LogChannel>,
-) -> impl IntoResponse {
+async fn ws_handler(ws: WebSocketUpgrade, State(channel): State<LogChannel>) -> impl IntoResponse {
     ws.on_upgrade(move |socket| stream_logs(socket, channel))
 }
 

@@ -1,129 +1,48 @@
-# Mainnet Genesis Launch Checklist — Q2 2026
+# Mainnet Genesis Checklist — Target 1 January 2027
 
-Pre-launch checklist for Nakharax Mainnet Genesis Block #0.
+Mainnet target: **`2027-01-01T00:00:00Z` (1 มกราคม 2570)**. This checklist is intentionally not marked ready: the Mainnet genesis artifact and production validator keys do not exist yet.
 
----
+## Canonical separation
 
-## 1. Genesis Configuration (Ready)
+- [ ] Mainnet Chain ID is `86150` (`0x15086`), never testnet `86137`.
+- [ ] Generate a dedicated `genesis_mainnet.json`; do not copy or rename testnet `genesis.json`.
+- [ ] Use fresh Mainnet validator, treasury, foundation, and operational keys.
+- [ ] Do not reuse Public Testnet IPs, Peer IDs, identity keys, faucet keys, or chain state.
+- [ ] Mainnet faucet is disabled unless governance approves a separate production policy.
 
-| Item | Status |
-|------|--------|
-| Creator alias | nakharaxius |
-| Total supply | 1,000,000,000,000 NAK (1 trillion) |
-| Creator allocation | 10% |
-| Genesis timestamp | 2026-04-01 00:00:00 UTC |
-| Chain ID | 86137 |
-| EVM addresses | Valid hex (deterministic from seeds) |
+## T-90 to T-31 days
 
----
+- [ ] Public Testnet has at least 30 consecutive days of stable block production.
+- [ ] External security audit is complete; critical/high findings are closed.
+- [ ] Backup, restore, validator replacement, and full-resync drills have passed.
+- [ ] Final economic allocations and vesting schedule have legal/governance approval.
+- [ ] Production providers and geographic failure domains are approved.
 
-## 2. Pre-Launch Steps
+## T-30 to T-8 days
 
-### 2.1 Faucet Key (Mainnet)
+- [ ] Freeze consensus parameters and Mainnet client release candidate.
+- [ ] Generate production keys on their final secure custody systems.
+- [ ] Record validator addresses and public endpoints in an approved inventory.
+- [ ] Generate the Mainnet genesis candidate with timestamp `2027-01-01T00:00:00Z`.
+- [ ] Independently verify total supply, allocations, validator set, Chain ID, state root, and file SHA-256.
+- [ ] Tag the immutable release commit and reproduce identical Linux binary hashes.
 
-For mainnet, generate a fresh faucet keypair:
+## T-7 days to T-1 hour
 
-```bash
-python scripts/generate-faucet-key.py
-```
+- [ ] Run an isolated full dress rehearsal from empty data directories.
+- [ ] Distribute the exact genesis file and signed checksum to every operator.
+- [ ] Every operator confirms genesis hash, binary hash, validator address, system clock, and firewall rules.
+- [ ] RPC, monitoring, alert routing, status page, and incident channels pass end-to-end tests.
+- [ ] At T-24h, freeze deployments except documented severity-one fixes.
+- [ ] At T-1h, obtain signed go/no-go confirmation from the required operators.
 
-- Add `FAUCET_PRIVATE_KEY` to `.env` on the faucet server
-- Regenerate genesis with the new address:
-  ```bash
-  python core/tools/create_genesis.py --faucet-address <ADDRESS> --verify
-  ```
+## T-0 and post-launch
 
-For testnet, the default deterministic key is used (no extra step).
+- [ ] Start validators at the agreed genesis time.
+- [ ] Confirm Chain ID `86150`, block production, quorum, and matching finalized height.
+- [ ] Activate public Mainnet RPC only after internal verification passes.
+- [ ] Maintain staffed incident watch for at least 24 hours.
+- [ ] Publish genesis hash, release tag, binary hashes, endpoints, and status page.
+- [ ] Preserve launch logs and the signed go/no-go record.
 
-### 2.2 Regenerate Genesis
-
-```bash
-cd nakharax
-python core/tools/create_genesis.py --verify
-```
-
-Output: `core/tools/genesis.json`
-
-### 2.3 Verify Genesis
-
-```bash
-python core/tools/verify_genesis.py core/tools/genesis.json
-```
-
-### 2.4 Distribute to Validators
-
-- Share `genesis.json` with all validators
-- Announce genesis hash (SHA-256 of file)
-- Validators place at: `~/.nakharax/config/genesis.json` (or per deploy path)
-
-### 2.5 Creator / Team Keys
-
-The following addresses receive allocations. Ensure private keys are secured:
-
-| Allocation | Address | Key Management |
-|------------|---------|----------------|
-| Creator | `0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f` | nakharaxius holds key |
-| Foundation | `0xa77f117ff23b672cf484b1d05cc48b5e7c03909d` | Multisig recommended |
-| Team | `0x6af7d73fdcc0bf711ccada1422774ab1fdff9ae4` | Secure storage |
-| Community | `0x776b0130e806cb70003744a4691238052c0b972a` | DAO / multisig |
-| Public Sale | `0x58abb3d4e75f232b4177bfd6061972a210f4c9e6` | Sale coordinator |
-| Reserve | `0xa61e8cb3ec1e6246a852ca0493f7e8c9c44006cd` | Emergency fund |
-
-**Note:** Addresses are deterministic from seeds. For mainnet, consider generating fresh keypairs and updating genesis before launch.
-
----
-
-## 3. Validator Setup
-
-| Validator | IP | Address |
-|-----------|-----|---------|
-| EU-01 | 217.216.109.5 | `0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326` |
-| AU-01 | 46.250.244.4 | `0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb` |
-
-Each receives 25,000,000,000 NAK (2.5% of supply) as bootstrap stake.
-
----
-
-## 4. Faucet Address (Testnet Default)
-
-```
-0x9dd7e28ccd04cfb6547adc7be2a8cf2beb434a1c
-```
-
-Deterministic key seed: `nakharax_faucet_mainnet_q2_2026`
-
-For testnet, set in `.env`:
-```
-FAUCET_PRIVATE_KEY=<derived from seed - use generate-faucet-key.py --testnet to get>
-```
-
----
-
-## 5. Launch Day
-
-1. **T-24h:** Final genesis.json distributed, hash announced
-2. **T-1h:** All validators confirm genesis hash match
-3. **T-0:** Validators start nodes with genesis
-4. **T+0:** RPC, Explorer, Faucet go live
-5. **T+1h:** Verify block production, RPC responding
-
----
-
-## 6. Post-Launch
-
-- [ ] Monitor block production
-- [ ] Verify RPC endpoints (EU, AU)
-- [ ] Test faucet (rate limit, amount)
-- [ ] Explorer indexing
-- [ ] Announce mainnet live
-
----
-
-## See Also
-
-- [GENESIS_LAUNCH_README.md](../tools/GENESIS_LAUNCH_README.md) — Launch toolkit
-- [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md) — System architecture
-- [RUNBOOK.md](./RUNBOOK.md) — Deploy & incident response
-- [SECURITY_AUDIT.md](./SECURITY_AUDIT.md) — Security audit & hardening
-
-**Version:** 2026-02 · Q2 2026 Mainnet Target
+Any failed critical gate is a no-go. The target date must not override safety or genesis correctness.

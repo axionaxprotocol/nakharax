@@ -2,15 +2,22 @@
 //!
 //! Usage:
 //!   cargo run -p genesis --bin genesis-export
-//!   cargo run -p genesis --bin genesis-export > core/tools/genesis_canonical.json
+//!   cargo run -p genesis --bin genesis-export -- core/tools/genesis_canonical.json
 //!
 //! The output is derived entirely from the constants in genesis/src/lib.rs,
 //! so genesis.json is always reproducible from the source code.
 
 use genesis::GenesisGenerator;
+use std::path::PathBuf;
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let genesis = GenesisGenerator::mainnet();
     let json = GenesisGenerator::export_json(&genesis);
-    println!("{}", json);
+    if let Some(output_path) = std::env::args_os().nth(1).map(PathBuf::from) {
+        std::fs::write(&output_path, format!("{}\n", json))?;
+        eprintln!("wrote {}", output_path.display());
+    } else {
+        println!("{}", json);
+    }
+    Ok(())
 }

@@ -34,7 +34,8 @@ vrf:
 network:
   chain_id: 86137
   network_name: nakharax-testnet
-  block_time_seconds: 5
+  block_time_seconds: 3
   max_peers: 50
-  bootstrap_nodes:
-    - "/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWQY4NaM13vP6Vrx5Q4MWFQHGKj5qigtg81WC2J1Cca7ZK"
+  # Populate from PUBLIC_TESTNET_BOOTSTRAPS.txt only after the seven new VPS
+  # identities have been generated and verified.
+  bootstrap_nodes: []

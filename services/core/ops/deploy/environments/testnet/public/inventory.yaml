@@ -1,36 +1,42 @@
 all:
   children:
-    validator:
-      hosts:
-        validator-1:
-          ansible_host: 10.0.0.11
-          region: us-west-2
-        validator-2:
-          ansible_host: 10.0.0.12
-          region: us-east-1
-    rpc:
-      hosts:
-        rpc-1:
-          ansible_host: 10.0.1.20
-          region: eu-central-1
     bootnode:
       hosts:
-        boot-1:
-          ansible_host: 10.0.2.30
-    explorer:
+        vps-01:
+          ansible_host: "VPS01_NEW_IPV4_REQUIRED"
+          region: "TBD"
+    validator:
       hosts:
-        explorer-1:
-          ansible_host: 10.0.3.40
+        vps-02:
+          ansible_host: "VPS02_NEW_IPV4_REQUIRED"
+          region: "TBD"
+          validator_address: "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326"
+        vps-03:
+          ansible_host: "VPS03_NEW_IPV4_REQUIRED"
+          region: "TBD"
+          validator_address: "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb"
+    rpc:
+      hosts:
+        vps-04:
+          ansible_host: "VPS04_NEW_IPV4_REQUIRED"
+          region: "TBD"
+          rpc_tier: primary
+        vps-05:
+          ansible_host: "VPS05_NEW_IPV4_REQUIRED"
+          region: "TBD"
+          rpc_tier: secondary
     faucet:
       hosts:
-        faucet-1:
-          ansible_host: 10.0.4.50
+        vps-06:
+          ansible_host: "VPS06_NEW_IPV4_REQUIRED"
+          region: "TBD"
     monitoring:
       hosts:
-        monitor-1:
-          ansible_host: 10.0.5.60
-          region: us-west-2
+        vps-07:
+          ansible_host: "VPS07_NEW_IPV4_REQUIRED"
+          region: "TBD"
 vars:
+  deployment_ready: false
   ansible_user: deployer
   ansible_ssh_private_key_file: ~/.ssh/nakharax-testnet
   container_registry: ghcr.io/axionaxprotocol

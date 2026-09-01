@@ -297,7 +297,7 @@ impl TransactionPool {
             .collect();
 
         // Sort by gas price (highest first)
-        pending.sort_by(|a, b| b.0.cmp(&a.0));
+        pending.sort_by_key(|a| std::cmp::Reverse(a.0));
 
         // Take top transactions
         for (_, ptx) in pending.into_iter().take(limit) {

@@ -2,6 +2,11 @@
 # nakharax VPS Deployment - Simple Pre-Flight Check
 # ==============================================================================
 
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$VPS_IP
+)
+
 Write-Host "`n=== nakharax VPS Deployment Pre-Flight Check ===" -ForegroundColor Cyan
 
 $ScriptRoot = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
@@ -9,7 +14,6 @@ $DeployDir = Split-Path -Parent $ScriptRoot
 if (-not (Test-Path "$DeployDir\docker-compose.vps.yml")) {
     $DeployDir = $ScriptRoot
 }
-$VPS_IP = "217.216.109.5"
 
 # 1. Check Scripts
 Write-Host "`n[1] Checking Scripts..." -ForegroundColor Yellow

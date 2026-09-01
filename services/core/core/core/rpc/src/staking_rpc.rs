@@ -128,7 +128,6 @@ struct DelegateParams {
     amount: String,
 }
 
-
 pub struct StakingRpcServerImpl {
     staking: Arc<RwLock<Staking>>,
     config: StakingConfig,
@@ -179,10 +178,11 @@ impl StakingRpcServer for StakingRpcServerImpl {
     async fn stake(&self, signed_tx: String) -> RpcResult<bool> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| StakingRpcError::AuthError(e.to_string()))?;
-            
+
         let params: StakeParams = serde_json::from_slice(&req.message)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
@@ -201,10 +201,11 @@ impl StakingRpcServer for StakingRpcServerImpl {
     async fn unstake(&self, signed_tx: String) -> RpcResult<bool> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| StakingRpcError::AuthError(e.to_string()))?;
-            
+
         let params: UnstakeParams = serde_json::from_slice(&req.message)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
@@ -223,10 +224,11 @@ impl StakingRpcServer for StakingRpcServerImpl {
     async fn delegate(&self, signed_tx: String) -> RpcResult<bool> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| StakingRpcError::AuthError(e.to_string()))?;
-            
+
         let params: DelegateParams = serde_json::from_slice(&req.message)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid payload: {}", e)))?;
 
@@ -248,8 +250,9 @@ impl StakingRpcServer for StakingRpcServerImpl {
     async fn claim_rewards(&self, signed_tx: String) -> RpcResult<String> {
         let req: SignedRequest = serde_json::from_str(&signed_tx)
             .map_err(|e| StakingRpcError::InvalidParams(format!("Invalid signed tx: {}", e)))?;
-            
-        let verified_addr = req.verify_and_recover_address()
+
+        let verified_addr = req
+            .verify_and_recover_address()
             .map_err(|e| StakingRpcError::AuthError(e.to_string()))?;
 
         let staking = self.staking.read().await;
@@ -267,7 +270,6 @@ fn parse_hex_u128(hex: &str) -> Result<u128, String> {
     let hex = hex.strip_prefix("0x").unwrap_or(hex);
     u128::from_str_radix(hex, 16).map_err(|e| format!("Invalid hex: {}", e))
 }
-
 
 #[cfg(test)]
 mod tests {

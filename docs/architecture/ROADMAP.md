@@ -154,13 +154,20 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 ---
 
-### Phase 5: v2.0 Mainnet Genesis (Q4 2026 - Q2 2027)
+### Phase 5: v2.0 Mainnet Genesis (September 2026 - January 2027)
 
 **Status**: 📅 Planned
 
-**Goal**: Launch production mainnet with full ecosystem support
+**Goal**: Launch production mainnet on **1 January 2027 (`2027-01-01`, 1 มกราคม 2570)** after Public Testnet stabilization and explicit go/no-go approval
 
-#### Q4 2026: Security Audits
+#### September-October 2026: Public Testnet Stabilization
+
+- [ ] Provision seven entirely new VPS instances and record their new IPs and Peer IDs
+- [ ] Run Public Testnet continuously and collect uptime, consensus, RPC, and recovery evidence
+- [ ] Complete external validator onboarding documentation
+- [ ] Freeze protocol-breaking changes before the Mainnet release candidate
+
+#### October-November 2026: Security Audits
 
 - [ ] Select reputable audit firms
   - Trail of Bits
@@ -176,7 +183,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [ ] Public audit report publication
 - [ ] Bug bounty program launch
 
-#### Q1 2027: Developer Tools
+#### November-December 2026: Mainnet Release Candidate
 
 - [ ] SDK Development
   - Go SDK
@@ -187,9 +194,6 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [ ] Code examples and tutorials
 - [ ] Integration guides
 - [ ] Developer portal launch
-
-#### Q2 2027: Genesis Preparation
-
 - [ ] Mainnet genesis configuration
 - [ ] Token distribution preparation
 - [ ] Exchange listings (CEX/DEX)
@@ -198,7 +202,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [ ] Partnership announcements
 - [ ] Node operator incentive program
 
-#### Q3 2027: Mainnet Launch
+#### 1 January 2027: Mainnet Launch
 
 - [ ] **Genesis block** 🚀
 - [ ] Public mainnet launch
@@ -206,8 +210,13 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 - [ ] User dashboard deployment
 - [ ] Analytics and monitoring
 - [ ] 24/7 support channels
-- [ ] Achieve 100+ production nodes
 - [ ] Launch partner pilot programs
+
+#### Q1-Q2 2027: Post-Launch Expansion
+
+- [ ] Achieve 100+ production nodes
+- [ ] Achieve 500+ worker nodes
+- [ ] Expand SDK and developer portal coverage
 
 **Deliverables**:
 
@@ -221,7 +230,7 @@ Build the most transparent, secure, and performant Layer-1 blockchain for decent
 
 ---
 
-### Phase 6: Ecosystem Growth (Q4 2027 - Q3 2028)
+### Phase 6: Ecosystem Growth (Q1 2027 - Q3 2028)
 
 **Status**: 📅 Planned
 

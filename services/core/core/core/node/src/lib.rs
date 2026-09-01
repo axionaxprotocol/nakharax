@@ -212,19 +212,19 @@ impl NakharaxNode {
         // These validators are defined in genesis with pre-allocated stakes
         let staking_clone = staking.clone();
         tokio::spawn(async move {
-            use genesis::{ADDR_VALIDATOR_EU, ADDR_VALIDATOR_AU};
+            use genesis::{ADDR_VALIDATOR_01, ADDR_VALIDATOR_02};
             const ONE_AXX: u128 = 10_u128.pow(18);
             const VALIDATOR_STAKE: u128 = 25_000_000 * ONE_AXX; // 25M NAK per validator (5% of total / 2)
 
             let _ = staking_clone
                 .write()
                 .await
-                .bootstrap_validator(ADDR_VALIDATOR_EU.to_string(), VALIDATOR_STAKE)
+                .bootstrap_validator(ADDR_VALIDATOR_01.to_string(), VALIDATOR_STAKE)
                 .await;
             let _ = staking_clone
                 .write()
                 .await
-                .bootstrap_validator(ADDR_VALIDATOR_AU.to_string(), VALIDATOR_STAKE)
+                .bootstrap_validator(ADDR_VALIDATOR_02.to_string(), VALIDATOR_STAKE)
                 .await;
             info!("Bootstrapped genesis validators into staking module");
         });

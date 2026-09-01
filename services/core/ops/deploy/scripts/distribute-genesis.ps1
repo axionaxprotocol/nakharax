@@ -1,12 +1,12 @@
-# Distribute genesis.json to both Validator VPS (Week 1)
-# Run from repo root. Requires: SSH to root@217.216.109.5 and root@46.250.244.4
-# Usage: .\ops\deploy\scripts\distribute-genesis.ps1
-#        .\ops\deploy\scripts\distribute-genesis.ps1 -User root -Vps1 217.216.109.5 -Vps2 46.250.244.4
+# Distribute the canonical Public Testnet genesis to all seven new VPS nodes.
+# No host defaults are permitted. Example:
+# .\ops\deploy\scripts\distribute-genesis.ps1 -Hosts @('<VPS01_IP>', ..., '<VPS07_IP>')
 
 param(
     [string]$User = "root",
-    [string]$Vps1 = "217.216.109.5",
-    [string]$Vps2 = "46.250.244.4"
+    [Parameter(Mandatory = $true)]
+    [ValidateCount(7, 7)]
+    [string[]]$Hosts
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,13 +24,17 @@ if (-not (Test-Path $GenesisPath)) {
 
 $hash = (Get-FileHash -Path $GenesisPath -Algorithm SHA256).Hash.ToLower()
 Write-Host "==============================================" -ForegroundColor Cyan
-Write-Host "  Distribute Genesis to Validators" -ForegroundColor Cyan
+Write-Host "  Distribute Genesis to Seven New VPS Nodes" -ForegroundColor Cyan
 Write-Host "  Genesis: $GenesisPath" -ForegroundColor Cyan
 Write-Host "  SHA-256: 0x$hash" -ForegroundColor Cyan
-Write-Host "  VPS: $Vps1 (EU), $Vps2 (AU)" -ForegroundColor Cyan
+Write-Host "  VPS: $($Hosts -join ', ')" -ForegroundColor Cyan
 Write-Host "==============================================" -ForegroundColor Cyan
 
-foreach ($vps in $Vps1, $Vps2) {
+if (($Hosts | Sort-Object -Unique).Count -ne 7) {
+    throw "All seven VPS host values must be unique."
+}
+
+foreach ($vps in $Hosts) {
     Write-Host "`n--- $vps ---" -ForegroundColor Yellow
     Write-Host "Creating $RemoteDir if needed..."
     ssh "${User}@${vps}" "mkdir -p $RemoteDir"
@@ -41,10 +45,10 @@ foreach ($vps in $Vps1, $Vps2) {
     if ($remoteHash -eq $hash) {
         Write-Host "  OK: Hash matches on $vps" -ForegroundColor Green
     } else {
-        Write-Host "  WARN: Hash mismatch on $vps (local $hash vs remote $remoteHash)" -ForegroundColor Yellow
+        throw "Hash mismatch on $vps (local $hash vs remote $remoteHash)"
     }
 }
 
 Write-Host "`n==============================================" -ForegroundColor Green
-Write-Host "  Done. Next: run run-update-both-vps.ps1 to update/restart nodes" -ForegroundColor Green
+Write-Host "  Done. All seven nodes have the same genesis hash." -ForegroundColor Green
 Write-Host "==============================================" -ForegroundColor Green

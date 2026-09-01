@@ -244,10 +244,7 @@ impl NetworkManager {
     /// for every entry the operator supplied (config or `NAKHARAX_EXTERNAL_ADDRS`
     /// env). Auto / Disabled are no-ops here — Auto relies on Identify to fill
     /// the address book later, Disabled deliberately advertises nothing.
-    fn apply_external_addr_strategy(
-        swarm: &mut Swarm<NakharaxBehaviour>,
-        config: &NetworkConfig,
-    ) {
+    fn apply_external_addr_strategy(swarm: &mut Swarm<NakharaxBehaviour>, config: &NetworkConfig) {
         use crate::config::ExternalAddrStrategy;
 
         if config.external_addr_strategy == ExternalAddrStrategy::Disabled {
@@ -380,7 +377,9 @@ impl NetworkManager {
     }
 
     /// Get snapshot of Kademlia routing table peers and their addresses.
-    pub fn kad_routing_table(&self) -> impl std::future::Future<Output = Result<Vec<(PeerId, Vec<Multiaddr>)>>> + Send {
+    pub fn kad_routing_table(
+        &self,
+    ) -> impl std::future::Future<Output = Result<Vec<(PeerId, Vec<Multiaddr>)>>> + Send {
         let (reply_tx, reply_rx) = tokio::sync::oneshot::channel();
         let control_tx = self.control_tx.clone();
         async move {
@@ -414,10 +413,7 @@ impl NetworkManager {
         // Dropping this manager closes `message_tx`, which causes the swarm
         // task to exit on its next `message_rx.recv()` returning `None`.
         let count = self.peer_count.load(Ordering::Relaxed);
-        info!(
-            "Network manager shutting down ({} peers connected)",
-            count
-        );
+        info!("Network manager shutting down ({} peers connected)", count);
     }
 }
 
@@ -537,7 +533,9 @@ async fn handle_swarm_event(
         SwarmEvent::ExpiredListenAddr { address, .. } => {
             warn!(target: "p2p", listen_addr = %address, "Listen address expired");
         }
-        SwarmEvent::ListenerClosed { addresses, reason, .. } => {
+        SwarmEvent::ListenerClosed {
+            addresses, reason, ..
+        } => {
             warn!(
                 target: "p2p",
                 ?addresses,
@@ -635,7 +633,10 @@ async fn handle_swarm_event(
                 "Incoming connection error"
             );
         }
-        SwarmEvent::Dialing { peer_id, connection_id } => {
+        SwarmEvent::Dialing {
+            peer_id,
+            connection_id,
+        } => {
             debug!(
                 target: "p2p::conn",
                 peer_id = ?peer_id,
@@ -712,11 +713,7 @@ async fn handle_behaviour_event(
                 debug!(target: "p2p::mdns", %peer_id, "mDNS peer expired");
             }
         }
-        NakharaxBehaviourEvent::Identify(identify::Event::Received {
-            peer_id,
-            info,
-            ..
-        }) => {
+        NakharaxBehaviourEvent::Identify(identify::Event::Received { peer_id, info, .. }) => {
             // The peer told us which address *they* observed for us — this is
             // the single most useful piece of information when debugging why
             // a node behind NAT can't be reached on its public IP.

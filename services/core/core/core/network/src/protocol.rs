@@ -238,7 +238,10 @@ mod tests {
     #[test]
     fn test_topic_names() {
         assert_eq!(MessageType::Blocks.topic_name(), "/nakharax/blocks/1.0.0");
-        assert_eq!(MessageType::Transactions.topic_name(), "/nakharax/txs/1.0.0");
+        assert_eq!(
+            MessageType::Transactions.topic_name(),
+            "/nakharax/txs/1.0.0"
+        );
         assert_eq!(
             MessageType::Consensus.topic_name(),
             "/nakharax/consensus/1.0.0"

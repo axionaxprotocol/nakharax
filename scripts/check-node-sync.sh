@@ -6,7 +6,7 @@
 #
 # Defaults:
 #   LOCAL_RPC      = http://localhost:8545
-#   PEER_RPC       = http://217.216.109.5:8545        (testnet validator #1)
+#   PEER_RPC       = required argument or environment variable
 #   LAG_THRESHOLD  = 10                                (warn if behind by > this)
 #
 # Exit codes:
@@ -20,8 +20,13 @@
 set -euo pipefail
 
 LOCAL_RPC="${1:-${LOCAL_RPC:-http://localhost:8545}}"
-PEER_RPC="${2:-${PEER_RPC:-http://217.216.109.5:8545}}"
+PEER_RPC="${2:-${PEER_RPC:-}}"
 LAG_THRESHOLD="${3:-${LAG_THRESHOLD:-10}}"
+
+if [[ -z "$PEER_RPC" ]]; then
+  echo "PEER_RPC is required; pass the new RPC URL as argument 2 or environment variable." >&2
+  exit 3
+fi
 
 # ---- helpers ---------------------------------------------------------------
 

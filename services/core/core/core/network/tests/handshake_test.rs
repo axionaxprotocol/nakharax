@@ -66,7 +66,9 @@ async fn await_peering(
 async fn handshake_two_local_nodes_via_mdns() {
     // Initialize tracing so `--nocapture` shows the diagnostic logs.
     let _ = tracing_subscriber::fmt()
-        .with_env_filter("info,network=debug,p2p=debug,p2p::conn=debug,p2p::mdns=debug,p2p::identify=debug")
+        .with_env_filter(
+            "info,network=debug,p2p=debug,p2p::conn=debug,p2p::mdns=debug,p2p::identify=debug",
+        )
         .with_test_writer()
         .try_init();
 

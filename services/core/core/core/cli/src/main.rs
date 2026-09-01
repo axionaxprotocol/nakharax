@@ -2,9 +2,9 @@
 //!
 //! Usage: nakharax <command> [options]
 
-use nakharax_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
 use clap::{Parser, Subcommand};
 use colored::*;
+use nakharax_cli::{build_rpc_request, hex_to_decimal, parse_rpc_response};
 use serde_json::Value;
 
 #[derive(Parser)]
@@ -371,10 +371,7 @@ async fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
                         println!("No peers in Kademlia routing table.");
                     } else {
                         for p in peers {
-                            println!(
-                                "Peer ID: {}",
-                                p["peer_id"].as_str().unwrap_or("").green()
-                            );
+                            println!("Peer ID: {}", p["peer_id"].as_str().unwrap_or("").green());
                             if let Some(addrs) = p["addresses"].as_array() {
                                 for addr in addrs {
                                     println!("  - {}", addr.as_str().unwrap_or(""));

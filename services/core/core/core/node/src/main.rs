@@ -260,7 +260,7 @@ fn resolve_chain_id(args: &Args) -> u64 {
     match std::fs::read_to_string(chain_path) {
         Ok(contents) => serde_json::from_str::<serde_json::Value>(&contents)
             .ok()
-            .and_then(|g| g.get("chain_id").and_then(|v| v.as_u64()))
+            .and_then(|g| chain_id_from_genesis(&g))
             .unwrap_or_else(|| {
                 warn!(
                     "Could not extract chain_id from {}, using --chain_id={}",
@@ -278,5 +278,34 @@ fn resolve_chain_id(args: &Args) -> u64 {
             );
             args.chain_id
         }
+    }
+}
+
+fn chain_id_from_genesis(genesis: &serde_json::Value) -> Option<u64> {
+    genesis
+        .get("chain_id")
+        .and_then(|value| value.as_u64())
+        .or_else(|| {
+            genesis
+                .get("config")
+                .and_then(|config| config.get("chainId"))
+                .and_then(|value| value.as_u64())
+        })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::chain_id_from_genesis;
+
+    #[test]
+    fn reads_native_genesis_chain_id() {
+        let genesis = serde_json::json!({ "chain_id": 86137 });
+        assert_eq!(chain_id_from_genesis(&genesis), Some(86137));
+    }
+
+    #[test]
+    fn reads_evm_genesis_chain_id() {
+        let genesis = serde_json::json!({ "config": { "chainId": 86137 } });
+        assert_eq!(chain_id_from_genesis(&genesis), Some(86137));
     }
 }

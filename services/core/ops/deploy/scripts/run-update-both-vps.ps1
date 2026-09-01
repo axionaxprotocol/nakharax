@@ -1,12 +1,12 @@
-# Run update on both Validator VPS (217.216.109.5, 46.250.244.4)
+# Run update on the two new Validator VPS instances. No legacy host defaults.
 # Usage: from repo root or from ops/deploy:
-#   .\scripts\run-update-both-vps.ps1
-#   .\scripts\run-update-both-vps.ps1 -User root -SkipApt
+#   .\scripts\run-update-both-vps.ps1 -ValidatorHosts @('<VPS02_IP>', '<VPS03_IP>')
 
 param(
     [string]$User = "root",
-    [string]$Vps1 = "217.216.109.5",
-    [string]$Vps2 = "46.250.244.4",
+    [Parameter(Mandatory = $true)]
+    [ValidateCount(2, 2)]
+    [string[]]$ValidatorHosts,
     [switch]$SkipApt,
     [switch]$DryRun
 )
@@ -23,7 +23,7 @@ $argStr = $args -join " "
 
 Write-Host "==============================================" -ForegroundColor Cyan
 Write-Host "  Update both Validator VPS" -ForegroundColor Cyan
-Write-Host "  $Vps1 (EU), $Vps2 (AU)" -ForegroundColor Cyan
+Write-Host "  $($ValidatorHosts -join ', ')" -ForegroundColor Cyan
 Write-Host "==============================================" -ForegroundColor Cyan
 
 $scriptPath = Join-Path $ScriptDir $ScriptName
@@ -32,7 +32,11 @@ if (-not (Test-Path $scriptPath)) {
     exit 1
 }
 
-foreach ($vps in $Vps1, $Vps2) {
+if (($ValidatorHosts | Sort-Object -Unique).Count -ne 2) {
+    throw "The two validator host values must be unique."
+}
+
+foreach ($vps in $ValidatorHosts) {
     Write-Host "`n--- $vps ---" -ForegroundColor Yellow
     Write-Host "Copying script..."
     scp $scriptPath "${User}@${vps}:/tmp/$ScriptName"
@@ -45,5 +49,5 @@ foreach ($vps in $Vps1, $Vps2) {
 }
 
 Write-Host "`n==============================================" -ForegroundColor Green
-Write-Host "  Done both VPS" -ForegroundColor Green
+Write-Host "  Done both new Validator VPS instances" -ForegroundColor Green
 Write-Host "==============================================" -ForegroundColor Green

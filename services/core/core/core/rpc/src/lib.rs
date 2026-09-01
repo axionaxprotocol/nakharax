@@ -206,8 +206,7 @@ pub trait NakharaxRpc {
 
     /// Get transaction receipt by hash. Returns None if tx not indexed yet.
     #[method(name = "eth_getTransactionReceipt")]
-    async fn get_transaction_receipt(&self, tx_hash: String)
-        -> RpcResult<Option<ReceiptResponse>>;
+    async fn get_transaction_receipt(&self, tx_hash: String) -> RpcResult<Option<ReceiptResponse>>;
 
     /// Get current gas price (hex-encoded wei). Returns the chain's min gas price.
     #[method(name = "eth_gasPrice")]
@@ -379,10 +378,7 @@ impl NakharaxRpcServer for NakharaxRpcServerImpl {
         Ok(tx_hash)
     }
 
-    async fn get_transaction_receipt(
-        &self,
-        tx_hash: String,
-    ) -> RpcResult<Option<ReceiptResponse>> {
+    async fn get_transaction_receipt(&self, tx_hash: String) -> RpcResult<Option<ReceiptResponse>> {
         let hash = parse_hex_hash(&tx_hash).map_err(RpcError::InvalidParams)?;
 
         // Look up the transaction first; if it's not indexed we return None.
@@ -723,7 +719,7 @@ fn build_system_module(
 
     module.register_method("nak_sendTransaction", move |params, _, _| {
         let tx_hex: String = params.one().unwrap_or_default();
-        let hash = crypto::keccak256(tx_hex.as_bytes());
+        let hash = crypto::hash::keccak256(tx_hex.as_bytes());
         Ok::<_, ErrorObjectOwned>(serde_json::json!({
             "status": "accepted",
             "tx_hash": format!("0x{}", hex::encode(hash)),
@@ -744,7 +740,7 @@ fn build_system_module(
                         e.to_string(),
                         None::<()>,
                     ))?;
-                
+
                 let result: Vec<serde_json::Value> = table
                     .into_iter()
                     .map(|(peer_id, addrs)| {

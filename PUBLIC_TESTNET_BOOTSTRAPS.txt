@@ -1,20 +1,18 @@
 # =============================================================================
-# NakharaX Protocol L1 Public Testnet — Canonical Bootstrap Multiaddresses
-# Network: nakharax-testnet | Chain ID: 86137 (0x15079) | Port: 30303 (TCP/UDP)
-# Generated: 31 August 2026 (Genesis Launch: 1 September 2026)
+# NakharaX Public Testnet — Bootstrap Registry
+# Chain ID: 86137 (0x15079) | P2P: 30303/TCP+UDP
+# Status: NOT INITIALIZED — all seven VPS instances will be new
 # =============================================================================
 
-# Node 01 (Master Compute Hub & Seed - Contabo Asia/AU)
-/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWK4UmkJdsVqiqTvGhWYRXaQC1KDgxg1jbgkfFBDDynN5y
+# Safety rule: do not copy IP addresses, Peer IDs, or identity keys from the
+# retired deployment. Populate this file only from the seven new running nodes.
+# A valid line has this form:
+# /ip4/<NEW_STATIC_IPV4>/tcp/30303/p2p/<PEER_ID_FROM_THE_SAME_NEW_VPS>
 
-# Node 02 (Primary Genesis Validator #1 - OVHcloud EU Frankfurt)
-/ip4/217.216.109.5/tcp/30303/p2p/12D3KooWLJs38pzcR8DnY6AcynQehzUTURZCt9FyTLCeiNLPNskz
-
-# Node 03 (Genesis Validator #2 / US DeAI Worker - OVHcloud US East Virginia)
-/ip4/147.135.10.12/tcp/30303/p2p/12D3KooWGfPNH2qM7s7Wr9uMuCe21zg4mETgvbHxrh1hrbXcLkCn
-
-# Node 04 (Genesis Validator #3 / SG DeAI Worker - OVHcloud SG Singapore)
-/ip4/51.79.160.25/tcp/30303/p2p/12D3KooWBYNGL89GNZBywpffNMkCZDi7fSDCfdqUF76FABCQ5dQN
-
-# Node 05 (Genesis Validator #4 / EU Security Auditor - OVHcloud EU London/Gravelines)
-/ip4/51.89.96.42/tcp/30303/p2p/12D3KooWNhGJwThe6iYqBddJwu3BH5YtZvinGqDZpETF4khpJWd2
+# VPS-01 Seed/bootnode:                   PENDING
+# VPS-02 Validator-01:                    PENDING
+# VPS-03 Validator-02:                    PENDING
+# VPS-04 Public RPC primary:              PENDING
+# VPS-05 Public RPC secondary + observer: PENDING
+# VPS-06 Faucet + observer:               PENDING
+# VPS-07 Monitoring + observer:           PENDING

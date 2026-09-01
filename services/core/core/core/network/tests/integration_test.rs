@@ -46,7 +46,7 @@ async fn test_peer_discovery() {
 #[tokio::test]
 async fn test_message_publishing() {
     let config = NetworkConfig::dev();
-    let mut manager = NetworkManager::new(config)
+    let manager = NetworkManager::new(config)
         .await
         .expect("Failed to create network manager");
 
@@ -72,7 +72,7 @@ async fn test_message_publishing() {
 #[tokio::test]
 async fn test_transaction_propagation() {
     let config = NetworkConfig::dev();
-    let mut manager = NetworkManager::new(config)
+    let manager = NetworkManager::new(config)
         .await
         .expect("Failed to create network manager");
 
@@ -137,7 +137,7 @@ async fn test_config_validation() {
 #[tokio::test]
 async fn test_concurrent_messages() {
     let config = NetworkConfig::dev();
-    let mut manager = NetworkManager::new(config)
+    let manager = NetworkManager::new(config)
         .await
         .expect("Failed to create manager");
 

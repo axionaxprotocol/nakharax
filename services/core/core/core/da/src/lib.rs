@@ -6,8 +6,8 @@
 //! - Live DA audits
 //! - Availability window management
 
-use serde::{Deserialize, Serialize};
 use reed_solomon_erasure::galois_8::ReedSolomon;
+use serde::{Deserialize, Serialize};
 use sha3::{Digest, Sha3_256};
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -332,7 +332,11 @@ impl DA {
         }
 
         data.truncate(entry.original_size);
-        debug!("Retrieved and reconstructed data {}: {} bytes", id, data.len());
+        debug!(
+            "Retrieved and reconstructed data {}: {} bytes",
+            id,
+            data.len()
+        );
         Ok(data)
     }
 
@@ -558,7 +562,10 @@ mod tests {
         });
 
         let data = b"This data will be split, partially lost, and then reconstructed.";
-        let entry = da.store("reconstruct-test".to_string(), data).await.unwrap();
+        let entry = da
+            .store("reconstruct-test".to_string(), data)
+            .await
+            .unwrap();
 
         // For chunk_size=10, 64 bytes -> data_chunks=7, parity_chunks=4, total=11.
         assert_eq!(entry.data_chunks, 7);
