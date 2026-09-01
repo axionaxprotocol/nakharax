@@ -11,7 +11,7 @@
 
 /ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M
 /ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE
-# VPS-03 Validator-02:                    PENDING
+/ip4/217.216.39.77/tcp/30303/p2p/12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK
 # VPS-04 Public RPC primary:              PENDING
 # VPS-05 Public RPC secondary + observer: PENDING
 # VPS-06 Faucet + observer:               PENDING
