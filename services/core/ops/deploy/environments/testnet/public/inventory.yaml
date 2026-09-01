@@ -3,8 +3,8 @@ all:
     bootnode:
       hosts:
         vps-01:
-          ansible_host: "VPS01_NEW_IPV4_REQUIRED"
-          region: "TBD"
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
     validator:
       hosts:
         vps-02:
