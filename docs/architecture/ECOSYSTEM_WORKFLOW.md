@@ -8,7 +8,7 @@ Welcome to the canonical end-to-end workflow manual for the **NakharaX Protocol*
 
 When a new node joins the NakharaX mesh, it initiates peer discovery via **Libp2p Bootstrapping** integrated with **Kademlia DHT**:
 
-1. **Bootstrap Node Entry:** The joining node specifies at least one active **Bootstrap Node** multiaddr in `protocol.testnet.yaml` or via the `NAKHARAX_BOOTSTRAP_NODES` environment variable (e.g., `/ip4/46.250.244.4/tcp/30303/p2p/12D3KooWQY...`).
+1. **Bootstrap Node Entry:** The joining node specifies at least one active **Bootstrap Node** multiaddr in `protocol.testnet.yaml` or via `NAKHARAX_BOOTSTRAP_NODES` (for example `/ip4/<NEW_SEED_IP>/tcp/30303/p2p/<REAL_NEW_SEED_PEER_ID>`).
 2. **Kademlia DHT Routing Table Query:** Upon connecting to the bootstrap peer, `swarm.behaviour_mut().kad.bootstrap()` inside [`manager.rs`](file:///D:/nakharax/services/core/core/core/network/src/manager.rs) queries active routing table peers.
 3. **Peer Discovery & Identification:** The node utilizes `Identify` and `mDNS` protocols to exchange multiaddresses and PeerIDs automatically, discovering network peers without requiring pre-registered IP addresses.
 

@@ -1,105 +1,21 @@
-# Connectivity: Local Full Node, VPS Validator, and Frontend
+# Public Testnet Connectivity Overview
 
-How **Local full node**, **VPS Validator nodes**, and **Frontend (hosted website)** connect, and what must be configured.
+Current status: all former VPS endpoints are retired. No public RPC, faucet, explorer, or dashboard endpoint should be considered live until the new domain and seven VPS instances are provisioned and verified.
 
-> **Production layout (2026-05):** User-facing services (rpc, explorer, api, faucet) run on **46.250.244.4 (AU)** via `docker-compose.vps.yml`. EU validator: **217.216.109.5**.
+```text
+rpc.<domain> --------> VPS-04 Caddy :443 -> node RPC 127.0.0.1:8545
+rpc-backup.<domain> -> VPS-05 Caddy :443 -> node RPC 127.0.0.1:8545
+faucet.<domain> -----> VPS-06 Caddy :443 -> faucet 127.0.0.1:3002
 
----
-
-## Overview
-
-| Component | Location / URL | Connects to |
-|-----------|----------------|-------------|
-| **VPS EU** | 217.216.109.5 | Validator #1, RPC, **Nakharax OS** (`app.nakharax.com` → :3030) |
-| **VPS AU** | 46.250.244.4 | Validator #2; nginx, rpc, explorer, api, faucet |
-| **DNS (chain)** | rpc / explorer / api / faucet `.nakharax.com` | → **46.250.244.4** |
-| **DNS (OS)** | `app.nakharax.com` | → **217.216.109.5** |
-| **Nakharax OS** | `apps/os-dashboard` on EU | RPC client → `https://rpc.nakharax.com` (AU) |
-| **Local full node** | Your machine | Bootstrap to EU or AU; or use public RPC only |
-
----
-
-## 1. Public Testnet (VPS Validators + Frontend)
-
-### Intended connectivity
-
-```
-[User] → https://rpc.nakharax.com (nginx @ 46.250.244.4)
-              ↓
-         [AU rpc-node] ←P2P→ [EU validator @ 217.216.109.5]
-              ↓
-         Chain ID 86137
-
-[Faucet / Explorer / API] → same host (46.250.244.4), RPC_URL=http://rpc-node:8545
+VPS-01 seed <-------> VPS-02..VPS-07 over P2P 30303/TCP+UDP
 ```
 
-- **Both validators** share genesis (86137) and sync on P2P **30303**.
-- **Frontend** should use `NEXT_PUBLIC_RPC_URL=https://rpc.nakharax.com` (or `https://rpc-au.nakharax.com`).
-- **Faucet** on AU uses internal RPC — no cross-VPS RPC URL needed when stack is all-in-one.
-- **Direct IP RPC** (debug): `http://217.216.109.5:8545` (EU), `http://46.250.244.4:8545` (AU).
+Public exposure rules:
 
-### What must be in place for "fully connected"
+- `8545`, `8080`, `3002`, monitoring, and database ports stay private.
+- Only `80/443` on ingress nodes and `30303/TCP+UDP` on network nodes are public.
+- SSH is allowlisted to the operator IP.
+- Peer IDs come from identities created on the corresponding new VPS.
+- Clients use DNS names, never direct VPS IPs.
 
-| Item | Host | Notes |
-|------|------|-------|
-| EU validator running | 217.216.109.5 | 8545, 30303 open |
-| AU stack running | 46.250.244.4 | `docker-compose.vps.yml`, all containers healthy |
-| DNS → AU | 46.250.244.4 | rpc, explorer, api, faucet subdomains |
-| Frontend RPC env | build-time | `https://rpc.nakharax.com` |
-| P2P between validators | both | `peers >= 1` on each node |
-
-**Deploy guide:** [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md)
-
----
-
-## 2. Local Full Node
-
-### Option A: Connect to Public Testnet
-
-- Bootstrap: `NAKHARAX_BOOTSTRAP_NODES` pointing at EU or AU peer ID on port 30303.
-- Or skip local sync and use public RPC only.
-
-### Option B: Separate local chain
-
-- Standalone genesis / chain_id — not connected to public testnet.
-
----
-
-## 3. Frontend (hosted)
-
-- RPC URL at build/runtime determines which chain the UI uses.
-- Production: `https://rpc.nakharax.com` → testnet 86137 on AU/EU validators.
-
----
-
-## 4. Summary: "Is everything connected?"
-
-| Pair | Connected? | Condition |
-|------|------------|-----------|
-| **EU ↔ AU validators** | Yes | P2P 30303; same genesis |
-| **Frontend ↔ testnet** | Yes | RPC URL points to rpc.nakharax.com (AU nginx → local node) |
-| **Faucet ↔ testnet** | Yes | Faucet on AU, `RPC_URL=http://rpc-node:8545` |
-| **Explorer/API ↔ testnet** | Yes | `explorer-backend` on AU, same internal RPC |
-
----
-
-## 5. Quick verification
-
-```bash
-# EU validator
-curl -s -X POST -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  http://217.216.109.5:8545
-
-# AU validator (direct)
-curl -s -X POST -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  http://46.250.244.4:8545
-
-# Public HTTPS (after DNS + SSL on AU)
-curl -s -X POST -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  https://rpc.nakharax.com
-```
-
-Full script: `ops/deploy/scripts/verify-launch-ready.sh`
+See [1_SEP_GENESIS_RUNBOOK.md](../ops/1_SEP_GENESIS_RUNBOOK.md) for deployment and verification.

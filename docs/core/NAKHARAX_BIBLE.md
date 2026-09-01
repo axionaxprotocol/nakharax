@@ -72,12 +72,11 @@ This repository contains many documents. This file is the central index: content
 
 | Document | Description |
 |----------|-------------|
-| [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis public testnet plan, 2-VPS allocation (EU validator + AU all-in-one), weekly timeline |
-| [ops/deploy/VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) | Deploy chain services on 46.250.244.4 (AU) |
-| [web/VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md) | Deploy Nakharax OS on 217.216.109.5 (EU) |
+| [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Seven-new-VPS Public Testnet implementation plan |
+| [1_SEP_GENESIS_RUNBOOK.md](../ops/1_SEP_GENESIS_RUNBOOK.md) | Canonical deployment, DNS, TLS, faucet, and verification procedure |
 | [CONNECTIVITY_OVERVIEW.md](CONNECTIVITY_OVERVIEW.md) | How Local full node, VPS Validator, and Frontend connect |
 | [ADD_NETWORK_AND_TOKEN.md](ADD_NETWORK_AND_TOKEN.md) | Add Nakharax Testnet and NAK token in MetaMask; receive from Faucet |
-| [ops/deploy/VPS_VALIDATOR_UPDATE.md](../../services/core/ops/deploy/VPS_VALIDATOR_UPDATE.md) | Validator VPS update (217.216.109.5, 46.250.244.4) and checklist |
+| [NETWORK_NODES.md](NETWORK_NODES.md) | Current seven-node roles and provisioning state |
 | [ops/deploy/VPS_FULL_NODE_RUNBOOK.md](../../services/core/ops/deploy/VPS_FULL_NODE_RUNBOOK.md) | Run full node on VPS (chain_id 86137, RPC 8545, P2P 30303) |
 | [RUN_PUBLIC_FULL_NODE.md](RUN_PUBLIC_FULL_NODE.md) | Permissionless public testnet full node — genesis, bootstrap, build, verify (any operator worldwide) |
 | [PUBLIC_TESTNET_BOOTSTRAPS.txt](PUBLIC_TESTNET_BOOTSTRAPS.txt) | Maintainer-updated libp2p multiaddrs for `NAKHARAX_BOOTSTRAP_NODES` |
@@ -95,7 +94,7 @@ This repository contains many documents. This file is the central index: content
 |----------|-------------|
 | [GENESIS_PUBLIC_TESTNET_PLAN.md](GENESIS_PUBLIC_TESTNET_PLAN.md) | Genesis public testnet plan, VPS allocation, weekly timeline |
 | [TESTNET_OPTIMIZATION_CHECKLIST.md](TESTNET_OPTIMIZATION_CHECKLIST.md) | Testnet optimization checklist (Stability, Consensus, RPC, Faucet, Monitoring, Security) |
-| [MAINNET_PRODUCTION_PLAN.md](MAINNET_PRODUCTION_PLAN.md) | Mainnet production plan — target mid-year 2026 (Chain ID 86150), pre-mainnet checklist, launch |
+| [MAINNET_PRODUCTION_PLAN.md](MAINNET_PRODUCTION_PLAN.md) | Mainnet production plan — target 1 January 2027 (Chain ID 86150) |
 | [BENCHMARK_BASELINE.md](BENCHMARK_BASELINE.md) | Reproducible benchmark baseline (TPS/block-time/latency) and claim policy |
 | [TESTNET_READINESS.md](../../services/core/TESTNET_READINESS.md) | Testnet readiness (Genesis, Balance, Faucet) and launch doc links |
 | [GITHUB_READINESS.md](GITHUB_READINESS.md) | Repository readiness on GitHub (CI, secrets, docs, verify script) |

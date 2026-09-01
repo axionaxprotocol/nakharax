@@ -8,7 +8,7 @@
 pub mod merkle;
 
 use redb::{Database, ReadableTable, TableDefinition};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::path::Path;
 use std::sync::Arc;
 use thiserror::Error;
@@ -381,7 +381,7 @@ impl StateDB {
     }
 
     /// Seed genesis balances (call once when chain height is 0).
-    pub fn seed_genesis_balances(&self, balances: &HashMap<String, u128>) -> Result<()> {
+    pub fn seed_genesis_balances(&self, balances: &BTreeMap<String, u128>) -> Result<()> {
         let write_txn = self.db.begin_write()?;
         {
             let mut t = write_txn.open_table(CHAIN_STATE)?;

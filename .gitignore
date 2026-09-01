@@ -49,3 +49,9 @@ models/
 # Agent Metadata
 .antigravitycli/
 .gemini/
+
+# Python Cache
+__pycache__/
+*.pyc
+**/*.pyc
+**/__pycache__/

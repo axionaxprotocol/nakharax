@@ -14,7 +14,7 @@ Central docs for the Nakharax Core Universe (blockchain, network, DeAI, hardware
 | [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md) | **Start here** — full system architecture (layers, modules, hardware) |
 | [PROJECT_ASCENSION.md](./PROJECT_ASCENSION.md) | Vision, 9 Pillars, 4 Engines, implementation map |
 | [MONOLITH_ROADMAP.md](./MONOLITH_ROADMAP.md) | Monolith hardware MK-I → MK-IV (Vanguard to Gaia) |
-| [MAINNET_GENESIS_CHECKLIST.md](./MAINNET_GENESIS_CHECKLIST.md) | Q2 2026 Mainnet genesis launch checklist |
+| [MAINNET_GENESIS_CHECKLIST.md](./MAINNET_GENESIS_CHECKLIST.md) | Mainnet checklist — target 1 January 2027 |
 
 ## Network & nodes
 

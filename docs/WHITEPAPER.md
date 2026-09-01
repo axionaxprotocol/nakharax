@@ -426,7 +426,7 @@ The protocol is active in development and local testnet environment (`Chain ID 8
 | Parameter | Value |
 |-----------|-------|
 | Chain ID | 86137 |
-| Active Validators | Local Docker / Developer Node (Legacy VPS 217.216.109.5 / 46.250.244.4 offline; awaiting new VPS provisioning) |
+| Active Validators | Local developer node only; former VPS cluster retired and seven new VPS instances pending |
 | RPC | `http://localhost:8545` (Planned: `https://rpc.nakharax.com`) |
 | Dashboard | `http://localhost:3030` (Planned: `https://app.nakharax.com`) |
 | Block time | ~3 seconds (3000ms cadence) |

@@ -112,25 +112,24 @@ python3 scripts/update-node.py --full-deps
 
 ---
 
-## Current Network (Testnet)
+## Current Network (Public Testnet)
 
-| Node | IP | Role | RPC |
-|------|-----|------|-----|
-| EU | 217.216.109.5 | Validator + RPC + **Nakharax OS** | `https://app.nakharax.com` |
-| AU | 46.250.244.4 | Validator + rpc, explorer, api, faucet | `https://rpc.nakharax.com` |
-
-EU OS: [docs/web/VPS_EU_OS_DASHBOARD.md](../../docs/web/VPS_EU_OS_DASHBOARD.md) · AU: [ops/deploy/VPS_AU_ALL_IN_ONE.md](ops/deploy/VPS_AU_ALL_IN_ONE.md)
+| Node | Location | IP | Role | Status |
+|------|----------|-----|------|:---:|
+| **VPS-01** | 🇪🇺 Frankfurt, Germany | `158.220.127.24` | Master Seed & Public Ingress | 🟢 **ONLINE** |
+| **VPS-02** | 🇺🇸 Virginia, US East | `40.160.87.118` | Genesis Validator 01 | 🟢 **PRODUCING** |
+| **VPS-03** | 🇸🇬 Singapore, APAC | `217.216.39.77` | Genesis Validator 02 | 🟢 **PRODUCING** |
 
 - **Chain ID:** `86137`
-- **Phase:** Pre-Testnet (Phase 2)
-- Configs already point to these bootnodes
+- **Phase:** Live Genesis Public Testnet
+- **Cadence:** ~3.0s / block (PoPC BFT Quorum Consensus)
 
 **Verify RPC:**
 
 ```bash
-curl -s -X POST -H "Content-Type: application/json" \
+curl -s -X POST -H "Host: rpc.nakharax.com" -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://rpc-au.nakharax.com
+  http://158.220.127.24
 ```
 
 **Run your own full node (anywhere on the Internet)** — no allowlist: build `nakharax-node`, use the same genesis as testnet, set `NAKHARAX_BOOTSTRAP_NODES`, open P2P port **30303**. Step-by-step: [docs/RUN_PUBLIC_FULL_NODE.md](docs/RUN_PUBLIC_FULL_NODE.md) · bootstrap list template: [docs/PUBLIC_TESTNET_BOOTSTRAPS.txt](docs/PUBLIC_TESTNET_BOOTSTRAPS.txt)

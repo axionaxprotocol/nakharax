@@ -163,7 +163,7 @@
 
 | # | Evaluated Metric | World SOTA Leader & Benchmark | NakharaX Real Empirical Execution Result | Reference Log / Code | SOTA Advantage Multiplier |
 |---|---|---|---|---|---|
-| 91| **1M Users Infrastructure Bill**| **AWS EC2 + ALB + RDS:** $15,000/mo| **$23.44 / month** (5-Node Hybrid Mesh)| `vps_deployment_plan.md` | 💸 **640x Cheaper (99.84% Savings)** |
+| 91| **Public Testnet Infrastructure**| Managed-cloud baseline to be re-estimated | **TBD after seven-new-VPS procurement** | `vps_deployment_plan.md` | Architecture fixed; provider cost pending |
 | 92| **Global Egress Data Transfer Cost**| **AWS CloudFront:** $1,500/month | **$0.00 / month** (OVH Unmetered) | `vps_deployment_plan.md` | 💰 **100% Egress Cost Savings** |
 | 93| **Risk Management SaaS Cost**| **TradeStation Enterprise:** $5,000/mo| **$4.54 / month** (XpFirm VPS Stack) | `vps_deployment_plan.md` | 💸 **1,100x Cheaper Stack Cost** |
 | 94| **System Monitoring Team Cost**| **3 Senior DevOps:** $15,000/month | **$0 / month** (Automated Doctor Scripts)| `NAKHARAX_OPERATOR_PLAYBOOK.md` | 💰 **100% DevOps Labor Savings** |

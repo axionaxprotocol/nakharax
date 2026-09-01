@@ -235,7 +235,7 @@ nakharax-core governance vote \
    **Reporting**: Monthly progress reports to DAO
    **KPIs**:
 
-- Launch date: Q2 2026
+- Mainnet target date: 1 January 2027 (`2027-01-01`)
 - User growth: 1000+ in 6 months
 - Compute volume: 10k jobs/month
 ```

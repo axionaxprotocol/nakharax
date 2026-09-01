@@ -202,7 +202,7 @@ When something is genuinely broken, paste **two artifacts**:
 
 Template:
 
-> I'm running two nodes (A: `46.250.244.4`, B: `217.216.109.5`). Here are the last 200 lines of logs from both:
+> I'm running two newly provisioned nodes (A: `<VPS_A_IP>`, B: `<VPS_B_IP>`). Here are the last 200 lines of logs from both:
 >
 > ```
 > <paste log A>
@@ -228,7 +228,7 @@ Version focused on real-world execution across tech, testnet operations, finance
 ### Phase 1: Testnet & Infrastructure
 
 - [ ] **P2P Discovery stability** (24h run is an ops window — automation + evidence layout are ready)
-  - DoD: `217.216.109.5` and `46.250.244.4` see each other as peers continuously for 24 hours.
+  - DoD: the two new VPS hosts see each other as peers continuously for 24 hours.
   - DoD: block sync does not stall, reorg remains within accepted bounds, auto-reconnect succeeds.
   - Evidence: peer logs, sync-height graph, latency and packet-loss report.
   - Execution runbook (24h window):
@@ -246,7 +246,7 @@ Version focused on real-world execution across tech, testnet operations, finance
   - Evidence package (attach to issue/PR):
     - `peer-events.log`: connect/disconnect timeline from both validators.
     - `sync-height.csv`: timestamp, node A height, node B height, delta.
-    - `network-quality.txt`: `mtr` or equivalent latency/packet-loss summary between `217.216.109.5` and `46.250.244.4`.
+    - `network-quality.txt`: `mtr` or equivalent latency/packet-loss summary between the two new VPS hosts.
     - `incident-notes.md`: any stalls/reconnects, root-cause note, and mitigation applied.
 - [x] **Hello DeAI completed**
   - DoD: Python workload is sent end-to-end from a main node to a worker node.

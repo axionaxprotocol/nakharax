@@ -207,7 +207,7 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 
 ### 8. โทโปโลยีเครือข่ายและแผนการปล่อยตัว (Genesis Launch Plan)
 
-- **โครงสร้างทดสอบ (5-Node Hybrid Quorum Mesh)**: เครือข่ายรันอยู่บนโหนดประสานงาน 5 โหนดทั่วโลก (1 Master Hub + 4 Satellites) ด้วยต้นทุนโครงสร้างพื้นฐานประหยัดเพียง **$23.44 ต่อเดือน**
+- **โครงสร้างทดสอบ (7 VPS ใหม่)**: แยก seed, validator 2 เครื่อง, RPC 2 เครื่อง, faucet และ monitoring โดย provider/region/IP และต้นทุนจะสรุปหลังจัดซื้อ
 - **กำหนดการ Genesis Public Testnet**: วันที่ **1 กันยายน 2026** (Chain ID: `86137`) พร้อมเปิด Faucet แจก $tNAK สำหรับนักพัฒนา
 
 ---

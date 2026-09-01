@@ -8,7 +8,7 @@
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use sha3::{Digest, Sha3_256};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -70,7 +70,7 @@ pub struct GenesisConfig {
     pub chain_name: String,
     pub timestamp: u64,
     pub validators: Vec<GenesisValidator>,
-    pub balances: HashMap<String, u128>,
+    pub balances: BTreeMap<String, u128>,
     pub config: ProtocolConfig,
     pub extra_data: String,
     pub total_supply: u128,
@@ -84,7 +84,7 @@ impl Default for GenesisConfig {
             chain_name: CHAIN_NAME.to_string(),
             timestamp: Utc::now().timestamp() as u64,
             validators: vec![],
-            balances: HashMap::new(),
+            balances: BTreeMap::new(),
             config: ProtocolConfig::default(),
             extra_data: "nakharaxius - Genesis Block #0 - Nakharax Core Universe".to_string(),
             total_supply: TOTAL_SUPPLY,
@@ -335,7 +335,7 @@ impl GenesisGenerator {
                     node_url: "http://vps-03.invalid:30303".to_string(),
                 },
             ],
-            balances: HashMap::new(),
+            balances: BTreeMap::new(),
         };
 
         config

@@ -1,70 +1,31 @@
-# Genesis Public Testnet Implementation Blueprint
+# Genesis Public Testnet Implementation Plan
 
-This document outlines the dual-VPS architecture: **2 Validator Nodes + Ingress Reverse Proxy + RPC + Faucet + Block Explorer + API Mesh** sharing Chain ID `86137`.
+Status on 1 September 2026: genesis artifacts are prepared, but the public network is **not online** because the domain and all seven replacement VPS instances are not yet provisioned.
 
-> **Production Topology:** AU (`46.250.244.4`) hosts the all-in-one infrastructure stack. EU (`217.216.109.5`) hosts Validator #1 + RPC Ingress. Refer to [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md).
+## Fixed network parameters
 
----
+| Parameter | Value |
+|---|---|
+| Network | NakharaX Public Testnet |
+| Chain ID | `86137` (`0x15079`) |
+| Genesis time | `2026-09-01T00:00:00Z` |
+| Block cadence | 3 seconds |
+| P2P | `30303/TCP+UDP` |
+| Genesis validators | 2 |
 
-## Immediate Action Matrix
+## Infrastructure
 
-| Step | Operation Target | Execution Command / Script Path |
-|---|---|---|
-| 1 | **Genesis Blueprint Initialized** | `services/core/tools/genesis.json` (SHA-256: `0xed1bdac7...`), Chain ID `86137` |
-| 2 | **Distribute Genesis Blueprint** | From repository root: `.\services\core\ops\deploy\scripts\distribute-genesis.ps1` |
-| 3 | **Update Node Daemons (EU + AU)**| `.\services\core\ops\deploy\scripts\run-update-both-vps.ps1` |
-| 4 | **Verify JSON-RPC Endpoints** | `curl -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' http://217.216.109.5:8545` |
-| 5 | **Deploy Service Stack on AU Host** | `docker compose -f docker-compose.vps.yml up -d` on `46.250.244.4` |
-| 6 | **Configure DNS & SSL** | A Records → `46.250.244.4`; Certbot Auto-TLS via Nginx Compose |
+Use seven entirely new VPS instances. Their IP addresses, providers, regions, Peer IDs, and identity keys are not assigned yet. The roles are defined in [7_NODE_HYBRID_TOPOLOGY.md](../architecture/7_NODE_HYBRID_TOPOLOGY.md).
 
----
+## Execution order
 
-## 1. Multi-Region VPS Resource Allocation
+1. Register the production domain and provision seven VPS instances.
+2. Record new IPs in `services/core/ops/deploy/environments/testnet/public/inventory.yaml`.
+3. Freeze the release commit and verify both genesis checksums.
+4. Start VPS-01, read its real Peer ID, and record the seed multiaddress.
+5. Start VPS-02 and VPS-03 with their distinct genesis validator addresses.
+6. Start RPC/observer nodes VPS-04 through VPS-07.
+7. Configure DNS/TLS, then activate RPC and faucet ingress.
+8. Complete internal and external go/no-go verification before announcement.
 
-| Host Region | IP Address | Primary Infrastructure Role | Deployed Service Stack |
-|---|---|---|---|
-| **EU (Germany)** | `217.216.109.5` | Consensus Validator #1 + RPC + **NakharaX OS UI** | `nakharax-node` + `apps/os-dashboard` (Next.js `:3030`, Nginx → `app.nakharax.com`) |
-| **AU (Australia)**| `46.250.244.4` | Consensus Validator #2 + Public Services | `docker-compose.vps.yml`: Validator/RPC, Nginx, Explorer, API, Faucet, PostgreSQL, Redis |
-
-### Public Network Ingress Domains
-
-| Canonical Domain | Internal Service Target | Host Node |
-|---|---|---|
-| `app.nakharax.com` | `os-dashboard:3030` | EU Node (`217.216.109.5`) |
-| `rpc.nakharax.com` | `rpc-node:8545` | AU Node (`46.250.244.4`) |
-| `rpc-au.nakharax.com` | `rpc-node:8545` | AU Node (`46.250.244.4`) |
-| `explorer.nakharax.com` | `explorer-backend:3001` | AU Node (`46.250.244.4`) |
-| `api.nakharax.com` | `explorer-backend:3001` | AU Node (`46.250.244.4`) |
-| `faucet.nakharax.com` | `faucet:3002` | AU Node (`46.250.244.4`) |
-
----
-
-## 2. Pre-Flight Prerequisites
-
-- [ ] **Genesis Verification:** Enforce Chain ID `86137` across all node instances.
-- [ ] **Validator Keystores:** Ensure validator identity keys are installed on EU and AU nodes.
-- [ ] **Faucet Authority:** Define `FAUCET_PRIVATE_KEY` inside `.env` on the AU host.
-- [ ] **Firewall Ingress Rules:** Allow ports `22`, `8545`, and `30303` on both nodes; enable `80` and `443` on AU.
-
----
-
-## 3. Four-Week Rollout Schedule
-
-### Phase 1: Validator Consensus & Genesis Sync
-- Generate Genesis blueprint (`86137`), verify checksums, and distribute to `217.216.109.5` and `46.250.244.4`.
-- Establish P2P mesh and verify block height synchronization.
-
-### Phase 2: AU All-in-One Service Deployment
-- Deploy container stack on `46.250.244.4` via `docker-compose.vps.yml`.
-- Verify Faucet, Block Explorer, and Postgres database persistence.
-
-### Phase 3: TLS Termination & Web Ingress
-- Configure Certbot SSL certificates on Nginx ingress nodes.
-- Deploy Next.js OS Dashboard on EU node (`app.nakharax.com`).
-
-### Phase 4: Public Launch & Telemetry
-- Execute `verify-launch-ready.sh` suite to certify network health.
-
----
-
-*Certified & Maintained by Lead Systems Architect: August 2026*
+The executable source of truth is [1_SEP_GENESIS_RUNBOOK.md](../ops/1_SEP_GENESIS_RUNBOOK.md). Legacy dual-VPS and three-VPS instructions are retired.

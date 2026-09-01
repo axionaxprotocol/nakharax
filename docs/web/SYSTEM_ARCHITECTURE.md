@@ -97,7 +97,7 @@ Website manages blockchain connection directly, not via SDK.
 2. **Process**:
    - `Web3Context` calls `connectWallet()` from `lib/web3.ts`
    - Uses `window.ethereum` for account access
-   - Hardcoded RPCs: `https://nakharax.com/rpc/`, `http://217.216.109.5:8545`
+   - RPC ingress is configured through environment variables and verified HTTPS DNS.
 3. **Output**: App state (`account`, `balance`) updated via `zustand` or Context
 
 ---
@@ -125,7 +125,7 @@ Website manages blockchain connection directly, not via SDK.
    - Have `apps/web` use `@nakharax/sdk` instead of managing `ethers` directly
 
 2. **Environment Variables**:
-   - Move RPC URLs (e.g. `http://46.250.244.4:8545`) to `.env` or central config in SDK
+   - Keep RPC URLs in `.env` or central SDK config; never hardcode direct VPS IPs.
 
 3. **Complete SDK**:
    - Replace `// TODO` in `packages/sdk` with real smart contract calls
@@ -144,6 +144,5 @@ Website manages blockchain connection directly, not via SDK.
   - Primary connection point for frontend (e.g. `apps/web` fetches metrics)
 
 - **Validator Nodes**:
-  - `217.216.109.5` (EU Region)
-  - `46.250.244.4` (AU Region)
+  - Seven new VPS endpoints are pending provisioning and must be injected from environment/inventory.
   - **Role**: Consensus and block production (Blockchain Core)

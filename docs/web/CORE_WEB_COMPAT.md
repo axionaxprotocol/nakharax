@@ -4,21 +4,21 @@
 
 | Last updated | Core reference (tag or SHA)                                      | Web reference (tag or SHA) | Notes                                                                                                                                                             |
 | ------------ | ---------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-05-24   | monolith `master` — AU chain + EU OS deploy docs                 | `main` — docs sync         | **AU** `46.250.244.4`: rpc, explorer, api, faucet. **EU** `217.216.109.5`: validator + `apps/os-dashboard` (`app.nakharax.com`). |
-| 2026-04-24   | `28f42cf` — docs: enhance GENESIS_PUBLIC_TESTNET_PLAN + ulimits  | `main` — docs sync pass    | Testnet (chain_id 86137). Genesis SHA-256 `0xed1bdac7...`. Legacy 3-VPS plan (superseded by AU all-in-one). |
+| 2026-09-01   | Public Testnet Genesis (Chain ID 86137)                          | `main` — 7 VPS Topology    | Canonical 7 VPS topology: unassigned IPs until provisioning. Mainnet target: 1 Jan 2027. |
+| 2026-05-24   | Legacy AU chain + EU OS deploy docs (archival)                   | `main` — docs sync         | *Legacy reference (superseded by 7 VPS architecture)* |
+| 2026-04-24   | `28f42cf` — docs: enhance GENESIS_PUBLIC_TESTNET_PLAN + ulimits  | `main` — docs sync pass    | Testnet (chain_id 86137). Genesis SHA-256 `0xed1bdac7...`. Legacy 3-VPS plan (superseded). |
 
-## Genesis parameters (from core `28f42cf`)
+## Genesis parameters
 
 | Item                     | Value                                                                                    |
 | ------------------------ | ---------------------------------------------------------------------------------------- |
 | Chain ID                 | `86137` (`0x15079`)                                                                      |
 | Native token             | NAK (18 decimals)                                                                        |
-| Genesis file             | `core/tools/genesis.json`                                                                |
-| Genesis SHA-256          | `0xed1bdac7c278e5b4f58a1eceb7594a4238e39bb63e1018e38ec18a555c762b55`                     |
-| Block time               | 2 s (genesis)                                                                            |
-| Validator EU + OS       | `217.216.109.5` — RPC 8545, P2P 30303, `app.nakharax.com` → os-dashboard :3030          |
-| Validator AU + chain    | `46.250.244.4` — RPC 8545, P2P 30303, rpc/explorer/api/faucet via compose              |
-| OS deploy               | `docs/web/VPS_EU_OS_DASHBOARD.md`                                                        |
-| Chain deploy (AU)       | `ops/deploy/VPS_AU_ALL_IN_ONE.md`                                                        |
+| Genesis file             | `services/core/core/tools/genesis.json`                                                  |
+| Block time               | 3 s (genesis)                                                                            |
+| Validator Node 01        | VPS-02 (`0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326`)                                    |
+| Validator Node 02        | VPS-03 (`0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb`)                                    |
+| OS Web Terminal          | VPS-05 (`app.nakharax.com`)                                                              |
+| Public RPC Primary       | VPS-04 (`rpc.nakharax.com`)                                                              |
 
 See [SOLO_CORE_WEB_SYNC.md](SOLO_CORE_WEB_SYNC.md) for the checklist and [PARAMETERS_SYNC.md](../packages/blockchain-utils/PARAMETERS_SYNC.md) for the field map.

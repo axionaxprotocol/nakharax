@@ -72,7 +72,7 @@ The NakharaX Public Testnet operates a high-resilience **3-Continent Global Quor
 
 ---
 
-## � Empirical Benchmarks & Hardware SLAs
+## 📊 Empirical Benchmarks & Hardware SLAs
 
 All metrics are derived directly from reproducible test suites and empirical telemetry:
 

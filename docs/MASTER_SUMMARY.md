@@ -135,8 +135,8 @@ Planned AI-assisted security modules for Sentinel nodes. Currently at design sta
 
 | Phase       | Name            | Timeline | Key Goals                                                           |
 | ----------- | --------------- | -------- | ------------------------------------------------------------------- |
-| **Phase 1** | The Incarnation | Q1 2026  | Public Testnet, Monolith Scout/Vanguard sales, Geo-Hierarchy launch |
-| **Phase 2** | Genesis         | Q3 2026  | Mainnet launch, NAK listing, live Marketplace                       |
+| **Phase 1** | The Incarnation | Sep 2026 | Public Testnet genesis artifacts and seven-new-VPS rollout          |
+| **Phase 2** | Genesis         | 1 Jan 2027 | Mainnet target, NAK listing, live Marketplace                     |
 | **Phase 3** | Evolution       | 2027     | Enterprise API, open compute marketplace                            |
 | **Phase 4** | Expansion       | 2028+    | Hardware acceleration R&D, multi-region federation                  |
 

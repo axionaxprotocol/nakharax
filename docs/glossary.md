@@ -199,7 +199,7 @@ Locking NAK tokens to participate in consensus. Min: 10,000 NAK (mainnet), 1,000
 
 ### Testnet
 **Type**: Network  
-Public testing network (Chain ID 86137). Current validators: AU (46.250.244.4) + ES (217.216.109.5).
+Public testing network (Chain ID 86137). The genesis contains two validator addresses; their new VPS endpoints are pending provisioning.
 
 ### TPS (Transactions Per Second)
 **Type**: Performance Metric  

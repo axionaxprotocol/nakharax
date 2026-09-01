@@ -415,9 +415,9 @@ This core implementation is part of the complete nakharax Protocol ecosystem:
 | --------------------- | --------- | -------------- | ------------------------------------ |
 | **v1.6 Multi-Lang**   | Q4'25     | ✅ Complete    | Rust core, Python ML, TypeScript SDK |
 | **v1.7 Network**      | Q1'26     | 🟡 In Progress | libp2p, RocksDB state, JSON-RPC      |
-| **v1.8 Testnet**      | Q2'26     | 📅 Planned     | Full testnet deployment, integration |
-| **v1.9 Mainnet Prep** | Q3'26     | 📅 Planned     | Security audit, performance tuning   |
-| **v2.0 Mainnet**      | Q4'26     | 📅 Planned     | Public launch, production ready      |
+| **v1.8 Testnet**      | Sep'26    | 🟡 Infra pending | Genesis artifacts and seven-new-VPS rollout |
+| **v1.9 Mainnet Prep** | Sep-Dec'26 | 📅 Planned    | Security audit, performance tuning   |
+| **v2.0 Mainnet**      | 1 Jan'27  | 📅 Planned     | Public launch, production ready      |
 | **Guardian Nodes**    | 2028-2029 | 🔬 Research    | Space-based validator nodes          |
 
 📖 **[Full Roadmap →](docs/ROADMAP.md)**
@@ -496,22 +496,23 @@ This core implementation is part of the complete nakharax Protocol ecosystem:
 - Bridge development
 - Ecosystem partnerships
 
-### Phase 5: Mainnet Preparation (Q3 2026)
+### Phase 5: Mainnet Preparation (September-December 2026)
 - Final security audits
 - Token generation event (TGE)
 - Mainnet genesis ceremony
 - Validator setup & delegation
 - Exchange listings preparation
 
-### Phase 6: Mainnet Launch 🚀 (Target: Q4 2026)
+### Phase 6: Mainnet Launch 🚀 (Target: 1 January 2027)
 - Mainnet activation (Chain ID: 86150)
 - Initial validator set
 - DAO governance activation
 - Compute marketplace launch
 - Ecosystem grants program
 
-**Current Status**: Phase 2 (Pre-Testnet) - Security & Testing Focus  
-**Next Milestone**: Public Testnet Launch Q1 2026
+**Current Status**: Public Testnet genesis artifacts ready; domain and seven new VPS instances pending
+
+**Next Milestone**: Provision the new Public Testnet infrastructure
 
 ### Environment & Deployment
 
@@ -702,9 +703,9 @@ Built with 💜 by the nakharax Protocol community
 
 ---
 
-**⚠️ Development Notice**: nakharax Protocol v1.6 core is complete. Network layer
-(v1.7) in progress. Testnet launch planned Q2 2026. Mainnet Q4 2026.
+**⚠️ Development Notice**: NakharaX Public Testnet genesis artifacts are prepared,
+but public infrastructure is pending. Mainnet target: 1 January 2027.
 
 Made with 💜 by the nakharax Protocol Team
 
-**Last Updated**: November 7, 2025
+**Last Updated**: September 1, 2026

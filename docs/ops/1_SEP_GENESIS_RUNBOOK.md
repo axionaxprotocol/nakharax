@@ -36,7 +36,7 @@ Source code และ genesis ต้องมาจาก launch commit เด�
 | Artifact | Path | Release-candidate value |
 |---|---|---|
 | Deployment genesis | `services/core/core/tools/genesis.json` | SHA-256 `AFD34AFD2D22A5D9C963B2C481C028399AF6F2DF602F39248BD044F30762A0AA` |
-| Native genesis manifest | `services/core/core/tools/genesis_canonical.json` | SHA-256 `C9E03AB7003AD73E88AFA2ECC446A752C147D6CA009EB9DB0BE9FF62BEFE2BAE` |
+| Native genesis manifest | `services/core/core/tools/genesis_canonical.json` | SHA-256 `D2123DE821980AD617D6EFC007EDAB7E5DDC386140A5449118223F7BE4FA1D5B` |
 | Genesis block hash | native manifest | `0x6e93b29d01abe7ea88ab5d9890b9b4b0a682dcad782a4d7cf43076a29df4eafe` |
 | Genesis state root | native manifest | `0x0f5780715afc3c02910afb737a54270a50d20336608bf740f5f0686f2bbbb300` |
 
@@ -387,6 +387,8 @@ curl -fsS -X POST "https://rpc.<DOMAIN>" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' | jq -e '.result == "0x15079"'
 ```
 
+บน VPS-05 ใช้ Caddy configuration แบบเดียวกันแต่เปลี่ยน hostname เป็น `rpc-backup.<DOMAIN>` และ reverse proxy ไป `127.0.0.1:8545` อย่าใส่ secondary endpoint เป็น client default จน node sync ถึง tip และผ่าน soak test อย่างน้อย 24 ชั่วโมง
+
 ## 14. Faucet บน VPS-06
 
 Build และติดตั้ง:
@@ -481,6 +483,15 @@ Validate และ reload:
 sudo caddy validate --config /etc/caddy/Caddyfile
 sudo systemctl reload caddy
 ```
+
+### Monitoring บน VPS-07
+
+ให้ VPS-07 รัน observer node ก่อน แล้วติดตั้ง monitoring stack ที่เลือกภายหลังโดยยึดกฎต่อไปนี้:
+
+- scrape node health/metrics ผ่าน private network, SSH tunnel หรือ authenticated overlay เท่านั้น
+- ห้ามเปิด Grafana, Prometheus หรือ node exporter สู่ public internet
+- alert อย่างน้อยเมื่อ block ไม่เดิน, peer เป็นศูนย์, process restart loop, disk เหลือน้อยกว่า 20%, memory pressure และ TLS ใกล้หมดอายุ
+- ทดสอบ alert delivery จริงก่อนเปิด public announcement
 
 ## 15. Explorer และ frontend
 

@@ -101,8 +101,8 @@ curl -X POST http://localhost:8545 \
 ### Method 2: Direct from Validator
 
 Contact testnet validators for development allocation:
-- **AU Validator**: `46.250.244.4:8545`
-- **ES Validator**: `217.216.109.5:8545`
+- **Validator-01**: new VPS-02 endpoint pending
+- **Validator-02**: new VPS-03 endpoint pending
 
 ### Method 3: Block Rewards
 

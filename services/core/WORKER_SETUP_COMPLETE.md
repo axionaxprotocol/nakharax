@@ -71,7 +71,7 @@ vram = 4
 [network]
 # Connect to your RPC node
 rpc_url = "https://rpc.nakharax.com"
-ws_url = "ws://217.216.109.5:8546"
+ws_url = "wss://rpc.<DOMAIN>"
 
 [performance]
 # Conservative for CPU-only
@@ -234,7 +234,7 @@ D:\nakharax-worker\          # Worker data (create this)
 
 **Soon (when ready):**
 4. Run training test
-5. Connect to RPC node (217.216.109.5)
+5. Connect to the verified new RPC domain
 6. Submit test job to network
 
 **Future:**

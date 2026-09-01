@@ -90,8 +90,7 @@ node:
   p2p:
     listen_addr: "/ip4/0.0.0.0/tcp/30333"
     bootnodes:
-      - "/ip4/217.216.109.5/tcp/30333/p2p/QmBootnode1"
-      - "/ip4/46.250.244.4/tcp/30333/p2p/QmBootnode2"
+      - "/ip4/<NEW_SEED_IP>/tcp/30303/p2p/<REAL_NEW_SEED_PEER_ID>"
   
   rpc:
     enabled: true

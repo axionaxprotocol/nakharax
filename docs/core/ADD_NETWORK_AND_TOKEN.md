@@ -11,7 +11,7 @@ How to add **Nakharax Testnet** and the **NAK** token in MetaMask, Rabby, Coinba
 | Item | Value |
 |------|-------|
 | **Network name** | Nakharax Testnet |
-| **RPC URL** | `https://rpc.nakharax.com` (or `http://217.216.109.5:8545` / `http://46.250.244.4:8545`) |
+| **RPC URL** | `https://rpc.<DOMAIN>` after the new infrastructure passes go/no-go |
 | **Chain ID** | `86137` |
 | **Currency symbol** | NAK |
 | **Decimals** | 18 |
@@ -103,7 +103,7 @@ A successful response includes `"success": true` and `tx_hash`; the NAK balance 
 | **Invalid address** | Must be EVM format: `0x` + 40 hex characters (42 total) — copy directly from MetaMask |
 | **24h cooldown** | Faucet limits one request per address per 24h — wait or use another address |
 | **Faucet out of funds** | Contact the team/community to refill the Faucet |
-| **RPC mismatch** | MetaMask must use **Nakharax Testnet** (Chain ID 86137) and the RPC specified by the team (e.g. `http://217.216.109.5:8545`) |
+| **RPC mismatch** | MetaMask must use **NakharaX Public Testnet** (Chain ID 86137) and the verified HTTPS RPC announced by the team. |
 
 ---
 
