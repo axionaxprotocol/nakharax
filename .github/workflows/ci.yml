@@ -1,0 +1,137 @@
+name: "NakharaX Enterprise CI/CD Pipeline"
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 1. Quality & Lint Gate
+  lint-and-typecheck:
+    name: 🔍 Lint & Static Analysis Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js & pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.32.1
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Install Workspace Dependencies
+        run: pnpm install
+
+      - name: SDK Typecheck
+        run: pnpm --filter @nakharax/sdk typecheck
+
+      - name: Rust Code Formatting Check
+        run: |
+          cd services/core/core
+          cargo fmt --all -- --check
+
+      - name: Rust Clippy Strict Lint Gate (-D warnings)
+        run: |
+          cd services/core/core
+          cargo clippy --workspace --all-targets -- -D warnings
+
+  # 2. Smart Contracts Gate
+  smart-contracts:
+    name: 📜 Smart Contracts Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js & pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.32.1
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Compile Hardhat Contracts
+        run: pnpm --filter @nakharax/contracts compile
+
+      - name: Run Hardhat Unit & Fuzz Tests
+        run: pnpm --filter @nakharax/contracts test
+
+  # 3. Layer-1 Rust Core Gate
+  rust-core-tests:
+    name: ⚡ Layer-1 Consensus & Rust Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: services/core/core
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Rust Workspace Tests (320+ Tests)
+        run: |
+          cd services/core/core
+          cargo test --workspace --all-features
+
+      - name: Verify Genesis Manifest & Tokenomics Invariants
+        run: |
+          python services/core/core/tools/create_genesis.py --verify
+          cd services/core/core
+          cargo run -p genesis --bin genesis-export -- tools/genesis_canonical.json
+
+  # 4. Web OS Dashboard Production Build Gate
+  web-dashboard-build:
+    name: 🖥️ Next.js Web OS Dashboard Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js & pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.32.1
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Next.js Dashboard
+        run: pnpm --filter nakharax-os-dashboard build
