@@ -98,11 +98,11 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     endpoint: "127.0.0.1:30303 (DirectML GPU)",
     role: "DeAI GPU Worker",
     hardware: "AMD Ryzen 5 4500 · 16 GB RAM · RX 560 (DirectML)",
-    tps: 52.4,
-    status: "ACTIVE_LIVE",
-    latencyMs: 1,
+    tps: 0.0,
+    status: "STANDBY_BLUEPRINT",
+    latencyMs: 0,
     blockHeight: 300,
-    hostingTier: "Tier 2: DeAI Compute Worker Rig",
+    hostingTier: "Tier 2: DeAI Compute Worker Rig (Awaiting Connection)",
   },
   {
     id: "node-pc02-chiangmai",
@@ -111,11 +111,11 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     endpoint: "127.0.0.1:30303 (PyTorch ZK)",
     role: "Hydra Sentinel",
     hardware: "8 Core CPU · 16 GB RAM · PyTorch Swarm",
-    tps: 24.8,
-    status: "ACTIVE_LIVE",
-    latencyMs: 5,
+    tps: 0.0,
+    status: "STANDBY_BLUEPRINT",
+    latencyMs: 0,
     blockHeight: 300,
-    hostingTier: "Tier 2: DeAI ZK Proof Generation Swarm",
+    hostingTier: "Tier 2: DeAI ZK Proof Generation Swarm (Awaiting Connection)",
   },
 ];
 
@@ -360,9 +360,7 @@ export default function NodesPage() {
                 >
                   {node.status === "ACTIVE_LIVE"
                     ? "🟢 LIVE ACTIVE HOST"
-                    : node.id.includes("0xf39fd") || node.name.includes("PC-2")
-                      ? "🛑 OFFLINE (SLEEPING)"
-                      : "🟡 [MOCK UP - COMING SOON]"}
+                    : "🟡 STANDBY / NOT CONNECTED"}
                 </StatusPill>
               </div>
 
@@ -401,27 +399,23 @@ export default function NodesPage() {
               ? dhtPeers
               : [
                 {
-                  peer_id: "12D3KooWStZ9M8...Frankfurt-Val1",
-                  addresses: ["/dns4/eu-val1.nakharax.net/tcp/30303", "/dns4/eu-val1.nakharax.net/udp/30303/quic-v1"],
+                  peer_id: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M",
+                  addresses: ["/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M"],
                 },
                 {
-                  peer_id: "12D3KooWKn7P4...Sydney-Val2",
-                  addresses: ["/dns4/au-val2.nakharax.net/tcp/30303", "/dns4/au-val2.nakharax.net/udp/30303/quic-v1"],
+                  peer_id: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE",
+                  addresses: ["/ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE"],
                 },
                 {
-                  peer_id: "12D3KooWVa8B2...Tokyo-WorkerGPU",
-                  addresses: ["/dns4/jp-gpu1.nakharax.net/tcp/30303"],
-                },
-                {
-                  peer_id: "12D3KooWRx5T1...Virginia-Sentinel",
-                  addresses: ["/dns4/us-sentinel.nakharax.net/tcp/30303"],
+                  peer_id: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK",
+                  addresses: ["/ip4/217.216.39.77/tcp/30303/p2p/12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK"],
                 },
               ]
             ).map((peer, idx) => (
               <div key={idx} className="rounded-xl border border-white/10 bg-slate-950 p-3 text-xs font-mono">
                 <div className="flex items-center justify-between text-cyan-300 font-bold">
-                  <span>Peer #{idx + 1}: {peer.peer_id}</span>
-                  <span className="text-emerald-400 text-[10px]">CONNECTED</span>
+                  <span>Peer #{idx + 1}: {peer.peer_id.slice(0, 16)}…</span>
+                  <span className="text-emerald-400 text-[10px]">BOOTSTRAP</span>
                 </div>
                 <div className="mt-1.5 space-y-0.5 text-[10.5px] text-slate-400">
                   {peer.addresses.map((addr, aIdx) => (

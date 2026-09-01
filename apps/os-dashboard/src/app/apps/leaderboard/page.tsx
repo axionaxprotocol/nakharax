@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   Trophy,
@@ -44,100 +44,44 @@ interface Contributor {
 const INITIAL_LEADERBOARD: Contributor[] = [
   {
     rank: 1,
-    id: "node-virginia-01",
-    name: "Virginia PyTorch Rig (US-03)",
-    category: "GPU_MINER",
-    region: "Virginia, USA",
-    hardware: "NVIDIA A40 (48GB VRAM)",
-    computePower: "149.7 TFLOPS",
-    proofsSolved: 48920,
-    points: 984500,
-    rewardsTnak: 4892.0,
-    uptime: "99.98%",
-    status: "ACTIVE",
-  },
-  {
-    rank: 2,
-    id: "node-tokyo-02",
-    name: "Tokyo Matrix Accelerator (JP-04)",
-    category: "GPU_MINER",
-    region: "Tokyo, Japan",
-    hardware: "NVIDIA RTX 4090 (24GB)",
-    computePower: "82.6 TFLOPS",
-    proofsSolved: 39410,
-    points: 792200,
-    rewardsTnak: 3941.0,
-    uptime: "99.95%",
-    status: "ACTIVE",
-  },
-  {
-    rank: 3,
     id: "node-frankfurt-val",
     name: "Frankfurt Genesis L1 (EU-01)",
     category: "VALIDATOR",
     region: "Frankfurt, Germany",
     hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
     computePower: "BFT Consensus Quorum",
-    proofsSolved: 31200,
-    points: 624000,
-    rewardsTnak: 3120.0,
-    uptime: "100.0%",
+    proofsSolved: 0,
+    points: 0,
+    rewardsTnak: 0.0,
+    uptime: "—",
     status: "ACTIVE",
   },
   {
-    rank: 4,
-    id: "node-london-auditor",
-    name: "Hydra ZK Auditor (UK-06)",
-    category: "GPU_MINER",
-    region: "London, UK",
-    hardware: "Dedicated ZK Auditor (36GB)",
-    computePower: "64.2 TFLOPS",
-    proofsSolved: 28450,
-    points: 571000,
-    rewardsTnak: 2845.0,
-    uptime: "99.92%",
+    rank: 2,
+    id: "node-virginia-val",
+    name: "Virginia Genesis Validator 01 (US-02)",
+    category: "VALIDATOR",
+    region: "Virginia, USA",
+    hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
+    computePower: "BFT Consensus Quorum",
+    proofsSolved: 0,
+    points: 0,
+    rewardsTnak: 0.0,
+    uptime: "—",
     status: "ACTIVE",
   },
   {
-    rank: 5,
+    rank: 3,
     id: "node-singapore-val",
-    name: "Singapore Genesis L1 (SG-05)",
+    name: "Singapore Genesis Validator 02 (SG-03)",
     category: "VALIDATOR",
     region: "Singapore, SG",
     hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
     computePower: "BFT Consensus Quorum",
-    proofsSolved: 24800,
-    points: 496000,
-    rewardsTnak: 2480.0,
-    uptime: "99.89%",
-    status: "ACTIVE",
-  },
-  {
-    rank: 6,
-    id: "node-local-host",
-    name: "Localhost Sovereign Host (TH-07)",
-    category: "GPU_MINER",
-    region: "Local Rig",
-    hardware: "Local Host CPU/GPU",
-    computePower: "36.4 TFLOPS",
-    proofsSolved: 19200,
-    points: 384000,
-    rewardsTnak: 1920.0,
-    uptime: "100.0%",
-    status: "ACTIVE",
-  },
-  {
-    rank: 7,
-    id: "node-sydney-hub",
-    name: "Sydney Ingress & Faucet (AU-02)",
-    category: "VALIDATOR",
-    region: "Sydney, Australia",
-    hardware: "4 vCPU · 8GB RAM · 150GB SSD",
-    computePower: "Public RPC Gateway",
-    proofsSolved: 16500,
-    points: 330000,
-    rewardsTnak: 1650.0,
-    uptime: "99.94%",
+    proofsSolved: 0,
+    points: 0,
+    rewardsTnak: 0.0,
+    uptime: "—",
     status: "ACTIVE",
   },
 ];
@@ -146,27 +90,15 @@ export default function LeaderboardPage() {
   const [filter, setFilter] = useState<"ALL" | "GPU_MINER" | "VALIDATOR">("ALL");
   const [leaderboard, setLeaderboard] = useState<Contributor[]>(INITIAL_LEADERBOARD);
 
-  // Dynamic live score increment simulation
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLeaderboard((prev) =>
-        prev.map((c) => ({
-          ...c,
-          proofsSolved: c.proofsSolved + (c.category === "GPU_MINER" ? Math.floor(Math.random() * 3) + 1 : 1),
-          points: c.points + (c.category === "GPU_MINER" ? 25 : 10),
-          rewardsTnak: +(c.rewardsTnak + (c.category === "GPU_MINER" ? 0.25 : 0.1)).toFixed(2),
-        }))
-      );
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
+  // Leaderboard reflects the live Genesis network topology (3 VPS validators).
+  // No fabricated live score simulation — values are shown as reported by the network.
 
   const filteredList = leaderboard.filter((item) => {
     if (filter === "ALL") return true;
     return item.category === filter;
   });
 
-  const totalCompute = "332.9 TFLOPS";
+  const totalCompute = "0 TFLOPS";
   const totalProofs = leaderboard.reduce((acc, c) => acc + c.proofsSolved, 0);
   const totalRewards = leaderboard.reduce((acc, c) => acc + c.rewardsTnak, 0);
 
@@ -242,31 +174,28 @@ export default function LeaderboardPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilter("ALL")}
-            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
-              filter === "ALL"
-                ? "bg-neutral-800 text-white border border-neutral-700 shadow-sm"
-                : "text-neutral-400 hover:text-white"
-            }`}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${filter === "ALL"
+              ? "bg-neutral-800 text-white border border-neutral-700 shadow-sm"
+              : "text-neutral-400 hover:text-white"
+              }`}
           >
             All Contributors ({leaderboard.length})
           </button>
           <button
             onClick={() => setFilter("GPU_MINER")}
-            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
-              filter === "GPU_MINER"
-                ? "bg-emerald-950 text-emerald-300 border border-emerald-800/50 shadow-sm"
-                : "text-neutral-400 hover:text-white"
-            }`}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${filter === "GPU_MINER"
+              ? "bg-emerald-950 text-emerald-300 border border-emerald-800/50 shadow-sm"
+              : "text-neutral-400 hover:text-white"
+              }`}
           >
             DeAI GPU Miners (4)
           </button>
           <button
             onClick={() => setFilter("VALIDATOR")}
-            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
-              filter === "VALIDATOR"
-                ? "bg-cyan-950 text-cyan-300 border border-cyan-800/50 shadow-sm"
-                : "text-neutral-400 hover:text-white"
-            }`}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${filter === "VALIDATOR"
+              ? "bg-cyan-950 text-cyan-300 border border-cyan-800/50 shadow-sm"
+              : "text-neutral-400 hover:text-white"
+              }`}
           >
             BFT Validators (3)
           </button>

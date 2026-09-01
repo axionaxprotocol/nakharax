@@ -31,7 +31,6 @@ import {
   Sparkles,
   Square,
   Terminal,
-  Thermometer,
   Zap,
 } from "lucide-react";
 
@@ -55,14 +54,11 @@ export default function WorkerManagerPage() {
   // Node Overload Protection & Intensity Profile
   const [intensityMode, setIntensityMode] = useState<"eco" | "balanced" | "max">("balanced");
   const [isThermalProtected, setIsThermalProtected] = useState(true);
-  const [simulatedGpuTemp, setSimulatedGpuTemp] = useState(62);
-  const [vramUsageMb, setVramUsageMb] = useState(3420);
 
   // In-Browser Mining Engine State
   const [isBrowserMining, setIsBrowserMining] = useState(false);
   const [browserHashrate, setBrowserHashrate] = useState(0);
   const [browserJobsCompleted, setBrowserJobsCompleted] = useState(0);
-  const [browserEarnedNak, setBrowserEarnedNak] = useState(0);
   const [browserLogs, setBrowserLogs] = useState<string[]>([]);
   const miningLoopRef = useRef<boolean>(false);
   const intensityRef = useRef<"eco" | "balanced" | "max">("balanced");
@@ -175,7 +171,6 @@ export default function WorkerManagerPage() {
 
     // Continuous Mining Loop with Anti-Overload Throttling
     let localJobs = browserJobsCompleted;
-    let localRewards = browserEarnedNak;
     let batchCounter = 0;
 
     const runBatch = async () => {
@@ -186,8 +181,7 @@ export default function WorkerManagerPage() {
 
       // Duty Cycle Intermission: Take a 1.2s breather every 35 batches in Balanced/Eco to cool VRM/GPU
       if (batchCounter % 35 === 0 && currentMode !== "max") {
-        addLog(`🛡️ [Governor Cooldown] Duty-cycle breathing pause (1.2s) - Temperature cooled to 61°C`);
-        setSimulatedGpuTemp(61);
+        addLog(`🛡️ [Governor Cooldown] Duty-cycle breathing pause (1.2s)`);
         await new Promise(r => setTimeout(r, 1200));
       }
 
@@ -209,36 +203,14 @@ export default function WorkerManagerPage() {
 
       const elapsed = Math.max(1, performance.now() - t0);
       const mops = Math.round((numElements * 50 / (elapsed / 1000)) / 1000000);
-      const reward = parseFloat((Math.random() * 0.25 + 0.15).toFixed(4));
 
       localJobs++;
-      localRewards += reward;
       setBrowserJobsCompleted(localJobs);
-      setBrowserEarnedNak(parseFloat(localRewards.toFixed(4)));
       setBrowserHashrate(mops);
-
-      // Update simulated hardware metrics
-      const targetTemp = currentMode === "eco" ? 58 : currentMode === "balanced" ? 64 : 74;
-      setSimulatedGpuTemp(targetTemp + (localJobs % 3));
-      setVramUsageMb(3400 + ((localJobs * 17) % 600));
 
       const executionProofHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(16).padStart(2, '0')).join('')}`;
 
-      // Claim reward on-chain
-      try {
-        await fetch("/api/rpc", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            method: "nak_harvestRewards",
-            params: [workerAddress, reward.toString()],
-            id: Date.now(),
-          }),
-        });
-      } catch { }
-
-      addLog(`[JOB #${localJobs}] DeAI-DeepSeek-R1 | Time: ${elapsed.toFixed(1)}ms | Rate: ${mops} M-Ops/s | +${reward} tNAK | Proof: ${executionProofHash}...`);
+      addLog(`[JOB #${localJobs}] DeAI-DeepSeek-R1 | Time: ${elapsed.toFixed(1)}ms | Rate: ${mops} M-Ops/s | Proof: ${executionProofHash}...`);
 
       if (miningLoopRef.current) {
         // Sleep delay governed by Intensity Profile
@@ -253,7 +225,6 @@ export default function WorkerManagerPage() {
   const stopBrowserMining = () => {
     setIsBrowserMining(false);
     miningLoopRef.current = false;
-    setSimulatedGpuTemp(48);
     addLog(`🛑 [WebGPU Engine] In-Browser worker halted. Hardware in idle state.`);
   };
 
@@ -308,12 +279,12 @@ export default function WorkerManagerPage() {
           </div>
           <div className="flex items-center gap-2 font-mono text-xs">
             <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 border border-white/10 text-slate-300">
-              <Thermometer size={13} className={simulatedGpuTemp > 75 ? "text-amber-400" : "text-emerald-400"} />
-              GPU: <strong className="text-white">{simulatedGpuTemp}°C</strong> (Safe)
+              <Gauge size={13} className="text-emerald-400" />
+              Network Hashrate: <strong className="text-white">{totalNetworkHashrateMops.toLocaleString()} M-Ops/s</strong>
             </span>
             <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-black/60 border border-white/10 text-slate-300">
-              <HardDrive size={13} className="text-cyan-400" />
-              VRAM: <strong className="text-white">{(vramUsageMb / 1024).toFixed(1)} / {vramAllocated} GB</strong>
+              <Server size={13} className="text-cyan-400" />
+              Workers: <strong className="text-white">{totalWorkersCount} Online</strong>
             </span>
           </div>
         </div>
@@ -324,8 +295,8 @@ export default function WorkerManagerPage() {
         <button
           onClick={() => setActiveTab("browser")}
           className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${activeTab === "browser"
-              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-500/10"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
+            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-500/10"
+            : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
         >
           <Globe size={14} />
@@ -334,8 +305,8 @@ export default function WorkerManagerPage() {
         <button
           onClick={() => setActiveTab("cli")}
           className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${activeTab === "cli"
-              ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-500/10"
-              : "text-slate-400 hover:text-white hover:bg-white/5"
+            ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-500/10"
+            : "text-slate-400 hover:text-white hover:bg-white/5"
             }`}
         >
           <Terminal size={14} />
@@ -368,7 +339,7 @@ export default function WorkerManagerPage() {
         />
         <StatCard
           label="Total Rewards Claimed"
-          value={isBrowserMining ? `+${browserEarnedNak.toFixed(4)} tNAK` : `+${liveWorkers.reduce((acc, w) => acc + (Number(w.cumulativeRewards) || 0), 0).toFixed(4)} tNAK`}
+          value={`+${liveWorkers.reduce((acc, w) => acc + (Number(w.cumulativeRewards) || 0), 0).toFixed(4)} tNAK`}
           hint="Settled directly on L1 Ledger"
           icon={<Zap size={18} />}
           tone="warn"
@@ -421,8 +392,8 @@ export default function WorkerManagerPage() {
                 <button
                   onClick={() => setIntensityMode("eco")}
                   className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "eco"
-                      ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold shadow"
-                      : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
+                    ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold shadow"
+                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
                     }`}
                 >
                   <Leaf size={14} />
@@ -432,8 +403,8 @@ export default function WorkerManagerPage() {
                 <button
                   onClick={() => setIntensityMode("balanced")}
                   className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "balanced"
-                      ? "border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold shadow"
-                      : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
+                    ? "border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold shadow"
+                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
                     }`}
                 >
                   <Gauge size={14} />
@@ -443,8 +414,8 @@ export default function WorkerManagerPage() {
                 <button
                   onClick={() => setIntensityMode("max")}
                   className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "max"
-                      ? "border-amber-400 bg-amber-500/20 text-amber-300 font-bold shadow"
-                      : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
+                    ? "border-amber-400 bg-amber-500/20 text-amber-300 font-bold shadow"
+                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
                     }`}
                 >
                   <Flame size={14} />

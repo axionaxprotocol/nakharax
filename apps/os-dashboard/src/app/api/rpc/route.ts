@@ -5,7 +5,10 @@ export const dynamic = "force-dynamic";
 const LOCAL_RPC = "http://127.0.0.1:8545";
 const LIVE_GATEWAY_RPC = "http://158.220.127.24";
 const DEFAULT_RPC = process.env.RPC_URL || process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com";
-const ENABLE_MOCK_FALLBACK = process.env.ENABLE_DEV_MOCK_FALLBACK === "true" || process.env.NODE_ENV === "development";
+// Mock fallback is STRICTLY limited to local development. It is never active in
+// production, regardless of any environment variable, so the live dashboard can
+// never serve fabricated RPC data to real users.
+const ENABLE_MOCK_FALLBACK = process.env.NODE_ENV === "development";
 
 /**
  * Strict Method Allowlist for public Ingress RPC Gateway

@@ -61,35 +61,35 @@ const EVOLUTION_TIERS: {
   newSkill: string;
   notes: string;
 }[] = [
-  {
-    accuracy: 76.8,
-    latencyMs: 82,
-    loss: 0.491,
-    newSkill: "mcp-ast-bytecode-verifier",
-    notes: "Gen 1 Mutation: Autonomous AST parser synthesis applied. Eliminated syntax parsing bottlenecks.",
-  },
-  {
-    accuracy: 88.5,
-    latencyMs: 38,
-    loss: 0.215,
-    newSkill: "mcp-ties-adapter-merging",
-    notes: "Gen 2 Mutation: In-memory TIES LoRA delta tensor merged into attention heads. Reasoning depth quadrupled.",
-  },
-  {
-    accuracy: 96.2,
-    latencyMs: 14,
-    loss: 0.068,
-    newSkill: "mcp-zk-stark-prover",
-    notes: "Gen 3 Mutation: Sub-second STARK FRI polynomial proof generator unlocked. Mathematical formal verification 100%.",
-  },
-  {
-    accuracy: 99.4,
-    latencyMs: 4.8,
-    loss: 0.012,
-    newSkill: "mcp-submillisecond-circuit-breaker",
-    notes: "Gen 4 Singularity: Sub-5ms quantum execution tier achieved. Invariant safety guaranteed with zero false positives.",
-  },
-];
+    {
+      accuracy: 76.8,
+      latencyMs: 82,
+      loss: 0.491,
+      newSkill: "mcp-ast-bytecode-verifier",
+      notes: "Gen 1 Mutation: Autonomous AST parser synthesis applied. Eliminated syntax parsing bottlenecks.",
+    },
+    {
+      accuracy: 88.5,
+      latencyMs: 38,
+      loss: 0.215,
+      newSkill: "mcp-ties-adapter-merging",
+      notes: "Gen 2 Mutation: In-memory TIES LoRA delta tensor merged into attention heads. Reasoning depth quadrupled.",
+    },
+    {
+      accuracy: 96.2,
+      latencyMs: 14,
+      loss: 0.068,
+      newSkill: "mcp-zk-stark-prover",
+      notes: "Gen 3 Mutation: Sub-second STARK FRI polynomial proof generator unlocked. Mathematical formal verification 100%.",
+    },
+    {
+      accuracy: 99.4,
+      latencyMs: 4.8,
+      loss: 0.012,
+      newSkill: "mcp-submillisecond-circuit-breaker",
+      notes: "Gen 4 Singularity: Sub-5ms quantum execution tier achieved. Invariant safety guaranteed with zero false positives.",
+    },
+  ];
 
 export function SelfEvolvingAgentSandbox() {
   const [state, setState] = useState(INITIAL_GENESIS_STATE);
@@ -109,26 +109,13 @@ export function SelfEvolvingAgentSandbox() {
     setEvolutionLog("🧬 Initializing Recursive Self-Evolution Loop...");
 
     try {
-      // Step 1: Stress test & error backpropagation
-      await new Promise((r) => setTimeout(r, 600));
-      setEvolutionLog("⚡ Phase 1: Running 50 stochastic stress-tests & analyzing error gradients...");
+      // This is a local simulation sandbox. The evolution metrics below are
+      // illustrative placeholders, not the result of real on-chain training.
+      setEvolutionLog(`🧬 Simulating Generation ${nextGenIndex + 1} evolution (${targetTier.newSkill})...`);
 
-      // Step 2: Autonomous Chain-of-Thought Reflection
-      await new Promise((r) => setTimeout(r, 700));
-      setEvolutionLog("🧠 Phase 2: Synthesizing meta-reasoning heuristics & computing weight delta ΔW...");
+      const proofHash = `0x${Array.from({ length: 40 }, () => "0").join("")}sandbox-sim`;
 
-      // Step 3: LoRA Weight Fusion
-      await new Promise((r) => setTimeout(r, 650));
-      setEvolutionLog(`🧬 Phase 3: Merging '${targetTier.newSkill}' adapter into VRAM via TIES algorithm...`);
-
-      // Step 4: On-Chain PoPC Proof of Evolution
-      await new Promise((r) => setTimeout(r, 600));
-      const proofBytes = Array.from(crypto.getRandomValues(new Uint8Array(20)))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-      const proofHash = `0x${proofBytes}`;
-
-      const evoPayload = encodeTxMemo(`evolution_gen:${nextGenIndex + 1}:${proofBytes}`);
+      const evoPayload = encodeTxMemo(`evolution_gen:${nextGenIndex + 1}:sandbox-sim`);
       await broadcastRawTransaction({
         to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         value: BigInt(0),
@@ -158,12 +145,12 @@ export function SelfEvolvingAgentSandbox() {
 
       setEvolutionLog(
         `✅ [EVOLUTION SUCCESSFUL: GENERATION ${nextGenIndex + 1}]\n` +
-          `• Accuracy: ${state.accuracy}% ➔ ${targetTier.accuracy}% (+${(targetTier.accuracy - state.accuracy).toFixed(1)}%)\n` +
-          `• Latency: ${state.latencyMs}ms ➔ ${targetTier.latencyMs}ms (-${(state.latencyMs - targetTier.latencyMs).toFixed(1)}ms faster)\n` +
-          `• Loss: ${state.loss} ➔ ${targetTier.loss}\n` +
-          `• Unlocked Skill: [${targetTier.newSkill}]\n` +
-          `• PoPC STARK Proof Hash: ${proofHash}\n` +
-          `• Status: Autonomous Generation ${nextGenIndex + 1} Confirmed on Chain 86137`
+        `• Accuracy: ${state.accuracy}% ➔ ${targetTier.accuracy}% (+${(targetTier.accuracy - state.accuracy).toFixed(1)}%)\n` +
+        `• Latency: ${state.latencyMs}ms ➔ ${targetTier.latencyMs}ms (-${(state.latencyMs - targetTier.latencyMs).toFixed(1)}ms faster)\n` +
+        `• Loss: ${state.loss} ➔ ${targetTier.loss}\n` +
+        `• Unlocked Skill: [${targetTier.newSkill}]\n` +
+        `• PoPC STARK Proof Hash: ${proofHash}\n` +
+        `• Status: Autonomous Generation ${nextGenIndex + 1} Confirmed on Chain 86137`
       );
     } catch (err: any) {
       setEvolutionLog(`❌ Evolution proof broadcast failed: ${err?.message || "Transaction rejected"}`);
@@ -268,8 +255,8 @@ export function SelfEvolvingAgentSandbox() {
         {isEvolving
           ? "Computing Neural Delta & Merging LoRA Weights..."
           : state.currentGen >= EVOLUTION_TIERS.length
-          ? "🌟 Maximum Convergence Reached (Generation 4)"
-          : `🧬 Trigger Autonomous Evolution ➔ Generation ${state.currentGen + 1}`}
+            ? "🌟 Maximum Convergence Reached (Generation 4)"
+            : `🧬 Trigger Autonomous Evolution ➔ Generation ${state.currentGen + 1}`}
       </button>
 
       {/* Real-time Evolution Telemetry Log */}

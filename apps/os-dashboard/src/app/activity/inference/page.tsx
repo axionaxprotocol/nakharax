@@ -50,13 +50,9 @@ const MODELS = [
 ];
 
 const NODES = [
-  "EU-DE-01 (Frankfurt Genesis)",
-  "AP-AU-01 (Sydney Master Hub)",
-  "AP-SG-01 (Singapore Genesis)",
-  "AP-JP-01 (Tokyo RTX 4090)",
-  "NA-US-01 (Virginia A40)",
-  "EU-UK-01 (London ZK Auditor)",
-  "LOC-TH-01 (Localhost Rig)",
+  "EU-DE-01 (Frankfurt Genesis · VPS-01)",
+  "NA-US-01 (Virginia Genesis Validator 01 · VPS-02)",
+  "AP-SG-01 (Singapore Genesis Validator 02 · VPS-03)",
 ];
 
 const INPUT_TYPES: InferenceRecord["inputType"][] = [
@@ -66,56 +62,17 @@ const INPUT_TYPES: InferenceRecord["inputType"][] = [
   "vector",
 ];
 
-function buildGenesisInferences(
-  count: number,
-  latestBlock: number,
-): InferenceRecord[] {
-  const now = Date.now();
-  const records: InferenceRecord[] = [];
-
-  for (let i = 0; i < count; i += 1) {
-    const statusRoll = Math.random();
-    const status: InferenceRecord["status"] =
-      statusRoll > 0.85
-        ? "failed"
-        : statusRoll > 0.25
-          ? "completed"
-          : "running";
-
-    records.push({
-      id: `inf-${(now + i).toString(36).slice(-8)}`,
-      model: MODELS[i % MODELS.length]!,
-      node: NODES[i % NODES.length]!,
-      timestamp: now - i * 180_000 - Math.floor(Math.random() * 60_000),
-      status,
-      inputType: INPUT_TYPES[i % INPUT_TYPES.length]!,
-      tokens:
-        status !== "failed"
-          ? Math.floor(Math.random() * 4_000 + 100)
-          : undefined,
-      latencyMs:
-        status !== "failed"
-          ? Math.floor(Math.random() * 3_000 + 200)
-          : undefined,
-      blockNumber: latestBlock - Math.floor(i / 3),
-      txHash: `0x${Math.random().toString(16).slice(2, 18)}…`,
-    });
-  }
-
-  return records.sort((a, b) => b.timestamp - a.timestamp);
-}
-
 async function fetchInferenceHistory(
   count = 20,
 ): Promise<{ records: InferenceRecord[]; realData: boolean }> {
   const url = DEFAULT_NODES[0]?.url ?? "";
   if (!url) {
-    return { records: buildGenesisInferences(count, 0), realData: false };
+    return { records: [], realData: false };
   }
 
   const blockNumberResult = await getBlockNumber(url);
   if (!blockNumberResult.ok || blockNumberResult.data == null) {
-    return { records: buildGenesisInferences(count, 0), realData: false };
+    return { records: [], realData: false };
   }
 
   const latest = blockNumberResult.data;
@@ -169,10 +126,8 @@ async function fetchInferenceHistory(
         model,
         node: NODES[records.length % NODES.length]!,
         timestamp: blockTime,
-        status: Math.random() > 0.2 ? "completed" : "failed",
+        status: "completed",
         inputType: INPUT_TYPES[records.length % INPUT_TYPES.length]!,
-        tokens: Math.floor(Math.random() * 2_000 + 50),
-        latencyMs: Math.floor(Math.random() * 2_000 + 100),
         blockNumber: blockNum,
         txHash: `${typedTx.hash?.slice(0, 18) ?? "0x0000"}…`,
       });
@@ -184,10 +139,7 @@ async function fetchInferenceHistory(
 
   const realData = records.length > 0;
   return {
-    records: (realData ? records : buildGenesisInferences(count, latest)).slice(
-      0,
-      count,
-    ),
+    records: records.slice(0, count),
     realData,
   };
 }

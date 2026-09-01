@@ -185,13 +185,8 @@ export default function MCPMarketplacePage() {
         endpoint: selectedSkill.endpointUrl,
         transport: selectedSkill.transport,
         costDeducted: `${selectedSkill.feePerCallWei} tNAK`,
-        status: "MINED_ON_CHAIN_FINALIZED",
-        receiptRoot: `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map(b => b.toString(16).padStart(2, '0')).join('')}`,
-        output: selectedSkill.id === "mcp-quant-risk"
-          ? { riskScore: 0.12, haltRecommended: false, simulatedMaxLoss: 1420.50, verdict: "CLEAR_TO_TRADE" }
-          : selectedSkill.id === "mcp-sec-auditor"
-          ? { vulnerabilitiesFound: 0, reentrancyGuarded: true, gasOptimized: true, passed: true }
-          : { status: "SUCCESS", reasoningDepth: "5-Tier Chain-of-Thought", verifiedProof: "STARK-OK" },
+        status: "BROADCAST_TO_MEMPOOL",
+        note: "Tool execution request broadcast on-chain. Awaiting worker execution result from the MCP provider.",
       };
 
       setExecutionResult(JSON.stringify(receipt, null, 2));
@@ -305,11 +300,10 @@ export default function MCPMarketplacePage() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-xl border px-3 py-1.5 text-[11px] font-mono capitalize transition-all ${
-                selectedCategory === cat
+              className={`rounded-xl border px-3 py-1.5 text-[11px] font-mono capitalize transition-all ${selectedCategory === cat
                   ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300 shadow-sm"
                   : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06] hover:text-white"
-              }`}
+                }`}
             >
               {cat}
             </button>
@@ -339,11 +333,10 @@ export default function MCPMarketplacePage() {
                 key={skill.id}
                 interactive
                 onClick={() => handleSelectSkill(skill)}
-                className={`cursor-pointer transition-all ${
-                  isSelected
+                className={`cursor-pointer transition-all ${isSelected
                     ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(41,240,106,0.15)]"
                     : "border-white/10 bg-slate-950/80"
-                }`}
+                  }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2.5">
@@ -352,12 +345,12 @@ export default function MCPMarketplacePage() {
                         skill.category === "finance"
                           ? Flame
                           : skill.category === "security"
-                          ? ShieldCheck
-                          : skill.category === "scientific"
-                          ? Brain
-                          : skill.category === "sandbox"
-                          ? Terminal
-                          : Globe2
+                            ? ShieldCheck
+                            : skill.category === "scientific"
+                              ? Brain
+                              : skill.category === "sandbox"
+                                ? Terminal
+                                : Globe2
                       }
                       tone={isSelected ? "ai" : "neutral"}
                       className="h-9 w-9"

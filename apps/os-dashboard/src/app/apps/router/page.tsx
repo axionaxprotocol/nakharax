@@ -92,9 +92,8 @@ export default function ASRComputeRouterPage() {
   async function handleOptimizePolicy() {
     try {
       setIsSimulating(true);
-      await new Promise((r) => setTimeout(r, 650));
       setSimulationResult(
-        `✅ ASR Policy Matrix Recalibrated!\nObjective Function: R = -${costWeight.toFixed(2)}*(Cost) - ${latencyWeight.toFixed(2)}*(Latency) + ${proofWeight.toFixed(2)}*(Reputation)\nGlobal Efficiency Gain: +18.4% Throughput | Cost Reduction: -14.2%`
+        `ASR Policy Matrix\nObjective Function: R = -${costWeight.toFixed(2)}*(Cost) - ${latencyWeight.toFixed(2)}*(Latency) + ${proofWeight.toFixed(2)}*(Reputation)\n\n⚠️ No live compute cluster is connected yet.\nPolicy weights saved locally. Real throughput/cost optimization requires connected GPU workers.`
       );
     } finally {
       setIsSimulating(false);

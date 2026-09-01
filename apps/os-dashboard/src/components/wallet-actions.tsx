@@ -148,14 +148,7 @@ export function WalletActions() {
   const [escrowLocked, setEscrowLocked] = useState("0.00");
   const [unbondingQueue, setUnbondingQueue] = useState<
     Array<{ id: string; amount: number; releaseTime: number; claimed: boolean }>
-  >([
-    {
-      id: "unbond-01",
-      amount: 250,
-      releaseTime: Date.now() - 10000, // already unlocked for demo
-      claimed: false,
-    },
-  ]);
+  >([]);
 
   const [balance, setBalance] = useState("0.00");
   const [accruedYield, setAccruedYield] = useState<number>(0.0);
@@ -169,7 +162,7 @@ export function WalletActions() {
   const [metaMaskConnected, setMetaMaskConnected] = useState(false);
   const [isInstitutionalModalOpen, setIsInstitutionalModalOpen] = useState(false);
   const [txHistory, setTxHistory] = useState<TxHistoryItem[]>([]);
-  const [demoReceipt, setDemoReceipt] = useState<string | null>(null);
+  const [lastReceipt, setLastReceipt] = useState<string | null>(null);
   const [hint, setHint] = useState<{
     type: "error" | "success" | "info";
     msg: string;
@@ -294,7 +287,7 @@ export function WalletActions() {
             void fetchBalance();
           }
         })
-        .catch(() => {});
+        .catch(() => { });
 
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts && accounts.length > 0) {
@@ -537,7 +530,7 @@ export function WalletActions() {
       }
       const pass = prompt(`Enter Master Password to decrypt Keystore for ${parsed.address.slice(0, 10)}...:`);
       if (!pass) return;
-      
+
       const decryptedKey = await decryptKeystore(parsed, pass);
       setPrivateKey(decryptedKey);
       setAddress(parsed.address);
@@ -546,7 +539,7 @@ export function WalletActions() {
           KEY_STORE_LOCAL,
           JSON.stringify({ address: parsed.address, keystore: parsed, createdAt: Date.now() })
         );
-      } catch {}
+      } catch { }
       setHint({ type: "success", msg: `🔓 Keystore decrypted successfully! Loaded wallet ${parsed.address.slice(0, 10)}...` });
       void fetchBalance();
     } catch (err: any) {
@@ -602,7 +595,7 @@ export function WalletActions() {
       };
 
       setTxHistory((prev) => [newTx, ...prev]);
-      setDemoReceipt(txHash);
+      setLastReceipt(txHash);
       await fetchBalance();
       setHint({ type: "success", msg: `🎉 Raw Transaction signed & broadcast on-chain (Block #${currentLiveBlock})! Hash: ${txHash.slice(0, 18)}...` });
       setTo("");
@@ -1235,11 +1228,10 @@ export function WalletActions() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id as WalletTab)}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-mono font-bold transition-all ${
-                isActive
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-mono font-bold transition-all ${isActive
                   ? "border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-sm"
                   : "border border-white/10 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
-              }`}
+                }`}
             >
               <Icon size={14} className={isActive ? "text-emerald-400" : "text-slate-400"} />
               <span>{tab.label}</span>
@@ -1251,13 +1243,12 @@ export function WalletActions() {
       {/* Notification Banner */}
       {hint && (
         <div
-          className={`rounded-xl border p-3 text-xs font-mono leading-relaxed flex items-center justify-between ${
-            hint.type === "error"
+          className={`rounded-xl border p-3 text-xs font-mono leading-relaxed flex items-center justify-between ${hint.type === "error"
               ? "border-rose-500/40 bg-rose-500/10 text-rose-300"
               : hint.type === "success"
-              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-              : "border-cyan-500/40 bg-cyan-500/10 text-cyan-300"
-          }`}
+                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+                : "border-cyan-500/40 bg-cyan-500/10 text-cyan-300"
+            }`}
         >
           <span>{hint.msg}</span>
           <button
@@ -1479,11 +1470,10 @@ export function WalletActions() {
                     key={preset.id}
                     type="button"
                     onClick={() => setGasPreset(preset.id as any)}
-                    className={`rounded-xl border p-2.5 text-left font-mono transition-all ${
-                      gasPreset === preset.id
+                    className={`rounded-xl border p-2.5 text-left font-mono transition-all ${gasPreset === preset.id
                         ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
                         : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                    }`}
+                      }`}
                   >
                     <div className="text-[11px] font-bold">{preset.name}</div>
                     <div className="text-[9.5px] text-slate-400 mt-0.5">{preset.fee} · {preset.speed}</div>
@@ -1502,9 +1492,9 @@ export function WalletActions() {
             </button>
           </form>
 
-          {demoReceipt && (
+          {lastReceipt && (
             <div className="p-3 rounded-xl border border-white/10 bg-white/5 text-xs font-mono text-slate-300 flex items-center justify-between">
-              <span className="truncate mr-2">Receipt Hash: <strong className="text-white">{demoReceipt}</strong></span>
+              <span className="truncate mr-2">Receipt Hash: <strong className="text-white">{lastReceipt}</strong></span>
               <Link href="/apps/explorer" className="text-cyan-300 hover:underline shrink-0">Inspect</Link>
             </div>
           )}
@@ -1525,11 +1515,10 @@ export function WalletActions() {
                 key={subTab.id}
                 type="button"
                 onClick={() => setStakingMode(subTab.id as any)}
-                className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all ${
-                  stakingMode === subTab.id
+                className={`rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all ${stakingMode === subTab.id
                     ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
                     : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
-                }`}
+                  }`}
               >
                 {subTab.label}
               </button>
@@ -1734,8 +1723,8 @@ export function WalletActions() {
                                 {item.claimed
                                   ? "Claimed & Transferred"
                                   : isUnlocked
-                                  ? "🟢 Mature (Ready to claim)"
-                                  : "⏳ Cooldown in progress"}
+                                    ? "🟢 Mature (Ready to claim)"
+                                    : "⏳ Cooldown in progress"}
                               </div>
                             </div>
                             {!item.claimed && isUnlocked && (
@@ -2092,19 +2081,18 @@ export function WalletActions() {
                 <tr key={tx.id} className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3 pr-4">
                     <span
-                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold ${
-                        tx.type === "FAUCET"
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-bold ${tx.type === "FAUCET"
                           ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
                           : tx.type === "TRANSFER"
-                          ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
-                          : tx.type === "STAKING_DEPOSIT"
-                          ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
-                          : tx.type === "UNSTAKE_INITIATED"
-                          ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
-                          : tx.type === "UNSTAKE_CLAIMED"
-                          ? "bg-teal-500/10 text-teal-300 border border-teal-500/30"
-                          : "bg-rose-500/10 text-rose-300 border border-rose-500/30"
-                      }`}
+                            ? "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
+                            : tx.type === "STAKING_DEPOSIT"
+                              ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
+                              : tx.type === "UNSTAKE_INITIATED"
+                                ? "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                                : tx.type === "UNSTAKE_CLAIMED"
+                                  ? "bg-teal-500/10 text-teal-300 border border-teal-500/30"
+                                  : "bg-rose-500/10 text-rose-300 border border-rose-500/30"
+                        }`}
                     >
                       {tx.type}
                     </span>

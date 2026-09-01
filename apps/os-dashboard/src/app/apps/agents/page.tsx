@@ -301,11 +301,10 @@ export default function SovereignAgentsPage() {
                       key={skill.id}
                       type="button"
                       onClick={() => toggleSkill(skill.id)}
-                      className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition-all ${
-                        isSelected
+                      className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition-all ${isSelected
                           ? "border-emerald-500/50 bg-emerald-500/10 text-white"
                           : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06]"
-                      }`}
+                        }`}
                     >
                       <span className="text-[11px] font-semibold">{skill.label}</span>
                       {isSelected && <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />}
@@ -351,22 +350,11 @@ function AgentTaskSandbox({ agents }: { agents: SovereignAgentIdentity[] }) {
   const handleDispatch = async () => {
     try {
       setIsExecuting(true);
-      await new Promise((r) => setTimeout(r, 800));
-      const trace = `[AEE AUTONOMOUS EXECUTION TRACE]
-Agent DID: ${selectedAgent.agentId} (${selectedAgent.name})
-Instruction: "${prompt}"
-
-Step 1: Authenticating DID keypair on-chain... [PASS - Verified]
-Step 2: Invoking MCP Tool: [${selectedAgent.activeSkills[0] || "mcp-quant-risk"}]...
-  - Request: { "intent": "risk_audit", "parameters": { "symbol": "XAUUSD", "samples": 1000 } }
-  - State Channel Micro-Fee: 0.05 tNAK [Settled]
-Step 3: Synthesis & Verification:
-  - Monte Carlo Max Drawdown: 2.14% (Within 5% Limit)
-  - Recommended Action: ARMED_ACTIVE (Hurst H = 0.68 Trend)
-Step 4: PoPC STARK Receipt Minted:
-  - Proof Hash: 0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}
-  - Block Height: #1845`;
-      setExecutionOutput(trace);
+      // No autonomous execution engine is connected yet. Show an honest empty state
+      // instead of fabricating a fake execution trace.
+      setExecutionOutput(
+        `[AEE AUTONOMOUS EXECUTION ENGINE]\nAgent DID: ${selectedAgent.agentId} (${selectedAgent.name})\nInstruction: "${prompt}"\n\n⚠️ No autonomous execution engine is currently connected.\nThe Sovereign Agent execution backend is not yet available on this network.\nPlease connect a worker node to enable real on-chain task dispatch.`
+      );
     } finally {
       setIsExecuting(false);
     }

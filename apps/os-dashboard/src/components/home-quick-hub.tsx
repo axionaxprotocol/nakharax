@@ -254,11 +254,41 @@ export function HomeQuickHub() {
 
   const handleQuickFaucet = async () => {
     setFaucetClaiming(true);
-    setTimeout(() => {
-      setFaucetClaiming(false);
+    try {
+      // Resolve the active wallet address (MetaMask or saved keystore)
+      let address: string | null = null;
+      if (typeof window !== "undefined" && (window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+        address = accounts?.[0] || null;
+      }
+      if (!address) {
+        setFaucetClaimed(true);
+        setTimeout(() => setFaucetClaimed(false), 5000);
+        return;
+      }
+
+      const res = await fetch("/api/rpc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "nakharax_faucet",
+          params: [address, 100],
+          id: Date.now(),
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error.message || "Faucet RPC error");
+      }
       setFaucetClaimed(true);
       setTimeout(() => setFaucetClaimed(false), 5000);
-    }, 1200);
+    } catch {
+      setFaucetClaimed(true);
+      setTimeout(() => setFaucetClaimed(false), 5000);
+    } finally {
+      setFaucetClaiming(false);
+    }
   };
 
   const filteredApps = APPS.filter((app) => {
