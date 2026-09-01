@@ -18,8 +18,8 @@ We are proud to officially launch the **NakharaX L1 Public Testnet**, the sovere
 | Configuration Field | Network Parameter |
 | :--- | :--- |
 | **Network Name** | NakharaX Public Testnet |
-| **New RPC URL** | `https://rpc.nakharax.com` |
-| **Secondary RPC Backup** | `https://rpc-backup.nakharax.com` |
+| **New RPC URL** | `https://rpc.nakharax.com` (Direct Ingress: `http://158.220.127.24`) |
+| **Active Quorum Mesh** | 3 Cloud VPS (Germany, US East, Singapore) + 2 Local GPU Workers |
 | **Chain ID** | `86137` (Hex: `0x15079`) |
 | **Currency Symbol** | `$tNAK` |
 | **Block Explorer** | `https://explorer.nakharax.com` |

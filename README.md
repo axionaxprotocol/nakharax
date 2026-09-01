@@ -58,7 +58,21 @@ NakharaX bridges off-chain high-performance AI execution with an ultra-fast on-c
 
 ---
 
-## 📊 Empirical Benchmarks & Hardware SLAs
+## 🌐 Live Genesis Network Topology (3 Cloud VPS + 2 Local Worker PCs)
+
+The NakharaX Public Testnet operates a high-resilience **3-Continent Global Quorum Mesh** with live DeAI compute workers:
+
+| Node Identity | Geographic Location | Infrastructure Role | Public IPv4 & Ingress | P2P Status |
+|:---|:---|:---|:---|:---:|
+| **VPS-01** | 🇪🇺 Germany (Frankfurt) | **Master Seed / Bootnode & Public RPC Ingress** | `158.220.127.24` (`rpc.nakharax.com:443`) | 🟢 **ONLINE** |
+| **VPS-02** | 🇺🇸 Virginia (US East) | **Genesis Validator 01** (`0xca0e...3326`) | `40.160.87.118` (Port `30303`) | 🟢 **PRODUCING** |
+| **VPS-03** | 🇸🇬 Singapore (APAC) | **Genesis Validator 02** (`0x26e7...e6cb`) | `217.216.39.77` (Port `30303`) | 🟢 **PRODUCING** |
+| **PC-01** | 🇹🇭 Thailand (Bangkok) | **Primary DeAI GPU Worker** (AMD Ryzen 5 + RX 560) | `127.0.0.1` (DirectML Sandbox) | 🟢 **ACTIVE** |
+| **PC-02** | 🇹🇭 Thailand (Chiang Mai) | **Secondary Edge Worker** (STARK-FRI ZK Prover) | `127.0.0.1` (PyTorch Compute) | 🟢 **ACTIVE** |
+
+---
+
+## � Empirical Benchmarks & Hardware SLAs
 
 All metrics are derived directly from reproducible test suites and empirical telemetry:
 
