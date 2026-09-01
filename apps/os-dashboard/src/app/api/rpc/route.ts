@@ -222,6 +222,25 @@ export async function POST(req: NextRequest) {
       clearTimeout(timeoutId1);
     }
 
+    // Second attempt: Direct VPS-01 Ingress Gateway
+    if (!res || !res.ok) {
+      const controllerLive = new AbortController();
+      const timeoutIdLive = setTimeout(() => controllerLive.abort(), 4000);
+      try {
+        res = await fetch(LIVE_GATEWAY_RPC, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Host": "rpc.nakharax.com" },
+          body: JSON.stringify(body),
+          cache: "no-store",
+          signal: controllerLive.signal,
+        });
+      } catch {
+        res = null;
+      } finally {
+        clearTimeout(timeoutIdLive);
+      }
+    }
+
     // Fallback attempt: LOCAL_RPC ONLY in development environment
     if (!res || !res.ok) {
       const isDev = process.env.NODE_ENV === "development";

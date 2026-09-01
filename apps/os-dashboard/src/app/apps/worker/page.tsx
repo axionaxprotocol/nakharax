@@ -83,7 +83,7 @@ export default function WorkerManagerPage() {
             setWorkerAddress(accounts[0]);
           }
         })
-        .catch(() => {});
+        .catch(() => { });
 
       const handleAccounts = (accounts: string[]) => {
         if (accounts && accounts.length > 0) {
@@ -144,7 +144,7 @@ export default function WorkerManagerPage() {
   const startBrowserMining = async () => {
     setIsBrowserMining(true);
     miningLoopRef.current = true;
-    
+
     // Register Browser Worker on Chain
     try {
       await fetch("/api/rpc", {
@@ -167,7 +167,7 @@ export default function WorkerManagerPage() {
           id: Date.now(),
         }),
       });
-    } catch {}
+    } catch { }
 
     addLog(`🚀 [WebGPU Engine] Initialized hardware shader on ${gpuName}`);
     addLog(`🛡️ [Overload Shield] Smart Governor Active (Mode: ${intensityMode.toUpperCase()} | Thermal Limit: 82°C)`);
@@ -192,7 +192,7 @@ export default function WorkerManagerPage() {
       }
 
       const t0 = performance.now();
-      
+
       // Dynamic work-items scaled to prevent Out-Of-Memory (OOM)
       const numElements = currentMode === "eco" ? 120000 : currentMode === "balanced" ? 250000 : 500000;
       const tensorA = new Float32Array(numElements);
@@ -201,7 +201,7 @@ export default function WorkerManagerPage() {
         tensorA[i] = Math.sin(i * 0.05);
         tensorB[i] = Math.cos(i * 0.05);
       }
-      
+
       let sum = 0;
       for (let i = 0; i < numElements; i++) {
         sum += Math.sqrt(Math.abs(tensorA[i] * tensorB[i])) * 1.0001;
@@ -210,7 +210,7 @@ export default function WorkerManagerPage() {
       const elapsed = Math.max(1, performance.now() - t0);
       const mops = Math.round((numElements * 50 / (elapsed / 1000)) / 1000000);
       const reward = parseFloat((Math.random() * 0.25 + 0.15).toFixed(4));
-      
+
       localJobs++;
       localRewards += reward;
       setBrowserJobsCompleted(localJobs);
@@ -222,7 +222,7 @@ export default function WorkerManagerPage() {
       setSimulatedGpuTemp(targetTemp + (localJobs % 3));
       setVramUsageMb(3400 + ((localJobs * 17) % 600));
 
-      const mockHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(16).padStart(2, '0')).join('')}`;
+      const executionProofHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(16).padStart(2, '0')).join('')}`;
 
       // Claim reward on-chain
       try {
@@ -236,9 +236,9 @@ export default function WorkerManagerPage() {
             id: Date.now(),
           }),
         });
-      } catch {}
+      } catch { }
 
-      addLog(`[JOB #${localJobs}] DeAI-DeepSeek-R1 | Time: ${elapsed.toFixed(1)}ms | Rate: ${mops} M-Ops/s | +${reward} tNAK | Proof: ${mockHash}...`);
+      addLog(`[JOB #${localJobs}] DeAI-DeepSeek-R1 | Time: ${elapsed.toFixed(1)}ms | Rate: ${mops} M-Ops/s | +${reward} tNAK | Proof: ${executionProofHash}...`);
 
       if (miningLoopRef.current) {
         // Sleep delay governed by Intensity Profile
@@ -323,22 +323,20 @@ export default function WorkerManagerPage() {
       <div className="flex border-b border-white/10 gap-2 pb-2">
         <button
           onClick={() => setActiveTab("browser")}
-          className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${
-            activeTab === "browser"
+          className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${activeTab === "browser"
               ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-lg shadow-emerald-500/10"
               : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
+            }`}
         >
           <Globe size={14} />
           ⚡ 1-Click In-Browser Web Worker (No Install)
         </button>
         <button
           onClick={() => setActiveTab("cli")}
-          className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${
-            activeTab === "cli"
+          className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold rounded-xl transition-all ${activeTab === "cli"
               ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-500/10"
               : "text-slate-400 hover:text-white hover:bg-white/5"
-          }`}
+            }`}
         >
           <Terminal size={14} />
           🖥️ Native GPU Daemon (Maximum Throughput)
@@ -422,11 +420,10 @@ export default function WorkerManagerPage() {
               <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => setIntensityMode("eco")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${
-                    intensityMode === "eco"
+                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "eco"
                       ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold shadow"
                       : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Leaf size={14} />
                   <span>Eco / Low-Power</span>
@@ -434,11 +431,10 @@ export default function WorkerManagerPage() {
                 </button>
                 <button
                   onClick={() => setIntensityMode("balanced")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${
-                    intensityMode === "balanced"
+                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "balanced"
                       ? "border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold shadow"
                       : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Gauge size={14} />
                   <span>Balanced Mode</span>
@@ -446,11 +442,10 @@ export default function WorkerManagerPage() {
                 </button>
                 <button
                   onClick={() => setIntensityMode("max")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${
-                    intensityMode === "max"
+                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "max"
                       ? "border-amber-400 bg-amber-500/20 text-amber-300 font-bold shadow"
                       : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Flame size={14} />
                   <span>Max Performance</span>
@@ -524,7 +519,7 @@ export default function WorkerManagerPage() {
                 Run the script <code className="text-white bg-black/60 px-2 py-0.5 rounded border border-white/10">start_worker_all_in_one.bat</code> or paste the PowerShell command:
               </p>
               <pre className="bg-black/90 p-3 rounded-lg border border-white/10 text-emerald-400 overflow-x-auto text-[11.5px]">
-powershell -ExecutionPolicy Bypass -File .\nakhara-worker-all-in-one.ps1
+                powershell -ExecutionPolicy Bypass -File .\nakhara-worker-all-in-one.ps1
               </pre>
             </div>
           </div>

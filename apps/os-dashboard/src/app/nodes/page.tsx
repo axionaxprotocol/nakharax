@@ -53,95 +53,69 @@ interface ClusterNode {
 
 const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
   {
-    id: "node-local-rig",
-    name: "Localhost Sovereign Node (This Machine) [Live Host]",
-    region: "Local Development Rig",
-    endpoint: "127.0.0.1:8545 (HTTP) · 127.0.0.1:8546 (WS)",
-    role: "Local Live Host",
-    hardware: "Bicameral Split-Brain Core · Windows x64",
-    tps: 24.8,
+    id: "node-vps01-germany",
+    name: "Germany Master Hub & Ingress (VPS-01)",
+    region: "Frankfurt, Germany",
+    endpoint: "rpc.nakharax.com (158.220.127.24)",
+    role: "Public RPC Gateway",
+    hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
+    tps: 1.0,
+    status: "ACTIVE_LIVE",
+    latencyMs: 145,
+    blockHeight: 300,
+    hostingTier: "Tier 1: Global Seed & Public Ingress (Contabo VPS)",
+  },
+  {
+    id: "node-vps02-virginia",
+    name: "Virginia Genesis Validator 01 (VPS-02)",
+    region: "Virginia, US East",
+    endpoint: "40.160.87.118:30303",
+    role: "Genesis Validator",
+    hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
+    tps: 1.0,
+    status: "ACTIVE_LIVE",
+    latencyMs: 180,
+    blockHeight: 300,
+    hostingTier: "Tier 1: Global Validator Quorum (OVHcloud VPS)",
+  },
+  {
+    id: "node-vps03-singapore",
+    name: "Singapore Genesis Validator 02 (VPS-03)",
+    region: "Singapore, APAC",
+    endpoint: "217.216.39.77:30303",
+    role: "Genesis Validator",
+    hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
+    tps: 1.0,
+    status: "ACTIVE_LIVE",
+    latencyMs: 28,
+    blockHeight: 300,
+    hostingTier: "Tier 1: Global Validator Quorum (Contabo VPS)",
+  },
+  {
+    id: "node-pc01-bangkok",
+    name: "Bangkok Primary DeAI Worker (PC-01)",
+    region: "Bangkok, Thailand",
+    endpoint: "127.0.0.1:30303 (DirectML GPU)",
+    role: "DeAI GPU Worker",
+    hardware: "AMD Ryzen 5 4500 · 16 GB RAM · RX 560 (DirectML)",
+    tps: 52.4,
     status: "ACTIVE_LIVE",
     latencyMs: 1,
-    blockHeight: 1250,
-    hostingTier: "Tier 5: Bicameral Edge Node (Live Active Hardware)",
+    blockHeight: 300,
+    hostingTier: "Tier 2: DeAI Compute Worker Rig",
   },
   {
-    id: "node-frankfurt-val1",
-    name: "Frankfurt Genesis L1 (EU-01) [Mock Up]",
-    region: "Frankfurt, Germany",
-    endpoint: "eu-val1.nakharax.net (Contabo VPS)",
-    role: "Genesis Validator",
-    hardware: "8 vCPU · 16 GB RAM · 500 GB NVMe",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 14,
-    blockHeight: 1250,
-    hostingTier: "Tier 1: Global Root [Mock Up · Coming Soon 1 Sep]",
-  },
-  {
-    id: "node-singapore-val3",
-    name: "Singapore Genesis L1 (SG-05) [Mock Up]",
-    region: "Singapore, SG",
-    endpoint: "sg-val3.nakharax.net (Genesis Node)",
-    role: "Genesis Validator",
-    hardware: "8 vCPU · 16 GB RAM · 250 GB NVMe",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 46,
-    blockHeight: 1250,
-    hostingTier: "Tier 1: Global Root [Mock Up · Coming Soon 1 Sep]",
-  },
-  {
-    id: "node-virginia-worker",
-    name: "Virginia LLM Training Super Node (US-03) [Mock Up]",
-    region: "North Virginia, USA",
-    endpoint: "us-worker.nakharax.net (GPU Cloud)",
-    role: "DeAI GPU Worker",
-    hardware: "NVIDIA A40 (48GB VRAM) · 32 vCPU",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 165,
-    blockHeight: 1250,
-    hostingTier: "Tier 2: Regional Titan [Mock Up · Coming Soon 1 Sep]",
-  },
-  {
-    id: "node-tokyo-gpu1",
-    name: "Tokyo GPU Accelerated Cluster (JP-04) [Mock Up]",
-    region: "Tokyo, Japan",
-    endpoint: "jp-gpu1.nakharax.net (RunPod / Dedicated)",
-    role: "DeAI GPU Worker",
-    hardware: "16 Core · 32 GB · RTX 4090 24GB",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 82,
-    blockHeight: 1250,
-    hostingTier: "Tier 2: Regional Titan [Mock Up · Coming Soon 1 Sep]",
-  },
-  {
-    id: "node-sydney-val2",
-    name: "Sydney Ingress & Faucet (AU-02) [Mock Up]",
-    region: "Sydney, Australia",
-    endpoint: "au-val2.nakharax.net (Contabo VPS)",
-    role: "Public RPC Gateway",
-    hardware: "4 vCPU · 8 GB RAM · 150 GB SSD",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 128,
-    blockHeight: 1250,
-    hostingTier: "Tier 3: National Gateway [Mock Up · Coming Soon 1 Sep]",
-  },
-  {
-    id: "node-london-auditor",
-    name: "London ZK State Auditor & Radar (UK-06) [Mock Up]",
-    region: "London, United Kingdom",
-    endpoint: "uk-auditor.nakharax.net (Dedicated VPS)",
+    id: "node-pc02-chiangmai",
+    name: "Chiang Mai Secondary ZK Prover (PC-02)",
+    region: "Chiang Mai, Thailand",
+    endpoint: "127.0.0.1:30303 (PyTorch ZK)",
     role: "Hydra Sentinel",
-    hardware: "12 vCPU · 32 GB RAM · 1 TB NVMe",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 172,
-    blockHeight: 1250,
-    hostingTier: "Tier 4: Metro Aggregator [Mock Up · Coming Soon 1 Sep]",
+    hardware: "8 Core CPU · 16 GB RAM · PyTorch Swarm",
+    tps: 24.8,
+    status: "ACTIVE_LIVE",
+    latencyMs: 5,
+    blockHeight: 300,
+    hostingTier: "Tier 2: DeAI ZK Proof Generation Swarm",
   },
 ];
 
@@ -193,22 +167,22 @@ export default function NodesPage() {
           const displayName = isPC2
             ? "PC-2 (NVIDIA GeForce GTX 1070 Ti)"
             : isStandby
-            ? "PC-Standby (NOESIS Sentinel Guardian)"
-            : (w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`);
+              ? "PC-Standby (NOESIS Sentinel Guardian)"
+              : (w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`);
 
           const hardwareName = isPC2
             ? "NVIDIA GeForce GTX 1070 Ti (8GB VRAM) · 2,432 CUDA Cores"
             : isStandby
-            ? "Standby Core: Dual-Engine NPU/CPU (16GB RAM)"
-            : (w.gpu || w.specs?.gpu || "NVIDIA GPU Accelerator");
+              ? "Standby Core: Dual-Engine NPU/CPU (16GB RAM)"
+              : (w.gpu || w.specs?.gpu || "NVIDIA GPU Accelerator");
 
           const isOnline = w.status === "ONLINE_ACTIVE" || w.status === "active";
           const nodeStatus: "ACTIVE_LIVE" | "STANDBY_BLUEPRINT" = isOnline ? "ACTIVE_LIVE" : "STANDBY_BLUEPRINT";
           const tierName = isPC2
             ? `Tier 5: DeAI Edge Worker · ${isOnline ? "Active" : "Offline / Sleeping"}`
             : isStandby
-            ? `Tier 5: Bicameral Sentinel Guardian · Active`
-            : `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`;
+              ? `Tier 5: Bicameral Sentinel Guardian · Active`
+              : `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`;
 
           return {
             id: `worker-${addr}`,
@@ -379,16 +353,16 @@ export default function NodesPage() {
                     node.status === "ACTIVE_LIVE"
                       ? "ai"
                       : node.id.includes("0xf39fd") || node.name.includes("PC-2")
-                      ? "danger"
-                      : "warn"
+                        ? "danger"
+                        : "warn"
                   }
                   pulse={node.status === "ACTIVE_LIVE"}
                 >
                   {node.status === "ACTIVE_LIVE"
                     ? "🟢 LIVE ACTIVE HOST"
                     : node.id.includes("0xf39fd") || node.name.includes("PC-2")
-                    ? "🛑 OFFLINE (SLEEPING)"
-                    : "🟡 [MOCK UP - COMING SOON]"}
+                      ? "🛑 OFFLINE (SLEEPING)"
+                      : "🟡 [MOCK UP - COMING SOON]"}
                 </StatusPill>
               </div>
 
@@ -426,23 +400,23 @@ export default function NodesPage() {
             {(dhtPeers.length > 0
               ? dhtPeers
               : [
-                  {
-                    peer_id: "12D3KooWStZ9M8...Frankfurt-Val1",
-                    addresses: ["/dns4/eu-val1.nakharax.net/tcp/30303", "/dns4/eu-val1.nakharax.net/udp/30303/quic-v1"],
-                  },
-                  {
-                    peer_id: "12D3KooWKn7P4...Sydney-Val2",
-                    addresses: ["/dns4/au-val2.nakharax.net/tcp/30303", "/dns4/au-val2.nakharax.net/udp/30303/quic-v1"],
-                  },
-                  {
-                    peer_id: "12D3KooWVa8B2...Tokyo-WorkerGPU",
-                    addresses: ["/dns4/jp-gpu1.nakharax.net/tcp/30303"],
-                  },
-                  {
-                    peer_id: "12D3KooWRx5T1...Virginia-Sentinel",
-                    addresses: ["/dns4/us-sentinel.nakharax.net/tcp/30303"],
-                  },
-                ]
+                {
+                  peer_id: "12D3KooWStZ9M8...Frankfurt-Val1",
+                  addresses: ["/dns4/eu-val1.nakharax.net/tcp/30303", "/dns4/eu-val1.nakharax.net/udp/30303/quic-v1"],
+                },
+                {
+                  peer_id: "12D3KooWKn7P4...Sydney-Val2",
+                  addresses: ["/dns4/au-val2.nakharax.net/tcp/30303", "/dns4/au-val2.nakharax.net/udp/30303/quic-v1"],
+                },
+                {
+                  peer_id: "12D3KooWVa8B2...Tokyo-WorkerGPU",
+                  addresses: ["/dns4/jp-gpu1.nakharax.net/tcp/30303"],
+                },
+                {
+                  peer_id: "12D3KooWRx5T1...Virginia-Sentinel",
+                  addresses: ["/dns4/us-sentinel.nakharax.net/tcp/30303"],
+                },
+              ]
             ).map((peer, idx) => (
               <div key={idx} className="rounded-xl border border-white/10 bg-slate-950 p-3 text-xs font-mono">
                 <div className="flex items-center justify-between text-cyan-300 font-bold">

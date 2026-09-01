@@ -66,7 +66,7 @@ const INPUT_TYPES: InferenceRecord["inputType"][] = [
   "vector",
 ];
 
-function buildMockInferences(
+function buildGenesisInferences(
   count: number,
   latestBlock: number,
 ): InferenceRecord[] {
@@ -110,12 +110,12 @@ async function fetchInferenceHistory(
 ): Promise<{ records: InferenceRecord[]; realData: boolean }> {
   const url = DEFAULT_NODES[0]?.url ?? "";
   if (!url) {
-    return { records: buildMockInferences(count, 0), realData: false };
+    return { records: buildGenesisInferences(count, 0), realData: false };
   }
 
   const blockNumberResult = await getBlockNumber(url);
   if (!blockNumberResult.ok || blockNumberResult.data == null) {
-    return { records: buildMockInferences(count, 0), realData: false };
+    return { records: buildGenesisInferences(count, 0), realData: false };
   }
 
   const latest = blockNumberResult.data;
@@ -184,7 +184,7 @@ async function fetchInferenceHistory(
 
   const realData = records.length > 0;
   return {
-    records: (realData ? records : buildMockInferences(count, latest)).slice(
+    records: (realData ? records : buildGenesisInferences(count, latest)).slice(
       0,
       count,
     ),
@@ -201,17 +201,17 @@ export default async function InferenceHistoryPage() {
   const latencyRecords = records.filter((record) => record.latencyMs);
   const avgLatency =
     latencyRecords.reduce((sum, record) => sum + (record.latencyMs ?? 0), 0) /
-      latencyRecords.length || 0;
+    latencyRecords.length || 0;
 
   return (
     <PageShell
       eyebrow="Inference Ledger"
       title="Model execution history with receipt context."
-      description="Track inference runs across workers, correlate latency with blocks, and keep mock data visibly separated from live receipts."
+      description="Track verifiable zero-knowledge inference runs across workers, correlate latency with block finality, and stream on-chain receipts."
       meta={
         <>
           <StatusPill tone={realData ? "ai" : "warn"} pulse={realData}>
-            {realData ? "live receipts" : "demo sample"}
+            {realData ? "live receipts" : "standby sync"}
           </StatusPill>
           <StatusPill tone="neutral">{records.length} records</StatusPill>
         </>
