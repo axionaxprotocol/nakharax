@@ -8,8 +8,8 @@ all:
     validator:
       hosts:
         vps-02:
-          ansible_host: "VPS02_NEW_IPV4_REQUIRED"
-          region: "TBD"
+          ansible_host: "40.160.87.118"
+          region: "US-East"
           validator_address: "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326"
         vps-03:
           ansible_host: "VPS03_NEW_IPV4_REQUIRED"
