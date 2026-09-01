@@ -9,7 +9,7 @@
 # A valid line has this form:
 # /ip4/<NEW_STATIC_IPV4>/tcp/30303/p2p/<PEER_ID_FROM_THE_SAME_NEW_VPS>
 
-# VPS-01 Seed/bootnode (158.220.127.24): PENDING (awaiting peer_id)
+/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M
 # VPS-02 Validator-01:                    PENDING
 # VPS-03 Validator-02:                    PENDING
 # VPS-04 Public RPC primary:              PENDING
