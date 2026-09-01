@@ -3,14 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Download, Pause, Play, RotateCcw, Search, Terminal, Trash2, Wifi, WifiOff } from "lucide-react";
 
-const SYNTH_FALLBACK = [
-  "mempool    INFO  bundle acceptance window 2s",
-  "consensus  INFO  validator set unchanged [PoPC active]",
-  "rpc        INFO  eth_chainId cache hit (chain 86137)",
-  "network    INFO  gossipsub mesh diameter <= 3",
-  "worker     INFO  sandbox heartbeat OK",
-];
-
 interface LogViewerProps {
   seedLines: string[];
   wsUrl?: string;
@@ -99,25 +91,6 @@ export function LogViewer({ seedLines, wsUrl = "ws://127.0.0.1:8546" }: LogViewe
     };
   }, [wsUrl]);
 
-  // Synthetic fallback heartbeats when offline
-  useEffect(() => {
-    if (isConnected) return;
-
-    let tick = 0;
-    const interval = setInterval(() => {
-      if (isPausedRef.current) return;
-      const message = SYNTH_FALLBACK[tick % SYNTH_FALLBACK.length];
-      tick += 1;
-      const timestamp = new Date().toISOString();
-      setLines((prev) => {
-        const next = [...prev, `${timestamp}  ${message}`];
-        return next.length > 500 ? next.slice(-500) : next;
-      });
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, [isConnected]);
-
   // Auto-scroll to bottom
   useEffect(() => {
     if (!isPaused) {
@@ -150,11 +123,10 @@ export function LogViewer({ seedLines, wsUrl = "ws://127.0.0.1:8546" }: LogViewe
           </span>
 
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider ${
-              isConnected
-                ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                : "border border-amber-500/30 bg-amber-500/10 text-amber-300"
-            }`}
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-mono font-semibold uppercase tracking-wider ${isConnected
+              ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+              : "border border-amber-500/30 bg-amber-500/10 text-amber-300"
+              }`}
           >
             {isConnected ? (
               <>
@@ -165,7 +137,7 @@ export function LogViewer({ seedLines, wsUrl = "ws://127.0.0.1:8546" }: LogViewe
             ) : (
               <>
                 <WifiOff size={11} className="text-amber-400" />
-                Demo Tail (Simulated)
+                Disconnected
               </>
             )}
           </span>
@@ -188,11 +160,10 @@ export function LogViewer({ seedLines, wsUrl = "ws://127.0.0.1:8546" }: LogViewe
           <button
             onClick={() => setIsPaused((v) => !v)}
             title={isPaused ? "Resume log stream" : "Pause log stream"}
-            className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-mono transition-colors ${
-              isPaused
-                ? "border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
-                : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
-            }`}
+            className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[11px] font-mono transition-colors ${isPaused
+              ? "border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
+              : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+              }`}
           >
             {isPaused ? <Play size={11} /> : <Pause size={11} />}
             <span className="hidden sm:inline">{isPaused ? "Resume" : "Pause"}</span>

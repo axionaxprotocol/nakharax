@@ -51,6 +51,9 @@ interface ClusterNode {
   hostingTier: string;
 }
 
+// Real live Genesis network topology (3 VPS validators). No fabricated TPS/latency
+// values — metrics are shown as reported by the live probe. Local worker rigs are
+// NOT listed here; they only appear once they register on-chain via the live probe.
 const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
   {
     id: "node-vps01-germany",
@@ -59,10 +62,10 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     endpoint: "rpc.nakharax.com (158.220.127.24)",
     role: "Public RPC Gateway",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 145,
-    blockHeight: 300,
+    latencyMs: 0,
+    blockHeight: 0,
     hostingTier: "Tier 1: Global Seed & Public Ingress (Contabo VPS)",
   },
   {
@@ -72,10 +75,10 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     endpoint: "40.160.87.118:30303",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 180,
-    blockHeight: 300,
+    latencyMs: 0,
+    blockHeight: 0,
     hostingTier: "Tier 1: Global Validator Quorum (OVHcloud VPS)",
   },
   {
@@ -85,37 +88,11 @@ const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
     endpoint: "217.216.39.77:30303",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 28,
-    blockHeight: 300,
+    latencyMs: 0,
+    blockHeight: 0,
     hostingTier: "Tier 1: Global Validator Quorum (Contabo VPS)",
-  },
-  {
-    id: "node-pc01-bangkok",
-    name: "Bangkok Primary DeAI Worker (PC-01)",
-    region: "Bangkok, Thailand",
-    endpoint: "127.0.0.1:30303 (DirectML GPU)",
-    role: "DeAI GPU Worker",
-    hardware: "AMD Ryzen 5 4500 · 16 GB RAM · RX 560 (DirectML)",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 0,
-    blockHeight: 300,
-    hostingTier: "Tier 2: DeAI Compute Worker Rig (Awaiting Connection)",
-  },
-  {
-    id: "node-pc02-chiangmai",
-    name: "Chiang Mai Secondary ZK Prover (PC-02)",
-    region: "Chiang Mai, Thailand",
-    endpoint: "127.0.0.1:30303 (PyTorch ZK)",
-    role: "Hydra Sentinel",
-    hardware: "8 Core CPU · 16 GB RAM · PyTorch Swarm",
-    tps: 0.0,
-    status: "STANDBY_BLUEPRINT",
-    latencyMs: 0,
-    blockHeight: 300,
-    hostingTier: "Tier 2: DeAI ZK Proof Generation Swarm (Awaiting Connection)",
   },
 ];
 
@@ -161,41 +138,24 @@ export default function NodesPage() {
 
         const workerData = await workerRes.json();
         const liveWorkersObj = workerData.result || {};
+        // Only render workers that are actually registered on-chain. No fabricated
+        // TPS/latency/hardware — values are shown as reported by the live probe.
         const liveWorkerNodes: ClusterNode[] = Object.entries(liveWorkersObj).map(([addr, w]: [string, any], idx) => {
-          const isPC2 = addr.toLowerCase() === "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
-          const isStandby = addr.toLowerCase() === "0x90f79bf6eb2c4f870365e785982e1f101e93b906";
-          const displayName = isPC2
-            ? "PC-2 (NVIDIA GeForce GTX 1070 Ti)"
-            : isStandby
-              ? "PC-Standby (NOESIS Sentinel Guardian)"
-              : (w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`);
-
-          const hardwareName = isPC2
-            ? "NVIDIA GeForce GTX 1070 Ti (8GB VRAM) · 2,432 CUDA Cores"
-            : isStandby
-              ? "Standby Core: Dual-Engine NPU/CPU (16GB RAM)"
-              : (w.gpu || w.specs?.gpu || "NVIDIA GPU Accelerator");
-
           const isOnline = w.status === "ONLINE_ACTIVE" || w.status === "active";
           const nodeStatus: "ACTIVE_LIVE" | "STANDBY_BLUEPRINT" = isOnline ? "ACTIVE_LIVE" : "STANDBY_BLUEPRINT";
-          const tierName = isPC2
-            ? `Tier 5: DeAI Edge Worker · ${isOnline ? "Active" : "Offline / Sleeping"}`
-            : isStandby
-              ? `Tier 5: Bicameral Sentinel Guardian · Active`
-              : `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`;
 
           return {
             id: `worker-${addr}`,
-            name: displayName,
-            region: isPC2 ? "LAN Compute Grid (192.168.1.108)" : isStandby ? "Hot-Standby Sentinel Cluster" : (w.region || `Edge Cluster Node #${idx + 2}`),
-            endpoint: isPC2 ? "192.168.1.108 · Port 8545" : `${addr.slice(0, 8)}...${addr.slice(-6)} · Port 8545`,
-            role: isStandby ? "Hydra Sentinel" : "DeAI GPU Worker",
-            hardware: hardwareName,
-            tps: isOnline ? (isPC2 ? 64.5 : isStandby ? 52.0 : 48.2) : 0.0,
+            name: w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`,
+            region: w.region || "Unknown Region",
+            endpoint: `${addr.slice(0, 8)}...${addr.slice(-6)} · Port 8545`,
+            role: "DeAI GPU Worker",
+            hardware: w.gpu || w.specs?.gpu || "GPU Accelerator",
+            tps: 0,
             status: nodeStatus,
-            latencyMs: isOnline ? (isPC2 ? 2 : isStandby ? 1 : (w.latency || 2)) : 0,
+            latencyMs: w.latency || 0,
             blockHeight: globalBlock,
-            hostingTier: tierName,
+            hostingTier: `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`,
           };
         });
 
@@ -203,7 +163,6 @@ export default function NodesPage() {
           const base = PLANNED_VPS_BLUEPRINTS.map((node) => ({
             ...node,
             blockHeight: globalBlock,
-            latencyMs: node.id === "node-local-rig" ? (globalLatency || 1) : node.latencyMs,
           }));
           return [...liveWorkerNodes, ...base];
         });
@@ -212,7 +171,6 @@ export default function NodesPage() {
           prev.map((node) => ({
             ...node,
             blockHeight: globalBlock,
-            latencyMs: node.id === "node-local-rig" ? (globalLatency || 1) : node.latencyMs,
           }))
         );
       }

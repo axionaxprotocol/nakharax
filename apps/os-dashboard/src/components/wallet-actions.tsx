@@ -77,53 +77,6 @@ interface TxHistoryItem {
   to: string;
 }
 
-const INITIAL_TX_HISTORY: TxHistoryItem[] = [
-  {
-    id: "tx-faucet-01",
-    hash: "0x8f2d1e3a9c7b4e6a5f0d8c2b1e3a7f9c8b4d2e1a",
-    type: "FAUCET",
-    amount: "+100.00",
-    symbol: "tNAK",
-    timestamp: "Just now",
-    blockNumber: 1845,
-    status: "CONFIRMED",
-    to: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-  },
-  {
-    id: "tx-stake-02",
-    hash: "0x7a3c9b1e4f2d5e8a0b3c6d9e1f4a7b2c5e8d0a3b",
-    type: "STAKING_DEPOSIT",
-    amount: "-2,500.00",
-    symbol: "tNAK",
-    timestamp: "12 mins ago",
-    blockNumber: 1841,
-    status: "CONFIRMED",
-    to: "0x000000000000000000000000000000000000dEaD",
-  },
-  {
-    id: "tx-escrow-03",
-    hash: "0x4b7c2a1e9f8d3b5c6e0a7f2d1c8b9e4a3f5c7b1e",
-    type: "ESCROW_LOCK",
-    amount: "-15.00",
-    symbol: "tNAK",
-    timestamp: "45 mins ago",
-    blockNumber: 1830,
-    status: "CONFIRMED",
-    to: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-  },
-  {
-    id: "tx-reward-04",
-    hash: "0x1a3f5c7b9e2d4f6a8b0c2e1a3f5d7b9c1e3a5f7b",
-    type: "REWARD",
-    amount: "+12.45",
-    symbol: "tNAK",
-    timestamp: "1 hour ago",
-    blockNumber: 1805,
-    status: "CONFIRMED",
-    to: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-  },
-];
-
 type WalletTab = "overview" | "transfer" | "staking" | "keystore" | "web3";
 
 export function WalletActions() {

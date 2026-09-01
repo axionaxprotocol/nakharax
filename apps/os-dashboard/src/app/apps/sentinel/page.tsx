@@ -50,78 +50,58 @@ interface ValidatorNodeSecurity {
   lastProofValid: boolean;
 }
 
+// Real live Genesis validator set (3 VPS nodes). No fabricated uptime/byzantine
+// scores — values are shown as reported by the live RPC probe.
 const INITIAL_VALIDATORS: ValidatorNodeSecurity[] = [
   {
-    nodeId: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    moniker: "Sentinel-Alpha (Frankfurt EU)",
+    nodeId: "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+    moniker: "Frankfurt Genesis L1 (VPS-01)",
     region: "EU-Central",
-    stakedNak: "50,000 tNAK",
-    uptimePercent: 99.98,
+    stakedNak: "Genesis Validator",
+    uptimePercent: 0,
     missedBlocks: 0,
-    byzantineScore: 0.02,
+    byzantineScore: 0,
     status: "ACTIVE_VALID",
     lastProofValid: true,
   },
   {
-    nodeId: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    moniker: "Sentinel-Beta (Sydney AU)",
-    region: "AP-Southeast",
-    stakedNak: "50,000 tNAK",
-    uptimePercent: 99.95,
-    missedBlocks: 1,
-    byzantineScore: 0.05,
-    status: "ACTIVE_VALID",
-    lastProofValid: true,
-  },
-  {
-    nodeId: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    moniker: "Sentinel-Gamma (N. Virginia US)",
+    nodeId: "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
+    moniker: "Virginia Genesis Validator 01 (VPS-02)",
     region: "US-East",
-    stakedNak: "50,000 tNAK",
-    uptimePercent: 100.0,
+    stakedNak: "Genesis Validator",
+    uptimePercent: 0,
     missedBlocks: 0,
-    byzantineScore: 0.01,
+    byzantineScore: 0,
     status: "ACTIVE_VALID",
     lastProofValid: true,
   },
   {
-    nodeId: "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
-    moniker: "Sentinel-Delta (Tokyo JP)",
-    region: "AP-Northeast",
-    stakedNak: "50,000 tNAK",
-    uptimePercent: 99.89,
-    missedBlocks: 2,
-    byzantineScore: 0.08,
+    nodeId: "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+    moniker: "Singapore Genesis Validator 02 (VPS-03)",
+    region: "AP-Southeast",
+    stakedNak: "Genesis Validator",
+    uptimePercent: 0,
+    missedBlocks: 0,
+    byzantineScore: 0,
     status: "ACTIVE_VALID",
     lastProofValid: true,
-  },
-  {
-    nodeId: "0x9965507D1a55bcC2695C58ba16FB37d819B0A4df",
-    moniker: "Rogue-Worker-Test (Simulated)",
-    region: "Unknown-TOR",
-    stakedNak: "10,000 tNAK",
-    uptimePercent: 42.10,
-    missedBlocks: 45,
-    byzantineScore: 88.5,
-    status: "SLASHED_PENALTY",
-    lastProofValid: false,
   },
 ];
 
 export default function HydraSentinelPage() {
   const [nodes, setNodes] = useState<ValidatorNodeSecurity[]>(INITIAL_VALIDATORS);
-  const [currentBlock, setCurrentBlock] = useState<number>(1830);
-  const [activePeers, setActivePeers] = useState<number>(3);
+  const [currentBlock, setCurrentBlock] = useState<number>(0);
+  const [activePeers, setActivePeers] = useState<number>(0);
   const [rateLimitEnabled, setRateLimitEnabled] = useState(true);
   const [sybilShieldActive, setSybilShieldActive] = useState(true);
   const [ipBanInput, setIpBanInput] = useState("");
-  const [bannedIps, setBannedIps] = useState<string[]>(["198.51.100.42", "203.0.113.19"]);
+  const [bannedIps, setBannedIps] = useState<string[]>([]);
   const [arbitrationNotice, setArbitrationNotice] = useState<string | null>(null);
 
-  // Poll live block & validator status
+  // Poll live block & validator status from the public RPC gateway
   const fetchLiveSentinelStats = useCallback(async () => {
     try {
-      const bnRes = await fetch("http://127.0.0.1:8545", {
+      const bnRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: 1 }),
@@ -131,14 +111,14 @@ export default function HydraSentinelPage() {
         setCurrentBlock(parseInt(bnData.result, 16));
       }
 
-      const peerRes = await fetch("http://127.0.0.1:8545", {
+      const peerRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "net_peerCount", params: [], id: 2 }),
       });
       const peerData = await peerRes.json();
       if (peerData.result) {
-        setActivePeers(Math.max(3, parseInt(peerData.result, 16)));
+        setActivePeers(parseInt(peerData.result, 16));
       }
     } catch {
       /* fallback */
@@ -192,30 +172,30 @@ export default function HydraSentinelPage() {
       {/* 4 Architecture Metric Cards */}
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
-          label="Slashing Radar"
-          value="100% Armed"
-          hint="Byzantine fault detection"
+          label="Live Validators"
+          value={`${nodes.length} Nodes`}
+          hint="Genesis quorum mesh"
           icon={<ShieldAlert size={18} />}
           tone="danger"
         />
         <StatCard
-          label="Honest Validators"
-          value={`${activePeers + 1} / 5 Nodes`}
-          hint="Consensus supermajority (>67%)"
+          label="Active Peers"
+          value={activePeers > 0 ? `${activePeers}` : "—"}
+          hint="Reported by live RPC"
           icon={<ShieldCheck size={18} />}
           tone="ai"
         />
         <StatCard
           label="Slashed Stake"
-          value="2,500 tNAK"
-          hint="Total penalties enforced"
+          value="0 tNAK"
+          hint="No penalties enforced"
           icon={<Flame size={18} />}
           tone="warn"
         />
         <StatCard
-          label="Rate Limiting"
-          value="100 req/s"
-          hint="DDoS flood mitigation"
+          label="Current Block"
+          value={currentBlock > 0 ? `#${currentBlock.toLocaleString()}` : "—"}
+          hint="Live chain height"
           icon={<Zap size={18} />}
           tone="violet"
         />
@@ -284,11 +264,10 @@ export default function HydraSentinelPage() {
             {nodes.map((node) => (
               <Card
                 key={node.nodeId}
-                className={`space-y-3 border p-4 transition-all ${
-                  node.status === "SLASHED_PENALTY"
-                    ? "border-red-500/30 bg-red-950/10"
-                    : "border-white/10 bg-slate-950/80 hover:border-emerald-500/30"
-                }`}
+                className={`space-y-3 border p-4 transition-all ${node.status === "SLASHED_PENALTY"
+                  ? "border-red-500/30 bg-red-950/10"
+                  : "border-white/10 bg-slate-950/80 hover:border-emerald-500/30"
+                  }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2.5">
                   <div className="flex items-center gap-2">
@@ -299,11 +278,10 @@ export default function HydraSentinelPage() {
                   </div>
 
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9.5px] font-bold ${
-                      node.status === "ACTIVE_VALID"
-                        ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                        : "border border-red-500/30 bg-red-500/10 text-red-400"
-                    }`}
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[9.5px] font-bold ${node.status === "ACTIVE_VALID"
+                      ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                      : "border border-red-500/30 bg-red-500/10 text-red-400"
+                      }`}
                   >
                     {node.status === "ACTIVE_VALID" ? (
                       <>
@@ -333,9 +311,8 @@ export default function HydraSentinelPage() {
                   <div>
                     <div className="text-slate-500">Byzantine Risk</div>
                     <div
-                      className={`font-semibold ${
-                        node.byzantineScore > 50 ? "text-red-400" : "text-emerald-400"
-                      }`}
+                      className={`font-semibold ${node.byzantineScore > 50 ? "text-red-400" : "text-emerald-400"
+                        }`}
                     >
                       {node.byzantineScore} %
                     </div>
@@ -376,11 +353,10 @@ export default function HydraSentinelPage() {
                 <button
                   type="button"
                   onClick={() => setRateLimitEnabled(!rateLimitEnabled)}
-                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold ${
-                    rateLimitEnabled
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                      : "bg-red-500/20 text-red-300 border border-red-500/30"
-                  }`}
+                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold ${rateLimitEnabled
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    : "bg-red-500/20 text-red-300 border border-red-500/30"
+                    }`}
                 >
                   {rateLimitEnabled ? "ARMED" : "DISARMED"}
                 </button>
@@ -391,11 +367,10 @@ export default function HydraSentinelPage() {
                 <button
                   type="button"
                   onClick={() => setSybilShieldActive(!sybilShieldActive)}
-                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold ${
-                    sybilShieldActive
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                      : "bg-red-500/20 text-red-300 border border-red-500/30"
-                  }`}
+                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold ${sybilShieldActive
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    : "bg-red-500/20 text-red-300 border border-red-500/30"
+                    }`}
                 >
                   {sybilShieldActive ? "ACTIVE" : "BYPASSED"}
                 </button>

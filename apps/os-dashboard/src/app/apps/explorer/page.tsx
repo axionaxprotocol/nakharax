@@ -83,7 +83,9 @@ export default function BlockExplorerPage() {
       if (!bnData.result) return;
       const latestBlockNum = parseInt(bnData.result, 16);
       setCurrentBlock(latestBlockNum);
-      setTotalTxsCount(latestBlockNum * 2 + 14);
+      // Total transaction count is derived only from real on-chain blocks below —
+      // no fabricated formula is applied.
+      setTotalTxsCount(0);
 
       // 2. Fetch peer/validator count
       try {
@@ -94,13 +96,14 @@ export default function BlockExplorerPage() {
         });
         const peerData = await peerRes.json();
         if (peerData.result) {
-          setActiveValidators(Math.max(3, parseInt(peerData.result, 16)));
+          setActiveValidators(parseInt(peerData.result, 16));
         }
       } catch {
         /* ignore */
       }
 
-      // 3. Fetch latest 4 blocks from live RPC
+      // 3. Fetch latest 4 blocks from live RPC. Only real on-chain blocks are shown —
+      // no fabricated hashes, validators, gas, rewards, or proof roots are injected.
       const blockPromises = [0, 1, 2, 3].map(async (offset) => {
         const num = latestBlockNum - offset;
         if (num < 0) return null;
@@ -117,36 +120,32 @@ export default function BlockExplorerPage() {
           });
           const data = await res.json();
           const block = data.result;
-          if (block) {
-            return {
-              height: num,
-              hash: block.hash || `0x${num.toString(16).padStart(64, "0")}`,
-              validator: block.miner || "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-              txsCount: Array.isArray(block.transactions) ? block.transactions.length : (num % 5) + 1,
-              gasUsed: `${parseInt(block.gasUsed || "0x15f90", 16).toLocaleString()} (${((parseInt(block.gasUsed || "0x15f90", 16) / 30000000) * 100).toFixed(1)}%)`,
-              computeProofHash: block.stateRoot?.slice(0, 22) || `0x3a9f${num}bc048291e0a8`,
-              timestamp: `${offset * 3}s ago`,
-              rewardNak: "2.5 tNAK",
-            };
-          }
+          if (!block) return null;
+          const txsCount = Array.isArray(block.transactions) ? block.transactions.length : 0;
+          const gasUsedHex = block.gasUsed || "0x0";
+          const gasUsedNum = parseInt(gasUsedHex, 16);
+          const gasLimitNum = parseInt(block.gasLimit || "0x0", 16);
+          const gasPct = gasLimitNum > 0 ? ((gasUsedNum / gasLimitNum) * 100).toFixed(1) : "0.0";
+          return {
+            height: num,
+            hash: block.hash || "0x",
+            validator: block.miner || "0x",
+            txsCount,
+            gasUsed: `${gasUsedNum.toLocaleString()} (${gasPct}%)`,
+            computeProofHash: block.stateRoot?.slice(0, 22) || "0x",
+            timestamp: "—",
+            rewardNak: "—",
+          };
         } catch {
-          /* fallback below */
+          return null;
         }
-        return {
-          height: num,
-          hash: `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map(b => b.toString(16).padStart(2, "0")).join("")}`,
-          validator: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-          txsCount: 2,
-          gasUsed: "120,000 (0.4%)",
-          computeProofHash: `0x${num}a81bc048291e`,
-          timestamp: `${offset * 3}s ago`,
-          rewardNak: "2.5 tNAK",
-        };
       });
 
       const fetchedBlocks = (await Promise.all(blockPromises)).filter(Boolean) as RealBlockData[];
       if (fetchedBlocks.length > 0) {
         setBlocks(fetchedBlocks);
+        // Total transactions = sum of real tx counts across the latest blocks.
+        setTotalTxsCount(fetchedBlocks.reduce((acc, b) => acc + b.txsCount, 0));
       }
 
       // 4. Fetch real on-chain transactions from live RPC
@@ -175,19 +174,9 @@ export default function BlockExplorerPage() {
           }));
           setTransactions(mappedTxs);
         } else {
-          // Fallback recent template if mempool empty
-          setTransactions([
-            {
-              txHash: `0x9fa1${latestBlockNum}b29837410eb01928374a81029384710bc89`,
-              blockHeight: latestBlockNum,
-              from: "0x0000000000000000000000000000000000000001",
-              to: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-              valueNak: "100.00 tNAK",
-              type: "FAUCET_DISPENSE",
-              status: "CONFIRMED_POPC",
-              age: "Just now",
-            },
-          ]);
+          // No fabricated transactions are injected. If the mempool is empty, the
+          // list stays empty and an honest empty state is shown.
+          setTransactions([]);
         }
       } catch {
         /* ignore */
@@ -232,14 +221,7 @@ export default function BlockExplorerPage() {
         setSearchResult({
           type: "BLOCK",
           query: `Block #${num}`,
-          data: data.result || {
-            number: num,
-            hash: `0x${num.toString(16).padStart(64, "0")}`,
-            miner: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-            gasUsed: "120,000",
-            gasLimit: "30,000,000",
-            proof: "Verified PoPC STARK Receipt",
-          },
+          data: data.result || { message: "Block not found on current chain." },
         });
       } else if (query.startsWith("0x")) {
         // Address or Tx Hash
@@ -261,9 +243,9 @@ export default function BlockExplorerPage() {
             query: `Account ${query.slice(0, 10)}...`,
             data: {
               address: query,
-              balance: data.result ? `${parseInt(data.result, 16) / 1e18} tNAK` : "100.00 tNAK",
+              balance: data.result ? `${parseInt(data.result, 16) / 1e18} tNAK` : "0 tNAK",
               nonce: 0,
-              type: "Sovereign Agent Vault",
+              type: "On-Chain Account",
             },
           });
         } else {
@@ -301,10 +283,9 @@ export default function BlockExplorerPage() {
               query: `Tx ${query.slice(0, 12)}...`,
               data: {
                 hash: query,
-                status: "CONFIRMED_POPC (Finalized)",
+                status: "NOT_FOUND",
                 block: currentBlock,
-                gasFee: "0.00012 tNAK",
-                type: "DEAI_COMPUTE_EXECUTION",
+                message: "Transaction not found on current chain.",
               },
             });
           }
@@ -331,8 +312,8 @@ export default function BlockExplorerPage() {
           <StatusPill tone="chain" pulse>
             {currentBlock != null ? `Live Block #${currentBlock.toLocaleString()}` : "Connecting to Node..."}
           </StatusPill>
-          <StatusPill tone="ai">PoPC Fast-Finality (2.84s)</StatusPill>
-          <StatusPill tone="violet">RPC: http://127.0.0.1:8545</StatusPill>
+          <StatusPill tone="ai">PoPC Consensus (3.0s Cadence)</StatusPill>
+          <StatusPill tone="violet">RPC: /api/rpc</StatusPill>
         </>
       }
       actions={
@@ -350,7 +331,7 @@ export default function BlockExplorerPage() {
         <StatCard
           label="Block Height"
           value={currentBlock != null ? `#${currentBlock.toLocaleString()}` : "Syncing..."}
-          hint="Cadence: 2.84s (Live RPC)"
+          hint="Cadence: 3.0s (Live RPC)"
           icon={<Boxes size={18} />}
           tone="chain"
         />
@@ -386,7 +367,7 @@ export default function BlockExplorerPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by Block Height (e.g. 1820) / Transaction Hash (0x...) / Account Address..."
+              placeholder="Search by Block Height / Transaction Hash (0x...) / Account Address..."
               className="w-full rounded-xl border border-white/10 bg-black/50 py-2.5 pl-10 pr-4 font-mono text-xs text-white placeholder:text-slate-500 focus:border-emerald-500/50 focus:outline-none"
             />
           </div>
@@ -429,35 +410,48 @@ export default function BlockExplorerPage() {
           />
 
           <div className="space-y-2.5">
-            {blocks.map((b) => (
-              <Card key={b.height} className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-emerald-500/30">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-xs font-bold text-cyan-300">
-                      #{b.height.toLocaleString()}
-                    </span>
-                    <span className="text-[11px] font-mono text-slate-400">{b.timestamp}</span>
+            {blocks.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-white/10 bg-slate-950/40 p-8 text-center">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-cyan-500/20 bg-cyan-500/5 text-cyan-400/60">
+                  <Boxes size={18} />
+                </span>
+                <p className="text-[13px] font-semibold text-slate-200">No Blocks Loaded</p>
+                <p className="max-w-sm text-[11px] font-mono leading-relaxed text-slate-500">
+                  Waiting for live block data from the RPC node. Only real on-chain blocks are
+                  displayed — no placeholder blocks are injected.
+                </p>
+              </div>
+            ) : (
+              blocks.map((b) => (
+                <Card key={b.height} className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-emerald-500/30">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-xs font-bold text-cyan-300">
+                        #{b.height.toLocaleString()}
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-400">{b.timestamp}</span>
+                    </div>
+                    <span className="text-xs font-mono font-semibold text-emerald-400">+{b.rewardNak}</span>
                   </div>
-                  <span className="text-xs font-mono font-semibold text-emerald-400">+{b.rewardNak}</span>
-                </div>
 
-                <div className="text-[11px] font-mono text-slate-300">
-                  <div className="flex justify-between truncate">
-                    <span className="text-slate-400">Validator:</span>
-                    <span className="truncate ml-2 text-white">{b.validator.slice(0, 16)}...</span>
+                  <div className="text-[11px] font-mono text-slate-300">
+                    <div className="flex justify-between truncate">
+                      <span className="text-slate-400">Validator:</span>
+                      <span className="truncate ml-2 text-white">{b.validator.slice(0, 16)}...</span>
+                    </div>
+                    <div className="flex justify-between truncate mt-0.5">
+                      <span className="text-slate-400">State Root:</span>
+                      <span className="text-violet-300 font-mono">{b.computeProofHash}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between truncate mt-0.5">
-                    <span className="text-slate-400">State Root:</span>
-                    <span className="text-violet-300 font-mono">{b.computeProofHash}</span>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono text-slate-400">
-                  <span>Transactions: <strong className="text-white">{b.txsCount} txs</strong></span>
-                  <span>Gas Used: <strong className="text-emerald-300">{b.gasUsed}</strong></span>
-                </div>
-              </Card>
-            ))}
+                  <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono text-slate-400">
+                    <span>Transactions: <strong className="text-white">{b.txsCount} txs</strong></span>
+                    <span>Gas Used: <strong className="text-emerald-300">{b.gasUsed}</strong></span>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </div>
 
@@ -471,69 +465,78 @@ export default function BlockExplorerPage() {
           </div>
 
           <div className="space-y-2.5">
-            {transactions.map((tx) => (
-              <Card
-                key={tx.txHash}
-                onClick={() =>
-                  setSearchResult({
-                    type: "TRANSACTION",
-                    query: `Tx ${tx.txHash.slice(0, 14)}...`,
-                    data: {
-                      hash: tx.txHash,
-                      from: tx.from,
-                      to: tx.to,
-                      value: tx.valueNak,
-                      type: tx.type,
-                      blockHeight: tx.blockHeight,
-                      status: tx.status,
-                      gasUsed: "21,000 (0.000021 tNAK)",
-                      popcProofRoot: "0x89f2a0b4c810de93847a1029384710bc89",
-                      starkPolynomialDegree: "1,024 constraints (FRI Fast Path)",
-                    },
-                  })
-                }
-                className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-cyan-500/30 cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`rounded-md px-2 py-0.5 font-mono text-[10px] font-bold ${
-                        tx.type === "DEAI_COMPUTE_JOB"
+            {transactions.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-white/10 bg-slate-950/40 p-8 text-center">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400/60">
+                  <Activity size={18} />
+                </span>
+                <p className="text-[13px] font-semibold text-slate-200">No Transactions Yet</p>
+                <p className="max-w-sm text-[11px] font-mono leading-relaxed text-slate-500">
+                  The mempool is empty. No fabricated transactions are shown — the list reflects
+                  only real on-chain transactions returned by the RPC node.
+                </p>
+              </div>
+            ) : (
+              transactions.map((tx) => (
+                <Card
+                  key={tx.txHash}
+                  onClick={() =>
+                    setSearchResult({
+                      type: "TRANSACTION",
+                      query: `Tx ${tx.txHash.slice(0, 14)}...`,
+                      data: {
+                        hash: tx.txHash,
+                        from: tx.from,
+                        to: tx.to,
+                        value: tx.valueNak,
+                        type: tx.type,
+                        blockHeight: tx.blockHeight,
+                        status: tx.status,
+                      },
+                    })
+                  }
+                  className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-cyan-500/30 cursor-pointer"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`rounded-md px-2 py-0.5 font-mono text-[10px] font-bold ${tx.type === "DEAI_COMPUTE_JOB"
                           ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
                           : tx.type === "MCP_TOOL_CALL"
-                          ? "border border-violet-500/30 bg-violet-500/10 text-violet-300"
-                          : tx.type === "LORA_WEIGHT_MERGE"
-                          ? "border border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
-                          : "border border-amber-500/30 bg-amber-500/10 text-amber-300"
-                      }`}
-                    >
-                      {tx.type}
+                            ? "border border-violet-500/30 bg-violet-500/10 text-violet-300"
+                            : tx.type === "LORA_WEIGHT_MERGE"
+                              ? "border border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
+                              : "border border-amber-500/30 bg-amber-500/10 text-amber-300"
+                          }`}
+                      >
+                        {tx.type}
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-400">{tx.age}</span>
+                    </div>
+                    <span className="text-xs font-mono font-bold text-white">{tx.valueNak}</span>
+                  </div>
+
+                  <div className="text-[11px] font-mono text-slate-300">
+                    <div className="flex justify-between truncate">
+                      <span className="text-slate-400">From:</span>
+                      <span className="truncate ml-2 text-slate-300">{tx.from.slice(0, 14)}...</span>
+                    </div>
+                    <div className="flex justify-between truncate mt-0.5">
+                      <span className="text-slate-400">To:</span>
+                      <span className="truncate ml-2 text-slate-300">{tx.to.slice(0, 14)}...</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono">
+                    <span className="text-slate-400 truncate mr-2">Hash: {tx.txHash.slice(0, 18)}...</span>
+                    <span className="inline-flex items-center gap-1 text-emerald-400 font-bold shrink-0">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      {tx.status}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">{tx.age}</span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-white">{tx.valueNak}</span>
-                </div>
-
-                <div className="text-[11px] font-mono text-slate-300">
-                  <div className="flex justify-between truncate">
-                    <span className="text-slate-400">From:</span>
-                    <span className="truncate ml-2 text-slate-300">{tx.from.slice(0, 14)}...</span>
-                  </div>
-                  <div className="flex justify-between truncate mt-0.5">
-                    <span className="text-slate-400">To:</span>
-                    <span className="truncate ml-2 text-slate-300">{tx.to.slice(0, 14)}...</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono">
-                  <span className="text-slate-400 truncate mr-2">Hash: {tx.txHash.slice(0, 18)}...</span>
-                  <span className="inline-flex items-center gap-1 text-emerald-400 font-bold shrink-0">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    {tx.status}
-                  </span>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </div>

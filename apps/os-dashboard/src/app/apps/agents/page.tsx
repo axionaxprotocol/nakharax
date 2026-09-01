@@ -42,38 +42,9 @@ import {
 import { SelfEvolvingAgentSandbox } from "@/components/self-evolving-agent-sandbox";
 import type { SovereignAgentIdentity } from "@nakharax/sdk";
 
-const INITIAL_AGENTS: SovereignAgentIdentity[] = [
-  {
-    agentId: "did:nakharax:0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    name: "NOESIS-VX Reasoning Prover",
-    ownerAddress: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    balanceWei: "250.0",
-    reputationScore: 99.9,
-    activeSkills: ["mcp-deepseek-reasoner", "mcp-onchain-indexer"],
-    totalJobsExecuted: 1420,
-    createdAt: Date.now() - 86400000 * 14,
-  },
-  {
-    agentId: "did:nakharax:0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    name: "Hydra Security Auditor Agent",
-    ownerAddress: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    balanceWei: "180.5",
-    reputationScore: 99.4,
-    activeSkills: ["mcp-sec-auditor", "mcp-docker-sandbox"],
-    totalJobsExecuted: 890,
-    createdAt: Date.now() - 86400000 * 9,
-  },
-  {
-    agentId: "did:nakharax:0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    name: "TIES Weight Merger Specialist",
-    ownerAddress: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    balanceWei: "420.0",
-    reputationScore: 99.8,
-    activeSkills: ["mcp-ties-weight-merger", "mcp-web-scout"],
-    totalJobsExecuted: 3120,
-    createdAt: Date.now() - 86400000 * 21,
-  },
-];
+// No sovereign agents are registered on-chain yet. The fleet list is populated
+// only from real on-chain DID registrations — no fabricated agents or balances.
+const INITIAL_AGENTS: SovereignAgentIdentity[] = [];
 
 export default function SovereignAgentsPage() {
   const [agents, setAgents] = useState<SovereignAgentIdentity[]>(INITIAL_AGENTS);
@@ -203,52 +174,63 @@ export default function SovereignAgentsPage() {
             subtitle="Autonomous on-chain identities executing tasks and micro-payments"
           />
 
-          {agents.map((agent) => (
-            <Card key={agent.agentId} className="space-y-3 border-white/10 bg-slate-950/80">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2.5">
-                  <IconBadge Icon={Bot} tone="ai" className="h-10 w-10" />
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-[14px] font-bold text-white">{agent.name}</h3>
-                      <span className="inline-flex items-center gap-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.2 text-[9px] font-mono text-emerald-300">
-                        {agent.reputationScore}% Rep
-                      </span>
-                    </div>
-                    <code className="text-[10.5px] font-mono text-cyan-400">
-                      {agent.agentId}
-                    </code>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <div className="text-[13px] font-mono font-bold text-emerald-400">
-                    {agent.balanceWei} tNAK
-                  </div>
-                  <div className="text-[9.5px] font-mono text-slate-500">
-                    Agent Vault
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5">
-                {agent.activeSkills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-mono text-slate-300"
-                  >
-                    <Plug size={10} className="text-emerald-400" />
-                    {skill}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono text-slate-400">
-                <span>Owner: {agent.ownerAddress.slice(0, 10)}...</span>
-                <span>{agent.totalJobsExecuted.toLocaleString()} tasks completed</span>
-              </div>
+          {agents.length === 0 ? (
+            <Card className="flex flex-col items-center justify-center gap-2 border-dashed border-white/10 bg-slate-950/40 p-8 text-center">
+              <IconBadge Icon={Bot} tone="ai" className="h-10 w-10 opacity-60" />
+              <p className="text-[13px] font-semibold text-slate-200">No Sovereign Agents Registered</p>
+              <p className="max-w-sm text-[11px] font-mono leading-relaxed text-slate-500">
+                No autonomous agents have been minted on-chain yet. Use the Mint Sovereign Agent DID
+                studio to deploy your first on-chain identity with a dedicated keypair and MCP skills.
+              </p>
             </Card>
-          ))}
+          ) : (
+            agents.map((agent) => (
+              <Card key={agent.agentId} className="space-y-3 border-white/10 bg-slate-950/80">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <IconBadge Icon={Bot} tone="ai" className="h-10 w-10" />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-[14px] font-bold text-white">{agent.name}</h3>
+                        <span className="inline-flex items-center gap-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.2 text-[9px] font-mono text-emerald-300">
+                          {agent.reputationScore}% Rep
+                        </span>
+                      </div>
+                      <code className="text-[10.5px] font-mono text-cyan-400">
+                        {agent.agentId}
+                      </code>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className="text-[13px] font-mono font-bold text-emerald-400">
+                      {agent.balanceWei} tNAK
+                    </div>
+                    <div className="text-[9.5px] font-mono text-slate-500">
+                      Agent Vault
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {agent.activeSkills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-mono text-slate-300"
+                    >
+                      <Plug size={10} className="text-emerald-400" />
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[10.5px] font-mono text-slate-400">
+                  <span>Owner: {agent.ownerAddress.slice(0, 10)}...</span>
+                  <span>{agent.totalJobsExecuted.toLocaleString()} tasks completed</span>
+                </div>
+              </Card>
+            ))
+          )}
         </div>
 
         {/* Right Column: Mint New Sovereign Agent */}
@@ -302,8 +284,8 @@ export default function SovereignAgentsPage() {
                       type="button"
                       onClick={() => toggleSkill(skill.id)}
                       className={`w-full flex items-center justify-between p-2 rounded-xl border text-left transition-all ${isSelected
-                          ? "border-emerald-500/50 bg-emerald-500/10 text-white"
-                          : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06]"
+                        ? "border-emerald-500/50 bg-emerald-500/10 text-white"
+                        : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06]"
                         }`}
                     >
                       <span className="text-[11px] font-semibold">{skill.label}</span>

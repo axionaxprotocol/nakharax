@@ -102,64 +102,10 @@ export default function GovernancePage() {
       const pJson = await pRes.json();
       const loadedProposals = pJson.result || [];
 
-      // If no proposals exist yet, provide canonical foundational proposals
-      if (loadedProposals.length === 0) {
-        setProposals([
-          {
-            id: 1,
-            proposer: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-            title: "NXP-01: Mainnet Economics Ratification (Option A - 1,000 NAK/block)",
-            description: "Ratify Option A for Mainnet tokenomics: 1 Trillion fixed supply, 1.0s block cadence, 1,000 NAK block rewards with 4-year halving cycle, and 50% Burn / 30% DAO Treasury fee split.",
-            type: "upgrade:tokenomics_option_a",
-            stake: 100000,
-            createdBlock: liveBlock - 200,
-            snapshotBlock: liveBlock - 201,
-            endBlock: liveBlock + 201400,
-            timelockEndBlock: 0,
-            status: "ACTIVE_VOTING",
-            votesFor: 854000,
-            votesAgainst: 12500,
-            votesAbstain: 5000,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            proposer: "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
-            title: "NXP-02: ASR Compute Pool Expansion & Top-K Size to 128 Workers",
-            description: "Expand the Auto-Selection Router (ASR) Top-K pool from 64 to 128 to accommodate global GPU miner surge and lower decentralized inference latency.",
-            type: "parameter:asr_router.top_k_size=128",
-            stake: 100000,
-            createdBlock: liveBlock - 500,
-            snapshotBlock: liveBlock - 501,
-            endBlock: liveBlock + 201100,
-            timelockEndBlock: 0,
-            status: "ACTIVE_VOTING",
-            votesFor: 642100,
-            votesAgainst: 4200,
-            votesAbstain: 1100,
-            createdAt: new Date().toISOString(),
-          },
-          {
-            id: 3,
-            proposer: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
-            title: "NXP-03: STARK FRI 1,024 Constraints Polynomial Optimization",
-            description: "Deploy optimized vectorized SIMD kernel for PoPC STARK FRI Polynomial Verification, reducing GPU verification latency from 1.96ms to 0.88ms.",
-            type: "upgrade:popc_stark_fri_simd",
-            stake: 100000,
-            createdBlock: liveBlock - 1200,
-            snapshotBlock: liveBlock - 1201,
-            endBlock: liveBlock - 50,
-            timelockEndBlock: liveBlock + 604000,
-            status: "TIMELOCK_QUEUED",
-            votesFor: 1250000,
-            votesAgainst: 0,
-            votesAbstain: 0,
-            createdAt: new Date(Date.now() - 86400000).toISOString(),
-          },
-        ]);
-      } else {
-        setProposals(loadedProposals);
-      }
+      // No canonical/fabricated proposals are injected. The list reflects only
+      // real on-chain proposals returned by gov_getProposals. If none exist yet,
+      // an honest empty state is shown until a proposal is created on-chain.
+      setProposals(loadedProposals);
 
       // 3. Fetch Gov Stats
       const sRes = await fetch("/api/rpc", {
@@ -265,13 +211,12 @@ export default function GovernancePage() {
       {/* Action Notification Banner */}
       {actionHint && (
         <div
-          className={`mb-6 flex items-center justify-between rounded-xl border p-4 text-xs font-mono transition-all ${
-            actionHint.type === "success"
-              ? "border-emerald-500/30 bg-emerald-950/40 text-emerald-300"
-              : actionHint.type === "error"
+          className={`mb-6 flex items-center justify-between rounded-xl border p-4 text-xs font-mono transition-all ${actionHint.type === "success"
+            ? "border-emerald-500/30 bg-emerald-950/40 text-emerald-300"
+            : actionHint.type === "error"
               ? "border-rose-500/30 bg-rose-950/40 text-rose-300"
               : "border-cyan-500/30 bg-cyan-950/40 text-cyan-300"
-          }`}
+            }`}
         >
           <div className="flex items-center gap-2.5">
             {actionHint.type === "success" && <CheckCircle2 className="h-4 w-4 text-emerald-400" />}
@@ -369,119 +314,134 @@ export default function GovernancePage() {
 
           {/* Proposals Feed */}
           <div className="space-y-4">
-            {proposals.map((proposal) => {
-              const totalVotes = proposal.votesFor + proposal.votesAgainst + proposal.votesAbstain;
-              const forPercent = totalVotes > 0 ? ((proposal.votesFor / totalVotes) * 100).toFixed(1) : "0.0";
-              const againstPercent = totalVotes > 0 ? ((proposal.votesAgainst / totalVotes) * 100).toFixed(1) : "0.0";
+            {proposals.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/10 bg-slate-950/40 p-10 text-center">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl border border-cyan-500/20 bg-cyan-500/5 text-cyan-400/60">
+                  <Vote size={22} />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-200">No On-Chain Proposals Yet</p>
+                  <p className="mx-auto mt-1 max-w-sm text-xs font-mono leading-relaxed text-slate-500">
+                    No governance proposals have been created on-chain. The feed reflects only real
+                    proposals returned by gov_getProposals — no fabricated proposals or votes are
+                    injected. Create the first proposal to start DAO voting.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              proposals.map((proposal) => {
+                const totalVotes = proposal.votesFor + proposal.votesAgainst + proposal.votesAbstain;
+                const forPercent = totalVotes > 0 ? ((proposal.votesFor / totalVotes) * 100).toFixed(1) : "0.0";
+                const againstPercent = totalVotes > 0 ? ((proposal.votesAgainst / totalVotes) * 100).toFixed(1) : "0.0";
 
-              return (
-                <div
-                  key={proposal.id}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-6 transition-all hover:border-cyan-500/40 hover:bg-slate-950/90"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-3 border-b border-white/5 pb-4">
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <span className="font-mono text-xs text-neutral-400">NXP-0{proposal.id}</span>
-                        <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase ${
-                            proposal.status === "ACTIVE_VOTING"
+                return (
+                  <div
+                    key={proposal.id}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 p-6 transition-all hover:border-cyan-500/40 hover:bg-slate-950/90"
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3 border-b border-white/5 pb-4">
+                      <div>
+                        <div className="flex items-center gap-2.5">
+                          <span className="font-mono text-xs text-neutral-400">NXP-0{proposal.id}</span>
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase ${proposal.status === "ACTIVE_VOTING"
                               ? "border border-cyan-500/40 bg-cyan-500/10 text-cyan-300"
                               : proposal.status === "TIMELOCK_QUEUED"
-                              ? "border border-amber-500/40 bg-amber-500/10 text-amber-300"
-                              : proposal.status === "EXECUTED"
-                              ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
-                              : "border border-rose-500/40 bg-rose-500/10 text-rose-300"
-                          }`}
-                        >
-                          {proposal.status.replace("_", " ")}
+                                ? "border border-amber-500/40 bg-amber-500/10 text-amber-300"
+                                : proposal.status === "EXECUTED"
+                                  ? "border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+                                  : "border border-rose-500/40 bg-rose-500/10 text-rose-300"
+                              }`}
+                          >
+                            {proposal.status.replace("_", " ")}
+                          </span>
+                          <span className="font-mono text-[11px] text-neutral-500">
+                            Type: {proposal.type.split(":")[0]}
+                          </span>
+                        </div>
+                        <h3 className="mt-1.5 text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                          {proposal.title}
+                        </h3>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-[11px] font-mono text-neutral-400">
+                          Snapshot: Block #{proposal.snapshotBlock.toLocaleString()}
+                        </p>
+                        <p className="text-[11px] font-mono text-neutral-500">
+                          Stake: {proposal.stake.toLocaleString()} $tNAK
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="mt-4 text-xs text-neutral-300 leading-relaxed">
+                      {proposal.description}
+                    </p>
+
+                    {/* Voting Progress Bar */}
+                    <div className="mt-5 space-y-2">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="text-emerald-300">FOR: {forPercent}% ({proposal.votesFor.toLocaleString()} votes)</span>
+                        <span className="text-rose-300">AGAINST: {againstPercent}% ({proposal.votesAgainst.toLocaleString()} votes)</span>
+                      </div>
+
+                      <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/5 p-0.5 border border-white/10 flex gap-1">
+                        <div
+                          className="h-full rounded-full bg-emerald-500 transition-all"
+                          style={{ width: `${Math.max(2, parseFloat(forPercent))}%` }}
+                        />
+                        <div
+                          className="h-full rounded-full bg-rose-500 transition-all"
+                          style={{ width: `${Math.max(0, parseFloat(againstPercent))}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Action Bar (Voting Buttons) */}
+                    {proposal.status === "ACTIVE_VOTING" && (
+                      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/5">
+                        <div className="flex items-center gap-2 text-xs text-neutral-400 font-mono">
+                          <Clock className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
+                          <span>Voting closes at Block #{proposal.endBlock.toLocaleString()}</span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleCastVote(proposal.id, "for")}
+                            disabled={votingOnId === proposal.id}
+                            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-mono font-bold text-emerald-300 hover:bg-emerald-500/20 transition-all disabled:opacity-50"
+                          >
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            <span>Vote FOR</span>
+                          </button>
+
+                          <button
+                            onClick={() => handleCastVote(proposal.id, "against")}
+                            disabled={votingOnId === proposal.id}
+                            className="flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3.5 py-1.5 text-xs font-mono font-bold text-rose-300 hover:bg-rose-500/20 transition-all disabled:opacity-50"
+                          >
+                            <XCircle className="h-3.5 w-3.5" />
+                            <span>Vote AGAINST</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {proposal.status === "TIMELOCK_QUEUED" && (
+                      <div className="mt-5 flex items-center justify-between pt-4 border-t border-white/5 text-xs font-mono text-amber-300">
+                        <div className="flex items-center gap-2">
+                          <Lock className="h-4 w-4 text-amber-400" />
+                          <span>Security Timelock Active: Executable at Block #{proposal.timelockEndBlock?.toLocaleString()}</span>
+                        </div>
+                        <span className="rounded bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[11px]">
+                          Anti-Flashloan Safe
                         </span>
-                        <span className="font-mono text-[11px] text-neutral-500">
-                          Type: {proposal.type.split(":")[0]}
-                        </span>
                       </div>
-                      <h3 className="mt-1.5 text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                        {proposal.title}
-                      </h3>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-[11px] font-mono text-neutral-400">
-                        Snapshot: Block #{proposal.snapshotBlock.toLocaleString()}
-                      </p>
-                      <p className="text-[11px] font-mono text-neutral-500">
-                        Stake: {proposal.stake.toLocaleString()} $tNAK
-                      </p>
-                    </div>
+                    )}
                   </div>
-
-                  <p className="mt-4 text-xs text-neutral-300 leading-relaxed">
-                    {proposal.description}
-                  </p>
-
-                  {/* Voting Progress Bar */}
-                  <div className="mt-5 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-emerald-300">FOR: {forPercent}% ({proposal.votesFor.toLocaleString()} votes)</span>
-                      <span className="text-rose-300">AGAINST: {againstPercent}% ({proposal.votesAgainst.toLocaleString()} votes)</span>
-                    </div>
-
-                    <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/5 p-0.5 border border-white/10 flex gap-1">
-                      <div
-                        className="h-full rounded-full bg-emerald-500 transition-all"
-                        style={{ width: `${Math.max(2, parseFloat(forPercent))}%` }}
-                      />
-                      <div
-                        className="h-full rounded-full bg-rose-500 transition-all"
-                        style={{ width: `${Math.max(0, parseFloat(againstPercent))}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Action Bar (Voting Buttons) */}
-                  {proposal.status === "ACTIVE_VOTING" && (
-                    <div className="mt-5 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/5">
-                      <div className="flex items-center gap-2 text-xs text-neutral-400 font-mono">
-                        <Clock className="h-3.5 w-3.5 text-cyan-400 animate-pulse" />
-                        <span>Voting closes at Block #{proposal.endBlock.toLocaleString()}</span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleCastVote(proposal.id, "for")}
-                          disabled={votingOnId === proposal.id}
-                          className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-mono font-bold text-emerald-300 hover:bg-emerald-500/20 transition-all disabled:opacity-50"
-                        >
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          <span>Vote FOR</span>
-                        </button>
-
-                        <button
-                          onClick={() => handleCastVote(proposal.id, "against")}
-                          disabled={votingOnId === proposal.id}
-                          className="flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3.5 py-1.5 text-xs font-mono font-bold text-rose-300 hover:bg-rose-500/20 transition-all disabled:opacity-50"
-                        >
-                          <XCircle className="h-3.5 w-3.5" />
-                          <span>Vote AGAINST</span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {proposal.status === "TIMELOCK_QUEUED" && (
-                    <div className="mt-5 flex items-center justify-between pt-4 border-t border-white/5 text-xs font-mono text-amber-300">
-                      <div className="flex items-center gap-2">
-                        <Lock className="h-4 w-4 text-amber-400" />
-                        <span>Security Timelock Active: Executable at Block #{proposal.timelockEndBlock?.toLocaleString()}</span>
-                      </div>
-                      <span className="rounded bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[11px]">
-                        Anti-Flashloan Safe
-                      </span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -502,33 +462,29 @@ export default function GovernancePage() {
             <div className="mt-4 flex gap-1 rounded-xl bg-white/5 p-1 text-xs font-mono">
               <button
                 onClick={() => setActiveParamTab("economic_dao")}
-                className={`flex-1 rounded-lg py-1.5 transition-colors ${
-                  activeParamTab === "economic_dao" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 transition-colors ${activeParamTab === "economic_dao" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 Economic
               </button>
               <button
                 onClick={() => setActiveParamTab("consensus_popc")}
-                className={`flex-1 rounded-lg py-1.5 transition-colors ${
-                  activeParamTab === "consensus_popc" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 transition-colors ${activeParamTab === "consensus_popc" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 PoPC
               </button>
               <button
                 onClick={() => setActiveParamTab("asr_router")}
-                className={`flex-1 rounded-lg py-1.5 transition-colors ${
-                  activeParamTab === "asr_router" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 transition-colors ${activeParamTab === "asr_router" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 ASR
               </button>
               <button
                 onClick={() => setActiveParamTab("ppc_pricing")}
-                className={`flex-1 rounded-lg py-1.5 transition-colors ${
-                  activeParamTab === "ppc_pricing" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
-                }`}
+                className={`flex-1 rounded-lg py-1.5 transition-colors ${activeParamTab === "ppc_pricing" ? "bg-cyan-500 font-bold text-slate-950" : "text-neutral-400 hover:text-white"
+                  }`}
               >
                 PPC
               </button>
@@ -540,11 +496,11 @@ export default function GovernancePage() {
                 <>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                     <span className="text-neutral-400">Block Cadence</span>
-                    <span className="text-cyan-300 font-bold">1.0s (1,000ms)</span>
+                    <span className="text-cyan-300 font-bold">3.0s</span>
                   </div>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                     <span className="text-neutral-400">Genesis Block Reward (Mainnet)</span>
-                    <span className="text-emerald-300 font-bold">1,000 NAK (Option A)</span>
+                    <span className="text-emerald-300 font-bold">TBD (Governance)</span>
                   </div>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                     <span className="text-neutral-400">EIP-1559 Fee Burn</span>
@@ -569,7 +525,7 @@ export default function GovernancePage() {
                 <>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                     <span className="text-neutral-400">Sample Size (s)</span>
-                    <span className="text-cyan-300 font-bold">1,000 constraints</span>
+                    <span className="text-cyan-300 font-bold">TBD (Governance)</span>
                   </div>
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                     <span className="text-neutral-400">Replica Redundancy (β)</span>

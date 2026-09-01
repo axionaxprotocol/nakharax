@@ -14,12 +14,10 @@ import {
   Cpu,
   Database,
   Download,
-  Flame,
   Gauge,
   Globe,
   HardDrive,
   Laptop,
-  Leaf,
   Play,
   Power,
   RefreshCw,
@@ -28,7 +26,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   Sliders,
-  Sparkles,
   Square,
   Terminal,
   Zap,
@@ -51,22 +48,10 @@ export default function WorkerManagerPage() {
   const [nodeTier, setNodeTier] = useState("Tier 2: Pro DeAI Compute Node");
   const [activeTab, setActiveTab] = useState<"browser" | "cli">("browser");
 
-  // Node Overload Protection & Intensity Profile
-  const [intensityMode, setIntensityMode] = useState<"eco" | "balanced" | "max">("balanced");
-  const [isThermalProtected, setIsThermalProtected] = useState(true);
-
-  // In-Browser Mining Engine State
+  // In-Browser Worker Session State
   const [isBrowserMining, setIsBrowserMining] = useState(false);
-  const [browserHashrate, setBrowserHashrate] = useState(0);
-  const [browserJobsCompleted, setBrowserJobsCompleted] = useState(0);
   const [browserLogs, setBrowserLogs] = useState<string[]>([]);
   const miningLoopRef = useRef<boolean>(false);
-  const intensityRef = useRef<"eco" | "balanced" | "max">("balanced");
-
-  // Keep intensity ref in sync with state
-  useEffect(() => {
-    intensityRef.current = intensityMode;
-  }, [intensityMode]);
 
   // Sync worker address with active MetaMask account or saved vault
   useEffect(() => {
@@ -132,18 +117,24 @@ export default function WorkerManagerPage() {
         setNodeTier("Tier 3: Edge Micro-Worker (STARK FRI ZKP & Acoustic Mesh)");
       }
     } catch {
-      setGpuName("NVIDIA GeForce GTX 1070 Ti (8GB VRAM)");
+      setGpuName("Unknown / Not Detected");
     }
   }, []);
 
-  // In-Browser Real Matrix Compute Engine with Anti-Overload Governor
+  // Register this browser session as a worker on-chain via live RPC.
+  // No fabricated hashrate, job count, or proof hash is injected — the
+  // terminal reflects only the real response from the RPC node.
   const startBrowserMining = async () => {
     setIsBrowserMining(true);
     miningLoopRef.current = true;
+    setBrowserLogs([]);
 
-    // Register Browser Worker on Chain
+    addLog(`🔑 [Sovereign Key] Worker Wallet connected: ${workerAddress.slice(0, 14)}...`);
+    addLog(`🖥️ [Hardware] Detected: ${gpuName}`);
+    addLog(`📡 [RPC] Registering worker on chain (${workerAddress.slice(0, 10)}...)...`);
+
     try {
-      await fetch("/api/rpc", {
+      const res = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -163,69 +154,24 @@ export default function WorkerManagerPage() {
           id: Date.now(),
         }),
       });
-    } catch { }
-
-    addLog(`🚀 [WebGPU Engine] Initialized hardware shader on ${gpuName}`);
-    addLog(`🛡️ [Overload Shield] Smart Governor Active (Mode: ${intensityMode.toUpperCase()} | Thermal Limit: 82°C)`);
-    addLog(`🔑 [Sovereign Key] Worker Wallet connected: ${workerAddress.slice(0, 14)}...`);
-
-    // Continuous Mining Loop with Anti-Overload Throttling
-    let localJobs = browserJobsCompleted;
-    let batchCounter = 0;
-
-    const runBatch = async () => {
-      if (!miningLoopRef.current) return;
-
-      const currentMode = intensityRef.current;
-      batchCounter++;
-
-      // Duty Cycle Intermission: Take a 1.2s breather every 35 batches in Balanced/Eco to cool VRM/GPU
-      if (batchCounter % 35 === 0 && currentMode !== "max") {
-        addLog(`🛡️ [Governor Cooldown] Duty-cycle breathing pause (1.2s)`);
-        await new Promise(r => setTimeout(r, 1200));
+      const data = await res.json();
+      if (data.result?.ok || data.result?.workerId || data.result?.txHash) {
+        addLog(`✅ [RPC] Worker registered on-chain. ${data.result.txHash ? `Tx: ${data.result.txHash.slice(0, 18)}...` : ""}`);
+      } else {
+        addLog(`⚠️ [RPC] Registration returned no confirmation: ${JSON.stringify(data.result || data.error || "no response")}`);
       }
+    } catch (err) {
+      addLog(`❌ [RPC] Registration failed: ${err instanceof Error ? err.message : "network error"}`);
+    }
 
-      const t0 = performance.now();
-
-      // Dynamic work-items scaled to prevent Out-Of-Memory (OOM)
-      const numElements = currentMode === "eco" ? 120000 : currentMode === "balanced" ? 250000 : 500000;
-      const tensorA = new Float32Array(numElements);
-      const tensorB = new Float32Array(numElements);
-      for (let i = 0; i < numElements; i++) {
-        tensorA[i] = Math.sin(i * 0.05);
-        tensorB[i] = Math.cos(i * 0.05);
-      }
-
-      let sum = 0;
-      for (let i = 0; i < numElements; i++) {
-        sum += Math.sqrt(Math.abs(tensorA[i] * tensorB[i])) * 1.0001;
-      }
-
-      const elapsed = Math.max(1, performance.now() - t0);
-      const mops = Math.round((numElements * 50 / (elapsed / 1000)) / 1000000);
-
-      localJobs++;
-      setBrowserJobsCompleted(localJobs);
-      setBrowserHashrate(mops);
-
-      const executionProofHash = `0x${Array.from(crypto.getRandomValues(new Uint8Array(12))).map(b => b.toString(16).padStart(2, '0')).join('')}`;
-
-      addLog(`[JOB #${localJobs}] DeAI-DeepSeek-R1 | Time: ${elapsed.toFixed(1)}ms | Rate: ${mops} M-Ops/s | Proof: ${executionProofHash}...`);
-
-      if (miningLoopRef.current) {
-        // Sleep delay governed by Intensity Profile
-        const sleepDelay = currentMode === "eco" ? 400 : currentMode === "balanced" ? 160 : 25;
-        setTimeout(runBatch, sleepDelay);
-      }
-    };
-
-    runBatch();
+    addLog(`ℹ️ [Note] In-browser sessions do not fabricate mining hashrate or proof hashes.`);
+    addLog(`ℹ️ [Note] Real compute rewards require the native worker daemon (see CLI tab).`);
   };
 
   const stopBrowserMining = () => {
     setIsBrowserMining(false);
     miningLoopRef.current = false;
-    addLog(`🛑 [WebGPU Engine] In-Browser worker halted. Hardware in idle state.`);
+    addLog(`🛑 [Worker] Browser session halted. No fabricated hashrate was reported.`);
   };
 
   const addLog = (msg: string) => {
@@ -241,16 +187,8 @@ export default function WorkerManagerPage() {
       meta={
         <>
           <StatusPill tone={isBrowserMining ? "ai" : totalWorkersCount > 0 ? "chain" : "warn"} pulse={isBrowserMining}>
-            {isBrowserMining ? "⚡ In-Browser GPU Mining Active" : `${totalWorkersCount} Remote Worker${totalWorkersCount > 1 ? "s" : ""} Online`}
+            {isBrowserMining ? "⚡ Browser Worker Session Active" : `${totalWorkersCount} Remote Worker${totalWorkersCount > 1 ? "s" : ""} Online`}
           </StatusPill>
-          <StatusPill tone="ai">
-            🛡️ Overload Governor: {intensityMode.toUpperCase()}
-          </StatusPill>
-          {isBrowserMining && (
-            <StatusPill tone="chain">
-              Hashrate: {browserHashrate.toLocaleString()} M-Ops/s
-            </StatusPill>
-          )}
         </>
       }
       actions={
@@ -318,7 +256,7 @@ export default function WorkerManagerPage() {
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Detected Hardware"
-          value={gpuName.includes("GeForce") ? gpuName.split("/")[0].slice(0, 20) : "NVIDIA Discrete GPU"}
+          value={gpuName.split("/")[0].slice(0, 20)}
           hint={nodeTier}
           icon={<Cpu size={18} />}
           tone="ai"
@@ -331,9 +269,9 @@ export default function WorkerManagerPage() {
           tone="chain"
         />
         <StatCard
-          label="Session Jobs Completed"
-          value={isBrowserMining ? `${browserJobsCompleted} Jobs` : `${liveWorkers.reduce((acc, w) => acc + (w.totalJobsCompleted || 0), 0)} Jobs`}
-          hint="PoPC STARK ZK Proofs Verified"
+          label="Network Jobs Completed"
+          value={`${liveWorkers.reduce((acc, w) => acc + (w.totalJobsCompleted || 0), 0)} Jobs`}
+          hint="Real on-chain worker completions"
           icon={<CheckCircle2 size={18} />}
           tone="ai"
         />
@@ -351,9 +289,9 @@ export default function WorkerManagerPage() {
         <div className="space-y-6">
           <Card>
             <SectionHeader
-              subtitle="Zero-Friction In-Browser Worker with Overload Protection"
-              title="Instant In-Browser DeAI Compute Grid"
-              description="Run genuine hardware tensor math & cryptographic proof verification inside this browser tab with dynamic power & thermal limits."
+              subtitle="Register this browser session as a worker on the live network"
+              title="In-Browser Worker Registration"
+              description="Registers this browser session with the RPC node. No hashrate, job count, or proof hash is fabricated — real compute rewards require the native worker daemon."
               action={
                 isBrowserMining ? (
                   <button
@@ -361,7 +299,7 @@ export default function WorkerManagerPage() {
                     className="flex items-center gap-2 rounded-xl bg-red-500/20 border border-red-500/40 px-5 py-2.5 text-xs font-mono font-bold text-red-300 hover:bg-red-500/30 transition-all shadow-lg shadow-red-500/10"
                   >
                     <Square size={14} />
-                    HALT IN-BROWSER WORKER
+                    HALT BROWSER SESSION
                   </button>
                 ) : (
                   <button
@@ -369,60 +307,29 @@ export default function WorkerManagerPage() {
                     className="flex items-center gap-2 rounded-xl bg-emerald-500 text-black px-6 py-2.5 text-xs font-mono font-bold hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 animate-pulse"
                   >
                     <Play size={14} />
-                    ⚡ START IN-BROWSER GPU MINING
+                    ⚡ REGISTER BROWSER WORKER
                   </button>
                 )
               }
             />
 
-            {/* Overload Governor / Intensity Selector */}
-            <div className="mt-4 rounded-xl border border-white/10 bg-slate-900/40 p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-slate-300 flex items-center gap-2">
-                  <Sliders size={14} className="text-emerald-400" />
-                  Hardware Workload Intensity & Overload Protection Profile:
-                </span>
-                <span className="text-[11px] font-mono text-emerald-400 font-semibold">
-                  {intensityMode === "eco" && "🌿 Eco Mode (50% Load · Silent & Cool)"}
-                  {intensityMode === "balanced" && "⚖️ Balanced Mode (75% Load · Recommended 24/7)"}
-                  {intensityMode === "max" && "🚀 Max Throttle (100% Full CUDA Power)"}
+            {/* Honest note about browser vs native mining */}
+            <div className="mt-4 rounded-xl border border-white/10 bg-slate-900/40 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Sliders size={14} className="text-emerald-400" />
+                <span className="text-xs font-mono font-bold text-slate-300">
+                  About In-Browser vs Native Mining
                 </span>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => setIntensityMode("eco")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "eco"
-                    ? "border-emerald-400 bg-emerald-500/20 text-emerald-300 font-bold shadow"
-                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                    }`}
-                >
-                  <Leaf size={14} />
-                  <span>Eco / Low-Power</span>
-                  <span className="text-[10px] text-slate-400 font-normal">Min Heat · 58°C Target</span>
-                </button>
-                <button
-                  onClick={() => setIntensityMode("balanced")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "balanced"
-                    ? "border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold shadow"
-                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                    }`}
-                >
-                  <Gauge size={14} />
-                  <span>Balanced Mode</span>
-                  <span className="text-[10px] text-slate-400 font-normal">Optimal Yield · 64°C</span>
-                </button>
-                <button
-                  onClick={() => setIntensityMode("max")}
-                  className={`p-2.5 rounded-lg border text-xs font-mono transition-all flex flex-col items-center gap-1 ${intensityMode === "max"
-                    ? "border-amber-400 bg-amber-500/20 text-amber-300 font-bold shadow"
-                    : "border-white/10 bg-black/40 text-slate-400 hover:text-white"
-                    }`}
-                >
-                  <Flame size={14} />
-                  <span>Max Performance</span>
-                  <span className="text-[10px] text-slate-400 font-normal">100% CUDA · Max Hash</span>
-                </button>
-              </div>
+              <p className="text-[11px] font-mono leading-relaxed text-slate-400">
+                Registering this browser session only announces your worker to the network. It does
+                not fabricate a hashrate, job count, or STARK proof. Real compute rewards are earned
+                by the native GPU daemon — switch to the Native GPU Daemon tab and run
+                <code className="text-white bg-black/60 px-1.5 py-0.5 rounded border border-white/10">
+                  nakhara-worker-all-in-one.ps1
+                </code>
+                on your GPU machine to begin mining.
+              </p>
             </div>
 
             <div className="space-y-4 pt-4">
@@ -430,7 +337,7 @@ export default function WorkerManagerPage() {
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Node Status:</span>
                   <span className={`font-bold uppercase ${isBrowserMining ? "text-emerald-400 animate-pulse" : "text-amber-400"}`}>
-                    {isBrowserMining ? "● COMPUTING ON GPU SILICON (MINING)" : "○ IDLE (READY TO START)"}
+                    {isBrowserMining ? "● BROWSER WORKER REGISTERED" : "○ NOT REGISTERED"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -452,7 +359,7 @@ export default function WorkerManagerPage() {
                 <div className="flex items-center justify-between text-xs font-mono text-slate-400">
                   <span className="flex items-center gap-1.5">
                     <Activity size={13} className="text-emerald-400" />
-                    Live Browser Compute Telemetry Log
+                    Browser Worker Registration Log
                   </span>
                   <span>{browserLogs.length} Events Captured</span>
                 </div>

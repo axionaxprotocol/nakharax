@@ -204,6 +204,7 @@ export function HomeQuickHub() {
   const [copiedReceipt, setCopiedReceipt] = useState(false);
   const [faucetClaiming, setFaucetClaiming] = useState(false);
   const [faucetClaimed, setFaucetClaimed] = useState(false);
+  const [faucetError, setFaucetError] = useState<string | null>(null);
 
   const handleRunPlayground = async () => {
     if (!prompt.trim()) return;
@@ -254,6 +255,7 @@ export function HomeQuickHub() {
 
   const handleQuickFaucet = async () => {
     setFaucetClaiming(true);
+    setFaucetError(null);
     try {
       // Resolve the active wallet address (MetaMask or saved keystore)
       let address: string | null = null;
@@ -262,8 +264,7 @@ export function HomeQuickHub() {
         address = accounts?.[0] || null;
       }
       if (!address) {
-        setFaucetClaimed(true);
-        setTimeout(() => setFaucetClaimed(false), 5000);
+        setFaucetError("No wallet connected. Connect a wallet first to claim testnet tokens.");
         return;
       }
 
@@ -279,13 +280,19 @@ export function HomeQuickHub() {
       });
       const data = await res.json();
       if (data.error) {
-        throw new Error(data.error.message || "Faucet RPC error");
+        setFaucetError(data.error.message || "Faucet RPC error");
+        return;
+      }
+      // Only mark as claimed when the RPC confirms a real on-chain result.
+      const ok = data.result?.ok ?? data.result?.txHash ?? data.result?.claimed;
+      if (!ok) {
+        setFaucetError("Faucet returned no confirmation. No tokens were credited.");
+        return;
       }
       setFaucetClaimed(true);
       setTimeout(() => setFaucetClaimed(false), 5000);
-    } catch {
-      setFaucetClaimed(true);
-      setTimeout(() => setFaucetClaimed(false), 5000);
+    } catch (err) {
+      setFaucetError(err instanceof Error ? err.message : "Faucet request failed. No tokens were credited.");
     } finally {
       setFaucetClaiming(false);
     }
@@ -386,6 +393,11 @@ export function HomeQuickHub() {
               </>
             )}
           </button>
+          {faucetError && (
+            <p className="mt-2 text-[10px] font-mono leading-relaxed text-red-400">
+              {faucetError}
+            </p>
+          )}
         </div>
 
         {/* 4. Node Ingress & Gateway */}

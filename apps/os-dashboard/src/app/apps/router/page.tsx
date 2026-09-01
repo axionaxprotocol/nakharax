@@ -42,44 +42,9 @@ interface RoutingRule {
   activeRoute: string;
 }
 
-const INITIAL_ROUTING_RULES: RoutingRule[] = [
-  {
-    id: "rule-llm-70b",
-    taskType: "70B+ Foundation Model Inference",
-    preferredHardware: "High-End GPU Clustered (A100 / RTX 5090)",
-    maxLatencyMs: 250,
-    maxCostWei: "0.15 tNAK",
-    verificationLevel: "FULL_STARK",
-    activeRoute: "Cloud-Pro-Cluster-EU",
-  },
-  {
-    id: "rule-reasoning-8b",
-    taskType: "DeepSeek-R1 CoT Math/Logic",
-    preferredHardware: "Mid-Tier Workstation / Mac M4 Max",
-    maxLatencyMs: 500,
-    maxCostWei: "0.05 tNAK",
-    verificationLevel: "LIGHT_SAMPLING",
-    activeRoute: "Universal-Edge-Mesh-AP",
-  },
-  {
-    id: "rule-vision-yolo",
-    taskType: "Edge Vision & Object Detection",
-    preferredHardware: "Raspberry Pi 5 + Hailo-10H NPU",
-    maxLatencyMs: 30,
-    maxCostWei: "0.01 tNAK",
-    verificationLevel: "OPTIMISTIC_DISPUTE",
-    activeRoute: "Local-Edge-Sentinel-01",
-  },
-  {
-    id: "rule-lora-merge",
-    taskType: "TIES/DARE Tensor Merging",
-    preferredHardware: "Validator Core High-RAM (32GB+)",
-    maxLatencyMs: 1200,
-    maxCostWei: "0.50 tNAK",
-    verificationLevel: "FULL_STARK",
-    activeRoute: "Validator-Consensus-Pool",
-  },
-];
+// No live compute cluster is connected yet. Routing rules are only populated
+// once GPU workers register on-chain. Empty state is shown until then.
+const INITIAL_ROUTING_RULES: RoutingRule[] = [];
 
 export default function ASRComputeRouterPage() {
   const [rules, setRules] = useState<RoutingRule[]>(INITIAL_ROUTING_RULES);
@@ -108,9 +73,9 @@ export default function ASRComputeRouterPage() {
       meta={
         <>
           <StatusPill tone="chain" pulse>
-            ASR Dynamic Routing Active
+            ASR Policy Engine
           </StatusPill>
-          <StatusPill tone="ai">Sub-millisecond Dispatch</StatusPill>
+          <StatusPill tone="ai">Awaiting GPU Workers</StatusPill>
         </>
       }
       actions={
@@ -134,22 +99,22 @@ export default function ASRComputeRouterPage() {
         />
         <StatCard
           label="Dispatch Latency"
-          value="1.42 ms"
-          hint="Decision time per task"
+          value="—"
+          hint="Awaiting live workers"
           icon={<Zap size={18} />}
           tone="ai"
         />
         <StatCard
           label="Active Routes"
-          value="4 Pipelines"
-          hint="Heterogeneous hardware tiering"
+          value={`${rules.length} Pipelines`}
+          hint="Registered on-chain"
           icon={<Split size={18} />}
           tone="violet"
         />
         <StatCard
           label="Cost Efficiency"
-          value="+24.8%"
-          hint="Over centralized cloud GPUs"
+          value="—"
+          hint="Awaiting live workers"
           icon={<Sparkles size={18} />}
           tone="warn"
         />
@@ -165,30 +130,41 @@ export default function ASRComputeRouterPage() {
           />
 
           <div className="space-y-3">
-            {rules.map((rule) => (
-              <Card key={rule.id} className="space-y-2.5 border-white/10 bg-slate-950/80 p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <IconBadge Icon={Workflow} tone="chain" className="h-9 w-9" />
-                    <div>
-                      <h3 className="text-[13.5px] font-bold text-white">{rule.taskType}</h3>
-                      <span className="text-[10.5px] font-mono text-emerald-400">
-                        Target: {rule.preferredHardware}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="rounded border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[9.5px] font-mono font-semibold text-cyan-300">
-                    {rule.verificationLevel}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[11px] font-mono text-slate-300">
-                  <span>Max Latency: <strong className="text-white">{rule.maxLatencyMs} ms</strong></span>
-                  <span>Max Cost: <strong className="text-emerald-300">{rule.maxCostWei}</strong></span>
-                  <span>Route: <strong className="text-violet-300">{rule.activeRoute}</strong></span>
-                </div>
+            {rules.length === 0 ? (
+              <Card className="flex flex-col items-center justify-center gap-2 border-dashed border-white/10 bg-slate-950/40 p-8 text-center">
+                <IconBadge Icon={Workflow} tone="chain" className="h-10 w-10 opacity-60" />
+                <p className="text-[13px] font-semibold text-slate-200">No Active Routing Rules</p>
+                <p className="max-w-sm text-[11px] font-mono leading-relaxed text-slate-500">
+                  No live compute cluster is connected yet. Routing rules are only populated once GPU
+                  workers register on-chain and report their hardware, latency, and proof capabilities.
+                </p>
               </Card>
-            ))}
+            ) : (
+              rules.map((rule) => (
+                <Card key={rule.id} className="space-y-2.5 border-white/10 bg-slate-950/80 p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <IconBadge Icon={Workflow} tone="chain" className="h-9 w-9" />
+                      <div>
+                        <h3 className="text-[13.5px] font-bold text-white">{rule.taskType}</h3>
+                        <span className="text-[10.5px] font-mono text-emerald-400">
+                          Target: {rule.preferredHardware}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="rounded border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[9.5px] font-mono font-semibold text-cyan-300">
+                      {rule.verificationLevel}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[11px] font-mono text-slate-300">
+                    <span>Max Latency: <strong className="text-white">{rule.maxLatencyMs} ms</strong></span>
+                    <span>Max Cost: <strong className="text-emerald-300">{rule.maxCostWei}</strong></span>
+                    <span>Route: <strong className="text-violet-300">{rule.activeRoute}</strong></span>
+                  </div>
+                </Card>
+              ))
+            )}
           </div>
         </div>
 

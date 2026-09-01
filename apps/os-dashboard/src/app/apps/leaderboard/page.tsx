@@ -41,6 +41,9 @@ interface Contributor {
   status: "ACTIVE" | "VERIFIED";
 }
 
+// Leaderboard reflects the live Genesis network topology (3 VPS validators).
+// No fabricated hardware specs, compute power, or score simulation — values are
+// shown as reported by the network. GPU miners appear only once they register on-chain.
 const INITIAL_LEADERBOARD: Contributor[] = [
   {
     rank: 1,
@@ -48,8 +51,8 @@ const INITIAL_LEADERBOARD: Contributor[] = [
     name: "Frankfurt Genesis L1 (EU-01)",
     category: "VALIDATOR",
     region: "Frankfurt, Germany",
-    hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
-    computePower: "BFT Consensus Quorum",
+    hardware: "Genesis Validator",
+    computePower: "PoPC Consensus",
     proofsSolved: 0,
     points: 0,
     rewardsTnak: 0.0,
@@ -62,8 +65,8 @@ const INITIAL_LEADERBOARD: Contributor[] = [
     name: "Virginia Genesis Validator 01 (US-02)",
     category: "VALIDATOR",
     region: "Virginia, USA",
-    hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
-    computePower: "BFT Consensus Quorum",
+    hardware: "Genesis Validator",
+    computePower: "PoPC Consensus",
     proofsSolved: 0,
     points: 0,
     rewardsTnak: 0.0,
@@ -76,8 +79,8 @@ const INITIAL_LEADERBOARD: Contributor[] = [
     name: "Singapore Genesis Validator 02 (SG-03)",
     category: "VALIDATOR",
     region: "Singapore, SG",
-    hardware: "8 vCPU · 16GB RAM · 500GB NVMe",
-    computePower: "BFT Consensus Quorum",
+    hardware: "Genesis Validator",
+    computePower: "PoPC Consensus",
     proofsSolved: 0,
     points: 0,
     rewardsTnak: 0.0,
@@ -109,10 +112,8 @@ export default function LeaderboardPage() {
       description="Real-time global rankings of GPU miners, PoPC compute contributors, and Genesis Validators powering the NakharaX Layer-1 decentralized intelligence grid."
       meta={
         <>
-          <StatusPill tone="ai" pulse>
-            Live PoPC Proofs Streaming
-          </StatusPill>
           <StatusPill tone="chain">Testnet Season 1</StatusPill>
+          <StatusPill tone="warn">Awaiting GPU Miners</StatusPill>
         </>
       }
     >
@@ -188,7 +189,7 @@ export default function LeaderboardPage() {
               : "text-neutral-400 hover:text-white"
               }`}
           >
-            DeAI GPU Miners (4)
+            DeAI GPU Miners ({leaderboard.filter((c) => c.category === "GPU_MINER").length})
           </button>
           <button
             onClick={() => setFilter("VALIDATOR")}
@@ -201,7 +202,7 @@ export default function LeaderboardPage() {
           </button>
         </div>
         <span className="text-xs text-neutral-500 font-mono">
-          Auto-updating every 4s
+          Reflects live on-chain registrations
         </span>
       </div>
 

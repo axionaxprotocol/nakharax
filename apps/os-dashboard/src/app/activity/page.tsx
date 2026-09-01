@@ -3,28 +3,18 @@
 import Link from "next/link";
 import {
   Activity,
-  ArrowRight,
   Boxes,
   Brain,
   Cpu,
-  Flame,
-  Gauge,
   Globe2,
-  HardDrive,
   Layers3,
   RadioTower,
-  ReceiptText,
-  Route,
-  Server,
-  ShieldAlert,
   ShieldCheck,
-  Timer,
   Zap,
 } from "lucide-react";
 
 import {
   Card,
-  IconBadge,
   PageShell,
   SectionHeader,
   StatCard,
@@ -32,37 +22,32 @@ import {
 } from "@/components/card";
 import { useNetworkMesh } from "@/lib/use-network-mesh";
 
-const DEFAULT_GLOBAL_GATEWAYS = [
-  { region: "Frankfurt Genesis L1 (EU · VPS-01)", endpoint: "158.220.127.24:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Master Hub & Ingress" },
-  { region: "Virginia Genesis Validator 01 (US · VPS-02)", endpoint: "40.160.87.118:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Genesis Validator" },
-  { region: "Singapore Genesis Validator 02 (AP · VPS-03)", endpoint: "217.216.39.77:30303", status: "Genesis Validator", ping: "—", load: "—", role: "Genesis Validator" },
-];
-
 export default function ActivityPage() {
-  const { blockNumber, isLive, latencyMs, workersList, totalActiveNodes } = useNetworkMesh();
+  const { blockNumber, isLive, workersList, totalActiveNodes, totalWorkersCount } = useNetworkMesh();
 
-  const liveGateways = workersList.map((w, idx) => ({
-    region: `${w.name || "Edge Worker Node"} (Worker Node #${idx + 2})`,
-    endpoint: `LAN Node (${w.address ? `${w.address.slice(0, 10)}...` : "Active"})`,
-    status: "Active PoPC Miner",
-    ping: "2ms",
-    load: "42%",
-    role: `DeAI GPU Worker (${w.gpu || "Discrete GPU"})`,
+  // Build gateway cards ONLY from real probed worker data. No fabricated ping/load/status.
+  const liveGateways = workersList.map((w) => ({
+    region: w.name || "Edge Worker Node",
+    endpoint: w.address ? `${w.address.slice(0, 10)}...` : "—",
+    status: w.status === "ONLINE_ACTIVE" ? "Active PoPC Miner" : "Offline",
+    ping: "—",
+    load: "—",
+    role: w.gpu ? `DeAI GPU Worker (${w.gpu})` : "DeAI GPU Worker",
+    jobsCompleted: w.totalJobsCompleted ?? 0,
   }));
-  const gateways = [...liveGateways, ...DEFAULT_GLOBAL_GATEWAYS];
 
   return (
     <PageShell
       eyebrow="Network Telemetry"
       title="Global DeAI Compute Cluster & Mesh Telemetry"
-      description="Real-time consensus telemetry for the 3-continent Genesis Quorum Mesh (Frankfurt, Virginia & Singapore)."
+      description="Real-time consensus telemetry from live on-chain probes. Only real network data is shown."
       meta={
         <>
           <StatusPill tone="ai" pulse>
             {totalActiveNodes} Active Mesh Nodes
           </StatusPill>
           <StatusPill tone="chain">Block #{blockNumber.toLocaleString()}</StatusPill>
-          <StatusPill tone="violet">P2P Telemetry Live</StatusPill>
+          <StatusPill tone="violet">P2P Telemetry {isLive ? "Live" : "Connecting"}</StatusPill>
         </>
       }
       actions={
@@ -101,16 +86,16 @@ export default function ActivityPage() {
           tone="ai"
         />
         <StatCard
-          label="Active Execution Rig"
-          value="1 Local Host"
-          hint="Windows x64 / CUDA Host"
+          label="Registered Workers"
+          value={totalWorkersCount > 0 ? `${totalWorkersCount} Worker${totalWorkersCount > 1 ? "s" : ""}` : "0 Workers"}
+          hint="Real on-chain worker registrations"
           icon={<Cpu size={18} />}
           tone="violet"
         />
         <StatCard
           label="Byzantine Slashing"
           value="0 Disputes"
-          hint="100% Honest Stake (Live)"
+          hint="No disputes observed on-chain"
           icon={<ShieldCheck size={18} />}
           tone="chain"
         />
@@ -120,38 +105,57 @@ export default function ActivityPage() {
       <section className="space-y-3.5">
         <SectionHeader
           title="Global Gateway & Validator Health"
-          description="Direct RPC and Libp2p gossip mesh latency across geographical deployment clusters."
+          description="Live worker registrations probed from the network. Latency and load are only shown when a real probe returns them."
         />
-        <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
-          {gateways.map((gw) => (
-            <Card key={gw.region} className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Globe2 size={16} className="text-cyan-400" />
-                  <span className="text-xs font-bold text-white">{gw.region}</span>
+        {liveGateways.length === 0 ? (
+          <Card className="p-6 text-center space-y-2 border-dashed">
+            <RadioTower size={20} className="mx-auto text-slate-500" />
+            <p className="text-sm font-bold text-white">No Workers Registered</p>
+            <p className="text-xs text-slate-400 font-sans leading-relaxed">
+              No DeAI GPU worker has registered on-chain yet. Gateway health will appear here once a worker
+              connects and is probed by the network.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
+            {liveGateways.map((gw) => (
+              <Card key={gw.region} className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Globe2 size={16} className="text-cyan-400" />
+                    <span className="text-xs font-bold text-white">{gw.region}</span>
+                  </div>
+                  <span className="flex items-center gap-1 text-[10.5px] font-mono text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    {gw.status}
+                  </span>
                 </div>
-                <span className="flex items-center gap-1 text-[10.5px] font-mono text-emerald-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  {gw.status}
-                </span>
-              </div>
-              <div className="space-y-1.5 pt-1 text-[11.5px] font-mono">
-                <div className="flex justify-between text-slate-400">
-                  <span>Role:</span>
-                  <span className="text-slate-200">{gw.role}</span>
+                <div className="space-y-1.5 pt-1 text-[11.5px] font-mono">
+                  <div className="flex justify-between text-slate-400">
+                    <span>Role:</span>
+                    <span className="text-slate-200">{gw.role}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Address:</span>
+                    <span className="text-emerald-300 font-semibold">{gw.endpoint}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Jobs Completed:</span>
+                    <span className="text-cyan-300">{gw.jobsCompleted}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Latency:</span>
+                    <span className="text-slate-300">{gw.ping}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Cluster Load:</span>
+                    <span className="text-slate-300">{gw.load}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-slate-400">
-                  <span>Latency:</span>
-                  <span className="text-emerald-300 font-semibold">{gw.ping}</span>
-                </div>
-                <div className="flex justify-between text-slate-400">
-                  <span>Cluster Load:</span>
-                  <span className="text-cyan-300">{gw.load}</span>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Subnet GPU Compute Allocation */}
@@ -161,7 +165,7 @@ export default function ActivityPage() {
           description="Decentralized VRAM utilization across active knowledge subnets."
         />
         <Card className="p-6 text-center space-y-2 border-dashed">
-          <Brain size={20} className="mx-auto text-slate-500" />
+          <Zap size={20} className="mx-auto text-slate-500" />
           <p className="text-sm font-bold text-white">No GPU Workers Connected</p>
           <p className="text-xs text-slate-400 font-sans leading-relaxed">
             No DeAI GPU worker has joined the network yet. Subnet compute allocation will appear here once a worker
