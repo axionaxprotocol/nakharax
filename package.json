@@ -12,6 +12,7 @@
     "mock-rpc": "node services/core/ops/deploy/mock-rpc/server.js",
     "test": "pnpm --filter @nakharax/contracts test",
     "test:all": "pnpm test && cd services/core/core && cargo test --workspace --all-features",
+    "test:e2e": "cd packages/contracts && npx hardhat run ../../scripts/test_e2e_user_flow.mjs --network hardhat",
     "ci": "powershell -ExecutionPolicy Bypass -File scripts/ci-local.ps1",
     "ci:quick": "powershell -ExecutionPolicy Bypass -File scripts/ci-local.ps1 -Quick",
     "ci:bash": "bash scripts/ci-local.sh",
