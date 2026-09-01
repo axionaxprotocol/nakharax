@@ -40,9 +40,10 @@ echo "[4/4] Configuring Caddy Reverse Proxy for app.nakharax.com & nakharax.com.
 sudo tee /etc/caddy/Caddyfile >/dev/null <<'EOF'
 {
     email admin@nakharax.com
+    auto_https disable_redirects
 }
 
-rpc.nakharax.com {
+http://rpc.nakharax.com, https://rpc.nakharax.com, :8085 {
     encode zstd gzip
     header {
         Access-Control-Allow-Origin *
@@ -54,7 +55,7 @@ rpc.nakharax.com {
     reverse_proxy 127.0.0.1:8545
 }
 
-faucet.nakharax.com {
+http://faucet.nakharax.com, https://faucet.nakharax.com {
     encode zstd gzip
     header {
         Access-Control-Allow-Origin *
@@ -64,7 +65,7 @@ faucet.nakharax.com {
     reverse_proxy 127.0.0.1:3002
 }
 
-app.nakharax.com, nakharax.com, www.nakharax.com {
+http://app.nakharax.com, https://app.nakharax.com, http://nakharax.com, https://nakharax.com, http://www.nakharax.com, https://www.nakharax.com {
     encode zstd gzip
     header {
         Strict-Transport-Security "max-age=31536000; includeSubDomains"
