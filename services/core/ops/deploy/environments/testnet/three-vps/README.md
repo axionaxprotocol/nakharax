@@ -40,8 +40,7 @@ co-locate with the full node and dashboard on VPS-01's 8 GB RAM.
 
 1. Populate the DNS records above and wait for them to resolve to VPS-01.
 2. On VPS-01, create the untracked faucet environment file from
-   `ops/deploy/env.faucet.example`; set the faucet signer and Redis password
-   only on the host.
+   `ops/deploy/env.faucet.example`; set the faucet signer only on the host.
 3. Run `ops/deploy/scripts/deploy-dashboard-vps01.sh` from a clean clone.
    The script fast-forwards from `origin/master`, builds the dashboard, installs
    `vps01/Caddyfile`, and reloads Caddy.
@@ -51,6 +50,21 @@ co-locate with the full node and dashboard on VPS-01's 8 GB RAM.
 5. On VPS-03, run Prometheus/Grafana only after private reachability to all
    three node metrics endpoints is configured. Access Grafana through an SSH
    tunnel or VPN.
+
+### Faucet recovery
+
+The dashboard updater does not start the faucet, because the signing key is
+deliberately absent from Git. Once the host-only `.env.faucet` file is present,
+repair or deploy it with:
+
+```bash
+cd /opt/nakharax
+bash services/core/ops/deploy/scripts/repair-faucet-vps01.sh
+```
+
+The script checks the local chain ID, starts the host-networked faucet on
+`127.0.0.1:3002`, waits for `/health`, and reloads Caddy. It does not display
+or modify the faucet signing key.
 
 ## Acceptance checks
 
