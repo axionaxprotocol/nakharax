@@ -62,9 +62,11 @@ cd /opt/nakharax
 bash services/core/ops/deploy/scripts/repair-faucet-vps01.sh
 ```
 
-The script checks the local chain ID, starts the host-networked faucet on
-`127.0.0.1:3002`, waits for `/health`, and reloads Caddy. It does not display
-or modify the faucet signing key.
+The script checks the local chain ID, verifies the faucet through
+`127.0.0.1:3002/health`, and reloads Caddy. It uses Docker Compose when Docker
+is available; otherwise it creates a hardened native systemd service and uses
+the installed faucet binary (or builds it from source). It does not display or
+modify the faucet signing key.
 
 ## Acceptance checks
 
