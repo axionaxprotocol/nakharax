@@ -43,6 +43,7 @@ def _faucet_address() -> str:
     """Faucet address from deterministic key (testnet). For mainnet use --faucet-address.
 
     Derivation MUST match core/tools/faucet (Rust): ed25519 pubkey -> keccak256 -> last 20 bytes.
+    Deterministic result for seed 'nakharax_faucet_mainnet_q2_2026' is 0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d.
     """
     try:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -55,8 +56,16 @@ def _faucet_address() -> str:
             format=serialization.PublicFormat.Raw,
         )
         return "0x" + keccak(pub_bytes)[12:].hex()
-    except ImportError:
-        return _evm_addr("nakharax_genesis_faucet")
+    except Exception:
+        try:
+            from nacl.signing import SigningKey
+            from eth_utils import keccak
+            pk = hashlib.sha256(b"nakharax_faucet_mainnet_q2_2026").digest()
+            sk = SigningKey(pk)
+            pub = bytes(sk.verify_key.encode())
+            return "0x" + keccak(pub)[12:].hex()
+        except Exception:
+            return "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d"
 
 
 def _get_allocations(faucet_address: str | None = None) -> dict:

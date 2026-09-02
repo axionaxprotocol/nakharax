@@ -402,7 +402,7 @@ sudo install -o root -g root -m 0755 target/release/nakharax-faucet /usr/local/b
 Faucet testnet key ต้อง derive เป็น address ที่ได้รับ genesis allocation นี้เท่านั้น:
 
 ```text
-0x9dd7e28ccd04cfb6547adc7be2a8cf2beb434a1c
+0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d
 ```
 
 Derive testnet key บน VPS-06 เท่านั้น แล้วใส่ผลลัพธ์ลง root-only env file ห้าม commit หรือส่งผ่าน chat:
@@ -460,7 +460,7 @@ curl -fsS http://127.0.0.1:3002/health
 curl -fsS http://127.0.0.1:3002/info | jq
 ```
 
-ค่า `address` จาก `/info` ต้องตรง `0x9dd7...` ก่อนเปิด public endpoint ถ้าไม่ตรงให้หยุด service และแก้ key ห้ามเติมเงินให้ address ใหม่แบบข้าม genesis manifest
+ค่า `address` จาก `/info` ต้องตรง `0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d` ก่อนเปิด public endpoint ถ้าไม่ตรงให้หยุด service และแก้ key ห้ามเติมเงินให้ address ใหม่แบบข้าม genesis manifest
 
 ติดตั้ง Caddy และเพิ่ม public faucet route บน VPS-06:
 

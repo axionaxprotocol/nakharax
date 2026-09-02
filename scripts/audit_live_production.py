@@ -20,7 +20,7 @@ else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 TARGET_VPS01_IP = "158.220.127.24"
-FAUCET_ADDRESS = "0x9dd7e28ccd04cfb6547adc7be2a8cf2beb434a1c"
+FAUCET_ADDRESS = "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d"
 VALIDATOR_01 = "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326"
 VALIDATOR_02 = "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb"
 
