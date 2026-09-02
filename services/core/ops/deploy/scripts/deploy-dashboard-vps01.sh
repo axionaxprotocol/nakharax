@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # NakharaX Genesis Public Testnet — VPS-01 Web OS Dashboard 1-Click Deploy
-# Host: 158.220.127.24 | Ingress: app.nakharax.com, nakharax.com (Port 3030 -> Caddy 443)
+# Ingress: app.nakharax.com, nakharax.com (Port 3030 -> Caddy 443)
 # =============================================================================
 
 set -euo pipefail
@@ -22,61 +22,28 @@ sudo npm install -g pnpm pm2
 # 2. Build Dashboard Application
 echo "[2/4] Updating repository and compiling Next.js dashboard..."
 cd /opt/nakharax
-git fetch --all
-git reset --hard origin/master
+git pull --ff-only origin master
 
-pnpm install
+pnpm install --frozen-lockfile
 pnpm --filter nakharax-os-dashboard build
 
 # 3. Start Application with PM2
 echo "[3/4] Starting Web OS Dashboard daemon with PM2..."
-pm2 delete nakharax-dashboard 2>/dev/null || true
-pm2 start pnpm --name "nakharax-dashboard" -- --filter nakharax-os-dashboard start
+if pm2 describe nakharax-dashboard >/dev/null 2>&1; then
+    PORT=3030 pm2 reload nakharax-dashboard --update-env
+else
+    PORT=3030 pm2 start pnpm --name "nakharax-dashboard" -- --filter nakharax-os-dashboard start
+fi
 pm2 save
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /root || true
 
 # 4. Update Caddy Reverse Proxy
-echo "[4/4] Configuring Caddy Reverse Proxy for app.nakharax.com & nakharax.com..."
-sudo tee /etc/caddy/Caddyfile >/dev/null <<'EOF'
-{
-    email admin@nakharax.com
-    auto_https disable_redirects
-}
-
-http://rpc.nakharax.com, https://rpc.nakharax.com, :8085 {
-    encode zstd gzip
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET, POST, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-        Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        X-Content-Type-Options "nosniff"
-    }
-    reverse_proxy 127.0.0.1:8545
-}
-
-http://faucet.nakharax.com, https://faucet.nakharax.com {
-    encode zstd gzip
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET, POST, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-    }
-    reverse_proxy 127.0.0.1:3002
-}
-
-http://app.nakharax.com, https://app.nakharax.com, http://nakharax.com, https://nakharax.com, http://www.nakharax.com, https://www.nakharax.com {
-    encode zstd gzip
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        X-Content-Type-Options "nosniff"
-        Referrer-Policy "strict-origin-when-cross-origin"
-    }
-    reverse_proxy 127.0.0.1:3030
-}
-EOF
-
-sudo systemctl reload caddy || sudo systemctl restart caddy
+echo "[4/4] Installing the VPS-01 Caddy configuration..."
+CADDY_TEMPLATE="$PWD/services/core/ops/deploy/environments/testnet/three-vps/vps01/Caddyfile"
+test -f "$CADDY_TEMPLATE"
+sudo install -o root -g root -m 0644 "$CADDY_TEMPLATE" /etc/caddy/Caddyfile
+sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+sudo systemctl reload caddy
 
 sleep 3
 
@@ -87,7 +54,9 @@ echo ""
 echo "  👉 Main App URL: https://app.nakharax.com"
 echo "  👉 Landing URL:  https://nakharax.com"
 echo "  👉 RPC Endpoint: https://rpc.nakharax.com"
-echo "  👉 Faucet API:   https://faucet.nakharax.com"
+echo "  👉 Explorer:     https://explorer.nakharax.com"
+echo "  👉 HTTP API:     https://api.nakharax.com/v1/models"
+echo "  👉 Faucet API:   https://faucet.nakharax.com (requires a healthy local faucet)"
 echo ""
 echo "PM2 Process Status:"
 pm2 status

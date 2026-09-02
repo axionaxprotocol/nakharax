@@ -1,0 +1,82 @@
+# NakharaX public-testnet ingress for VPS-01.
+#
+# This file is for a host-based deployment: the full node, faucet and Caddy run
+# on VPS-01, while the Web OS runs under PM2 on 127.0.0.1:3030. Keep the
+# upstream ports bound to loopback; only Caddy exposes 80/443 publicly.
+{
+    email admin@nakharax.com
+}
+
+(security_headers) {
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}
+
+(allowed_cors) {
+    @allowed_origin header_regexp Origin ^https:\/\/(app\.nakharax\.com|nakharax\.com|www\.nakharax\.com|explorer\.nakharax\.com|faucet\.nakharax\.com|api\.nakharax\.com)$
+    header @allowed_origin Access-Control-Allow-Origin "{http.request.header.Origin}"
+    header @allowed_origin Vary "Origin"
+    header Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    header Access-Control-Allow-Headers "Content-Type, Authorization"
+}
+
+# Public JSON-RPC and WebSocket ingress. The node itself remains loopback-only.
+rpc.nakharax.com {
+    import security_headers
+    import allowed_cors
+
+    @preflight method OPTIONS
+    respond @preflight 204
+
+    @websocket path /ws /ws/*
+    reverse_proxy @websocket 127.0.0.1:8546
+    reverse_proxy 127.0.0.1:8545
+}
+
+# Main Web OS and landing site.
+app.nakharax.com, nakharax.com, www.nakharax.com {
+    import security_headers
+    reverse_proxy 127.0.0.1:3030
+}
+
+# A lightweight explorer domain. It intentionally serves the Web OS explorer
+# route; do not co-locate Blockscout and PostgreSQL on this 8 GB node.
+explorer.nakharax.com {
+    import security_headers
+
+    @explorer_root path /
+    redir @explorer_root /apps/explorer 302
+    reverse_proxy 127.0.0.1:3030
+}
+
+# Public HTTP API gateway. Existing Web OS API routes stay canonical at
+# /api/*; /v1/* is provided as the public compatibility path.
+api.nakharax.com {
+    import security_headers
+    import allowed_cors
+
+    @preflight method OPTIONS
+    respond @preflight 204
+
+    @v1 path /v1 /v1/*
+    rewrite @v1 /api{uri}
+    @rpc path /rpc
+    rewrite @rpc /api/rpc
+    @api_root path /
+    respond @api_root "NakharaX Testnet HTTP API" 200
+    reverse_proxy 127.0.0.1:3030
+}
+
+# The faucet runs separately with its signer material outside this repository.
+faucet.nakharax.com {
+    import security_headers
+    import allowed_cors
+
+    @preflight method OPTIONS
+    respond @preflight 204
+    reverse_proxy 127.0.0.1:3002
+}

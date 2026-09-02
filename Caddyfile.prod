@@ -15,9 +15,10 @@
 # 1. L1 Public JSON-RPC Gateway & WebSocket (HTTPS + WSS)
 rpc.nakharax.com {
     import security_headers
-    @allowed_origins header_regexp Origin ^(https:\/\/(app\.nakharax\.com|nakharax\.com|www\.nakharax\.com|explorer\.nakharax\.com|faucet\.nakharax\.com)|https?:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?)$
+    @allowed_origins header_regexp Origin ^(https:\/\/(app\.nakharax\.com|nakharax\.com|www\.nakharax\.com|explorer\.nakharax\.com|faucet\.nakharax\.com|api\.nakharax\.com)|https?:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?)$
     header @allowed_origins Access-Control-Allow-Origin "{http.request.header.Origin}"
     header @allowed_origins Access-Control-Allow-Credentials "true"
+    header @allowed_origins Vary "Origin"
     header Access-Control-Allow-Methods "POST, OPTIONS"
     header Access-Control-Allow-Headers "Content-Type, Authorization"
 
@@ -40,6 +41,29 @@ faucet.nakharax.com {
 # 4. Block & Tx Explorer
 explorer.nakharax.com {
     import security_headers
+
+    @explorer_root path /
+    redir @explorer_root /apps/explorer 302
     reverse_proxy web-os:3030
 }
 
+# 5. Public HTTP API. The Web OS owns the current API implementation; expose
+# /v1/* as its public compatibility path and retain /rpc for RPC proxying.
+api.nakharax.com {
+    import security_headers
+    @allowed_origins header_regexp Origin ^https:\/\/(app\.nakharax\.com|nakharax\.com|www\.nakharax\.com|explorer\.nakharax\.com|faucet\.nakharax\.com|api\.nakharax\.com)$
+    header @allowed_origins Access-Control-Allow-Origin "{http.request.header.Origin}"
+    header @allowed_origins Vary "Origin"
+    header Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    header Access-Control-Allow-Headers "Content-Type, Authorization"
+
+    @preflight method OPTIONS
+    respond @preflight 204
+    @v1 path /v1 /v1/*
+    rewrite @v1 /api{uri}
+    @rpc path /rpc
+    rewrite @rpc /api/rpc
+    @api_root path /
+    respond @api_root "NakharaX Testnet HTTP API" 200
+    reverse_proxy web-os:3030
+}

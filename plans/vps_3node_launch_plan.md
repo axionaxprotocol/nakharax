@@ -1,5 +1,10 @@
-# Retired: Three-VPS Launch Plan
+# Three-VPS Launch Plan
 
-This plan is obsolete. All seven Public Testnet VPS instances will be newly provisioned; none of the former hosts or identities may be reused.
+The existing three VPS instances are the active Public Testnet topology:
 
-Use [vps_deployment_plan.md](vps_deployment_plan.md) and [1_SEP_GENESIS_RUNBOOK.md](../docs/ops/1_SEP_GENESIS_RUNBOOK.md).
+- VPS-01: full node, bootnode, public RPC/WSS, Web OS, HTTP API and faucet.
+- VPS-02: validator.
+- VPS-03: validator with private monitoring.
+
+There is no AU RPC node. DNS and acceptance checks are maintained in the
+[three-VPS deployment configuration](../services/core/ops/deploy/environments/testnet/three-vps/README.md).

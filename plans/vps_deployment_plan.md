@@ -1,28 +1,23 @@
-# Seven-New-VPS Public Testnet Deployment Plan
+# Three-VPS Public Testnet Deployment Plan
 
-Decision date: 1 September 2026.
+Decision date: 2 September 2026.
 
-The former infrastructure is retired. Public Testnet will use seven entirely new VPS instances; provider, region, public IP, and Peer ID values are intentionally unset until procurement.
+Public Testnet runs on the existing three VPS instances. There is no AU RPC
+node and no planned VPS-04 through VPS-07.
 
-| Node | Role | Minimum sizing | Status |
+| Node | Role | Capacity | Public exposure |
 |---|---|---|---|
-| VPS-01 | Seed/bootnode | 2 vCPU, 4 GB RAM, 80 GB NVMe | pending purchase |
-| VPS-02 | Validator-01 | 4 vCPU, 8 GB RAM, 100 GB NVMe | pending purchase |
-| VPS-03 | Validator-02 | 4 vCPU, 8 GB RAM, 100 GB NVMe | pending purchase |
-| VPS-04 | RPC primary | 4 vCPU, 8 GB RAM, 150 GB NVMe | pending purchase |
-| VPS-05 | RPC secondary + observer | 4 vCPU, 8 GB RAM, 150 GB NVMe | pending purchase |
-| VPS-06 | Faucet + observer | 2 vCPU, 4 GB RAM, 100 GB NVMe | pending purchase |
-| VPS-07 | Monitoring + observer | 4 vCPU, 8 GB RAM, 200 GB NVMe | pending purchase |
+| VPS-01 | Full node, bootnode, primary RPC/WSS, Web OS, HTTP API, faucet | 4 vCPU, 8 GB RAM, 100 GB SSD | 22, 80, 443, 30303 TCP/UDP |
+| VPS-02 | Validator-01 | 2 vCPU, 8 GB RAM, 40 GB NVMe | 22, 30303 TCP/UDP |
+| VPS-03 | Validator-02, private monitoring | 4 vCPU, 8 GB RAM, 100 GB SSD | 22, 30303 TCP/UDP |
 
-Procurement requirements:
+VPS-01 must keep the node RPC and WebSocket listeners on loopback and publish
+them only through Caddy. VPS-02 and VPS-03 run validator roles only; never
+expose their RPC endpoints publicly. Monitoring on VPS-03 is reachable only by
+SSH tunnel or VPN.
 
-- Static IPv4 and provider rescue console for every VPS.
-- Ubuntu 22.04 or 24.04 LTS consistently.
-- At least three provider/geographic failure domains.
-- Snapshot/backup capability and documented renewal dates.
-- SSH key authentication and operator-IP allowlisting.
-- No provider purchase or region is considered final until entered in the canonical inventory.
+Create `app`, `rpc`, `api`, `explorer`, and `faucet` DNS records for VPS-01;
+delete `rpc-au`. See the deployment-ready configuration and acceptance checks
+in [three-vps](../services/core/ops/deploy/environments/testnet/three-vps/README.md).
 
-Deployment is blocked until the domain and all seven VPS instances exist. Follow [1_SEP_GENESIS_RUNBOOK.md](../docs/ops/1_SEP_GENESIS_RUNBOOK.md) after procurement.
-
-Mainnet target is 1 January 2027 (`2027-01-01`, 1 มกราคม 2570); Mainnet will use separate keys, identities, state, and genesis artifacts.
+Mainnet will use separate keys, identities, state, and genesis artifacts.

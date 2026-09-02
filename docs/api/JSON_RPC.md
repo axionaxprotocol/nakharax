@@ -6,15 +6,16 @@ Last Updated: August 27, 2026
 
 ## Testnet Endpoints
 
-| Endpoint | URL | Host |
-|----------|-----|------|
-| **Public RPC primary** | `https://rpc.<DOMAIN>` | VPS-04 after provisioning |
-| **Public RPC secondary** | `https://rpc-backup.<DOMAIN>` | VPS-05 after provisioning |
-| **Public RPC (AU)** | `https://rpc-au.nakharax.com` | AU |
-| **Explorer** | `https://explorer.nakharax.com` | AU |
-| **API** | `https://api.nakharax.com` | AU |
-| **Faucet** | `https://faucet.nakharax.com` | AU |
-| **Nakharax OS** | `https://app.<DOMAIN>` | pending domain and deployment |
+| Endpoint | URL | Host / status |
+|----------|-----|---------------|
+| **Public RPC + WSS** | `https://rpc.nakharax.com` · `wss://rpc.nakharax.com/ws` | VPS-01 full-node ingress |
+| **Explorer** | `https://explorer.nakharax.com` | VPS-01 Web OS explorer route; DNS/Caddy rollout pending |
+| **HTTP API** | `https://api.nakharax.com/v1/*` | VPS-01 Web OS API gateway; DNS/Caddy rollout pending |
+| **Faucet** | `https://faucet.nakharax.com` | VPS-01; repair upstream health before enabling DNS checks |
+| **Nakharax OS** | `https://app.nakharax.com` | VPS-01 Web OS |
+
+There is no AU or secondary public RPC endpoint in the three-VPS testnet
+topology. Do not configure clients with `rpc-au.nakharax.com`.
 
 Deploy: [VPS_AU_ALL_IN_ONE.md](../../services/core/ops/deploy/VPS_AU_ALL_IN_ONE.md) · OS: [VPS_EU_OS_DASHBOARD.md](../web/VPS_EU_OS_DASHBOARD.md)
 

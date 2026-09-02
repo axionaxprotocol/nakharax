@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # =============================================================================
 # NakharaX Genesis Public Testnet — VPS-01 Master Hub 1-Click Bootstrap Script
-# Host: 158.220.127.24 | Chain ID: 86137 | Port: 30303 (P2P), 8545 (RPC)
+# Chain ID: 86137 | Port: 30303 (P2P), 8545 (loopback RPC)
 # =============================================================================
 
 set -euo pipefail
 
 echo "================================================================="
-echo "  🚀 NakharaX Genesis Public Testnet — VPS-01 Master Hub Setup"
+echo "  🚀 NakharaX Genesis Public Testnet — VPS-01 Full Node & Bootstrap Setup"
 echo "================================================================="
 
 # 1. Update OS & Install Tools
@@ -74,7 +74,7 @@ GENESIS="$REPO_DIR/services/core/core/tools/genesis.json"
 
 sudo env NAKHARAX_NODE_BIN=/usr/local/bin/nakharax-node \
   bash "$BOOTSTRAP_SCRIPT" setup \
-  --role bootnode \
+  --role full \
   --data-dir /var/lib/nakharax-node \
   --genesis "$GENESIS" \
   --rpc 127.0.0.1:8545 \
@@ -84,7 +84,7 @@ sudo chown -R nakharax:nakharax /var/lib/nakharax-node
 
 sudo tee /etc/systemd/system/nakharax-node.service >/dev/null <<'EOF'
 [Unit]
-Description=NakharaX Public Testnet Master Seed & RPC Node
+Description=NakharaX Public Testnet Full Node & Bootstrap Node
 After=network-online.target
 Wants=network-online.target
 
@@ -111,47 +111,23 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now nakharax-node
 
 # 6. Configure Caddy TLS Reverse Proxy
-echo "[6/6] Configuring Caddy Reverse Proxy for rpc.nakharax.com..."
-sudo tee /etc/caddy/Caddyfile >/dev/null <<'EOF'
-{
-    email admin@nakharax.com
-}
-
-rpc.nakharax.com {
-    encode zstd gzip
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET, POST, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-        Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        X-Content-Type-Options "nosniff"
-    }
-    reverse_proxy 127.0.0.1:8545
-}
-
-faucet.nakharax.com {
-    encode zstd gzip
-    header {
-        Access-Control-Allow-Origin *
-        Access-Control-Allow-Methods "GET, POST, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-    }
-    reverse_proxy 127.0.0.1:3002
-}
-EOF
-
-sudo systemctl restart caddy || sudo systemctl reload caddy
+echo "[6/6] Installing the versioned VPS-01 Caddy configuration..."
+CADDY_TEMPLATE="$REPO_DIR/ops/deploy/environments/testnet/three-vps/vps01/Caddyfile"
+test -f "$CADDY_TEMPLATE"
+sudo install -o root -g root -m 0644 "$CADDY_TEMPLATE" /etc/caddy/Caddyfile
+sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+sudo systemctl reload caddy
 
 sleep 3
 
 echo "================================================================="
-echo "  ✅ VPS-01 Master Hub Bootstrap Complete!"
+echo "  ✅ VPS-01 Full Node & Bootstrap Setup Complete!"
 echo "================================================================="
 echo ""
 echo "Local Peer ID:"
 SEED_PEER_ID="$(sudo journalctl -u nakharax-node --no-pager | sed -n 's/.*Local peer ID: \([[:alnum:]]\+\).*/\1/p' | tail -n 1)"
 echo "Peer ID: $SEED_PEER_ID"
-echo "Seed Multiaddr: /ip4/158.220.127.24/tcp/30303/p2p/$SEED_PEER_ID"
+echo "Bootstrap multiaddr: /ip4/<VPS-01_PUBLIC_IPV4>/tcp/30303/p2p/$SEED_PEER_ID"
 echo ""
 echo "RPC Health Check:"
 curl -s -X POST http://127.0.0.1:8545 -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' | jq || true

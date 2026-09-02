@@ -5,6 +5,32 @@ all:
         vps-01:
           ansible_host: "158.220.127.24"
           region: "EU-Contabo"
+    full_node:
+      hosts:
+        vps-01:
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
+    rpc:
+      hosts:
+        vps-01:
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
+          rpc_tier: primary
+    web:
+      hosts:
+        vps-01:
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
+    api:
+      hosts:
+        vps-01:
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
+    faucet:
+      hosts:
+        vps-01:
+          ansible_host: "158.220.127.24"
+          region: "EU-Contabo"
     validator:
       hosts:
         vps-02:
@@ -15,27 +41,13 @@ all:
           ansible_host: "217.216.39.77"
           region: "APAC-Singapore"
           validator_address: "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb"
-    rpc:
-      hosts:
-        vps-04:
-          ansible_host: "VPS04_NEW_IPV4_REQUIRED"
-          region: "TBD"
-          rpc_tier: primary
-        vps-05:
-          ansible_host: "VPS05_NEW_IPV4_REQUIRED"
-          region: "TBD"
-          rpc_tier: secondary
-    faucet:
-      hosts:
-        vps-06:
-          ansible_host: "VPS06_NEW_IPV4_REQUIRED"
-          region: "TBD"
     monitoring:
       hosts:
-        vps-07:
-          ansible_host: "VPS07_NEW_IPV4_REQUIRED"
-          region: "TBD"
+        vps-03:
+          ansible_host: "217.216.39.77"
+          region: "APAC-Singapore"
 vars:
+  # Set true only after DNS, TLS, faucet and all external acceptance checks pass.
   deployment_ready: false
   ansible_user: deployer
   ansible_ssh_private_key_file: ~/.ssh/nakharax-testnet
