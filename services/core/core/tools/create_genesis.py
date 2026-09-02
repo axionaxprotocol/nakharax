@@ -68,75 +68,85 @@ def _faucet_address() -> str:
             return "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d"
 
 
-def _get_allocations(faucet_address: str | None = None) -> dict:
-    """Build allocations dict with faucet address resolved."""
+def _get_allocations(
+    faucet_address: str | None = None,
+    creator_address: str | None = None,
+    ecosystem_address: str | None = None,
+    foundation_address: str | None = None,
+    community_address: str | None = None,
+    team_address: str | None = None,
+    public_sale_address: str | None = None,
+    reserve_address: str | None = None,
+    validator_01_address: str | None = None,
+    validator_02_address: str | None = None,
+) -> dict:
+    """Build allocations dict with addresses resolved."""
     allocations = {
-    "creator": {
-        "address": _evm_addr("nakharaxius_genesis_creator"),
-        "label": f"Creator ({CREATOR_ALIAS})",
-        "percent": 10,
-    },
-    "ecosystem_rewards": {
-        "address": _evm_addr("nakharax_genesis_ecosystem"),
-        "label": "Ecosystem & Rewards Pool",
-        "percent": 30,
-        "note": "Validator rewards, worker incentives, staking emissions",
-    },
-    "foundation": {
-        "address": _evm_addr("nakharax_genesis_foundation"),
-        "label": "Foundation / Treasury",
-        "percent": 20,
-        "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear unlock"},
-    },
-    "community": {
-        "address": _evm_addr("nakharax_genesis_community"),
-        "label": "Community",
-        "percent": 15,
-        "note": "Airdrops, incentives, DAO governance",
-        "vesting": {"enabled": True, "schedule": "2 years linear unlock"},
-    },
-    "team": {
-        "address": _evm_addr("nakharax_genesis_team"),
-        "label": "Team & Advisors",
-        "percent": 10,
-        "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear vest"},
-    },
-    "validators": {
-        "percent": 5,
-        "split": [
-            {
-                # Preserve the approved testnet allocation address while
-                # decoupling validator identity from the retired VPS IP.
-                "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
-                "label": "Validator-01",
-                "region": "TBD",
-                "ip": "vps-02.invalid",
-            },
-            {
-                "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
-                "label": "Validator-02",
-                "region": "TBD",
-                "ip": "vps-03.invalid",
-            },
-        ],
-    },
-    "public_sale": {
-        "address": _evm_addr("nakharax_genesis_public_sale"),
-        "label": "Public Sale",
-        "percent": 5,
-    },
-    "faucet": {
-        "address": faucet_address or _faucet_address(),
-        "label": "Faucet (Testnet & Mainnet)",
-        "percent": 3,
-    },
-    "reserve": {
-        "address": _evm_addr("nakharax_genesis_reserve"),
-        "label": "Strategic Reserve",
-        "percent": 2,
-        "note": "Emergency liquidity, strategic partnerships",
-    },
-}
+        "creator": {
+            "address": creator_address or _evm_addr("nakharaxius_genesis_creator"),
+            "label": f"Creator ({CREATOR_ALIAS})",
+            "percent": 10,
+        },
+        "ecosystem_rewards": {
+            "address": ecosystem_address or _evm_addr("nakharax_genesis_ecosystem"),
+            "label": "Ecosystem & Rewards Pool",
+            "percent": 30,
+            "note": "Validator rewards, worker incentives, staking emissions",
+        },
+        "foundation": {
+            "address": foundation_address or _evm_addr("nakharax_genesis_foundation"),
+            "label": "Foundation / Treasury",
+            "percent": 20,
+            "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear unlock"},
+        },
+        "community": {
+            "address": community_address or _evm_addr("nakharax_genesis_community"),
+            "label": "Community",
+            "percent": 15,
+            "note": "Airdrops, incentives, DAO governance",
+            "vesting": {"enabled": True, "schedule": "2 years linear unlock"},
+        },
+        "team": {
+            "address": team_address or _evm_addr("nakharax_genesis_team"),
+            "label": "Team & Advisors",
+            "percent": 10,
+            "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear vest"},
+        },
+        "validators": {
+            "percent": 5,
+            "split": [
+                {
+                    "address": validator_01_address or "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
+                    "label": "Validator-01",
+                    "region": "TBD",
+                    "ip": "vps-02.invalid",
+                },
+                {
+                    "address": validator_02_address or "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+                    "label": "Validator-02",
+                    "region": "TBD",
+                    "ip": "vps-03.invalid",
+                },
+            ],
+        },
+        "public_sale": {
+            "address": public_sale_address or _evm_addr("nakharax_genesis_public_sale"),
+            "label": "Public Sale",
+            "percent": 5,
+        },
+        "faucet": {
+            "address": faucet_address or _faucet_address(),
+            "label": "Faucet (Testnet & Mainnet)",
+            "percent": 3,
+        },
+        "reserve": {
+            "address": reserve_address or _evm_addr("nakharax_genesis_reserve"),
+            "label": "Strategic Reserve",
+            "percent": 2,
+            "note": "Emergency liquidity, strategic partnerships",
+        },
+    }
+    return allocations
     return allocations
 
 
@@ -224,8 +234,11 @@ def build_tokenomics(allocations: dict):
     }
 
 
-def build_genesis(faucet_address: str | None = None) -> dict:
-    allocations = _get_allocations(faucet_address)
+def build_genesis(
+    faucet_address: str | None = None,
+    allocations_override: dict | None = None,
+) -> dict:
+    allocations = allocations_override or _get_allocations(faucet_address)
     return {
         "config": {
             "chainId": CHAIN_ID,
@@ -311,6 +324,15 @@ def main():
     parser.add_argument("--out", default=None, help="Output path (default: genesis.json next to this script)")
     parser.add_argument("--verify", action="store_true", help="Run verification after generation")
     parser.add_argument("--faucet-address", default=None, help="Faucet EVM address (default: deterministic from seed)")
+    parser.add_argument("--creator-address", default=None, help="Creator EVM address")
+    parser.add_argument("--ecosystem-address", default=None, help="Ecosystem rewards EVM address")
+    parser.add_argument("--foundation-address", default=None, help="Foundation EVM address")
+    parser.add_argument("--community-address", default=None, help="Community EVM address")
+    parser.add_argument("--team-address", default=None, help="Team EVM address")
+    parser.add_argument("--public-sale-address", default=None, help="Public sale EVM address")
+    parser.add_argument("--reserve-address", default=None, help="Strategic reserve EVM address")
+    parser.add_argument("--validator-01-address", default=None, help="Validator 01 EVM address")
+    parser.add_argument("--validator-02-address", default=None, help="Validator 02 EVM address")
     parser.add_argument("--chain-id", type=int, default=None, help="Chain ID (86137=testnet, 86150=mainnet)")
     args = parser.parse_args()
 
@@ -324,8 +346,19 @@ def main():
     else:
         CHAIN_NAME = f"Nakharax Dev ({CHAIN_ID})"
 
-    allocations = _get_allocations(args.faucet_address)
-    genesis = build_genesis(args.faucet_address)
+    allocations = _get_allocations(
+        faucet_address=args.faucet_address,
+        creator_address=args.creator_address,
+        ecosystem_address=args.ecosystem_address,
+        foundation_address=args.foundation_address,
+        community_address=args.community_address,
+        team_address=args.team_address,
+        public_sale_address=args.public_sale_address,
+        reserve_address=args.reserve_address,
+        validator_01_address=args.validator_01_address,
+        validator_02_address=args.validator_02_address,
+    )
+    genesis = build_genesis(allocations_override=allocations)
     print_summary(genesis, allocations)
 
     out_path = Path(args.out) if args.out else Path(__file__).parent / "genesis.json"
