@@ -83,31 +83,31 @@ def _get_allocations(
     """Build allocations dict with addresses resolved."""
     allocations = {
         "creator": {
-            "address": creator_address or _evm_addr("nakharaxius_genesis_creator"),
+            "address": creator_address or "0x6873db3ac0de85da55d22aefcb3550a6ae9e5b03",
             "label": f"Creator ({CREATOR_ALIAS})",
             "percent": 10,
         },
         "ecosystem_rewards": {
-            "address": ecosystem_address or _evm_addr("nakharax_genesis_ecosystem"),
+            "address": ecosystem_address or "0x2eb428ac92e6b3ec16e9962106b30e56d6ee42fc",
             "label": "Ecosystem & Rewards Pool",
             "percent": 30,
             "note": "Validator rewards, worker incentives, staking emissions",
         },
         "foundation": {
-            "address": foundation_address or _evm_addr("nakharax_genesis_foundation"),
+            "address": foundation_address or "0xe04350f33671e64073a2ef81c80a07541d50c813",
             "label": "Foundation / Treasury",
             "percent": 20,
             "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear unlock"},
         },
         "community": {
-            "address": community_address or _evm_addr("nakharax_genesis_community"),
+            "address": community_address or "0x00efe484b845393929d9752d97a6ca23cba07849",
             "label": "Community",
             "percent": 15,
             "note": "Airdrops, incentives, DAO governance",
             "vesting": {"enabled": True, "schedule": "2 years linear unlock"},
         },
         "team": {
-            "address": team_address or _evm_addr("nakharax_genesis_team"),
+            "address": team_address or "0x5ea30b0e1cbdafa3717b3fc5241acb0086be754a",
             "label": "Team & Advisors",
             "percent": 10,
             "vesting": {"enabled": True, "cliff": "1 year", "schedule": "4 years linear vest"},
@@ -116,13 +116,13 @@ def _get_allocations(
             "percent": 5,
             "split": [
                 {
-                    "address": validator_01_address or "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
+                    "address": validator_01_address or "0x1a99805b71e0530f774e6b69546cd64e03fc3c33",
                     "label": "Validator-01",
                     "region": "TBD",
                     "ip": "vps-02.invalid",
                 },
                 {
-                    "address": validator_02_address or "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+                    "address": validator_02_address or "0x8a6bff3cedc3d1893740f2453424cd8be2965f1c",
                     "label": "Validator-02",
                     "region": "TBD",
                     "ip": "vps-03.invalid",
@@ -130,17 +130,17 @@ def _get_allocations(
             ],
         },
         "public_sale": {
-            "address": public_sale_address or _evm_addr("nakharax_genesis_public_sale"),
+            "address": public_sale_address or "0x241094bcdda9e43a129303199c6dd32f3ace23af",
             "label": "Public Sale",
             "percent": 5,
         },
         "faucet": {
-            "address": faucet_address or _faucet_address(),
+            "address": faucet_address or "0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338",
             "label": "Faucet (Testnet & Mainnet)",
             "percent": 3,
         },
         "reserve": {
-            "address": reserve_address or _evm_addr("nakharax_genesis_reserve"),
+            "address": reserve_address or "0x69b00be1a442d08cbe9a8d2876a53606e57b638f",
             "label": "Strategic Reserve",
             "percent": 2,
             "note": "Emergency liquidity, strategic partnerships",

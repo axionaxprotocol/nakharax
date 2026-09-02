@@ -1,7 +1,7 @@
 {
   "config": {
     "chainId": 86137,
-    "chainName": "Nakharax Testnet",
+    "chainName": "Nakharax Public Testnet",
     "homesteadBlock": 0,
     "eip150Block": 0,
     "eip155Block": 0,
@@ -14,7 +14,7 @@
     "londonBlock": 0,
     "nakharax": {
       "consensus": "popc",
-      "blockTime": 2,
+      "blockTime": 3,
       "epochLength": 100,
       "minValidatorStake": "10000000000000000000000",
       "maxValidators": 100,
@@ -26,8 +26,8 @@
     }
   },
   "nonce": "0x0",
-  "timestamp": "0x69cc6000",
-  "extraData": "0x6178696f6e6178697573202d2047656e6573697320426c6f636b202330202d204178696f6e617820436f726520556e697665727365",
+  "timestamp": "0x6a961580",
+  "extraData": "0x6e616b6861726178697573202d2047656e6573697320426c6f636b202330202d204e616b686172617820436f726520556e697665727365",
   "extraDataDecoded": "nakharaxius - Genesis Block #0 - Nakharax Core Universe",
   "gasLimit": "0x1c9c380",
   "difficulty": "0x1",
@@ -93,49 +93,39 @@
   },
   "validators": [
     {
-      "address": "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
-      "name": "Validator-EU-01",
-      "region": "EU",
-      "ip": "217.216.109.5",
-      "stake": "16666666668000000000000000000",
+      "address": "0x1a99805b71e0530f774e6b69546cd64e03fc3c33",
+      "name": "Validator-01",
+      "region": "TBD",
+      "ip": "vps-02.invalid",
+      "stake": "25000000000000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@217.216.109.5:30303",
+      "enode": "enode://GENERATED@vps-02.invalid:30303",
       "active": true
     },
     {
-      "address": "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
-      "name": "Validator-AU-01",
-      "region": "AU",
-      "ip": "46.250.244.4",
-      "stake": "16666666666000000000000000000",
+      "address": "0x8a6bff3cedc3d1893740f2453424cd8be2965f1c",
+      "name": "Validator-02",
+      "region": "TBD",
+      "ip": "vps-03.invalid",
+      "stake": "25000000000000000000000000000",
       "commission": 0.1,
-      "enode": "enode://GENERATED@46.250.244.4:30303",
-      "active": true
-    },
-    {
-      "address": "0xc88e57c96302f1c98066c4ca6d9dd88adbaa8ed9",
-      "name": "Validator-US-01",
-      "region": "US",
-      "ip": "0.0.0.0",
-      "stake": "16666666666000000000000000000",
-      "commission": 0.1,
-      "enode": "enode://GENERATED@0.0.0.0:30303",
+      "enode": "enode://GENERATED@vps-03.invalid:30303",
       "active": true
     }
   ],
   "alloc": {
-    "0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f": {
+    "0x6873db3ac0de85da55d22aefcb3550a6ae9e5b03": {
       "label": "Creator (nakharaxius)",
       "percent": "10%",
       "balance": "100000000000000000000000000000"
     },
-    "0x866740f77e808b381bcb8622015b4a31cc3ca935": {
+    "0x2eb428ac92e6b3ec16e9962106b30e56d6ee42fc": {
       "label": "Ecosystem & Rewards Pool",
       "percent": "30%",
       "balance": "300000000000000000000000000000",
       "note": "Validator rewards, worker incentives, staking emissions"
     },
-    "0xa77f117ff23b672cf484b1d05cc48b5e7c03909d": {
+    "0xe04350f33671e64073a2ef81c80a07541d50c813": {
       "label": "Foundation / Treasury",
       "percent": "20%",
       "balance": "200000000000000000000000000000",
@@ -145,7 +135,7 @@
         "schedule": "4 years linear unlock"
       }
     },
-    "0x776b0130e806cb70003744a4691238052c0b972a": {
+    "0x00efe484b845393929d9752d97a6ca23cba07849": {
       "label": "Community",
       "percent": "15%",
       "balance": "150000000000000000000000000000",
@@ -155,7 +145,7 @@
       },
       "note": "Airdrops, incentives, DAO governance"
     },
-    "0x6af7d73fdcc0bf711ccada1422774ab1fdff9ae4": {
+    "0x5ea30b0e1cbdafa3717b3fc5241acb0086be754a": {
       "label": "Team & Advisors",
       "percent": "10%",
       "balance": "100000000000000000000000000000",
@@ -165,30 +155,25 @@
         "schedule": "4 years linear vest"
       }
     },
-    "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326": {
-      "label": "Validator-EU-01",
-      "balance": "16666666668000000000000000000"
+    "0x1a99805b71e0530f774e6b69546cd64e03fc3c33": {
+      "label": "Validator-01",
+      "balance": "25000000000000000000000000000"
     },
-    "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb": {
-      "label": "Validator-AU-01",
-      "balance": "16666666666000000000000000000"
+    "0x8a6bff3cedc3d1893740f2453424cd8be2965f1c": {
+      "label": "Validator-02",
+      "balance": "25000000000000000000000000000"
     },
-    "0xc88e57c96302f1c98066c4ca6d9dd88adbaa8ed9": {
-      "label": "Validator-US-01",
-      "balance": "16666666666000000000000000000"
-    },
-    "0x58abb3d4e75f232b4177bfd6061972a210f4c9e6": {
+    "0x241094bcdda9e43a129303199c6dd32f3ace23af": {
       "label": "Public Sale",
       "percent": "5%",
       "balance": "50000000000000000000000000000"
     },
-    "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d": {
+    "0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338": {
       "label": "Faucet (Testnet & Mainnet)",
-      "note": "ed25519-derived address (matches core/tools/faucet Rust signer)",
       "percent": "3%",
       "balance": "30000000000000000000000000000"
     },
-    "0xa61e8cb3ec1e6246a852ca0493f7e8c9c44006cd": {
+    "0x69b00be1a442d08cbe9a8d2876a53606e57b638f": {
       "label": "Strategic Reserve",
       "percent": "2%",
       "balance": "20000000000000000000000000000",

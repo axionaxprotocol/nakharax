@@ -24,6 +24,8 @@ typechain-types/
 **/.env.production
 **/.env.production*
 **/worker_key.json
+*secrets*.json
+**/*secrets*.json
 **/.env
 
 # IDE

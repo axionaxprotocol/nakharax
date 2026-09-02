@@ -214,7 +214,7 @@ impl NakharaxNode {
         tokio::spawn(async move {
             use genesis::{ADDR_VALIDATOR_01, ADDR_VALIDATOR_02};
             const ONE_AXX: u128 = 10_u128.pow(18);
-            const VALIDATOR_STAKE: u128 = 25_000_000 * ONE_AXX; // 25M NAK per validator (5% of total / 2)
+            const VALIDATOR_STAKE: u128 = 25_000_000_000 * ONE_AXX; // 25B NAK per validator (5% of total / 2)
 
             let _ = staking_clone
                 .write()

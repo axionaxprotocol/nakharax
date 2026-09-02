@@ -20,9 +20,9 @@ else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 TARGET_VPS01_IP = "158.220.127.24"
-FAUCET_ADDRESS = "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d"
-VALIDATOR_01 = "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326"
-VALIDATOR_02 = "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb"
+FAUCET_ADDRESS = "0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338"
+VALIDATOR_01 = "0x1a99805b71e0530f774e6b69546cd64e03fc3c33"
+VALIDATOR_02 = "0x8a6bff3cedc3d1893740f2453424cd8be2965f1c"
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False

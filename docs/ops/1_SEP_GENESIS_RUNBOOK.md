@@ -20,8 +20,8 @@
 | Host | Role | Public ingress | Genesis validator address |
 |---|---|---|---|
 | VPS-01 | Seed/bootnode | P2P `30303` | — |
-| VPS-02 | Validator-01 | P2P `30303` | `0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326` |
-| VPS-03 | Validator-02 | P2P `30303` | `0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb` |
+| VPS-02 | Validator-01 | P2P `30303` | `0x1a99805b71e0530f774e6b69546cd64e03fc3c33` |
+| VPS-03 | Validator-02 | P2P `30303` | `0x8a6bff3cedc3d1893740f2453424cd8be2965f1c` |
 | VPS-04 | Public RPC primary | HTTPS `443`, P2P `30303` | — |
 | VPS-05 | Public RPC secondary + observer | HTTPS `443`, P2P `30303` | — |
 | VPS-06 | Faucet + observer | HTTPS `443`, P2P `30303` | — |
@@ -264,7 +264,7 @@ sudo env NAKHARAX_NODE_BIN=/usr/local/bin/nakharax-node \
   --genesis /opt/nakharax/services/core/core/tools/genesis.json \
   --rpc 127.0.0.1:8545 \
   --p2p 0.0.0.0:30303 \
-  --validator-address 0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326
+  --validator-address 0x1a99805b71e0530f774e6b69546cd64e03fc3c33
 
 sudo chown -R nakharax:nakharax /var/lib/nakharax-node
 sudo systemctl start nakharax-node
@@ -273,7 +273,7 @@ sudo systemctl start nakharax-node
 VPS-03 ใช้คำสั่งเดียวกันแต่เปลี่ยน validator address เป็น:
 
 ```text
-0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb
+0x8a6bff3cedc3d1893740f2453424cd8be2965f1c
 ```
 
 ตรวจทั้งสองเครื่อง:
@@ -402,7 +402,7 @@ sudo install -o root -g root -m 0755 target/release/nakharax-faucet /usr/local/b
 Faucet testnet key ต้อง derive เป็น address ที่ได้รับ genesis allocation นี้เท่านั้น:
 
 ```text
-0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d
+0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338
 ```
 
 Derive testnet key บน VPS-06 เท่านั้น แล้วใส่ผลลัพธ์ลง root-only env file ห้าม commit หรือส่งผ่าน chat:
@@ -460,7 +460,7 @@ curl -fsS http://127.0.0.1:3002/health
 curl -fsS http://127.0.0.1:3002/info | jq
 ```
 
-ค่า `address` จาก `/info` ต้องตรง `0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d` ก่อนเปิด public endpoint ถ้าไม่ตรงให้หยุด service และแก้ key ห้ามเติมเงินให้ address ใหม่แบบข้าม genesis manifest
+ค่า `address` จาก `/info` ต้องตรง `0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338` ก่อนเปิด public endpoint ถ้าไม่ตรงให้หยุด service และแก้ key ห้ามเติมเงินให้ address ใหม่แบบข้าม genesis manifest
 
 ติดตั้ง Caddy และเพิ่ม public faucet route บน VPS-06:
 

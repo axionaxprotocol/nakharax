@@ -43,21 +43,20 @@ pub const ALLOC_FAUCET_BPS: u16 = 300; //  3%
 pub const ALLOC_RESERVE_BPS: u16 = 200; //  2%
 
 // ---------------------------------------------------------------------------
-// Well-known addresses
+// Well-known addresses (Master HD Wallet BIP-44 1:1 Parity + Sovereign Faucet)
 // ---------------------------------------------------------------------------
 
-// EVM-compatible addresses (deterministic from sha256 seeds, matches core/tools/create_genesis.py)
-pub const ADDR_CREATOR: &str = "0xb9e3968de4ec06c75ecb3c8ca151b446939aec7f";
-pub const ADDR_ECOSYSTEM: &str = "0x866740f77e808b381bcb8622015b4a31cc3ca935";
-pub const ADDR_FOUNDATION: &str = "0xa77f117ff23b672cf484b1d05cc48b5e7c03909d";
-pub const ADDR_COMMUNITY: &str = "0x776b0130e806cb70003744a4691238052c0b972a";
-pub const ADDR_TEAM: &str = "0x6af7d73fdcc0bf711ccada1422774ab1fdff9ae4";
-pub const ADDR_PUBLIC_SALE: &str = "0x58abb3d4e75f232b4177bfd6061972a210f4c9e6";
-pub const ADDR_FAUCET: &str = "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d";
-pub const ADDR_RESERVE: &str = "0xa61e8cb3ec1e6246a852ca0493f7e8c9c44006cd";
+pub const ADDR_CREATOR: &str = "0x6873db3ac0de85da55d22aefcb3550a6ae9e5b03";
+pub const ADDR_ECOSYSTEM: &str = "0x2eb428ac92e6b3ec16e9962106b30e56d6ee42fc";
+pub const ADDR_FOUNDATION: &str = "0xe04350f33671e64073a2ef81c80a07541d50c813";
+pub const ADDR_COMMUNITY: &str = "0x00efe484b845393929d9752d97a6ca23cba07849";
+pub const ADDR_TEAM: &str = "0x5ea30b0e1cbdafa3717b3fc5241acb0086be754a";
+pub const ADDR_PUBLIC_SALE: &str = "0x241094bcdda9e43a129303199c6dd32f3ace23af";
+pub const ADDR_FAUCET: &str = "0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338";
+pub const ADDR_RESERVE: &str = "0x69b00be1a442d08cbe9a8d2876a53606e57b638f";
 
-pub const ADDR_VALIDATOR_01: &str = "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326";
-pub const ADDR_VALIDATOR_02: &str = "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb";
+pub const ADDR_VALIDATOR_01: &str = "0x1a99805b71e0530f774e6b69546cd64e03fc3c33";
+pub const ADDR_VALIDATOR_02: &str = "0x8a6bff3cedc3d1893740f2453424cd8be2965f1c";
 
 // ---------------------------------------------------------------------------
 // Structs

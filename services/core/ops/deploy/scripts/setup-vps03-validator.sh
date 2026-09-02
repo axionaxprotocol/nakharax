@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # NakharaX Genesis Public Testnet — VPS-03 Validator 02 1-Click Setup Script
-# Host: 217.216.39.77 | Role: Genesis Validator 02 | Address: 0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb
+# Host: 217.216.39.77 | Role: Genesis Validator 02 | Address: 0x8a6bff3cedc3d1893740f2453424cd8be2965f1c
 # Seeds:
 #   VPS-01: /ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M
 #   VPS-02: /ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE
@@ -61,7 +61,7 @@ sudo install -d -o nakharax -g nakharax -m 0750 /var/lib/nakharax-node
 BOOTSTRAP_SCRIPT="$REPO_DIR/services/core/ops/deploy/scripts/nakharax-node-bootstrap.sh"
 GENESIS="$REPO_DIR/services/core/core/tools/genesis.json"
 BOOTSTRAP_NODES="/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M,/ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE"
-VALIDATOR_ADDR="0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb"
+VALIDATOR_ADDR="0x8a6bff3cedc3d1893740f2453424cd8be2965f1c"
 
 sudo env NAKHARAX_NODE_BIN=/usr/local/bin/nakharax-node \
   NAKHARAX_BOOTSTRAP_NODES="$BOOTSTRAP_NODES" \
