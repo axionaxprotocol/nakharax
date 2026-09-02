@@ -33,28 +33,25 @@ const GEO_URL = "/world-countries-110m.json";
 
 export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number }) {
   const [mounted, setMounted] = useState(false);
-  const { meshNodes, meshConnections, totalActiveNodes, telemetryStream, isLive } = useNetworkMesh();
+  const { meshNodes, meshConnections, isLive } = useNetworkMesh();
   const [selectedNode, setSelectedNode] = useState<MeshNodeData | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-  const [isAuditing, setIsAuditing] = useState(false);
-  const [auditTimestamp, setAuditTimestamp] = useState<string>("T-0 REAL-TIME CONSENSUS SYNCHRONIZED");
 
   const currentNode = selectedNode || meshNodes[0] || null;
+  const hasRpcTelemetry = isLive && liveBlock > 0;
+  const configuredCountries = meshNodes
+    .filter((node) => !node.isLiveWorker)
+    .map((node) => node.countryName);
+  const liveWorkerCountries = meshNodes
+    .filter((node) => node.isLiveWorker && node.liveStats?.status === "ONLINE_ACTIVE")
+    .map((node) => node.countryName);
+  const activeWorkerCount = meshNodes.filter(
+    (node) => node.isLiveWorker && node.liveStats?.status === "ONLINE_ACTIVE",
+  ).length;
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Map country name to active nodes
-  const activeCountries = meshNodes.map((n) => n.countryName);
-
-  function triggerConsensusAudit() {
-    setIsAuditing(true);
-    setTimeout(() => {
-      setAuditTimestamp(`AUDIT PASS: ${totalActiveNodes}/${totalActiveNodes} SIGNATURES VERIFIED AT BLOCK #${liveBlock}`);
-      setIsAuditing(false);
-    }, 500);
-  }
 
   if (!mounted) {
     return (
@@ -133,30 +130,21 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-mono font-bold tracking-wider text-white uppercase">
-                  NAKHARAX L1 CONSENSUS RADAR · {totalActiveNodes}-NODE GLOBAL MESH QUORUM
+                  NAKHARAX NODE TOPOLOGY · CONFIGURED REGIONAL MAP
                 </h3>
-                <span className="rounded border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-300">
-                  BFT MESH {totalActiveNodes}/{totalActiveNodes} (100%)
+                <span className="rounded border border-cyan-500/40 bg-cyan-500/15 px-2 py-0.5 text-[9px] font-mono font-bold text-cyan-200">
+                  {hasRpcTelemetry ? `${activeWorkerCount} RPC-REPORTED WORKERS` : "RPC TELEMETRY PENDING"}
                 </span>
               </div>
               <p className="text-[10.5px] font-mono text-slate-400">
-                P2P Laser Mesh Backbone · Libp2p GossipSub v1.2 · 3.0s Deterministic Cadence
+                Map markers describe configured regions; worker state is shown only when reported by the RPC gateway.
               </p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
-            <button
-              type="button"
-              onClick={triggerConsensusAudit}
-              disabled={isAuditing}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 text-[11px] font-semibold text-cyan-300 transition-colors"
-            >
-              <RefreshCw size={12} className={isAuditing ? "animate-spin" : ""} />
-              <span>{isAuditing ? "Auditing Quorum..." : "Run Consensus Audit"}</span>
-            </button>
             <div className="rounded-lg border border-white/10 bg-black/40 px-3 py-1.5 text-[10.5px] text-slate-300">
-              RTT P99: <strong className="text-emerald-400">Live</strong>
+              RPC: <strong className={hasRpcTelemetry ? "text-emerald-400" : "text-slate-400"}>{hasRpcTelemetry ? `Block #${liveBlock.toLocaleString()}` : "Awaiting sample"}</strong>
             </div>
           </div>
         </div>
@@ -199,7 +187,8 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const countryName = geo.properties.name;
-                  const isNodeHost = activeCountries.includes(countryName);
+                  const isConfiguredNode = configuredCountries.includes(countryName);
+                  const isLiveWorkerCountry = hasRpcTelemetry && liveWorkerCountries.includes(countryName);
                   const matchingNode = meshNodes.find(
                     (n) => n.countryName === countryName
                   );
@@ -220,18 +209,20 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                         default: {
                           fill: isSelected
                             ? "#065f46"
-                            : isNodeHost
+                            : isLiveWorkerCountry
+                              ? "#047857"
+                              : isConfiguredNode
                               ? "#0e7490"
                               : "#0c1322",
-                          stroke: isSelected ? "#34d399" : isNodeHost ? "#0284c7" : "#1e293b",
-                          strokeWidth: isSelected ? 0.9 : isNodeHost ? 0.6 : 0.35,
+                          stroke: isSelected ? "#34d399" : isLiveWorkerCountry ? "#34d399" : isConfiguredNode ? "#0284c7" : "#1e293b",
+                          strokeWidth: isSelected ? 0.9 : isConfiguredNode || isLiveWorkerCountry ? 0.6 : 0.35,
                           outline: "none",
-                          cursor: isNodeHost ? "pointer" : "default",
+                          cursor: isConfiguredNode || isLiveWorkerCountry ? "pointer" : "default",
                           transition: "all 250ms",
                         },
                         hover: {
-                          fill: isNodeHost ? "#10b981" : "#1e293b",
-                          stroke: isNodeHost ? "#6ee7b7" : "#334155",
+                          fill: isConfiguredNode || isLiveWorkerCountry ? "#10b981" : "#1e293b",
+                          stroke: isConfiguredNode || isLiveWorkerCountry ? "#6ee7b7" : "#334155",
                           strokeWidth: 0.8,
                           outline: "none",
                         },
@@ -274,7 +265,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                     strokeWidth={isHighlighted ? 2 : 1.2}
                     strokeDasharray="6 18"
                     strokeLinecap="round"
-                    className={isHighlighted ? "laser-beam-fast" : "laser-beam-active"}
+                    className={isHighlighted && hasRpcTelemetry ? "laser-beam-fast" : undefined}
                     style={{
                       filter: isHighlighted
                         ? "url(#laser-glow-cyan)"
@@ -288,6 +279,7 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
             {/* 🎯 Node Markers with Triple Sonar Radar Waves */}
             {meshNodes.map((node) => {
               const isSelected = currentNode && currentNode.id === node.id;
+              const isReportedLiveWorker = hasRpcTelemetry && node.isLiveWorker && node.liveStats?.status === "ONLINE_ACTIVE";
 
               return (
                 <Marker
@@ -295,37 +287,18 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                   coordinates={node.coordinates}
                   onClick={() => setSelectedNode(node)}
                 >
-                  {/* Sonar Wave 1 */}
-                  <circle
-                    r={isSelected ? 6 : 4}
-                    fill="none"
-                    stroke={isSelected ? "#10b981" : "#06b6d4"}
-                    className="sonar-ripple-1"
-                    style={{ pointerEvents: "none" }}
-                  />
-
-                  {/* Sonar Wave 2 */}
-                  <circle
-                    r={isSelected ? 6 : 4}
-                    fill="none"
-                    stroke={isSelected ? "#34d399" : "#38bdf8"}
-                    className="sonar-ripple-2"
-                    style={{ pointerEvents: "none" }}
-                  />
-
-                  {/* Sonar Wave 3 */}
-                  <circle
-                    r={isSelected ? 6 : 4}
-                    fill="none"
-                    stroke={isSelected ? "#6ee7b7" : "#7dd3fc"}
-                    className="sonar-ripple-3"
-                    style={{ pointerEvents: "none" }}
-                  />
+                  {isReportedLiveWorker && (
+                    <>
+                      <circle r={isSelected ? 6 : 4} fill="none" stroke={isSelected ? "#10b981" : "#06b6d4"} className="sonar-ripple-1" style={{ pointerEvents: "none" }} />
+                      <circle r={isSelected ? 6 : 4} fill="none" stroke={isSelected ? "#34d399" : "#38bdf8"} className="sonar-ripple-2" style={{ pointerEvents: "none" }} />
+                      <circle r={isSelected ? 6 : 4} fill="none" stroke={isSelected ? "#6ee7b7" : "#7dd3fc"} className="sonar-ripple-3" style={{ pointerEvents: "none" }} />
+                    </>
+                  )}
 
                   {/* Inner Node Solid Core with Neon Aura */}
                   <circle
                     r={isSelected ? 5.5 : 4}
-                    fill={isSelected ? "#10b981" : "#0284c7"}
+                    fill={isSelected || isReportedLiveWorker ? "#10b981" : "#0284c7"}
                     stroke="#ffffff"
                     strokeWidth={1.5}
                     style={{
@@ -349,39 +322,38 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                       pointerEvents: "none",
                     }}
                   >
-                    {node.code} ({node.p2p.latencyMs}ms)
+                    {node.code}
                   </text>
                 </Marker>
               );
             })}
           </ComposableMap>
 
-          {/* 📡 Live Cyber Data Stream HUD (Top Right Corner) */}
+          {/* RPC telemetry HUD (Top Right Corner) */}
           <div className="absolute top-3 right-3 max-w-sm rounded-xl border border-white/10 bg-black/85 p-2.5 font-mono text-[10px] text-slate-300 backdrop-blur-md shadow-2xl space-y-1">
             <div className="flex items-center justify-between text-[9px] uppercase tracking-wider text-slate-400 border-b border-white/10 pb-1">
-              <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-                Live P2P Transmission Stream
+              <span className="flex items-center gap-1.5 text-cyan-300 font-bold">
+                <span className={`h-1.5 w-1.5 rounded-full ${hasRpcTelemetry ? "bg-emerald-400 animate-ping" : "bg-slate-500"}`} />
+                Public RPC Telemetry
               </span>
-              <span className="text-slate-500 font-bold">3.0s CADENCE</span>
+              <span className="text-slate-500 font-bold">{hasRpcTelemetry ? "AVAILABLE" : "PENDING"}</span>
             </div>
-            {telemetryStream.slice(0, 4).map((log, idx) => (
-              <div
-                key={idx}
-                className={`truncate transition-all ${idx === 0 ? "text-cyan-300 font-semibold" : "text-slate-400 opacity-70"
-                  }`}
-              >
-                {log}
-              </div>
-            ))}
+            <div className="text-cyan-200 font-semibold">
+              {hasRpcTelemetry ? `Latest block: #${liveBlock.toLocaleString()}` : "Awaiting a block sample from the RPC gateway."}
+            </div>
+            <div className="text-slate-400">
+              {activeWorkerCount > 0 ? `${activeWorkerCount} worker${activeWorkerCount > 1 ? "s" : ""} reported by RPC.` : "No active worker is currently reported by RPC."}
+            </div>
           </div>
 
           {/* Hover / Active Country Badge Overlay */}
           {hoveredCountry && (
             <div className="absolute top-3 left-3 px-3 py-1 bg-black/85 backdrop-blur-md border border-cyan-500/40 rounded-lg text-[10.5px] font-mono text-cyan-300 shadow-xl">
               Target Zone: <strong className="text-white">{hoveredCountry}</strong>
-              {activeCountries.includes(hoveredCountry) && (
-                <span className="text-emerald-400 font-bold ml-2">● Active Mesh Node</span>
+              {liveWorkerCountries.includes(hoveredCountry) ? (
+                <span className="text-emerald-400 font-bold ml-2">● RPC-REPORTED WORKER</span>
+              ) : configuredCountries.includes(hoveredCountry) && (
+                <span className="text-cyan-300 font-bold ml-2">● CONFIGURED REGION</span>
               )}
             </div>
           )}
@@ -390,9 +362,11 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
           <div className="absolute bottom-2 left-3 flex items-center gap-3 font-mono text-[9.5px] text-slate-400 bg-black/60 px-2.5 py-0.5 rounded backdrop-blur-sm">
             <span>GRID: WGS84 ATLAS (110M)</span>
             <span>·</span>
-            <span>CADENCE: 3.00s POPC</span>
+            <span>TOPOLOGY: CONFIGURED</span>
             <span>·</span>
-            <span className="text-emerald-400 font-bold">{auditTimestamp}</span>
+            <span className={hasRpcTelemetry ? "text-emerald-400 font-bold" : "text-slate-400 font-bold"}>
+              {hasRpcTelemetry ? `RPC BLOCK #${liveBlock.toLocaleString()}` : "AWAITING RPC"}
+            </span>
           </div>
         </div>
 
@@ -404,14 +378,15 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 <th className="py-2.5 px-4 font-semibold">Node Code & Role</th>
                 <th className="py-2.5 px-4 font-semibold">Geographic Location</th>
                 <th className="py-2.5 px-4 font-semibold">Hardware Allocation</th>
-                <th className="py-2.5 px-4 font-semibold">P2P Ingress SLA</th>
-                <th className="py-2.5 px-4 font-semibold">Consensus Weight</th>
+                <th className="py-2.5 px-4 font-semibold">P2P Details</th>
+                <th className="py-2.5 px-4 font-semibold">Topology Role</th>
                 <th className="py-2.5 px-4 font-semibold text-right">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.06] text-slate-300">
               {meshNodes.map((node) => {
                 const isSelected = currentNode && currentNode.id === node.id;
+                const isReportedLiveWorker = hasRpcTelemetry && node.isLiveWorker && node.liveStats?.status === "ONLINE_ACTIVE";
                 return (
                   <tr
                     key={node.id}
@@ -425,7 +400,9 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                       <div className="flex items-center gap-2">
                         <span
                           className={`h-2 w-2 rounded-full ${node.isLiveWorker
-                            ? "bg-emerald-400 animate-ping"
+                            ? isReportedLiveWorker
+                              ? "bg-emerald-400 animate-ping"
+                              : "bg-amber-400"
                             : isSelected
                               ? "bg-emerald-400 animate-pulse"
                               : "bg-cyan-400"
@@ -438,8 +415,8 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                               ({node.name.split(" ")[0]})
                             </span>
                             {node.isLiveWorker && (
-                              <span className="rounded bg-emerald-500/20 text-emerald-300 text-[8.5px] font-bold px-1.5 py-0.2">
-                                LIVE WORKER
+                              <span className={`rounded text-[8.5px] font-bold px-1.5 py-0.2 ${isReportedLiveWorker ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"}`}>
+                                {isReportedLiveWorker ? "RPC WORKER" : "WORKER STANDBY"}
                               </span>
                             )}
                           </div>
@@ -461,23 +438,21 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                     </td>
 
                     <td className="py-3 px-4">
-                      <div className="text-emerald-400 font-bold">
-                        {node.p2p.latencyMs} ms <span className="text-[10px] font-normal text-slate-500">(±{node.p2p.jitterMs}ms)</span>
+                      <div className={isReportedLiveWorker ? "text-emerald-400 font-bold" : "text-slate-400"}>
+                        {isReportedLiveWorker ? "Worker reported active" : "No live RTT reported"}
                       </div>
-                      <div className="text-[10px] text-slate-500 truncate max-w-[140px]">
-                        {node.p2p.protocol}
-                      </div>
+                      <div className="text-[10px] text-slate-500 truncate max-w-[140px]">Configured protocol: {node.p2p.protocol}</div>
                     </td>
 
                     <td className="py-3 px-4">
-                      <div className="text-white font-bold">{node.consensus.votingWeight}</div>
-                      <div className="text-[10px] text-cyan-300">{node.consensus.tps} tx/s</div>
+                      <div className="text-white font-bold">{node.role}</div>
+                      <div className="text-[10px] text-cyan-300">{node.isLiveWorker ? `${node.liveStats?.totalJobsCompleted ?? 0} reported jobs` : "Configured node"}</div>
                     </td>
 
                     <td className="py-3 px-4 text-right">
-                      <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-400 border border-emerald-500/30">
+                      <span className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-bold border ${isReportedLiveWorker ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" : "bg-cyan-500/10 text-cyan-200 border-cyan-500/30"}`}>
                         <CheckCircle2 size={11} />
-                        <span>{node.consensus.bftStatus}</span>
+                        <span>{isReportedLiveWorker ? "RPC ACTIVE" : node.isLiveWorker ? "STANDBY" : "CONFIGURED"}</span>
                       </span>
                     </td>
                   </tr>
@@ -498,26 +473,26 @@ export function GlobalNodeMeshCanvas({ liveBlock = 2580 }: { liveBlock?: number 
                 Inspecting Target: {currentNode.code} — {currentNode.name}
               </span>
             </div>
-            <span className="text-[10px] text-emerald-400">
-              Validated State: Block #{liveBlock} (Deterministic Finality)
+            <span className={hasRpcTelemetry ? "text-[10px] text-emerald-400" : "text-[10px] text-slate-400"}>
+              {hasRpcTelemetry ? `Latest RPC block: #${liveBlock.toLocaleString()}` : "RPC block not available"}
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px]">
             <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-              <span className="text-[10px] uppercase text-slate-500 block">Libp2p Peer Multiaddr</span>
-              <div className="text-cyan-300 font-bold break-all">{currentNode.p2p.multiaddr}</div>
+              <span className="text-[10px] uppercase text-slate-500 block">Peer Multiaddr</span>
+              <div className="text-cyan-300 font-bold break-all">Not supplied by the current RPC telemetry.</div>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-              <span className="text-[10px] uppercase text-slate-500 block">Hardware / GPU SLA</span>
-              <div className="text-emerald-300 font-bold">{currentNode.provider} ({currentNode.hardware.antiDdos})</div>
+              <span className="text-[10px] uppercase text-slate-500 block">Configured Hardware Profile</span>
+              <div className="text-emerald-300 font-bold">{currentNode.provider}</div>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/50 p-3 space-y-1">
-              <span className="text-[10px] uppercase text-slate-500 block">Byzantine Consensus Invariant</span>
+              <span className="text-[10px] uppercase text-slate-500 block">Verification Scope</span>
               <div className="text-white font-bold">
-                3.00s Cadence · 0 Slashing Penalties
+                Current gateway exposes block and worker telemetry; validator finality is not asserted here.
               </div>
             </div>
           </div>

@@ -4,11 +4,12 @@ import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 
 export function QuickConnectBox({
-  command = `curl -X POST https://rpc.nakharax.com -d '{"method":"system_status"}'`,
+  endpoint = process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com",
 }: {
-  command?: string;
+  endpoint?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const command = `curl -sS -X POST ${endpoint} -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'`;
 
   const handleCopy = async () => {
     try {
@@ -65,11 +66,7 @@ export function QuickConnectBox({
       <div className="mt-os-3.5 flex items-center gap-2.5 font-mono text-[12.5px] text-slate-100">
         <span className="select-none font-bold text-[var(--accent-chain)] drop-shadow">$</span>
         <div className="flex-1 overflow-x-auto whitespace-nowrap scrollbar-none">
-          <span className="text-emerald-300 font-semibold">curl</span>{" "}
-          <span className="text-amber-300">-X POST</span>{" "}
-          <span className="text-cyan-300">https://rpc.nakharax.com</span>{" "}
-          <span className="text-slate-300">-d</span>{" "}
-          <span className="text-violet-300">&apos;&#123;&quot;method&quot;:&quot;system_status&quot;&#125;&apos;</span>
+          <code className="text-slate-100">{command}</code>
           <span className="inline-block h-4 w-1.5 translate-y-0.5 animate-pulse bg-emerald-400 ml-1 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
         </div>
       </div>

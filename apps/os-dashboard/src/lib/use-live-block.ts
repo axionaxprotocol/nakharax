@@ -80,9 +80,13 @@ function initRealtimeSync() {
 
   // 2. WebSocket listener for instant zero-delay block push
   const setupWs = () => {
+    // The dashboard works with RPC polling by default. A direct WebSocket
+    // endpoint is optional because browsers cannot reach a validator's local
+    // port in hosted deployments.
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL;
+    if (!wsUrl) return;
+
     try {
-      const host = typeof window !== "undefined" ? window.location.hostname : "127.0.0.1";
-      const wsUrl = `ws://${host}:8546`;
       const ws = new WebSocket(wsUrl);
       ws.onopen = () => {
         ws.send(

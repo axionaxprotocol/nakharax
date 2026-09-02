@@ -69,39 +69,39 @@ export interface NetworkMeshState {
 const BASE_7_NODES: MeshNodeData[] = [
   {
     id: "node-vps-01",
-    name: "Germany Master Hub & Ingress [Live VPS-01]",
+    name: "Germany Master Hub & Ingress [Configured VPS-01]",
     code: "EU-DE-01",
     role: "MASTER_HUB",
     countryName: "Germany",
     region: "Frankfurt / Contabo",
     coordinates: [8.6821, 50.1109],
-    provider: "Contabo Cloud VPS (158.220.127.24)",
+    provider: "Configured Contabo cloud VPS",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW + Caddy TLS Gateway" },
     p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/ip4/158.220.127.24/tcp/30303", protocol: "libp2p/kad/1.0.0", latencyMs: 145.2, jitterMs: 1.1 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 300, tps: 1.0 }
   },
   {
     id: "node-vps-02",
-    name: "Virginia Genesis Validator 01 [Live VPS-02]",
+    name: "Virginia Genesis Validator 01 [Configured VPS-02]",
     code: "NA-US-01",
     role: "PRIMARY_VALIDATOR",
     countryName: "United States of America",
     region: "Virginia / US East",
     coordinates: [-78.4769, 38.0307],
-    provider: "OVHcloud VPS-1 (40.160.87.118)",
+    provider: "Configured OVHcloud VPS",
     hardware: { vcpu: 4, ramGb: 8, storage: "40 GB NVMe", antiDdos: "OVHcloud Anti-DDoS" },
     p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/ip4/40.160.87.118/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 180.5, jitterMs: 1.4 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 300, tps: 1.0 }
   },
   {
     id: "node-vps-03",
-    name: "Singapore Genesis Validator 02 [Live VPS-03]",
+    name: "Singapore Genesis Validator 02 [Configured VPS-03]",
     code: "AP-SG-01",
     role: "PRIMARY_VALIDATOR",
     countryName: "Singapore",
     region: "Singapore / Contabo",
     coordinates: [103.8198, 1.3521],
-    provider: "Contabo Cloud VPS (217.216.39.77)",
+    provider: "Configured Contabo cloud VPS",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW Hardware Guard" },
     p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/ip4/217.216.39.77/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 28.4, jitterMs: 0.5 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 300, tps: 1.0 }
@@ -283,7 +283,8 @@ function startMeshEngine() {
 
   const initWs = () => {
     try {
-      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8546";
+      const wsUrl = process.env.NEXT_PUBLIC_WS_URL;
+      if (!wsUrl) return;
       const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
@@ -318,7 +319,9 @@ function startMeshEngine() {
     } catch { }
   };
 
-  initWs();
+  if (process.env.NEXT_PUBLIC_WS_URL) {
+    initWs();
+  }
 
   // 2. Adaptive RPC Polling (Visibility-aware & WebSocket priority)
   const pollMesh = async () => {

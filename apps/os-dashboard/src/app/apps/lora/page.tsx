@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
@@ -111,6 +111,78 @@ const CURATED_LORA_ADAPTERS: LoRAAdapterDescriptor[] = [
   },
 ];
 
+const LORA_HUB = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+const GET_ADAPTER_COUNT = "0x8a12fad9";
+const ADAPTER_IDS = "0xef060de6";
+const ADAPTERS = "0xb84f5d1e";
+const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
+
+function decodeHexUtf8(hex: string): string {
+  const clean = hex.startsWith("0x") ? hex.slice(2) : hex;
+  if (!clean || clean.length % 2 !== 0 || !/^[0-9a-f]+$/i.test(clean)) return "";
+
+  const bytes = new Uint8Array(clean.length / 2);
+  for (let index = 0; index < bytes.length; index += 1) {
+    bytes[index] = parseInt(clean.slice(index * 2, index * 2 + 2), 16);
+  }
+  return textDecoder.decode(bytes);
+}
+
+// ---- ABI decoding helpers for the LoRAAdapterHub registry -----------------
+// Decode a Solidity `string` returned by eth_call (offset + length + utf8 bytes).
+function decodeString(hex: string): string {
+  try {
+    const clean = hex.startsWith("0x") ? hex.slice(2) : hex;
+    const offset = parseInt(clean.slice(0, 64), 16) * 2;
+    const len = parseInt(clean.slice(offset, offset + 64), 16) * 2;
+    const raw = clean.slice(offset + 64, offset + 64 + len);
+    return decodeHexUtf8(raw);
+  } catch {
+    return "";
+  }
+}
+
+// ABI-encode a `string` argument for eth_call (offset + length + padded bytes).
+function encodeStringArg(value: string): string {
+  const bytes = textEncoder.encode(value);
+  const raw = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const paddedLength = Math.ceil(bytes.length / 32) * 64;
+  const padded = raw.padEnd(paddedLength, "0");
+  const lenHex = bytes.length.toString(16).padStart(64, "0");
+  return `0000000000000000000000000000000000000000000000000000000000000020${lenHex}${padded}`;
+}
+
+// Decode the LoRAAdapterHub `Adapter` struct return value:
+//   string adapterId; string name; string baseModel; bytes32 merkleRoot;
+//   address author; uint256 totalMerges; uint256 createdAt;
+function decodeAdapter(hex: string): {
+  name: string;
+  baseModel: string;
+  merkleRoot: string;
+  author: string;
+  totalMerges: number;
+} | null {
+  try {
+    const clean = hex.startsWith("0x") ? hex.slice(2) : hex;
+    const word = (start: number) => clean.slice(start * 64, start * 64 + 64);
+    const readString = (offsetWord: number) => {
+      const offset = parseInt(word(offsetWord), 16) * 2;
+      const len = parseInt(clean.slice(offset, offset + 64), 16) * 2;
+      const raw = clean.slice(offset + 64, offset + 64 + len);
+      return decodeHexUtf8(raw);
+    };
+    const name = readString(1);
+    const baseModel = readString(2);
+    const merkleRoot = "0x" + word(3);
+    const author = "0x" + word(4).slice(24);
+    const totalMerges = parseInt(word(5), 16);
+    return { name, baseModel, merkleRoot, author, totalMerges };
+  } catch {
+    return null;
+  }
+}
+
 export default function LoRAMergingPage() {
   const [adapters, setAdapters] = useState<LoRAAdapterDescriptor[]>(CURATED_LORA_ADAPTERS);
   const [selectedAdapterIds, setSelectedAdapterIds] = useState<string[]>([
@@ -123,6 +195,83 @@ export default function LoRAMergingPage() {
   const [dropRate, setDropRate] = useState(0.50);
   const [isMerging, setIsMerging] = useState(false);
   const [mergeReceipt, setMergeReceipt] = useState<string | null>(null);
+  const [totalMerges, setTotalMerges] = useState(5510);
+  const [onChainAdapterCount, setOnChainAdapterCount] = useState<number | null>(null);
+
+  // On-chain LoRAAdapterHub registry (deployed on NakharaX testnet).
+  // The contract stores adapterId/name/baseModel/merkleRoot/author/totalMerges.
+  // We read the real registry state via eth_call and merge it into the curated
+  // display catalog so the page reflects live on-chain data instead of static values.
+  const fetchLiveLoRAStats = useCallback(async () => {
+    try {
+      const rpc = (body: unknown) =>
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", ...(body as object), id: Date.now() }),
+        }).then((r) => r.json());
+
+      // 1. Read on-chain adapter count.
+      const countRes = await rpc({ method: "eth_call", params: [{ to: LORA_HUB, data: GET_ADAPTER_COUNT }, "latest"] });
+      if (countRes.result && countRes.result !== "0x") {
+        const count = parseInt(countRes.result, 16);
+        if (!Number.isFinite(count) || count < 0) return;
+        setOnChainAdapterCount(count);
+
+        // 2. Read each adapterId from the registry and merge on-chain state
+        //    (totalMerges, author, baseModel, merkleRoot) into the catalog.
+        const known = new Map(CURATED_LORA_ADAPTERS.map((a) => [a.id, a]));
+        const merged: LoRAAdapterDescriptor[] = [];
+        let mergesSum = 0;
+
+        for (let i = 0; i < count; i += 1) {
+          const idxHex = i.toString(16).padStart(64, "0");
+          const idRes = await rpc({ method: "eth_call", params: [{ to: LORA_HUB, data: `${ADAPTER_IDS}${idxHex}` }, "latest"] });
+          if (!idRes.result || idRes.result === "0x") continue;
+          const adapterId = decodeString(idRes.result);
+          if (!adapterId) continue;
+
+          // adapters(string) — ABI-encode the string argument.
+          const enc = encodeStringArg(adapterId);
+          const adRes = await rpc({ method: "eth_call", params: [{ to: LORA_HUB, data: `${ADAPTERS}${enc}` }, "latest"] });
+          if (!adRes.result || adRes.result === "0x") continue;
+
+          const parsed = decodeAdapter(adRes.result);
+          if (!parsed) continue;
+
+          const base = known.get(adapterId);
+          merged.push({
+            id: adapterId,
+            name: parsed.name || base?.name || adapterId,
+            domain: base?.domain ?? "general",
+            baseModel: parsed.baseModel || base?.baseModel || "DeAI-DeepSeek-R1-8B",
+            rank: base?.rank ?? 32,
+            alpha: base?.alpha ?? 64,
+            sizeMb: base?.sizeMb ?? 32,
+            authorAddress: parsed.author || base?.authorAddress || "0x0000000000000000000000000000000000000000",
+            mergeCount: parsed.totalMerges > 0 ? parsed.totalMerges : (base?.mergeCount ?? 0),
+            verifiedProofHash: parsed.merkleRoot || base?.verifiedProofHash || "0x",
+            rating: base?.rating ?? 4.5,
+            downloadUrl: base?.downloadUrl || `https://hub.nakharax.com/lora/${adapterId}.safetensors`,
+          });
+          mergesSum += parsed.totalMerges;
+        }
+
+        if (merged.length > 0) {
+          setAdapters(merged);
+          if (mergesSum > 0) setTotalMerges(mergesSum);
+        }
+      }
+    } catch {
+      /* keep curated catalog as fallback */
+    }
+  }, []);
+
+  useEffect(() => {
+    void fetchLiveLoRAStats();
+    const interval = setInterval(fetchLiveLoRAStats, 15000);
+    return () => clearInterval(interval);
+  }, [fetchLiveLoRAStats]);
 
   const toggleAdapter = (id: string) => {
     setSelectedAdapterIds((prev) =>
@@ -217,8 +366,8 @@ export default function LoRAMergingPage() {
         />
         <StatCard
           label="Total Merges"
-          value="5,510"
-          hint="On-chain consensus fusions"
+          value={totalMerges.toLocaleString()}
+          hint={onChainAdapterCount !== null ? `${onChainAdapterCount} on-chain adapters` : "On-chain consensus fusions"}
           icon={<Activity size={18} />}
           tone="violet"
         />
@@ -247,11 +396,10 @@ export default function LoRAMergingPage() {
                 key={adapter.id}
                 interactive
                 onClick={() => toggleAdapter(adapter.id)}
-                className={`cursor-pointer transition-all ${
-                  isSelected
-                    ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(41,240,106,0.15)]"
-                    : "border-white/10 bg-slate-950/80"
-                }`}
+                className={`cursor-pointer transition-all ${isSelected
+                  ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(41,240,106,0.15)]"
+                  : "border-white/10 bg-slate-950/80"
+                  }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2.5">
@@ -260,12 +408,12 @@ export default function LoRAMergingPage() {
                         adapter.domain === "quant_trading"
                           ? Flame
                           : adapter.domain === "smart_contract_audit"
-                          ? ShieldCheck
-                          : adapter.domain === "formal_logic"
-                          ? Brain
-                          : adapter.domain === "chip_design"
-                          ? Microchip
-                          : Dna
+                            ? ShieldCheck
+                            : adapter.domain === "formal_logic"
+                              ? Brain
+                              : adapter.domain === "chip_design"
+                                ? Microchip
+                                : Dna
                       }
                       tone={isSelected ? "ai" : "neutral"}
                       className="h-9 w-9"
@@ -338,22 +486,20 @@ export default function LoRAMergingPage() {
                   <button
                     type="button"
                     onClick={() => setAlgorithm("ties")}
-                    className={`rounded-lg py-1 text-center font-mono text-[11px] font-semibold transition-all ${
-                      algorithm === "ties"
-                        ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                        : "text-slate-400 hover:text-white"
-                    }`}
+                    className={`rounded-lg py-1 text-center font-mono text-[11px] font-semibold transition-all ${algorithm === "ties"
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                      : "text-slate-400 hover:text-white"
+                      }`}
                   >
                     TIES
                   </button>
                   <button
                     type="button"
                     onClick={() => setAlgorithm("dare")}
-                    className={`rounded-lg py-1 text-center font-mono text-[11px] font-semibold transition-all ${
-                      algorithm === "dare"
-                        ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                        : "text-slate-400 hover:text-white"
-                    }`}
+                    className={`rounded-lg py-1 text-center font-mono text-[11px] font-semibold transition-all ${algorithm === "dare"
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                      : "text-slate-400 hover:text-white"
+                      }`}
                   >
                     DARE
                   </button>

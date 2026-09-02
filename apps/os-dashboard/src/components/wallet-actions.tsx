@@ -51,6 +51,22 @@ import { broadcastRawTransaction } from "@/lib/web3/tx-broadcaster";
 import { InstitutionalVaultModal, VaultCreationResult } from "@/components/institutional-vault-modal";
 
 const KEY_STORE_LOCAL = "nakharax-active-vault";
+const NAKHARAX_RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com";
+
+function parseBlockNumber(value: unknown): number | null {
+  if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0) {
+    return value;
+  }
+  if (typeof value !== "string" || !value.trim()) return null;
+
+  const normalized = value.trim();
+  const parsed = Number.parseInt(normalized, normalized.startsWith("0x") ? 16 : 10);
+  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function blockContext(blockNumber: number | null): string {
+  return blockNumber === null ? "pending block inclusion" : `Block #${blockNumber.toLocaleString()}`;
+}
 
 function requireRpcTxHash(data: any, operation: string): string {
   if (data?.error) {
@@ -72,7 +88,7 @@ interface TxHistoryItem {
   amount: string;
   symbol: string;
   timestamp: string;
-  blockNumber: number;
+  blockNumber: number | null;
   status: "CONFIRMED" | "PENDING";
   to: string;
 }
@@ -116,6 +132,7 @@ export function WalletActions() {
   const [isInstitutionalModalOpen, setIsInstitutionalModalOpen] = useState(false);
   const [txHistory, setTxHistory] = useState<TxHistoryItem[]>([]);
   const [lastReceipt, setLastReceipt] = useState<string | null>(null);
+  const [rpcStatus, setRpcStatus] = useState<"syncing" | "connected" | "unavailable">("syncing");
   const [hint, setHint] = useState<{
     type: "error" | "success" | "info";
     msg: string;
@@ -160,43 +177,56 @@ export function WalletActions() {
     setPrivateKey(pair.privateKey);
   }, []);
 
-  const fetchBalance = useCallback(async () => {
+  const fetchBalance = useCallback(async (walletAddress = address) => {
+    if (!walletAddress) return;
+
     try {
       setIsRefreshing(true);
+      const rpcCall = async (body: Record<string, unknown>) => {
+        const response = await fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await response.json();
+        if (!response.ok || data?.error) {
+          throw new Error(data?.error?.message || `RPC request failed (${response.status}).`);
+        }
+        return data;
+      };
+
       // 1. Fetch Liquid Balance
-      const balPromise = fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_getBalance",
-          params: [address, "latest"],
-          id: 1,
-        }),
-      }).then((r) => r.json());
+      const balPromise = rpcCall({
+        jsonrpc: "2.0",
+        method: "eth_getBalance",
+        params: [walletAddress, "latest"],
+        id: 1,
+      });
 
       // 2. Fetch Staked Balance & Unbonding Queue from On-Chain Staking Pool
-      const stakePromise = fetch("/api/rpc", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "nak_getStakeInfo",
-          params: [address],
-          id: 2,
-        }),
-      }).then((r) => r.json());
+      const stakePromise = rpcCall({
+        jsonrpc: "2.0",
+        method: "nak_getStakeInfo",
+        params: [walletAddress],
+        id: 2,
+      });
 
-      const [balData, stakeData] = await Promise.all([balPromise, stakePromise]);
+      const [balanceResult, stakeResult] = await Promise.allSettled([balPromise, stakePromise]);
 
-      if (balData?.result) {
-        const wei = BigInt(balData.result);
+      if (balanceResult.status === "fulfilled" && typeof balanceResult.value?.result === "string") {
+        const wei = BigInt(balanceResult.value.result);
         const val = Number(formatEther(wei));
         setBalance(val.toFixed(2));
+        setRpcStatus("connected");
+      } else {
+        setRpcStatus("unavailable");
       }
 
-      if (stakeData?.result) {
-        if (stakeData.result.staked !== undefined) {
+      if (stakeResult.status === "fulfilled" && stakeResult.value?.result) {
+        const stakeData = stakeResult.value;
+        if (stakeData.result.sNakBalance !== undefined) {
+          setStakedBalance(stakeData.result.sNakBalance);
+        } else if (stakeData.result.staked !== undefined) {
           setStakedBalance(stakeData.result.staked);
         }
         if (stakeData.result.claimableReward !== undefined) {
@@ -210,7 +240,7 @@ export function WalletActions() {
         }
       }
     } catch {
-      /* fallback */
+      setRpcStatus("unavailable");
     } finally {
       setIsRefreshing(false);
     }
@@ -237,7 +267,7 @@ export function WalletActions() {
           if (accounts && accounts.length > 0) {
             setAddress(accounts[0]);
             setMetaMaskConnected(true);
-            void fetchBalance();
+            void fetchBalance(accounts[0]);
           }
         })
         .catch(() => { });
@@ -246,7 +276,7 @@ export function WalletActions() {
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
           setMetaMaskConnected(true);
-          void fetchBalance();
+          void fetchBalance(accounts[0]);
         } else {
           setMetaMaskConnected(false);
         }
@@ -293,6 +323,7 @@ export function WalletActions() {
       if (accounts && accounts[0]) {
         setAddress(accounts[0]);
         setMetaMaskConnected(true);
+        await fetchBalance(accounts[0]);
       }
 
       // Add & Switch to Nakharax Testnet (Chain ID 86137)
@@ -308,8 +339,8 @@ export function WalletActions() {
                 symbol: "tNAK",
                 decimals: 18,
               },
-              rpcUrls: ["http://127.0.0.1:8545", "https://rpc.nakharax.com"],
-              blockExplorerUrls: ["http://localhost:3030/apps/explorer"],
+              rpcUrls: [NAKHARAX_RPC_URL],
+              blockExplorerUrls: [`${window.location.origin}/apps/explorer`],
             },
           ],
         });
@@ -321,7 +352,7 @@ export function WalletActions() {
         type: "success",
         msg: "🦊 Connected to MetaMask & Nakharax Testnet (Chain 86137)!",
       });
-      await fetchBalance();
+      await fetchBalance(accounts?.[0]);
     } catch (err: any) {
       setHint({ type: "error", msg: `MetaMask Error: ${err.message || String(err)}` });
     }
@@ -329,6 +360,11 @@ export function WalletActions() {
 
   // Sync real on-chain transactions directly from node RPC
   const syncTransactions = useCallback(async () => {
+    if (!address) {
+      setTxHistory([]);
+      return;
+    }
+
     try {
       const res = await fetch("/api/rpc", {
         method: "POST",
@@ -340,25 +376,33 @@ export function WalletActions() {
           id: Date.now(),
         }),
       });
+      if (!res.ok) throw new Error(`RPC request failed (${res.status}).`);
       const data = await res.json();
-      if (Array.isArray(data.result) && data.result.length > 0) {
-        const mapped: TxHistoryItem[] = data.result.map((tx: any) => ({
+      if (data.error) throw new Error(data.error.message || "Ledger RPC error");
+      if (Array.isArray(data.result)) {
+        const walletAddress = address.toLowerCase();
+        const mapped: TxHistoryItem[] = data.result
+          .filter((tx: any) => tx.from?.toLowerCase() === walletAddress || tx.to?.toLowerCase() === walletAddress)
+          .map((tx: any) => {
+            const blockNumber = parseBlockNumber(tx.blockNumber);
+            return {
           id: tx.hash,
           hash: tx.hash,
           type: (tx.type?.replace("_DISPENSE", "") || "TRANSFER") as any,
-          amount: `${(parseInt(tx.value || "0x0", 16) / 1e18).toFixed(2)}`,
+          amount: `${Number(formatEther(BigInt(tx.value || "0x0"))).toFixed(2)}`,
           symbol: "tNAK",
           timestamp: tx.timestamp ? new Date(tx.timestamp * 1000).toLocaleTimeString() : "Just now",
-          blockNumber: parseInt(tx.blockNumber || "0x0", 16),
-          status: "CONFIRMED",
+          blockNumber,
+          status: blockNumber === null ? "PENDING" : "CONFIRMED",
           to: tx.to,
-        }));
+            };
+          });
         setTxHistory(mapped);
       }
     } catch {
       /* ignore */
     }
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     void syncTransactions();
@@ -380,23 +424,25 @@ export function WalletActions() {
       /* ignore */
     }
     setHint({ type: "success", msg: "Generated new cryptographic keypair on device!" });
-    void fetchBalance();
+    void fetchBalance(pair.address);
   }
 
   // Fetch current block number helper
-  const getLiveBlockNumber = async (): Promise<number> => {
+  const getLiveBlockNumber = async (): Promise<number | null> => {
     try {
       const res = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: Date.now() }),
       });
+      if (!res.ok) return null;
       const data = await res.json();
-      if (data.result) return parseInt(data.result, 16);
+      if (data.error) return null;
+      return parseBlockNumber(data.result);
     } catch {
       /* ignore */
     }
-    return 1845;
+    return null;
   };
 
   // 1-Click Request 100 $tNAK from Testnet Faucet
@@ -417,7 +463,7 @@ export function WalletActions() {
       });
       const data = await res.json();
       const txHash = requireRpcTxHash(data, "Faucet request");
-      const currentLiveBlock = data.result?.blockNumber || (await getLiveBlockNumber());
+      const currentLiveBlock = parseBlockNumber(data.result?.blockNumber) ?? (await getLiveBlockNumber());
 
       const newTx: TxHistoryItem = {
         id: txHash,
@@ -427,7 +473,7 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: address,
       };
 
@@ -435,7 +481,7 @@ export function WalletActions() {
       await fetchBalance();
       setHint({
         type: "success",
-        msg: `🎉 Dispensed 100 tNAK (Block #${currentLiveBlock})! (Tx: ${txHash.slice(0, 16)}...)`,
+        msg: `🎉 Faucet transaction accepted (${blockContext(currentLiveBlock)}). Tx: ${txHash.slice(0, 16)}...`,
       });
     } catch (err: any) {
       setHint({ type: "error", msg: `Faucet request failed: ${err?.message || "RPC error"}` });
@@ -494,7 +540,7 @@ export function WalletActions() {
         );
       } catch { }
       setHint({ type: "success", msg: `🔓 Keystore decrypted successfully! Loaded wallet ${parsed.address.slice(0, 10)}...` });
-      void fetchBalance();
+      void fetchBalance(parsed.address);
     } catch (err: any) {
       setHint({ type: "error", msg: `Keystore import failed: ${err?.message || "Decryption error"}` });
     } finally {
@@ -543,14 +589,14 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: to,
       };
 
       setTxHistory((prev) => [newTx, ...prev]);
       setLastReceipt(txHash);
       await fetchBalance();
-      setHint({ type: "success", msg: `🎉 Raw Transaction signed & broadcast on-chain (Block #${currentLiveBlock})! Hash: ${txHash.slice(0, 18)}...` });
+      setHint({ type: "success", msg: `🎉 Raw transaction signed & broadcast (${blockContext(currentLiveBlock)}). Hash: ${txHash.slice(0, 18)}...` });
       setTo("");
       setAmount("");
     } catch (err: any) {
@@ -591,7 +637,7 @@ export function WalletActions() {
       }
       const rpcResult = data.result;
 
-      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const currentLiveBlock = parseBlockNumber(rpcResult?.blockNumber) ?? (await getLiveBlockNumber());
       const txHash = requireRpcTxHash(data, "Staking transaction");
 
       const newStaked = (parseFloat(stakedBalance) + val).toFixed(2);
@@ -607,7 +653,7 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: selectedValidator,
       };
 
@@ -615,7 +661,7 @@ export function WalletActions() {
       await fetchBalance();
       setHint({
         type: "success",
-        msg: `🎉 On-Chain Stake Committed (Block #${currentLiveBlock})! Minted ${val} sNAK shares. Tx: ${txHash.slice(0, 16)}...`,
+        msg: `🎉 Stake transaction accepted (${blockContext(currentLiveBlock)}). Minted ${val} sNAK shares. Tx: ${txHash.slice(0, 16)}...`,
       });
       setStakeAmount("");
     } catch (err: any) {
@@ -655,11 +701,14 @@ export function WalletActions() {
       }
       const rpcResult = data.result;
 
-      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const currentLiveBlock = parseBlockNumber(rpcResult?.blockNumber) ?? (await getLiveBlockNumber());
       const txHash = requireRpcTxHash(data, "Unstaking transaction");
 
-      const unbondId = rpcResult?.unbondId || `unbond-${Date.now()}`;
-      const releaseTime = rpcResult?.releaseTime || Date.now() + 300000;
+      if (typeof rpcResult?.unbondId !== "string" || !Number.isFinite(rpcResult?.releaseTime)) {
+        throw new Error("Unstaking RPC did not return a valid unbonding schedule.");
+      }
+      const unbondId = rpcResult.unbondId;
+      const releaseTime = rpcResult.releaseTime;
 
       const newStaked = (parseFloat(stakedBalance) - val).toFixed(2);
       setStakedBalance(newStaked);
@@ -677,7 +726,7 @@ export function WalletActions() {
         symbol: "sNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: "0x0000000000000000000000000000000000000008",
       };
 
@@ -685,7 +734,7 @@ export function WalletActions() {
 
       setHint({
         type: "success",
-        msg: `🔓 On-Chain Unstake Committed (Block #${currentLiveBlock})! Cooldown active (300s). Tx: ${txHash.slice(0, 16)}...`,
+        msg: `🔓 Unstake transaction accepted (${blockContext(currentLiveBlock)}). Cooldown active (300s). Tx: ${txHash.slice(0, 16)}...`,
       });
       setUnstakeAmount("");
     } catch (err: any) {
@@ -717,7 +766,7 @@ export function WalletActions() {
       }
       const rpcResult = data.result;
 
-      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const currentLiveBlock = parseBlockNumber(rpcResult?.blockNumber) ?? (await getLiveBlockNumber());
       const txHash = requireRpcTxHash(data, "Claim transaction");
 
       setUnbondingQueue((prev) =>
@@ -735,7 +784,7 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: address,
       };
 
@@ -744,7 +793,7 @@ export function WalletActions() {
 
       setHint({
         type: "success",
-        msg: `✅ Claimed ${item.amount} tNAK on-chain (Block #${currentLiveBlock})! Released to wallet.`,
+        msg: `✅ Claimed ${item.amount} tNAK (${blockContext(currentLiveBlock)}). Released to wallet.`,
       });
     } catch (err: any) {
       setHint({ type: "error", msg: `Claim unbonded transaction failed: ${err?.message || "Broadcast error"}` });
@@ -777,7 +826,7 @@ export function WalletActions() {
       }
       const rpcResult = data.result;
 
-      const currentLiveBlock = rpcResult?.blockNumber || (await getLiveBlockNumber());
+      const currentLiveBlock = parseBlockNumber(rpcResult?.blockNumber) ?? (await getLiveBlockNumber());
       const txHash = requireRpcTxHash(data, "Harvest transaction");
 
       const actualHarvested = rpcResult?.harvestedAmount !== undefined ? rpcResult.harvestedAmount : harvested;
@@ -791,7 +840,7 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: address,
       };
 
@@ -799,7 +848,7 @@ export function WalletActions() {
       await fetchBalance();
       setHint({
         type: "success",
-        msg: `🌾 Harvested +${Number(actualHarvested).toFixed(6)} tNAK on-chain (Block #${currentLiveBlock}) across ${rpcResult?.blocksPassed || 1} blocks!`,
+        msg: `🌾 Harvested +${Number(actualHarvested).toFixed(6)} tNAK (${blockContext(currentLiveBlock)}) across ${rpcResult?.blocksPassed || 1} blocks.`,
       });
     } catch (err: any) {
       setHint({ type: "error", msg: `Harvest transaction failed: ${err?.message || "Broadcast error"}` });
@@ -831,7 +880,7 @@ export function WalletActions() {
               symbol: "tNAK",
               decimals: 18,
             },
-            rpcUrls: ["http://127.0.0.1:8545"],
+            rpcUrls: [NAKHARAX_RPC_URL],
             blockExplorerUrls: [`${origin}/apps/explorer`],
             iconUrls: [`${origin}/icon.png`],
           },
@@ -921,7 +970,7 @@ export function WalletActions() {
       const data = await res.json();
       const txHash = requireRpcTxHash(data, "MetaMask faucet request");
 
-      const currentLiveBlock = await getLiveBlockNumber();
+      const currentLiveBlock = parseBlockNumber(data.result?.blockNumber) ?? (await getLiveBlockNumber());
       const newTx: TxHistoryItem = {
         id: txHash,
         hash: txHash,
@@ -930,13 +979,13 @@ export function WalletActions() {
         symbol: "tNAK",
         timestamp: "Just now",
         blockNumber: currentLiveBlock,
-        status: "CONFIRMED",
+        status: currentLiveBlock === null ? "PENDING" : "CONFIRMED",
         to: targetMetaMaskAddr,
       };
 
       setTxHistory((prev) => [newTx, ...prev]);
       setAddress(targetMetaMaskAddr);
-      await fetchBalance();
+      await fetchBalance(targetMetaMaskAddr);
       setHint({
         type: "success",
         msg: `🎉 Successfully Airdropped +500.00 $tNAK to your MetaMask account (${targetMetaMaskAddr.slice(0, 10)}...)! Sovereign Treasury Valuation synced in real-time.`,
@@ -947,9 +996,13 @@ export function WalletActions() {
   }
 
   async function handleResetWallet() {
+    if (!window.confirm("Reset the active wallet's balance, staking positions, and local transaction list? This cannot be undone.")) {
+      return;
+    }
+
     try {
       setIsRefreshing(true);
-      await fetch("/api/rpc", {
+      const res = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -959,6 +1012,10 @@ export function WalletActions() {
           id: Date.now(),
         }),
       });
+      const data = await res.json();
+      if (!res.ok || data?.error || data?.result?.success !== true) {
+        throw new Error(data?.error?.message || "The node did not confirm the wallet reset.");
+      }
       setBalance("0.00");
       setStakedBalance("0.00");
       setEscrowLocked("0.00");
@@ -966,7 +1023,7 @@ export function WalletActions() {
       setTxHistory([]);
       setHint({
         type: "info",
-        msg: "✨ Wallet balance and staking positions reset to 0.00 $tNAK on-chain (Clean Genesis State)!",
+        msg: "✨ The node confirmed that this wallet's balance and staking positions were reset to 0.00 tNAK.",
       });
     } catch {
       setHint({ type: "error", msg: "Failed to reset wallet." });
@@ -995,7 +1052,7 @@ export function WalletActions() {
       type: "success",
       msg: `🏛️ Institutional Citadel Vault Created & BIP-39 Seed Verified! Address: ${result.address.slice(0, 10)}...`,
     });
-    void fetchBalance();
+    void fetchBalance(result.address);
   }
 
   const totalPortfolioValue = (
@@ -1003,24 +1060,31 @@ export function WalletActions() {
     parseFloat(stakedBalance || "0") +
     parseFloat(escrowLocked || "0")
   ).toFixed(2);
+  const rpcStatusLabel = rpcStatus === "connected" ? "RPC CONNECTED" : rpcStatus === "syncing" ? "SYNCING" : "RPC UNAVAILABLE";
+  const rpcStatusClass = rpcStatus === "connected" ? "text-emerald-400" : rpcStatus === "syncing" ? "text-cyan-300" : "text-rose-300";
+  const rpcStatusDetail = rpcStatus === "connected"
+    ? "Live balance and wallet-state reads are active."
+    : rpcStatus === "syncing"
+      ? "Syncing wallet state through the RPC gateway."
+      : "Wallet RPC is unavailable; balances may be stale.";
 
   return (
     <div className="space-y-6">
       {/* 🛡️ Sovereign Node Mesh Health & Operator Sentinel Banner */}
-      <div className="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="rounded-xl border border-white/10 bg-slate-950/70 px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2.5">
-          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span className="font-semibold text-emerald-300">
-            NODE SENTINEL ACTIVE:
+          <ShieldCheck className={`w-4 h-4 shrink-0 ${rpcStatusClass}`} />
+          <span className={`font-semibold ${rpcStatusClass}`}>
+            NETWORK RPC:
           </span>
           <span className="text-neutral-300 font-mono">
-            7/7 Global Mesh Nodes Healthy · P99 Latency 1ms · Zero Slashed Validators
+            {rpcStatusDetail}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-300 font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            BFT Quorum 100%
+          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[11px] font-mono ${rpcStatusClass}`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${rpcStatus === "connected" ? "bg-emerald-400 animate-pulse" : rpcStatus === "syncing" ? "bg-cyan-400 animate-pulse" : "bg-rose-400"}`} />
+            {rpcStatusLabel}
           </span>
           <Link
             href="/nodes"
@@ -1103,7 +1167,7 @@ export function WalletActions() {
 
             <button
               type="button"
-              onClick={fetchBalance}
+              onClick={() => void fetchBalance()}
               disabled={isRefreshing}
               className="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 transition-colors"
               title="Refresh Portfolio"
@@ -1325,7 +1389,7 @@ export function WalletActions() {
                   <Globe2 size={16} className="text-cyan-400" />
                   <h3 className="text-sm font-bold text-white">Network Ingress SLA</h3>
                 </div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold">● CONNECTED</span>
+                <span className={`text-[10px] font-mono font-bold ${rpcStatusClass}`}>● {rpcStatusLabel}</span>
               </div>
 
               <div className="mt-4 space-y-2.5 font-mono text-xs text-slate-300">
@@ -1335,7 +1399,7 @@ export function WalletActions() {
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/5">
                   <span className="text-slate-400">Native RPC:</span>
-                  <span className="text-cyan-300 font-bold">http://127.0.0.1:8545</span>
+                  <span className="max-w-[220px] truncate text-cyan-300 font-bold" title={NAKHARAX_RPC_URL}>{NAKHARAX_RPC_URL}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/5">
                   <span className="text-slate-400">P2P Port:</span>
@@ -1834,7 +1898,7 @@ export function WalletActions() {
                 </div>
                 <h4 className="text-sm font-bold text-white">Add NakharaX L1 Network</h4>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                  Adds Chain ID <strong className="text-white">86137 (0x15079)</strong> with native currency <strong className="text-white">tNAK</strong> and RPC <code className="text-cyan-300">http://127.0.0.1:8545</code>.
+                  Adds Chain ID <strong className="text-white">86137 (0x15079)</strong> with native currency <strong className="text-white">tNAK</strong> and RPC <code className="text-cyan-300">{NAKHARAX_RPC_URL}</code>.
                 </p>
               </div>
 
@@ -1935,7 +1999,7 @@ export function WalletActions() {
               <div>
                 <div className="flex items-center gap-2 text-xs font-mono font-bold text-violet-300">
                   <KeyRound size={14} />
-                  <span>Option B: Import Existing 1,500+ $tNAK Vault</span>
+                  <span>Option B: Import Dashboard Vault</span>
                 </div>
                 <h4 className="text-sm font-bold text-white mt-1">Import Dashboard Private Key</h4>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed mt-1">
@@ -1969,7 +2033,7 @@ export function WalletActions() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
               {[
                 { label: "Network Name", value: "NakharaX L1 Testnet" },
-                { label: "RPC URL", value: "http://127.0.0.1:8545" },
+                { label: "RPC URL", value: NAKHARAX_RPC_URL },
                 { label: "Chain ID", value: "86137" },
                 { label: "Currency Symbol", value: "tNAK" },
                 { label: "$tNAK Token Address", value: "0x5FbDB2315678afecb367f032d93F642f64180aa3" },
@@ -2050,7 +2114,7 @@ export function WalletActions() {
                       <span>{tx.hash.slice(0, 10)}...{tx.hash.slice(-6)}</span>
                     </Link>
                   </td>
-                  <td className="py-3 px-4 text-slate-400">#{tx.blockNumber}</td>
+                  <td className="py-3 px-4 text-slate-400">{tx.blockNumber === null ? "Awaiting inclusion" : `#${tx.blockNumber.toLocaleString()}`}</td>
                   <td className="py-3 px-4 font-bold text-white">
                     <span className={tx.amount.startsWith("+") ? "text-emerald-400" : "text-slate-200"}>
                       {tx.amount} {tx.symbol}

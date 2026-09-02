@@ -33,13 +33,21 @@ import {
   StatusPill,
 } from "@/components/card";
 
+// On-chain FaucetTreasury contract (holds NAK ERC-20 token, not native ETH).
+// We read the token balance via eth_call on the NakharaxToken contract:
+// balanceOf(FaucetTreasury) — selector 0x70a08231.
+const FAUCET_TREASURY = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const NAK_TOKEN = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const BALANCE_OF_DATA = `0x70a08231${FAUCET_TREASURY.slice(2).toLowerCase().padStart(64, "0")}`;
+
 export default function TestnetFaucetPage() {
   const [recipientAddress, setRecipientAddress] = useState("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
   const [isRequesting, setIsRequesting] = useState(false);
   const [receiptNotice, setReceiptNotice] = useState<string | null>(null);
-  const [faucetTreasury, setFaucetTreasury] = useState<number>(50000);
-  const [totalDispensed, setTotalDispensed] = useState<number>(1420);
-  const [currentBlock, setCurrentBlock] = useState<number>(1830);
+  const [noticeTone, setNoticeTone] = useState<"success" | "error">("success");
+  const [faucetTreasury, setFaucetTreasury] = useState<number | null>(null);
+  const [sessionDispenses, setSessionDispenses] = useState(0);
+  const [currentBlock, setCurrentBlock] = useState<number | null>(null);
 
   // Restore saved wallet address or sync with active MetaMask account
   useEffect(() => {
@@ -52,7 +60,7 @@ export default function TestnetFaucetPage() {
             setRecipientAddress(accounts[0]);
           }
         })
-        .catch(() => {});
+        .catch(() => { });
 
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts && accounts.length > 0) {
@@ -79,7 +87,9 @@ export default function TestnetFaucetPage() {
     }
   }, []);
 
-  // Fetch live on-chain faucet treasury balance
+  // Fetch live on-chain faucet treasury balance from the real FaucetTreasury contract.
+  // The treasury holds the NAK ERC-20 token (not native ETH), so we read the token
+  // balance via eth_call on the NakharaxToken contract: balanceOf(FaucetTreasury).
   const fetchLiveFaucetStats = useCallback(async () => {
     try {
       const bnRes = await fetch("/api/rpc", {
@@ -90,25 +100,24 @@ export default function TestnetFaucetPage() {
       const bnData = await bnRes.json();
       if (bnData.result) {
         const bn = parseInt(bnData.result, 16);
-        setCurrentBlock(bn);
-        setTotalDispensed(Math.floor(bn * 1.5));
+        if (Number.isFinite(bn)) setCurrentBlock(bn);
       }
 
-      // Query treasury account
+      // Query the NAK token balance held by the FaucetTreasury contract.
       const balRes = await fetch("/api/rpc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           jsonrpc: "2.0",
-          method: "eth_getBalance",
-          params: ["0x0000000000000000000000000000000000000001", "latest"],
+          method: "eth_call",
+          params: [{ to: NAK_TOKEN, data: BALANCE_OF_DATA }, "latest"],
           id: 2,
         }),
       });
       const balData = await balRes.json();
-      if (balData.result) {
+      if (balData.result && balData.result !== "0x") {
         const bal = parseInt(balData.result, 16) / 1e18;
-        setFaucetTreasury(bal > 0 ? bal : 50000);
+        setFaucetTreasury(bal > 0 ? bal : 0);
       }
     } catch {
       /* fallback */
@@ -123,10 +132,16 @@ export default function TestnetFaucetPage() {
 
   async function handleRequestTokens(e: React.FormEvent) {
     e.preventDefault();
-    if (!recipientAddress.trim()) return;
+    const recipient = recipientAddress.trim();
+    if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) {
+      setNoticeTone("error");
+      setReceiptNotice("Enter a valid 20-byte EVM address before claiming testnet tokens.");
+      return;
+    }
 
     try {
       setIsRequesting(true);
+      setNoticeTone("success");
       setReceiptNotice("Broadcasting nakharax_faucet JSON-RPC to Node RPC...");
 
       // Call live RPC
@@ -136,22 +151,23 @@ export default function TestnetFaucetPage() {
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "nakharax_faucet",
-          params: [recipientAddress.trim(), 100],
+          params: [recipient, 100],
           id: Date.now(),
         }),
       });
       const data = await res.json();
-      const txHash =
-        data.result?.txHash ||
-        `0x${Array.from(crypto.getRandomValues(new Uint8Array(20))).map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+      if (!res.ok || data.error || !data.result?.txHash) {
+        throw new Error(data.error?.message || "The faucet did not return a transaction hash.");
+      }
 
       setReceiptNotice(
-        `🎉 Successfully Dispensed 100.00 $tNAK (Block #${currentBlock})!\nRecipient: ${recipientAddress.trim()}\nTx Hash: ${txHash}\nStatus: CONFIRMED_POPC_FINALITY`
+        `🎉 Successfully dispensed 100.00 $tNAK${currentBlock === null ? "" : ` (Block #${currentBlock})`}!\nRecipient: ${recipient}\nTx Hash: ${data.result.txHash}\nStatus: CONFIRMED_POPC_FINALITY`
       );
-      setFaucetTreasury((prev) => Math.max(0, prev - 100));
-      setTotalDispensed((prev) => prev + 1);
-    } catch {
-      setReceiptNotice(`🎉 Successfully Dispensed 100.00 $tNAK to ${recipientAddress.trim()}!`);
+      setFaucetTreasury((prev) => (prev === null ? null : Math.max(0, prev - 100)));
+      setSessionDispenses((prev) => prev + 1);
+    } catch (error) {
+      setNoticeTone("error");
+      setReceiptNotice(`Faucet request was not confirmed: ${error instanceof Error ? error.message : "Unknown RPC error."}`);
     } finally {
       setIsRequesting(false);
     }
@@ -168,7 +184,9 @@ export default function TestnetFaucetPage() {
             100 $tNAK / Request
           </StatusPill>
           <StatusPill tone="ai">Chain ID 86137</StatusPill>
-          <StatusPill tone="violet">Block #{currentBlock.toLocaleString()}</StatusPill>
+          <StatusPill tone="violet">
+            {currentBlock === null ? "Network syncing" : `Block #${currentBlock.toLocaleString()}`}
+          </StatusPill>
         </>
       }
       actions={
@@ -192,15 +210,15 @@ export default function TestnetFaucetPage() {
         />
         <StatCard
           label="Treasury Balance"
-          value={`${faucetTreasury.toLocaleString()} tNAK`}
+          value={faucetTreasury === null ? "—" : `${faucetTreasury.toLocaleString()} tNAK`}
           hint="Live Genesis Faucet Vault"
           icon={<Coins size={18} />}
           tone="chain"
         />
         <StatCard
-          label="Total Dispenses"
-          value={totalDispensed.toLocaleString()}
-          hint="Live on-chain requests"
+          label="Session Dispenses"
+          value={sessionDispenses.toLocaleString()}
+          hint="Confirmed in this browser session"
           icon={<Activity size={18} />}
           tone="ai"
         />
@@ -251,7 +269,12 @@ export default function TestnetFaucetPage() {
             </div>
 
             {receiptNotice && (
-              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 font-mono text-xs text-emerald-300 whitespace-pre-wrap leading-relaxed shadow-[0_0_20px_rgba(41,240,106,0.15)]">
+              <div
+                className={`rounded-xl border p-3.5 font-mono text-xs whitespace-pre-wrap leading-relaxed ${noticeTone === "success"
+                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_20px_rgba(41,240,106,0.15)]"
+                  : "border-rose-500/30 bg-rose-500/10 text-rose-200"
+                  }`}
+              >
                 {receiptNotice}
               </div>
             )}

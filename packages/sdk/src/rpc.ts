@@ -10,11 +10,11 @@ import { TESTNET_CHAIN_ID } from "./types";
 
 export type { NodeEndpoint, NodeStatus, Result, RpcError, KadPeer };
 
-/** Curated default testnet endpoints — prioritized with active local daemon & multi-region gateways. */
+/** Curated default testnet endpoints — prioritized with active public gateway & multi-region fallbacks. */
 export const DEFAULT_NODES: NodeEndpoint[] = [
+  { id: "rpc-public", name: "Public RPC Gateway", url: "https://rpc.nakharax.com", wsUrl: "wss://rpc.nakharax.com/ws" },
+  { id: "rpc-vps01", name: "VPS-01 Ingress Gateway", url: "http://158.220.127.24", wsUrl: "ws://158.220.127.24:8546" },
   { id: "rpc-local", name: "Local Sovereign Daemon", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
-  { id: "rpc-eu", name: "Validator EU (Frankfurt)", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
-  { id: "rpc-ap", name: "Validator AP (Singapore)", url: "http://127.0.0.1:8545", wsUrl: "ws://127.0.0.1:8546" },
 ];
 
 export interface RpcCallOptions {

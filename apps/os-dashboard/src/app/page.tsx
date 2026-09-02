@@ -55,14 +55,18 @@ export default async function Home() {
     0,
   );
   const totalNodes = statuses.length;
-  const isOnline = online > 0;
+  const rpcEndpoint = process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com";
 
   return (
     <div className="space-y-10 sm:space-y-12 animate-slide-up pb-20">
       {/* =========================================================================
           HIGH-FPS LIVE INGRESS TICKER STRIP (TOP RADAR)
           ========================================================================= */}
-      <TopRadarTicker initialBlock={maxBlock} />
+      <TopRadarTicker
+        initialBlock={maxBlock}
+        initialOnline={online}
+        initialTotalNodes={totalNodes}
+      />
 
       {/* =========================================================================
           HERO: INSTITUTIONAL COMMAND CENTER & SOVEREIGN DEAI GRID
@@ -107,7 +111,7 @@ export default async function Home() {
               className="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
             >
               <Globe2 size={16} />
-              <span>Global 3-Node Radar</span>
+              <span>Open Node Radar</span>
             </Link>
 
             <Link
@@ -345,11 +349,11 @@ export default async function Home() {
           description="Submit cryptographic jobs or query node state directly over HTTP JSON-RPC 2.0."
           action={
             <span className="text-[11px] font-mono text-slate-400">
-              RPC: <code className="text-cyan-300">http://127.0.0.1:8545</code>
+              RPC: <code className="text-cyan-300">{rpcEndpoint}</code>
             </span>
           }
         />
-        <QuickConnectBox />
+        <QuickConnectBox endpoint={rpcEndpoint} />
       </section>
     </div>
   );

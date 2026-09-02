@@ -43,12 +43,14 @@ interface TransactionItem {
 }
 
 export default function TreasuryPage() {
+  // Start from zeroed state; real on-chain values are fetched from
+  // nak_getTreasuryStats. No fabricated/hardcoded fallback numbers.
   const [stats, setStats] = useState<TreasuryStats>({
-    treasuryBalanceTokens: 10008.67,
-    totalBurnedTokens: 142.38,
-    totalJobs: 28,
-    totalBurnedWei: "0x7b587a8b60000",
-    totalTreasuryWei: "0x8a9234b00000",
+    treasuryBalanceTokens: 0,
+    totalBurnedTokens: 0,
+    totalJobs: 0,
+    totalBurnedWei: "0x0",
+    totalTreasuryWei: "0x0",
   });
   const [currentBlock, setCurrentBlock] = useState<number>(0);
   const [recentTxs, setRecentTxs] = useState<TransactionItem[]>([]);
@@ -103,12 +105,13 @@ export default function TreasuryPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const treasuryBalance = typeof (stats as any)?.liquidBalance === 'string' 
-    ? parseFloat((stats as any).liquidBalance) 
-    : (stats?.treasuryBalanceTokens ?? 10008.67);
-  const totalBurned = typeof stats?.totalBurnedTokens === 'number' 
-    ? stats.totalBurnedTokens 
-    : 142.38;
+  // Use only live on-chain values. No fabricated fallback numbers.
+  const treasuryBalance = typeof (stats as any)?.liquidBalance === 'string'
+    ? parseFloat((stats as any).liquidBalance)
+    : (stats?.treasuryBalanceTokens ?? 0);
+  const totalBurned = typeof stats?.totalBurnedTokens === 'number'
+    ? stats.totalBurnedTokens
+    : 0;
 
   return (
     <PageShell
@@ -289,13 +292,12 @@ export default function TreasuryPage() {
                       </td>
                       <td className="py-3">
                         <span
-                          className={`rounded px-2 py-0.5 text-[10px] font-bold ${
-                            tx.type?.includes("COMPUTE")
-                              ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
-                              : tx.type?.includes("STAKING")
+                          className={`rounded px-2 py-0.5 text-[10px] font-bold ${tx.type?.includes("COMPUTE")
+                            ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
+                            : tx.type?.includes("STAKING")
                               ? "bg-indigo-500/10 text-indigo-300 border border-indigo-500/30"
                               : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/30"
-                          }`}
+                            }`}
                         >
                           {tx.type || "TRANSFER"}
                         </span>

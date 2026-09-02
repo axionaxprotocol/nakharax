@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { broadcastRawTransaction, encodeTxMemo } from "@/lib/web3/tx-broadcaster";
 import {
@@ -55,7 +55,7 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
     rating: 4.95,
     totalCalls: 89400,
     verified: true,
-    endpointUrl: "http://127.0.0.1:8545/mcp/auditor",
+    endpointUrl: "https://rpc.nakharax.com/mcp/auditor",
     transport: "websocket",
     schema: {
       input: { contractSource: "string", compilerVersion: "string" },
@@ -72,7 +72,7 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
     rating: 4.99,
     totalCalls: 312000,
     verified: true,
-    endpointUrl: "http://127.0.0.1:8545/mcp/deepseek-r1",
+    endpointUrl: "https://rpc.nakharax.com/mcp/deepseek-r1",
     transport: "sse",
     schema: {
       input: { prompt: "string", maxThinkingTokens: "number" },
@@ -89,7 +89,7 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
     rating: 4.91,
     totalCalls: 541200,
     verified: true,
-    endpointUrl: "http://127.0.0.1:8545/mcp/indexer",
+    endpointUrl: "https://rpc.nakharax.com/mcp/indexer",
     transport: "websocket",
     schema: {
       input: { blockRange: "array", targetAddress: "string" },
@@ -106,7 +106,7 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
     rating: 4.88,
     totalCalls: 67300,
     verified: true,
-    endpointUrl: "http://127.0.0.1:8545/mcp/sandbox",
+    endpointUrl: "https://rpc.nakharax.com/mcp/sandbox",
     transport: "stdio",
     schema: {
       input: { code: "string", language: "string", memoryLimitMb: "number" },
@@ -123,7 +123,7 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
     rating: 4.86,
     totalCalls: 198000,
     verified: true,
-    endpointUrl: "http://127.0.0.1:8545/mcp/crawler",
+    endpointUrl: "https://rpc.nakharax.com/mcp/crawler",
     transport: "sse",
     schema: {
       input: { url: "string", extractMarkdown: "boolean" },
@@ -132,16 +132,54 @@ const CURATED_MCP_SKILLS: MCPSkillDescriptor[] = [
   },
 ];
 
+const DEFAULT_AUDITOR_PAYLOAD = JSON.stringify(
+  {
+    contractSource: "pragma solidity ^0.8.20;\ncontract Vault { ... }",
+    compilerVersion: "0.8.20",
+  },
+  null,
+  2
+);
+
 export default function MCPMarketplacePage() {
   const [skills, setSkills] = useState<MCPSkillDescriptor[]>(CURATED_MCP_SKILLS);
   const [selectedSkill, setSelectedSkill] = useState<MCPSkillDescriptor>(CURATED_MCP_SKILLS[0]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [testPayload, setTestPayload] = useState<string>(
-    JSON.stringify({ equity: 100000, dailyDrawdownLimit: 5000, openPositions: [{ symbol: "XAUUSD", volume: 1.5 }] }, null, 2)
-  );
+  const [testPayload, setTestPayload] = useState(DEFAULT_AUDITOR_PAYLOAD);
   const [isExecuting, setIsExecuting] = useState(false);
   const [executionResult, setExecutionResult] = useState<string | null>(null);
+  const [liveWorkerCount, setLiveWorkerCount] = useState<number | null>(null);
+  const [liveBlock, setLiveBlock] = useState<number | null>(null);
+
+  // Pull live network state from the RPC gateway so the marketplace reflects
+  // real on-chain worker availability instead of purely static catalog data.
+  const fetchLiveMCPStats = async () => {
+    try {
+      const rpc = (body: unknown) =>
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", ...(body as object), id: Date.now() }),
+        }).then((r) => r.json());
+
+      const bn = await rpc({ method: "eth_blockNumber", params: [] });
+      if (bn.result) setLiveBlock(parseInt(bn.result, 16));
+
+      const workers = await rpc({ method: "nak_getWorkers", params: [] });
+      if (workers.result && Array.isArray(workers.result)) {
+        setLiveWorkerCount(workers.result.length);
+      }
+    } catch {
+      /* keep curated catalog as fallback */
+    }
+  };
+
+  useEffect(() => {
+    void fetchLiveMCPStats();
+    const interval = setInterval(fetchLiveMCPStats, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredSkills = skills.filter((s) => {
     const matchesSearch =
@@ -157,7 +195,7 @@ export default function MCPMarketplacePage() {
     if (skill.id === "mcp-quant-risk") {
       setTestPayload(JSON.stringify({ equity: 100000, dailyDrawdownLimit: 5000, openPositions: [{ symbol: "XAUUSD", volume: 1.5 }] }, null, 2));
     } else if (skill.id === "mcp-sec-auditor") {
-      setTestPayload(JSON.stringify({ contractSource: "pragma solidity ^0.8.20;\ncontract Vault { ... }", compilerVersion: "0.8.20" }, null, 2));
+      setTestPayload(DEFAULT_AUDITOR_PAYLOAD);
     } else if (skill.id === "mcp-deepseek-reasoner") {
       setTestPayload(JSON.stringify({ prompt: "Prove whether P != NP under oracle separation constraints.", maxThinkingTokens: 4096 }, null, 2));
     } else {
@@ -266,14 +304,14 @@ export default function MCPMarketplacePage() {
         <StatCard
           label="Registered Skills"
           value={skills.length}
-          hint="Verifiable MCP services"
+          hint={liveWorkerCount !== null ? `${liveWorkerCount} live workers` : "Verifiable MCP services"}
           icon={<Plug size={18} />}
           tone="ai"
         />
         <StatCard
           label="Invocation Transport"
           value="JSON-RPC + SSE"
-          hint="Direct localhost & stream"
+          hint={liveBlock !== null ? `Block #${liveBlock.toLocaleString()}` : "Gateway & stream"}
           icon={<Activity size={18} />}
           tone="chain"
         />
@@ -301,8 +339,8 @@ export default function MCPMarketplacePage() {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={`rounded-xl border px-3 py-1.5 text-[11px] font-mono capitalize transition-all ${selectedCategory === cat
-                  ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300 shadow-sm"
-                  : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06] hover:text-white"
+                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300 shadow-sm"
+                : "border-white/10 bg-white/[0.03] text-slate-400 hover:bg-white/[0.06] hover:text-white"
                 }`}
             >
               {cat}
@@ -334,8 +372,8 @@ export default function MCPMarketplacePage() {
                 interactive
                 onClick={() => handleSelectSkill(skill)}
                 className={`cursor-pointer transition-all ${isSelected
-                    ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(41,240,106,0.15)]"
-                    : "border-white/10 bg-slate-950/80"
+                  ? "border-emerald-400/80 bg-emerald-500/10 shadow-[0_0_25px_rgba(41,240,106,0.15)]"
+                  : "border-white/10 bg-slate-950/80"
                   }`}
               >
                 <div className="flex items-start justify-between">

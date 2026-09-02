@@ -6,18 +6,22 @@ import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 interface TopRadarTickerProps {
   initialBlock: number;
+  initialOnline: number;
+  initialTotalNodes: number;
 }
 
-export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
-  const { blockNumber, isLive, latencyMs, totalActiveNodes, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
-  const displayBlock = isLive && blockNumber > 0 ? blockNumber : (initialBlock > 0 ? initialBlock : 1000);
+export function TopRadarTicker({ initialBlock, initialOnline, initialTotalNodes }: TopRadarTickerProps) {
+  const { blockNumber, isLive, latencyMs, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
+  const hasLiveTelemetry = isLive && blockNumber > 0;
+  const displayBlock = hasLiveTelemetry ? blockNumber : (initialBlock > 0 ? initialBlock : null);
+  const networkReachable = hasLiveTelemetry || initialOnline > 0;
 
   return (
     <div className="overflow-hidden rounded-2xl border border-emerald-500/30 bg-black/60 p-2.5 backdrop-blur-xl shadow-lg">
       <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono">
         <div className="flex items-center gap-2 text-emerald-400 font-bold">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>NAKHARAX L1 GRID: {totalActiveNodes > 0 ? `${totalActiveNodes}-NODE MESH LIVE` : "SYNCING"}</span>
+          <span className={`h-2 w-2 rounded-full ${networkReachable ? "bg-emerald-400 animate-ping" : "bg-slate-500"}`} />
+          <span>NAKHARAX L1 GRID: {hasLiveTelemetry ? "TELEMETRY LIVE" : networkReachable ? "RPC PROBE AVAILABLE" : "AWAITING RPC"}</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 text-slate-400">
@@ -28,25 +32,25 @@ export function TopRadarTicker({ initialBlock }: TopRadarTickerProps) {
           <span>
             BLOCK:{" "}
             <strong className="text-cyan-300 font-bold transition-all">
-              #{displayBlock.toLocaleString()}
+              {displayBlock ? `#${displayBlock.toLocaleString()}` : "AWAITING"}
             </strong>
           </span>
           <span>·</span>
           <span>
-            CADENCE: <strong className="text-emerald-300 font-bold">3.00s</strong>
+            TELEMETRY: <strong className="text-emerald-300 font-bold">{hasLiveTelemetry ? "CONNECTED" : "PENDING"}</strong>
           </span>
           <span>·</span>
           <span>
             BFT MESH:{" "}
             <strong className="text-emerald-400 font-bold">
-              {totalActiveNodes} NODES ACTIVE {totalWorkersCount > 0 ? `(${totalWorkersCount} GPU WORKER${totalWorkersCount > 1 ? "S" : ""} · ${totalNetworkHashrateMops.toFixed(0)} M-Ops/s)` : ""}
+              {initialTotalNodes > 0 ? `${initialOnline}/${initialTotalNodes} RPC NODES ONLINE` : "NO RPC NODES CONFIGURED"}{hasLiveTelemetry && totalWorkersCount > 0 ? ` · ${totalWorkersCount} GPU WORKER${totalWorkersCount > 1 ? "S" : ""} · ${totalNetworkHashrateMops.toFixed(0)} M-Ops/s` : ""}
             </strong>
           </span>
           <span>·</span>
           <span>
             LATENCY:{" "}
             <strong className="text-cyan-300 font-bold">
-              {latencyMs > 0 ? `${latencyMs}ms` : "< 2ms"}
+              {hasLiveTelemetry && latencyMs > 0 ? `${latencyMs}ms` : "AWAITING SAMPLE"}
             </strong>
           </span>
         </div>

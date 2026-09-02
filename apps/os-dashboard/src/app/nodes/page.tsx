@@ -44,140 +44,151 @@ interface ClusterNode {
   endpoint: string;
   role: "Local Live Host" | "Genesis Validator" | "Public RPC Gateway" | "DeAI GPU Worker" | "Hydra Sentinel";
   hardware: string;
-  tps: number;
-  status: "ACTIVE_LIVE" | "STANDBY_BLUEPRINT";
-  latencyMs: number;
-  blockHeight: number;
+  tps: number | null;
+  status: "ACTIVE_LIVE" | "CONFIGURED" | "STANDBY";
+  latencyMs: number | null;
+  blockHeight: number | null;
   hostingTier: string;
 }
 
-// Real live Genesis network topology (3 VPS validators). No fabricated TPS/latency
-// values — metrics are shown as reported by the live probe. Local worker rigs are
-// NOT listed here; they only appear once they register on-chain via the live probe.
-const PLANNED_VPS_BLUEPRINTS: ClusterNode[] = [
+// Configured Genesis topology. Only the public gateway is marked live when the
+// RPC telemetry hook confirms it; other validator hosts are not independently probed
+// by this frontend. Workers appear only after the RPC reports a registration.
+const CONFIGURED_VPS_NODES: ClusterNode[] = [
   {
     id: "node-vps01-germany",
     name: "Germany Master Hub & Ingress (VPS-01)",
     region: "Frankfurt, Germany",
-    endpoint: "rpc.nakharax.com (158.220.127.24)",
+    endpoint: "https://rpc.nakharax.com",
     role: "Public RPC Gateway",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 0,
-    status: "ACTIVE_LIVE",
-    latencyMs: 0,
-    blockHeight: 0,
-    hostingTier: "Tier 1: Global Seed & Public Ingress (Contabo VPS)",
+    tps: null,
+    status: "CONFIGURED",
+    latencyMs: null,
+    blockHeight: null,
+    hostingTier: "Configured public RPC ingress",
   },
   {
     id: "node-vps02-virginia",
     name: "Virginia Genesis Validator 01 (VPS-02)",
     region: "Virginia, US East",
-    endpoint: "40.160.87.118:30303",
+    endpoint: "P2P endpoint not independently probed",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
-    tps: 0,
-    status: "ACTIVE_LIVE",
-    latencyMs: 0,
-    blockHeight: 0,
-    hostingTier: "Tier 1: Global Validator Quorum (OVHcloud VPS)",
+    tps: null,
+    status: "CONFIGURED",
+    latencyMs: null,
+    blockHeight: null,
+    hostingTier: "Configured validator topology",
   },
   {
     id: "node-vps03-singapore",
     name: "Singapore Genesis Validator 02 (VPS-03)",
     region: "Singapore, APAC",
-    endpoint: "217.216.39.77:30303",
+    endpoint: "P2P endpoint not independently probed",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 0,
-    status: "ACTIVE_LIVE",
-    latencyMs: 0,
-    blockHeight: 0,
-    hostingTier: "Tier 1: Global Validator Quorum (Contabo VPS)",
+    tps: null,
+    status: "CONFIGURED",
+    latencyMs: null,
+    blockHeight: null,
+    hostingTier: "Configured validator topology",
   },
 ];
 
 export default function NodesPage() {
-  const { blockNumber: globalBlock, isLive, latencyMs: globalLatency, totalActiveNodes, totalWorkersCount } = useNetworkMesh();
-  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(PLANNED_VPS_BLUEPRINTS);
+  const { blockNumber: globalBlock, isLive, latencyMs: globalLatency } = useNetworkMesh();
+  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(CONFIGURED_VPS_NODES);
   const [dhtPeers, setDhtPeers] = useState<KadPeer[]>([]);
   const [isProbing, setIsProbing] = useState(false);
   const [diagnosticResult, setDiagnosticResult] = useState<string | null>(null);
+  const currentBlock = isLive && globalBlock > 0 ? globalBlock : null;
+  const activeNodeCount = clusterNodes.filter((node) => node.status === "ACTIVE_LIVE").length;
+  const liveWorkerCount = clusterNodes.filter(
+    (node) => node.role === "DeAI GPU Worker" && node.status === "ACTIVE_LIVE",
+  ).length;
+  const reportedLatencies = clusterNodes
+    .map((node) => node.latencyMs)
+    .filter((latency): latency is number => latency !== null && latency > 0);
 
   const probeAllNodes = useCallback(async () => {
     try {
       setIsProbing(true);
-      // Query Kademlia DHT routing table + Live Registered Workers
-      try {
-        const [dhtRes, workerRes] = await Promise.all([
-          fetch("/api/rpc", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              jsonrpc: "2.0",
-              method: "nak_getKadRoutingTable",
-              params: [],
-              id: Date.now(),
-            }),
+      const telemetryLive = isLive && globalBlock > 0;
+      const [dhtResult, workerResult] = await Promise.allSettled([
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "nak_getKadRoutingTable",
+            params: [],
+            id: Date.now(),
           }),
-          fetch("/api/rpc", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              jsonrpc: "2.0",
-              method: "nak_getWorkers",
-              params: [],
-              id: Date.now() + 1,
-            }),
+        }),
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "nak_getWorkers",
+            params: [],
+            id: Date.now() + 1,
           }),
-        ]);
+        }),
+      ]);
 
-        const dhtData = await dhtRes.json();
-        if (dhtData.result && Array.isArray(dhtData.result)) {
-          setDhtPeers(dhtData.result);
+      let dhtData: any = null;
+      if (dhtResult.status === "fulfilled" && dhtResult.value.ok) {
+        try {
+          dhtData = await dhtResult.value.json();
+        } catch {
+          dhtData = null;
         }
-
-        const workerData = await workerRes.json();
-        const liveWorkersObj = workerData.result || {};
-        // Only render workers that are actually registered on-chain. No fabricated
-        // TPS/latency/hardware — values are shown as reported by the live probe.
-        const liveWorkerNodes: ClusterNode[] = Object.entries(liveWorkersObj).map(([addr, w]: [string, any], idx) => {
-          const isOnline = w.status === "ONLINE_ACTIVE" || w.status === "active";
-          const nodeStatus: "ACTIVE_LIVE" | "STANDBY_BLUEPRINT" = isOnline ? "ACTIVE_LIVE" : "STANDBY_BLUEPRINT";
-
-          return {
-            id: `worker-${addr}`,
-            name: w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`,
-            region: w.region || "Unknown Region",
-            endpoint: `${addr.slice(0, 8)}...${addr.slice(-6)} · Port 8545`,
-            role: "DeAI GPU Worker",
-            hardware: w.gpu || w.specs?.gpu || "GPU Accelerator",
-            tps: 0,
-            status: nodeStatus,
-            latencyMs: w.latency || 0,
-            blockHeight: globalBlock,
-            hostingTier: `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`,
-          };
-        });
-
-        setClusterNodes(() => {
-          const base = PLANNED_VPS_BLUEPRINTS.map((node) => ({
-            ...node,
-            blockHeight: globalBlock,
-          }));
-          return [...liveWorkerNodes, ...base];
-        });
-      } catch {
-        setClusterNodes((prev) =>
-          prev.map((node) => ({
-            ...node,
-            blockHeight: globalBlock,
-          }))
-        );
       }
+      setDhtPeers(Array.isArray(dhtData?.result) ? dhtData.result : []);
+
+      let workerData: any = null;
+      if (workerResult.status === "fulfilled" && workerResult.value.ok) {
+        try {
+          workerData = await workerResult.value.json();
+        } catch {
+          workerData = null;
+        }
+      }
+      const liveWorkersObj = workerData?.result && typeof workerData.result === "object"
+        ? workerData.result
+        : {};
+      const liveWorkerNodes: ClusterNode[] = Object.entries(liveWorkersObj).map(([addr, w]: [string, any], idx) => {
+        const isOnline = w.status === "ONLINE_ACTIVE" || w.status === "active";
+        const reportedLatency = Number(w.latencyMs ?? w.latency);
+
+        return {
+          id: `worker-${addr}`,
+          name: w.name || w.specs?.name || `Edge Compute Worker #${idx + 1}`,
+          region: w.region || "Unknown Region",
+          endpoint: `${addr.slice(0, 8)}...${addr.slice(-6)} · RPC-reported worker`,
+          role: "DeAI GPU Worker",
+          hardware: w.gpu || w.specs?.gpu || "GPU Accelerator",
+          tps: null,
+          status: isOnline ? "ACTIVE_LIVE" : "STANDBY",
+          latencyMs: Number.isFinite(reportedLatency) && reportedLatency > 0 ? reportedLatency : null,
+          blockHeight: telemetryLive ? globalBlock : null,
+          hostingTier: `${w.popc_verifier || w.specs?.popc_verifier || "STARK-FRI-1024-ZK"} · ${w.totalJobsCompleted || w.jobsCompleted || 0} Jobs Mined`,
+        };
+      });
+
+      const baseNodes = CONFIGURED_VPS_NODES.map((node) => ({
+        ...node,
+        status: node.id === "node-vps01-germany" && telemetryLive ? "ACTIVE_LIVE" as const : "CONFIGURED" as const,
+        latencyMs: node.id === "node-vps01-germany" && telemetryLive && globalLatency > 0 ? globalLatency : null,
+        blockHeight: node.id === "node-vps01-germany" && telemetryLive ? globalBlock : null,
+      }));
+      setClusterNodes([...liveWorkerNodes, ...baseNodes]);
     } finally {
       setIsProbing(false);
     }
-  }, [globalBlock, globalLatency]);
+  }, [globalBlock, globalLatency, isLive]);
 
   useEffect(() => {
     void probeAllNodes();
@@ -198,6 +209,9 @@ export default function NodesPage() {
         }),
       });
       const data = await res.json();
+      if (!res.ok || data?.error) {
+        throw new Error(data?.error?.message || `RPC request failed (${res.status}).`);
+      }
       setDiagnosticResult(`[${method}] Response:\n` + JSON.stringify(data.result, null, 2));
     } catch (e: any) {
       setDiagnosticResult(`[${method}] Error: ${e.message}`);
@@ -207,15 +221,15 @@ export default function NodesPage() {
   return (
     <PageShell
       eyebrow="Node Topology & Deployment Blueprint"
-      title="Sovereign Local Node & Public VPS Deployment Planner"
-      description="Active local node daemon running on this machine (127.0.0.1:8545) alongside blueprint architecture for Public Testnet VPS clusters (Contabo / Hetzner / Dedicated Bare-Metal)."
+      title="Network Node & Public VPS Deployment Planner"
+      description="Monitor public RPC telemetry alongside the configured regional validator topology. Worker cards appear only after the RPC reports an on-chain registration."
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            {clusterNodes.filter((n) => n.status === "ACTIVE_LIVE").length} Nodes Active ({clusterNodes.filter((n) => n.role === "DeAI GPU Worker").length} GPU Workers)
+            {activeNodeCount} RPC-Confirmed Nodes ({liveWorkerCount} GPU Workers)
           </StatusPill>
-          <StatusPill tone="chain">PoPC Live · #{globalBlock.toLocaleString()}</StatusPill>
-          <StatusPill tone="violet">P2P Mesh Synced</StatusPill>
+          <StatusPill tone="chain">{currentBlock ? `RPC Block · #${currentBlock.toLocaleString()}` : "RPC Block Pending"}</StatusPill>
+          <StatusPill tone="violet">{isLive ? "RPC Telemetry Available" : "RPC Telemetry Pending"}</StatusPill>
         </>
       }
       actions={
@@ -243,50 +257,50 @@ export default function NodesPage() {
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Consensus Height"
-          value={`#${globalBlock.toLocaleString()}`}
-          hint="Synchronized across all regions"
+          value={currentBlock ? `#${currentBlock.toLocaleString()}` : "Awaiting RPC"}
+          hint={currentBlock ? "Latest block reported by the public RPC gateway" : "No RPC block sample is available yet"}
           icon={<Server size={18} />}
           tone="chain"
         />
         <StatCard
           label="Active Mesh Nodes"
-          value={`${clusterNodes.filter((n) => n.status === "ACTIVE_LIVE").length} Nodes Active`}
-          hint={`${clusterNodes.filter((n) => n.role === "DeAI GPU Worker").length} Live GPU Workers + ${clusterNodes.filter((n) => n.role === "Genesis Validator").length} Validators + Sentinel Swarm`}
+          value={`${activeNodeCount} Confirmed Nodes`}
+          hint={`${liveWorkerCount} live GPU workers; configured validators are labeled separately`}
           icon={<ShieldCheck size={18} />}
           tone="ai"
         />
         <StatCard
           label="Best RPC Latency"
-          value={`${Math.min(...clusterNodes.map((n) => n.latencyMs))} ms`}
-          hint="Frankfurt Gateway"
+          value={reportedLatencies.length > 0 ? `${Math.min(...reportedLatencies)} ms` : "Awaiting sample"}
+          hint={reportedLatencies.length > 0 ? "Lowest currently reported RPC or worker latency" : "Latency is only shown after a telemetry report"}
           icon={<Timer size={18} />}
           tone="violet"
         />
         <StatCard
-          label="P2P DHT Protocol"
-          value="Libp2p 0.54"
-          hint="Gossipsub + QUIC Enabled"
+          label="Configured P2P Profile"
+          value="Libp2p / GossipSub"
+          hint="Live routing entries are shown below only when reported by RPC"
           icon={<Network size={18} />}
           tone="warn"
         />
       </div>
 
-      {/* Security & DDoS Shield Active Banner */}
-      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 font-mono text-xs text-emerald-300 flex items-center justify-between shadow-inner">
+      {/* Public topology disclosure notice */}
+      <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-3 font-mono text-xs text-cyan-200 flex items-center justify-between shadow-inner">
         <span className="flex items-center gap-2">
-          <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+          <ShieldCheck size={16} className="text-cyan-300 shrink-0" />
           <span>
-            <strong>Sovereign Zero-DDoS Protection Active:</strong> Physical node IPs and validator endpoints are shielded behind Anycast DNS Gateways & Libp2p multi-relays.
+            <strong>Topology disclosure:</strong> validator cards describe configured regions. Live status, blocks, peers, and workers are displayed only when reported by the public RPC gateway.
           </span>
         </span>
-        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider shrink-0 ml-2">
-          IP Masking 100%
+        <span className="text-[10px] text-cyan-300 font-bold uppercase tracking-wider shrink-0 ml-2">
+          RPC-SOURCED
         </span>
       </div>
 
       {/* Multi-Region Node Topology Cards */}
       <section className="space-y-4">
-        <GlobalNodeMeshCanvas liveBlock={globalBlock} />
+        <GlobalNodeMeshCanvas liveBlock={currentBlock ?? 0} />
 
         <SectionHeader
           title="Multi-Region L1 Node Cluster Topology"
@@ -307,26 +321,22 @@ export default function NodesPage() {
                   </div>
                 </div>
                 <StatusPill
-                  tone={
-                    node.status === "ACTIVE_LIVE"
-                      ? "ai"
-                      : node.id.includes("0xf39fd") || node.name.includes("PC-2")
-                        ? "danger"
-                        : "warn"
-                  }
+                  tone={node.status === "ACTIVE_LIVE" ? "ai" : node.status === "STANDBY" ? "warn" : "neutral"}
                   pulse={node.status === "ACTIVE_LIVE"}
                 >
                   {node.status === "ACTIVE_LIVE"
-                    ? "🟢 LIVE ACTIVE HOST"
-                    : "🟡 STANDBY / NOT CONNECTED"}
+                    ? "LIVE — RPC CONFIRMED"
+                    : node.status === "STANDBY"
+                      ? "STANDBY / OFFLINE"
+                      : "CONFIGURED / NOT PROBED"}
                 </StatusPill>
               </div>
 
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 pt-1">
                 <Field label="Role" value={node.role.replace(" Genesis", "")} />
-                <Field label="Block" value={`#${node.blockHeight}`} />
-                <Field label="TPS" value={`${node.tps} tps`} />
-                <Field label="Latency" value={`${node.latencyMs} ms`} />
+                <Field label="Block" value={node.blockHeight ? `#${node.blockHeight.toLocaleString()}` : "Not reported"} />
+                <Field label="TPS" value={node.tps !== null ? `${node.tps} tps` : "Not reported"} />
+                <Field label="Latency" value={node.latencyMs !== null ? `${node.latencyMs} ms` : "Not reported"} />
               </div>
 
               <div className="rounded-xl border border-white/10 bg-slate-950 p-2.5 text-[11px] font-mono text-slate-300 flex items-center justify-between">
@@ -349,27 +359,11 @@ export default function NodesPage() {
         <Card className="lg:col-span-7 space-y-3">
           <SectionHeader
             title="Kademlia DHT Peer Discovery Mesh"
-            description="Active routing table entries on P2P Port 30303 (Gossipsub & QUIC multi-addrs)"
+            description="Routing table entries reported by the RPC gateway (Gossipsub & QUIC multi-addrs)"
           />
 
           <div className="space-y-2">
-            {(dhtPeers.length > 0
-              ? dhtPeers
-              : [
-                {
-                  peer_id: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M",
-                  addresses: ["/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M"],
-                },
-                {
-                  peer_id: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE",
-                  addresses: ["/ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE"],
-                },
-                {
-                  peer_id: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK",
-                  addresses: ["/ip4/217.216.39.77/tcp/30303/p2p/12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK"],
-                },
-              ]
-            ).map((peer, idx) => (
+            {dhtPeers.length > 0 ? dhtPeers.map((peer, idx) => (
               <div key={idx} className="rounded-xl border border-white/10 bg-slate-950 p-3 text-xs font-mono">
                 <div className="flex items-center justify-between text-cyan-300 font-bold">
                   <span>Peer #{idx + 1}: {peer.peer_id.slice(0, 16)}…</span>
@@ -381,7 +375,11 @@ export default function NodesPage() {
                   ))}
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="rounded-xl border border-dashed border-white/15 bg-slate-950/50 p-4 text-xs font-mono text-slate-400">
+                No DHT peers were reported by the RPC gateway on the latest probe.
+              </div>
+            )}
           </div>
         </Card>
 
@@ -389,7 +387,7 @@ export default function NodesPage() {
         <Card className="lg:col-span-5 space-y-3">
           <SectionHeader
             title="JSON-RPC 2.0 Diagnostic Console"
-            description="Execute live queries against node daemon on port 8545"
+            description="Execute read-only diagnostics through the configured public RPC gateway"
           />
 
           <div className="grid grid-cols-2 gap-2">
@@ -424,7 +422,7 @@ export default function NodesPage() {
           </div>
 
           <pre className="max-h-48 overflow-y-auto rounded-xl border border-white/10 bg-slate-950 p-3 font-mono text-[10.5px] leading-relaxed text-emerald-300 whitespace-pre-wrap shadow-inner">
-            {diagnosticResult || "Click any RPC method above to test live response from node daemon."}
+            {diagnosticResult || "Click any RPC method above to test a read-only response from the public RPC gateway."}
           </pre>
         </Card>
       </div>

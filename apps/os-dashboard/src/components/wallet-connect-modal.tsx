@@ -24,6 +24,7 @@ import { cn } from "@/lib/cn";
 export const NAKHARAX_CHAIN_ID_DEC = 86137;
 export const NAKHARAX_CHAIN_ID_HEX = "0x15079"; // 86137 in hex
 export const NAKHARAX_TOKEN_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const NAKHARAX_RPC_URL = process.env.NEXT_PUBLIC_RPC_URL || "https://rpc.nakharax.com";
 
 export const NAKHARAX_CHAIN_PARAMS = {
   chainId: NAKHARAX_CHAIN_ID_HEX,
@@ -33,8 +34,7 @@ export const NAKHARAX_CHAIN_PARAMS = {
     symbol: "tNAK",
     decimals: 18,
   },
-  rpcUrls: ["http://127.0.0.1:8545", "https://rpc.nakharax.com"],
-  blockExplorerUrls: ["http://localhost:3030/apps/explorer"],
+  rpcUrls: [NAKHARAX_RPC_URL],
 };
 
 export function WalletConnectModal({
@@ -144,7 +144,12 @@ export function WalletConnectModal({
         try {
           await ethereum.request({
             method: "wallet_addEthereumChain",
-            params: [NAKHARAX_CHAIN_PARAMS],
+            params: [
+              {
+                ...NAKHARAX_CHAIN_PARAMS,
+                blockExplorerUrls: [`${window.location.origin}/apps/explorer`],
+              },
+            ],
           });
           setChainId(NAKHARAX_CHAIN_ID_HEX);
         } catch (addError: any) {

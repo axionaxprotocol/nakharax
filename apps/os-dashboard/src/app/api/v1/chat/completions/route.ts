@@ -4,6 +4,43 @@ import { processNoesisQuery } from "@/lib/noesis-brain";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+// Ollama inference endpoint. On the VPS this can point to a remote Ollama
+// instance (e.g. http://<vps-ip>:11434) via the OLLAMA_BASE_URL env var.
+// Falls back to localhost for local development.
+const OLLAMA_BASE_URLS = [
+  process.env.OLLAMA_BASE_URL,
+  "http://127.0.0.1:11434",
+].filter((u): u is string => Boolean(u));
+
+async function queryOllama(
+  prompt: string,
+  temperature: number,
+  maxTokens: number
+): Promise<{ response: string; baseUrl: string } | null> {
+  for (const baseUrl of OLLAMA_BASE_URLS) {
+    try {
+      const res = await fetch(`${baseUrl.replace(/\/$/, "")}/api/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "deepseek-r1:1.5b",
+          prompt,
+          stream: false,
+          options: { temperature, num_predict: maxTokens },
+        }),
+        signal: AbortSignal.timeout(45000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.response) return { response: data.response, baseUrl };
+      }
+    } catch {
+      // try next endpoint
+    }
+  }
+  return null;
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -22,38 +59,19 @@ export async function POST(req: Request) {
     let reasoningText = "";
     let usedModel = "DeepSeek-R1-Distill-Qwen-1.5B (Live Neural Weights)";
 
-    // 2. Query Live Local Ollama DeepSeek-R1 (Port 11434 /api/generate)
-    try {
-      const ollamaRes = await fetch("http://127.0.0.1:11434/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "deepseek-r1:1.5b",
-          prompt: userMessage,
-          stream: false,
-          options: { temperature, num_predict: max_tokens },
-        }),
-        signal: AbortSignal.timeout(45000),
-      });
-
-      if (ollamaRes.ok) {
-        const data = await ollamaRes.json();
-        const rawOutput = data.response || "";
-        
-        if (rawOutput) {
-          // Extract <think> reasoning tags if present
-          if (rawOutput.includes("</think>")) {
-            const parts = rawOutput.split("</think>");
-            reasoningText = parts[0].replace("<think>", "").trim();
-            completionText = parts[1].trim();
-          } else {
-            completionText = rawOutput.trim();
-          }
-          usedModel = `DeepSeek-R1-1.5B (Ollama Local Weights)`;
-        }
+    // 2. Query Ollama DeepSeek-R1 (remote OLLAMA_BASE_URL first, then localhost)
+    const ollama = await queryOllama(userMessage, temperature, max_tokens);
+    if (ollama) {
+      const rawOutput = ollama.response;
+      // Extract <think> reasoning tags if present
+      if (rawOutput.includes("</think>")) {
+        const parts = rawOutput.split("</think>");
+        reasoningText = parts[0].replace("<think>", "").trim();
+        completionText = parts[1].trim();
+      } else {
+        completionText = rawOutput.trim();
       }
-    } catch {
-      // Local daemon offline or timed out
+      usedModel = `DeepSeek-R1-1.5B (Ollama ${ollama.baseUrl.includes("127.0.0.1") ? "Local" : "Remote"} Weights)`;
     }
 
     // 3. Fallback to In-Protocol Cognitive Synthesizer if local neural engine is offline

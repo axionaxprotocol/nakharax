@@ -80,6 +80,22 @@ const STRICT_ALLOWED_METHODS = new Set([
   "gov_getProposals",
   "gov_getVotes",
   "nak_getProposals",
+
+  // ---- Mutation / State-Changing Methods --------------------------------
+  // These are required by the OS dashboard UI (wallet, jobs, worker, faucet,
+  // governance). They are intentionally proxied to the upstream node so the
+  // dashboard features actually work against the live chain. The upstream node
+  // remains the authority for authorization / validation of these calls.
+  "nakharax_submitJob",
+  "nakharax_registerWorker",
+  "nakharax_faucet",
+  "nak_stake",
+  "nak_unstake",
+  "nak_claimUnbonded",
+  "nak_harvestRewards",
+  "nak_resetWallet",
+  "gov_castVote",
+  "gov_createProposal",
 ]);
 
 function isMethodAllowed(method: string): boolean {

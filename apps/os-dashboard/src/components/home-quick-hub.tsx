@@ -199,6 +199,7 @@ export function HomeQuickHub() {
   const [selectedModel, setSelectedModel] = useState("DeepSeek-R1-CoT");
   const [isRunning, setIsRunning] = useState(false);
   const [response, setResponse] = useState<string | null>(null);
+  const [playgroundError, setPlaygroundError] = useState(false);
   const [latency, setLatency] = useState<number | null>(null);
   const [starkHash, setStarkHash] = useState<string | null>(null);
   const [copiedReceipt, setCopiedReceipt] = useState(false);
@@ -211,6 +212,8 @@ export function HomeQuickHub() {
     setIsRunning(true);
     setResponse(null);
     setStarkHash(null);
+    setPlaygroundError(false);
+    setLatency(null);
     const start = performance.now();
 
     try {
@@ -227,20 +230,26 @@ export function HomeQuickHub() {
       const elapsed = Math.round(performance.now() - start);
       setLatency(elapsed);
 
-      if (data.choices && data.choices[0]?.message?.content) {
-        setResponse(data.choices[0].message.content);
-        setStarkHash(data.system_fingerprint || "0x9f8b4d2e1a7c3e5b8d0c2e1a3f5d7b9c1e3a5f7b_popc_v4");
-      } else if (data.error) {
-        setResponse(`Error: ${data.error.message || "Failed to execute prompt."}`);
-      } else {
-        setResponse("Task executed successfully on decentralized worker node.");
-        setStarkHash("0x8e1a3c7b9f2d5e0a4c2b1e3a7f9c8b4d2e1a5f7b_popc_v4");
+      if (!res.ok || data?.error) {
+        throw new Error(data?.error?.message || `Inference request failed (${res.status}).`);
       }
-    } catch (err: any) {
+
+      const content = data?.choices?.[0]?.message?.content;
+      if (typeof content !== "string" || !content.trim()) {
+        throw new Error("The inference gateway returned no response content.");
+      }
+
+      setResponse(content);
+      setStarkHash(
+        typeof data.system_fingerprint === "string" && data.system_fingerprint.trim()
+          ? data.system_fingerprint
+          : null,
+      );
+    } catch (err) {
       const elapsed = Math.round(performance.now() - start);
       setLatency(elapsed);
-      setResponse(`[Offline Simulation Response] ${prompt}\n\nExecution verified via local PoPC engine. STARK FRI merkle root calculated.`);
-      setStarkHash("0x8e1a3c7b9f2d5e0a4c2b1e3a7f9c8b4d2e1a5f7b_popc_v4");
+      setPlaygroundError(true);
+      setResponse(`Unable to run this request. ${err instanceof Error ? err.message : "Please try again shortly."}`);
     } finally {
       setIsRunning(false);
     }
@@ -411,7 +420,7 @@ export function HomeQuickHub() {
             </span>
           </div>
           <h3 className="mt-3 text-base font-bold text-white">Node Gateway</h3>
-          <p className="mt-1 text-xs text-slate-300">Live JSON-RPC endpoint at port :8545.</p>
+          <p className="mt-1 text-xs text-slate-300">Inspect the public JSON-RPC gateway and current node availability.</p>
           <Link
             href="/nodes"
             className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors"
@@ -508,11 +517,24 @@ export function HomeQuickHub() {
 
           {/* Result Box */}
           {response && (
-            <div className="mt-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-500/20 pb-2.5 text-xs font-mono">
-                <div className="flex items-center gap-2 text-emerald-300">
+            <div className={cn(
+              "mt-4 rounded-2xl border p-4 space-y-3",
+              playgroundError
+                ? "border-red-500/30 bg-red-950/20"
+                : "border-emerald-500/30 bg-emerald-950/20",
+            )}>
+              <div className={cn(
+                "flex flex-wrap items-center justify-between gap-2 border-b pb-2.5 text-xs font-mono",
+                playgroundError ? "border-red-500/20" : "border-emerald-500/20",
+              )}>
+                <div className={cn(
+                  "flex items-center gap-2",
+                  playgroundError ? "text-red-300" : "text-emerald-300",
+                )}>
                   <ShieldCheck size={16} />
-                  <span className="font-bold">PoPC STARK Verification PASS</span>
+                  <span className="font-bold">
+                    {playgroundError ? "Inference request unavailable" : "Inference response received"}
+                  </span>
                 </div>
                 {latency && (
                   <span className="text-slate-400">
@@ -528,7 +550,7 @@ export function HomeQuickHub() {
               {starkHash && (
                 <div className="flex items-center justify-between rounded-xl bg-slate-950/80 p-2.5 border border-white/10 text-[11px] font-mono">
                   <span className="text-slate-400 truncate max-w-[280px] sm:max-w-md">
-                    Proof Receipt: <code className="text-emerald-300">{starkHash}</code>
+                    Gateway receipt: <code className="text-emerald-300">{starkHash}</code>
                   </span>
                   <button
                     onClick={handleCopyReceipt}
