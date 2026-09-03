@@ -110,9 +110,10 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable --now nakharax-node
 
-# 6. Configure Caddy TLS Reverse Proxy
-echo "[6/6] Installing the versioned VPS-01 Caddy configuration..."
-CADDY_TEMPLATE="$REPO_DIR/ops/deploy/environments/testnet/three-vps/vps01/Caddyfile"
+# 6. Configure the loopback rate-limit gateway and Caddy TLS reverse proxy.
+echo "[6/6] Installing the VPS-01 ingress gateway and Caddy configuration..."
+sudo env NAKHARAX_REPO_DIR="$REPO_DIR" bash "$REPO_DIR/services/core/ops/deploy/scripts/install-ingress-gateway-vps01.sh"
+CADDY_TEMPLATE="$REPO_DIR/services/core/ops/deploy/environments/testnet/three-vps/vps01/Caddyfile"
 test -f "$CADDY_TEMPLATE"
 sudo install -o root -g root -m 0644 "$CADDY_TEMPLATE" /etc/caddy/Caddyfile
 sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile

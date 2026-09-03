@@ -37,8 +37,9 @@ fi
 pm2 save
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u root --hp /root || true
 
-# 4. Update Caddy Reverse Proxy
-echo "[4/4] Installing the VPS-01 Caddy configuration..."
+# 4. Install the loopback-only rate-limit gateway, then update Caddy.
+echo "[4/4] Installing the VPS-01 ingress gateway and Caddy configuration..."
+sudo env NAKHARAX_REPO_DIR="$PWD" bash "$PWD/services/core/ops/deploy/scripts/install-ingress-gateway-vps01.sh"
 CADDY_TEMPLATE="$PWD/services/core/ops/deploy/environments/testnet/three-vps/vps01/Caddyfile"
 test -f "$CADDY_TEMPLATE"
 sudo install -o root -g root -m 0644 "$CADDY_TEMPLATE" /etc/caddy/Caddyfile

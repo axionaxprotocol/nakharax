@@ -16,6 +16,20 @@
     }
 }
 
+# The dashboard is a Next.js application. This policy permits only its own
+# assets and the first-party RPC/API/faucet endpoints it needs to call.
+(dashboard_security_headers) {
+    import security_headers
+    header Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://rpc.nakharax.com wss://rpc.nakharax.com https://api.nakharax.com https://faucet.nakharax.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests"
+}
+
+# API responses are not documents and must never be embedded or execute
+# browser content. Keep this policy separate from the dashboard policy.
+(api_security_headers) {
+    import security_headers
+    header Content-Security-Policy "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+}
+
 (allowed_cors) {
     @allowed_origin header_regexp Origin ^https:\/\/(app\.nakharax\.com|nakharax\.com|www\.nakharax\.com|explorer\.nakharax\.com|faucet\.nakharax\.com|api\.nakharax\.com)$
     header @allowed_origin Access-Control-Allow-Origin "{http.request.header.Origin}"
@@ -26,27 +40,27 @@
 
 # Public JSON-RPC and WebSocket ingress. The node itself remains loopback-only.
 rpc.nakharax.com {
-    import security_headers
+    import api_security_headers
     import allowed_cors
 
     @preflight method OPTIONS
     respond @preflight 204
 
-    @websocket path /ws /ws/*
-    reverse_proxy @websocket 127.0.0.1:8546
-    reverse_proxy 127.0.0.1:8545
+    # The loopback-only Nginx gateway applies per-client RPC and WebSocket
+    # limits before forwarding to the node's loopback RPC/WSS ports.
+    reverse_proxy 127.0.0.1:8081
 }
 
 # Main Web OS and landing site.
 app.nakharax.com, nakharax.com, www.nakharax.com {
-    import security_headers
+    import dashboard_security_headers
     reverse_proxy 127.0.0.1:3030
 }
 
 # A lightweight explorer domain. It intentionally serves the Web OS explorer
 # route; do not co-locate Blockscout and PostgreSQL on this 8 GB node.
 explorer.nakharax.com {
-    import security_headers
+    import dashboard_security_headers
 
     @explorer_root path /
     redir @explorer_root /apps/explorer 302
@@ -56,7 +70,7 @@ explorer.nakharax.com {
 # Public HTTP API gateway. Existing Web OS API routes stay canonical at
 # /api/*; /v1/* is provided as the public compatibility path.
 api.nakharax.com {
-    import security_headers
+    import api_security_headers
     import allowed_cors
 
     @preflight method OPTIONS
@@ -68,15 +82,17 @@ api.nakharax.com {
     rewrite @rpc /api/rpc
     @api_root path /
     respond @api_root "NakharaX Testnet HTTP API" 200
-    reverse_proxy 127.0.0.1:3030
+    # Per-IP API rate limits are enforced by the loopback-only gateway.
+    reverse_proxy 127.0.0.1:8081
 }
 
 # The faucet runs separately with its signer material outside this repository.
 faucet.nakharax.com {
-    import security_headers
+    import api_security_headers
     import allowed_cors
 
     @preflight method OPTIONS
     respond @preflight 204
-    reverse_proxy 127.0.0.1:3002
+    # The faucet receives a stricter per-IP rate limit in the gateway.
+    reverse_proxy 127.0.0.1:8081
 }
