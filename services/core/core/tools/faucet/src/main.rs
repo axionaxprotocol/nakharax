@@ -349,8 +349,8 @@ async fn request_handler(
         signer_public_key: pub_key.to_bytes().to_vec(),
     };
 
-    tx.compute_hash();
-    let payload = tx.signing_payload();
+    tx.compute_hash(state.chain_id);
+    let payload = tx.signing_payload(state.chain_id);
     tx.signature = crypto::signature::sign(&state.signing_key, &payload);
 
     // Serialize to JSON bytes

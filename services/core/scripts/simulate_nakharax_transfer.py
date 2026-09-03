@@ -84,6 +84,7 @@ def signing_payload(
     gas_limit: int,
     nonce: int,
     data: bytes,
+    chain_id: int,
 ) -> bytes:
     """Must match blockchain::Transaction::signing_payload (Rust)."""
     buf = bytearray()
@@ -94,6 +95,7 @@ def signing_payload(
     buf.extend(gas_limit.to_bytes(8, "little"))
     buf.extend(nonce.to_bytes(8, "little"))
     buf.extend(data)
+    buf.extend(chain_id.to_bytes(8, "little"))
     return bytes(buf)
 
 
@@ -110,11 +112,14 @@ def build_signed_tx_json(
     gas_limit: int,
     nonce: int,
     data: bytes,
+    chain_id: int,
 ) -> bytes:
     vk = sk.verify_key
     pub = bytes(vk.encode())
     from_addr = address_from_ed25519_pubkey(pub)
-    payload = signing_payload(from_addr, to_addr, value, gas_price, gas_limit, nonce, data)
+    payload = signing_payload(
+        from_addr, to_addr, value, gas_price, gas_limit, nonce, data, chain_id
+    )
     tx_hash = blake2s_256(payload)
     sig_msg = sk.sign(payload)
     # PyNaCl SignedMessage: 64-byte detached signature
@@ -180,11 +185,25 @@ def main() -> int:
     sk = SigningKey(bytes.fromhex(seed_hex))
     from_addr = address_from_ed25519_pubkey(bytes(sk.verify_key.encode()))
 
+    # The canonical transaction payload is chain-bound. Query the endpoint
+    # rather than accepting a caller-supplied default that could sign for a
+    # different network.
+    chain_id_hex = _rpc(args.rpc, "eth_chainId", [])
+    try:
+        chain_id = int(chain_id_hex, 0)
+    except (TypeError, ValueError) as exc:
+        print(f"ERROR: invalid eth_chainId response: {chain_id_hex!r}", file=sys.stderr)
+        return 1
+    if not 0 <= chain_id <= 0xFFFF_FFFF_FFFF_FFFF:
+        print(f"ERROR: eth_chainId is outside the u64 range: {chain_id}", file=sys.stderr)
+        return 1
+
     # Nonce from chain
     nonce_hex = _rpc(args.rpc, "eth_getTransactionCount", [from_addr, "latest"])
     nonce = int(nonce_hex, 16)
 
     print(f"RPC:        {args.rpc}")
+    print(f"Chain ID:   {chain_id}")
     print(f"From:       {from_addr}")
     print(f"To:         {to_addr}")
     print(f"Start nonce:{nonce}")
@@ -192,7 +211,7 @@ def main() -> int:
     for i in range(args.repeat):
         n = nonce + i
         raw_json = build_signed_tx_json(
-            sk, to_addr, args.value, args.gas_price, args.gas_limit, n, b""
+            sk, to_addr, args.value, args.gas_price, args.gas_limit, n, b"", chain_id
         )
         tx_hex = "0x" + raw_json.hex()
         try:

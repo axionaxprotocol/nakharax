@@ -33,8 +33,8 @@ if [ -z "$FAUCET_PRIVATE_KEY" ]; then
   echo "FAUCET_PRIVATE_KEY is not set. Create $ENV_FILE with:"
   echo "  FAUCET_PRIVATE_KEY=<hex key for genesis faucet address>"
   echo ""
-  echo "If you used create_genesis.py default, the key is deterministic:"
-  echo "  python3 -c \"import hashlib; print(hashlib.sha256(b'nakharax_faucet_mainnet_q2_2026').hexdigest())\""
+  echo "Retrieve the key from the approved offline master-wallet secret or secret manager."
+  echo "Never derive a faucet key from a seed embedded in source code."
   echo ""
   exit 1
 fi

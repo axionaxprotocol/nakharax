@@ -44,11 +44,13 @@ sudo systemctl start nakharax-node
 
 ### 🔹 2.1 Faucet Treasury & Admin Key Generation
 ```bash
-# Generate Private Key for Faucet (Testnet Deterministic / Mainnet Random)
-python services/core/scripts/generate-faucet-key.py --testnet
+# Generate a CSPRNG Ed25519 faucet key in an owner-only file.
+python services/core/scripts/generate-faucet-key.py --env-file /secure/faucet.env
 
-# Export .env key configuration file for Faucet Service
-python services/core/scripts/generate-faucet-key.py --env
+# Or retrieve the faucet key generated with the offline sovereign master wallet.
+python services/core/scripts/generate-faucet-key.py \
+  --from-master-wallet /secure/master_wallet_secrets.json \
+  --env-file /secure/faucet.env
 ```
 
 ### 🔹 2.2 Validator Identity Keys (P2P Identity Management)

@@ -28,13 +28,14 @@ This document summarizes key management readiness, private key storage paradigms
 ## 2. Faucet Treasury Subsystem
 
 - **Script Target:** `services/core/scripts/generate-faucet-key.py`
-- **Testnet Deterministic Seed:** Generates deterministic address matching `genesis.json`.
-- **Mainnet Randomization:** Uses cryptographically secure random entropy (`secrets.token_hex(32)`).
+- **Key source:** Uses fresh CSPRNG Ed25519 entropy or the faucet key from the offline sovereign master wallet.
+- **No deterministic faucet seed:** `--testnet` is retired to prevent a publicly derivable faucet private key.
 
 ```bash
-python services/core/scripts/generate-faucet-key.py              # Mainnet Random Keypair
-python services/core/scripts/generate-faucet-key.py --testnet     # Testnet Deterministic Keypair
-python services/core/scripts/generate-faucet-key.py --env         # Output .env Configuration Template
+python services/core/scripts/generate-faucet-key.py --env-file /secure/faucet.env
+python services/core/scripts/generate-faucet-key.py \
+  --from-master-wallet /secure/master_wallet_secrets.json \
+  --env-file /secure/faucet.env
 ```
 
 ---

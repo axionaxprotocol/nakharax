@@ -194,7 +194,10 @@ impl NakharaxNode {
         // Initialize transaction pool
         let mempool = Arc::new(TransactionPool::new(
             PoolConfig::default(),
-            ValidationConfig::default(),
+            ValidationConfig {
+                chain_id: config.network.chain_id,
+                ..Default::default()
+            },
         ));
         info!("Transaction pool initialized");
 
@@ -555,6 +558,7 @@ impl NakharaxNode {
         let staking = self.staking.clone();
         let mempool = self.mempool.clone();
         let validator_address = self.config.validator_address.clone();
+        let chain_id = self.config.network.chain_id;
 
         tokio::spawn(async move {
             info!("Sync task running...");
@@ -597,6 +601,7 @@ impl NakharaxNode {
                                     &state,
                                     &stats,
                                     &mempool,
+                                    chain_id,
                                     tx_msg
                                 ).await {
                                     error!("Failed to handle transaction: {}", e);
@@ -728,6 +733,7 @@ impl NakharaxNode {
         state: &Arc<StateDB>,
         stats: &Arc<RwLock<NodeStats>>,
         mempool: &Arc<TransactionPool>,
+        chain_id: u64,
         tx_msg: TransactionMessage,
     ) -> anyhow::Result<()> {
         debug!("Received transaction from network: {}", &tx_msg.hash[..8]);
@@ -760,7 +766,7 @@ impl NakharaxNode {
             signature: tx_msg.signature,
             signer_public_key: tx_msg.signer_public_key,
         };
-        tx.compute_hash();
+        tx.compute_hash(chain_id);
 
         // Add to mempool — validates signature, nonce ordering, gas price
         match mempool.add_transaction(tx).await {

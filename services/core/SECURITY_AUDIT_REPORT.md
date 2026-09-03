@@ -783,8 +783,8 @@ This audit reviewed the entire Nakharax Protocol codebase. A total of **130 find
 #### DM-10: Deterministic Faucet Key Generation
 
 - **File:** `scripts/generate-faucet-key.py`, lines 27, 41
-- **Description:** Testnet faucet key derived from `sha256(b"nakharax_faucet_mainnet_q2_2026")`.
-- **Recommendation:** Ensure testnet-only; rename seed.
+- **Description:** Historical testnet faucet key was derived from a source-controlled seed.
+- **Remediation:** Retired in favor of CSPRNG Ed25519 keys or an offline master-wallet secret; source-controlled derivation is prohibited.
 
 ### LOW
 

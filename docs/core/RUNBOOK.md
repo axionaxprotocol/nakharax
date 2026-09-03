@@ -36,7 +36,7 @@ Same as validator but without block production; point dApps/Explorer/Faucet to t
 
 ### 1.3 Faucet
 
-1. Generate key: `python scripts/generate-faucet-key.py` (mainnet) or `--testnet`.
+1. Generate a CSPRNG key with `python scripts/generate-faucet-key.py --env-file /secure/faucet.env`, or load the offline master-wallet faucet key with `--from-master-wallet /secure/master_wallet_secrets.json --env-file /secure/faucet.env`.
 2. Set env: `FAUCET_PRIVATE_KEY`, `RPC_URL`, `PORT=3002`.
 3. Build/run faucet (e.g. `core/tools/faucet` or ops Dockerfile).
 4. Regenerate genesis with `--faucet-address <ADDRESS>` if not already in genesis.

@@ -100,7 +100,8 @@ pub struct Transaction {
 
 impl Transaction {
     /// Canonical bytes that get signed. Excludes hash/signature/signer_public_key.
-    pub fn signing_payload(&self) -> Vec<u8> {
+    /// Includes chain_id to prevent cross-chain replay attacks.
+    pub fn signing_payload(&self, chain_id: u64) -> Vec<u8> {
         let mut buf = Vec::with_capacity(256);
         buf.extend_from_slice(self.from.as_bytes());
         buf.extend_from_slice(self.to.as_bytes());
@@ -109,12 +110,18 @@ impl Transaction {
         buf.extend_from_slice(&self.gas_limit.to_le_bytes());
         buf.extend_from_slice(&self.nonce.to_le_bytes());
         buf.extend_from_slice(&self.data);
+        buf.extend_from_slice(&chain_id.to_le_bytes());
         buf
     }
 
-    /// Compute and set the transaction hash from the signing payload.
-    pub fn compute_hash(&mut self) {
-        self.hash = crypto::hash::blake2s_256(&self.signing_payload());
+    /// Return the transaction hash for a specific chain.
+    pub fn hash_for_chain(&self, chain_id: u64) -> [u8; 32] {
+        crypto::hash::blake2s_256(&self.signing_payload(chain_id))
+    }
+
+    /// Compute and set the transaction hash from the chain-bound signing payload.
+    pub fn compute_hash(&mut self, chain_id: u64) {
+        self.hash = self.hash_for_chain(chain_id);
     }
 
     /// Returns true if the transaction carries a signature.
@@ -123,11 +130,12 @@ impl Transaction {
     }
 
     /// Verify the Ed25519 signature and check that the derived address matches `from`.
-    pub fn verify_signature(&self) -> bool {
+    /// Includes chain_id in signature verification to prevent cross-chain replay attacks.
+    pub fn verify_signature(&self, chain_id: u64) -> bool {
         let Some(vk) = crypto::signature::public_key_from_bytes(&self.signer_public_key) else {
             return false;
         };
-        let payload = self.signing_payload();
+        let payload = self.signing_payload(chain_id);
         if !crypto::signature::verify(&vk, &payload, &self.signature) {
             return false;
         }
@@ -551,6 +559,9 @@ mod tests {
 
     #[test]
     fn test_transaction_signing_and_verification() {
+        const TEST_CHAIN_ID: u64 = 86137;
+        const OTHER_CHAIN_ID: u64 = 86150;
+
         let signing_key = crypto::signature::generate_keypair();
         let verifying_key = signing_key.verifying_key();
         let address = crypto::signature::address_from_public_key(&verifying_key);
@@ -570,26 +581,32 @@ mod tests {
 
         // Unsigned tx should not verify
         assert!(!tx.is_signed());
-        assert!(!tx.verify_signature());
+        assert!(!tx.verify_signature(TEST_CHAIN_ID));
 
         // Sign the transaction
-        let payload = tx.signing_payload();
+        tx.compute_hash(TEST_CHAIN_ID);
+        let payload = tx.signing_payload(TEST_CHAIN_ID);
         tx.signature = crypto::signature::sign(&signing_key, &payload);
         tx.signer_public_key = verifying_key.to_bytes().to_vec();
 
         // Now it should verify
         assert!(tx.is_signed());
-        assert!(tx.verify_signature());
+        assert!(tx.verify_signature(TEST_CHAIN_ID));
+        assert_ne!(
+            tx.hash_for_chain(TEST_CHAIN_ID),
+            tx.hash_for_chain(OTHER_CHAIN_ID)
+        );
+        assert!(!tx.verify_signature(OTHER_CHAIN_ID));
 
         // Tamper with from address — should fail verification
         let mut tampered = tx.clone();
         tampered.from = "0x0000000000000000000000000000000000000000".to_string();
-        assert!(!tampered.verify_signature());
+        assert!(!tampered.verify_signature(TEST_CHAIN_ID));
 
         // Tamper with signature — should fail
         let mut bad_sig = tx.clone();
         bad_sig.signature[0] ^= 0xFF;
-        assert!(!bad_sig.verify_signature());
+        assert!(!bad_sig.verify_signature(TEST_CHAIN_ID));
     }
 
     #[tokio::test]

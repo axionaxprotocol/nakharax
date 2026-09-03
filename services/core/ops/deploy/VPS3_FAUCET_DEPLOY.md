@@ -20,15 +20,11 @@
 
 ---
 
-## 2. หา Faucet Private Key (ถ้าใช้ default จาก create_genesis.py)
+## 2. Retrieve Faucet Private Key
 
-Genesis ใช้ address จาก key ที่ได้จาก seed นี้:
-
-```bash
-python3 -c "import hashlib; print(hashlib.sha256(b'nakharax_faucet_mainnet_q2_2026').hexdigest())"
-```
-
-ได้ค่า hex 64 ตัว (ไม่มี `0x`) — ใช้เป็น `FAUCET_PRIVATE_KEY`
+รับ key จาก offline master-wallet secret หรือ secret manager ที่ได้รับอนุมัติเท่านั้น
+ห้าม derive key จาก seed ใน source code และห้ามส่ง key ผ่าน chat. ก่อน deploy ให้ตรวจว่า
+address ที่ derive จาก key ตรงกับ faucet allocation ของ active genesis
 
 ---
 
@@ -50,7 +46,7 @@ cd /root/nakharax/services/core/ops/deploy
 
 # สร้าง .env.vps3-faucet และใส่ FAUCET_PRIVATE_KEY
 cp env.vps3-faucet.example .env.vps3-faucet
-nano .env.vps3-faucet   # ใส่ FAUCET_PRIVATE_KEY=<hex จากขั้น 2>
+nano .env.vps3-faucet   # ใส่ FAUCET_PRIVATE_KEY=<hex จาก offline secret manager>
 
 # รัน deploy
 bash scripts/deploy-faucet-vps3.sh

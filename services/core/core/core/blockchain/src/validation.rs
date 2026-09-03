@@ -33,6 +33,9 @@ pub enum ValidationError {
     #[error("Invalid transaction signature")]
     InvalidSignature,
 
+    #[error("Transaction hash does not match the chain-bound signing payload")]
+    InvalidTransactionHash,
+
     #[error("Invalid transaction nonce: expected {expected}, got {actual}")]
     InvalidNonce { expected: u64, actual: u64 },
 
@@ -66,6 +69,8 @@ pub type Result<T> = std::result::Result<T, ValidationError>;
 /// Block validator configuration
 #[derive(Debug, Clone)]
 pub struct ValidationConfig {
+    /// Chain ID used to bind transaction hashes and signatures to this network.
+    pub chain_id: u64,
     /// Maximum block size in bytes
     pub max_block_size: usize,
     /// Maximum transactions per block
@@ -83,6 +88,7 @@ pub struct ValidationConfig {
 impl Default for ValidationConfig {
     fn default() -> Self {
         Self {
+            chain_id: 86137,
             max_block_size: 1_048_576, // 1 MB
             max_transactions_per_block: 10_000,
             max_timestamp_drift: 15,      // 15 seconds
@@ -319,7 +325,15 @@ impl TransactionValidator {
             return Err(ValidationError::InvalidSignature);
         }
 
-        if !tx.verify_signature() {
+        if tx.hash != tx.hash_for_chain(self.config.chain_id) {
+            warn!(
+                "Transaction {:?} hash does not match chain-bound payload",
+                &tx.hash[..8]
+            );
+            return Err(ValidationError::InvalidTransactionHash);
+        }
+
+        if !tx.verify_signature(self.config.chain_id) {
             warn!(
                 "Transaction {:?} has invalid signature or address mismatch",
                 &tx.hash[..8]

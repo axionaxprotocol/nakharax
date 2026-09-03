@@ -432,8 +432,8 @@ mod tests {
                 signature: vec![],
                 signer_public_key: vk.to_bytes().to_vec(),
             };
-            tx.compute_hash();
-            tx.signature = crypto::signature::sign(&self.sk, &tx.signing_payload());
+            tx.compute_hash(86137);
+            tx.signature = crypto::signature::sign(&self.sk, &tx.signing_payload(86137));
             tx
         }
     }
@@ -449,6 +449,22 @@ mod tests {
         let stats = pool.stats().await;
         assert_eq!(stats.total_transactions, 1);
         assert_eq!(stats.total_added, 1);
+    }
+
+    #[tokio::test]
+    async fn test_rejects_transaction_signed_for_another_chain() {
+        let pool = TransactionPool::new(
+            PoolConfig::default(),
+            ValidationConfig {
+                chain_id: 86150,
+                ..Default::default()
+            },
+        );
+        let acct = TestAccount::new();
+
+        // TestAccount signs for the default testnet chain ID (86137).
+        let result = pool.add_transaction(acct.tx(0, 20_000_000_000)).await;
+        assert!(matches!(result, Err(PoolError::ValidationFailed(_))));
     }
 
     #[tokio::test]

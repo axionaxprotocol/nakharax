@@ -39,35 +39,6 @@ def _evm_addr(seed: str) -> str:
     return "0x" + h[:40]
 
 
-def _faucet_address() -> str:
-    """Faucet address from deterministic key (testnet). For mainnet use --faucet-address.
-
-    Derivation MUST match core/tools/faucet (Rust): ed25519 pubkey -> keccak256 -> last 20 bytes.
-    Deterministic result for seed 'nakharax_faucet_mainnet_q2_2026' is 0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d.
-    """
-    try:
-        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-        from cryptography.hazmat.primitives import serialization
-        from eth_hash.auto import keccak
-        pk = hashlib.sha256(b"nakharax_faucet_mainnet_q2_2026").digest()
-        sk = Ed25519PrivateKey.from_private_bytes(pk)
-        pub_bytes = sk.public_key().public_bytes(
-            encoding=serialization.Encoding.Raw,
-            format=serialization.PublicFormat.Raw,
-        )
-        return "0x" + keccak(pub_bytes)[12:].hex()
-    except Exception:
-        try:
-            from nacl.signing import SigningKey
-            from eth_utils import keccak
-            pk = hashlib.sha256(b"nakharax_faucet_mainnet_q2_2026").digest()
-            sk = SigningKey(pk)
-            pub = bytes(sk.verify_key.encode())
-            return "0x" + keccak(pub)[12:].hex()
-        except Exception:
-            return "0xdede7fb8ad1512ae6d4c18e20026e4c3e2cb166d"
-
-
 def _get_allocations(
     faucet_address: str | None = None,
     creator_address: str | None = None,
@@ -323,7 +294,7 @@ def main():
     parser = argparse.ArgumentParser(description="Nakharax Public Testnet Genesis Block #0 Generator")
     parser.add_argument("--out", default=None, help="Output path (default: genesis.json next to this script)")
     parser.add_argument("--verify", action="store_true", help="Run verification after generation")
-    parser.add_argument("--faucet-address", default=None, help="Faucet EVM address (default: deterministic from seed)")
+    parser.add_argument("--faucet-address", default=None, help="Faucet EVM address for a new genesis (from the offline faucet key generator)")
     parser.add_argument("--creator-address", default=None, help="Creator EVM address")
     parser.add_argument("--ecosystem-address", default=None, help="Ecosystem rewards EVM address")
     parser.add_argument("--foundation-address", default=None, help="Foundation EVM address")
@@ -345,6 +316,9 @@ def main():
         CHAIN_NAME = "Nakharax Public Testnet"
     else:
         CHAIN_NAME = f"Nakharax Dev ({CHAIN_ID})"
+
+    if CHAIN_ID == CHAIN_ID_MAINNET and not args.faucet_address:
+        parser.error("--faucet-address is required for mainnet genesis; generate it offline first")
 
     allocations = _get_allocations(
         faucet_address=args.faucet_address,

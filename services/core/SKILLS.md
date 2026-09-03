@@ -30,9 +30,9 @@ Nakharax uses **PoPC** (not PoW, PoS, or BFT alone). The agent must understand:
 | KDF (Argon2-like) | `core/core/crypto/src/kdf.rs` | Wallet key derivation |
 
 **Transaction signing flow:**
-1. Build `signing_payload()` (from + to + value + gas_price + gas_limit + nonce + data)
+1. Build `signing_payload(chain_id)` (from + to + value + gas_price + gas_limit + nonce + data + 8-byte little-endian chain ID)
 2. Sign with Ed25519 `SigningKey`
-3. Derive address from `VerifyingKey` (Blake2s hash → hex prefix "0x")
+3. Derive address from `VerifyingKey` (Keccak-256 public key, final 20 bytes, `0x` prefix)
 4. Attach `signature` (64 bytes) + `signer_public_key` (32 bytes) to `Transaction`
 
 ### 1.3 P2P Networking (libp2p)
@@ -205,7 +205,7 @@ Pipeline: `cargo fmt --check` → `cargo clippy -- -D warnings` → `cargo test 
 
 ### 6.2 Security Invariants (Never Break)
 
-1. Every transaction submitted via `eth_sendRawTransaction` **must** have a valid Ed25519 signature — `verify_signature()` is mandatory.
+1. Every transaction submitted via `eth_sendRawTransaction` **must** have a valid Ed25519 signature bound to the node's chain ID — `verify_signature(chain_id)` is mandatory.
 2. Nonce must exactly match the sender's current nonce — prevents replay attacks.
 3. PoPC challenge samples **must** be deduplicated — ensures sampling coverage.
 4. Docker sandbox **must** enforce resource limits (CPU, RAM, timeout) on every compute job.

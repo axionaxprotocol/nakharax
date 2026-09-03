@@ -219,8 +219,8 @@ mod transaction_injection {
             signature: vec![],
             signer_public_key: vk.to_bytes().to_vec(),
         };
-        tx.compute_hash();
-        tx.signature = crypto::signature::sign(&sk, &tx.signing_payload());
+        tx.compute_hash(86137);
+        tx.signature = crypto::signature::sign(&sk, &tx.signing_payload(86137));
 
         assert!(pool.add_transaction(tx.clone()).await.is_ok());
         let dup = pool.add_transaction(tx).await;

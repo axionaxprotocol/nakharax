@@ -676,14 +676,26 @@ impl MetricsUpdater {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Mutex;
+
+    // The process-wide metric collectors are deliberately shared. Serialize the
+    // tests that mutate them so their assertions do not race under the Rust
+    // test harness's default parallel execution.
+    static METRICS_TEST_LOCK: Mutex<()> = Mutex::new(());
 
     #[test]
     fn test_metrics_init() {
+        let _lock = METRICS_TEST_LOCK
+            .lock()
+            .expect("metrics test lock should not be poisoned");
         init();
     }
 
     #[test]
     fn test_record_block() {
+        let _lock = METRICS_TEST_LOCK
+            .lock()
+            .expect("metrics test lock should not be poisoned");
         init();
         MetricsUpdater::record_block(100, 50, 2.5);
         assert_eq!(BLOCK_HEIGHT.get(), 100);
@@ -691,20 +703,16 @@ mod tests {
 
     #[test]
     fn test_export() {
+        let _lock = METRICS_TEST_LOCK
+            .lock()
+            .expect("metrics test lock should not be poisoned");
         init();
         BLOCK_HEIGHT.set(42);
         let output = export();
         assert!(output.contains("nakharax_block_height"));
-        // Check that a line with the metric name and a numeric value is present.
-        // We avoid checking a specific value because global metrics are shared
-        // across parallel tests (e.g. test_record_block sets BLOCK_HEIGHT to 100).
-        assert!(output.lines().any(|l| {
-            l.starts_with("nakharax_block_height ")
-                && l.split_whitespace()
-                    .nth(1)
-                    .and_then(|v| v.parse::<i64>().ok())
-                    .is_some()
-        }));
+        assert!(output
+            .lines()
+            .any(|line| line == "nakharax_block_height 42"));
     }
 
     #[test]

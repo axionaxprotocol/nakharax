@@ -405,10 +405,10 @@ Faucet testnet key ต้อง derive เป็น address ที่ได้�
 0x5d3bd7346255d06dbb130ff22ebdbcb2290a0338
 ```
 
-Derive testnet key บน VPS-06 เท่านั้น แล้วใส่ผลลัพธ์ลง root-only env file ห้าม commit หรือส่งผ่าน chat:
+นำ faucet key ที่สร้างพร้อม master wallet แบบ offline หรือดึงจาก secret manager ที่ได้รับอนุมัติเท่านั้น
+แล้วใส่ลง root-only env file ห้าม commit หรือส่งผ่าน chat. ห้าม derive key จาก seed ใน source code:
 
 ```bash
-python3 -c "import hashlib; print(hashlib.sha256(b'nakharax_faucet_mainnet_q2_2026').hexdigest())"
 sudo install -d -o root -g nakharax -m 0750 /etc/nakharax
 sudo install -o root -g nakharax -m 0640 /dev/null /etc/nakharax/faucet.env
 sudoedit /etc/nakharax/faucet.env

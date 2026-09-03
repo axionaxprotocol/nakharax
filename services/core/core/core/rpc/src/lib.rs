@@ -339,7 +339,7 @@ impl NakharaxRpcServer for NakharaxRpcServerImpl {
             .into());
         }
 
-        if !tx.verify_signature() {
+        if !tx.verify_signature(self.chain_id) {
             return Err(RpcError::InvalidParams(
                 "Invalid transaction signature or signer address mismatch".to_string(),
             )
@@ -356,8 +356,14 @@ impl NakharaxRpcServer for NakharaxRpcServerImpl {
             .into());
         }
 
+        let expected_hash = tx.hash_for_chain(self.chain_id);
         if tx.hash == [0u8; 32] {
-            tx.compute_hash();
+            tx.hash = expected_hash;
+        } else if tx.hash != expected_hash {
+            return Err(RpcError::InvalidParams(
+                "Transaction hash does not match the chain-bound signing payload".to_string(),
+            )
+            .into());
         }
 
         let tx_hash = format!("0x{}", hex::encode(tx.hash));

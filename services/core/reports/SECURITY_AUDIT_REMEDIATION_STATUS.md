@@ -105,7 +105,7 @@ refreshed. Corrected statuses for the items checked (with evidence):
 | SC-2 | **Remediated** | `gov_vote` loads `actual_weight` from staking (`governance_rpc.rs`). |
 | SC-3 | **Remediated** | `gov_createProposal` uses `actual_stake` from staking for proposer. |
 | SC-4 | **Remediated** | `gov_finalizeProposal` uses `staking.get_total_staked()` only (no caller-supplied total). |
-| SH-1 | **Remediated** | `eth_sendRawTransaction` requires signed tx + `verify_signature()` (`rpc/src/lib.rs`). |
+| SH-1 | **Remediated** | `eth_sendRawTransaction` requires an Ed25519 signature bound to the RPC chain ID and validates the chain-bound transaction hash (`rpc/src/lib.rs`). |
 | SH-2 | **Open** | Node still binds per CLI/config; **no built-in TLS** — use reverse proxy for production. |
 | SH-3 | **Partial** | `UnifiedRpcConfig.rate_limit`, CORS and request validation exist (`server.rs`, `middleware.rs`); confirm all entrypoints use same stack. |
 | SH-4 | **Open** | Unstake semantics — verify `staking` implementation matches economic intent. |
