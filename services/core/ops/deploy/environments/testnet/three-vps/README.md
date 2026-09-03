@@ -47,8 +47,10 @@ co-locate with the full node and dashboard on VPS-01's 8 GB RAM.
 4. Ensure the full-node systemd service is active and its RPC/WSS ports listen
    only on `127.0.0.1`. Start the faucet compose service separately after its
    secret file is present.
-5. On VPS-03, run Prometheus/Grafana only after private reachability to all
-   three node metrics endpoints is configured. Access Grafana through an SSH
+5. On VPS-03, install the private Prometheus, Alertmanager and Grafana
+   collector only after the restricted reverse SSH reachability for all three
+   node metrics endpoints is configured. Follow the complete
+   [monitoring runbook](monitoring/README.md); access Grafana through an SSH
    tunnel or VPN.
 
 ### Faucet recovery

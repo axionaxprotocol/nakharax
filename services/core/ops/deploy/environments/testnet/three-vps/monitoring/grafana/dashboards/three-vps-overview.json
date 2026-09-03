@@ -1,0 +1,75 @@
+{
+  "annotations": {"list": []},
+  "editable": false,
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"mappings": [{"options": {"0": {"color": "red", "text": "DOWN"}, "1": {"color": "green", "text": "UP"}}, "type": "value"}], "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]}}, "overrides": []},
+      "gridPos": {"h": 7, "w": 8, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+      "targets": [{"expr": "min by (node) (nakharax_up)", "legendFormat": "{{node}}", "refId": "A"}],
+      "title": "Node health",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}}, "overrides": []},
+      "gridPos": {"h": 7, "w": 8, "x": 8, "y": 0},
+      "id": 2,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [{"expr": "nakharax_block_height", "legendFormat": "{{node}}", "refId": "A"}],
+      "title": "Block height",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}}, "overrides": []},
+      "gridPos": {"h": 7, "w": 8, "x": 16, "y": 0},
+      "id": 3,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "list", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [{"expr": "nakharax_peers_connected", "legendFormat": "{{node}}", "refId": "A"}],
+      "title": "Connected peers",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "color": {"mode": "continuous-GrYlRd"}}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 7},
+      "id": 4,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [{"expr": "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)", "legendFormat": "{{node}}", "refId": "A"}],
+      "title": "Memory utilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"unit": "percent", "min": 0, "max": 100, "color": {"mode": "continuous-GrYlRd"}}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 7},
+      "id": 5,
+      "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom"}, "tooltip": {"mode": "multi"}},
+      "targets": [{"expr": "100 * (1 - node_filesystem_avail_bytes{mountpoint=\"/\",fstype!~\"tmpfs|overlay|squashfs\"} / node_filesystem_size_bytes{mountpoint=\"/\",fstype!~\"tmpfs|overlay|squashfs\"})", "legendFormat": "{{node}}", "refId": "A"}],
+      "title": "Root filesystem utilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "PROMETHEUS_DS"},
+      "fieldConfig": {"defaults": {"mappings": [{"options": {"0": {"color": "red", "text": "FAIL"}, "1": {"color": "green", "text": "OK"}}, "type": "value"}], "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]}}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 15},
+      "id": 6,
+      "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+      "targets": [{"expr": "probe_success{job=\"public-https\"}", "legendFormat": "{{instance}}", "refId": "A"}],
+      "title": "Public HTTPS synthetic probes",
+      "type": "stat"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["nakharax", "testnet", "operations"],
+  "templating": {"list": []},
+  "time": {"from": "now-6h", "to": "now"},
+  "timezone": "browser",
+  "title": "NakharaX Three-VPS Testnet",
+  "uid": "nakharax-three-vps",
+  "version": 1
+}

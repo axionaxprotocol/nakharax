@@ -1,0 +1,128 @@
+groups:
+  - name: nakharax-node-health
+    rules:
+      - alert: NakharaxNodeMetricsDown
+        expr: up{job="nakharax-node"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "NakharaX node metrics unavailable on {{ $labels.node }}"
+          description: "Prometheus could not scrape the loopback-only /metrics endpoint for over two minutes."
+
+      - alert: NakharaxNodeServiceInactive
+        expr: nakharax_systemd_service_active{service="nakharax-node"} != 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "nakharax-node is inactive on {{ $labels.node }}"
+          description: "The local systemd health collector reports that nakharax-node is not active."
+
+      - alert: NakharaxNodeRestartLoop
+        expr: increase(nakharax_systemd_service_restarts_total{service="nakharax-node"}[15m]) > 2
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "nakharax-node restart loop on {{ $labels.node }}"
+          description: "The node service restarted more than twice within 15 minutes."
+
+      - alert: NakharaxNoPeers
+        expr: nakharax_peers_connected{job="nakharax-node"} < 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "NakharaX node has no peers on {{ $labels.node }}"
+          description: "The node has reported zero connected peers for five minutes."
+
+      - alert: NakharaxBlockProductionStalled
+        expr: |
+          (
+            max by (node) (max_over_time(nakharax_block_height{job="nakharax-node"}[10m]))
+            - min by (node) (min_over_time(nakharax_block_height{job="nakharax-node"}[10m]))
+          ) < 1
+          and on (node) min by (node) (up{job="nakharax-node"}) == 1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Block height stalled on {{ $labels.node }}"
+          description: "Block height has not advanced during the last 10 minutes while the node remains scrapeable."
+
+      - alert: NakharaxNodeNotReady
+        expr: nakharax_sync_ok{job="nakharax-node"} != 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "NakharaX node is not sync-ready on {{ $labels.node }}"
+          description: "The node health endpoint reports a failed synchronization check."
+
+  - name: host-capacity
+    rules:
+      - alert: NakharaxHostMetricsDown
+        expr: up{job="node-exporter"} == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Host metrics unavailable on {{ $labels.node }}"
+          description: "The loopback-only node exporter or its restricted tunnel is unavailable."
+
+      - alert: NakharaxHighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.node }}"
+          description: "Memory utilization has exceeded 85% for ten minutes."
+
+      - alert: NakharaxLowRootDiskSpace
+        expr: node_filesystem_avail_bytes{mountpoint="/",fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes{mountpoint="/",fstype!~"tmpfs|overlay|squashfs"} < 0.20
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low root disk space on {{ $labels.node }}"
+          description: "The root filesystem has less than 20% free space for 15 minutes."
+
+      - alert: NakharaxHighCpuUsage
+        expr: (1 - avg by (node) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 0.90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.node }}"
+          description: "Average CPU utilization has exceeded 90% for ten minutes."
+
+  - name: public-ingress
+    rules:
+      - alert: NakharaxPublicEndpointDown
+        expr: probe_success{job="public-https"} != 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Public endpoint probe failed: {{ $labels.instance }}"
+          description: "The VPS-03 synthetic HTTPS probe has failed for over two minutes."
+
+      - alert: NakharaxPublicEndpointSlow
+        expr: probe_duration_seconds{job="public-https"} > 3
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow public endpoint: {{ $labels.instance }}"
+          description: "The synthetic HTTPS probe has exceeded three seconds for five minutes."
+
+      - alert: NakharaxTlsCertificateExpiring
+        expr: probe_ssl_earliest_cert_expiry{job="public-https"} - time() < 14 * 24 * 60 * 60
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "TLS certificate expires soon: {{ $labels.instance }}"
+          description: "The earliest certificate in the public HTTPS chain expires within 14 days."

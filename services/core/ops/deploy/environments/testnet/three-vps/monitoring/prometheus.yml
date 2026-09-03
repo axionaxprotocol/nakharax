@@ -1,0 +1,68 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+scrape_configs:
+  # All node-health endpoints stay loopback-only. VPS-01 and VPS-02 reach
+  # these collector-local ports through restricted reverse SSH tunnels; VPS-03
+  # is local to the collector.
+  - job_name: nakharax-node
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["127.0.0.1:18081"]
+        labels:
+          node: vps01
+          role: bootnode-rpc
+      - targets: ["127.0.0.1:18082"]
+        labels:
+          node: vps02
+          role: validator-01
+      - targets: ["127.0.0.1:8080"]
+        labels:
+          node: vps03
+          role: validator-02-collector
+
+  # Native node exporter is also loopback-only on every VPS and transported
+  # over the same restricted tunnels from VPS-01/VPS-02.
+  - job_name: node-exporter
+    static_configs:
+      - targets: ["127.0.0.1:19101"]
+        labels:
+          node: vps01
+      - targets: ["127.0.0.1:19102"]
+        labels:
+          node: vps02
+      - targets: ["127.0.0.1:9100"]
+        labels:
+          node: vps03
+
+  # Public synthetic probes run from VPS-03 but do not expose any monitoring
+  # endpoint. These validate the Caddy ingress independently of node metrics.
+  - job_name: public-https
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://nakharax.com/
+          - https://app.nakharax.com/
+          - https://explorer.nakharax.com/apps/explorer
+          - https://api.nakharax.com/
+          - https://faucet.nakharax.com/health
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

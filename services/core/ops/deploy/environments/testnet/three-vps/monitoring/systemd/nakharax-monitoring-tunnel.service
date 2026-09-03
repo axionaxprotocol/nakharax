@@ -1,0 +1,19 @@
+[Unit]
+Description=NakharaX restricted monitoring reverse SSH tunnel
+After=network-online.target nakharax-node-exporter.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/nakharax-monitoring-tunnel.env
+ExecStart=/usr/bin/ssh -N -T -i ${SSH_KEY_PATH} -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o StrictHostKeyChecking=yes -o UserKnownHostsFile=${KNOWN_HOSTS_PATH} -p ${COLLECTOR_PORT} -R 127.0.0.1:${NODE_METRICS_PORT}:127.0.0.1:8080 -R 127.0.0.1:${HOST_METRICS_PORT}:127.0.0.1:9100 ${COLLECTOR_USER}@${COLLECTOR_HOST}
+Restart=always
+RestartSec=10s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadOnlyPaths=/etc/nakharax-monitoring
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+[Unit]
+Description=NakharaX loopback-only node exporter
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecStart=/usr/bin/prometheus-node-exporter --web.listen-address=127.0.0.1:9100 --collector.textfile.directory=/var/lib/nakharax-node-exporter/textfile
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadOnlyPaths=/proc /sys
+
+[Install]
+WantedBy=multi-user.target

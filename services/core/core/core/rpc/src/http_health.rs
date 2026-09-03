@@ -279,50 +279,7 @@ async fn handle_request(
                     .unwrap_or_else(|_| r#"{"ready":false}"#.to_string()),
             )
         } else if path == metrics_path {
-            let mut body = metrics::export();
-
-            // Basic metrics
-            body.push_str("# HELP nakharax_up Node is up\n");
-            body.push_str("# TYPE nakharax_up gauge\n");
-            body.push_str(&format!(
-                "nakharax_up {}\n",
-                if state.is_alive() { 1 } else { 0 }
-            ));
-
-            // Network metrics
-            body.push_str("# HELP nakharax_peers_connected Number of connected peers\n");
-            body.push_str("# TYPE nakharax_peers_connected gauge\n");
-            body.push_str(&format!(
-                "nakharax_peers_connected {}\n",
-                state.peers_connected
-            ));
-
-            // Blockchain metrics
-            body.push_str("# HELP nakharax_block_height Current block height\n");
-            body.push_str("# TYPE nakharax_block_height counter\n");
-            body.push_str(&format!("nakharax_block_height {}\n", state.block_height));
-
-            // Health check metrics
-            body.push_str("# HELP nakharax_database_ok Database connectivity status\n");
-            body.push_str("# TYPE nakharax_database_ok gauge\n");
-            body.push_str(&format!(
-                "nakharax_database_ok {}\n",
-                if state.database_ok { 1 } else { 0 }
-            ));
-
-            body.push_str("# HELP nakharax_sync_ok Blockchain sync status\n");
-            body.push_str("# TYPE nakharax_sync_ok gauge\n");
-            body.push_str(&format!(
-                "nakharax_sync_ok {}\n",
-                if state.sync_ok { 1 } else { 0 }
-            ));
-
-            // Performance metrics
-            body.push_str("# HELP nakharax_min_peers Minimum required peers\n");
-            body.push_str("# TYPE nakharax_min_peers gauge\n");
-            body.push_str(&format!("nakharax_min_peers {}\n", state.min_peers));
-
-            ("200 OK", body)
+            ("200 OK", render_metrics(&state))
         } else if path == version_path {
             let response = VersionResponse {
                 version: env!("CARGO_PKG_VERSION").to_string(),
@@ -359,6 +316,42 @@ async fn handle_request(
 
     socket.write_all(response.as_bytes()).await?;
     Ok(())
+}
+
+/// Combine process-wide protocol metrics with health-only metrics.
+///
+/// `metrics::export()` already emits the canonical block-height and peer-count
+/// samples. Do not render those names again here: duplicate samples with the
+/// same label set make a Prometheus scrape invalid.
+fn render_metrics(state: &HealthState) -> String {
+    let mut body = metrics::export();
+
+    body.push_str("# HELP nakharax_up Node is up\n");
+    body.push_str("# TYPE nakharax_up gauge\n");
+    body.push_str(&format!(
+        "nakharax_up {}\n",
+        if state.is_alive() { 1 } else { 0 }
+    ));
+
+    body.push_str("# HELP nakharax_database_ok Database connectivity status\n");
+    body.push_str("# TYPE nakharax_database_ok gauge\n");
+    body.push_str(&format!(
+        "nakharax_database_ok {}\n",
+        if state.database_ok { 1 } else { 0 }
+    ));
+
+    body.push_str("# HELP nakharax_sync_ok Blockchain sync status\n");
+    body.push_str("# TYPE nakharax_sync_ok gauge\n");
+    body.push_str(&format!(
+        "nakharax_sync_ok {}\n",
+        if state.sync_ok { 1 } else { 0 }
+    ));
+
+    body.push_str("# HELP nakharax_min_peers Minimum required peers\n");
+    body.push_str("# TYPE nakharax_min_peers gauge\n");
+    body.push_str(&format!("nakharax_min_peers {}\n", state.min_peers));
+
+    body
 }
 
 #[cfg(test)]
@@ -408,5 +401,18 @@ mod tests {
         assert_eq!(config.live_path, "/health");
         assert_eq!(config.ready_path, "/ready");
         assert_eq!(config.metrics_path, "/metrics");
+    }
+
+    #[test]
+    fn test_metrics_do_not_duplicate_shared_samples() {
+        let output = render_metrics(&HealthState::default());
+
+        for metric in ["nakharax_block_height", "nakharax_peers_connected"] {
+            let sample_count = output
+                .lines()
+                .filter(|line| line.starts_with(&format!("{metric} ")))
+                .count();
+            assert_eq!(sample_count, 1, "{metric} must have exactly one sample");
+        }
     }
 }
