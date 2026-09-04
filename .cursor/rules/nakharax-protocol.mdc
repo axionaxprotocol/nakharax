@@ -5,22 +5,25 @@ alwaysApply: true
 
 # Nakharax Protocol Rule
 
-## Architecture
+## Architecture & Isolation
+- **Strict Isolation:** NakharaX Protocol is strictly Layer-1 DeAI Compute Marketplace & Sovereign OS. Never mix external projects (XpFirm / MT5 Prop Firm) into this repo.
 - Check `packages/sdk` first for reusable business logic before implementing in apps.
-- Use workspace aliases only (for example `@nakharax/sdk`), never cross-package relative imports.
-- Use `pnpm` for workspace dependency and script operations.
+- Use workspace aliases only (e.g. `@nakharax/sdk`, `@nakharax/contracts`), never cross-package relative imports.
+- Use `pnpm` exclusively for workspace dependencies and scripts (`pnpm dev:web`, `pnpm build`, `pnpm reality:check`).
 
-## Frontend
+## Frontend (`apps/os-dashboard/`)
 - Default to React Server Components; add `"use client"` only when hooks/browser APIs are required.
 - Use Tailwind CSS and keep dark, cyberpunk/futuristic styling as default.
 - Use `next/image` for UI images when possible.
+- State management with Zustand; Web3 interactions via Viem.
 
 ## Integration and Reliability
-- If node/validator access is unavailable, add SDK-level mock services to unblock UI development.
+- If node/validator access is unavailable, use `pnpm mock-rpc` (`services/core/ops/deploy/mock-rpc/server.js`) to unblock UI development.
 - Handle RPC and transaction failures gracefully with clear user-facing feedback.
+- Verify ground truth with `pnpm reality:check` (100% Truth Score).
 
-## Rust Core Context
-- When tasks mention Core or Node, treat it as the Rust Substrate implementation.
+## Rust & Python Core Context (`services/core/`)
+- When tasks mention Core or Node, treat it as the Rust/Python consensus and DeAI worker implementation.
 - Favor memory safety, predictable behavior, and performance-minded changes.
 
 ## Working Style
