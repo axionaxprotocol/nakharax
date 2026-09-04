@@ -52,8 +52,55 @@ export function WalletConnectModal({
   const [tokenAdded, setTokenAdded] = useState(false);
   const [copied, setCopied] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [balance, setBalance] = useState<string | null>(null);
+  const [liveLatency, setLiveLatency] = useState<number | null>(null);
+  const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   const isCorrectNetwork = chainId === NAKHARAX_CHAIN_ID_HEX || chainId === "86137";
+
+  // Query live balance, block height, and real roundtrip latency from RPC
+  useEffect(() => {
+    if (!isOpen || !account || !isCorrectNetwork || typeof window === "undefined" || !(window as any).ethereum) {
+      return;
+    }
+    const ethereum = (window as any).ethereum;
+    let isMounted = true;
+
+    const fetchTelemetry = async () => {
+      try {
+        const t0 = performance.now();
+        const [balHex, blockHex] = await Promise.all([
+          ethereum.request({ method: "eth_getBalance", params: [account, "latest"] }).catch(() => null),
+          ethereum.request({ method: "eth_blockNumber" }).catch(() => null),
+        ]);
+        const latency = Math.round(performance.now() - t0);
+
+        if (!isMounted) return;
+        setLiveLatency(latency);
+
+        if (balHex) {
+          const balBig = BigInt(balHex);
+          const whole = balBig / BigInt(10 ** 18);
+          const rem = balBig % BigInt(10 ** 18);
+          const decimals = (Number(rem) / 10 ** 18).toFixed(2).slice(2);
+          setBalance(`${whole.toLocaleString()}.${decimals}`);
+        }
+
+        if (blockHex) {
+          setBlockHeight(parseInt(blockHex, 16));
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+
+    fetchTelemetry();
+    const interval = setInterval(fetchTelemetry, 5000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [isOpen, account, isCorrectNetwork]);
 
   // Check existing connection on mount
   useEffect(() => {
@@ -110,16 +157,28 @@ export function WalletConnectModal({
     setIsConnecting(true);
     try {
       const ethereum = (window as any).ethereum;
-      const accounts = await ethereum.request({
+      // 15-second safety timeout so UI never hangs indefinitely if MetaMask popup is minimized or suppressed
+      const requestPromise = ethereum.request({
         method: "eth_requestAccounts",
       });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("REQUEST_TIMEOUT")), 15000)
+      );
+
+      const accounts = (await Promise.race([requestPromise, timeoutPromise])) as string[];
       if (accounts && accounts.length > 0) {
         setAccount(accounts[0]);
         const currentChainId = await ethereum.request({ method: "eth_chainId" });
         setChainId(currentChainId);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to connect wallet.");
+      if (err.code === -32002 || err.message?.includes("already pending")) {
+        setErrorMessage("🦊 MetaMask มีคำขอกำลังรอการยืนยันอยู่ (Pending Request) กรุณาดูหน้าต่าง Pop-up ของ MetaMask หรือกดรีเฟรชหน้าเว็บ (F5) แล้วกด Connect ใหม่");
+      } else if (err.message === "REQUEST_TIMEOUT") {
+        setErrorMessage("⏱️ MetaMask ตอบสนองช้าหรือหน้าต่างยืนยันถูกย่อไว้ กรุณาตรวจสอบหน้าต่างยืนยันของ MetaMask หรือกด F5 เพื่อเริ่มใหม่");
+      } else {
+        setErrorMessage(err.message || "Failed to connect wallet.");
+      }
     } finally {
       setIsConnecting(false);
     }
@@ -273,6 +332,17 @@ export function WalletConnectModal({
                     </>
                   )}
                 </button>
+                {isConnecting && (
+                  <button
+                    onClick={() => {
+                      setIsConnecting(false);
+                      setErrorMessage("ยกเลิกคำขอแล้ว กรุณากด F5 รีเฟรชหน้าเว็บ หรือตรวจสอบหน้าต่างแจ้งเตือนของ MetaMask");
+                    }}
+                    className="mt-2 text-[11px] text-slate-400 hover:text-rose-400 underline transition-colors"
+                  >
+                    ยกเลิก / รีเซ็ตคำขอ (Cancel Request)
+                  </button>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-[11px] font-mono text-slate-400">
@@ -310,6 +380,14 @@ export function WalletConnectModal({
                     {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
                     <span>{copied ? "Copied" : "Copy"}</span>
                   </button>
+                </div>
+
+                {/* Real Live On-Chain Balance */}
+                <div className="flex items-center justify-between pt-1 border-t border-white/5 text-xs font-mono">
+                  <span className="text-slate-400 text-[11px]">ON-CHAIN BALANCE</span>
+                  <span className="text-emerald-300 font-bold text-xs">
+                    {balance !== null ? `${balance} $tNAK` : "Querying RPC..."}
+                  </span>
                 </div>
               </div>
 
@@ -354,9 +432,11 @@ export function WalletConnectModal({
                     <div className="flex items-center justify-between px-2.5 py-1 text-[11px] font-mono text-neutral-400 bg-black/40 rounded-lg border border-white/5">
                       <span className="flex items-center gap-1.5 text-emerald-400">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        7/7 Mesh Nodes Online (1ms)
+                        Block #{blockHeight ? blockHeight.toLocaleString() : "Syncing..."}
                       </span>
-                      <span className="text-neutral-500">BFT Quorum 100%</span>
+                      <span className="text-neutral-400">
+                        {liveLatency !== null ? `${liveLatency}ms Live Ping` : "Connected"}
+                      </span>
                     </div>
                   </div>
                 )}
