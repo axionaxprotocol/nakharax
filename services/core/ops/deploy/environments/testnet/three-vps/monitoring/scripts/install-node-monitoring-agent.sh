@@ -133,8 +133,8 @@ systemctl enable --now nakharax-node-exporter.service nakharax-node-service-metr
 systemctl start nakharax-node-service-metrics.service
 
 metrics="$(curl -fsS --max-time 5 http://127.0.0.1:9100/metrics)"
-echo "${metrics}" | grep -q '^node_uname_info'
-echo "${metrics}" | grep -q '^nakharax_systemd_service_active'
+grep '^node_uname_info' <<< "${metrics}" >/dev/null
+grep '^nakharax_systemd_service_active' <<< "${metrics}" >/dev/null
 if ss -ltnH '( sport = :9100 )' | grep -vq '127.0.0.1:9100'; then
     echo "Node exporter is not loopback-only; refusing to continue." >&2
     exit 1
