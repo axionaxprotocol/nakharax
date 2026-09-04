@@ -481,7 +481,8 @@ async fn run_swarm_loop(
 fn emit_p2p_health(swarm: &Swarm<NakharaxBehaviour>, peer_count: &Arc<AtomicUsize>) {
     let listeners: Vec<String> = swarm.listeners().map(|m| m.to_string()).collect();
     let external_addrs: Vec<String> = swarm.external_addresses().map(|m| m.to_string()).collect();
-    let count = peer_count.load(Ordering::Relaxed);
+    let count = swarm.connected_peers().count();
+    peer_count.store(count, Ordering::Relaxed);
 
     info!(
         target: "p2p::health",
@@ -553,7 +554,8 @@ async fn handle_swarm_event(
             num_established,
             ..
         } => {
-            let n = peer_count.fetch_add(1, Ordering::Relaxed) + 1;
+            let n = swarm.connected_peers().count();
+            peer_count.store(n, Ordering::Relaxed);
             let (direction, addr) = match &endpoint {
                 ConnectedPoint::Dialer { address, .. } => ("outgoing", address.to_string()),
                 ConnectedPoint::Listener { send_back_addr, .. } => {
@@ -578,17 +580,15 @@ async fn handle_swarm_event(
             num_established,
             ..
         } => {
-            // Saturating decrement
-            let prev = peer_count.load(Ordering::Relaxed);
-            let new = prev.saturating_sub(1);
-            peer_count.store(new, Ordering::Relaxed);
+            let n = swarm.connected_peers().count();
+            peer_count.store(n, Ordering::Relaxed);
             info!(
                 target: "p2p::conn",
                 %peer_id,
                 connection_id = ?connection_id,
                 cause = ?cause,
                 remaining_to_peer = num_established,
-                total_peers = new,
+                total_peers = n,
                 "Peer connection closed"
             );
         }
