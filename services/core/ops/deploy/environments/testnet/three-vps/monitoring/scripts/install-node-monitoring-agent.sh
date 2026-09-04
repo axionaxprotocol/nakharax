@@ -117,6 +117,7 @@ if ! id prometheus >/dev/null 2>&1; then
 fi
 
 install -d -o root -g root -m 0750 "${CONFIG_DIR}"
+install -d -o root -g root -m 0755 /usr/local/libexec
 install -d -o root -g prometheus -m 0750 "${TEXTFILE_DIR}"
 install -o root -g root -m 0755 "${SCRIPT_DIR}/nakharax-node-service-metrics.sh" /usr/local/libexec/nakharax-node-service-metrics
 install -o root -g root -m 0644 "${SYSTEMD_DIR}/nakharax-node-exporter.service" /etc/systemd/system/nakharax-node-exporter.service
