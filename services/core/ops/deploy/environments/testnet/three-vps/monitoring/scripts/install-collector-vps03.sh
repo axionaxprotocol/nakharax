@@ -78,7 +78,7 @@ install -o root -g root -m 0644 "${SOURCE_DIR}/grafana/dashboards/three-vps-over
 
 escaped_webhook="$(printf '%s' "${ALERT_WEBHOOK_URL}" | sed 's/[&|\\]/\\&/g')"
 sed "s|__ALERT_WEBHOOK_URL__|${escaped_webhook}|g" "${SOURCE_DIR}/alertmanager.yml.template" >"${CONFIG_DIR}/alertmanager.yml"
-chmod 0600 "${CONFIG_DIR}/alertmanager.yml"
+chmod 0644 "${CONFIG_DIR}/alertmanager.yml"
 
 "${COMPOSE[@]}" --env-file "${ENV_FILE}" -f "${CONFIG_DIR}/docker-compose.yml" config -q
 docker run --rm --network none --entrypoint /bin/promtool \
