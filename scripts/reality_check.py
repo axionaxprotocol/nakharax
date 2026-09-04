@@ -33,9 +33,9 @@ GROUND_TRUTH = {
     "block_reward": 2.0, # 2.00 tNAK per block
     "faucet_amount_per_claim": 100,
     "staking_apy": "8.40%",
-    "rpc_url": "http://127.0.0.1:8545",
-    "ws_url": "ws://127.0.0.1:8546",
-    "dashboard_url": "http://localhost:3030",
+    "rpc_url": os.environ.get("RPC_URL", "http://127.0.0.1:8545"),
+    "ws_url": os.environ.get("WS_URL", "ws://127.0.0.1:8546"),
+    "dashboard_url": os.environ.get("DASHBOARD_URL", "http://localhost:3030"),
     "canonical_7_nodes": [
         {"code": "EU-DE-01", "name": "Frankfurt Genesis L1", "region": "Frankfurt, DE", "role": "Genesis Validator"},
         {"code": "AP-AU-01", "name": "Sydney Master Ingress", "region": "Sydney, AU", "role": "Public RPC & Faucet"},
