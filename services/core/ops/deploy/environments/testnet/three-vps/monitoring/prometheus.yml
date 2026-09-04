@@ -10,7 +10,7 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-            - alertmanager:9093
+            - 127.0.0.1:9093
 
 scrape_configs:
   # All node-health endpoints stay loopback-only. VPS-01 and VPS-02 reach
@@ -65,4 +65,4 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: blackbox-exporter:9115
+        replacement: 127.0.0.1:9115
