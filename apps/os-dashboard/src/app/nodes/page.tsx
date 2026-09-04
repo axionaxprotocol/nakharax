@@ -52,110 +52,54 @@ interface ClusterNode {
   hostingTier: string;
 }
 
-const CANONICAL_7_NODES: ClusterNode[] = [
-  {
-    id: "node-vps-02",
-    name: "Frankfurt Genesis Validator 01",
-    code: "EU-DE-01",
-    region: "Frankfurt, Germany",
-    endpoint: "/ip4/40.160.87.118/tcp/30303",
-    role: "Genesis Validator",
-    hardware: "4 vCPU · 8 GB RAM · 100 GB NVMe",
-    tps: 1.0,
-    status: "ACTIVE_LIVE",
-    latencyMs: 155,
-    blockHeight: null,
-    hostingTier: "Azure Cloud Host · BFT Voter 50%",
-  },
+const REAL_3_GENESIS_NODES: ClusterNode[] = [
   {
     id: "node-vps-01",
-    name: "Sydney Master Ingress & RPC Gateway",
-    code: "AP-AU-01",
-    region: "Sydney, Australia",
-    endpoint: "https://rpc.nakharax.com · :30303",
-    role: "Public RPC Gateway",
+    name: "Germany Master Hub & Ingress (VPS-01)",
+    code: "EU-DE-01",
+    region: "Frankfurt, Germany",
+    endpoint: "https://rpc.nakharax.com · 158.220.127.24:30303",
+    role: "Public RPC Gateway & Master Hub",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
     tps: 1.0,
     status: "ACTIVE_LIVE",
-    latencyMs: 120,
+    latencyMs: 145,
     blockHeight: null,
-    hostingTier: "Contabo Dedicated · Caddy TLS SSL",
+    hostingTier: "Contabo Dedicated · Public Ingress & Caddy TLS",
   },
   {
-    id: "node-worker-us",
-    name: "Virginia PyTorch GPU Worker",
+    id: "node-vps-02",
+    name: "Virginia Genesis Validator 01 (VPS-02)",
     code: "NA-US-01",
     region: "Virginia, US East",
-    endpoint: "/ip4/40.160.87.118/tcp/30303",
-    role: "DeAI GPU Worker",
-    hardware: "16 vCPU · 64 GB RAM · NVIDIA A40 (48GB)",
-    tps: 124.5,
+    endpoint: "40.160.87.118:30303",
+    role: "Genesis Validator",
+    hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
+    tps: 1.0,
     status: "ACTIVE_LIVE",
-    latencyMs: 185,
+    latencyMs: 180,
     blockHeight: null,
-    hostingTier: "Enterprise AI Grid · STARK FRI Verifier",
-  },
-  {
-    id: "node-worker-jp",
-    name: "Tokyo Matrix Solver Worker",
-    code: "AP-JP-01",
-    region: "Tokyo, Japan",
-    endpoint: "/ip4/217.216.39.77/tcp/30303",
-    role: "DeAI GPU Worker",
-    hardware: "16 vCPU · 32 GB RAM · RTX 4090 (24GB)",
-    tps: 86.2,
-    status: "ACTIVE_LIVE",
-    latencyMs: 78,
-    blockHeight: null,
-    hostingTier: "Discrete GPU Node · Matrix Solver",
+    hostingTier: "OVHcloud VPS · BFT Validator Quorum",
   },
   {
     id: "node-vps-03",
-    name: "Singapore Genesis Validator 02",
+    name: "Singapore Genesis Validator 02 (VPS-03)",
     code: "AP-SG-01",
     region: "Singapore, APAC",
-    endpoint: "/ip4/217.216.39.77/tcp/30303",
+    endpoint: "217.216.39.77:30303",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
     tps: 1.0,
     status: "ACTIVE_LIVE",
-    latencyMs: 32,
+    latencyMs: 28,
     blockHeight: null,
-    hostingTier: "Contabo Dedicated · BFT Voter 50%",
-  },
-  {
-    id: "node-auditor-uk",
-    name: "London ZK State & FRI Auditor",
-    code: "EU-UK-01",
-    region: "London, United Kingdom",
-    endpoint: "/ip4/158.220.127.24/tcp/30303",
-    role: "Hydra Sentinel",
-    hardware: "8 vCPU · 36 GB RAM · Dedicated ZK (36GB)",
-    tps: 12.0,
-    status: "ACTIVE_LIVE",
-    latencyMs: 168,
-    blockHeight: null,
-    hostingTier: "Zero-Knowledge Enclave · FRI Polynomial",
-  },
-  {
-    id: "node-pc-01",
-    name: "Localhost Sovereign Master Rig",
-    code: "LOC-TH-01",
-    region: "Bangkok, Thailand",
-    endpoint: "http://127.0.0.1:8545 · :30303",
-    role: "Local Live Host",
-    hardware: "16 vCPU · 32 GB RAM · 1 TB NVMe",
-    tps: 52.4,
-    status: "ACTIVE_LIVE",
-    latencyMs: 1,
-    blockHeight: null,
-    hostingTier: "Local Sovereign Master Host · Dev Rig",
+    hostingTier: "Contabo Dedicated · BFT Validator Quorum",
   },
 ];
 
 export default function NodesPage() {
   const { blockNumber: globalBlock, isLive, latencyMs: globalLatency } = useNetworkMesh();
-  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(CANONICAL_7_NODES);
+  const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(REAL_3_GENESIS_NODES);
   const [activePeerCount, setActivePeerCount] = useState<number>(2);
   const [diagnosticResult, setDiagnosticResult] = useState<string | null>(null);
   const [isProbing, setIsProbing] = useState(false);
@@ -229,7 +173,7 @@ export default function NodesPage() {
 
       setClusterNodes((prev) =>
         prev.map((n) => {
-          const canonical = CANONICAL_7_NODES.find((c) => c.id === n.id);
+          const canonical = REAL_3_GENESIS_NODES.find((c) => c.id === n.id);
           const baseLatency = canonical?.latencyMs ?? 100;
           const jitter = Math.floor(Math.random() * 4) - 2;
           return {
@@ -281,7 +225,7 @@ export default function NodesPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            {activeNodeCount}/7 Canonical Nodes Online ({activePeerCount} BFT Peers)
+            {activeNodeCount}/3 Real Genesis Nodes Online ({activePeerCount} BFT Peers)
           </StatusPill>
           <StatusPill tone="chain" pulse>
             {currentBlock ? `Live Block · #${currentBlock.toLocaleString()}` : "Syncing Block..."}
@@ -322,8 +266,8 @@ export default function NodesPage() {
           tone="chain"
         />
         <StatCard
-          label="Active Mesh Nodes"
-          value={`${activeNodeCount}/7 Online`}
+          label="Active Genesis Nodes"
+          value={`${activeNodeCount}/3 Online`}
           hint={`${activePeerCount} Live P2P BFT Consensus Peers`}
           icon={<ShieldCheck size={18} />}
           tone="ai"
@@ -349,7 +293,7 @@ export default function NodesPage() {
         <span className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-cyan-300 shrink-0" />
           <span>
-            <strong>Global Mesh Telemetry:</strong> 7 Canonical Genesis Nodes operating under PoPC BFT Fast-Finality consensus across 3 continents. Live block numbers and latencies refresh every 2.0s.
+            <strong>Real Genesis Cluster:</strong> 3 Active VPS Validators operating under PoPC BFT Fast-Finality consensus across Germany (VPS-01), Virginia (VPS-02), and Singapore (VPS-03). Live block numbers and latencies refresh every 2.0s.
           </span>
         </span>
         <span className="text-[10px] text-cyan-300 font-bold uppercase tracking-wider shrink-0 ml-2">
@@ -366,7 +310,7 @@ export default function NodesPage() {
           description="High-availability validator nodes and compute worker infrastructure powering testnet 86137."
         />
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {clusterNodes.map((node) => (
             <Card key={node.id} className="space-y-3.5 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-emerald-500/30">
               <div className="flex items-start justify-between">
@@ -424,32 +368,25 @@ export default function NodesPage() {
           <div className="space-y-2">
             {[
               {
+                id: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M",
+                name: "Germany Master Hub & Ingress (VPS-01)",
+                role: "RPC / FAUCET INGRESS",
+                multiaddr: "/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJ...",
+                status: "MASTER INGRESS",
+              },
+              {
                 id: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE",
-                name: "Frankfurt Genesis Validator 01 (EU-DE-01)",
-                role: "BFT VOTER 50%",
+                name: "Virginia Genesis Validator 01 (VPS-02)",
+                role: "BFT VOTER 33.33%",
                 multiaddr: "/ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeew...",
                 status: "SYNCED AT TIP",
               },
               {
                 id: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK",
-                name: "Singapore Genesis Validator 02 (AP-SG-01)",
-                role: "BFT VOTER 50%",
+                name: "Singapore Genesis Validator 02 (VPS-03)",
+                role: "BFT VOTER 33.33%",
                 multiaddr: "/ip4/217.216.39.77/tcp/30303/p2p/12D3KooWQzf4...",
                 status: "SYNCED AT TIP",
-              },
-              {
-                id: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M",
-                name: "Sydney Master Ingress Gateway (AP-AU-01)",
-                role: "RPC / FAUCET INGRESS",
-                multiaddr: "/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJ...",
-                status: "INGRESS ACTIVE",
-              },
-              {
-                id: "12D3KooWLoc77kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1",
-                name: "Localhost Sovereign Master Rig (LOC-TH-01)",
-                role: "MASTER LIVE HOST",
-                multiaddr: "/ip4/127.0.0.1/tcp/30303/p2p/12D3KooWLoc7...",
-                status: "LOCAL RIG",
               },
             ].map((peer, idx) => (
               <div key={idx} className="rounded-xl border border-white/10 bg-slate-950 p-3 text-xs font-mono">

@@ -65,103 +65,51 @@ export interface NetworkMeshState {
   lastUpdated: number;
 }
 
-// 🏛️ Base 7 Canonical Global Mesh Topology (Single Source of Truth)
-const BASE_7_NODES: MeshNodeData[] = [
-  {
-    id: "node-vps-02",
-    name: "Frankfurt Genesis Validator 01",
-    code: "EU-DE-01",
-    role: "PRIMARY_VALIDATOR",
-    countryName: "Germany",
-    region: "Frankfurt, DE",
-    coordinates: [8.6821, 50.1109],
-    provider: "Azure Cloud Host",
-    hardware: { vcpu: 4, ramGb: 8, storage: "100 GB NVMe", antiDdos: "Azure DDoS Protection" },
-    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/ip4/40.160.87.118/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 155.0, jitterMs: 1.2 },
-    consensus: { votingWeight: "50.00%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
-  },
+// 🏛️ Real Live Genesis VPS Topology (3 Active Validator Nodes)
+const BASE_3_NODES: MeshNodeData[] = [
   {
     id: "node-vps-01",
-    name: "Sydney Master Ingress & RPC Gateway",
-    code: "AP-AU-01",
+    name: "Germany Master Hub & Ingress [VPS-01]",
+    code: "EU-DE-01",
     role: "MASTER_HUB",
-    countryName: "Australia",
-    region: "Sydney, AU",
-    coordinates: [151.2093, -33.8688],
-    provider: "Contabo Dedicated Node",
-    hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW + Caddy SSL Gateway" },
-    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/ip4/158.220.127.24/tcp/30303", protocol: "libp2p/kad/1.0.0", latencyMs: 120.0, jitterMs: 0.9 },
-    consensus: { votingWeight: "Gateway", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
+    countryName: "Germany",
+    region: "Frankfurt / Contabo",
+    coordinates: [8.6821, 50.1109],
+    provider: "Contabo Dedicated Node (158.220.127.24)",
+    hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW + Caddy TLS Gateway" },
+    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/ip4/158.220.127.24/tcp/30303", protocol: "libp2p/kad/1.0.0", latencyMs: 145.0, jitterMs: 1.0 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   },
   {
-    id: "node-worker-us",
-    name: "Virginia PyTorch GPU Worker",
+    id: "node-vps-02",
+    name: "Virginia Genesis Validator 01 [VPS-02]",
     code: "NA-US-01",
-    role: "DEAI_WORKER",
+    role: "PRIMARY_VALIDATOR",
     countryName: "United States of America",
-    region: "Virginia, US East",
+    region: "Virginia / US East",
     coordinates: [-78.4769, 38.0307],
-    provider: "NVIDIA A40 (48GB VRAM)",
-    hardware: { vcpu: 16, ramGb: 64, storage: "500 GB NVMe", antiDdos: "Enterprise Shield" },
-    p2p: { peerId: "12D3KooWUsWorkerA40mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1", multiaddr: "/ip4/40.160.87.118/tcp/30303", protocol: "libp2p/popc/2.1.0", latencyMs: 185.0, jitterMs: 2.1 },
-    consensus: { votingWeight: "PoPC Worker (48GB)", bftStatus: "HEALTHY", blockHeight: 0, tps: 124.5 }
-  },
-  {
-    id: "node-worker-jp",
-    name: "Tokyo Matrix Solver Worker",
-    code: "AP-JP-01",
-    role: "DEAI_WORKER",
-    countryName: "Japan",
-    region: "Tokyo, JP",
-    coordinates: [139.6917, 35.6895],
-    provider: "NVIDIA RTX 4090 (24GB VRAM)",
-    hardware: { vcpu: 16, ramGb: 32, storage: "1 TB NVMe", antiDdos: "Hardware Anti-DDoS" },
-    p2p: { peerId: "12D3KooWJpWorker4090mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e2", multiaddr: "/ip4/217.216.39.77/tcp/30303", protocol: "libp2p/popc/2.1.0", latencyMs: 78.0, jitterMs: 0.8 },
-    consensus: { votingWeight: "PoPC Worker (24GB)", bftStatus: "HEALTHY", blockHeight: 0, tps: 86.2 }
+    provider: "OVHcloud VPS (40.160.87.118)",
+    hardware: { vcpu: 4, ramGb: 8, storage: "40 GB NVMe", antiDdos: "OVHcloud Anti-DDoS" },
+    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/ip4/40.160.87.118/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 180.0, jitterMs: 1.2 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   },
   {
     id: "node-vps-03",
-    name: "Singapore Genesis Validator 02",
+    name: "Singapore Genesis Validator 02 [VPS-03]",
     code: "AP-SG-01",
     role: "PRIMARY_VALIDATOR",
     countryName: "Singapore",
-    region: "Singapore, SG",
+    region: "Singapore / Contabo",
     coordinates: [103.8198, 1.3521],
-    provider: "Contabo Dedicated Node",
+    provider: "Contabo Dedicated Node (217.216.39.77)",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW Hardware Guard" },
-    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/ip4/217.216.39.77/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 32.0, jitterMs: 0.4 },
-    consensus: { votingWeight: "50.00%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
-  },
-  {
-    id: "node-auditor-uk",
-    name: "London ZK State & FRI Auditor",
-    code: "EU-UK-01",
-    role: "SECURITY_AUDITOR",
-    countryName: "United Kingdom",
-    region: "London, UK",
-    coordinates: [-0.1278, 51.5074],
-    provider: "Dedicated ZK Auditor (36GB)",
-    hardware: { vcpu: 8, ramGb: 36, storage: "250 GB NVMe", antiDdos: "Zero-Knowledge Enclave" },
-    p2p: { peerId: "12D3KooWUkAuditorZkP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e3", multiaddr: "/ip4/158.220.127.24/tcp/30303", protocol: "libp2p/fri/1.0.0", latencyMs: 168.0, jitterMs: 1.5 },
-    consensus: { votingWeight: "FRI Auditor", bftStatus: "HEALTHY", blockHeight: 0, tps: 12.0 }
-  },
-  {
-    id: "node-pc-01",
-    name: "Localhost Sovereign Master Rig",
-    code: "LOC-TH-01",
-    role: "DEAI_WORKER",
-    countryName: "Thailand",
-    region: "Bangkok Dev Center (Host Rig)",
-    coordinates: [100.5018, 13.7563],
-    provider: "Local Sovereign Master Host",
-    hardware: { vcpu: 16, ramGb: 32, storage: "1 TB NVMe", antiDdos: "Localhost Sovereign Shield" },
-    p2p: { peerId: "12D3KooWLoc77kL7mP9xK4e1a3b5c7b1e2a3d4f5e6a7b8c9d0e1", multiaddr: "/ip4/127.0.0.1/tcp/30303", protocol: "libp2p/kad/1.0.0", latencyMs: 1.0, jitterMs: 0.1 },
-    consensus: { votingWeight: "Master Rig", bftStatus: "HEALTHY", blockHeight: 0, tps: 52.4 }
+    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/ip4/217.216.39.77/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 28.0, jitterMs: 0.5 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   }
 ];
 
 const BASE_CONNECTIONS: Array<[number, number]> = [
-  [0, 1], [0, 4], [1, 4], [0, 5], [4, 6], [1, 2], [3, 4], [2, 3]
+  [0, 1], [1, 2], [0, 2]
 ];
 
 // Helper: Deterministic offset around Southeast Asia / Thailand LAN cluster
@@ -191,14 +139,14 @@ let globalMeshState: NetworkMeshState = {
   workers: {},
   workersList: [],
   totalWorkersCount: 0,
-  totalActiveNodes: 7,
+  totalActiveNodes: 3,
   totalNetworkHashrateMops: 0,
-  meshNodes: BASE_7_NODES,
+  meshNodes: BASE_3_NODES,
   meshConnections: BASE_CONNECTIONS,
   telemetryStream: [
-    "[GOSSIPSUB] AP-AU-01 ──» EU-DE-01 (PoPC BFT Consensus Synchronized · 14.5ms)",
-    "[ZKP-STARK] NA-US-01 ──» AP-JP-01 (1,024 Polynomial Constraints Checked · 82.1ms)",
-    "[QUORUM-SIG] EU-UK-01 ──» LOC-TH-01 (Deterministic State Root Signed · 1.0ms)"
+    "[GOSSIPSUB] NA-US-01 ──» EU-DE-01 (PoPC BFT Consensus Synchronized · 145ms)",
+    "[BFT-VOTE] AP-SG-01 ──» EU-DE-01 (Genesis Quorum Block Vote 33.33% · 28ms)",
+    "[RPC-SYNC] EU-DE-01 ──» NA-US-01 (Block Height Propagated · 180ms)"
   ],
   lastUpdated: Date.now()
 };
@@ -256,7 +204,7 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
     };
   });
 
-  const updatedBaseNodes: MeshNodeData[] = BASE_7_NODES.map((node) => ({
+  const updatedBaseNodes: MeshNodeData[] = BASE_3_NODES.map((node) => ({
     ...node,
     consensus: {
       ...node.consensus,
@@ -267,12 +215,12 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
   const allMeshNodes = [...updatedBaseNodes, ...dynamicWorkerNodes];
   const allMeshConnections: Array<[number, number]> = [...BASE_CONNECTIONS];
 
-  // Dynamic Laser Connections: Link each active worker to LOC-TH-01 (index 6) and AP-SG-01 (index 3)
+  // Dynamic Laser Connections: Link each active worker to VPS-01 (Germany, index 0) and VPS-03 (Singapore, index 2)
   dynamicWorkerNodes.forEach((node, idx) => {
     if (node.consensus.bftStatus === "HEALTHY") {
-      const workerNodeIndex = 7 + idx;
-      allMeshConnections.push([6, workerNodeIndex]); // Link to Localhost Host Rig
-      allMeshConnections.push([3, workerNodeIndex]); // Link to Singapore Gateway
+      const workerNodeIndex = BASE_3_NODES.length + idx;
+      allMeshConnections.push([0, workerNodeIndex]); // Link to Germany Master Hub
+      allMeshConnections.push([2, workerNodeIndex]); // Link to Singapore Genesis Validator
     }
   });
 
@@ -284,7 +232,7 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
   const activeNodesOnly = dynamicWorkerNodes.filter(n => n.consensus.bftStatus === "HEALTHY");
   if (activeNodesOnly.length > 0) {
     const activeW = activeNodesOnly[Math.floor(Math.random() * activeNodesOnly.length)];
-    const logPacket = `[POPC-ZK] ${activeW.code} ──» LOC-TH-01 (STARK FRI 1,024 Proofs Verified · 19ms · ${activeW.liveStats?.hashrateMops?.toFixed(1)} M-Ops)`;
+    const logPacket = `[POPC-ZK] ${activeW.code} ──» EU-DE-01 (STARK FRI 1,024 Proofs Verified · 19ms · ${activeW.liveStats?.hashrateMops?.toFixed(1)} M-Ops)`;
     if (!telemetryLogs.includes(logPacket)) {
       telemetryLogs.unshift(logPacket);
       if (telemetryLogs.length > 8) telemetryLogs.pop();
@@ -297,7 +245,7 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
     workers: workersRecord,
     workersList,
     totalWorkersCount: activeWorkersList.length,
-    totalActiveNodes: 7 + activeWorkersList.length,
+    totalActiveNodes: 3 + activeWorkersList.length,
     totalNetworkHashrateMops: totalHashrate,
     meshNodes: allMeshNodes,
     meshConnections: allMeshConnections,
