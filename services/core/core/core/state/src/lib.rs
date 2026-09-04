@@ -5,7 +5,10 @@
 //! - Chain state and metadata
 //! - Account balances and nonces
 
+pub mod contract_engine;
 pub mod merkle;
+
+pub use contract_engine::{compute_contract_address, ContractEngine, ExecutionReceipt, TransactionLog};
 
 use redb::{Database, ReadableTable, TableDefinition};
 use std::collections::BTreeMap;
@@ -375,6 +378,71 @@ impl StateDB {
         {
             let mut t = write_txn.open_table(CHAIN_STATE)?;
             t.insert(key.as_str(), nonce.to_be_bytes().as_slice())?;
+        }
+        write_txn.commit()?;
+        Ok(())
+    }
+
+    fn code_key(address: &str) -> String {
+        let a = address.strip_prefix("0x").unwrap_or(address);
+        format!("code_0x{}", a.to_lowercase())
+    }
+
+    fn storage_key(address: &str, slot: &[u8; 32]) -> String {
+        let a = address.strip_prefix("0x").unwrap_or(address);
+        format!("slot_0x{}_{}", a.to_lowercase(), hex::encode(slot))
+    }
+
+    /// Get contract bytecode
+    pub fn get_code(&self, address: &str) -> Result<Vec<u8>> {
+        let key = Self::code_key(address);
+        let read_txn = self.db.begin_read()?;
+        let t = read_txn.open_table(CHAIN_STATE)?;
+        Ok(match t.get(key.as_str())? {
+            Some(v) => v.value().to_vec(),
+            None => Vec::new(),
+        })
+    }
+
+    /// Set contract bytecode
+    pub fn set_code(&self, address: &str, code: &[u8]) -> Result<()> {
+        let key = Self::code_key(address);
+        let write_txn = self.db.begin_write()?;
+        {
+            let mut t = write_txn.open_table(CHAIN_STATE)?;
+            t.insert(key.as_str(), code)?;
+        }
+        write_txn.commit()?;
+        Ok(())
+    }
+
+    /// Get contract storage slot (32-byte value)
+    pub fn get_storage_at(&self, address: &str, slot: &[u8; 32]) -> Result<[u8; 32]> {
+        let key = Self::storage_key(address, slot);
+        let read_txn = self.db.begin_read()?;
+        let t = read_txn.open_table(CHAIN_STATE)?;
+        Ok(match t.get(key.as_str())? {
+            Some(v) => {
+                let bytes: &[u8] = v.value();
+                if bytes.len() >= 32 {
+                    let mut arr = [0u8; 32];
+                    arr.copy_from_slice(&bytes[..32]);
+                    arr
+                } else {
+                    [0u8; 32]
+                }
+            }
+            None => [0u8; 32],
+        })
+    }
+
+    /// Set contract storage slot (32-byte value)
+    pub fn set_storage_at(&self, address: &str, slot: &[u8; 32], value: &[u8; 32]) -> Result<()> {
+        let key = Self::storage_key(address, slot);
+        let write_txn = self.db.begin_write()?;
+        {
+            let mut t = write_txn.open_table(CHAIN_STATE)?;
+            t.insert(key.as_str(), value.as_slice())?;
         }
         write_txn.commit()?;
         Ok(())

@@ -781,3 +781,99 @@ mod blockchain_chain_attacks {
         );
     }
 }
+
+// ── 10. Byzantine Equivocation & Automated Slashing Attacks ─────────────────
+mod byzantine_equivocation_slashing_attacks {
+    use consensus::{EquivocationDetector, EquivocationType};
+    use staking::{Staking, StakingConfig};
+
+    #[tokio::test]
+    async fn test_adversarial_double_proposal_triggers_automatic_slash() {
+        let staking = Staking::new(StakingConfig::default());
+        let rogue_validator = "0xRogueProposer1111111111111111111111111111";
+        let initial_stake: u128 = 10_000 * 10_u128.pow(18); // 10,000 NAK
+
+        // Bootstrap validator
+        staking
+            .bootstrap_validator(rogue_validator.to_string(), initial_stake)
+            .await
+            .expect("Bootstrap validator failed");
+
+        let mut detector = EquivocationDetector::new();
+
+        // 1. Rogue proposes legitimate block at height #100
+        let hash_a = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        let res_a = detector.record_proposal(100, rogue_validator, hash_a);
+        assert!(res_a.is_none(), "First proposal must be accepted");
+
+        // 2. Rogue maliciously proposes conflicting block at height #100
+        let hash_b = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+        let proof = detector
+            .record_proposal(100, rogue_validator, hash_b)
+            .expect("Double-proposal MUST produce EquivocationProof");
+
+        assert_eq!(proof.violator, rogue_validator);
+        assert_eq!(proof.block_number, 100);
+        assert_eq!(proof.equivocation_type, EquivocationType::DoubleProposal);
+        assert!(proof.is_valid());
+
+        // 3. Automated Slashing execution: 500 bps (5%)
+        let slashed_amount = staking
+            .slash(proof.violator.clone(), 500)
+            .await
+            .expect("Slashing must succeed");
+
+        let expected_slash = initial_stake * 500 / 10_000;
+        assert_eq!(slashed_amount, expected_slash);
+
+        let v_info = staking
+            .get_validator(rogue_validator)
+            .await
+            .expect("Validator should exist");
+
+        assert_eq!(v_info.stake, initial_stake - expected_slash);
+        assert_eq!(v_info.total_slashed, expected_slash);
+        assert!(!v_info.is_active, "Rogue validator MUST be deactivated");
+    }
+
+    #[tokio::test]
+    async fn test_adversarial_double_voting_triggers_automatic_slash() {
+        let staking = Staking::new(StakingConfig::default());
+        let rogue_voter = "0xRogueVoter2222222222222222222222222222222";
+        let initial_stake: u128 = 50_000 * 10_u128.pow(18); // 50,000 NAK
+
+        staking
+            .bootstrap_validator(rogue_voter.to_string(), initial_stake)
+            .await
+            .expect("Bootstrap validator failed");
+
+        let mut detector = EquivocationDetector::new();
+
+        // 1. Vote for block hash A at height #250
+        let hash_a = "0x1111111111111111111111111111111111111111111111111111111111111111";
+        let res_a = detector.record_vote(250, rogue_voter, hash_a);
+        assert!(res_a.is_none());
+
+        // 2. Conflicting vote for block hash B at height #250
+        let hash_b = "0x2222222222222222222222222222222222222222222222222222222222222222";
+        let proof = detector
+            .record_vote(250, rogue_voter, hash_b)
+            .expect("Double-vote MUST produce EquivocationProof");
+
+        assert_eq!(proof.violator, rogue_voter);
+        assert_eq!(proof.equivocation_type, EquivocationType::DoubleVote);
+
+        // 3. Execute slash
+        let slashed = staking
+            .slash(proof.violator, 500)
+            .await
+            .expect("Slashing must execute");
+
+        let expected_slash = initial_stake * 500 / 10_000;
+        assert_eq!(slashed, expected_slash);
+
+        let v_info = staking.get_validator(rogue_voter).await.unwrap();
+        assert!(!v_info.is_active);
+    }
+}
+

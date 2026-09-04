@@ -566,6 +566,7 @@ impl NakharaxNode {
             let (_guard_tx, fallback_rx) = mpsc::channel::<NetworkMessage>(1);
             let mut rx = event_rx.unwrap_or(fallback_rx);
             let mut finality = FinalityTracker::default();
+            let mut equivocation_detector = consensus::EquivocationDetector::new();
 
             loop {
                 tokio::select! {
@@ -574,6 +575,25 @@ impl NakharaxNode {
                             NetworkMessage::Block(block_msg) => {
                                 let block_hash = block_msg.hash.clone();
                                 let block_number = block_msg.number;
+
+                                // Byzantine Equivocation Watchdog: Check for double-proposal
+                                if let Some(proof) = equivocation_detector.record_proposal(
+                                    block_number,
+                                    &block_msg.proposer,
+                                    &block_hash,
+                                ) {
+                                    warn!(
+                                        "🚨 BYZANTINE EQUIVOCATION DETECTED (Double Proposal)! Slashing validator {} at block #{}: {} vs {}",
+                                        proof.violator, proof.block_number, proof.hash_a, proof.hash_b
+                                    );
+                                    let s = staking.write().await;
+                                    if let Err(e) = s.slash(proof.violator.clone(), 500).await {
+                                        warn!("Failed to slash validator {}: {}", proof.violator, e);
+                                    } else {
+                                        info!("⚔️ Slashed 5% (500 bps) stake from rogue validator {}", proof.violator);
+                                    }
+                                }
+
                                 if let Err(e) = Self::handle_block_message(
                                     &state,
                                     &stats,
@@ -608,6 +628,24 @@ impl NakharaxNode {
                                 }
                             }
                             NetworkMessage::BlockConfirmation(conf_msg) => {
+                                // Byzantine Equivocation Watchdog: Check for double-voting
+                                if let Some(proof) = equivocation_detector.record_vote(
+                                    conf_msg.block_number,
+                                    &conf_msg.validator_address,
+                                    &conf_msg.block_hash,
+                                ) {
+                                    warn!(
+                                        "🚨 BYZANTINE EQUIVOCATION DETECTED (Double Vote)! Slashing validator {} at block #{}: {} vs {}",
+                                        proof.violator, proof.block_number, proof.hash_a, proof.hash_b
+                                    );
+                                    let s = staking.write().await;
+                                    if let Err(e) = s.slash(proof.violator.clone(), 500).await {
+                                        warn!("Failed to slash validator {}: {}", proof.violator, e);
+                                    } else {
+                                        info!("⚔️ Slashed 5% (500 bps) stake from rogue validator {}", proof.violator);
+                                    }
+                                }
+
                                 // Count finality votes
                                 let active_count = {
                                     let s = staking.read().await;

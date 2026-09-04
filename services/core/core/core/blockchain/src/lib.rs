@@ -19,10 +19,12 @@ use tokio::sync::RwLock;
 use genesis::GenesisGenerator;
 
 pub mod mempool;
+pub mod seraph_mempool;
 pub mod storage;
 pub mod validation;
 
 pub use mempool::{PoolConfig, PoolError, PoolStats, TransactionPool};
+pub use seraph_mempool::{EncryptedEnvelope, SeraphError, SeraphMempool};
 pub use storage::{BlockStore, RedbBlockStore, SledBlockStore, StorageError};
 pub use validation::{BlockValidator, TransactionValidator, ValidationConfig, ValidationError};
 

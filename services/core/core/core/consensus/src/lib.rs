@@ -3,6 +3,7 @@
 //! Implements Proof-of-Probabilistic-Checking consensus mechanism.
 //! [SIMULATION] Proof-of-Light (Monolith Mark-II) available in `proof_of_light`.
 
+pub mod equivocation;
 pub mod merkle;
 pub mod proof_of_light;
 
@@ -10,6 +11,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 
+pub use equivocation::{EquivocationDetector, EquivocationProof, EquivocationType};
 pub use merkle::{
     deserialize_proofs, verify_merkle_proof, verify_sample_proofs, Hash, MerkleProof, MerkleTree,
 };
