@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import {
   Activity,
@@ -58,55 +58,79 @@ const REAL_3_GENESIS_NODES: ClusterNode[] = [
     name: "Germany Master Hub & Ingress (VPS-01)",
     code: "EU-DE-01",
     region: "Frankfurt, Germany",
-    endpoint: "https://rpc.nakharax.com · 158.220.127.24:30303",
+    endpoint: "https://rpc.nakharax.com (Public Ingress)",
     role: "Public RPC Gateway & Master Hub",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
     tps: 1.0,
     status: "ACTIVE_LIVE",
     latencyMs: 145,
     blockHeight: null,
-    hostingTier: "Contabo Dedicated · Public Ingress & Caddy TLS",
+    hostingTier: "Dedicated Cloud Host · Caddy TLS Anycast Shield",
   },
   {
     id: "node-vps-02",
     name: "Virginia Genesis Validator 01 (VPS-02)",
     code: "NA-US-01",
     region: "Virginia, US East",
-    endpoint: "40.160.87.118:30303",
+    endpoint: "P2P Mesh · Port 30303 (Shielded)",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
     tps: 1.0,
     status: "ACTIVE_LIVE",
     latencyMs: 180,
     blockHeight: null,
-    hostingTier: "OVHcloud VPS · BFT Validator Quorum",
+    hostingTier: "Dedicated Cloud Host · BFT Validator Quorum",
   },
   {
     id: "node-vps-03",
     name: "Singapore Genesis Validator 02 (VPS-03)",
     code: "AP-SG-01",
     region: "Singapore, APAC",
-    endpoint: "217.216.39.77:30303",
+    endpoint: "P2P Mesh · Port 30303 (Shielded)",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
     tps: 1.0,
     status: "ACTIVE_LIVE",
     latencyMs: 28,
     blockHeight: null,
-    hostingTier: "Contabo Dedicated · BFT Validator Quorum",
+    hostingTier: "Dedicated Cloud Host · BFT Validator Quorum",
   },
 ];
 
 export default function NodesPage() {
-  const { blockNumber: globalBlock, isLive, latencyMs: globalLatency } = useNetworkMesh();
+  const { blockNumber: globalBlock, isLive, latencyMs: globalLatency, meshNodes } = useNetworkMesh();
   const [clusterNodes, setClusterNodes] = useState<ClusterNode[]>(REAL_3_GENESIS_NODES);
   const [activePeerCount, setActivePeerCount] = useState<number>(2);
   const [diagnosticResult, setDiagnosticResult] = useState<string | null>(null);
   const [isProbing, setIsProbing] = useState(false);
 
+  // Dynamic Auto-Discovery: Base Genesis nodes + dynamically discovered nodes/workers from libp2p/RPC mesh
+  const allDiscoveredNodes = useMemo(() => {
+    const baseIds = new Set(clusterNodes.map((b) => b.id));
+    const dynamicNodes: ClusterNode[] = (meshNodes || [])
+      .filter((m) => !baseIds.has(m.id))
+      .map((m) => ({
+        id: m.id,
+        name: m.name,
+        code: m.code,
+        region: m.region,
+        endpoint: "P2P Mesh · Port 30303 (Shielded)",
+        role: m.role === "DEAI_WORKER" ? "DeAI GPU Worker" : m.role,
+        hardware: `${m.hardware.vcpu} vCPU · ${m.hardware.ramGb} GB RAM · ${m.hardware.storage}`,
+        tps: m.consensus.tps,
+        status: m.consensus.bftStatus === "HEALTHY" ? "ACTIVE_LIVE" : "STANDBY",
+        latencyMs: m.p2p.latencyMs,
+        blockHeight: m.consensus.blockHeight || globalBlock,
+        hostingTier: m.provider,
+      }));
+
+    return [...clusterNodes, ...dynamicNodes];
+  }, [clusterNodes, meshNodes, globalBlock]);
+
   const currentBlock = isLive && globalBlock > 0 ? globalBlock : null;
-  const activeNodeCount = clusterNodes.filter((node) => node.status === "ACTIVE_LIVE").length;
-  const reportedLatencies = clusterNodes
+  const activeNodeCount = allDiscoveredNodes.filter((node) => node.status === "ACTIVE_LIVE").length;
+  const totalNodeCount = allDiscoveredNodes.length;
+  const reportedLatencies = allDiscoveredNodes
     .map((node) => node.latencyMs)
     .filter((latency): latency is number => latency !== null && latency > 0);
 
@@ -225,7 +249,7 @@ export default function NodesPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            {activeNodeCount}/3 Real Genesis Nodes Online ({activePeerCount} BFT Peers)
+            {activeNodeCount}/{totalNodeCount} Active Nodes Online ({activePeerCount} BFT Peers)
           </StatusPill>
           <StatusPill tone="chain" pulse>
             {currentBlock ? `Live Block · #${currentBlock.toLocaleString()}` : "Syncing Block..."}
@@ -267,7 +291,7 @@ export default function NodesPage() {
         />
         <StatCard
           label="Active Genesis Nodes"
-          value={`${activeNodeCount}/3 Online`}
+          value={`${activeNodeCount}/${totalNodeCount} Online`}
           hint={`${activePeerCount} Live P2P BFT Consensus Peers`}
           icon={<ShieldCheck size={18} />}
           tone="ai"
@@ -293,11 +317,11 @@ export default function NodesPage() {
         <span className="flex items-center gap-2">
           <ShieldCheck size={16} className="text-cyan-300 shrink-0" />
           <span>
-            <strong>Real Genesis Cluster:</strong> 3 Active VPS Validators operating under PoPC BFT Fast-Finality consensus across Germany (VPS-01), Virginia (VPS-02), and Singapore (VPS-03). Live block numbers and latencies refresh every 2.0s.
+            <strong>Real Genesis Cluster:</strong> Active Validators & DeAI workers operating under PoPC BFT Fast-Finality consensus. Public IP addresses are shielded behind Anycast & Libp2p relays.
           </span>
         </span>
         <span className="text-[10px] text-cyan-300 font-bold uppercase tracking-wider shrink-0 ml-2">
-          LIVE TELEMETRY
+          IP SHIELDED
         </span>
       </div>
 
@@ -311,7 +335,7 @@ export default function NodesPage() {
         />
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {clusterNodes.map((node) => (
+          {allDiscoveredNodes.map((node) => (
             <Card key={node.id} className="space-y-3.5 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-emerald-500/30">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
@@ -371,21 +395,24 @@ export default function NodesPage() {
                 id: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M",
                 name: "Germany Master Hub & Ingress (VPS-01)",
                 role: "RPC / FAUCET INGRESS",
-                multiaddr: "/ip4/158.220.127.24/tcp/30303/p2p/12D3KooWPbSJ...",
+                multiaddr: "p2p://12D3KooWPbSJ... · /dns4/rpc.nakharax.com (Shielded)",
+                region: "Frankfurt, Germany",
                 status: "MASTER INGRESS",
               },
               {
                 id: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE",
                 name: "Virginia Genesis Validator 01 (VPS-02)",
                 role: "BFT VOTER 33.33%",
-                multiaddr: "/ip4/40.160.87.118/tcp/30303/p2p/12D3KooWPeew...",
+                multiaddr: "p2p://12D3KooWPeew... · /dns4/us-east.nakharax.com (Shielded)",
+                region: "Virginia, US East",
                 status: "SYNCED AT TIP",
               },
               {
                 id: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK",
                 name: "Singapore Genesis Validator 02 (VPS-03)",
                 role: "BFT VOTER 33.33%",
-                multiaddr: "/ip4/217.216.39.77/tcp/30303/p2p/12D3KooWQzf4...",
+                multiaddr: "p2p://12D3KooWQzf4... · /dns4/sg-apac.nakharax.com (Shielded)",
+                region: "Singapore, APAC",
                 status: "SYNCED AT TIP",
               },
             ].map((peer, idx) => (
@@ -398,7 +425,7 @@ export default function NodesPage() {
                 </div>
                 <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-400">
                   <span className="truncate">{peer.multiaddr}</span>
-                  <span className="text-neutral-500 text-[10px] ml-2 shrink-0">{peer.role}</span>
+                  <span className="text-neutral-500 text-[10px] ml-2 shrink-0">{peer.region} · {peer.role}</span>
                 </div>
               </div>
             ))}

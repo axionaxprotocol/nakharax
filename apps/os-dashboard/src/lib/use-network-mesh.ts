@@ -65,7 +65,7 @@ export interface NetworkMeshState {
   lastUpdated: number;
 }
 
-// 🏛️ Real Live Genesis VPS Topology (3 Active Validator Nodes)
+// 🏛️ Real Live Genesis VPS Topology (3 Active Validator Nodes - IP Masked)
 const BASE_3_NODES: MeshNodeData[] = [
   {
     id: "node-vps-01",
@@ -73,11 +73,11 @@ const BASE_3_NODES: MeshNodeData[] = [
     code: "EU-DE-01",
     role: "MASTER_HUB",
     countryName: "Germany",
-    region: "Frankfurt / Contabo",
+    region: "Frankfurt, Germany",
     coordinates: [8.6821, 50.1109],
-    provider: "Contabo Dedicated Node (158.220.127.24)",
+    provider: "Contabo Dedicated Host (Frankfurt)",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW + Caddy TLS Gateway" },
-    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/ip4/158.220.127.24/tcp/30303", protocol: "libp2p/kad/1.0.0", latencyMs: 145.0, jitterMs: 1.0 },
+    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/dns4/rpc.nakharax.com/tcp/30303/p2p/12D3KooWPbSJ...", protocol: "libp2p/kad/1.0.0", latencyMs: 145.0, jitterMs: 1.0 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   },
   {
@@ -86,11 +86,11 @@ const BASE_3_NODES: MeshNodeData[] = [
     code: "NA-US-01",
     role: "PRIMARY_VALIDATOR",
     countryName: "United States of America",
-    region: "Virginia / US East",
+    region: "Virginia, US East",
     coordinates: [-78.4769, 38.0307],
-    provider: "OVHcloud VPS (40.160.87.118)",
+    provider: "OVHcloud Dedicated Host (Virginia)",
     hardware: { vcpu: 4, ramGb: 8, storage: "40 GB NVMe", antiDdos: "OVHcloud Anti-DDoS" },
-    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/ip4/40.160.87.118/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 180.0, jitterMs: 1.2 },
+    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/dns4/us-east.nakharax.com/tcp/30303/p2p/12D3KooWPeew...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 180.0, jitterMs: 1.2 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   },
   {
@@ -99,11 +99,11 @@ const BASE_3_NODES: MeshNodeData[] = [
     code: "AP-SG-01",
     role: "PRIMARY_VALIDATOR",
     countryName: "Singapore",
-    region: "Singapore / Contabo",
+    region: "Singapore, APAC",
     coordinates: [103.8198, 1.3521],
-    provider: "Contabo Dedicated Node (217.216.39.77)",
+    provider: "Contabo Dedicated Host (Singapore)",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW Hardware Guard" },
-    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/ip4/217.216.39.77/tcp/30303", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 28.0, jitterMs: 0.5 },
+    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/dns4/sg-apac.nakharax.com/tcp/30303/p2p/12D3KooWQzf4...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 28.0, jitterMs: 0.5 },
     consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
   }
 ];
