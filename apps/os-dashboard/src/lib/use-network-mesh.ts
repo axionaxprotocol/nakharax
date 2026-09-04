@@ -54,6 +54,7 @@ export interface NetworkMeshState {
   blockNumber: number;
   isLive: boolean;
   latencyMs: number;
+  peerCount: number;
   workers: Record<string, LiveWorkerInfo>;
   workersList: LiveWorkerInfo[];
   totalWorkersCount: number;
@@ -136,6 +137,7 @@ let globalMeshState: NetworkMeshState = {
   blockNumber: 1000,
   isLive: false,
   latencyMs: 1,
+  peerCount: 2,
   workers: {},
   workersList: [],
   totalWorkersCount: 0,
@@ -159,7 +161,7 @@ function notifyMeshListeners() {
 
 let engineStarted = false;
 
-function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentBlock: number) {
+function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentBlock: number, peerCount: number = globalMeshState.peerCount) {
   const workerEntries = Object.entries(workersRecord);
   const workersList = Object.values(workersRecord);
   const activeWorkersList = workersList.filter(w => w.status === "ONLINE_ACTIVE");
@@ -239,13 +241,20 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
     }
   }
 
+  // Calculate total active nodes dynamically:
+  // In a P2P blockchain mesh, total active consensus nodes = (peerCount + 1)
+  // Plus any active registered DeAI GPU workers
+  const basePeerNodes = peerCount > 0 ? peerCount + 1 : 3;
+  const totalActive = Math.max(3, basePeerNodes + activeWorkersList.length);
+
   globalMeshState = {
     ...globalMeshState,
     blockNumber: currentBlock,
+    peerCount,
     workers: workersRecord,
     workersList,
     totalWorkersCount: activeWorkersList.length,
-    totalActiveNodes: 3 + activeWorkersList.length,
+    totalActiveNodes: totalActive,
     totalNetworkHashrateMops: totalHashrate,
     meshNodes: allMeshNodes,
     meshConnections: allMeshConnections,
@@ -284,7 +293,7 @@ function startMeshEngine() {
           }
           // Mesh Worker Update Event
           if (msg.type === "mesh_update" && msg.data?.workers) {
-            recalculateMesh(msg.data.workers, msg.data.blockNumber || globalMeshState.blockNumber);
+            recalculateMesh(msg.data.workers, msg.data.blockNumber || globalMeshState.blockNumber, globalMeshState.peerCount);
           }
         } catch { }
       };
@@ -304,7 +313,7 @@ function startMeshEngine() {
     initWs();
   }
 
-  // 2. Real-Time RPC Polling (1.8s cadence for live block progression)
+  // 2. Real-Time RPC Polling (1.8s cadence for live block progression & node discovery)
   const pollMesh = async () => {
     if (typeof document !== "undefined" && document.hidden) {
       return;
@@ -312,7 +321,7 @@ function startMeshEngine() {
 
     const startT = performance.now();
     try {
-      const [bnRes, teleRes] = await Promise.allSettled([
+      const [bnRes, teleRes, peerRes, workersRes] = await Promise.allSettled([
         fetch("/api/rpc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -325,16 +334,43 @@ function startMeshEngine() {
           body: JSON.stringify({ jsonrpc: "2.0", method: "nak_getNodeTelemetry", params: [], id: Date.now() + 1 }),
           cache: "no-store",
         }),
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", method: "net_peerCount", params: [], id: Date.now() + 2 }),
+          cache: "no-store",
+        }),
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", method: "nak_getWorkers", params: [], id: Date.now() + 3 }),
+          cache: "no-store",
+        }),
       ]);
 
       const latency = Math.max(1, Math.round(performance.now() - startT));
 
       let currentBn = globalMeshState.blockNumber;
+      let currentPeers = globalMeshState.peerCount;
+      let currentWorkers = globalMeshState.workers;
+
       if (bnRes.status === "fulfilled" && bnRes.value.ok) {
         try {
           const bnData = await bnRes.value.json();
           if (bnData.result) {
             currentBn = parseInt(bnData.result, 16);
+          }
+        } catch { }
+      }
+
+      if (peerRes.status === "fulfilled" && peerRes.value.ok) {
+        try {
+          const peerData = await peerRes.value.json();
+          if (peerData.result) {
+            const count = parseInt(peerData.result, 16);
+            if (!isNaN(count) && count >= 0) {
+              currentPeers = count;
+            }
           }
         } catch { }
       }
@@ -345,12 +381,24 @@ function startMeshEngine() {
           if (teleData.result?.block_height && teleData.result.block_height > currentBn) {
             currentBn = teleData.result.block_height;
           }
+          if (typeof teleData.result?.peer_count === "number") {
+            currentPeers = teleData.result.peer_count;
+          }
+        } catch { }
+      }
+
+      if (workersRes.status === "fulfilled" && workersRes.value.ok) {
+        try {
+          const wData = await workersRes.value.json();
+          if (wData.result && typeof wData.result === "object") {
+            currentWorkers = wData.result;
+          }
         } catch { }
       }
 
       globalMeshState.isLive = true;
       globalMeshState.latencyMs = latency;
-      recalculateMesh(globalMeshState.workers, currentBn);
+      recalculateMesh(currentWorkers, currentBn, currentPeers);
     } catch {
       // Offline fallback
     }

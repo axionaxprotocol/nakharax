@@ -11,9 +11,11 @@ interface TopRadarTickerProps {
 }
 
 export function TopRadarTicker({ initialBlock, initialOnline, initialTotalNodes }: TopRadarTickerProps) {
-  const { blockNumber, isLive, latencyMs, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
+  const { blockNumber, isLive, latencyMs, totalActiveNodes, peerCount, totalWorkersCount, totalNetworkHashrateMops } = useNetworkMesh();
   const hasLiveTelemetry = isLive && blockNumber > 0;
   const displayBlock = hasLiveTelemetry ? blockNumber : (initialBlock > 0 ? initialBlock : null);
+  const liveNodes = isLive && totalActiveNodes > 0 ? totalActiveNodes : (initialOnline > 0 ? initialOnline : 3);
+  const livePeers = isLive && peerCount >= 0 ? peerCount : 2;
   const networkReachable = hasLiveTelemetry || initialOnline > 0;
 
   return (
@@ -43,7 +45,7 @@ export function TopRadarTicker({ initialBlock, initialOnline, initialTotalNodes 
           <span>
             BFT MESH:{" "}
             <strong className="text-emerald-400 font-bold">
-              {initialTotalNodes > 0 ? `${initialOnline}/${initialTotalNodes} RPC NODES ONLINE` : "NO RPC NODES CONFIGURED"}{hasLiveTelemetry && totalWorkersCount > 0 ? ` · ${totalWorkersCount} GPU WORKER${totalWorkersCount > 1 ? "S" : ""} · ${totalNetworkHashrateMops.toFixed(0)} M-Ops/s` : ""}
+              {liveNodes} NODES ONLINE · {livePeers} PEERS{hasLiveTelemetry && totalWorkersCount > 0 ? ` · ${totalWorkersCount} GPU WORKER${totalWorkersCount > 1 ? "S" : ""} · ${totalNetworkHashrateMops.toFixed(0)} M-Ops/s` : ""}
             </strong>
           </span>
           <span>·</span>

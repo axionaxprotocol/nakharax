@@ -249,7 +249,7 @@ export default function NodesPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            {activeNodeCount}/{totalNodeCount} Active Nodes Online ({activePeerCount} BFT Peers)
+            {activeNodeCount} Active Nodes Online ({activePeerCount} BFT Peers)
           </StatusPill>
           <StatusPill tone="chain" pulse>
             {currentBlock ? `Live Block · #${currentBlock.toLocaleString()}` : "Syncing Block..."}
@@ -290,8 +290,8 @@ export default function NodesPage() {
           tone="chain"
         />
         <StatCard
-          label="Active Genesis Nodes"
-          value={`${activeNodeCount}/${totalNodeCount} Online`}
+          label="Active Network Nodes"
+          value={`${activeNodeCount} Nodes Online`}
           hint={`${activePeerCount} Live P2P BFT Consensus Peers`}
           icon={<ShieldCheck size={18} />}
           tone="ai"

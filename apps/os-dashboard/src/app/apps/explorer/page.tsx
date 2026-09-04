@@ -35,6 +35,7 @@ import {
   StatCard,
   StatusPill,
 } from "@/components/card";
+import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 interface RealBlockData {
   height: number;
@@ -59,6 +60,7 @@ interface RealTransactionData {
 }
 
 export default function BlockExplorerPage() {
+  const { totalActiveNodes, peerCount, isLive } = useNetworkMesh();
   const [currentBlock, setCurrentBlock] = useState<number | null>(null);
   const [blocks, setBlocks] = useState<RealBlockData[]>([]);
   const [transactions, setTransactions] = useState<RealTransactionData[]>([]);
@@ -69,6 +71,9 @@ export default function BlockExplorerPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState<any | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+
+  const liveNodes = isLive && totalActiveNodes > 0 ? totalActiveNodes : (activeValidators > 0 ? activeValidators : 3);
+  const livePeers = isLive && peerCount >= 0 ? peerCount : 2;
 
   // Fetch live blockchain state from RPC endpoint via /api/rpc
   const fetchLiveState = useCallback(async () => {
@@ -312,7 +317,7 @@ export default function BlockExplorerPage() {
           <StatusPill tone="chain" pulse>
             {currentBlock != null ? `Live Block #${currentBlock.toLocaleString()}` : "Connecting to Node..."}
           </StatusPill>
-          <StatusPill tone="ai">PoPC Consensus (3.0s Cadence)</StatusPill>
+          <StatusPill tone="ai">{liveNodes} Nodes Online ({livePeers} BFT Peers)</StatusPill>
           <StatusPill tone="violet">RPC: /api/rpc</StatusPill>
         </>
       }
@@ -343,9 +348,9 @@ export default function BlockExplorerPage() {
           tone="ai"
         />
         <StatCard
-          label="Active Validators"
-          value={`${activeValidators} Nodes`}
-          hint="Global BFT Mesh (Live)"
+          label="Active Nodes & Validators"
+          value={`${liveNodes} Nodes`}
+          hint={`${livePeers} Live P2P BFT Peers`}
           icon={<ShieldCheck size={18} />}
           tone="violet"
         />

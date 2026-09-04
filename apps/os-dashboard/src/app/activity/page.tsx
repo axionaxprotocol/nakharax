@@ -23,7 +23,7 @@ import {
 import { useNetworkMesh } from "@/lib/use-network-mesh";
 
 export default function ActivityPage() {
-  const { blockNumber, isLive, workersList, totalActiveNodes, totalWorkersCount } = useNetworkMesh();
+  const { blockNumber, isLive, workersList, totalActiveNodes, peerCount, totalWorkersCount } = useNetworkMesh();
 
   // Build gateway cards ONLY from real probed worker data. No fabricated ping/load/status.
   const liveGateways = workersList.map((w) => ({
@@ -44,7 +44,7 @@ export default function ActivityPage() {
       meta={
         <>
           <StatusPill tone="ai" pulse>
-            {totalActiveNodes} Active Mesh Nodes
+            {totalActiveNodes} Active Mesh Nodes ({peerCount} BFT Peers)
           </StatusPill>
           <StatusPill tone="chain">Block #{blockNumber.toLocaleString()}</StatusPill>
           <StatusPill tone="violet">P2P Telemetry {isLive ? "Live" : "Connecting"}</StatusPill>
@@ -79,9 +79,9 @@ export default function ActivityPage() {
           tone="chain"
         />
         <StatCard
-          label="Local Throughput"
-          value={totalActiveNodes > 0 ? "3.0s Cadence" : "Awaiting Workers"}
-          hint="3.0s Deterministic PoPC"
+          label="P2P Swarm & Consensus"
+          value={`${totalActiveNodes} Active Nodes`}
+          hint={`${peerCount} Live BFT Peering Connections`}
           icon={<Activity size={18} />}
           tone="ai"
         />
