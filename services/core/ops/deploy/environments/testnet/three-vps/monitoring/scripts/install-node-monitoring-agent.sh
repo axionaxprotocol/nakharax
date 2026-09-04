@@ -132,8 +132,9 @@ systemctl disable --now prometheus-node-exporter.service || true
 systemctl enable --now nakharax-node-exporter.service nakharax-node-service-metrics.timer
 systemctl start nakharax-node-service-metrics.service
 
-curl -fsS --max-time 5 http://127.0.0.1:9100/metrics | grep -q '^node_uname_info'
-curl -fsS --max-time 5 http://127.0.0.1:9100/metrics | grep -q '^nakharax_systemd_service_active'
+metrics="$(curl -fsS --max-time 5 http://127.0.0.1:9100/metrics)"
+echo "${metrics}" | grep -q '^node_uname_info'
+echo "${metrics}" | grep -q '^nakharax_systemd_service_active'
 if ss -ltnH '( sport = :9100 )' | grep -vq '127.0.0.1:9100'; then
     echo "Node exporter is not loopback-only; refusing to continue." >&2
     exit 1
