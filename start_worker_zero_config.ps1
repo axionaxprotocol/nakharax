@@ -84,12 +84,22 @@ if (-not $rpcUrl) {
 }
 
 if (-not $rpcUrl) {
+    try {
+        $res = Invoke-RestMethod -Uri "https://rpc.nakharax.com" -Method Post -Body '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' -ContentType "application/json" -TimeoutSec 3 -ErrorAction SilentlyContinue
+        if ($res.result) {
+            $rpcUrl = "https://rpc.nakharax.com"
+            Write-Host "  [OK] Connected to Live Public Testnet: https://rpc.nakharax.com" -ForegroundColor Green
+        }
+    } catch {}
+}
+
+if (-not $rpcUrl) {
     Write-Host "  [Notice] LAN Auto-Discovery: Node not found automatically." -ForegroundColor Yellow
-    $userInput = Read-Host ">> Enter PC-1 IP Address manually (e.g. 192.168.1.35)"
+    $userInput = Read-Host ">> Enter Custom RPC URL or IP (Default: https://rpc.nakharax.com)"
     if ($userInput) {
-        $rpcUrl = "http://" + $userInput + ":" + $port
+        $rpcUrl = if ($userInput -match "^http") { $userInput } else { "http://" + $userInput + ":" + $port }
     } else {
-        $rpcUrl = "http://127.0.0.1:" + $port
+        $rpcUrl = "https://rpc.nakharax.com"
     }
 }
 

@@ -159,14 +159,25 @@ if (-not $rpcUrl) {
     } catch {}
 }
 
-# 3.3 Manual fallback
+# 3.3 Public Testnet WAN Fallback
 if (-not $rpcUrl) {
-    Write-Host "  [Notice] Node not auto-discovered on LAN." -ForegroundColor Yellow
-    $userInput = Read-Host ">> Enter PC-1 IP Address (e.g. 192.168.1.110)"
+    try {
+        $res = Invoke-RestMethod -Uri "https://rpc.nakharax.com" -Method Post -Body '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}' -ContentType "application/json" -TimeoutSec 3 -ErrorAction SilentlyContinue
+        if ($res.result) {
+            $rpcUrl = "https://rpc.nakharax.com"
+            Write-Host "  [OK] Connected to Live Public Testnet: https://rpc.nakharax.com" -ForegroundColor Green
+        }
+    } catch {}
+}
+
+# 3.4 Manual fallback
+if (-not $rpcUrl) {
+    Write-Host "  [Notice] Node not auto-discovered on LAN or WAN." -ForegroundColor Yellow
+    $userInput = Read-Host ">> Enter Custom RPC URL or IP (Default: https://rpc.nakharax.com)"
     if ($userInput) {
-        $rpcUrl = "http://" + $userInput + ":" + $port
+        $rpcUrl = if ($userInput -match "^http") { $userInput } else { "http://" + $userInput + ":" + $port }
     } else {
-        $rpcUrl = "http://127.0.0.1:" + $port
+        $rpcUrl = "https://rpc.nakharax.com"
     }
 }
 

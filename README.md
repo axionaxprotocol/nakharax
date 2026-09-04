@@ -18,7 +18,7 @@
   <b>Decentralized LoRA Weight Fusion</b>
 </p>
 
-[🌐 Official Portal](https://nakharax.com) • [💻 OS Dashboard](https://app.nakharax.com) • [📄 Whitepaper](docs/WHITEPAPER.md) • [📑 Documentation Bible](docs/core/NAKHARAX_BIBLE.md) • [🚀 1 Sep Genesis Runbook](docs/ops/1_SEP_GENESIS_RUNBOOK.md) • [📊 SOTA Disruption Matrix](docs/100_DISRUPTION_INVENTORY_MASTER.md)
+[🌐 Official Portal](https://nakharax.com) • [💻 OS Dashboard](https://app.nakharax.com) • [📄 Whitepaper](docs/WHITEPAPER.md) • [📑 Documentation Bible](docs/core/NAKHARAX_BIBLE.md) • [🚀 Release Notes (v1.9.2)](docs/RELEASE_NOTES_2026_09_04.md) • [📊 SOTA Disruption Matrix](docs/100_DISRUPTION_INVENTORY_MASTER.md)
 
 </div>
 
