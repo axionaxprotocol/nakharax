@@ -71,20 +71,20 @@ export default async function Home() {
       {/* =========================================================================
           HERO: INSTITUTIONAL COMMAND CENTER & SOVEREIGN DEAI GRID
           ========================================================================= */}
-      <section className="relative px-6 py-12 sm:px-12 sm:py-16 text-center overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-slate-950/90 via-[#030712] to-slate-950/90 backdrop-blur-3xl shadow-[0_25px_80px_rgba(0,0,0,0.85)]">
+      <section className="relative px-4 py-10 sm:px-12 sm:py-16 text-center overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-slate-950/90 via-[#030712] to-slate-950/90 backdrop-blur-3xl shadow-[0_25px_80px_rgba(0,0,0,0.85)]">
         {/* Holographic Glowing Ambient Backgrounds */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-24 w-[700px] sm:w-[900px] h-[320px] bg-emerald-500/15 rounded-full blur-[150px] pointer-events-none -z-10 animate-pulse duration-[4000ms]" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[200px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-        <div className="relative z-10 mx-auto max-w-4xl space-y-6">
+        <div className="relative z-10 mx-auto max-w-4xl space-y-5 sm:space-y-6">
           {/* Institutional Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono font-bold tracking-wider text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-            <span className="h-2 w-2 animate-ping rounded-full bg-emerald-400" />
-            SOVEREIGN DEAI COMPUTE PROTOCOL & MULTI-REGION BFT GRID
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 sm:px-4 py-1.5 text-[10.5px] sm:text-xs font-mono font-bold tracking-wider text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+            <span className="h-2 w-2 animate-ping rounded-full bg-emerald-400 shrink-0" />
+            <span>SOVEREIGN DEAI COMPUTE PROTOCOL & MULTI-REGION BFT GRID</span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1]">
+          <h1 className="text-2xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.15] sm:leading-[1.1]">
             Verifiable AI Compute &{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(41,240,106,0.3)]">
               Sovereign Execution.
@@ -92,15 +92,15 @@ export default async function Home() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-normal leading-relaxed">
+          <p className="text-slate-300 max-w-2xl mx-auto text-[13.5px] sm:text-base md:text-lg font-normal leading-relaxed">
             Harness high-performance GPUs, neural accelerators, and validator nodes into a decentralized L1 grid for verifiable STARK ZK inference, continual LoRA weight fusion, and autonomous agent settlement.
           </p>
 
           {/* Quick-Action Command Matrix */}
-          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 pt-2">
             <Link
               href="/apps/sentinel"
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 px-6 py-3 text-xs sm:text-sm font-mono font-bold text-black shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.6)]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 px-6 py-3 text-xs sm:text-sm font-mono font-bold text-black shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.6)]"
             >
               <Brain size={16} />
               <span>Launch AI Risk Brain</span>
@@ -108,7 +108,7 @@ export default async function Home() {
 
             <Link
               href="/nodes"
-              className="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-xs sm:text-sm font-mono font-bold text-cyan-300 transition-all hover:bg-cyan-500/20 hover:border-cyan-400"
             >
               <Globe2 size={16} />
               <span>Open Node Radar</span>
@@ -116,15 +116,15 @@ export default async function Home() {
 
             <Link
               href="/wallet"
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-xs sm:text-sm font-mono font-semibold text-white transition-all hover:bg-white/10"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-xs sm:text-sm font-mono font-semibold text-white transition-all hover:bg-white/10"
             >
               <Vault size={16} className="text-emerald-400" />
-              <span>Citadel Vault & Staking (8.40%)</span>
+              <span>Citadel Vault (8.40%)</span>
             </Link>
 
             <Link
               href="/apps/faucet"
-              className="inline-flex items-center gap-1.5 rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-xs sm:text-sm font-mono font-semibold text-amber-300 transition-all hover:bg-amber-500/20 hover:border-amber-400"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-xs sm:text-sm font-mono font-semibold text-amber-300 transition-all hover:bg-amber-500/20 hover:border-amber-400"
             >
               <Zap size={14} />
               <span>+100 $tNAK Faucet</span>
@@ -132,8 +132,8 @@ export default async function Home() {
           </div>
 
           {/* Cryptographic Proof & Performance Invariants Strip */}
-          <div className="pt-3 flex justify-center">
-            <div className="inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-2 text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
+          <div className="pt-2 sm:pt-3 flex justify-center">
+            <div className="inline-flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1.5 rounded-2xl border border-white/10 bg-white/[0.03] px-3.5 sm:px-5 py-2 text-[11px] sm:text-xs font-mono text-slate-300 shadow-sm backdrop-blur-xl">
               <span className="font-semibold text-emerald-300 flex items-center gap-1">
                 <CheckCircle2 size={13} />
                 Proof of Practical Compute (PoPC v2.1)

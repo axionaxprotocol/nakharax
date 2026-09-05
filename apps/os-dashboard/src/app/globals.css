@@ -415,4 +415,49 @@ html[data-mode="dark"] ::-webkit-scrollbar-thumb:hover {
     opacity: 0.35;
     animation: pulse-glow 2.4s ease-in-out infinite;
   }
+
+  /* Cyber-Brutalist HUD & Specular Highlights */
+  .specular-border {
+    position: relative;
+  }
+  .specular-border::before {
+    content: "";
+    position: absolute;
+    inset-x: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .hud-glow-emerald {
+    box-shadow: 0 0 25px rgba(41, 240, 106, 0.2), inset 0 1px 1.5px rgba(255, 255, 255, 0.3);
+  }
+  .hud-glow-cyan {
+    box-shadow: 0 0 25px rgba(34, 211, 238, 0.2), inset 0 1px 1.5px rgba(255, 255, 255, 0.3);
+  }
+  .hud-glow-violet {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.2), inset 0 1px 1.5px rgba(255, 255, 255, 0.3);
+  }
+
+  .tactile-btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tactile-btn:hover {
+    transform: translateY(-1px);
+  }
+  .tactile-btn:active {
+    transform: translateY(1px) scale(0.98);
+  }
+
+  /* Compact scrollbar utilities */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
+

@@ -475,7 +475,7 @@ export function HomeQuickHub() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Type any prompt or choose a preset below to run real-time inference across the compute grid..."
-              className="w-full rounded-2xl border border-white/15 bg-slate-900/80 p-4 text-sm text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+              className="w-full rounded-2xl border border-white/15 bg-slate-900/80 p-4 pb-14 sm:pb-4 text-sm text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
             />
             <div className="absolute right-3 bottom-3 flex items-center gap-2">
               <button

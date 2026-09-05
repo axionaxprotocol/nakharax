@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { MenuBar } from "@/components/menu-bar";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { FloatingSentinelChat } from "@/components/floating-sentinel-chat";
 import { Footer } from "@/components/footer";
 
@@ -70,14 +71,16 @@ export default function RootLayout({
         <MenuBar />
         <main
           id="main-content"
-          className="min-h-screen pb-6 pt-16 sm:pt-20"
+          className="min-h-screen pb-24 md:pb-8 pt-16 sm:pt-20"
           tabIndex={-1}
         >
-          <div className="mx-auto max-w-[1450px] px-4 py-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1450px] px-3 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
         <Footer />
+        {/* Mobile Persistent Ergonomic Bottom Navigation */}
+        <MobileBottomNav />
         {/* Global Floating DeAI Sentinel & NOESIS-VX Assistant */}
         <FloatingSentinelChat />
       </body>

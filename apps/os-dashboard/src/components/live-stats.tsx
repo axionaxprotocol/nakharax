@@ -27,7 +27,7 @@ export function LiveStatsSection({
   const hasLiveWorkers = hasLiveTelemetry && totalWorkersCount > 0;
 
   return (
-    <section className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+    <section className="grid grid-cols-2 gap-2.5 sm:gap-3.5 lg:grid-cols-4">
       <StatCard
         label="Consensus Block"
         value={currentBlock ? `#${currentBlock.toLocaleString()}` : "Syncing..."}

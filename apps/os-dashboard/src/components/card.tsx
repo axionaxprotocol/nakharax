@@ -104,7 +104,7 @@ export function PageShell({
 }) {
   return (
     <div className={cn("space-y-6 sm:space-y-8 animate-slide-up", className)}>
-      <header className="relative overflow-hidden rounded-2xl border border-white/[0.12] bg-slate-950/40 p-6 sm:p-8 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <header className="relative overflow-hidden rounded-2xl border border-white/[0.12] bg-slate-950/40 p-5 sm:p-8 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         {/* Dynamic atmospheric radial glows */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 w-[600px] h-[300px] bg-emerald-500/10 rounded-full blur-[140px]" />
@@ -114,23 +114,23 @@ export function PageShell({
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             {eyebrow && (
-              <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-mono font-semibold uppercase tracking-[0.16em] text-emerald-300 mb-3">
+              <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10.5px] sm:text-[11px] font-mono font-semibold uppercase tracking-[0.16em] text-emerald-300 mb-3">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
                 {eyebrow}
               </div>
             )}
-            <h1 className="text-[1.85rem] font-bold leading-tight tracking-[-0.025em] text-white sm:text-[2.5rem]">
+            <h1 className="text-2xl sm:text-3xl lg:text-[2.5rem] font-bold leading-tight tracking-[-0.025em] text-white">
               {title}
             </h1>
             {description && (
-              <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-slate-300 sm:text-[15.5px]">
+              <p className="mt-2.5 max-w-2xl text-[13.5px] leading-relaxed text-slate-300 sm:text-[15.5px]">
                 {description}
               </p>
             )}
             {meta && <div className="mt-4 flex flex-wrap items-center gap-2">{meta}</div>}
           </div>
           {actions && (
-            <div className="flex shrink-0 flex-wrap items-center gap-3">
+            <div className="flex w-full sm:w-auto shrink-0 flex-wrap items-center gap-2.5 sm:gap-3">
               {actions}
             </div>
           )}
@@ -156,11 +156,11 @@ export function SectionHeader({
   return (
     <div className="flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between border-b border-white/[0.08] pb-3">
       <div>
-        <h2 className="text-[1.25rem] font-bold tracking-tight text-white sm:text-[1.35rem]">
+        <h2 className="text-[1.2rem] font-bold tracking-tight text-white sm:text-[1.35rem]">
           {title}
         </h2>
         {desc && (
-          <p className="mt-0.5 text-[13px] text-slate-400">
+          <p className="mt-0.5 text-[12.5px] sm:text-[13px] text-slate-400">
             {desc}
           </p>
         )}
@@ -188,20 +188,23 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl border border-white/[0.12] bg-slate-950/40 p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-slate-900/50",
+        "group relative overflow-hidden rounded-xl border border-white/[0.12] bg-slate-950/40 p-3.5 sm:p-5 backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-slate-900/50",
         toneStyle.glow,
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="text-[11px] font-mono font-medium uppercase tracking-[0.16em] text-slate-400">
+      {/* Specular top refraction border */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+      <div className="flex items-start justify-between gap-2.5 sm:gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-[0.14em] text-slate-400 truncate">
             {label}
           </div>
-          <div className="mt-2 font-mono text-[1.75rem] font-bold leading-none tabular-nums text-white tracking-tight">
+          <div className="mt-1.5 sm:mt-2 font-mono text-xl sm:text-2xl lg:text-[1.75rem] font-bold leading-tight tabular-nums text-white tracking-tight break-words">
             {value}
           </div>
           {hint && (
-            <div className="mt-2 text-[12px] text-slate-400">
+            <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-[12px] text-slate-400 leading-snug line-clamp-2">
               {hint}
             </div>
           )}
@@ -209,7 +212,7 @@ export function StatCard({
         {icon && (
           <div
             className={cn(
-              "grid h-10 w-10 shrink-0 place-items-center rounded-lg border transition-transform duration-300 group-hover:scale-105",
+              "grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-lg border transition-transform duration-300 group-hover:scale-105",
               toneStyle.badge,
             )}
           >
