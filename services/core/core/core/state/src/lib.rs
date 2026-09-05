@@ -351,6 +351,14 @@ impl StateDB {
         Ok(())
     }
 
+    /// Credit balance to an account (adds to existing balance).
+    pub fn credit_balance(&self, address: &str, amount: u128) -> Result<u128> {
+        let current = self.get_balance(address)?;
+        let new_bal = current.saturating_add(amount);
+        self.set_balance(address, new_bal)?;
+        Ok(new_bal)
+    }
+
     /// Get account nonce (0 if never set).
     pub fn get_nonce(&self, address: &str) -> Result<u64> {
         let key = Self::nonce_key(address);
@@ -812,5 +820,22 @@ mod tests {
             db1.compute_state_root().unwrap(),
             db2.compute_state_root().unwrap()
         );
+    }
+
+    #[test]
+    fn test_credit_balance() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+
+        let addr = "0x1234567890123456789012345678901234567890";
+        assert_eq!(db.get_balance(addr).unwrap(), 0);
+
+        let bal1 = db.credit_balance(addr, 2_000_000_000_000_000_000).unwrap();
+        assert_eq!(bal1, 2_000_000_000_000_000_000);
+        assert_eq!(db.get_balance(addr).unwrap(), 2_000_000_000_000_000_000);
+
+        let bal2 = db.credit_balance(addr, 1_000_000_000_000_000_000).unwrap();
+        assert_eq!(bal2, 3_000_000_000_000_000_000);
+        assert_eq!(db.get_balance(addr).unwrap(), 3_000_000_000_000_000_000);
     }
 }

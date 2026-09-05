@@ -40,8 +40,8 @@ fn hash_to_hex(hash: &[u8; 32]) -> String {
     format!("0x{}", hex::encode(hash))
 }
 
-/// Block reward per block (1 NAK in base units)
-pub const BLOCK_REWARD: u128 = 1_000_000_000_000_000_000;
+/// Block reward per block (2.0 tNAK in base units)
+pub const BLOCK_REWARD: u128 = 2_000_000_000_000_000_000;
 
 /// Node configuration
 #[derive(Debug, Clone)]
@@ -438,6 +438,19 @@ impl NakharaxNode {
                     hash_input.extend_from_slice(&timestamp.to_le_bytes());
                     let block_hash = crypto::hash::sha3_256(&hash_input);
 
+                    let proposer = validator_address
+                        .clone()
+                        .unwrap_or_else(|| "unknown".to_string());
+
+                    // Instant Block Reward: Credit 2.0 tNAK directly to proposer in StateDB
+                    if proposer != "unknown" && !proposer.is_empty() {
+                        if let Err(e) = state.credit_balance(&proposer, BLOCK_REWARD) {
+                            tracing::warn!("Failed to credit block reward to proposer {}: {}", proposer, e);
+                        } else {
+                            debug!("⛏ Credited block reward {} to proposer {}", BLOCK_REWARD, proposer);
+                        }
+                    }
+
                     // Compute Merkle state root over all account balances and nonces.
                     // Transactions from the mempool were already applied to state when
                     // they were accepted via eth_sendRawTransaction, so the current
@@ -446,10 +459,6 @@ impl NakharaxNode {
                         tracing::warn!("compute_state_root failed, falling back to zero: {}", e);
                         [0u8; 32]
                     });
-
-                    let proposer = validator_address
-                        .clone()
-                        .unwrap_or_else(|| "unknown".to_string());
 
                     let gas_used: u64 = pending_txs
                         .iter()
@@ -597,6 +606,7 @@ impl NakharaxNode {
                                 if let Err(e) = Self::handle_block_message(
                                     &state,
                                     &stats,
+                                    &staking,
                                     block_msg
                                 ).await {
                                     error!("Failed to handle block: {}", e);
@@ -685,6 +695,7 @@ impl NakharaxNode {
     async fn handle_block_message(
         state: &Arc<StateDB>,
         stats: &Arc<RwLock<NodeStats>>,
+        staking: &Arc<RwLock<Staking>>,
         block_msg: BlockMessage,
     ) -> anyhow::Result<()> {
         debug!("Received block #{} from network", block_msg.number);
@@ -735,6 +746,15 @@ impl NakharaxNode {
             gas_used,
             gas_limit: 30_000_000, // Standard block gas limit (Ethereum compatible)
         };
+
+        // Instant Block Reward: Credit block reward to proposer in StateDB upon storing peer block
+        if block.proposer != "unknown" && !block.proposer.is_empty() {
+            if let Err(e) = state.credit_balance(&block.proposer, BLOCK_REWARD) {
+                tracing::warn!("Failed to credit block reward to proposer {}: {}", block.proposer, e);
+            }
+            let s = staking.read().await;
+            s.record_block_produced(&block.proposer, BLOCK_REWARD).await;
+        }
 
         // Store block
         state.store_block(&block)?;

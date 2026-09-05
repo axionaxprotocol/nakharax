@@ -430,11 +430,28 @@ impl Staking {
     /// Called by the block producer immediately after a block is stored.
     pub async fn record_block_produced(&self, address: &str, reward: u128) {
         let mut validators = self.validators.write().await;
-        if let Some(validator) = validators.get_mut(address) {
-            validator.blocks_produced = validator.blocks_produced.saturating_add(1);
-            validator.unclaimed_rewards = validator.unclaimed_rewards.saturating_add(reward);
-            validator.total_rewards = validator.total_rewards.saturating_add(reward);
-            debug!("Block reward {} credited to validator {}", reward, address);
+        let addr_lower = address.to_lowercase();
+        let target_key = validators
+            .keys()
+            .find(|k| k.to_lowercase() == addr_lower)
+            .cloned();
+
+        if let Some(key) = target_key {
+            if let Some(validator) = validators.get_mut(&key) {
+                validator.blocks_produced = validator.blocks_produced.saturating_add(1);
+                validator.unclaimed_rewards = validator.unclaimed_rewards.saturating_add(reward);
+                validator.total_rewards = validator.total_rewards.saturating_add(reward);
+                debug!("Block reward {} credited to validator {}", reward, address);
+            }
+        } else if address.starts_with("0x") && address.len() == 42 {
+            // Dynamically register active block proposer validator if not yet in map
+            let mut val = ValidatorInfo::new(address.to_string(), 0);
+            val.blocks_produced = 1;
+            val.unclaimed_rewards = reward;
+            val.total_rewards = reward;
+            val.is_active = true;
+            validators.insert(address.to_string(), val);
+            debug!("Registered dynamic validator proposer {}", address);
         }
     }
 
