@@ -46,14 +46,17 @@ export function MatrixRainBackground() {
 
     const fontSize = 14;
     let columns = Math.floor(width / (fontSize * 1.8)); // Airy, subtle density
-    let drops: number[] = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
+    let drops: number[] = Array.from({ length: columns }, () => Math.random() * -60);
+    // Slow, elegant ambient speeds (average ~0.28 rows/frame vs previous 1.0)
+    let speeds: number[] = Array.from({ length: columns }, () => 0.18 + Math.random() * 0.22);
 
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       columns = Math.floor(width / (fontSize * 1.8));
-      drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
+      drops = Array.from({ length: columns }, () => Math.random() * -60);
+      speeds = Array.from({ length: columns }, () => 0.18 + Math.random() * 0.22);
     };
 
     window.addEventListener("resize", handleResize);
@@ -70,33 +73,38 @@ export function MatrixRainBackground() {
       if (elapsed < fpsInterval) return;
       lastTime = currentTime - (elapsed % fpsInterval);
 
-      // Soft fading clear coat to create trailing glow
-      ctx.fillStyle = "rgba(2, 6, 23, 0.09)";
+      // Soft fading clear coat calibrated for gentle, slow-moving trails
+      ctx.fillStyle = "rgba(2, 6, 23, 0.055)";
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const char = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        const row = Math.floor(drops[i]);
         const x = i * fontSize * 1.8;
-        const y = drops[i] * fontSize;
+        const y = row * fontSize;
 
-        // Leading head character has bright mint glow
-        ctx.fillStyle = "rgba(167, 243, 208, 0.65)";
-        ctx.shadowColor = "rgba(52, 211, 153, 0.4)";
-        ctx.shadowBlur = 4;
-        ctx.fillText(char, x, y);
+        if (y >= 0 && y <= height + fontSize * 2) {
+          const char = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
-        // Body trail has soft, ethereal emerald luminescence
-        ctx.fillStyle = "rgba(16, 185, 129, 0.18)";
-        ctx.shadowBlur = 0;
-        ctx.fillText(char, x, y - fontSize);
+          // Leading head character has bright mint glow
+          ctx.fillStyle = "rgba(167, 243, 208, 0.70)";
+          ctx.shadowColor = "rgba(52, 211, 153, 0.45)";
+          ctx.shadowBlur = 4;
+          ctx.fillText(char, x, y);
+
+          // Body trail has soft, ethereal emerald luminescence
+          ctx.fillStyle = "rgba(16, 185, 129, 0.18)";
+          ctx.shadowBlur = 0;
+          ctx.fillText(char, x, y - fontSize);
+        }
 
         if (y > height && Math.random() > 0.985) {
           drops[i] = 0;
+          speeds[i] = 0.18 + Math.random() * 0.22;
         }
 
-        drops[i]++;
+        drops[i] += speeds[i];
       }
     };
 
