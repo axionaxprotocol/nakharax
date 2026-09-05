@@ -258,10 +258,10 @@ export function FloatingSentinelChat() {
   const PersonaIcon = currentProfile.icon;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <div className="fixed bottom-20 md:bottom-5 right-3.5 md:right-5 z-40 flex flex-col items-end">
       {/* Floating Chat Modal Popup */}
       {isOpen && (
-        <div className="mb-3.5 w-[460px] max-w-[calc(100vw-2rem)] h-[620px] max-h-[calc(100vh-6rem)] flex flex-col rounded-2xl border border-white/20 bg-slate-950/95 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(41,240,106,0.2)] backdrop-blur-3xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div className="mb-3 w-[460px] max-w-[calc(100vw-1.5rem)] h-[580px] max-h-[calc(100vh-8.5rem)] flex flex-col rounded-2xl border border-white/20 bg-slate-950/95 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(41,240,106,0.2)] backdrop-blur-3xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 bg-black/40 px-4 py-3 shrink-0">
             <div className="flex items-center gap-2.5">
@@ -448,7 +448,7 @@ export function FloatingSentinelChat() {
           <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
         </span>
         <span className="bg-gradient-to-r from-white via-slate-200 to-emerald-300 bg-clip-text text-transparent">
-          {isOpen ? "Close Assistant" : "Ask NOESIS DeAI"}
+          {isOpen ? "Close Assistant" : <><span className="hidden sm:inline">Ask NOESIS DeAI</span><span className="sm:hidden">NOESIS AI</span></>}
         </span>
         {unreadCount > 0 && !isOpen && (
           <span className="grid h-4 w-4 place-items-center rounded-full bg-emerald-500 text-[9px] font-bold text-black animate-bounce">
