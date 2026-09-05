@@ -196,6 +196,10 @@ pub trait NakharaxRpc {
     #[method(name = "eth_getBalance")]
     async fn get_balance(&self, address: String, block: String) -> RpcResult<String>;
 
+    /// Get the current native token supply (hex wei).
+    #[method(name = "nak_totalSupply")]
+    async fn total_supply(&self) -> RpcResult<String>;
+
     /// Get account nonce
     #[method(name = "eth_getTransactionCount")]
     async fn get_transaction_count(&self, address: String, block: String) -> RpcResult<String>;
@@ -309,6 +313,11 @@ impl NakharaxRpcServer for NakharaxRpcServerImpl {
             .get_balance(address.as_str())
             .map_err(RpcError::from)?;
         Ok(format!("0x{:x}", balance))
+    }
+
+    async fn total_supply(&self) -> RpcResult<String> {
+        let supply = self.state.get_total_supply().map_err(RpcError::from)?;
+        Ok(format!("0x{:x}", supply))
     }
 
     async fn get_transaction_count(&self, address: String, _block: String) -> RpcResult<String> {
@@ -903,6 +912,21 @@ mod tests {
 
         let result = rpc.net_version().await.unwrap();
         assert_eq!(result, "86137");
+    }
+
+    #[tokio::test]
+    async fn test_rpc_total_supply() {
+        let state = create_test_state();
+        state
+            .set_balance("0x0000000000000000000000000000000000000001", 100)
+            .unwrap();
+        state
+            .set_balance("0x0000000000000000000000000000000000000002", 23)
+            .unwrap();
+        let rpc = NakharaxRpcServerImpl::new(state, 86137);
+
+        let result = rpc.total_supply().await.unwrap();
+        assert_eq!(result, "0x7b");
     }
 
     #[test]

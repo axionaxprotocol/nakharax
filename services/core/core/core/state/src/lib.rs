@@ -8,7 +8,9 @@
 pub mod contract_engine;
 pub mod merkle;
 
-pub use contract_engine::{compute_contract_address, ContractEngine, ExecutionReceipt, TransactionLog};
+pub use contract_engine::{
+    compute_contract_address, ContractEngine, ExecutionReceipt, TransactionLog,
+};
 
 use redb::{Database, ReadableTable, TableDefinition};
 use std::collections::BTreeMap;
@@ -39,6 +41,28 @@ pub enum StateError {
 
     #[error("Key not found: {0}")]
     KeyNotFound(String),
+
+    #[error("Duplicate block: {0}")]
+    DuplicateBlock(String),
+
+    #[error("Invalid parent hash for block #{0}")]
+    InvalidParentHash(u64),
+
+    #[error("Insufficient balance in {address}: have {available}, need {required}")]
+    InsufficientBalance {
+        address: String,
+        available: u128,
+        required: u128,
+    },
+
+    #[error("Arithmetic overflow while updating account balance")]
+    ArithmeticOverflow,
+
+    #[error("State root mismatch for block #{0}")]
+    StateRootMismatch(u64),
+
+    #[error("Total supply {actual} is below configured hard cap {hard_cap}")]
+    SupplyBelowHardCap { actual: u128, hard_cap: u128 },
 }
 
 pub type Result<T> = std::result::Result<T, StateError>;
@@ -84,6 +108,15 @@ const CHAIN_STATE: TableDefinition<&str, &[u8]> = TableDefinition::new("chain_st
 /// State database wrapper for redb
 pub struct StateDB {
     db: Arc<Database>,
+}
+
+/// Result of the one-time fixed-supply migration.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SupplyMigrationResult {
+    pub already_applied: bool,
+    pub total_before: u128,
+    pub total_after: u128,
+    pub excess_removed: u128,
 }
 
 impl StateDB {
@@ -354,9 +387,22 @@ impl StateDB {
     /// Credit balance to an account (adds to existing balance).
     pub fn credit_balance(&self, address: &str, amount: u128) -> Result<u128> {
         let current = self.get_balance(address)?;
-        let new_bal = current.saturating_add(amount);
+        let new_bal = current
+            .checked_add(amount)
+            .ok_or(StateError::ArithmeticOverflow)?;
         self.set_balance(address, new_bal)?;
         Ok(new_bal)
+    }
+
+    /// Sum every native account balance using checked arithmetic.
+    pub fn get_total_supply(&self) -> Result<u128> {
+        self.get_all_accounts()?
+            .into_iter()
+            .try_fold(0u128, |total, (_, balance, _)| {
+                total
+                    .checked_add(balance)
+                    .ok_or(StateError::ArithmeticOverflow)
+            })
     }
 
     /// Get account nonce (0 if never set).
@@ -474,9 +520,41 @@ impl StateDB {
     /// Apply a transfer transaction: deduct from sender, add to recipient, increment sender nonce.
     /// Returns error if insufficient balance or nonce mismatch.
     pub fn apply_transaction(&self, tx: &Transaction) -> Result<()> {
-        let from_bal = self.get_balance(&tx.from)?;
-        let to_bal = self.get_balance(&tx.to)?;
-        let from_nonce = self.get_nonce(&tx.from)?;
+        let from_key = Self::balance_key(&tx.from);
+        let to_key = Self::balance_key(&tx.to);
+        let nonce_key = Self::nonce_key(&tx.from);
+        let write_txn = self.db.begin_write()?;
+        let mut state = write_txn.open_table(CHAIN_STATE)?;
+
+        let read_u128 = |bytes: &[u8]| -> u128 {
+            if bytes.len() < 16 {
+                return 0;
+            }
+            let mut arr = [0u8; 16];
+            arr.copy_from_slice(&bytes[..16]);
+            u128::from_be_bytes(arr)
+        };
+        let read_u64 = |bytes: &[u8]| -> u64 {
+            if bytes.len() < 8 {
+                return 0;
+            }
+            let mut arr = [0u8; 8];
+            arr.copy_from_slice(&bytes[..8]);
+            u64::from_be_bytes(arr)
+        };
+
+        let from_bal = state
+            .get(from_key.as_str())?
+            .map(|v| read_u128(v.value()))
+            .unwrap_or(0);
+        let to_bal = state
+            .get(to_key.as_str())?
+            .map(|v| read_u128(v.value()))
+            .unwrap_or(0);
+        let from_nonce = state
+            .get(nonce_key.as_str())?
+            .map(|v| read_u64(v.value()))
+            .unwrap_or(0);
 
         if from_nonce != tx.nonce {
             return Err(StateError::DatabaseError(format!(
@@ -492,10 +570,264 @@ impl StateDB {
             )));
         }
 
-        self.set_balance(&tx.from, from_bal.saturating_sub(cost))?;
-        self.set_balance(&tx.to, to_bal.saturating_add(cost))?;
-        self.set_nonce(&tx.from, tx.nonce.saturating_add(1))?;
+        let next_nonce = tx
+            .nonce
+            .checked_add(1)
+            .ok_or(StateError::ArithmeticOverflow)?;
+
+        if from_key != to_key {
+            let recipient_balance = to_bal
+                .checked_add(cost)
+                .ok_or(StateError::ArithmeticOverflow)?;
+            state.insert(
+                from_key.as_str(),
+                from_bal.checked_sub(cost).unwrap().to_be_bytes().as_slice(),
+            )?;
+            state.insert(to_key.as_str(), recipient_balance.to_be_bytes().as_slice())?;
+        }
+        state.insert(nonce_key.as_str(), next_nonce.to_be_bytes().as_slice())?;
+        drop(state);
+        write_txn.commit()?;
         Ok(())
+    }
+
+    /// Atomically commit the next canonical block and transfer its protocol reward.
+    ///
+    /// The reward is paid from `reward_pool` and therefore never changes total
+    /// supply. Passing `verify_state_root=true` validates a peer-provided root;
+    /// local producers pass false and receive the computed root in the returned block.
+    pub fn commit_block_with_reward(
+        &self,
+        mut block: Block,
+        reward_pool: &str,
+        requested_reward: u128,
+        verify_state_root: bool,
+    ) -> Result<(Block, u128)> {
+        if block.number == 0 {
+            return Err(StateError::InvalidBlockNumber(0));
+        }
+        if block.proposer.is_empty() || block.proposer == "unknown" {
+            return Err(StateError::DatabaseError(
+                "block proposer is required for reward transfer".to_string(),
+            ));
+        }
+
+        let block_key = format!("block_{}", block.number);
+        let reward_key = format!("reward_{}", hex::encode(block.hash));
+        let pool_key = Self::balance_key(reward_pool);
+        let proposer_key = Self::balance_key(&block.proposer);
+        let write_txn = self.db.begin_write()?;
+
+        {
+            let hashes = write_txn.open_table(BLOCK_HASH_TO_NUMBER)?;
+            if hashes.get(block.hash.as_slice())?.is_some() {
+                return Err(StateError::DuplicateBlock(hex::encode(block.hash)));
+            }
+        }
+
+        let current_height = {
+            let state = write_txn.open_table(CHAIN_STATE)?;
+            let height = state
+                .get("chain_height")?
+                .map(|v| {
+                    let bytes: &[u8] = v.value();
+                    u64::from_be_bytes(bytes.try_into().unwrap_or([0; 8]))
+                })
+                .unwrap_or(0);
+            height
+        };
+        let expected_number = current_height
+            .checked_add(1)
+            .ok_or(StateError::ArithmeticOverflow)?;
+        if block.number != expected_number {
+            return Err(StateError::InvalidBlockNumber(block.number));
+        }
+
+        let expected_parent = {
+            let blocks = write_txn.open_table(BLOCKS)?;
+            let parent_key = format!("block_{}", current_height);
+            let encoded = blocks
+                .get(parent_key.as_str())?
+                .ok_or_else(|| StateError::BlockNotFound(current_height.to_string()))?;
+            let parent: Block = serde_json::from_slice(encoded.value())
+                .map_err(|e| StateError::SerializationError(e.to_string()))?;
+            parent.hash
+        };
+        if block.parent_hash != expected_parent {
+            return Err(StateError::InvalidParentHash(block.number));
+        }
+
+        let reward_paid;
+        let computed_root;
+        {
+            let mut state = write_txn.open_table(CHAIN_STATE)?;
+            if state.get(reward_key.as_str())?.is_some() {
+                return Err(StateError::DuplicateBlock(hex::encode(block.hash)));
+            }
+
+            let decode_u128 = |bytes: &[u8]| -> u128 {
+                if bytes.len() < 16 {
+                    return 0;
+                }
+                let mut arr = [0u8; 16];
+                arr.copy_from_slice(&bytes[..16]);
+                u128::from_be_bytes(arr)
+            };
+            let pool_balance = state
+                .get(pool_key.as_str())?
+                .map(|v| decode_u128(v.value()))
+                .unwrap_or(0);
+            let proposer_balance = state
+                .get(proposer_key.as_str())?
+                .map(|v| decode_u128(v.value()))
+                .unwrap_or(0);
+
+            reward_paid = requested_reward.min(pool_balance);
+            if pool_key == proposer_key {
+                return Err(StateError::DatabaseError(
+                    "reward pool cannot also be the block proposer".to_string(),
+                ));
+            }
+            let next_pool = pool_balance
+                .checked_sub(reward_paid)
+                .ok_or(StateError::ArithmeticOverflow)?;
+            let next_proposer = proposer_balance
+                .checked_add(reward_paid)
+                .ok_or(StateError::ArithmeticOverflow)?;
+            state.insert(pool_key.as_str(), next_pool.to_be_bytes().as_slice())?;
+            state.insert(
+                proposer_key.as_str(),
+                next_proposer.to_be_bytes().as_slice(),
+            )?;
+
+            let mut balances = BTreeMap::<String, u128>::new();
+            let mut nonces = BTreeMap::<String, u64>::new();
+            for entry in state.iter()? {
+                let (key_guard, value_guard) = entry?;
+                let key = key_guard.value();
+                let value = value_guard.value();
+                if let Some(address) = key.strip_prefix("bal_0x") {
+                    balances.insert(format!("0x{}", address), decode_u128(value));
+                } else if let Some(address) = key.strip_prefix("nonce_0x") {
+                    let nonce = if value.len() >= 8 {
+                        let mut arr = [0u8; 8];
+                        arr.copy_from_slice(&value[..8]);
+                        u64::from_be_bytes(arr)
+                    } else {
+                        0
+                    };
+                    nonces.insert(format!("0x{}", address), nonce);
+                }
+            }
+            let leaves = balances
+                .into_iter()
+                .map(|(address, balance)| {
+                    let nonce = nonces.get(&address).copied().unwrap_or(0);
+                    merkle::account_leaf(&address, balance, nonce)
+                })
+                .collect();
+            computed_root = merkle::merkle_root(leaves);
+
+            if verify_state_root && block.state_root != computed_root {
+                return Err(StateError::StateRootMismatch(block.number));
+            }
+            block.state_root = computed_root;
+            state.insert(reward_key.as_str(), reward_paid.to_be_bytes().as_slice())?;
+            state.insert("chain_height", block.number.to_be_bytes().as_slice())?;
+        }
+
+        let block_data = serde_json::to_vec(&block)
+            .map_err(|e| StateError::SerializationError(e.to_string()))?;
+        {
+            let mut blocks = write_txn.open_table(BLOCKS)?;
+            blocks.insert(block_key.as_str(), block_data.as_slice())?;
+        }
+        {
+            let mut hashes = write_txn.open_table(BLOCK_HASH_TO_NUMBER)?;
+            hashes.insert(block.hash.as_slice(), block.number)?;
+        }
+        write_txn.commit()?;
+
+        info!(
+            "Committed block #{} with zero-sum reward {} from {} to {}",
+            block.number, reward_paid, reward_pool, block.proposer
+        );
+        Ok((block, reward_paid))
+    }
+
+    /// Remove legacy inflation from the reward pool exactly once.
+    pub fn migrate_supply_to_hard_cap(
+        &self,
+        reward_pool: &str,
+        hard_cap: u128,
+        migration_id: &str,
+    ) -> Result<SupplyMigrationResult> {
+        let marker_key = format!("migration_{}", migration_id);
+        let pool_key = Self::balance_key(reward_pool);
+        let write_txn = self.db.begin_write()?;
+        let mut state = write_txn.open_table(CHAIN_STATE)?;
+
+        let decode_u128 = |bytes: &[u8]| -> u128 {
+            if bytes.len() < 16 {
+                return 0;
+            }
+            let mut arr = [0u8; 16];
+            arr.copy_from_slice(&bytes[..16]);
+            u128::from_be_bytes(arr)
+        };
+        let mut total_before = 0u128;
+        for entry in state.iter()? {
+            let (key, value) = entry?;
+            if key.value().starts_with("bal_0x") {
+                total_before = total_before
+                    .checked_add(decode_u128(value.value()))
+                    .ok_or(StateError::ArithmeticOverflow)?;
+            }
+        }
+
+        if state.get(marker_key.as_str())?.is_some() {
+            return Ok(SupplyMigrationResult {
+                already_applied: true,
+                total_before,
+                total_after: total_before,
+                excess_removed: 0,
+            });
+        }
+        if total_before < hard_cap {
+            return Err(StateError::SupplyBelowHardCap {
+                actual: total_before,
+                hard_cap,
+            });
+        }
+
+        let excess = total_before - hard_cap;
+        let pool_balance = state
+            .get(pool_key.as_str())?
+            .map(|v| decode_u128(v.value()))
+            .unwrap_or(0);
+        if pool_balance < excess {
+            return Err(StateError::InsufficientBalance {
+                address: reward_pool.to_string(),
+                available: pool_balance,
+                required: excess,
+            });
+        }
+        let next_pool = pool_balance - excess;
+        state.insert(pool_key.as_str(), next_pool.to_be_bytes().as_slice())?;
+        let marker = format!(
+            "total_before={};hard_cap={};excess_removed={}",
+            total_before, hard_cap, excess
+        );
+        state.insert(marker_key.as_str(), marker.as_bytes())?;
+        drop(state);
+        write_txn.commit()?;
+
+        Ok(SupplyMigrationResult {
+            already_applied: false,
+            total_before,
+            total_after: hard_cap,
+            excess_removed: excess,
+        })
     }
 
     /// Iterate all accounts stored in the state database.
@@ -837,5 +1169,123 @@ mod tests {
         let bal2 = db.credit_balance(addr, 1_000_000_000_000_000_000).unwrap();
         assert_eq!(bal2, 3_000_000_000_000_000_000);
         assert_eq!(db.get_balance(addr).unwrap(), 3_000_000_000_000_000_000);
+    }
+
+    #[test]
+    fn test_block_reward_is_atomic_zero_sum_and_idempotent() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+        let pool = "0x0000000000000000000000000000000000000001";
+        let proposer = "0x0000000000000000000000000000000000000002";
+        db.store_block(&create_test_block(0)).unwrap();
+        db.set_balance(pool, 100).unwrap();
+        db.set_balance(proposer, 10).unwrap();
+
+        let mut block = create_test_block(1);
+        block.proposer = proposer.to_string();
+        let (stored, paid) = db
+            .commit_block_with_reward(block.clone(), pool, 2, false)
+            .unwrap();
+
+        assert_eq!(paid, 2);
+        assert_eq!(db.get_balance(pool).unwrap(), 98);
+        assert_eq!(db.get_balance(proposer).unwrap(), 12);
+        assert_eq!(db.get_total_supply().unwrap(), 110);
+        assert_eq!(db.get_latest_block().unwrap().state_root, stored.state_root);
+        assert_ne!(stored.state_root, [0u8; 32]);
+
+        let duplicate = db.commit_block_with_reward(block, pool, 2, false);
+        assert!(matches!(duplicate, Err(StateError::DuplicateBlock(_))));
+        assert_eq!(db.get_balance(pool).unwrap(), 98);
+        assert_eq!(db.get_balance(proposer).unwrap(), 12);
+    }
+
+    #[test]
+    fn test_block_reward_drains_pool_without_minting() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+        let pool = "0x0000000000000000000000000000000000000001";
+        let proposer = "0x0000000000000000000000000000000000000002";
+        db.store_block(&create_test_block(0)).unwrap();
+        db.set_balance(pool, 1).unwrap();
+        db.set_balance(proposer, 10).unwrap();
+        let mut block = create_test_block(1);
+        block.proposer = proposer.to_string();
+
+        let (_, paid) = db.commit_block_with_reward(block, pool, 2, false).unwrap();
+        assert_eq!(paid, 1);
+        assert_eq!(db.get_balance(pool).unwrap(), 0);
+        assert_eq!(db.get_balance(proposer).unwrap(), 11);
+        assert_eq!(db.get_total_supply().unwrap(), 11);
+    }
+
+    #[test]
+    fn test_peer_state_root_mismatch_rolls_back_reward_and_block() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+        let pool = "0x0000000000000000000000000000000000000001";
+        let proposer = "0x0000000000000000000000000000000000000002";
+        db.store_block(&create_test_block(0)).unwrap();
+        db.set_balance(pool, 100).unwrap();
+        db.set_balance(proposer, 10).unwrap();
+        let mut block = create_test_block(1);
+        block.proposer = proposer.to_string();
+        block.state_root = [0xff; 32];
+
+        let result = db.commit_block_with_reward(block, pool, 2, true);
+        assert!(matches!(result, Err(StateError::StateRootMismatch(1))));
+        assert_eq!(db.get_chain_height().unwrap(), 0);
+        assert_eq!(db.get_balance(pool).unwrap(), 100);
+        assert_eq!(db.get_balance(proposer).unwrap(), 10);
+    }
+
+    #[test]
+    fn test_self_transfer_preserves_supply_and_balance() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+        let address = "0x0000000000000000000000000000000000000001";
+        db.set_balance(address, 1_000).unwrap();
+        let tx = Transaction {
+            hash: [9u8; 32],
+            from: address.to_string(),
+            to: address.to_string(),
+            value: 100,
+            gas_price: 0,
+            gas_limit: 21_000,
+            nonce: 0,
+            data: vec![],
+            signature: vec![],
+            signer_public_key: vec![],
+        };
+
+        db.apply_transaction(&tx).unwrap();
+        assert_eq!(db.get_balance(address).unwrap(), 1_000);
+        assert_eq!(db.get_nonce(address).unwrap(), 1);
+        assert_eq!(db.get_total_supply().unwrap(), 1_000);
+    }
+
+    #[test]
+    fn test_supply_migration_removes_excess_once() {
+        let temp_dir = TempDir::new().unwrap();
+        let db = StateDB::open(temp_dir.path().join("state.redb")).unwrap();
+        let pool = "0x0000000000000000000000000000000000000001";
+        let holder = "0x0000000000000000000000000000000000000002";
+        db.set_balance(pool, 100).unwrap();
+        db.set_balance(holder, 1_000).unwrap();
+
+        let first = db
+            .migrate_supply_to_hard_cap(pool, 1_000, "fixed_supply_v2")
+            .unwrap();
+        assert!(!first.already_applied);
+        assert_eq!(first.excess_removed, 100);
+        assert_eq!(db.get_balance(pool).unwrap(), 0);
+        assert_eq!(db.get_total_supply().unwrap(), 1_000);
+
+        let second = db
+            .migrate_supply_to_hard_cap(pool, 1_000, "fixed_supply_v2")
+            .unwrap();
+        assert!(second.already_applied);
+        assert_eq!(second.excess_removed, 0);
+        assert_eq!(db.get_total_supply().unwrap(), 1_000);
     }
 }

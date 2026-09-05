@@ -43,6 +43,38 @@ fn hash_to_hex(hash: &[u8; 32]) -> String {
 /// Block reward per block (2.0 tNAK in base units)
 pub const BLOCK_REWARD: u128 = 2_000_000_000_000_000_000;
 
+/// Canonical public-testnet block producers. Every node must build the same
+/// in-memory validator registry so proposer selection is deterministic.
+pub const TESTNET_BLOCK_PRODUCERS: [&str; 3] = [
+    "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb",
+    "0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326",
+    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+];
+
+fn configured_block_producers(chain_id: u64, local_validator: Option<&str>) -> Vec<String> {
+    match chain_id {
+        86137 => TESTNET_BLOCK_PRODUCERS
+            .iter()
+            .map(|address| (*address).to_string())
+            .collect(),
+        86150 => vec![
+            genesis::ADDR_VALIDATOR_01.to_string(),
+            genesis::ADDR_VALIDATOR_02.to_string(),
+        ],
+        _ => local_validator
+            .filter(|address| !address.is_empty())
+            .map(|address| vec![address.to_lowercase()])
+            .unwrap_or_default(),
+    }
+}
+
+fn expected_proposer(active_validators: &[String], block_number: u64) -> Option<&str> {
+    if active_validators.is_empty() {
+        return None;
+    }
+    Some(&active_validators[block_number as usize % active_validators.len()])
+}
+
 /// Node configuration
 #[derive(Debug, Clone)]
 pub struct NodeConfig {
@@ -213,40 +245,21 @@ impl NakharaxNode {
 
         // Bootstrap genesis validators into staking module
         // These validators are defined in genesis with pre-allocated stakes
-        let staking_clone = staking.clone();
-        let val_addr_opt = config.validator_address.clone();
-        tokio::spawn(async move {
-            use genesis::{ADDR_VALIDATOR_01, ADDR_VALIDATOR_02};
-            const ONE_AXX: u128 = 10_u128.pow(18);
-            const VALIDATOR_STAKE: u128 = 25_000_000_000 * ONE_AXX; // 25B NAK per validator (5% of total / 2)
-
-            let _ = staking_clone
+        let block_producers = configured_block_producers(
+            config.network.chain_id,
+            config.validator_address.as_deref(),
+        );
+        const ONE_AXX: u128 = 10_u128.pow(18);
+        const VALIDATOR_STAKE: u128 = 10_000 * ONE_AXX;
+        for address in block_producers {
+            staking
                 .write()
                 .await
-                .bootstrap_validator(ADDR_VALIDATOR_01.to_string(), VALIDATOR_STAKE)
-                .await;
-            let _ = staking_clone
-                .write()
+                .bootstrap_validator(address, VALIDATOR_STAKE)
                 .await
-                .bootstrap_validator(ADDR_VALIDATOR_02.to_string(), VALIDATOR_STAKE)
-                .await;
-            let _ = staking_clone
-                .write()
-                .await
-                .bootstrap_validator(
-                    "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb".to_string(),
-                    VALIDATOR_STAKE,
-                )
-                .await;
-            if let Some(val_addr) = val_addr_opt {
-                let _ = staking_clone
-                    .write()
-                    .await
-                    .bootstrap_validator(val_addr, VALIDATOR_STAKE)
-                    .await;
-            }
-            info!("Bootstrapped genesis validators into staking module");
-        });
+                .map_err(|e| anyhow::anyhow!("bootstrap block producer: {}", e))?;
+        }
+        info!("Bootstrapped canonical block producers into staking module");
 
         let stats = Arc::new(RwLock::new(NodeStats::default()));
 
@@ -326,6 +339,12 @@ impl NakharaxNode {
                 hs.peers_connected = live_peers;
                 hs.block_height = metrics::BLOCK_HEIGHT.get() as u64;
                 hs.database_ok = state_for_health.get_chain_height().is_ok();
+                if let (Ok(total_supply), Ok(reward_pool)) = (
+                    state_for_health.get_total_supply(),
+                    state_for_health.get_balance(genesis::ADDR_ECOSYSTEM),
+                ) {
+                    metrics::MetricsUpdater::set_tokenomics(total_supply, reward_pool);
+                }
                 hs.sync_ok = hs.block_height > 0 || hs.peers_connected > 0;
                 hs.update(); // refresh uptime
             }
@@ -363,8 +382,6 @@ impl NakharaxNode {
         let stats = self.stats.clone();
         let network = self.network.clone();
         let mempool = self.mempool.clone();
-        let local_peer_id = self.local_peer_id;
-
         tokio::spawn(async move {
             info!(
                 "Block producer running (every {}s, validator={:?})...",
@@ -372,11 +389,8 @@ impl NakharaxNode {
             );
 
             let interval = tokio::time::Duration::from_secs(block_time_secs);
-            let mut round_count = 0u64;
-
             loop {
                 tokio::time::sleep(interval).await;
-                round_count += 1;
 
                 // Validator selection: round-robin over SORTED active validator addresses.
                 // This is deterministic and consistent across all peers.
@@ -394,6 +408,7 @@ impl NakharaxNode {
                 };
 
                 let validator_count = active_validators.len().max(1) as u64;
+                let next_block_number = state.get_chain_height().unwrap_or(0).saturating_add(1);
 
                 // Determine slot based on our validator_address position, or fallback to peer_id hash
                 let my_slot = if let Some(ref addr) = validator_address {
@@ -407,28 +422,21 @@ impl NakharaxNode {
                 };
 
                 let should_produce = match my_slot {
-                    Some(slot) => round_count % validator_count == slot % validator_count,
-                    None => {
-                        // Not in staking registry — fallback to peer_id hash
-                        use std::hash::{Hash, Hasher};
-                        let mut hasher = std::collections::hash_map::DefaultHasher::new();
-                        local_peer_id.hash(&mut hasher);
-                        let peer_hash = hasher.finish();
-                        (peer_hash + round_count) % validator_count == 0
-                    }
+                    Some(slot) => next_block_number % validator_count == slot % validator_count,
+                    None => false,
                 };
 
                 if !should_produce {
                     debug!(
-                        "Skipping block production (not my turn, round={}, validators={})",
-                        round_count, validator_count
+                        "Skipping block production (next_block={}, validators={})",
+                        next_block_number, validator_count
                     );
                     continue;
                 }
 
                 debug!(
-                    "My turn to produce block (round={}, slot={:?})",
-                    round_count, my_slot
+                    "My turn to produce block (next_block={}, slot={:?})",
+                    next_block_number, my_slot
                 );
 
                 // Step 1 (async): Get pending transactions from mempool
@@ -460,24 +468,6 @@ impl NakharaxNode {
                         .clone()
                         .unwrap_or_else(|| "unknown".to_string());
 
-                    // Instant Block Reward: Credit 2.0 tNAK directly to proposer in StateDB
-                    if proposer != "unknown" && !proposer.is_empty() {
-                        if let Err(e) = state.credit_balance(&proposer, BLOCK_REWARD) {
-                            tracing::warn!("Failed to credit block reward to proposer {}: {}", proposer, e);
-                        } else {
-                            info!("⛏ Credited block reward {} to proposer {}", BLOCK_REWARD, proposer);
-                        }
-                    }
-
-                    // Compute Merkle state root over all account balances and nonces.
-                    // Transactions from the mempool were already applied to state when
-                    // they were accepted via eth_sendRawTransaction, so the current
-                    // state already reflects the post-transaction account snapshot.
-                    let state_root = state.compute_state_root().unwrap_or_else(|e| {
-                        tracing::warn!("compute_state_root failed, falling back to zero: {}", e);
-                        [0u8; 32]
-                    });
-
                     let gas_used: u64 = pending_txs
                         .iter()
                         .map(|tx| tx.gas_limit)
@@ -490,13 +480,20 @@ impl NakharaxNode {
                         timestamp,
                         proposer,
                         transactions: pending_txs,
-                        state_root,
+                        // StateDB computes this after applying the zero-sum reward in
+                        // the same write transaction that commits the block.
+                        state_root: [0u8; 32],
                         gas_used,
                         gas_limit: 30_000_000,
                     };
 
-                    match state.store_block(&block) {
-                        Ok(()) => {
+                    match state.commit_block_with_reward(
+                        block,
+                        genesis::ADDR_ECOSYSTEM,
+                        BLOCK_REWARD,
+                        false,
+                    ) {
+                        Ok((block, reward_paid)) => {
                             // Index each tx by hash so eth_getTransactionByHash and
                             // eth_getTransactionReceipt can resolve them.
                             for tx in &block.transactions {
@@ -508,7 +505,7 @@ impl NakharaxNode {
                                     );
                                 }
                             }
-                            Some((block, new_number, block_hash))
+                            Some((block, new_number, block_hash, reward_paid))
                         }
                         Err(e) => {
                             error!("Failed to store block #{}: {}", new_number, e);
@@ -518,7 +515,8 @@ impl NakharaxNode {
                 };
 
                 // Step 3 (async): Update stats and publish to network
-                if let Some((block, new_number, block_hash)) = produced {
+                if let Some((block, new_number, block_hash, reward_paid)) = produced {
+                    metrics::MetricsUpdater::record_reward(reward_paid);
                     {
                         let mut s = stats.write().await;
                         s.blocks_stored = new_number;
@@ -549,10 +547,10 @@ impl NakharaxNode {
                         let _ = net.publish(NetworkMessage::Block(block_msg));
                     }
 
-                    // Credit block reward to proposer in staking module
+                    // Record the amount actually transferred from the reward pool.
                     if let Some(ref addr) = validator_address {
                         let s = staking.read().await;
-                        s.record_block_produced(addr, BLOCK_REWARD).await;
+                        s.record_block_produced(addr, reward_paid).await;
                     }
 
                     // Broadcast our own finality confirmation
@@ -732,9 +730,46 @@ impl NakharaxNode {
         let state_root = hex_to_hash(&block_msg.state_root)
             .map_err(|e| anyhow::anyhow!("Invalid state root: {}", e))?;
 
+        let mut hash_input = Vec::with_capacity(48);
+        hash_input.extend_from_slice(&parent_hash);
+        hash_input.extend_from_slice(&block_msg.number.to_le_bytes());
+        hash_input.extend_from_slice(&block_msg.timestamp.to_le_bytes());
+        let expected_hash = crypto::hash::sha3_256(&hash_input);
+        if hash != expected_hash {
+            warn!("Rejected block #{} with invalid hash", block_msg.number);
+            return Ok(());
+        }
+
         // Validate block (basic checks)
         if block_msg.number == 0 && parent_hash != [0u8; 32] {
             warn!("Invalid genesis block: non-zero parent hash");
+            return Ok(());
+        }
+
+        let active_validators = {
+            let s = staking.read().await;
+            let mut validators: Vec<String> = s
+                .get_active_validators()
+                .await
+                .into_iter()
+                .map(|validator| validator.address.to_lowercase())
+                .collect();
+            validators.sort();
+            validators.dedup();
+            validators
+        };
+        let Some(expected) = expected_proposer(&active_validators, block_msg.number) else {
+            warn!(
+                "Rejected block #{}: validator set is empty",
+                block_msg.number
+            );
+            return Ok(());
+        };
+        if block_msg.proposer.to_lowercase() != expected {
+            warn!(
+                "Rejected block #{} from out-of-turn proposer {} (expected {})",
+                block_msg.number, block_msg.proposer, expected
+            );
             return Ok(());
         }
 
@@ -765,17 +800,15 @@ impl NakharaxNode {
             gas_limit: 30_000_000, // Standard block gas limit (Ethereum compatible)
         };
 
-        // Instant Block Reward: Credit block reward to proposer in StateDB upon storing peer block
-        if block.proposer != "unknown" && !block.proposer.is_empty() {
-            if let Err(e) = state.credit_balance(&block.proposer, BLOCK_REWARD) {
-                tracing::warn!("Failed to credit block reward to proposer {}: {}", block.proposer, e);
-            }
+        // Validate the peer's state root and atomically commit the canonical block
+        // with a zero-sum transfer from the Ecosystem & Rewards Pool.
+        let (block, reward_paid) =
+            state.commit_block_with_reward(block, genesis::ADDR_ECOSYSTEM, BLOCK_REWARD, true)?;
+        metrics::MetricsUpdater::record_reward(reward_paid);
+        {
             let s = staking.read().await;
-            s.record_block_produced(&block.proposer, BLOCK_REWARD).await;
+            s.record_block_produced(&block.proposer, reward_paid).await;
         }
-
-        // Store block
-        state.store_block(&block)?;
         info!(
             "✅ Stored block #{} (hash: {})",
             block.number,
@@ -1073,5 +1106,31 @@ mod tests {
         let mut cfg = NodeConfig::dev();
         cfg.validator_address = Some("0xabc".to_string());
         assert_eq!(cfg.validator_address.as_deref(), Some("0xabc"));
+    }
+
+    #[test]
+    fn test_testnet_validator_set_is_identical_on_every_node() {
+        let pc1 = configured_block_producers(86137, Some(TESTNET_BLOCK_PRODUCERS[2]));
+        let singapore = configured_block_producers(86137, Some(TESTNET_BLOCK_PRODUCERS[0]));
+        assert_eq!(pc1, singapore);
+        assert_eq!(pc1.len(), 3);
+    }
+
+    #[test]
+    fn test_expected_proposer_depends_on_height() {
+        let mut validators = configured_block_producers(86137, None);
+        validators.sort();
+        assert_eq!(
+            expected_proposer(&validators, 1),
+            Some(validators[1].as_str())
+        );
+        assert_eq!(
+            expected_proposer(&validators, 2),
+            Some(validators[2].as_str())
+        );
+        assert_eq!(
+            expected_proposer(&validators, 3),
+            Some(validators[0].as_str())
+        );
     }
 }

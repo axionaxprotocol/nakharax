@@ -297,6 +297,9 @@ lazy_static! {
     pub static ref BLOCK_TIME: Histogram = Histogram::new(
         vec![0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 10.0]
     );
+    pub static ref TOKEN_TOTAL_SUPPLY_NAK: Gauge = Gauge::new();
+    pub static ref TOKEN_REWARD_POOL_NAK: Gauge = Gauge::new();
+    pub static ref TOKEN_REWARDS_DISTRIBUTED_NAK: IntCounter = IntCounter::new();
 
     // Consensus
     pub static ref VALIDATORS_ACTIVE: IntGauge = IntGauge::new();
@@ -347,6 +350,9 @@ pub fn init() {
     lazy_static::initialize(&TX_TOTAL);
     lazy_static::initialize(&TX_PER_SECOND);
     lazy_static::initialize(&BLOCK_TIME);
+    lazy_static::initialize(&TOKEN_TOTAL_SUPPLY_NAK);
+    lazy_static::initialize(&TOKEN_REWARD_POOL_NAK);
+    lazy_static::initialize(&TOKEN_REWARDS_DISTRIBUTED_NAK);
     lazy_static::initialize(&VALIDATORS_ACTIVE);
     lazy_static::initialize(&TOTAL_STAKED);
     lazy_static::initialize(&CHALLENGES_ISSUED);
@@ -397,6 +403,24 @@ pub fn export() -> String {
         "nakharax_block_time_seconds",
         "Block time in seconds",
         &BLOCK_TIME,
+    );
+    fmt_f64_gauge(
+        &mut buf,
+        "nakharax_total_supply_nak",
+        "Current native token supply in NAK",
+        &TOKEN_TOTAL_SUPPLY_NAK,
+    );
+    fmt_f64_gauge(
+        &mut buf,
+        "nakharax_reward_pool_balance_nak",
+        "Current Ecosystem and Rewards Pool balance in NAK",
+        &TOKEN_REWARD_POOL_NAK,
+    );
+    fmt_counter(
+        &mut buf,
+        "nakharax_rewards_distributed_nak_total",
+        "Native NAK transferred from the reward pool since node start",
+        &TOKEN_REWARDS_DISTRIBUTED_NAK,
     );
 
     // Consensus
@@ -644,6 +668,18 @@ impl MetricsUpdater {
         BLOCK_TIME.observe(block_time_secs);
     }
 
+    pub fn set_tokenomics(total_supply_wei: u128, reward_pool_wei: u128) {
+        const WEI_PER_NAK: f64 = 1_000_000_000_000_000_000.0;
+        TOKEN_TOTAL_SUPPLY_NAK.set(total_supply_wei as f64 / WEI_PER_NAK);
+        TOKEN_REWARD_POOL_NAK.set(reward_pool_wei as f64 / WEI_PER_NAK);
+    }
+
+    pub fn record_reward(reward_wei: u128) {
+        const WEI_PER_NAK: u128 = 1_000_000_000_000_000_000;
+        let whole_nak = reward_wei / WEI_PER_NAK;
+        TOKEN_REWARDS_DISTRIBUTED_NAK.inc_by(whole_nak.min(u64::MAX as u128) as u64);
+    }
+
     pub fn set_validators(active: usize, total_staked: f64) {
         VALIDATORS_ACTIVE.set(active as i64);
         TOTAL_STAKED.set(total_staked);
@@ -708,11 +744,17 @@ mod tests {
             .expect("metrics test lock should not be poisoned");
         init();
         BLOCK_HEIGHT.set(42);
+        MetricsUpdater::set_tokenomics(
+            1_000_000_000_000_000_000_000_000_000_000,
+            300_000_000_000_000_000_000_000_000_000,
+        );
         let output = export();
         assert!(output.contains("nakharax_block_height"));
         assert!(output
             .lines()
             .any(|line| line == "nakharax_block_height 42"));
+        assert!(output.contains("nakharax_total_supply_nak 1000000000000"));
+        assert!(output.contains("nakharax_reward_pool_balance_nak 300000000000"));
     }
 
     #[test]

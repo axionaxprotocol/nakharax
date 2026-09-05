@@ -47,6 +47,10 @@ models/
 *.bin
 .state_cache.json
 **/.state_cache.json
+pc1-state/
+**/pc1-state/
+*-state/
+**/*-state/
 
 # Agent Metadata
 .antigravitycli/
