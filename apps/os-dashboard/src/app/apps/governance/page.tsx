@@ -78,8 +78,28 @@ export default function GovernancePage() {
   const [newStake, setNewStake] = useState("100000");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Parameter Inspector Tab State
   const [activeParamTab, setActiveParamTab] = useState<"consensus_popc" | "asr_router" | "ppc_pricing" | "economic_dao">("economic_dao");
+  const [activeAddress, setActiveAddress] = useState("0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb");
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("nakharax-active-vault");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.address) setActiveAddress(parsed.address);
+      }
+      if (typeof window !== "undefined" && (window as any).ethereum) {
+        (window as any).ethereum
+          .request({ method: "eth_accounts" })
+          .then((accs: string[]) => {
+            if (accs && accs.length > 0) setActiveAddress(accs[0]);
+          })
+          .catch(() => {});
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const fetchGovData = async () => {
     try {
@@ -146,7 +166,7 @@ export default function GovernancePage() {
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "gov_castVote",
-          params: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", proposalId, choice],
+          params: [activeAddress, proposalId, choice],
           id: Date.now(),
         }),
       });
@@ -179,7 +199,7 @@ export default function GovernancePage() {
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "gov_createProposal",
-          params: ["0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266", newStake, newTitle, newDesc, newType],
+          params: [activeAddress, newStake, newTitle, newDesc, newType],
           id: Date.now(),
         }),
       });
