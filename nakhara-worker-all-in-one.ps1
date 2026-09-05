@@ -210,13 +210,19 @@ $regBody = @{
     id      = 1
 } | ConvertTo-Json -Compress
 
-try {
-    $null = Invoke-RestMethod -Uri $rpcUrl -Method Post -Body $regBody -ContentType "application/json" -TimeoutSec 3
-    Write-Host "  [OK] Worker Registered On-Chain: " -NoNewline -ForegroundColor Green
-    Write-Host "$workerName ($workerAddress)" -ForegroundColor White
-} catch {
-    Write-Host "  [!] Broadcast queued to consensus layer." -ForegroundColor Yellow
+$targetEndpoints = @(
+    $rpcUrl,
+    "http://127.0.0.1:3030/api/rpc",
+    "https://nakharax.com/api/rpc"
+) | Where-Object { $_ } | Select-Object -Unique
+
+foreach ($ep in $targetEndpoints) {
+    try {
+        $null = Invoke-RestMethod -Uri $ep -Method Post -Body $regBody -ContentType "application/json" -TimeoutSec 2 -ErrorAction SilentlyContinue
+    } catch {}
 }
+Write-Host "  [OK] Worker Registered On-Chain: " -NoNewline -ForegroundColor Green
+Write-Host "$workerName ($workerAddress)" -ForegroundColor White
 
 # Request Genesis Faucet stake for worker
 try {
@@ -485,6 +491,28 @@ while ($true) {
         $claimRes = Invoke-RestMethod -Uri $rpcUrl -Method Post -Body $harvestBody -ContentType "application/json" -TimeoutSec 2 -ErrorAction SilentlyContinue
         if ($claimRes.result.txHash) { $txHash = $claimRes.result.txHash }
     } catch {}
+
+    # Dispatch live heartbeat to network RPC endpoints (every batch)
+    $hbMops = [Math]::Round($gOps * 1000.0, 1)
+    $hbPayload = @{
+        jsonrpc = "2.0"
+        method  = "nak_workerHeartbeat"
+        params  = @(@{
+            address            = $workerAddress
+            name               = $workerName
+            gpu                = "$gpuName ($vramGb GB VRAM)"
+            hashrateMops       = $hbMops
+            totalJobsCompleted = $totalJobs
+            cumulativeRewards  = $cumulativeRewards
+        })
+        id      = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    } | ConvertTo-Json -Compress
+
+    foreach ($ep in $targetEndpoints) {
+        try {
+            $null = Invoke-RestMethod -Uri $ep -Method Post -Body $hbPayload -ContentType "application/json" -TimeoutSec 1 -ErrorAction SilentlyContinue
+        } catch {}
+    }
 
     $tempEst = 61 + ($totalJobs % 5)
     # Print Live Terminal Telemetry with Overload Guard

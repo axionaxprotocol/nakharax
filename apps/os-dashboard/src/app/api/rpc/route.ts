@@ -135,12 +135,12 @@ const LIVE_WORKER_REGISTRY: Record<string, LiveWorkerEntry> = {
     popc_verifier: "STARK-FRI-1024-ZK",
     stake_nak: 100.0,
     tier: "Tier 3: Edge Micro-Worker (STARK FRI ZKP & Inference)",
-    status: "ONLINE_ACTIVE",
-    registeredAt: Date.now() - 3600000,
-    lastHeartbeat: Date.now(),
+    status: "OFFLINE_DISCONNECTED",
+    registeredAt: 1788612004141,
+    lastHeartbeat: 0,
     totalJobsCompleted: 142,
     cumulativeRewards: 42.50,
-    hashrateMops: 185.0,
+    hashrateMops: 0.0,
   },
 };
 
@@ -268,14 +268,19 @@ export async function POST(req: NextRequest) {
 
   // 2. Intercept DeAI Worker Discovery & Management Methods
   if (method === "nak_getWorkers" || method === "nakharax_getWorkers" || method === "axn_getWorkers") {
-    // Keep local worker active and prune stale non-heartbeating workers (> 60s)
+    // Truth Sentinel: Verify real heartbeats within 15 seconds. If no heartbeat, mark OFFLINE!
     const now = Date.now();
     for (const [addr, w] of Object.entries(LIVE_WORKER_REGISTRY)) {
-      if (addr.toLowerCase() === "0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf") {
-        w.lastHeartbeat = now;
+      const timeSinceHeartbeat = now - (w.lastHeartbeat || 0);
+      if (timeSinceHeartbeat > 15000) {
+        w.status = "OFFLINE_DISCONNECTED";
+        w.hashrateMops = 0.0;
+        // If ephemeral remote worker and inactive for > 120s, prune it
+        if (addr.toLowerCase() !== "0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf" && timeSinceHeartbeat > 120000) {
+          delete LIVE_WORKER_REGISTRY[addr];
+        }
+      } else {
         w.status = "ONLINE_ACTIVE";
-      } else if (now - (w.lastHeartbeat || 0) > 60000) {
-        delete LIVE_WORKER_REGISTRY[addr];
       }
     }
     return NextResponse.json({
@@ -286,6 +291,13 @@ export async function POST(req: NextRequest) {
   }
 
   if (method === "axn_getWorkerStats") {
+    const now = Date.now();
+    for (const [addr, w] of Object.entries(LIVE_WORKER_REGISTRY)) {
+      if (now - (w.lastHeartbeat || 0) > 15000) {
+        w.status = "OFFLINE_DISCONNECTED";
+        w.hashrateMops = 0.0;
+      }
+    }
     const list = Object.values(LIVE_WORKER_REGISTRY);
     const active = list.filter((w) => w.status === "ONLINE_ACTIVE");
     const totalHashrate = active.reduce((sum, w) => sum + (w.hashrateMops || 0), 0);
@@ -364,7 +376,7 @@ export async function POST(req: NextRequest) {
       result: {
         acknowledged: true,
         timestamp: Date.now(),
-        activeWorkers: Object.keys(LIVE_WORKER_REGISTRY).length,
+        activeWorkers: Object.values(LIVE_WORKER_REGISTRY).filter(w => w.status === "ONLINE_ACTIVE").length,
       },
     });
   }
@@ -377,6 +389,9 @@ export async function POST(req: NextRequest) {
       LIVE_WORKER_REGISTRY[harvestAddr].status = "ONLINE_ACTIVE";
       LIVE_WORKER_REGISTRY[harvestAddr].totalJobsCompleted += 1;
       LIVE_WORKER_REGISTRY[harvestAddr].cumulativeRewards += harvestReward;
+      if (params?.[2]) {
+        LIVE_WORKER_REGISTRY[harvestAddr].hashrateMops = parseFloat(params[2]) || 185.0;
+      }
     }
   }
 

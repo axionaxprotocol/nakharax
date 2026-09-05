@@ -370,11 +370,21 @@ export default function WorkerManagerPage() {
               return (
                 <div
                   key={w.address}
-                  className="rounded-2xl border border-emerald-500/30 bg-slate-950/80 p-5 backdrop-blur-xl shadow-lg space-y-4 hover:border-emerald-400/60 transition-all group"
+                  className={`rounded-2xl border p-5 backdrop-blur-xl shadow-lg space-y-4 transition-all group ${
+                    isOnline
+                      ? "border-emerald-500/30 bg-slate-950/80 hover:border-emerald-400/60"
+                      : "border-white/10 bg-slate-950/40 hover:border-white/20 opacity-80"
+                  }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="grid h-11 w-11 place-items-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold group-hover:scale-105 transition-transform">
+                      <span
+                        className={`grid h-11 w-11 place-items-center rounded-xl border font-bold group-hover:scale-105 transition-transform ${
+                          isOnline
+                            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                            : "border-white/10 bg-white/5 text-slate-500"
+                        }`}
+                      >
                         <Cpu size={22} />
                       </span>
                       <div>
@@ -386,10 +396,10 @@ export default function WorkerManagerPage() {
                             className={`rounded px-2 py-0.5 text-[9.5px] font-mono font-bold border ${
                               isOnline
                                 ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                                : "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                                : "bg-rose-500/15 text-rose-300 border-rose-500/30"
                             }`}
                           >
-                            {isOnline ? "● ONLINE & MINING" : "○ STANDBY"}
+                            {isOnline ? "● ONLINE & MINING" : "○ OFFLINE / DISCONNECTED"}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 mt-1 text-xs font-mono text-slate-400">
@@ -417,8 +427,12 @@ export default function WorkerManagerPage() {
 
                     <div className="text-right font-mono">
                       <span className="text-[10px] text-slate-500 uppercase block">Compute Hashrate</span>
-                      <span className="text-sm font-bold text-emerald-400">
-                        {(w.hashrateMops || 185.0).toFixed(1)} M-Ops/s
+                      <span
+                        className={`text-sm font-bold ${
+                          isOnline ? "text-emerald-400" : "text-slate-500"
+                        }`}
+                      >
+                        {isOnline ? `${(w.hashrateMops ?? 185.0).toFixed(1)} M-Ops/s` : "0.0 M-Ops/s (Offline)"}
                       </span>
                     </div>
                   </div>
@@ -451,13 +465,26 @@ export default function WorkerManagerPage() {
 
                   {/* Live Node Heartbeat Strip */}
                   <div className="flex items-center justify-between border-t border-white/10 pt-3 text-[11px] font-mono text-slate-400">
-                    <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                      Verified Batches:{" "}
-                      <strong className="text-white font-bold ml-1">{w.totalJobsCompleted} Batches</strong>
-                    </span>
+                    {isOnline ? (
+                      <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                        Verified Batches:{" "}
+                        <strong className="text-white font-bold ml-1">{w.totalJobsCompleted} Batches</strong>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-slate-500 font-semibold">
+                        <span className="h-2 w-2 rounded-full bg-rose-500/80" />
+                        Standby Batches:{" "}
+                        <strong className="text-slate-400 font-bold ml-1">{w.totalJobsCompleted} Batches (Historical)</strong>
+                      </span>
+                    )}
                     <span className="text-slate-500">
-                      Heartbeat: <strong className="text-slate-300">Active (&lt; 2s ago)</strong>
+                      Heartbeat:{" "}
+                      {isOnline ? (
+                        <strong className="text-emerald-400 font-bold">Active (&lt; 2s ago)</strong>
+                      ) : (
+                        <strong className="text-rose-400 font-bold">Disconnected / Inactive</strong>
+                      )}
                     </span>
                   </div>
                 </div>

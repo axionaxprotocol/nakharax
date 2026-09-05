@@ -147,11 +147,12 @@ const CANONICAL_LOCAL_WORKER: LiveWorkerInfo = {
   popc_verifier: "STARK-FRI-1024-ZK",
   stake_nak: 100.0,
   registeredAt: 1725530000000,
-  lastActive: Date.now(),
-  status: "ONLINE_ACTIVE",
+  lastActive: 0,
+  status: "OFFLINE",
   totalJobsCompleted: 142,
   cumulativeRewards: 42.50,
-  hashrateMops: 185.0,
+  hashrateMops: 0.0,
+  tier: "Tier 3: Edge Micro-Worker (STARK FRI ZKP & Inference)",
 };
 
 let globalMeshState: NetworkMeshState = {
@@ -167,16 +168,15 @@ let globalMeshState: NetworkMeshState = {
     [CANONICAL_LOCAL_WORKER.address.toLowerCase()]: CANONICAL_LOCAL_WORKER,
   },
   workersList: [CANONICAL_LOCAL_WORKER],
-  totalWorkersCount: 1,
-  totalActiveNodes: 4,
-  totalNetworkHashrateMops: 185.0,
+  totalWorkersCount: 0,
+  totalActiveNodes: 3,
+  totalNetworkHashrateMops: 0.0,
   meshNodes: BASE_3_NODES,
   meshConnections: BASE_CONNECTIONS,
   telemetryStream: [
     "[GOSSIPSUB] NA-US-01 ──» EU-DE-01 (PoPC BFT Consensus Synchronized)",
     "[BFT-VOTE] AP-SG-01 ──» EU-DE-01 (Genesis Quorum Block Vote 33.33%)",
-    "[RPC-SYNC] EU-DE-01 ──» NA-US-01 (Block Height Propagated)",
-    "[POPC-ZK] WRK-01 (LOC-PC-01 AMD Radeon RX 560) ──» EU-DE-01 (STARK FRI 1,024 Proofs Verified · 185.0 M-Ops)"
+    "[RPC-SYNC] EU-DE-01 ──» NA-US-01 (Block Height Propagated)"
   ],
   lastUpdated: Date.now()
 };
@@ -199,16 +199,28 @@ function recalculateMesh(
   liveMempoolSize: number = globalMeshState.mempoolSize,
   liveUptimeSeconds: number = globalMeshState.uptimeSeconds
 ) {
-  // Auto-scan & dynamic inclusion:
-  // Guarantee local worker LOC-PC-01 is always present and active (matching validator node LOC-TH-01 behavior),
-  // and dynamically merge any workers joining via RPC heartbeat, browser WebGPU, or remote CLI.
+  // Grounded Reality Check:
+  // Determine local worker status strictly from the live RPC heartbeat response.
+  // If the process was closed or no heartbeat has arrived within 15s, mark as OFFLINE with 0 M-Ops.
+  const localAddr = CANONICAL_LOCAL_WORKER.address.toLowerCase();
+  const remoteLocalWorker = workersRecord ? (workersRecord[localAddr] || workersRecord[CANONICAL_LOCAL_WORKER.address]) : undefined;
+  const isLocalOnline = remoteLocalWorker?.status === "ONLINE_ACTIVE";
+
   const mergedWorkers: Record<string, LiveWorkerInfo> = {
-    [CANONICAL_LOCAL_WORKER.address.toLowerCase()]: {
+    [localAddr]: remoteLocalWorker ? {
       ...CANONICAL_LOCAL_WORKER,
-      lastActive: Date.now(),
+      ...remoteLocalWorker,
+      status: isLocalOnline ? "ONLINE_ACTIVE" : "OFFLINE",
+      hashrateMops: isLocalOnline ? (remoteLocalWorker.hashrateMops || 185.0) : 0.0,
+    } : {
+      ...CANONICAL_LOCAL_WORKER,
+      status: "OFFLINE",
+      hashrateMops: 0.0,
     },
     ...Object.fromEntries(
-      Object.entries(workersRecord || {}).map(([k, v]) => [k.toLowerCase(), v])
+      Object.entries(workersRecord || {})
+        .filter(([k]) => k.toLowerCase() !== localAddr)
+        .map(([k, v]) => [k.toLowerCase(), v])
     ),
   };
 
@@ -218,6 +230,7 @@ function recalculateMesh(
 
   // Calculate total active nodes dynamically:
   // In a P2P blockchain mesh, total active consensus nodes = (peerCount + 1)
+  // Plus any active registered DeAI GPU workers
   // Plus any active registered DeAI GPU workers
   const basePeerNodes = peerCount > 0 ? peerCount + 1 : 3;
   const totalActive = Math.max(3, basePeerNodes + activeWorkersList.length);
