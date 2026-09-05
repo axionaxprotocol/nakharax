@@ -244,13 +244,48 @@ function recalculateMesh(
     },
   }));
 
-  const allMeshNodes = [...updatedBaseNodes, ...dynamicWorkerNodes];
+  const dynamicPeerNodes: MeshNodeData[] = [];
+  if (peerCount >= 3) {
+    dynamicPeerNodes.push({
+      id: "node-pc-01",
+      name: "Localhost Sovereign Host · PC-1 (LOC-TH-01)",
+      code: "LOC-TH-01",
+      role: "PRIMARY_VALIDATOR",
+      countryName: "Thailand",
+      region: "Bangkok, Thailand (PC-1)",
+      coordinates: [100.5018, 13.7563],
+      provider: "PC-1 Sovereign Rig · Windows x64 (Native Rust nakharax-node)",
+      hardware: { vcpu: 8, ramGb: 16, storage: "1 TB NVMe SSD", antiDdos: "Local Mesh P2P Shield" },
+      p2p: {
+        peerId: "12D3KooWLocalPC1ThMeshLiveNode",
+        multiaddr: "/ip4/183.89.5.23/tcp/30309/p2p/12D3KooWLocalPC1...",
+        protocol: "libp2p/kad/1.0.0",
+        latencyMs: realLatencyMs,
+        jitterMs: 0.8
+      },
+      consensus: {
+        votingWeight: dynamicVotingWeight,
+        bftStatus: "HEALTHY",
+        blockHeight: currentBlock,
+        tps: liveTps
+      }
+    });
+  }
+
+  const allMeshNodes = [...updatedBaseNodes, ...dynamicPeerNodes, ...dynamicWorkerNodes];
   const allMeshConnections: Array<[number, number]> = [...BASE_CONNECTIONS];
 
-  // Dynamic Laser Connections: Link each active worker to VPS-01 (Germany, index 0) and VPS-03 (Singapore, index 2)
+  // Dynamic Laser Connections: Link PC-1 to Germany (0) and Singapore (2)
+  if (dynamicPeerNodes.length > 0) {
+    const pc1Index = BASE_3_NODES.length;
+    allMeshConnections.push([0, pc1Index]); // Link to Germany Master Hub
+    allMeshConnections.push([2, pc1Index]); // Link to Singapore Genesis Validator
+  }
+
+  // Dynamic Laser Connections: Link each active worker
   dynamicWorkerNodes.forEach((node, idx) => {
     if (node.consensus.bftStatus === "HEALTHY") {
-      const workerNodeIndex = BASE_3_NODES.length + idx;
+      const workerNodeIndex = BASE_3_NODES.length + dynamicPeerNodes.length + idx;
       allMeshConnections.push([0, workerNodeIndex]); // Link to Germany Master Hub
       allMeshConnections.push([2, workerNodeIndex]); // Link to Singapore Genesis Validator
     }
@@ -261,6 +296,13 @@ function recalculateMesh(
 
   // Generate real-time telemetry packets
   const telemetryLogs = [...globalMeshState.telemetryStream];
+  if (peerCount >= 3) {
+    const pc1Packet = `[P2P-SWARM] LOC-TH-01 (PC-1 Bangkok) ──» EU-DE-01 (PoPC BFT Consensus Synchronized)`;
+    if (!telemetryLogs.includes(pc1Packet)) {
+      telemetryLogs.unshift(pc1Packet);
+      if (telemetryLogs.length > 8) telemetryLogs.pop();
+    }
+  }
   const activeNodesOnly = dynamicWorkerNodes.filter(n => n.consensus.bftStatus === "HEALTHY");
   if (activeNodesOnly.length > 0) {
     const activeW = activeNodesOnly[Math.floor(Math.random() * activeNodesOnly.length)];
