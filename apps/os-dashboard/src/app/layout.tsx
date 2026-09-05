@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { MenuBar } from "@/components/menu-bar";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { FloatingSentinelChat } from "@/components/floating-sentinel-chat";
+import { MatrixRainBackground } from "@/components/matrix-rain";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
@@ -68,6 +69,8 @@ export default function RootLayout({
           aria-hidden="true"
           className="protocol-grid pointer-events-none fixed inset-0 z-[-1] opacity-45"
         />
+        {/* Subtle Ambient DeAI Matrix Digital Rain */}
+        <MatrixRainBackground />
         <MenuBar />
         <main
           id="main-content"
