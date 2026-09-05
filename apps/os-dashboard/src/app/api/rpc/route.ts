@@ -268,10 +268,15 @@ export async function POST(req: NextRequest) {
 
   // 2. Intercept DeAI Worker Discovery & Management Methods
   if (method === "nak_getWorkers" || method === "nakharax_getWorkers" || method === "axn_getWorkers") {
-    // Keep local worker active and refresh timestamps
-    if (LIVE_WORKER_REGISTRY["0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf"]) {
-      LIVE_WORKER_REGISTRY["0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf"].lastHeartbeat = Date.now();
-      LIVE_WORKER_REGISTRY["0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf"].status = "ONLINE_ACTIVE";
+    // Keep local worker active and prune stale non-heartbeating workers (> 60s)
+    const now = Date.now();
+    for (const [addr, w] of Object.entries(LIVE_WORKER_REGISTRY)) {
+      if (addr.toLowerCase() === "0xb61877ac7b7b4f4b4dc2d5347e36345e4834cdcf") {
+        w.lastHeartbeat = now;
+        w.status = "ONLINE_ACTIVE";
+      } else if (now - (w.lastHeartbeat || 0) > 60000) {
+        delete LIVE_WORKER_REGISTRY[addr];
+      }
     }
     return NextResponse.json({
       jsonrpc: "2.0",

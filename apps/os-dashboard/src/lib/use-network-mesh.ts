@@ -16,6 +16,7 @@ export interface LiveWorkerInfo {
   totalJobsCompleted: number;
   cumulativeRewards: number;
   hashrateMops?: number;
+  tier?: string;
 }
 
 export interface MeshNodeData {

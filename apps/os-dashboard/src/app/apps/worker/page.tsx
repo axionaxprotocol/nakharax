@@ -69,7 +69,32 @@ export default function WorkerManagerPage() {
     setTimeout(() => setIsScanning(false), 600);
   };
 
-  // Sync worker address with active MetaMask account or saved vault
+  // Format raw WebGL/ANGLE renderer string into clean GPU model and vendor
+  const formatGpuDisplayName = (raw: string): string => {
+    if (!raw || raw === "Unknown / Not Detected") return "Hardware Accelerator";
+    if (raw === "Auto-Detecting GPU...") return "Auto-Detecting GPU...";
+    const match = raw.match(/ANGLE\s*\(([^,]+),\s*([^,]+)/i);
+    if (match) {
+      const vendor = match[1].trim();
+      const model = match[2]
+        .replace(/Direct3D\d+.*/i, "")
+        .replace(/vs_\d+.*/i, "")
+        .replace(/ps_\d+.*/i, "")
+        .replace(/D3D\d+.*/i, "")
+        .replace(/Series.*/i, "")
+        .trim();
+      return `${model} (${vendor})`;
+    }
+    return raw.replace(/Direct3D\d+.*/i, "").replace(/vs_\d+.*/i, "").trim();
+  };
+
+  // Sync worker address with active worker or connected vault/MetaMask
+  useEffect(() => {
+    if (liveWorkers.length > 0 && workerAddress === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266") {
+      setWorkerAddress(liveWorkers[0].address);
+    }
+  }, [liveWorkers, workerAddress]);
+
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).ethereum) {
       const ethereum = (window as any).ethereum;
@@ -127,10 +152,12 @@ export default function WorkerManagerPage() {
 
       if (detectedGpu.match(/4090|A100|H100|A6000/i) || mem >= 24) {
         setNodeTier("Tier 1: Enterprise SuperCluster (70B Model Training & AGI)");
-      } else if (detectedGpu.match(/1070|1080|2070|2080|3060|3070|3080|4060|4070|Radeon/i) || mem >= 8) {
+      } else if (detectedGpu.match(/RX 560|RX 550|RX 460|GTX 1050|GTX 750|HD Graphics|Iris/i) || mem < 6) {
+        setNodeTier("Tier 3: Edge Micro-Worker (STARK FRI ZKP & Inference)");
+      } else if (detectedGpu.match(/1070|1080|2070|2080|3060|3070|3080|4060|4070|Radeon RX 6|Radeon RX 7/i) || mem >= 8) {
         setNodeTier("Tier 2: Pro DeAI Node (DeepSeek-R1 & LoRA Tensor Fusion)");
       } else {
-        setNodeTier("Tier 3: Edge Micro-Worker (STARK FRI ZKP & Acoustic Mesh)");
+        setNodeTier("Tier 3: Edge Micro-Worker (STARK FRI ZKP & Inference)");
       }
     } catch {
       setGpuName("Unknown / Not Detected");
@@ -272,7 +299,7 @@ export default function WorkerManagerPage() {
       <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
         <StatCard
           label="Detected Hardware"
-          value={gpuName.split("/")[0].slice(0, 20)}
+          value={formatGpuDisplayName(gpuName)}
           hint={nodeTier}
           icon={<Cpu size={18} />}
           tone="ai"
@@ -405,7 +432,7 @@ export default function WorkerManagerPage() {
                     <div className="rounded-xl border border-white/10 bg-black/40 p-2.5">
                       <div className="text-[9.5px] uppercase text-slate-500">Compute Tier</div>
                       <div className="font-semibold text-cyan-300 truncate text-[11px]">
-                        {w.gpu.includes("4090") ? "Tier 1: SuperCluster" : "Tier 3: Edge ZKP"}
+                        {w.tier || (w.gpu.includes("4090") ? "Tier 1: Enterprise SuperCluster" : "Tier 3: Edge Micro-Worker")}
                       </div>
                     </div>
                     <div className="rounded-xl border border-white/10 bg-black/40 p-2.5">
@@ -539,7 +566,7 @@ export default function WorkerManagerPage() {
                 <div className="h-64 rounded-xl border border-white/10 bg-black/80 p-4 font-mono text-[11px] text-emerald-400 overflow-y-auto space-y-1.5 shadow-inner">
                   {browserLogs.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-slate-600">
-                      Click &quot;⚡ START IN-BROWSER GPU MINING&quot; above to begin real-time hardware execution.
+                      Click &quot;⚡ REGISTER BROWSER WORKER&quot; above to announce this session to the network.
                     </div>
                   ) : (
                     browserLogs.map((log, i) => (
