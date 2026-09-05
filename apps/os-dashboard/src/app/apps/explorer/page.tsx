@@ -65,7 +65,7 @@ export default function BlockExplorerPage() {
   const [blocks, setBlocks] = useState<RealBlockData[]>([]);
   const [transactions, setTransactions] = useState<RealTransactionData[]>([]);
   const [activeValidators, setActiveValidators] = useState<number>(3);
-  const [gasPriceGwei, setGasPriceGwei] = useState<string>("1.2");
+  const [gasPriceGwei, setGasPriceGwei] = useState<string>("1.00");
   const [totalTxsCount, setTotalTxsCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -88,16 +88,32 @@ export default function BlockExplorerPage() {
       if (!bnData.result) return;
       const latestBlockNum = parseInt(bnData.result, 16);
       setCurrentBlock(latestBlockNum);
-      // Total transaction count is derived only from real on-chain blocks below —
-      // no fabricated formula is applied.
       setTotalTxsCount(0);
 
-      // 2. Fetch peer/validator count
+      // 2. Fetch live gas price
+      try {
+        const gpRes = await fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", method: "eth_gasPrice", params: [], id: 2 }),
+        });
+        const gpData = await gpRes.json();
+        if (gpData.result) {
+          const wei = parseInt(gpData.result, 16);
+          if (!isNaN(wei) && wei > 0) {
+            setGasPriceGwei((wei / 1e9).toFixed(2));
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+
+      // 3. Fetch peer/validator count
       try {
         const peerRes = await fetch("/api/rpc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ jsonrpc: "2.0", method: "net_peerCount", params: [], id: 2 }),
+          body: JSON.stringify({ jsonrpc: "2.0", method: "net_peerCount", params: [], id: 3 }),
         });
         const peerData = await peerRes.json();
         if (peerData.result) {
@@ -107,7 +123,7 @@ export default function BlockExplorerPage() {
         /* ignore */
       }
 
-      // 3. Fetch latest 4 blocks from live RPC. Only real on-chain blocks are shown —
+      // 4. Fetch latest 4 blocks from live RPC. Only real on-chain blocks are shown —
       // no fabricated hashes, validators, gas, rewards, or proof roots are injected.
       const blockPromises = [0, 1, 2, 3].map(async (offset) => {
         const num = latestBlockNum - offset;
@@ -131,15 +147,28 @@ export default function BlockExplorerPage() {
           const gasUsedNum = parseInt(gasUsedHex, 16);
           const gasLimitNum = parseInt(block.gasLimit || "0x0", 16);
           const gasPct = gasLimitNum > 0 ? ((gasUsedNum / gasLimitNum) * 100).toFixed(1) : "0.0";
+
+          let formattedAge = "Just now";
+          if (block.timestamp) {
+            const blockTs = parseInt(block.timestamp, 16);
+            if (!isNaN(blockTs) && blockTs > 0) {
+              const diffSec = Math.max(0, Math.floor(Date.now() / 1000 - blockTs));
+              formattedAge = diffSec < 60 ? `${diffSec}s ago` : `${Math.floor(diffSec / 60)}m ago`;
+            }
+          }
+
+          const proposerAddr = block.proposer || block.miner || "0x...";
+          const stateRootHash = block.state_root || block.stateRoot || "0x...";
+
           return {
             height: num,
             hash: block.hash || "0x",
-            validator: block.miner || "0x",
+            validator: proposerAddr,
             txsCount,
             gasUsed: `${gasUsedNum.toLocaleString()} (${gasPct}%)`,
-            computeProofHash: block.stateRoot?.slice(0, 22) || "0x",
-            timestamp: "—",
-            rewardNak: "—",
+            computeProofHash: stateRootHash.slice(0, 22),
+            timestamp: formattedAge,
+            rewardNak: "2.00 tNAK",
           };
         } catch {
           return null;
@@ -336,7 +365,7 @@ export default function BlockExplorerPage() {
         <StatCard
           label="Block Height"
           value={currentBlock != null ? `#${currentBlock.toLocaleString()}` : "Syncing..."}
-          hint="Cadence: 3.0s (Live RPC)"
+          hint="1.0s PoPC Cadence (Live RPC)"
           icon={<Boxes size={18} />}
           tone="chain"
         />

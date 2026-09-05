@@ -33,7 +33,7 @@ export default function WalletPage() {
       meta={
         <>
           <StatusPill tone="chain" pulse>Chain ID: 86137</StatusPill>
-          <StatusPill tone="ai">Gas: 1.2 Gwei (EIP-1559)</StatusPill>
+          <StatusPill tone="ai">Gas: 1.0 Gwei (EIP-1559)</StatusPill>
           <StatusPill tone="violet">AES-256 Air-Gapped Vault</StatusPill>
         </>
       }
@@ -85,7 +85,7 @@ export default function WalletPage() {
             </div>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed font-sans">
-            Base fee of 1.2 Gwei is algorithmically adjusted and burned every block, providing deflationary tokenomics for the 1 Trillion $NAK cap.
+            Base fee of 1.0 Gwei is algorithmically adjusted and burned every block, providing deflationary tokenomics for the 1 Trillion $NAK cap.
           </p>
         </Card>
       </div>

@@ -61,9 +61,9 @@ const REAL_3_GENESIS_NODES: ClusterNode[] = [
     endpoint: "https://rpc.nakharax.com (Public Ingress)",
     role: "Public RPC Gateway & Master Hub",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 145,
+    latencyMs: null,
     blockHeight: null,
     hostingTier: "Dedicated Cloud Host · Caddy TLS Anycast Shield",
   },
@@ -75,9 +75,9 @@ const REAL_3_GENESIS_NODES: ClusterNode[] = [
     endpoint: "P2P Mesh · Port 30303 (Shielded)",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 40 GB NVMe",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 180,
+    latencyMs: null,
     blockHeight: null,
     hostingTier: "Dedicated Cloud Host · BFT Validator Quorum",
   },
@@ -89,9 +89,9 @@ const REAL_3_GENESIS_NODES: ClusterNode[] = [
     endpoint: "P2P Mesh · Port 30303 (Shielded)",
     role: "Genesis Validator",
     hardware: "4 vCPU · 8 GB RAM · 100 GB SSD",
-    tps: 1.0,
+    tps: 0,
     status: "ACTIVE_LIVE",
-    latencyMs: 28,
+    latencyMs: null,
     blockHeight: null,
     hostingTier: "Dedicated Cloud Host · BFT Validator Quorum",
   },
@@ -160,6 +160,7 @@ export default function NodesPage() {
       ]);
 
       let liveBn = globalBlock;
+      let liveTps = 0;
       if (bnRes.status === "fulfilled" && bnRes.value.ok) {
         try {
           const data = await bnRes.value.json();
@@ -179,6 +180,9 @@ export default function NodesPage() {
             if (typeof data.result.peer_count === "number") {
               setActivePeerCount(data.result.peer_count);
             }
+            if (typeof data.result.tps === "number") {
+              liveTps = data.result.tps;
+            }
           }
         } catch {}
       }
@@ -195,23 +199,20 @@ export default function NodesPage() {
         } catch {}
       }
 
+      const measuredRtt = globalLatency > 0 ? globalLatency : null;
       setClusterNodes((prev) =>
-        prev.map((n) => {
-          const canonical = REAL_3_GENESIS_NODES.find((c) => c.id === n.id);
-          const baseLatency = canonical?.latencyMs ?? 100;
-          const jitter = Math.floor(Math.random() * 4) - 2;
-          return {
-            ...n,
-            status: "ACTIVE_LIVE",
-            blockHeight: liveBn,
-            latencyMs: Math.max(1, baseLatency + jitter),
-          };
-        })
+        prev.map((n, idx) => ({
+          ...n,
+          status: "ACTIVE_LIVE",
+          blockHeight: liveBn,
+          tps: liveTps,
+          latencyMs: idx === 0 ? measuredRtt : measuredRtt,
+        }))
       );
     } finally {
       setIsProbing(false);
     }
-  }, [globalBlock]);
+  }, [globalBlock, globalLatency]);
 
   useEffect(() => {
     void queryLiveTelemetry();
@@ -298,8 +299,8 @@ export default function NodesPage() {
         />
         <StatCard
           label="Best RPC Latency"
-          value={reportedLatencies.length > 0 ? `${Math.min(...reportedLatencies)} ms` : `${globalLatency} ms`}
-          hint="Lowest round-trip cluster latency"
+          value={globalLatency > 0 ? `${globalLatency} ms` : "Measuring..."}
+          hint="Live measured round-trip RPC sample"
           icon={<Timer size={18} />}
           tone="violet"
         />
@@ -402,7 +403,7 @@ export default function NodesPage() {
               {
                 id: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE",
                 name: "Virginia Genesis Validator 01 (VPS-02)",
-                role: "BFT VOTER 33.33%",
+                role: `BFT VOTER ${(100 / Math.max(1, activeNodeCount)).toFixed(1)}%`,
                 multiaddr: "p2p://12D3KooWPeew... · /dns4/us-east.nakharax.com (Shielded)",
                 region: "Virginia, US East",
                 status: "SYNCED AT TIP",
@@ -410,7 +411,7 @@ export default function NodesPage() {
               {
                 id: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK",
                 name: "Singapore Genesis Validator 02 (VPS-03)",
-                role: "BFT VOTER 33.33%",
+                role: `BFT VOTER ${(100 / Math.max(1, activeNodeCount)).toFixed(1)}%`,
                 multiaddr: "p2p://12D3KooWQzf4... · /dns4/sg-apac.nakharax.com (Shielded)",
                 region: "Singapore, APAC",
                 status: "SYNCED AT TIP",

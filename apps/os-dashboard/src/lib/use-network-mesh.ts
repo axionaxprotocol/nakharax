@@ -55,6 +55,10 @@ export interface NetworkMeshState {
   isLive: boolean;
   latencyMs: number;
   peerCount: number;
+  tps: number;
+  gasPriceGwei: number;
+  mempoolSize: number;
+  uptimeSeconds: number;
   workers: Record<string, LiveWorkerInfo>;
   workersList: LiveWorkerInfo[];
   totalWorkersCount: number;
@@ -78,8 +82,8 @@ const BASE_3_NODES: MeshNodeData[] = [
     coordinates: [8.6821, 50.1109],
     provider: "Contabo Dedicated Host (Frankfurt)",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW + Caddy TLS Gateway" },
-    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/dns4/rpc.nakharax.com/tcp/30303/p2p/12D3KooWPbSJ...", protocol: "libp2p/kad/1.0.0", latencyMs: 145.0, jitterMs: 1.0 },
-    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
+    p2p: { peerId: "12D3KooWPbSJk2fhuqENJDyrcb8y4x5EFJEFHt29sfZ9Tmc3vn2M", multiaddr: "/dns4/rpc.nakharax.com/tcp/30303/p2p/12D3KooWPbSJ...", protocol: "libp2p/kad/1.0.0", latencyMs: 0, jitterMs: 0 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 0 }
   },
   {
     id: "node-vps-02",
@@ -91,8 +95,8 @@ const BASE_3_NODES: MeshNodeData[] = [
     coordinates: [-78.4769, 38.0307],
     provider: "OVHcloud Dedicated Host (Virginia)",
     hardware: { vcpu: 4, ramGb: 8, storage: "40 GB NVMe", antiDdos: "OVHcloud Anti-DDoS" },
-    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/dns4/us-east.nakharax.com/tcp/30303/p2p/12D3KooWPeew...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 180.0, jitterMs: 1.2 },
-    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
+    p2p: { peerId: "12D3KooWPeewcUHGcwU72BefJqLmTgzxs4DM8WhTtGFwQnRkHmDE", multiaddr: "/dns4/us-east.nakharax.com/tcp/30303/p2p/12D3KooWPeew...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 0, jitterMs: 0 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 0 }
   },
   {
     id: "node-vps-03",
@@ -104,8 +108,8 @@ const BASE_3_NODES: MeshNodeData[] = [
     coordinates: [103.8198, 1.3521],
     provider: "Contabo Dedicated Host (Singapore)",
     hardware: { vcpu: 4, ramGb: 8, storage: "100 GB SSD", antiDdos: "UFW Hardware Guard" },
-    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/dns4/sg-apac.nakharax.com/tcp/30303/p2p/12D3KooWQzf4...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 28.0, jitterMs: 0.5 },
-    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 1.0 }
+    p2p: { peerId: "12D3KooWQzf4maRFSYwk1BTJJuW7uspWLWKastntMWeRrxdoQCjK", multiaddr: "/dns4/sg-apac.nakharax.com/tcp/30303/p2p/12D3KooWQzf4...", protocol: "libp2p/gossipsub/1.2.0", latencyMs: 0, jitterMs: 0 },
+    consensus: { votingWeight: "33.33%", bftStatus: "HEALTHY", blockHeight: 0, tps: 0 }
   }
 ];
 
@@ -136,8 +140,12 @@ function getWorkerCoordinates(index: number, address: string): [number, number] 
 let globalMeshState: NetworkMeshState = {
   blockNumber: 1000,
   isLive: false,
-  latencyMs: 1,
+  latencyMs: 0,
   peerCount: 2,
+  tps: 0,
+  gasPriceGwei: 1.0,
+  mempoolSize: 0,
+  uptimeSeconds: 0,
   workers: {},
   workersList: [],
   totalWorkersCount: 0,
@@ -146,9 +154,9 @@ let globalMeshState: NetworkMeshState = {
   meshNodes: BASE_3_NODES,
   meshConnections: BASE_CONNECTIONS,
   telemetryStream: [
-    "[GOSSIPSUB] NA-US-01 ──» EU-DE-01 (PoPC BFT Consensus Synchronized · 145ms)",
-    "[BFT-VOTE] AP-SG-01 ──» EU-DE-01 (Genesis Quorum Block Vote 33.33% · 28ms)",
-    "[RPC-SYNC] EU-DE-01 ──» NA-US-01 (Block Height Propagated · 180ms)"
+    "[GOSSIPSUB] NA-US-01 ──» EU-DE-01 (PoPC BFT Consensus Synchronized)",
+    "[BFT-VOTE] AP-SG-01 ──» EU-DE-01 (Genesis Quorum Block Vote 33.33%)",
+    "[RPC-SYNC] EU-DE-01 ──» NA-US-01 (Block Height Propagated)"
   ],
   lastUpdated: Date.now()
 };
@@ -161,10 +169,26 @@ function notifyMeshListeners() {
 
 let engineStarted = false;
 
-function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentBlock: number, peerCount: number = globalMeshState.peerCount) {
+function recalculateMesh(
+  workersRecord: Record<string, LiveWorkerInfo>,
+  currentBlock: number,
+  peerCount: number = globalMeshState.peerCount,
+  realLatencyMs: number = globalMeshState.latencyMs,
+  liveTps: number = globalMeshState.tps,
+  liveGasPriceGwei: number = globalMeshState.gasPriceGwei,
+  liveMempoolSize: number = globalMeshState.mempoolSize,
+  liveUptimeSeconds: number = globalMeshState.uptimeSeconds
+) {
   const workerEntries = Object.entries(workersRecord);
   const workersList = Object.values(workersRecord);
   const activeWorkersList = workersList.filter(w => w.status === "ONLINE_ACTIVE");
+
+  // Calculate total active nodes dynamically:
+  // In a P2P blockchain mesh, total active consensus nodes = (peerCount + 1)
+  // Plus any active registered DeAI GPU workers
+  const basePeerNodes = peerCount > 0 ? peerCount + 1 : 3;
+  const totalActive = Math.max(3, basePeerNodes + activeWorkersList.length);
+  const dynamicVotingWeight = `${(100 / Math.max(1, totalActive)).toFixed(2)}%`;
 
   // Compute dynamic worker nodes
   const dynamicWorkerNodes: MeshNodeData[] = workerEntries.map(([addr, w], idx) => {
@@ -192,25 +216,31 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
         peerId: `12D3KooW${addr.slice(2, 8)}...${w.name || "Worker"}`,
         multiaddr: `/ip4/lan-worker-${idx + 2}/tcp/8545`,
         protocol: "libp2p/popc/2.1.0",
-        latencyMs: isOnline ? 2.0 : 0.0,
-        jitterMs: isOnline ? 0.1 : 0.0
+        latencyMs: isOnline ? realLatencyMs : 0.0,
+        jitterMs: 0.0
       },
       consensus: {
-        votingWeight: isOnline ? `PoPC Worker (${hashrate.toFixed(1)} M-Ops/s)` : "OFFLINE / SLEEPING",
+        votingWeight: isOnline ? dynamicVotingWeight : "OFFLINE / SLEEPING",
         bftStatus: isOnline ? "HEALTHY" : "OFFLINE / SLEEPING" as any,
         blockHeight: currentBlock,
-        tps: isOnline ? 48.5 : 0.0
+        tps: isOnline ? liveTps : 0.0
       },
       isLiveWorker: true,
       liveStats: { ...w, hashrateMops: hashrate }
     };
   });
 
-  const updatedBaseNodes: MeshNodeData[] = BASE_3_NODES.map((node) => ({
+  const updatedBaseNodes: MeshNodeData[] = BASE_3_NODES.map((node, idx) => ({
     ...node,
+    p2p: {
+      ...node.p2p,
+      latencyMs: idx === 0 ? realLatencyMs : realLatencyMs > 0 ? Math.max(1, realLatencyMs) : 0,
+    },
     consensus: {
       ...node.consensus,
       blockHeight: currentBlock,
+      tps: liveTps,
+      votingWeight: dynamicVotingWeight,
     },
   }));
 
@@ -234,23 +264,22 @@ function recalculateMesh(workersRecord: Record<string, LiveWorkerInfo>, currentB
   const activeNodesOnly = dynamicWorkerNodes.filter(n => n.consensus.bftStatus === "HEALTHY");
   if (activeNodesOnly.length > 0) {
     const activeW = activeNodesOnly[Math.floor(Math.random() * activeNodesOnly.length)];
-    const logPacket = `[POPC-ZK] ${activeW.code} ──» EU-DE-01 (STARK FRI 1,024 Proofs Verified · 19ms · ${activeW.liveStats?.hashrateMops?.toFixed(1)} M-Ops)`;
+    const logPacket = `[POPC-ZK] ${activeW.code} ──» EU-DE-01 (STARK FRI 1,024 Proofs Verified · ${activeW.liveStats?.hashrateMops?.toFixed(1)} M-Ops)`;
     if (!telemetryLogs.includes(logPacket)) {
       telemetryLogs.unshift(logPacket);
       if (telemetryLogs.length > 8) telemetryLogs.pop();
     }
   }
 
-  // Calculate total active nodes dynamically:
-  // In a P2P blockchain mesh, total active consensus nodes = (peerCount + 1)
-  // Plus any active registered DeAI GPU workers
-  const basePeerNodes = peerCount > 0 ? peerCount + 1 : 3;
-  const totalActive = Math.max(3, basePeerNodes + activeWorkersList.length);
-
   globalMeshState = {
     ...globalMeshState,
     blockNumber: currentBlock,
     peerCount,
+    latencyMs: realLatencyMs,
+    tps: liveTps,
+    gasPriceGwei: liveGasPriceGwei,
+    mempoolSize: liveMempoolSize,
+    uptimeSeconds: liveUptimeSeconds,
     workers: workersRecord,
     workersList,
     totalWorkersCount: activeWorkersList.length,
@@ -293,7 +322,16 @@ function startMeshEngine() {
           }
           // Mesh Worker Update Event
           if (msg.type === "mesh_update" && msg.data?.workers) {
-            recalculateMesh(msg.data.workers, msg.data.blockNumber || globalMeshState.blockNumber, globalMeshState.peerCount);
+            recalculateMesh(
+              msg.data.workers,
+              msg.data.blockNumber || globalMeshState.blockNumber,
+              globalMeshState.peerCount,
+              globalMeshState.latencyMs,
+              globalMeshState.tps,
+              globalMeshState.gasPriceGwei,
+              globalMeshState.mempoolSize,
+              globalMeshState.uptimeSeconds
+            );
           }
         } catch { }
       };
@@ -321,7 +359,7 @@ function startMeshEngine() {
 
     const startT = performance.now();
     try {
-      const [bnRes, teleRes, peerRes, workersRes] = await Promise.allSettled([
+      const [bnRes, teleRes, peerRes, workersRes, gasRes] = await Promise.allSettled([
         fetch("/api/rpc", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -346,6 +384,12 @@ function startMeshEngine() {
           body: JSON.stringify({ jsonrpc: "2.0", method: "nak_getWorkers", params: [], id: Date.now() + 3 }),
           cache: "no-store",
         }),
+        fetch("/api/rpc", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", method: "eth_gasPrice", params: [], id: Date.now() + 4 }),
+          cache: "no-store",
+        }),
       ]);
 
       const latency = Math.max(1, Math.round(performance.now() - startT));
@@ -353,6 +397,10 @@ function startMeshEngine() {
       let currentBn = globalMeshState.blockNumber;
       let currentPeers = globalMeshState.peerCount;
       let currentWorkers = globalMeshState.workers;
+      let currentTps = globalMeshState.tps;
+      let currentMempool = globalMeshState.mempoolSize;
+      let currentUptime = globalMeshState.uptimeSeconds;
+      let currentGasPriceGwei = globalMeshState.gasPriceGwei;
 
       if (bnRes.status === "fulfilled" && bnRes.value.ok) {
         try {
@@ -384,6 +432,27 @@ function startMeshEngine() {
           if (typeof teleData.result?.peer_count === "number") {
             currentPeers = teleData.result.peer_count;
           }
+          if (typeof teleData.result?.tps === "number") {
+            currentTps = teleData.result.tps;
+          }
+          if (typeof teleData.result?.mempool_size === "number") {
+            currentMempool = teleData.result.mempool_size;
+          }
+          if (typeof teleData.result?.uptime_seconds === "number") {
+            currentUptime = teleData.result.uptime_seconds;
+          }
+        } catch { }
+      }
+
+      if (gasRes.status === "fulfilled" && gasRes.value.ok) {
+        try {
+          const gasData = await gasRes.value.json();
+          if (gasData.result) {
+            const wei = parseInt(gasData.result, 16);
+            if (!isNaN(wei) && wei > 0) {
+              currentGasPriceGwei = Number((wei / 1e9).toFixed(2));
+            }
+          }
         } catch { }
       }
 
@@ -398,7 +467,16 @@ function startMeshEngine() {
 
       globalMeshState.isLive = true;
       globalMeshState.latencyMs = latency;
-      recalculateMesh(currentWorkers, currentBn, currentPeers);
+      recalculateMesh(
+        currentWorkers,
+        currentBn,
+        currentPeers,
+        latency,
+        currentTps,
+        currentGasPriceGwei,
+        currentMempool,
+        currentUptime
+      );
     } catch {
       // Offline fallback
     }
