@@ -73,6 +73,10 @@ const STRICT_ALLOWED_METHODS = new Set([
   "axn_getNetworkStats",
   "axn_getWorkers",
   "axn_getWorkerStats",
+  "staking_getActiveValidators",
+  "staking_getValidator",
+  "staking_claimRewards",
+  "nak_getActiveValidators",
 
   // Verified DAO Governance Read Query Methods
   "gov_getStats",
