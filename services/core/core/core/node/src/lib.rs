@@ -214,6 +214,7 @@ impl NakharaxNode {
         // Bootstrap genesis validators into staking module
         // These validators are defined in genesis with pre-allocated stakes
         let staking_clone = staking.clone();
+        let val_addr_opt = config.validator_address.clone();
         tokio::spawn(async move {
             use genesis::{ADDR_VALIDATOR_01, ADDR_VALIDATOR_02};
             const ONE_AXX: u128 = 10_u128.pow(18);
@@ -229,6 +230,21 @@ impl NakharaxNode {
                 .await
                 .bootstrap_validator(ADDR_VALIDATOR_02.to_string(), VALIDATOR_STAKE)
                 .await;
+            let _ = staking_clone
+                .write()
+                .await
+                .bootstrap_validator(
+                    "0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb".to_string(),
+                    VALIDATOR_STAKE,
+                )
+                .await;
+            if let Some(val_addr) = val_addr_opt {
+                let _ = staking_clone
+                    .write()
+                    .await
+                    .bootstrap_validator(val_addr, VALIDATOR_STAKE)
+                    .await;
+            }
             info!("Bootstrapped genesis validators into staking module");
         });
 
@@ -370,9 +386,10 @@ impl NakharaxNode {
                         .get_active_validators()
                         .await
                         .into_iter()
-                        .map(|vi| vi.address)
+                        .map(|vi| vi.address.to_lowercase())
                         .collect();
                     v.sort();
+                    v.dedup();
                     v
                 };
 
@@ -380,9 +397,10 @@ impl NakharaxNode {
 
                 // Determine slot based on our validator_address position, or fallback to peer_id hash
                 let my_slot = if let Some(ref addr) = validator_address {
+                    let addr_lower = addr.to_lowercase();
                     active_validators
                         .iter()
-                        .position(|a| a == addr)
+                        .position(|a| a == &addr_lower)
                         .map(|i| i as u64)
                 } else {
                     None
@@ -447,7 +465,7 @@ impl NakharaxNode {
                         if let Err(e) = state.credit_balance(&proposer, BLOCK_REWARD) {
                             tracing::warn!("Failed to credit block reward to proposer {}: {}", proposer, e);
                         } else {
-                            debug!("⛏ Credited block reward {} to proposer {}", BLOCK_REWARD, proposer);
+                            info!("⛏ Credited block reward {} to proposer {}", BLOCK_REWARD, proposer);
                         }
                     }
 
