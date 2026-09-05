@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Palette, Check, Sparkles, Pause } from "lucide-react";
+import { Palette, Check, Sparkles, Pause, Terminal } from "lucide-react";
 
 type Theme = { id: string; name: string; swatch: string; desc: string };
 
@@ -80,6 +80,7 @@ export function ThemeSwitcher() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("aurora");
   const [anim, setAnim] = useState<Anim>("on");
+  const [matrixStream, setMatrixStream] = useState<boolean>(true);
   const ref = useRef<HTMLDivElement>(null);
 
   // Hydrate from localStorage and enforce Dark Obsidian
@@ -91,8 +92,10 @@ export function ThemeSwitcher() {
 
     const t = localStorage.getItem(KEY_THEME) || "aurora";
     const a = (localStorage.getItem(KEY_ANIM) as Anim) || "on";
+    const m = localStorage.getItem("nakharax-matrix-ambient") !== "false";
     setActive(t);
     setAnim(a);
+    setMatrixStream(m);
     applyAnim(a);
     applyTheme(t);
   }, []);
@@ -119,6 +122,15 @@ export function ThemeSwitcher() {
     localStorage.setItem(KEY_ANIM, next);
   };
 
+  const toggleMatrix = () => {
+    const next = !matrixStream;
+    setMatrixStream(next);
+    try {
+      localStorage.setItem("nakharax-matrix-ambient", next ? "true" : "false");
+      window.dispatchEvent(new CustomEvent("nakharax-matrix-toggle", { detail: next }));
+    } catch {}
+  };
+
   return (
     <div ref={ref} className="relative">
       <button
@@ -132,8 +144,8 @@ export function ThemeSwitcher() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-9 w-80 rounded-2xl border border-white/20 bg-slate-950/90 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-3xl z-50 animate-scale-in">
-          {/* Header & Drift Switch */}
+        <div className="absolute right-0 top-9 w-84 rounded-2xl border border-white/20 bg-slate-950/90 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-3xl z-50 animate-scale-in">
+          {/* Header & Effect Switches */}
           <div className="flex items-center justify-between mb-3.5 border-b border-white/10 pb-2.5">
             <div>
               <div className="text-[12px] font-bold text-white tracking-wide">
@@ -143,13 +155,24 @@ export function ThemeSwitcher() {
                 Curated Refraction Palettes
               </div>
             </div>
-            <button
-              onClick={toggleAnim}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 px-2.5 py-1 text-[10.5px] font-mono transition-colors"
-            >
-              {anim === "on" ? <Sparkles size={11} className="text-emerald-400" /> : <Pause size={11} />}
-              {anim === "on" ? "Motion: ON" : "Motion: OFF"}
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={toggleMatrix}
+                className="inline-flex items-center gap-1 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 px-2 py-1 text-[10px] font-mono transition-colors"
+                title="Toggle DeAI Matrix Rain"
+              >
+                <Terminal size={10.5} className={matrixStream ? "text-emerald-400" : "text-slate-500"} />
+                <span>{matrixStream ? "Matrix" : "Off"}</span>
+              </button>
+              <button
+                onClick={toggleAnim}
+                className="inline-flex items-center gap-1 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 px-2 py-1 text-[10px] font-mono transition-colors"
+                title="Toggle Background Motion"
+              >
+                {anim === "on" ? <Sparkles size={10.5} className="text-emerald-400" /> : <Pause size={10.5} />}
+                <span>{anim === "on" ? "Motion" : "Off"}</span>
+              </button>
+            </div>
           </div>
 
           {/* 8 Curated Atmosphere Presets */}

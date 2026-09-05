@@ -18,6 +18,13 @@ export function MatrixRainBackground() {
     } catch {
       /* ignore */
     }
+
+    const handleToggle = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      setIsEnabled(customEvent.detail);
+    };
+    window.addEventListener("nakharax-matrix-toggle", handleToggle);
+    return () => window.removeEventListener("nakharax-matrix-toggle", handleToggle);
   }, []);
 
   useEffect(() => {
