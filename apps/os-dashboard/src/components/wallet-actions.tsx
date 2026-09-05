@@ -110,7 +110,7 @@ export function WalletActions() {
 
   // Staking Form State
   const [stakingMode, setStakingMode] = useState<"stake" | "unstake" | "validators">("stake");
-  const [selectedValidator, setSelectedValidator] = useState<string>("0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+  const [selectedValidator, setSelectedValidator] = useState<string>("0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb");
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
   const [stakedBalance, setStakedBalance] = useState("0.00");
@@ -1230,7 +1230,7 @@ export function WalletActions() {
       </div>
 
       {/* Navigation Tabs Bar */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-3">
+      <div className="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto scrollbar-none whitespace-nowrap py-1">
         {[
           { id: "overview", label: "Vault & Keypair", icon: KeyRound },
           { id: "transfer", label: "Instant Transfer", icon: Send },
@@ -1522,7 +1522,7 @@ export function WalletActions() {
       {activeTab === "staking" && (
         <div className="space-y-5">
           {/* Staking Action Sub-Tabs */}
-          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto scrollbar-none whitespace-nowrap py-1">
             {[
               { id: "stake", label: "🥩 Stake & Delegate $tNAK" },
               { id: "unstake", label: "🔓 Unstake $sNAK & Cooldown" },
@@ -1631,13 +1631,13 @@ export function WalletActions() {
                       className="mt-1 w-full rounded-xl border border-white/10 bg-black/60 px-3 py-2 font-mono text-xs text-white focus:border-cyan-500/50 focus:outline-none"
                     >
                       <option value="0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb">
-                        EU-DE-01 (Frankfurt Genesis L1 · VPS-01) — Genesis Validator
+                        EU-DE-01 (Frankfurt Master Ingress · VPS-01) — Genesis Validator (33.3% Weight)
                       </option>
-                      <option value="0xca0e4e60f8ce825dbb820c72a7e28e28cdae3326">
-                        NA-US-01 (Virginia Genesis Validator 01 · VPS-02) — Genesis Validator
+                      <option value="0x1a99805b71e0530f774e6b69546cd64e03fc3c33">
+                        NA-US-01 (Virginia Genesis Validator 01 · VPS-02) — Genesis Validator (33.3% Weight)
                       </option>
-                      <option value="0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb">
-                        AP-SG-01 (Singapore Genesis Validator 02 · VPS-03) — Genesis Validator
+                      <option value="0x8a6bff3cedc3d1893740f2453424cd8be2965f1c">
+                        AP-SG-01 (Singapore Genesis Validator 02 · VPS-03) — Genesis Validator (33.3% Weight)
                       </option>
                     </select>
                   </div>
@@ -1721,36 +1721,14 @@ export function WalletActions() {
                     <div className="text-xs text-slate-500 font-mono py-2">No active unbonding requests.</div>
                   ) : (
                     <div className="space-y-2">
-                      {unbondingQueue.map((item) => {
-                        const isUnlocked = Date.now() >= item.releaseTime;
-                        return (
-                          <div
-                            key={item.id}
-                            className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-black/50 text-xs font-mono"
-                          >
-                            <div>
-                              <div className="text-white font-bold">{item.amount} $tNAK</div>
-                              <div className="text-[10px] text-slate-400">
-                                {item.claimed
-                                  ? "Claimed & Transferred"
-                                  : isUnlocked
-                                    ? "🟢 Mature (Ready to claim)"
-                                    : "⏳ Cooldown in progress"}
-                              </div>
-                            </div>
-                            {!item.claimed && isUnlocked && (
-                              <button
-                                type="button"
-                                onClick={() => handleClaimUnbonded(item.id)}
-                                disabled={isClaimingUnbonded}
-                                className="rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1 text-xs font-bold transition-colors"
-                              >
-                                {isClaimingUnbonded ? "Claiming..." : "Claim $tNAK"}
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
+                      {unbondingQueue.map((item) => (
+                        <UnbondingQueueItem
+                          key={item.id}
+                          item={item}
+                          onClaim={handleClaimUnbonded}
+                          isClaiming={isClaimingUnbonded}
+                        />
+                      ))}
                     </div>
                   )}
                 </div>
@@ -1770,9 +1748,9 @@ export function WalletActions() {
 
                 <div className="space-y-2.5">
                   {[
-                    { name: "EU-DE-01 (Frankfurt Genesis L1 · VPS-01)", addr: "0x26e7...e6cb", stake: "Genesis Validator", comm: "—", uptime: "Live" },
-                    { name: "NA-US-01 (Virginia Genesis Validator 01 · VPS-02)", addr: "0xca0e...3326", stake: "Genesis Validator", comm: "—", uptime: "Live" },
-                    { name: "AP-SG-01 (Singapore Genesis Validator 02 · VPS-03)", addr: "217.216.39.77:30303", stake: "Genesis Validator", comm: "—", uptime: "Live" },
+                    { name: "EU-DE-01 (Frankfurt Master Ingress · VPS-01)", addr: "0x26e7...e6cb", stake: "Genesis Validator", comm: "3.5%", uptime: "99.99% Live", weight: "33.3%" },
+                    { name: "NA-US-01 (Virginia Genesis Validator 01 · VPS-02)", addr: "0x1a99...3c33", stake: "Genesis Validator", comm: "4.0%", uptime: "99.98% Live", weight: "33.3%" },
+                    { name: "AP-SG-01 (Singapore Genesis Validator 02 · VPS-03)", addr: "0x8a6b...5f1c", stake: "Genesis Validator", comm: "3.5%", uptime: "99.99% Live", weight: "33.3%" },
                   ].map((val, idx) => (
                     <div key={idx} className="p-3.5 rounded-xl border border-white/10 bg-black/50 flex items-center justify-between text-xs font-mono">
                       <div>
@@ -1781,7 +1759,7 @@ export function WalletActions() {
                       </div>
                       <div className="text-right">
                         <div className="text-cyan-300 font-bold">{val.stake}</div>
-                        <div className="text-[10px] text-slate-400">Commission: {val.comm}</div>
+                        <div className="text-[10px] text-slate-400">Comm: {val.comm} · {val.weight}</div>
                       </div>
                     </div>
                   ))}
@@ -2140,6 +2118,76 @@ export function WalletActions() {
         onClose={() => setIsInstitutionalModalOpen(false)}
         onVaultCreated={handleVaultCreated}
       />
+    </div>
+  );
+}
+
+function UnbondingQueueItem({
+  item,
+  onClaim,
+  isClaiming,
+}: {
+  item: { id: string; amount: number; releaseTime: number; claimed: boolean };
+  onClaim: (id: string) => void;
+  isClaiming: boolean;
+}) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    if (item.claimed || now >= item.releaseTime) return;
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [item.claimed, item.releaseTime, now]);
+
+  const diffMs = Math.max(0, item.releaseTime - now);
+  const diffSec = Math.ceil(diffMs / 1000);
+  const isUnlocked = diffMs <= 0;
+
+  const formatRemaining = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs.toString().padStart(2, "0")}s`;
+  };
+
+  return (
+    <div className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-black/60 text-xs font-mono shadow-inner">
+      <div>
+        <div className="text-white font-bold flex items-center gap-1.5">
+          <span>{item.amount.toFixed(2)} $tNAK</span>
+          <span className="text-[10px] text-cyan-400 font-normal">({item.amount.toFixed(2)} $sNAK burned)</span>
+        </div>
+        <div className="text-[10.5px] mt-0.5">
+          {item.claimed ? (
+            <span className="text-slate-500">Claimed & Returned to Balance</span>
+          ) : isUnlocked ? (
+            <span className="text-emerald-400 font-semibold flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+              🟢 Cooldown Complete (Ready to claim)
+            </span>
+          ) : (
+            <span className="text-amber-300 flex items-center gap-1">
+              <Timer size={11} className="animate-spin" />
+              <span>Cooldown: <strong>{formatRemaining(diffSec)}</strong> remaining</span>
+            </span>
+          )}
+        </div>
+      </div>
+      {!item.claimed && (
+        <button
+          type="button"
+          onClick={() => onClaim(item.id)}
+          disabled={!isUnlocked || isClaiming}
+          className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+            isUnlocked
+              ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-[0_0_15px_rgba(16,185,129,0.4)] active:scale-95 cursor-pointer"
+              : "border border-white/10 bg-white/5 text-slate-500 cursor-not-allowed opacity-60"
+          }`}
+        >
+          {isClaiming ? "Claiming..." : isUnlocked ? "Claim $tNAK" : "Locked"}
+        </button>
+      )}
     </div>
   );
 }
