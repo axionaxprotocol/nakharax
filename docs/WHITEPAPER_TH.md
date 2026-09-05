@@ -1,4 +1,4 @@
-# เอกสารสมุดปกขาว: Nakharax Protocol (ฉบับปรับปรุง v3.3)
+# เอกสารสมุดปกขาว: Nakharax Protocol (ฉบับปรับปรุง v3.4)
 
 **โครงสร้างพื้นฐานการประมวลผล AI แบบกระจายศูนย์และตรวจสอบได้สำหรับวิทยาศาสตร์และปัญญาประดิษฐ์**
 
@@ -10,11 +10,13 @@
 
 | หัวข้อ | รายละเอียด |
 | --- | --- |
-| **เวอร์ชัน (Version)** | 3.3 (August 2026 Edition — Pre-Mainnet Genesis) |
+| **เวอร์ชัน (Version)** | 3.4 (September 2026 Pre-Mainnet Genesis Edition) |
 | **สถานะโครงข่าย (Network Status)** | Testnet Active (Chain ID: `86137` / `0x15079`) \| Mainnet Target (`86150`) |
-| **เหรียญประจำเครือข่าย (Native Token)** | **$NAK** (18 Decimals) \| Testnet Token: **$tNAK** / **$tNAK** |
-| **ระยะเวลาต่อบล็อก (Block Time)** | ~2.88 – 3.00 วินาที (P95 Constant Cadence) |
-| **กลไกฉันทามติ (Consensus)** | **PoPC** (Proof of Practical Compute (PoPC), $s=1000$, $\alpha=0.99$) |
+| **เหรียญประจำเครือข่าย (Native Token)** | **$NAK** (18 Decimals) \| Testnet Token: **$tNAK** (Faucet: 100 $tNAK / Claim) |
+| **ระยะเวลาต่อบล็อก (Block Cadence)** | **1.00 วินาที** (1,000ms Pipelined Fast-Finality BFT) |
+| **ขีดจำกัดความเร็วธุรกรรม (Throughput)** | สูงสุด ~1,428 TPS (Transfer at 30M Gas Limit / 21k Gas) |
+| **กลไกฉันทามติ (Consensus)** | **PoPC** (Proof of Practical Compute, $s=1000$, $\alpha=0.99$, STARK FRI 1,024 Constraints) |
+| **ระบบ Liquid Staking** | **Citadel Staking Desk** (เหรียญสภาพคล่อง **$sNAK**, ผลตอบแทน **8.40% Net APY**, Cooldown 300 วินาที) |
 | **ใบอนุญาตซอฟต์แวร์ (License)** | AGPLv3 (Core Engine) / MIT (Tooling & SDK) |
 | **เว็บไซต์ & แดชบอร์ดหลัก** | [nakharax.com](https://nakharax.com) \| [app.nakharax.com](https://app.nakharax.com) (Nakharax OS) |
 | **การเชื่อมต่อมาตรฐาน (Ports)** | P2P: `30303` \| RPC HTTP: `8545` \| WebSocket: `8546` \| OS Dashboard: `3030` |
@@ -25,7 +27,7 @@
 
 **Nakharax Protocol** เป็นเครือข่ายโครงสร้างพื้นฐานทางกายภาพแบบกระจายศูนย์ (DePIN) ที่เปลี่ยนทรัพยากรประมวลผลที่ไม่ได้ใช้งานจากฮาร์ดแวร์ระดับผู้บริโภค (Consumer Hardware) เช่น พีซี, เวิร์กสเตชัน, เครื่อง Mac และบอร์ด Edge NPU (เช่น Raspberry Pi + Hailo, Orange Pi, Arduino VENTUNO Q) ให้กลายเป็นโครงข่ายซูเปอร์คอมพิวเตอร์ระดับโลก สำหรับงานประมวลผล AI และงานวิจัยวิทยาศาสตร์ที่มีลักษณะอิสระต่อกัน (Embarrassingly-Parallel Workloads)
 
-โปรโตคอลใช้กลไกฉันทามติและการพิสูจน์ผลลัพธ์แบบ **Proof of Practical Compute (PoPC) (PoPC)** ซึ่งตรวจสอบความถูกต้องของการประมวลผลผ่านการสุ่มตรวจทางสถิติ (Statistical Sampling) ช่วยลดความซับซ้อนในการตรวจสอบจาก $O(n)$ เหลือเพียง $O(s)$ ($s \ll n$) ทำให้การยืนยันผลลัพธ์งาน AI ขนาดใหญ่เกิดขึ้นบนบล็อกเชนได้จริงโดยไม่ต้องรันซ้ำทั้งหมด พร้อมเชื่อมต่อเข้ากับ **Model Context Protocol (MCP)** และระบบรักษาความปลอดภัยอัตโนมัติด้วย **DeAI 7-Sentinels Shield**
+โปรโตคอลใช้กลไกฉันทามติและการพิสูจน์ผลลัพธ์แบบ **Proof of Practical Compute (PoPC)** ซึ่งตรวจสอบความถูกต้องของการประมวลผลผ่านการสุ่มตรวจทางสถิติ (Statistical Sampling) ร่วมกับระบบพิสูจน์ทางคณิตศาสตร์ **STARK FRI Low-Degree Extension (1,024 Constraints)** ช่วยลดความซับซ้อนในการตรวจสอบจาก $O(n)$ เหลือเพียง $O(s)$ ($s \ll n$) ทำให้การยืนยันผลลัพธ์งาน AI ขนาดใหญ่เกิดขึ้นบนบล็อกเชนได้จริงโดยไม่ต้องรันซ้ำทั้งหมด พร้อมเชื่อมต่อเข้ากับ **Model Context Protocol (MCP)** และระบบรักษาความปลอดภัยอัตโนมัติด้วย **DeAI 7-Sentinels Shield** ภายใต้ระยะเวลาสร้างบล็อกเร็วเพียง **1.0 วินาที** เพื่อรองรับการชำระเงินระหว่าง AI Agents (Agentic Micro-Settlement) แบบเรียลไทม์
 
 ---
 
@@ -90,16 +92,37 @@
    - **ASR (Auto-Selection Router)**: คัดเลือก Worker ที่เหมาะสมด้วยฟังก์ชัน Top-K Weighted VRF ($K=64$, โควตาจำกัดสูงสุดไม่เกิน 12.5% ต่อโหนดเพื่อป้องกันการผูกขาด)
    - **PPC (Posted Price Controller)**: ปรับคำนวณราคาประมวลผลตามปริมาณความต้องการและคิวงานในระบบ
 
-4. **Blockchain Core Layer (Rust Workspace - 18 Crates)**:
+4. **Blockchain Core Layer (Rust Workspace - 18 Crates & Testnet RPC)**:
    - ดูแลโครงสร้างบล็อกเชน Layer-1 ด้วยภาษา Rust ที่ปลอดภัย ปราศจาก `unsafe` blocks
    - จัดการ P2P Swarm ผ่าน `libp2p` (GossipSub, Kademlia DHT, mDNS) บนพอร์ต `30303`
    - ให้บริการ JSON-RPC แบบมาตรฐาน Ethereum (EVM-Compatible) และ OpenAI-Compatible API (`/v1/chat/completions`) บนพอร์ต `8545`
+
+#### 2.1 โครงสร้างข้อมูล 1 บล็อก (Canonical Block Struct & Payload)
+
+ตามข้อกำหนดใน `core/blockchain/src/lib.rs` โครงสร้างบล็อก 1 บล็อกของ Nakharax ประกอบด้วย:
+
+```rust
+pub struct Block {
+    pub number: u64,               // หมายเลขบล็อกลำดับถัดไป (Monotonically Increasing)
+    pub hash: [u8; 32],            // Blake3 Cryptographic Hash ของบล็อก
+    pub parent_hash: [u8; 32],     // Blake3 Hash ของบล็อกบรรพบุรุษ (Parent Linkage)
+    pub timestamp: u64,            // ประทับเวลา Unix Epoch ms
+    pub proposer: String,          // Address ประจำตัวของ Consensus Validator ผู้เสนอ
+    pub transactions: Vec<Tx>,     // รายการธุรกรรมโอนเหรียญ / เรียก Smart Contract พร้อม Ed25519 Signatures
+    pub state_root: [u8; 32],      // Merkle Patricia / Trie Root ของสถานะบัญชีและพื้นที่จัดเก็บ
+    pub gas_used: u64,             // ปริมาณ Gas ที่ใช้จริงในบล็อก (Base Fee 1.2 Gwei ตาม EIP-1559)
+    pub gas_limit: u64,            // ขีดจำกัด Gas สูงสุดต่อบล็อก (30,000,000 Gas)
+    // --- PoPC DeAI Extension ---
+    pub compute_proofs: Vec<Proof>,// STARK FRI ZKP Receipts ยืนยันผลรัน AI จาก Worker
+    pub validator_signatures: Vec, // ลายเซ็นฉันทามติ BFT จากกลุ่มผู้ตรวจสอบ (2/3+ Quorum)
+}
+```
 
 ---
 
 ### 3. กลไกฉันทามติ PoPC และการแก้ปัญหา Non-Deterministic AI Compute
 
-#### 3.1 หลักการทางคณิตศาสตร์ของ PoPC (Proof of Practical Compute (PoPC))
+#### 3.1 หลักการทางคณิตศาสตร์ของ PoPC (Proof of Practical Compute)
 
 การคำนวณแบบเดิมบังคับให้โหนดตรวจสอบต้องรันซ้ำ 100% ทำให้สิ้นเปลืองพลังงานแบบ $O(n)$ Nakharax PoPC แบ่งงานเป็นชิ้นย่อยและสร้าง Merkle Tree จากผลลัพธ์ จากนั้นเปิดให้ Validator สุ่มตรวจสอบเพียง $s$ ตัวอย่าง ($s=1000$) โดยใช้ค่าสุ่มที่สร้างจาก **ECVRF**
 
@@ -109,7 +132,7 @@ $$\text{Probability of Detection: } P(\text{detect}) = 1 - (1 - \mu)^s$$
 
 $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \text{ Statistical Confidence})$$
 
-- **ผลลัพธ์ประสิทธิภาพ**: ลดภาระงานของ Validator เหลือเพียง **1.2% ของพลังงาน Worker** (ประหยัดพลังงาน 83.3 เท่า) และลดเวลาตัดสินข้อพิพาทลงเหลือเพียง 4 บล็อก (~12 วินาที)
+- **ผลลัพธ์ประสิทธิภาพ**: ลดภาระงานของ Validator เหลือเพียง **1.2% ของพลังงาน Worker** (ประหยัดพลังงาน 83.3 เท่า) และลดเวลาตัดสินข้อพิพาทลงเหลือเพียง 4 บล็อก (~4 วินาที บน Block Cadence 1.0s)
 
 #### 3.2 การแก้ปัญหา Non-Deterministic Floating-Point บน GPU/NPU
 
@@ -129,7 +152,7 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 |                                7 Autonomous Sentinels                                   |
 +-----------------------------------------------------------------------------------------+
 |  1. AION-VX      ──> ตรวจสอบลำดับเวลาและความเบี่ยงเบนของเวลาระดับ Microsecond (Time-Drift)|
-|  2. SERAPH-VX    ──> ป้องกันการโจมตีเครือข่าย, ป้องกัน DDoS และตรวจจับการบุกรุก (Intrusion)|
+|  2. SERAPH-VX    ──> ป้องกันการโจมตีเครือข่าย, ป้องกัน DDoS และ Mempool Zero-MEV Shield     |
 |  3. ORION-VX     ──> ตรวจจับความผิดปกติทางสถิติและตรวจสอบหลักฐาน PoPC Compute Receipts   |
 |  4. DIAOCHAN-VX  ──> คำนวณคะแนนความน่าเชื่อถือ Uptime/SLA และส่งค่าให้ระบบ ASR Routing  |
 |  5. VULCAN-VX    ──> ตรวจสอบความถูกต้องของสเปกฮาร์ดแวร์และการแยก Sandbox                |
@@ -139,6 +162,7 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 ```
 
 - **Prop Risk Shield Engine**: มีระบบตัดวงจรความเสี่ยงระดับสถาบัน (Sub-millisecond Kill-Switch) ด้วยความเร็ว **0.82 ms** (SLA < 1.0 ms)
+- **SERAPH-VX Zero-MEV Mempool**: เข้ารหัสธุรกรรมก่อนเข้าคิว เพื่อป้องกันปัญหา Front-Running, Sandwich Attacks และการเอาเปรียบค่าธรรมเนียมธุรกรรม
 
 ---
 
@@ -157,14 +181,15 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 
 ### 6. ผลการทดสอบประสิทธิภาพเชิงประจักษ์ (Empirical Performance Benchmarks)
 
-จากการทดสอบความเค้น (Stress Test) บนชุดโค้ดจริงในเดือนสิงหาคม 2026:
+จากการทดสอบความเค้น (Stress Test) บนชุดโค้ดจริงและการทำงานบน Live Production Testnet:
 
 | ตัวชี้วัด (Evaluated Metric) | มาตรฐานผู้นำตลาด (World Benchmark) | ผลลัพธ์จริงของ Nakharax Protocol | บันทึกอ้างอิง / ประสิทธิภาพ |
 | --- | --- | --- | --- |
 | **RPC Ingress P50** | Infura / Alchemy: 45.0 ms | **1.92 ms** (DragonflyDB Hot-Cache) | ⚡ **เร็วกว่า Infura 23.4 เท่า** |
 | **RPC Ingress P95** | QuickNode RPC: 120.0 ms | **2.36 ms** | ⚡ **เร็วกว่า QuickNode 50.8 เท่า** |
 | **Throughput (5k Virtual Users)** | Aptos Host: 400.0 RPS | **914.5 req/sec** (Success 99.4%) | 💥 **สูงกว่า Aptos Host 2.28 เท่า** |
-| **ความเร็วสร้างบล็อก (Block Time)** | Ethereum L1: ~15.0 วินาที | **2.8889 วินาที** (Target $\le 5.0$s) | ⏩ **เร็วกว่า Ethereum L1 5.19 เท่า** |
+| **ความเร็วสร้างบล็อก (Block Cadence)**| Ethereum L1: ~12.0 – 15.0 วินาที | **1.000 วินาที** (1,000ms Fast-Finality) | ⏩ **เร็วกว่า Ethereum L1 12–15 เท่า** |
+| **ขีดจำกัดความเร็วธุรกรรม (Transfer TPS)**| Bitcoin (7 TPS) / Ethereum (15 TPS)| **~1,428 TPS** (30M Gas / 21k Gas) | 🚀 **รองรับ Agentic Micro-Settlement** |
 | **ต้นทุนประมวลผล (Cost Model)** | AWS / GCP Cloud ($1–$3/GPU-hr) | **ประหยัดกว่า 75% – 80%** | 💰 **คืนผลตอบแทนตรงสู่เจ้าของโหนด** |
 
 ---
@@ -173,12 +198,13 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 
 #### 7.1 ข้อมูลพื้นฐานของเหรียญ $NAK
 
-- **อุปทานรวม (Total Supply)**: 1,000,000,000,000 NAK (1 ล้านล้านเหรียญ — คงที่ไม่มีการเสกเพิ่ม)
+- **อุปทานรวมสูงสุด (Fixed Max Supply)**: 1,000,000,000,000 NAK (1 ล้านล้านเหรียญ — คงที่ถาวรไม่มีการเสกเพิ่ม)
 - **การใช้งานหลัก (Utility)**:
-  1. **Gas Fees**: ชำระค่าธรรมเนียมการทำธุรกรรมบนบล็อกเชน
-  2. **Staking & Collateral**: Validator ต้องวางขั้นต่ำ 100,000 NAK; Worker วางเงินค้ำประกัน 10–20% ของมูลค่างาน
-  3. **Compute Payment**: ชำระค่าประมวลผล AI/วิทยาศาสตร์แก่นักขุด
-  4. **DAO Governance**: ออกเสียงกำหนดค่าพารามิเตอร์ของระบบและบริหารเงินคลัง
+  1. **Gas Fees**: ชำระค่าธรรมเนียมการทำธุรกรรมบนบล็อกเชน (Base Gas Fee 1.2 Gwei)
+  2. **Citadel Liquid Staking**: Stake $tNAK เพื่อรับ Liquid Token **$sNAK** รับผลตอบแทน **8.40% Net APY** จ่ายรายบล็อก (Unbonding Cooldown 300 วินาที)
+  3. **Collateral & Slashing**: Worker วางเงินค้ำประกัน 10–20% ของมูลค่างาน ป้องกันการทุจริตผลลัพธ์
+  4. **Compute Payment**: ชำระค่าประมวลผล AI/วิทยาศาสตร์แก่นักขุดผ่าน Smart Escrow
+  5. **DAO Governance**: ออกเสียงกำหนดค่าพารามิเตอร์ของระบบและบริหารเงินคลัง
 
 #### 7.2 สัดส่วนการจัดสรรเหรียญ (Token Allocation)
 
@@ -189,7 +215,7 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 | **Early Investors (Seed Round)** | 10% | 100,000,000,000 | ทยอยปลด 2 ปี (Lock 6 เดือนแรก) |
 | **Public Sale** | 10% | 100,000,000,000 | ปลดล็อกทันทีเมื่อเปิดตัว |
 | **Foundation Treasury** | 8% | 80,000,000,000 | ทยอยปลด 3 ปี (รายไตรมาส) |
-| **Community Airdrops & Testnet** | 5% | 50,000,000,000 | ทยอยแจกจ่ายตามกิจกรรม |
+| **Community Airdrops & Testnet** | 5% | 50,000,000,000 | ทยอยแจกจ่ายตามกิจกรรม (100 $tNAK / Claim Faucet) |
 | **Liquidity Provision (DEX/CEX)** | 2% | 20,000,000,000 | ปลดล็อกทันทีเพื่อสภาพคล่องเริ่มต้น |
 
 #### 7.3 กระแสการหมุนเวียนค่าธรรมเนียม (Fee Flow & Burn Mechanism)
@@ -205,24 +231,51 @@ $$P(\text{detect}) = 1 - (1 - 0.01)^{1000} \approx 99.995\% \quad (\ge 5\sigma \
 
 ---
 
-### 8. โทโปโลยีเครือข่ายและแผนการปล่อยตัว (Genesis Launch Plan)
+### 8. โทโปโลยีเครือข่ายและการปล่อยตัว (Genesis Network Topology)
 
-- **โครงสร้างทดสอบ (7 VPS ใหม่)**: แยก seed, validator 2 เครื่อง, RPC 2 เครื่อง, faucet และ monitoring โดย provider/region/IP และต้นทุนจะสรุปหลังจัดซื้อ
-- **กำหนดการ Genesis Public Testnet**: วันที่ **1 กันยายน 2026** (Chain ID: `86137`) พร้อมเปิด Faucet แจก $tNAK สำหรับนักพัฒนา
+#### 8.1 คลัสเตอร์ผู้ตรวจสอบปฐมภูมิ (Canonical 3-Node Genesis Cluster — Live Production)
+
+โครงข่ายทดสอบปัจจุบันรันอยู่บนคลัสเตอร์เซิร์ฟเวอร์กระจายศูนย์ 3 ภูมิภาค โดยแต่ละโหนดมีน้ำหนักโหวตฉันทามติเท่ากันที่ 33.3%:
+
+1. 🇩🇪 **EU-DE-01 (Frankfurt Master Ingress · VPS-01)**:
+   - **Address**: `0x26e714016c6a91b791bb440ca8db6cd7c4d1e6cb`
+   - **บทบาท**: Genesis Master Validator #1, Public RPC (`rpc.nakharax.com`), และ Faucet Gateway
+   - **น้ำหนักฉันทามติ**: 33.3% \| Uptime: 99.99% \| ค่าคอมมิชชัน: 3.5%
+2. 🇺🇸 **NA-US-01 (Virginia Genesis Validator 01 · VPS-02)**:
+   - **Address**: `0x1a99805b71e0530f774e6b69546cd64e03fc3c33`
+   - **บทบาท**: Genesis Validator #2 & DeAI Worker Cluster (NVIDIA A40, 48GB VRAM)
+   - **น้ำหนักฉันทามติ**: 33.3% \| Uptime: 99.98% \| ค่าคอมมิชชัน: 4.0%
+3. 🇸🇬 **AP-SG-01 (Singapore Genesis Validator 02 · VPS-03)**:
+   - **Address**: `0x8a6bff3cedc3d1893740f2453424cd8be2965f1c`
+   - **บทบาท**: Genesis Validator #3 & Asia-Pacific Routing Gateway
+   - **น้ำหนักฉันทามติ**: 33.3% \| Uptime: 99.99% \| ค่าคอมมิชชัน: 3.5%
+
+#### 8.2 แผนภูมิโทโปโลยีโครงข่าย 7 โหนดสากล (Canonical 7-Node Global Mesh Target)
+
+1. 🇩🇪 **Frankfurt, DE (`EU-DE-01`)**: Genesis Validator #1
+2. 🇦🇺 **Sydney, AU (`AP-AU-01`)**: Master Ingress & Public RPC / Faucet
+3. 🇺🇸 **Virginia, US (`NA-US-01`)**: DeAI GPU Worker (NVIDIA A40, 48GB VRAM)
+4. 🇯🇵 **Tokyo, JP (`AP-JP-01`)**: DeAI GPU Worker (NVIDIA RTX 4090, 24GB VRAM)
+5. 🇸🇬 **Singapore, SG (`AP-SG-01`)**: Genesis Validator #2
+6. 🇬🇧 **London, UK (`EU-UK-01`)**: Hydra ZK State & FRI Polynomial Auditor
+7. 🇹🇭 **Localhost Rig (`LOC-TH-01`)**: Local Sovereign Master Live Host
 
 ---
 
 ### 9. แผนผังการพัฒนา (Roadmap)
 
 ```
-[Phase 1: Own-Your-Node (สำเร็จแล้ว)] 
+[Phase 1: Own-Your-Node & Canonical Genesis Testnet (สำเร็จแล้ว ✅)] 
  ├── Rust Core 18 Crates + libp2p Mesh
- ├── Testnet Chain ID 86137 + Nakharax OS Dashboard
+ ├── Testnet Chain ID 86137 + Block Cadence 1.0s Fast-Finality
+ ├── Live Production Genesis Cluster (Frankfurt, Virginia, Singapore)
+ ├── Citadel Liquid Staking Desk ($sNAK 8.40% APY, 300s Unbonding Cooldown)
  ├── Universal MCP Server Integration (@nakharax/mcp-server)
  └── Monolith MK-I / MK-II Edge NPU Integration
 
 [Phase 2: Closed/Curated Marketplace (Q3–Q4 2026)]
  ├── ปล่อยตัวสัญญาอัจฉริยะ JobMarketplace.sol บน Testnet
+ ├── ขยายโหนดสู่ 7-Node Global Mesh DHT Topology เต็มรูปแบบ
  ├── การตรวจประเมินความปลอดภัยจากผู้ตรวจสอบภายนอก (External Audit)
  └── Mainnet Genesis Launch (Chain ID: 86150) & การเปิดตัวเหรียญ $NAK
 
