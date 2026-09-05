@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Activity,
   AlertCircle,
@@ -60,6 +61,7 @@ interface RealTransactionData {
 }
 
 export default function BlockExplorerPage() {
+  const router = useRouter();
   const { totalActiveNodes, peerCount, isLive } = useNetworkMesh();
   const [currentBlock, setCurrentBlock] = useState<number | null>(null);
   const [blocks, setBlocks] = useState<RealBlockData[]>([]);
@@ -241,88 +243,16 @@ export default function BlockExplorerPage() {
       // Check if number (Block Height)
       if (/^\d+$/.test(query)) {
         const num = parseInt(query, 10);
-        const res = await fetch("/api/rpc", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            method: "eth_getBlockByNumber",
-            params: ["0x" + num.toString(16), true],
-            id: Date.now(),
-          }),
-        });
-        const data = await res.json();
-        setSearchResult({
-          type: "BLOCK",
-          query: `Block #${num}`,
-          data: data.result || { message: "Block not found on current chain." },
-        });
+        router.push(`/apps/explorer/block/${num}`);
+        return;
       } else if (query.startsWith("0x")) {
         // Address or Tx Hash
         if (query.length === 42) {
-          // Account Balance query
-          const res = await fetch("/api/rpc", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              jsonrpc: "2.0",
-              method: "eth_getBalance",
-              params: [query, "latest"],
-              id: Date.now(),
-            }),
-          });
-          const data = await res.json();
-          setSearchResult({
-            type: "ACCOUNT",
-            query: `Account ${query.slice(0, 10)}...`,
-            data: {
-              address: query,
-              balance: data.result ? `${parseInt(data.result, 16) / 1e18} tNAK` : "0 tNAK",
-              nonce: 0,
-              type: "On-Chain Account",
-            },
-          });
-        } else {
-          // Tx Hash query: query real node on-chain record
-          const txRes = await fetch("/api/rpc", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              jsonrpc: "2.0",
-              method: "eth_getTransactionByHash",
-              params: [query],
-              id: Date.now(),
-            }),
-          });
-          const txData = await txRes.json();
-          const tx = txData.result;
-          if (tx) {
-            setSearchResult({
-              type: "TRANSACTION",
-              query: `Tx ${query.slice(0, 12)}...`,
-              data: {
-                hash: tx.hash,
-                status: "CONFIRMED_POPC (Finalized)",
-                block: parseInt(tx.blockNumber || "0x0", 16) || currentBlock,
-                from: tx.from,
-                to: tx.to,
-                value: tx.value ? `${(parseInt(tx.value, 16) / 1e18).toFixed(2)} tNAK` : "100.00 tNAK",
-                gasFee: "0.00012 tNAK",
-                type: tx.type || "TRANSFER",
-              },
-            });
-          } else {
-            setSearchResult({
-              type: "TRANSACTION",
-              query: `Tx ${query.slice(0, 12)}...`,
-              data: {
-                hash: query,
-                status: "NOT_FOUND",
-                block: currentBlock,
-                message: "Transaction not found on current chain.",
-              },
-            });
-          }
+          router.push(`/apps/explorer/address/${query}`);
+          return;
+        } else if (query.length === 66) {
+          router.push(`/apps/explorer/tx/${query}`);
+          return;
         }
       }
     } catch {
@@ -460,9 +390,12 @@ export default function BlockExplorerPage() {
                 <Card key={b.height} className="space-y-2 border-white/10 bg-slate-950/80 p-4 transition-all hover:border-emerald-500/30">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-xs font-bold text-cyan-300">
+                      <Link
+                        href={`/apps/explorer/block/${b.height}`}
+                        className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 font-mono text-xs font-bold text-cyan-300 hover:bg-cyan-500/20 transition-colors"
+                      >
                         #{b.height.toLocaleString()}
-                      </span>
+                      </Link>
                       <span className="text-[11px] font-mono text-slate-400">{b.timestamp}</span>
                     </div>
                     <span className="text-xs font-mono font-semibold text-emerald-400">+{b.rewardNak}</span>
@@ -471,7 +404,12 @@ export default function BlockExplorerPage() {
                   <div className="text-[11px] font-mono text-slate-300">
                     <div className="flex justify-between truncate">
                       <span className="text-slate-400">Validator:</span>
-                      <span className="truncate ml-2 text-white">{b.validator.slice(0, 16)}...</span>
+                      <Link
+                        href={`/apps/explorer/address/${b.validator}`}
+                        className="truncate ml-2 text-white hover:text-emerald-400 transition-colors font-mono"
+                      >
+                        {b.validator.slice(0, 16)}...
+                      </Link>
                     </div>
                     <div className="flex justify-between truncate mt-0.5">
                       <span className="text-slate-400">State Root:</span>
